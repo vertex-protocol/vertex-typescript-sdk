@@ -1,0 +1,23 @@
+{
+  "name": "@vertex/utils",
+  "version": "0.0.1",
+  "description": "",
+  "author": "Frank Jia <frank@vertexprotocol.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "source": "./src/index.ts",
+  "files": [
+    "dist/**/*",
+    "src/**/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc -b",
+    "dev": "tsc -w"
+  }
+}
