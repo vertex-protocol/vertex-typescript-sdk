@@ -12,7 +12,7 @@
     "access": "public"
   },
   "scripts": {
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist && rm -r tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "dev": "tsc -w",
     "test": "ts-node src/contracts.ts"

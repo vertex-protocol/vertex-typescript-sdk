@@ -4,8 +4,8 @@
       "runner": "nx/tasks-runners/default",
       "options": {
         "cacheableOperations": [
-          "clean",
-          "build"
+          "build",
+          "clean"
         ]
       }
     }

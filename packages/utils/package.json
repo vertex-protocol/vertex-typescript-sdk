@@ -16,8 +16,13 @@
     "access": "public"
   },
   "scripts": {
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist && rm -r tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "dev": "tsc -w"
+  },
+  "dependencies": {
+    "@ethersproject/bignumber": "^5.6.2",
+    "ethers": "^5.6.9",
+    "evm-bn": "^1.1.2"
   }
 }

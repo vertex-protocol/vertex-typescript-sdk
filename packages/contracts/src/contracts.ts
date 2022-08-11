@@ -1,7 +1,7 @@
-import { test, utilizationRatio } from '@vertex/utils';
+import { toX18 } from '@vertex/utils';
 
 export function testContract(): string {
-  return `hello` + test() + utilizationRatio();
+  return `hello` + toX18(10);
 }
 
 console.log(testContract());
