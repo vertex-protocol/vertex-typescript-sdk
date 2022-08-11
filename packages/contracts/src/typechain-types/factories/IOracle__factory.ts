@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
-import type { IOracle, IOracleInterface } from "../IOracle";
+import { Contract, Signer, utils } from 'ethers';
+import type { Provider } from '@ethersproject/providers';
+import type { IOracle, IOracleInterface } from '../IOracle';
 
 const _abi = [
   {
@@ -12,80 +12,80 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
+        internalType: 'uint32',
+        name: 'productId',
+        type: 'uint32',
       },
       {
         indexed: false,
-        internalType: "int256",
-        name: "price",
-        type: "int256",
+        internalType: 'int256',
+        name: 'price',
+        type: 'int256',
       },
     ],
-    name: "PriceUpdate",
-    type: "event",
+    name: 'PriceUpdate',
+    type: 'event',
   },
   {
     inputs: [
       {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
+        internalType: 'uint32',
+        name: 'productId',
+        type: 'uint32',
       },
       {
-        internalType: "uint8",
-        name: "decimalAdjustment",
-        type: "uint8",
+        internalType: 'uint8',
+        name: 'decimalAdjustment',
+        type: 'uint8',
       },
       {
-        internalType: "address",
-        name: "feedAddress",
-        type: "address",
+        internalType: 'address',
+        name: 'feedAddress',
+        type: 'address',
       },
     ],
-    name: "addFeed",
+    name: 'addFeed',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
+        internalType: 'uint32',
+        name: 'productId',
+        type: 'uint32',
       },
     ],
-    name: "getPriceX18",
+    name: 'getPriceX18',
     outputs: [
       {
-        internalType: "int256",
-        name: "",
-        type: "int256",
+        internalType: 'int256',
+        name: '',
+        type: 'int256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
+        internalType: 'uint32',
+        name: 'productId',
+        type: 'uint32',
       },
     ],
-    name: "updatePrice",
+    name: 'updatePrice',
     outputs: [
       {
-        internalType: "int256",
-        name: "",
-        type: "int256",
+        internalType: 'int256',
+        name: '',
+        type: 'int256',
       },
     ],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
 ];
 
@@ -96,7 +96,7 @@ export class IOracle__factory {
   }
   static connect(
     address: string,
-    signerOrProvider: Signer | Provider
+    signerOrProvider: Signer | Provider,
   ): IOracle {
     return new Contract(address, _abi, signerOrProvider) as IOracle;
   }

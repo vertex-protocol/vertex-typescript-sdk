@@ -12,64 +12,64 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
+} from 'ethers';
 import type {
   FunctionFragment,
   Result,
   EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+} from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from "./common";
+} from './common';
 
 export interface IOracleInterface extends utils.Interface {
   functions: {
-    "addFeed(uint32,uint8,address)": FunctionFragment;
-    "getPriceX18(uint32)": FunctionFragment;
-    "updatePrice(uint32)": FunctionFragment;
+    'addFeed(uint32,uint8,address)': FunctionFragment;
+    'getPriceX18(uint32)': FunctionFragment;
+    'updatePrice(uint32)': FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "addFeed" | "getPriceX18" | "updatePrice"
+    nameOrSignatureOrTopic: 'addFeed' | 'getPriceX18' | 'updatePrice',
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "addFeed",
+    functionFragment: 'addFeed',
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>
-    ]
+      PromiseOrValue<string>,
+    ],
   ): string;
   encodeFunctionData(
-    functionFragment: "getPriceX18",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: 'getPriceX18',
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
-    functionFragment: "updatePrice",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: 'updatePrice',
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
 
-  decodeFunctionResult(functionFragment: "addFeed", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'addFeed', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getPriceX18",
-    data: BytesLike
+    functionFragment: 'getPriceX18',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updatePrice",
-    data: BytesLike
+    functionFragment: 'updatePrice',
+    data: BytesLike,
   ): Result;
 
   events: {
-    "PriceUpdate(uint32,int256)": EventFragment;
+    'PriceUpdate(uint32,int256)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "PriceUpdate"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'PriceUpdate'): EventFragment;
 }
 
 export interface PriceUpdateEventObject {
@@ -93,15 +93,15 @@ export interface IOracle extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
+    toBlock?: string | number | undefined,
   ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
+    eventFilter?: TypedEventFilter<TEvent>,
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
+    eventFilter: TypedEventFilter<TEvent>,
   ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
@@ -114,17 +114,17 @@ export interface IOracle extends BaseContract {
       productId: PromiseOrValue<BigNumberish>,
       decimalAdjustment: PromiseOrValue<BigNumberish>,
       feedAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     updatePrice(
       productId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
   };
 
@@ -132,17 +132,17 @@ export interface IOracle extends BaseContract {
     productId: PromiseOrValue<BigNumberish>,
     decimalAdjustment: PromiseOrValue<BigNumberish>,
     feedAddress: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   getPriceX18(
     productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   updatePrice(
     productId: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -150,24 +150,24 @@ export interface IOracle extends BaseContract {
       productId: PromiseOrValue<BigNumberish>,
       decimalAdjustment: PromiseOrValue<BigNumberish>,
       feedAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     updatePrice(
       productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
   };
 
   filters: {
-    "PriceUpdate(uint32,int256)"(
+    'PriceUpdate(uint32,int256)'(
       productId?: null,
-      price?: null
+      price?: null,
     ): PriceUpdateEventFilter;
     PriceUpdate(productId?: null, price?: null): PriceUpdateEventFilter;
   };
@@ -177,17 +177,17 @@ export interface IOracle extends BaseContract {
       productId: PromiseOrValue<BigNumberish>,
       decimalAdjustment: PromiseOrValue<BigNumberish>,
       feedAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     updatePrice(
       productId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
   };
 
@@ -196,17 +196,17 @@ export interface IOracle extends BaseContract {
       productId: PromiseOrValue<BigNumberish>,
       decimalAdjustment: PromiseOrValue<BigNumberish>,
       feedAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     updatePrice(
       productId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
   };
 }

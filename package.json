@@ -6,9 +6,14 @@
     "packages/*"
   ],
   "scripts": {
+    "prepare": "husky install",
     "clean": "npx lerna run clean",
     "build": "npx lerna run build",
-    "dev": "npx lerna run dev"
+    "dev": "npx lerna run dev",
+    "lint": "eslint './**/*.ts' --fix && prettier --write './**/*.{ts,graphql}'"
+  },
+  "lint-staged": {
+    "*.{ts,graphql}": "yarn lint"
   },
   "devDependencies": {
     "@types/node": "^18.6.5",
@@ -17,7 +22,9 @@
     "eslint": "^8.21.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.0",
     "lerna": "^5.4.0",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
     "typescript": "^4.7.4"
   }

@@ -12,16 +12,16 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+} from 'ethers';
+import type { FunctionFragment, Result } from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from "./common";
+} from './common';
 
 export declare namespace ISpotEngine {
   export type ConfigStruct = {
@@ -47,7 +47,7 @@ export declare namespace ISpotEngine {
     BigNumber,
     BigNumber,
     BigNumber,
-    BigNumber
+    BigNumber,
   ] & {
     token: string;
     longWeightInitialX18: BigNumber;
@@ -76,7 +76,7 @@ export declare namespace ISpotEngine {
     BigNumber,
     BigNumber,
     BigNumber,
-    BigNumber
+    BigNumber,
   ] & {
     priceX18: BigNumber;
     cumulativeDepositsMultiplierX18: BigNumber;
@@ -93,7 +93,7 @@ export declare namespace ISpotEngine {
 
   export type ProductStructOutput = [
     ISpotEngine.ConfigStructOutput,
-    ISpotEngine.StateStructOutput
+    ISpotEngine.StateStructOutput,
   ] & {
     config: ISpotEngine.ConfigStructOutput;
     state: ISpotEngine.StateStructOutput;
@@ -134,7 +134,7 @@ export declare namespace IVertexQuerier {
     BigNumber,
     BigNumber,
     BigNumber,
-    BigNumber
+    BigNumber,
   ] & {
     productId: number;
     productType: number;
@@ -157,7 +157,7 @@ export declare namespace IVertexQuerier {
   export type SpotProductInfoStructOutput = [
     number,
     ISpotEngine.ProductStructOutput,
-    IVertexQuerier.MarketInfoStructOutput
+    IVertexQuerier.MarketInfoStructOutput,
   ] & {
     productId: number;
     product: ISpotEngine.ProductStructOutput;
@@ -175,7 +175,7 @@ export declare namespace IVertexQuerier {
     BigNumber,
     BigNumber,
     BigNumber,
-    BigNumber
+    BigNumber,
   ] & {
     unweightedWithOrdersX18: BigNumber;
     maintenanceWithOrdersX18: BigNumber;
@@ -196,7 +196,7 @@ export declare namespace IVertexQuerier {
     ISpotEngine.BalanceStructOutput,
     IVertexQuerier.HealthInfoStructOutput,
     BigNumber,
-    BigNumber
+    BigNumber,
   ] & {
     product: IVertexQuerier.SpotProductInfoStructOutput;
     balance: ISpotEngine.BalanceStructOutput;
@@ -214,7 +214,7 @@ export declare namespace IVertexQuerier {
   export type PerpProductInfoStructOutput = [
     number,
     IPerpEngine.ProductStructOutput,
-    IVertexQuerier.MarketInfoStructOutput
+    IVertexQuerier.MarketInfoStructOutput,
   ] & {
     productId: number;
     product: IPerpEngine.ProductStructOutput;
@@ -234,7 +234,7 @@ export declare namespace IVertexQuerier {
     IPerpEngine.BalanceStructOutput,
     IVertexQuerier.HealthInfoStructOutput,
     BigNumber,
-    BigNumber
+    BigNumber,
   ] & {
     product: IVertexQuerier.PerpProductInfoStructOutput;
     balance: IPerpEngine.BalanceStructOutput;
@@ -250,7 +250,7 @@ export declare namespace IVertexQuerier {
 
   export type AllBalanceInfoStructOutput = [
     IVertexQuerier.SpotBalanceInfoStructOutput[],
-    IVertexQuerier.PerpBalanceInfoStructOutput[]
+    IVertexQuerier.PerpBalanceInfoStructOutput[],
   ] & {
     spotBalances: IVertexQuerier.SpotBalanceInfoStructOutput[];
     perpBalances: IVertexQuerier.PerpBalanceInfoStructOutput[];
@@ -263,7 +263,7 @@ export declare namespace IVertexQuerier {
 
   export type AllProductInfoStructOutput = [
     IVertexQuerier.SpotProductInfoStructOutput[],
-    IVertexQuerier.PerpProductInfoStructOutput[]
+    IVertexQuerier.PerpProductInfoStructOutput[],
   ] & {
     spotProducts: IVertexQuerier.SpotProductInfoStructOutput[];
     perpProducts: IVertexQuerier.PerpProductInfoStructOutput[];
@@ -288,7 +288,7 @@ export declare namespace IPerpEngine {
     BigNumber,
     BigNumber,
     BigNumber,
-    BigNumber
+    BigNumber,
   ] & {
     longWeightInitialX18: BigNumber;
     shortWeightInitialX18: BigNumber;
@@ -316,7 +316,7 @@ export declare namespace IPerpEngine {
     BigNumber,
     BigNumber,
     BigNumber,
-    BigNumber
+    BigNumber,
   ] & {
     priceX18: BigNumber;
     ammPriceX18: BigNumber;
@@ -335,7 +335,7 @@ export declare namespace IPerpEngine {
 
   export type ProductStructOutput = [
     IPerpEngine.ConfigStructOutput,
-    IPerpEngine.StateStructOutput
+    IPerpEngine.StateStructOutput,
   ] & {
     config: IPerpEngine.ConfigStructOutput;
     state: IPerpEngine.StateStructOutput;
@@ -356,126 +356,126 @@ export declare namespace IPerpEngine {
 
 export interface IVertexQuerierInterface extends utils.Interface {
   functions: {
-    "getAllBalances(uint64)": FunctionFragment;
-    "getAllMarketInfo()": FunctionFragment;
-    "getAllProducts()": FunctionFragment;
-    "getConfig()": FunctionFragment;
-    "getHealthInfo(uint64)": FunctionFragment;
-    "getMarketInfo(uint32[])": FunctionFragment;
-    "getPerpBalances(uint32[],uint64)": FunctionFragment;
-    "getPerpProducts(uint32[])": FunctionFragment;
-    "getSettleAmountX18(uint64)": FunctionFragment;
-    "getSpotBalances(uint32[],uint64)": FunctionFragment;
-    "getSpotProducts(uint32[])": FunctionFragment;
-    "setAddresses(address)": FunctionFragment;
+    'getAllBalances(uint64)': FunctionFragment;
+    'getAllMarketInfo()': FunctionFragment;
+    'getAllProducts()': FunctionFragment;
+    'getConfig()': FunctionFragment;
+    'getHealthInfo(uint64)': FunctionFragment;
+    'getMarketInfo(uint32[])': FunctionFragment;
+    'getPerpBalances(uint32[],uint64)': FunctionFragment;
+    'getPerpProducts(uint32[])': FunctionFragment;
+    'getSettleAmountX18(uint64)': FunctionFragment;
+    'getSpotBalances(uint32[],uint64)': FunctionFragment;
+    'getSpotProducts(uint32[])': FunctionFragment;
+    'setAddresses(address)': FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "getAllBalances"
-      | "getAllMarketInfo"
-      | "getAllProducts"
-      | "getConfig"
-      | "getHealthInfo"
-      | "getMarketInfo"
-      | "getPerpBalances"
-      | "getPerpProducts"
-      | "getSettleAmountX18"
-      | "getSpotBalances"
-      | "getSpotProducts"
-      | "setAddresses"
+      | 'getAllBalances'
+      | 'getAllMarketInfo'
+      | 'getAllProducts'
+      | 'getConfig'
+      | 'getHealthInfo'
+      | 'getMarketInfo'
+      | 'getPerpBalances'
+      | 'getPerpProducts'
+      | 'getSettleAmountX18'
+      | 'getSpotBalances'
+      | 'getSpotProducts'
+      | 'setAddresses',
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "getAllBalances",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: 'getAllBalances',
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
-    functionFragment: "getAllMarketInfo",
-    values?: undefined
+    functionFragment: 'getAllMarketInfo',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getAllProducts",
-    values?: undefined
+    functionFragment: 'getAllProducts',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "getConfig", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getConfig', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getHealthInfo",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getMarketInfo",
-    values: [PromiseOrValue<BigNumberish>[]]
+    functionFragment: 'getHealthInfo',
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
-    functionFragment: "getPerpBalances",
-    values: [PromiseOrValue<BigNumberish>[], PromiseOrValue<BigNumberish>]
+    functionFragment: 'getMarketInfo',
+    values: [PromiseOrValue<BigNumberish>[]],
   ): string;
   encodeFunctionData(
-    functionFragment: "getPerpProducts",
-    values: [PromiseOrValue<BigNumberish>[]]
+    functionFragment: 'getPerpBalances',
+    values: [PromiseOrValue<BigNumberish>[], PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
-    functionFragment: "getSettleAmountX18",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: 'getPerpProducts',
+    values: [PromiseOrValue<BigNumberish>[]],
   ): string;
   encodeFunctionData(
-    functionFragment: "getSpotBalances",
-    values: [PromiseOrValue<BigNumberish>[], PromiseOrValue<BigNumberish>]
+    functionFragment: 'getSettleAmountX18',
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
-    functionFragment: "getSpotProducts",
-    values: [PromiseOrValue<BigNumberish>[]]
+    functionFragment: 'getSpotBalances',
+    values: [PromiseOrValue<BigNumberish>[], PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
-    functionFragment: "setAddresses",
-    values: [PromiseOrValue<string>]
+    functionFragment: 'getSpotProducts',
+    values: [PromiseOrValue<BigNumberish>[]],
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'setAddresses',
+    values: [PromiseOrValue<string>],
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "getAllBalances",
-    data: BytesLike
+    functionFragment: 'getAllBalances',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getAllMarketInfo",
-    data: BytesLike
+    functionFragment: 'getAllMarketInfo',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getAllProducts",
-    data: BytesLike
+    functionFragment: 'getAllProducts',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "getConfig", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getConfig', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getHealthInfo",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getMarketInfo",
-    data: BytesLike
+    functionFragment: 'getHealthInfo',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getPerpBalances",
-    data: BytesLike
+    functionFragment: 'getMarketInfo',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getPerpProducts",
-    data: BytesLike
+    functionFragment: 'getPerpBalances',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getSettleAmountX18",
-    data: BytesLike
+    functionFragment: 'getPerpProducts',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getSpotBalances",
-    data: BytesLike
+    functionFragment: 'getSettleAmountX18',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getSpotProducts",
-    data: BytesLike
+    functionFragment: 'getSpotBalances',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setAddresses",
-    data: BytesLike
+    functionFragment: 'getSpotProducts',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'setAddresses',
+    data: BytesLike,
   ): Result;
 
   events: {};
@@ -491,15 +491,15 @@ export interface IVertexQuerier extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
+    toBlock?: string | number | undefined,
   ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
+    eventFilter?: TypedEventFilter<TEvent>,
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
+    eventFilter: TypedEventFilter<TEvent>,
   ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
@@ -510,181 +510,181 @@ export interface IVertexQuerier extends BaseContract {
   functions: {
     getAllBalances(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[IVertexQuerier.AllBalanceInfoStructOutput]>;
 
     getAllMarketInfo(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[IVertexQuerier.MarketInfoStructOutput[]]>;
 
     getAllProducts(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[IVertexQuerier.AllProductInfoStructOutput]>;
 
     getConfig(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[IVertexQuerier.ConfigStructOutput]>;
 
     getHealthInfo(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[IVertexQuerier.HealthInfoStructOutput]>;
 
     getMarketInfo(
       productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[IVertexQuerier.MarketInfoStructOutput[]]>;
 
     getPerpBalances(
       productIds: PromiseOrValue<BigNumberish>[],
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[IVertexQuerier.PerpBalanceInfoStructOutput[]]>;
 
     getPerpProducts(
       productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[IVertexQuerier.PerpProductInfoStructOutput[]]>;
 
     getSettleAmountX18(
       subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     getSpotBalances(
       productIds: PromiseOrValue<BigNumberish>[],
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[IVertexQuerier.SpotBalanceInfoStructOutput[]]>;
 
     getSpotProducts(
       productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[IVertexQuerier.SpotProductInfoStructOutput[]]>;
 
     setAddresses(
       clearinghouse: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
   };
 
   getAllBalances(
     subaccount: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<IVertexQuerier.AllBalanceInfoStructOutput>;
 
   getAllMarketInfo(
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<IVertexQuerier.MarketInfoStructOutput[]>;
 
   getAllProducts(
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<IVertexQuerier.AllProductInfoStructOutput>;
 
   getConfig(
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<IVertexQuerier.ConfigStructOutput>;
 
   getHealthInfo(
     subaccount: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<IVertexQuerier.HealthInfoStructOutput>;
 
   getMarketInfo(
     productIds: PromiseOrValue<BigNumberish>[],
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<IVertexQuerier.MarketInfoStructOutput[]>;
 
   getPerpBalances(
     productIds: PromiseOrValue<BigNumberish>[],
     subaccount: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<IVertexQuerier.PerpBalanceInfoStructOutput[]>;
 
   getPerpProducts(
     productIds: PromiseOrValue<BigNumberish>[],
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<IVertexQuerier.PerpProductInfoStructOutput[]>;
 
   getSettleAmountX18(
     subaccountId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   getSpotBalances(
     productIds: PromiseOrValue<BigNumberish>[],
     subaccount: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<IVertexQuerier.SpotBalanceInfoStructOutput[]>;
 
   getSpotProducts(
     productIds: PromiseOrValue<BigNumberish>[],
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<IVertexQuerier.SpotProductInfoStructOutput[]>;
 
   setAddresses(
     clearinghouse: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   callStatic: {
     getAllBalances(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<IVertexQuerier.AllBalanceInfoStructOutput>;
 
     getAllMarketInfo(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<IVertexQuerier.MarketInfoStructOutput[]>;
 
     getAllProducts(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<IVertexQuerier.AllProductInfoStructOutput>;
 
     getConfig(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<IVertexQuerier.ConfigStructOutput>;
 
     getHealthInfo(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<IVertexQuerier.HealthInfoStructOutput>;
 
     getMarketInfo(
       productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<IVertexQuerier.MarketInfoStructOutput[]>;
 
     getPerpBalances(
       productIds: PromiseOrValue<BigNumberish>[],
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<IVertexQuerier.PerpBalanceInfoStructOutput[]>;
 
     getPerpProducts(
       productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<IVertexQuerier.PerpProductInfoStructOutput[]>;
 
     getSettleAmountX18(
       subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getSpotBalances(
       productIds: PromiseOrValue<BigNumberish>[],
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<IVertexQuerier.SpotBalanceInfoStructOutput[]>;
 
     getSpotProducts(
       productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<IVertexQuerier.SpotProductInfoStructOutput[]>;
 
     setAddresses(
       clearinghouse: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
   };
 
@@ -693,7 +693,7 @@ export interface IVertexQuerier extends BaseContract {
   estimateGas: {
     getAllBalances(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getAllMarketInfo(overrides?: CallOverrides): Promise<BigNumber>;
@@ -704,51 +704,51 @@ export interface IVertexQuerier extends BaseContract {
 
     getHealthInfo(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getMarketInfo(
       productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getPerpBalances(
       productIds: PromiseOrValue<BigNumberish>[],
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getPerpProducts(
       productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getSettleAmountX18(
       subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getSpotBalances(
       productIds: PromiseOrValue<BigNumberish>[],
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getSpotProducts(
       productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     setAddresses(
       clearinghouse: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     getAllBalances(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getAllMarketInfo(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -759,44 +759,44 @@ export interface IVertexQuerier extends BaseContract {
 
     getHealthInfo(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getMarketInfo(
       productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getPerpBalances(
       productIds: PromiseOrValue<BigNumberish>[],
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getPerpProducts(
       productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getSettleAmountX18(
       subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getSpotBalances(
       productIds: PromiseOrValue<BigNumberish>[],
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getSpotProducts(
       productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     setAddresses(
       clearinghouse: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
   };
 }

@@ -1,6 +1,4 @@
-query SubaccountsForAddress(
-  $address: String!
-) {
+query SubaccountsForAddress($address: String!) {
   subaccounts(where: { owner: $address }) {
     id
     name

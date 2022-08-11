@@ -12,20 +12,20 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
+} from 'ethers';
 import type {
   FunctionFragment,
   Result,
   EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+} from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from "./common";
+} from './common';
 
 export declare namespace IClearinghouse {
   export type OrderRequestStruct = {
@@ -43,193 +43,193 @@ export declare namespace IClearinghouse {
 
 export interface IClearinghouseInterface extends utils.Interface {
   functions: {
-    "addEngine(address,uint8)": FunctionFragment;
-    "getEngineByProduct(uint32)": FunctionFragment;
-    "getEngineByType(uint8)": FunctionFragment;
-    "getHealthX18(uint64,bool,bool,bool)": FunctionFragment;
-    "getInsurance()": FunctionFragment;
-    "getLastLiquidationTime(uint64)": FunctionFragment;
-    "getNumProducts()": FunctionFragment;
-    "getNumSubaccounts()": FunctionFragment;
-    "getQuote()": FunctionFragment;
-    "getSubaccountId(address,string)": FunctionFragment;
-    "getSupportedEngines()": FunctionFragment;
-    "liquidateSubaccount(string,uint64,uint32,int256)": FunctionFragment;
-    "modifyCollateral(string,uint32[],int256[])": FunctionFragment;
-    "modifyInsurance(int256)": FunctionFragment;
-    "registerProductForId()": FunctionFragment;
-    "sendOrders(string,uint32,(uint64,int256,int256)[])": FunctionFragment;
+    'addEngine(address,uint8)': FunctionFragment;
+    'getEngineByProduct(uint32)': FunctionFragment;
+    'getEngineByType(uint8)': FunctionFragment;
+    'getHealthX18(uint64,bool,bool,bool)': FunctionFragment;
+    'getInsurance()': FunctionFragment;
+    'getLastLiquidationTime(uint64)': FunctionFragment;
+    'getNumProducts()': FunctionFragment;
+    'getNumSubaccounts()': FunctionFragment;
+    'getQuote()': FunctionFragment;
+    'getSubaccountId(address,string)': FunctionFragment;
+    'getSupportedEngines()': FunctionFragment;
+    'liquidateSubaccount(string,uint64,uint32,int256)': FunctionFragment;
+    'modifyCollateral(string,uint32[],int256[])': FunctionFragment;
+    'modifyInsurance(int256)': FunctionFragment;
+    'registerProductForId()': FunctionFragment;
+    'sendOrders(string,uint32,(uint64,int256,int256)[])': FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "addEngine"
-      | "getEngineByProduct"
-      | "getEngineByType"
-      | "getHealthX18"
-      | "getInsurance"
-      | "getLastLiquidationTime"
-      | "getNumProducts"
-      | "getNumSubaccounts"
-      | "getQuote"
-      | "getSubaccountId"
-      | "getSupportedEngines"
-      | "liquidateSubaccount"
-      | "modifyCollateral"
-      | "modifyInsurance"
-      | "registerProductForId"
-      | "sendOrders"
+      | 'addEngine'
+      | 'getEngineByProduct'
+      | 'getEngineByType'
+      | 'getHealthX18'
+      | 'getInsurance'
+      | 'getLastLiquidationTime'
+      | 'getNumProducts'
+      | 'getNumSubaccounts'
+      | 'getQuote'
+      | 'getSubaccountId'
+      | 'getSupportedEngines'
+      | 'liquidateSubaccount'
+      | 'modifyCollateral'
+      | 'modifyInsurance'
+      | 'registerProductForId'
+      | 'sendOrders',
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "addEngine",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    functionFragment: 'addEngine',
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
-    functionFragment: "getEngineByProduct",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: 'getEngineByProduct',
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
-    functionFragment: "getEngineByType",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: 'getEngineByType',
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
-    functionFragment: "getHealthX18",
+    functionFragment: 'getHealthX18',
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<boolean>,
       PromiseOrValue<boolean>,
-      PromiseOrValue<boolean>
-    ]
+      PromiseOrValue<boolean>,
+    ],
   ): string;
   encodeFunctionData(
-    functionFragment: "getInsurance",
-    values?: undefined
+    functionFragment: 'getInsurance',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getLastLiquidationTime",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: 'getLastLiquidationTime',
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
-    functionFragment: "getNumProducts",
-    values?: undefined
+    functionFragment: 'getNumProducts',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getNumSubaccounts",
-    values?: undefined
+    functionFragment: 'getNumSubaccounts',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "getQuote", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getQuote', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getSubaccountId",
-    values: [PromiseOrValue<string>, PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getSupportedEngines",
-    values?: undefined
+    functionFragment: 'getSubaccountId',
+    values: [PromiseOrValue<string>, PromiseOrValue<string>],
   ): string;
   encodeFunctionData(
-    functionFragment: "liquidateSubaccount",
+    functionFragment: 'getSupportedEngines',
+    values?: undefined,
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'liquidateSubaccount',
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
+      PromiseOrValue<BigNumberish>,
+    ],
   ): string;
   encodeFunctionData(
-    functionFragment: "modifyCollateral",
+    functionFragment: 'modifyCollateral',
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>[],
-      PromiseOrValue<BigNumberish>[]
-    ]
+      PromiseOrValue<BigNumberish>[],
+    ],
   ): string;
   encodeFunctionData(
-    functionFragment: "modifyInsurance",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: 'modifyInsurance',
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
-    functionFragment: "registerProductForId",
-    values?: undefined
+    functionFragment: 'registerProductForId',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "sendOrders",
+    functionFragment: 'sendOrders',
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
-      IClearinghouse.OrderRequestStruct[]
-    ]
+      IClearinghouse.OrderRequestStruct[],
+    ],
   ): string;
 
-  decodeFunctionResult(functionFragment: "addEngine", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'addEngine', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getEngineByProduct",
-    data: BytesLike
+    functionFragment: 'getEngineByProduct',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getEngineByType",
-    data: BytesLike
+    functionFragment: 'getEngineByType',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getHealthX18",
-    data: BytesLike
+    functionFragment: 'getHealthX18',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getInsurance",
-    data: BytesLike
+    functionFragment: 'getInsurance',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getLastLiquidationTime",
-    data: BytesLike
+    functionFragment: 'getLastLiquidationTime',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getNumProducts",
-    data: BytesLike
+    functionFragment: 'getNumProducts',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getNumSubaccounts",
-    data: BytesLike
+    functionFragment: 'getNumSubaccounts',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "getQuote", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getQuote', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getSubaccountId",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getSupportedEngines",
-    data: BytesLike
+    functionFragment: 'getSubaccountId',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "liquidateSubaccount",
-    data: BytesLike
+    functionFragment: 'getSupportedEngines',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "modifyCollateral",
-    data: BytesLike
+    functionFragment: 'liquidateSubaccount',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "modifyInsurance",
-    data: BytesLike
+    functionFragment: 'modifyCollateral',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "registerProductForId",
-    data: BytesLike
+    functionFragment: 'modifyInsurance',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "sendOrders", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'registerProductForId',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(functionFragment: 'sendOrders', data: BytesLike): Result;
 
   events: {
-    "ClearinghouseInitialized(address,address,address)": EventFragment;
-    "CreateSubaccount(address,string,uint64)": EventFragment;
-    "Liquidation(uint64,uint64,uint32,int256,int256,int256)": EventFragment;
-    "ModifyCollateral(int256,uint64,uint32)": EventFragment;
-    "SettlePnl(uint64,int256)": EventFragment;
+    'ClearinghouseInitialized(address,address,address)': EventFragment;
+    'CreateSubaccount(address,string,uint64)': EventFragment;
+    'Liquidation(uint64,uint64,uint32,int256,int256,int256)': EventFragment;
+    'ModifyCollateral(int256,uint64,uint32)': EventFragment;
+    'SettlePnl(uint64,int256)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "ClearinghouseInitialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CreateSubaccount"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Liquidation"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ModifyCollateral"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SettlePnl"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ClearinghouseInitialized'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'CreateSubaccount'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Liquidation'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ModifyCollateral'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'SettlePnl'): EventFragment;
 }
 
 export interface ClearinghouseInitializedEventObject {
@@ -307,15 +307,15 @@ export interface IClearinghouse extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
+    toBlock?: string | number | undefined,
   ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
+    eventFilter?: TypedEventFilter<TEvent>,
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
+    eventFilter: TypedEventFilter<TEvent>,
   ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
@@ -327,17 +327,17 @@ export interface IClearinghouse extends BaseContract {
     addEngine(
       engine: PromiseOrValue<string>,
       engineType: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     getEngineByProduct(
       productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[string]>;
 
     getEngineByType(
       engineType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[string]>;
 
     getHealthX18(
@@ -345,14 +345,14 @@ export interface IClearinghouse extends BaseContract {
       weighted: PromiseOrValue<boolean>,
       initial: PromiseOrValue<boolean>,
       withLimitOrders: PromiseOrValue<boolean>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     getInsurance(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getLastLiquidationTime(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     getNumProducts(overrides?: CallOverrides): Promise<[number]>;
@@ -364,7 +364,7 @@ export interface IClearinghouse extends BaseContract {
     getSubaccountId(
       owner: PromiseOrValue<string>,
       subaccountName: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     getSupportedEngines(overrides?: CallOverrides): Promise<[number[]]>;
@@ -374,47 +374,47 @@ export interface IClearinghouse extends BaseContract {
       liquidateeId: PromiseOrValue<BigNumberish>,
       productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     modifyCollateral(
       subaccountName: PromiseOrValue<string>,
       productIds: PromiseOrValue<BigNumberish>[],
       amounts: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     modifyInsurance(
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     registerProductForId(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     sendOrders(
       subaccountName: PromiseOrValue<string>,
       productId: PromiseOrValue<BigNumberish>,
       requests: IClearinghouse.OrderRequestStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
   };
 
   addEngine(
     engine: PromiseOrValue<string>,
     engineType: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   getEngineByProduct(
     productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<string>;
 
   getEngineByType(
     engineType: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<string>;
 
   getHealthX18(
@@ -422,14 +422,14 @@ export interface IClearinghouse extends BaseContract {
     weighted: PromiseOrValue<boolean>,
     initial: PromiseOrValue<boolean>,
     withLimitOrders: PromiseOrValue<boolean>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   getInsurance(overrides?: CallOverrides): Promise<BigNumber>;
 
   getLastLiquidationTime(
     subaccount: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   getNumProducts(overrides?: CallOverrides): Promise<number>;
@@ -441,7 +441,7 @@ export interface IClearinghouse extends BaseContract {
   getSubaccountId(
     owner: PromiseOrValue<string>,
     subaccountName: PromiseOrValue<string>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   getSupportedEngines(overrides?: CallOverrides): Promise<number[]>;
@@ -451,47 +451,47 @@ export interface IClearinghouse extends BaseContract {
     liquidateeId: PromiseOrValue<BigNumberish>,
     productId: PromiseOrValue<BigNumberish>,
     amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   modifyCollateral(
     subaccountName: PromiseOrValue<string>,
     productIds: PromiseOrValue<BigNumberish>[],
     amounts: PromiseOrValue<BigNumberish>[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   modifyInsurance(
     amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   registerProductForId(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   sendOrders(
     subaccountName: PromiseOrValue<string>,
     productId: PromiseOrValue<BigNumberish>,
     requests: IClearinghouse.OrderRequestStruct[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   callStatic: {
     addEngine(
       engine: PromiseOrValue<string>,
       engineType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     getEngineByProduct(
       productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<string>;
 
     getEngineByType(
       engineType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<string>;
 
     getHealthX18(
@@ -499,14 +499,14 @@ export interface IClearinghouse extends BaseContract {
       weighted: PromiseOrValue<boolean>,
       initial: PromiseOrValue<boolean>,
       withLimitOrders: PromiseOrValue<boolean>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getInsurance(overrides?: CallOverrides): Promise<BigNumber>;
 
     getLastLiquidationTime(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getNumProducts(overrides?: CallOverrides): Promise<number>;
@@ -518,7 +518,7 @@ export interface IClearinghouse extends BaseContract {
     getSubaccountId(
       owner: PromiseOrValue<string>,
       subaccountName: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getSupportedEngines(overrides?: CallOverrides): Promise<number[]>;
@@ -528,19 +528,19 @@ export interface IClearinghouse extends BaseContract {
       liquidateeId: PromiseOrValue<BigNumberish>,
       productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     modifyCollateral(
       subaccountName: PromiseOrValue<string>,
       productIds: PromiseOrValue<BigNumberish>[],
       amounts: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     modifyInsurance(
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     registerProductForId(overrides?: CallOverrides): Promise<number>;
@@ -549,40 +549,40 @@ export interface IClearinghouse extends BaseContract {
       subaccountName: PromiseOrValue<string>,
       productId: PromiseOrValue<BigNumberish>,
       requests: IClearinghouse.OrderRequestStruct[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
   };
 
   filters: {
-    "ClearinghouseInitialized(address,address,address)"(
+    'ClearinghouseInitialized(address,address,address)'(
       quote?: null,
       oracle?: null,
-      fees?: null
+      fees?: null,
     ): ClearinghouseInitializedEventFilter;
     ClearinghouseInitialized(
       quote?: null,
       oracle?: null,
-      fees?: null
+      fees?: null,
     ): ClearinghouseInitializedEventFilter;
 
-    "CreateSubaccount(address,string,uint64)"(
+    'CreateSubaccount(address,string,uint64)'(
       owner?: null,
       name?: null,
-      subaccount?: null
+      subaccount?: null,
     ): CreateSubaccountEventFilter;
     CreateSubaccount(
       owner?: null,
       name?: null,
-      subaccount?: null
+      subaccount?: null,
     ): CreateSubaccountEventFilter;
 
-    "Liquidation(uint64,uint64,uint32,int256,int256,int256)"(
+    'Liquidation(uint64,uint64,uint32,int256,int256,int256)'(
       liquidatorSubaccount?: PromiseOrValue<BigNumberish> | null,
       liquidateeSubaccount?: PromiseOrValue<BigNumberish> | null,
       productId?: PromiseOrValue<BigNumberish> | null,
       liquidatorBaseDelta?: null,
       liquidatorQuoteDelta?: null,
-      insuranceCoverage?: null
+      insuranceCoverage?: null,
     ): LiquidationEventFilter;
     Liquidation(
       liquidatorSubaccount?: PromiseOrValue<BigNumberish> | null,
@@ -590,27 +590,27 @@ export interface IClearinghouse extends BaseContract {
       productId?: PromiseOrValue<BigNumberish> | null,
       liquidatorBaseDelta?: null,
       liquidatorQuoteDelta?: null,
-      insuranceCoverage?: null
+      insuranceCoverage?: null,
     ): LiquidationEventFilter;
 
-    "ModifyCollateral(int256,uint64,uint32)"(
+    'ModifyCollateral(int256,uint64,uint32)'(
       amount?: null,
       subaccount?: PromiseOrValue<BigNumberish> | null,
-      productId?: null
+      productId?: null,
     ): ModifyCollateralEventFilter;
     ModifyCollateral(
       amount?: null,
       subaccount?: PromiseOrValue<BigNumberish> | null,
-      productId?: null
+      productId?: null,
     ): ModifyCollateralEventFilter;
 
-    "SettlePnl(uint64,int256)"(
+    'SettlePnl(uint64,int256)'(
       subaccount?: PromiseOrValue<BigNumberish> | null,
-      amount?: null
+      amount?: null,
     ): SettlePnlEventFilter;
     SettlePnl(
       subaccount?: PromiseOrValue<BigNumberish> | null,
-      amount?: null
+      amount?: null,
     ): SettlePnlEventFilter;
   };
 
@@ -618,17 +618,17 @@ export interface IClearinghouse extends BaseContract {
     addEngine(
       engine: PromiseOrValue<string>,
       engineType: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     getEngineByProduct(
       productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getEngineByType(
       engineType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getHealthX18(
@@ -636,14 +636,14 @@ export interface IClearinghouse extends BaseContract {
       weighted: PromiseOrValue<boolean>,
       initial: PromiseOrValue<boolean>,
       withLimitOrders: PromiseOrValue<boolean>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getInsurance(overrides?: CallOverrides): Promise<BigNumber>;
 
     getLastLiquidationTime(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getNumProducts(overrides?: CallOverrides): Promise<BigNumber>;
@@ -655,7 +655,7 @@ export interface IClearinghouse extends BaseContract {
     getSubaccountId(
       owner: PromiseOrValue<string>,
       subaccountName: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getSupportedEngines(overrides?: CallOverrides): Promise<BigNumber>;
@@ -665,30 +665,30 @@ export interface IClearinghouse extends BaseContract {
       liquidateeId: PromiseOrValue<BigNumberish>,
       productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     modifyCollateral(
       subaccountName: PromiseOrValue<string>,
       productIds: PromiseOrValue<BigNumberish>[],
       amounts: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     modifyInsurance(
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     registerProductForId(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     sendOrders(
       subaccountName: PromiseOrValue<string>,
       productId: PromiseOrValue<BigNumberish>,
       requests: IClearinghouse.OrderRequestStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
   };
 
@@ -696,17 +696,17 @@ export interface IClearinghouse extends BaseContract {
     addEngine(
       engine: PromiseOrValue<string>,
       engineType: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     getEngineByProduct(
       productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getEngineByType(
       engineType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getHealthX18(
@@ -714,14 +714,14 @@ export interface IClearinghouse extends BaseContract {
       weighted: PromiseOrValue<boolean>,
       initial: PromiseOrValue<boolean>,
       withLimitOrders: PromiseOrValue<boolean>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getInsurance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getLastLiquidationTime(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getNumProducts(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -733,11 +733,11 @@ export interface IClearinghouse extends BaseContract {
     getSubaccountId(
       owner: PromiseOrValue<string>,
       subaccountName: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getSupportedEngines(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     liquidateSubaccount(
@@ -745,30 +745,30 @@ export interface IClearinghouse extends BaseContract {
       liquidateeId: PromiseOrValue<BigNumberish>,
       productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     modifyCollateral(
       subaccountName: PromiseOrValue<string>,
       productIds: PromiseOrValue<BigNumberish>[],
       amounts: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     modifyInsurance(
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     registerProductForId(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     sendOrders(
       subaccountName: PromiseOrValue<string>,
       productId: PromiseOrValue<BigNumberish>,
       requests: IClearinghouse.OrderRequestStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
   };
 }
