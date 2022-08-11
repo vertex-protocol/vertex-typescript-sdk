@@ -1,0 +1,21 @@
+sources:
+  - name: Clearinghouse
+    handler:
+      graphql:
+        # Default to hosted version
+        endpoint: '{context.endpoint:https://api.thegraph.com/subgraphs/name/frankfka/vertex-clearinghouse-sandbox}'
+    transforms:
+      # https://github.com/graphprotocol/graph-client
+      - autoPagination:
+          validateSchema: true
+      - blockTracking:
+          validateSchema: true
+          # Ignore the fields that you don't want to be tracked
+          ignoreFieldNames: [ ]
+          # Exclude the operation with the following names
+          ignoreOperationNames: [ ]
+documents:
+  - ./src/graphql/**/*.graphql
+
+codegen:
+  contextType: 'MeshContext & { endpoint: string }'
