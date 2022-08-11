@@ -14,17 +14,21 @@ ABI_FILES=(
 "ISpotEngine.json"
 "IVertexQuerier.json"
 )
-ABIS_ROOT=$VERTEX_HOME/vertex-evm/src/abis/
+SOURCE_ABIS_ROOT=$VERTEX_HOME/vertex-evm/abis/
+DEST_ABIS_ROOT=abis/
+
+rm -rf $DEST_ABIS_ROOT
+mkdir $DEST_ABIS_ROOT
 
 for FILE in ${ABI_FILES[*]}
   do
-    cp "$ABIS_ROOT/$FILE" "abis/$FILE"
+    cp "$SOURCE_ABIS_ROOT/$FILE" "$DEST_ABIS_ROOT/$FILE"
     echo "Copied $FILE"
   done
 
 
 echo "Generating Types"
 
-yarn run typechain --target ethers-v5 --out-dir 'src/typechain-types' './src/abis/*.json'
+yarn run typechain --target ethers-v5 --out-dir 'src/typechain-types' './abis/*.json'
 
 echo "Done"

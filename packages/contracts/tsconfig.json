@@ -6,7 +6,6 @@
   },
   "include": [
     "src",
-    "src/abis",
     "src/typechain-types"
   ],
   "exclude": [

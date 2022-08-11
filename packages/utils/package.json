@@ -9,8 +9,8 @@
   "types": "./dist/index.d.ts",
   "source": "./src/index.ts",
   "files": [
-    "dist/**/*",
-    "src/**/*"
+    "dist",
+    "src"
   ],
   "publishConfig": {
     "access": "public"
