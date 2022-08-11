@@ -15,12 +15,27 @@
     "clean": "rm -rf dist && rm -r tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "dev": "tsc -w",
-    "test": "ts-node src/contracts.ts"
+    "test": "ts-node src/contracts.ts",
+    "update-bindings": "env-cmd ./update-bindings.sh"
   },
+  "files": [
+    "dist",
+    "src",
+    "src/abis",
+    "src/typechain-types"
+  ],
   "dependencies": {
-    "@vertex/utils": "*"
+    "@ethersproject/abi": "^5.6.4",
+    "@ethersproject/bignumber": "^5.6.2",
+    "@ethersproject/bytes": "^5.6.1",
+    "@ethersproject/providers": "^5.6.8",
+    "@vertex/utils": "*",
+    "ethers": "^5.6.9"
   },
   "devDependencies": {
-    "ts-node": "10.9.1"
+    "@typechain/ethers-v5": "^10.1.0",
+    "env-cmd": "^10.1.0",
+    "ts-node": "10.9.1",
+    "typechain": "^8.1.0"
   }
 }

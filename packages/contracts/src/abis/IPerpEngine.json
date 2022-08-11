@@ -1,0 +1,877 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      }
+    ],
+    "name": "AddProduct",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      }
+    ],
+    "name": "ProductUpdate",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "socializedQuote",
+        "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "socializedBase",
+        "type": "int256"
+      }
+    ],
+    "name": "SocializeProduct",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint32",
+            "name": "productId",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "subaccountId",
+            "type": "uint64"
+          },
+          {
+            "internalType": "int256",
+            "name": "amountDeltaX18",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "vQuoteDeltaX18",
+            "type": "int256"
+          }
+        ],
+        "internalType": "struct IProductEngine.ProductDelta[]",
+        "name": "deltas",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "applyDeltas",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      }
+    ],
+    "name": "clearOrders",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      }
+    ],
+    "name": "getBalanceAmountX18",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "bool",
+        "name": "weighted",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "initial",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "withLimitOrders",
+        "type": "bool"
+      }
+    ],
+    "name": "getBalanceHealthX18",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      }
+    ],
+    "name": "getBalancePnlX18",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getClearinghouse",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getEngineType",
+    "outputs": [
+      {
+        "internalType": "enum IProductEngine.EngineType",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bool",
+        "name": "weighted",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "initial",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "withLimitOrders",
+        "type": "bool"
+      }
+    ],
+    "name": "getHealthX18",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccount",
+        "type": "uint64"
+      }
+    ],
+    "name": "getLastLiquidationTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "int256",
+        "name": "amountX18",
+        "type": "int256"
+      }
+    ],
+    "name": "getLiqPriceX18",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "int256",
+        "name": "healthAmountX18",
+        "type": "int256"
+      }
+    ],
+    "name": "getMaximumLiquidatableX18",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getOracle",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      }
+    ],
+    "name": "getOraclePriceX18",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      }
+    ],
+    "name": "getOrderbook",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      }
+    ],
+    "name": "getProduct",
+    "outputs": [
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "longWeightInitialX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "shortWeightInitialX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "longWeightMaintenanceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "shortWeightMaintenanceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "largePositionPenaltyX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct IPerpEngine.Config",
+            "name": "config",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "priceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "ammPriceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "cumulativeFundingLongX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "cumulativeFundingShortX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "openInterestX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "fundingLastUpdated",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "ammPriceLastUpdated",
+                "type": "uint256"
+              },
+              {
+                "internalType": "int256",
+                "name": "availableSettleX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct IPerpEngine.State",
+            "name": "state",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct IPerpEngine.Product",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      }
+    ],
+    "name": "getProductAndBalance",
+    "outputs": [
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "longWeightInitialX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "shortWeightInitialX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "longWeightMaintenanceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "shortWeightMaintenanceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "largePositionPenaltyX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct IPerpEngine.Config",
+            "name": "config",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "priceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "ammPriceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "cumulativeFundingLongX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "cumulativeFundingShortX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "openInterestX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "fundingLastUpdated",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "ammPriceLastUpdated",
+                "type": "uint256"
+              },
+              {
+                "internalType": "int256",
+                "name": "availableSettleX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct IPerpEngine.State",
+            "name": "state",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct IPerpEngine.Product",
+        "name": "",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "int256",
+            "name": "amountX18",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "vQuoteBalanceX18",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "lastCumulativeFundingX18",
+            "type": "int256"
+          }
+        ],
+        "internalType": "struct IPerpEngine.Balance",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getProductIds",
+    "outputs": [
+      {
+        "internalType": "uint32[]",
+        "name": "",
+        "type": "uint32[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      }
+    ],
+    "name": "getSettlementState",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "availableSettleX18",
+        "type": "int256"
+      },
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "longWeightInitialX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "shortWeightInitialX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "longWeightMaintenanceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "shortWeightMaintenanceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "largePositionPenaltyX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct IPerpEngine.Config",
+            "name": "config",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "priceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "ammPriceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "cumulativeFundingLongX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "cumulativeFundingShortX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "openInterestX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "fundingLastUpdated",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "ammPriceLastUpdated",
+                "type": "uint256"
+              },
+              {
+                "internalType": "int256",
+                "name": "availableSettleX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct IPerpEngine.State",
+            "name": "state",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct IPerpEngine.Product",
+        "name": "product",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "int256",
+            "name": "amountX18",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "vQuoteBalanceX18",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "lastCumulativeFundingX18",
+            "type": "int256"
+          }
+        ],
+        "internalType": "struct IPerpEngine.Balance",
+        "name": "balance",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      }
+    ],
+    "name": "hasAssets",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_clearinghouse",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_quote",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_oracle",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_admin",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_fees",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint64",
+            "name": "expiration",
+            "type": "uint64"
+          },
+          {
+            "internalType": "int256",
+            "name": "amountOrQueuePos",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "priceX18",
+            "type": "int256"
+          }
+        ],
+        "internalType": "struct IClearinghouse.OrderRequest[]",
+        "name": "requests",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "sendOrders",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      }
+    ],
+    "name": "settlePnl",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "int256",
+        "name": "vQuoteX18",
+        "type": "int256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isLong",
+        "type": "bool"
+      }
+    ],
+    "name": "socializeProduct",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

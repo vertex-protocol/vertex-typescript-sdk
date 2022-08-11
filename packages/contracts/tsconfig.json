@@ -5,7 +5,9 @@
     "outDir": "./dist"
   },
   "include": [
-    "./src/**/*"
+    "src",
+    "src/abis",
+    "src/typechain-types"
   ],
   "exclude": [
     "node_modules"
