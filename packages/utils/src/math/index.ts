@@ -1,2 +1,2 @@
 export * from './fixedPoint';
-export { MAX_U64 } from './consts';
+export { MaxUint64 } from './consts';

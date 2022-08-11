@@ -3,6 +3,7 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
+    "sourceMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "lib": [

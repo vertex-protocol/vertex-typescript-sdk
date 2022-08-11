@@ -1,7 +1,7 @@
 import { IClearinghouse } from '../typechain-types';
 import { BigNumber } from 'ethers';
 import { MaxInt256 } from '@ethersproject/constants';
-import { OrderbookRequest } from './executeArgs';
+import { OrderbookRequest } from './types';
 
 export function mapOrderbookRequest(
   request: OrderbookRequest,
@@ -11,7 +11,7 @@ export function mapOrderbookRequest(
       {
         ioc: 1,
         fok: 2,
-      }[request.expiration] ?? Number(request.expiration);
+      }[request.expiration.toString()] ?? Number(request.expiration);
     const priceX18 = (() => {
       if (request.price === 'market') {
         return BigNumber.from(request.amount).gt(0) ? MaxInt256 : 0;
