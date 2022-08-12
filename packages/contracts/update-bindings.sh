@@ -13,6 +13,8 @@ ABI_FILES=(
 "IProductEngine.json"
 "ISpotEngine.json"
 "IVertexQuerier.json"
+"IERC20.json"
+"MockERC20.json"
 )
 SOURCE_ABIS_ROOT=$VERTEX_HOME/vertex-evm/abis/
 DEST_ABIS_ROOT=abis/

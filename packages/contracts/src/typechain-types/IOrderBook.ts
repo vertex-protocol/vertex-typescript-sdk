@@ -12,20 +12,20 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from 'ethers';
+} from "ethers";
 import type {
   FunctionFragment,
   Result,
   EventFragment,
-} from '@ethersproject/abi';
-import type { Listener, Provider } from '@ethersproject/providers';
+} from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from './common';
+} from "./common";
 
 export declare namespace IOrderBook {
   export type MarketStruct = {
@@ -45,7 +45,7 @@ export declare namespace IOrderBook {
     BigNumber,
     BigNumber,
     BigNumber,
-    BigNumber,
+    BigNumber
   ] & {
     productId: number;
     bidX18: BigNumber;
@@ -73,83 +73,83 @@ export declare namespace IClearinghouse {
 
 export interface IOrderBookInterface extends utils.Interface {
   functions: {
-    'clearOrders(uint64)': FunctionFragment;
-    'dumpFees()': FunctionFragment;
-    'getBookPricesX18()': FunctionFragment;
-    'getCumulativeBuySellAmountsX18(uint64)': FunctionFragment;
-    'getMarket()': FunctionFragment;
-    'initialize(address,address,uint32,int256,int256)': FunctionFragment;
-    'sendOrders(uint64,(uint64,int256,int256)[])': FunctionFragment;
+    "clearOrders(uint64)": FunctionFragment;
+    "dumpFees()": FunctionFragment;
+    "getBookPricesX18()": FunctionFragment;
+    "getCumulativeBuySellAmountsX18(uint64)": FunctionFragment;
+    "getMarket()": FunctionFragment;
+    "initialize(address,address,uint32,int256,int256)": FunctionFragment;
+    "sendOrders(uint64,(uint64,int256,int256)[])": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | 'clearOrders'
-      | 'dumpFees'
-      | 'getBookPricesX18'
-      | 'getCumulativeBuySellAmountsX18'
-      | 'getMarket'
-      | 'initialize'
-      | 'sendOrders',
+      | "clearOrders"
+      | "dumpFees"
+      | "getBookPricesX18"
+      | "getCumulativeBuySellAmountsX18"
+      | "getMarket"
+      | "initialize"
+      | "sendOrders"
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: 'clearOrders',
-    values: [PromiseOrValue<BigNumberish>],
+    functionFragment: "clearOrders",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: 'dumpFees', values?: undefined): string;
+  encodeFunctionData(functionFragment: "dumpFees", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: 'getBookPricesX18',
-    values?: undefined,
+    functionFragment: "getBookPricesX18",
+    values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: 'getCumulativeBuySellAmountsX18',
-    values: [PromiseOrValue<BigNumberish>],
+    functionFragment: "getCumulativeBuySellAmountsX18",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: 'getMarket', values?: undefined): string;
+  encodeFunctionData(functionFragment: "getMarket", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: 'initialize',
+    functionFragment: "initialize",
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-    ],
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
-    functionFragment: 'sendOrders',
-    values: [PromiseOrValue<BigNumberish>, IClearinghouse.OrderRequestStruct[]],
+    functionFragment: "sendOrders",
+    values: [PromiseOrValue<BigNumberish>, IClearinghouse.OrderRequestStruct[]]
   ): string;
 
   decodeFunctionResult(
-    functionFragment: 'clearOrders',
-    data: BytesLike,
+    functionFragment: "clearOrders",
+    data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: 'dumpFees', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "dumpFees", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: 'getBookPricesX18',
-    data: BytesLike,
+    functionFragment: "getBookPricesX18",
+    data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'getCumulativeBuySellAmountsX18',
-    data: BytesLike,
+    functionFragment: "getCumulativeBuySellAmountsX18",
+    data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: 'getMarket', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'sendOrders', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getMarket", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "sendOrders", data: BytesLike): Result;
 
   events: {
-    'CancelOrder(uint64,uint64,int256)': EventFragment;
-    'FillOrder(uint64,uint64,int256,int256,int256,int256)': EventFragment;
-    'PlaceOrder(uint64,uint64,uint64,int256,int256,int256,int256,int256)': EventFragment;
-    'RemoveOrder(uint64,uint64,int256)': EventFragment;
+    "CancelOrder(uint64,uint64,int256)": EventFragment;
+    "FillOrder(uint64,uint64,int256,int256,int256,int256)": EventFragment;
+    "PlaceOrder(uint64,uint64,uint64,int256,int256,int256,int256,int256)": EventFragment;
+    "RemoveOrder(uint64,uint64,int256)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: 'CancelOrder'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'FillOrder'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'PlaceOrder'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'RemoveOrder'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "CancelOrder"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "FillOrder"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "PlaceOrder"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RemoveOrder"): EventFragment;
 }
 
 export interface CancelOrderEventObject {
@@ -198,7 +198,7 @@ export type PlaceOrderEvent = TypedEvent<
     BigNumber,
     BigNumber,
     BigNumber,
-    BigNumber,
+    BigNumber
   ],
   PlaceOrderEventObject
 >;
@@ -227,15 +227,15 @@ export interface IOrderBook extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined,
+    toBlock?: string | number | undefined
   ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>,
+    eventFilter?: TypedEventFilter<TEvent>
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>,
+    eventFilter: TypedEventFilter<TEvent>
   ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
@@ -246,24 +246,24 @@ export interface IOrderBook extends BaseContract {
   functions: {
     clearOrders(
       subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     dumpFees(
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     getBookPricesX18(
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber, BigNumber]>;
 
     getCumulativeBuySellAmountsX18(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber]>;
 
     getMarket(
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<[IOrderBook.MarketStructOutput]>;
 
     initialize(
@@ -272,32 +272,32 @@ export interface IOrderBook extends BaseContract {
       _productId: PromiseOrValue<BigNumberish>,
       _sizeIncrementX18: PromiseOrValue<BigNumberish>,
       _priceIncrementX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     sendOrders(
       subaccountId: PromiseOrValue<BigNumberish>,
       requests: IClearinghouse.OrderRequestStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
   clearOrders(
     subaccountId: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> },
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   dumpFees(
-    overrides?: Overrides & { from?: PromiseOrValue<string> },
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   getBookPricesX18(
-    overrides?: CallOverrides,
+    overrides?: CallOverrides
   ): Promise<[BigNumber, BigNumber, BigNumber]>;
 
   getCumulativeBuySellAmountsX18(
     subaccount: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides,
+    overrides?: CallOverrides
   ): Promise<[BigNumber, BigNumber]>;
 
   getMarket(overrides?: CallOverrides): Promise<IOrderBook.MarketStructOutput>;
@@ -308,34 +308,34 @@ export interface IOrderBook extends BaseContract {
     _productId: PromiseOrValue<BigNumberish>,
     _sizeIncrementX18: PromiseOrValue<BigNumberish>,
     _priceIncrementX18: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> },
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   sendOrders(
     subaccountId: PromiseOrValue<BigNumberish>,
     requests: IClearinghouse.OrderRequestStruct[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> },
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
     clearOrders(
       subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<void>;
 
     dumpFees(overrides?: CallOverrides): Promise<void>;
 
     getBookPricesX18(
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber, BigNumber]>;
 
     getCumulativeBuySellAmountsX18(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber]>;
 
     getMarket(
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<IOrderBook.MarketStructOutput>;
 
     initialize(
@@ -344,35 +344,35 @@ export interface IOrderBook extends BaseContract {
       _productId: PromiseOrValue<BigNumberish>,
       _sizeIncrementX18: PromiseOrValue<BigNumberish>,
       _priceIncrementX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<void>;
 
     sendOrders(
       subaccountId: PromiseOrValue<BigNumberish>,
       requests: IClearinghouse.OrderRequestStruct[],
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<void>;
   };
 
   filters: {
-    'CancelOrder(uint64,uint64,int256)'(
+    "CancelOrder(uint64,uint64,int256)"(
       subaccount?: PromiseOrValue<BigNumberish> | null,
       queuePos?: PromiseOrValue<BigNumberish> | null,
-      priceX18?: PromiseOrValue<BigNumberish> | null,
+      priceX18?: PromiseOrValue<BigNumberish> | null
     ): CancelOrderEventFilter;
     CancelOrder(
       subaccount?: PromiseOrValue<BigNumberish> | null,
       queuePos?: PromiseOrValue<BigNumberish> | null,
-      priceX18?: PromiseOrValue<BigNumberish> | null,
+      priceX18?: PromiseOrValue<BigNumberish> | null
     ): CancelOrderEventFilter;
 
-    'FillOrder(uint64,uint64,int256,int256,int256,int256)'(
+    "FillOrder(uint64,uint64,int256,int256,int256,int256)"(
       subaccount?: PromiseOrValue<BigNumberish> | null,
       queuePos?: PromiseOrValue<BigNumberish> | null,
       priceX18?: PromiseOrValue<BigNumberish> | null,
       amount?: null,
       quoteDelta?: null,
-      fee?: null,
+      fee?: null
     ): FillOrderEventFilter;
     FillOrder(
       subaccount?: PromiseOrValue<BigNumberish> | null,
@@ -380,10 +380,10 @@ export interface IOrderBook extends BaseContract {
       priceX18?: PromiseOrValue<BigNumberish> | null,
       amount?: null,
       quoteDelta?: null,
-      fee?: null,
+      fee?: null
     ): FillOrderEventFilter;
 
-    'PlaceOrder(uint64,uint64,uint64,int256,int256,int256,int256,int256)'(
+    "PlaceOrder(uint64,uint64,uint64,int256,int256,int256,int256,int256)"(
       subaccount?: PromiseOrValue<BigNumberish> | null,
       expiration?: null,
       queuePos?: PromiseOrValue<BigNumberish> | null,
@@ -391,7 +391,7 @@ export interface IOrderBook extends BaseContract {
       amountInitial?: null,
       amountOnBook?: null,
       quoteDelta?: null,
-      fee?: null,
+      fee?: null
     ): PlaceOrderEventFilter;
     PlaceOrder(
       subaccount?: PromiseOrValue<BigNumberish> | null,
@@ -401,36 +401,36 @@ export interface IOrderBook extends BaseContract {
       amountInitial?: null,
       amountOnBook?: null,
       quoteDelta?: null,
-      fee?: null,
+      fee?: null
     ): PlaceOrderEventFilter;
 
-    'RemoveOrder(uint64,uint64,int256)'(
+    "RemoveOrder(uint64,uint64,int256)"(
       subaccount?: PromiseOrValue<BigNumberish> | null,
       queuePos?: PromiseOrValue<BigNumberish> | null,
-      priceX18?: PromiseOrValue<BigNumberish> | null,
+      priceX18?: PromiseOrValue<BigNumberish> | null
     ): RemoveOrderEventFilter;
     RemoveOrder(
       subaccount?: PromiseOrValue<BigNumberish> | null,
       queuePos?: PromiseOrValue<BigNumberish> | null,
-      priceX18?: PromiseOrValue<BigNumberish> | null,
+      priceX18?: PromiseOrValue<BigNumberish> | null
     ): RemoveOrderEventFilter;
   };
 
   estimateGas: {
     clearOrders(
       subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     dumpFees(
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     getBookPricesX18(overrides?: CallOverrides): Promise<BigNumber>;
 
     getCumulativeBuySellAmountsX18(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getMarket(overrides?: CallOverrides): Promise<BigNumber>;
@@ -441,31 +441,31 @@ export interface IOrderBook extends BaseContract {
       _productId: PromiseOrValue<BigNumberish>,
       _sizeIncrementX18: PromiseOrValue<BigNumberish>,
       _priceIncrementX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     sendOrders(
       subaccountId: PromiseOrValue<BigNumberish>,
       requests: IClearinghouse.OrderRequestStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     clearOrders(
       subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     dumpFees(
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     getBookPricesX18(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getCumulativeBuySellAmountsX18(
       subaccount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getMarket(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -476,13 +476,13 @@ export interface IOrderBook extends BaseContract {
       _productId: PromiseOrValue<BigNumberish>,
       _sizeIncrementX18: PromiseOrValue<BigNumberish>,
       _priceIncrementX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     sendOrders(
       subaccountId: PromiseOrValue<BigNumberish>,
       requests: IClearinghouse.OrderRequestStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> },
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

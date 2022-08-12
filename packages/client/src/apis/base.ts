@@ -1,6 +1,6 @@
 import { VertexClientContext } from '../context';
 
-export class MarketAPI {
+export class BaseVertexAPI {
   readonly context: VertexClientContext;
 
   constructor(context: VertexClientContext) {
