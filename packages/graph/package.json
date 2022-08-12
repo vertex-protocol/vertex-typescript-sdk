@@ -12,19 +12,17 @@
     "access": "public"
   },
   "scripts": {
-    "clean": "rm -rf dist && rm -r tsconfig.tsbuildinfo",
+    "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "dev": "tsc -w",
-    "generate-graph-client": "rm -rf src/generated && graphclient build && mv .graphclient src/generated",
-    "test": "ts-node src/client/test.ts"
+    "generate-graph-client": "rm -rf src/generated && graphclient build && mv .graphclient src/generated"
   },
   "files": [
     "dist",
     "src"
   ],
   "devDependencies": {
-    "@graphprotocol/client-cli": "^2.1.3",
-    "ts-node": "^10.9.1"
+    "@graphprotocol/client-cli": "^2.1.3"
   },
   "dependencies": {
     "graphql": "^16.5.0"

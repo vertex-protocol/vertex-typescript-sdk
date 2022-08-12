@@ -1,6 +1,6 @@
 import { BigNumberish, Overrides } from 'ethers';
 import { PromiseOrValue } from '../typechain-types/common';
-import { OrderbookID } from '../common/types';
+import { OrderbookID } from '../common/orderTypes';
 
 export type ExecuteOverrides = Overrides & { from?: PromiseOrValue<string> };
 

@@ -13,6 +13,12 @@
   ],
   "references": [
     {
+      "path": "../graph"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
       "path": "../utils"
     }
   ]

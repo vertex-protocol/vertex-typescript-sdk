@@ -1,17 +1,13 @@
 {
-  "name": "@vertex/utils",
+  "name": "@vertex/client",
   "version": "0.1.0",
-  "description": "",
+  "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
   "license": "ISC",
-  "main": "./dist/index.js",
+  "main": "dist/src/index.js",
   "types": "./dist/index.d.ts",
   "source": "./src/index.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
   "publishConfig": {
     "access": "public"
   },
@@ -20,9 +16,14 @@
     "build": "tsc -b",
     "dev": "tsc -w"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "dependencies": {
-    "@ethersproject/bignumber": "^5.6.2",
-    "ethers": "^5.6.9",
-    "evm-bn": "^1.1.2"
+    "@vertex/contracts": "*",
+    "@vertex/graph": "*",
+    "@vertex/utils": "*",
+    "ethers": "^5.6.9"
   }
 }
