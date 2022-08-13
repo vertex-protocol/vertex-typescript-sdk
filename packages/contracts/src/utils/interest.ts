@@ -1,3 +1,22 @@
+import { ISpotEngine } from '../typechain-types';
+import { BigDecimal, fromX18 } from '@vertex/utils';
+
+export function calcTotalBorrowed(
+  state: ISpotEngine.StateStructOutput,
+): BigDecimal {
+  return fromX18(state.totalBorrowsNormalizedX18).multipliedBy(
+    fromX18(state.cumulativeBorrowsMultiplierX18),
+  );
+}
+
+export function calcTotalDeposited(
+  state: ISpotEngine.StateStructOutput,
+): BigDecimal {
+  return fromX18(state.totalDepositsNormalizedX18).multipliedBy(
+    fromX18(state.cumulativeDepositsMultiplierX18),
+  );
+}
+
 // TODO
 // function borrowRateCalculator(config: any, util: number) {
 //   const annualRate =

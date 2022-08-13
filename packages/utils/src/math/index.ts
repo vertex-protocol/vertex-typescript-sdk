@@ -1,2 +1,3 @@
 export * from './fixedPoint';
-export { MaxUint64 } from './consts';
+export * from './consts';
+export * from './bigNumber';

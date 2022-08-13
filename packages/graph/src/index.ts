@@ -1,1 +1,1 @@
-export { VertexGraphClient } from './client';
+export * from './client';

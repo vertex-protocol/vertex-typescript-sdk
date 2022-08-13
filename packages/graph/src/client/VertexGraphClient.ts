@@ -6,6 +6,10 @@ interface GraphClientOpts {
   endpoint?: string;
 }
 
+export interface GetSubaccountsParams {
+  address: string;
+}
+
 export class VertexGraphClient {
   readonly graph: GraphSDK;
 
@@ -13,9 +17,7 @@ export class VertexGraphClient {
     this.graph = getBuiltGraphSDK({ endpoint: opts?.endpoint });
   }
 
-  getSubaccountsForAddress(address: string) {
-    return this.graph.SubaccountsForAddress({
-      address,
-    });
+  getSubaccountsForAddress(params: GetSubaccountsParams) {
+    return this.graph.SubaccountsForAddress({ address: params.address });
   }
 }

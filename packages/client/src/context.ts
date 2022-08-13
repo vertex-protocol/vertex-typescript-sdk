@@ -1,13 +1,10 @@
 import {
-  IClearinghouse,
   IClearinghouse__factory,
-  IPerpEngine,
   IPerpEngine__factory,
-  ISpotEngine,
   ISpotEngine__factory,
-  IVertexQuerier,
   IVertexQuerier__factory,
   ProductEngineType,
+  VertexContracts,
 } from '@vertex/contracts';
 import { Signer } from 'ethers';
 import { Provider } from '@ethersproject/providers';
@@ -21,12 +18,7 @@ export interface VertexClientContextOpts {
 
 export interface VertexClientContext {
   signerOrProvider: Signer | Provider;
-  contracts: {
-    querier: IVertexQuerier;
-    clearinghouse: IClearinghouse;
-    spotEngine: ISpotEngine;
-    perpEngine: IPerpEngine;
-  };
+  contracts: VertexContracts;
   graph: VertexGraphClient;
 }
 

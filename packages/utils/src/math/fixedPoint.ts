@@ -1,11 +1,12 @@
 import { BigNumber, BigNumberish } from 'ethers';
 import { fromBn, toBn } from 'evm-bn';
+import { BigDecimal, toBigDecimal } from './bigNumber';
 
 export function toX18(val: BigNumberish): BigNumber {
   return toFixedPoint(val, 18);
 }
 
-export function fromX18(val: BigNumber): string {
+export function fromX18(val: BigNumber): BigDecimal {
   return fromFixedPoint(val, 18);
 }
 
@@ -13,8 +14,8 @@ export function fromX18(val: BigNumber): string {
  * Convert a fixed point BigNumber to its float string representation
  * ex. fromFixedPoint(BN(314), 2) => "3.14"
  */
-export function fromFixedPoint(val: BigNumber, decimals = 18): string {
-  return fromBn(val, decimals);
+export function fromFixedPoint(val: BigNumber, decimals = 18): BigDecimal {
+  return toBigDecimal(fromBn(val, decimals));
 }
 
 /**
