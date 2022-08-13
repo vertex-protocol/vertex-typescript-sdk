@@ -1,0 +1,51 @@
+query PaginatedAllMarketOrdersQuery(
+  $marketEntityId: String!,
+  $filteredStatuses: [OrderStatus!]!,
+  $first: Int,
+  $skip: Int,
+) {
+  orders(where: {
+    status_in: $filteredStatuses,
+    market: $marketEntityId,
+  }, first: $first, skip: $skip) {
+    ...OrderEntityFieldsFragment
+  }
+}
+
+query PaginatedSubaccountOrdersQuery(
+  $subaccountEntityId: String!,
+  $filteredStatuses: [OrderStatus!]!,
+  $first: Int,
+  $skip: Int,
+) {
+  orders(where: {
+    subaccount: $subaccountEntityId,
+    status_in: $filteredStatuses,
+  }, first: $first, skip: $skip) {
+    ...OrderEntityFieldsFragment
+  }
+}
+
+query OrdersByIDQuery($orderEntityIds: [String!]!) {
+  orders(where: { id_in: $orderEntityIds }) {
+    ...OrderEntityFieldsFragment
+  }
+}
+
+# All fields on Order
+fragment OrderEntityFieldsFragment on Order {
+  id
+  status
+  # TODO: onBookContract once synced
+  priceX18
+  queuePos
+  subaccount {
+    subaccountId
+  }
+  expiration
+  createdAt
+  createdAtBlock
+  initialAmount
+  filledAmount
+  collectedFee
+}

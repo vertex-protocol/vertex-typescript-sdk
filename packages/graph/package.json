@@ -15,7 +15,8 @@
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "dev": "tsc -w",
-    "generate-graph-client": "rm -rf src/generated && graphclient build && mv .graphclient src/generated"
+    "generate-graph-client": "rm -rf src/generated && graphclient build && mv .graphclient src/generated",
+    "test": "ts-node src/test.ts"
   },
   "files": [
     "dist",
@@ -25,6 +26,7 @@
     "@graphprotocol/client-cli": "^2.1.3"
   },
   "dependencies": {
-    "graphql": "^16.5.0"
+    "graphql": "^16.5.0",
+    "ts-mixer": "^6.0.1"
   }
 }

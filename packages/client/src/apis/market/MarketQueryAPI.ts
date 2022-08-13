@@ -13,4 +13,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   // Get orders by product
   // Add filters that makes sense (ex. by subaccount, pagniation, etc)
   async getMarketOrders() {}
+
+  // Get by price & queue pos
+  async getMarketOrder() {}
 }

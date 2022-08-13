@@ -4817,6 +4817,24 @@ const merger = new(BareMerger as any)({
     get documents() {
       return [
       {
+        document: PaginatedAllMarketOrdersQueryDocument,
+        get rawSDL() {
+          return printWithCache(PaginatedAllMarketOrdersQueryDocument);
+        },
+        location: 'PaginatedAllMarketOrdersQueryDocument.graphql'
+      },{
+        document: PaginatedSubaccountOrdersQueryDocument,
+        get rawSDL() {
+          return printWithCache(PaginatedSubaccountOrdersQueryDocument);
+        },
+        location: 'PaginatedSubaccountOrdersQueryDocument.graphql'
+      },{
+        document: OrdersByIdQueryDocument,
+        get rawSDL() {
+          return printWithCache(OrdersByIdQueryDocument);
+        },
+        location: 'OrdersByIdQueryDocument.graphql'
+      },{
         document: SubaccountsForAddressDocument,
         get rawSDL() {
           return printWithCache(SubaccountsForAddressDocument);
@@ -4850,6 +4868,47 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
   return getSdk<TOperationContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
+export type PaginatedAllMarketOrdersQueryQueryVariables = Exact<{
+  marketEntityId: Scalars['String'];
+  filteredStatuses: Array<OrderStatus> | OrderStatus;
+  first?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type PaginatedAllMarketOrdersQueryQuery = { orders: Array<(
+    Pick<Order, 'id' | 'status' | 'priceX18' | 'queuePos' | 'expiration' | 'createdAt' | 'createdAtBlock' | 'initialAmount' | 'filledAmount' | 'collectedFee'>
+    & { subaccount: Pick<Subaccount, 'subaccountId'> }
+  )> };
+
+export type PaginatedSubaccountOrdersQueryQueryVariables = Exact<{
+  subaccountEntityId: Scalars['String'];
+  filteredStatuses: Array<OrderStatus> | OrderStatus;
+  first?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type PaginatedSubaccountOrdersQueryQuery = { orders: Array<(
+    Pick<Order, 'id' | 'status' | 'priceX18' | 'queuePos' | 'expiration' | 'createdAt' | 'createdAtBlock' | 'initialAmount' | 'filledAmount' | 'collectedFee'>
+    & { subaccount: Pick<Subaccount, 'subaccountId'> }
+  )> };
+
+export type OrdersByIDQueryQueryVariables = Exact<{
+  orderEntityIds: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type OrdersByIDQueryQuery = { orders: Array<(
+    Pick<Order, 'id' | 'status' | 'priceX18' | 'queuePos' | 'expiration' | 'createdAt' | 'createdAtBlock' | 'initialAmount' | 'filledAmount' | 'collectedFee'>
+    & { subaccount: Pick<Subaccount, 'subaccountId'> }
+  )> };
+
+export type OrderEntityFieldsFragmentFragment = (
+  Pick<Order, 'id' | 'status' | 'priceX18' | 'queuePos' | 'expiration' | 'createdAt' | 'createdAtBlock' | 'initialAmount' | 'filledAmount' | 'collectedFee'>
+  & { subaccount: Pick<Subaccount, 'subaccountId'> }
+);
+
 export type SubaccountsForAddressQueryVariables = Exact<{
   address: Scalars['String'];
 }>;
@@ -4857,7 +4916,52 @@ export type SubaccountsForAddressQueryVariables = Exact<{
 
 export type SubaccountsForAddressQuery = { subaccounts: Array<Pick<Subaccount, 'id' | 'name' | 'subaccountId' | 'owner'>> };
 
-
+export const OrderEntityFieldsFragmentFragmentDoc = gql`
+    fragment OrderEntityFieldsFragment on Order {
+  id
+  status
+  priceX18
+  queuePos
+  subaccount {
+    subaccountId
+  }
+  expiration
+  createdAt
+  createdAtBlock
+  initialAmount
+  filledAmount
+  collectedFee
+}
+    ` as unknown as DocumentNode<OrderEntityFieldsFragmentFragment, unknown>;
+export const PaginatedAllMarketOrdersQueryDocument = gql`
+    query PaginatedAllMarketOrdersQuery($marketEntityId: String!, $filteredStatuses: [OrderStatus!]!, $first: Int, $skip: Int) {
+  orders(
+    where: {status_in: $filteredStatuses, market: $marketEntityId}
+    first: $first
+    skip: $skip
+  ) {
+    ...OrderEntityFieldsFragment
+  }
+}
+    ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<PaginatedAllMarketOrdersQueryQuery, PaginatedAllMarketOrdersQueryQueryVariables>;
+export const PaginatedSubaccountOrdersQueryDocument = gql`
+    query PaginatedSubaccountOrdersQuery($subaccountEntityId: String!, $filteredStatuses: [OrderStatus!]!, $first: Int, $skip: Int) {
+  orders(
+    where: {subaccount: $subaccountEntityId, status_in: $filteredStatuses}
+    first: $first
+    skip: $skip
+  ) {
+    ...OrderEntityFieldsFragment
+  }
+}
+    ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<PaginatedSubaccountOrdersQueryQuery, PaginatedSubaccountOrdersQueryQueryVariables>;
+export const OrdersByIDQueryDocument = gql`
+    query OrdersByIDQuery($orderEntityIds: [String!]!) {
+  orders(where: {id_in: $orderEntityIds}) {
+    ...OrderEntityFieldsFragment
+  }
+}
+    ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<OrdersByIDQueryQuery, OrdersByIDQueryQueryVariables>;
 export const SubaccountsForAddressDocument = gql`
     query SubaccountsForAddress($address: String!) {
   subaccounts(where: {owner: $address}) {
@@ -4870,9 +4974,21 @@ export const SubaccountsForAddressDocument = gql`
     ` as unknown as DocumentNode<SubaccountsForAddressQuery, SubaccountsForAddressQueryVariables>;
 
 
+
+
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
+    PaginatedAllMarketOrdersQuery(variables: PaginatedAllMarketOrdersQueryQueryVariables, options?: C): Promise<PaginatedAllMarketOrdersQueryQuery> {
+      return requester<PaginatedAllMarketOrdersQueryQuery, PaginatedAllMarketOrdersQueryQueryVariables>(PaginatedAllMarketOrdersQueryDocument, variables, options);
+    },
+    PaginatedSubaccountOrdersQuery(variables: PaginatedSubaccountOrdersQueryQueryVariables, options?: C): Promise<PaginatedSubaccountOrdersQueryQuery> {
+      return requester<PaginatedSubaccountOrdersQueryQuery, PaginatedSubaccountOrdersQueryQueryVariables>(PaginatedSubaccountOrdersQueryDocument, variables, options);
+    },
+    OrdersByIDQuery(variables: OrdersByIDQueryQueryVariables, options?: C): Promise<OrdersByIDQueryQuery> {
+      return requester<OrdersByIDQueryQuery, OrdersByIDQueryQueryVariables>(OrdersByIDQueryDocument, variables, options);
+    },
     SubaccountsForAddress(variables: SubaccountsForAddressQueryVariables, options?: C): Promise<SubaccountsForAddressQuery> {
       return requester<SubaccountsForAddressQuery, SubaccountsForAddressQueryVariables>(SubaccountsForAddressDocument, variables, options);
     }

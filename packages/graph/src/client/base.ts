@@ -6,18 +6,12 @@ interface GraphClientOpts {
   endpoint?: string;
 }
 
-export interface GetSubaccountsParams {
-  address: string;
-}
-
-export class VertexGraphClient {
+export class BaseVertexGraphClient {
   readonly graph: GraphSDK;
 
   constructor(opts?: GraphClientOpts) {
     this.graph = getBuiltGraphSDK({ endpoint: opts?.endpoint });
   }
 
-  getSubaccountsForAddress(params: GetSubaccountsParams) {
-    return this.graph.SubaccountsForAddress({ address: params.address });
-  }
+  // TODO: determine if the orders can do conditional filtering
 }
