@@ -4817,6 +4817,18 @@ const merger = new(BareMerger as any)({
     get documents() {
       return [
       {
+        document: BookPriceLevelsQueryDocument,
+        get rawSDL() {
+          return printWithCache(BookPriceLevelsQueryDocument);
+        },
+        location: 'BookPriceLevelsQueryDocument.graphql'
+      },{
+        document: HourlyHistoricalMarketDataQueryDocument,
+        get rawSDL() {
+          return printWithCache(HourlyHistoricalMarketDataQueryDocument);
+        },
+        location: 'HourlyHistoricalMarketDataQueryDocument.graphql'
+      },{
         document: PaginatedAllMarketOrdersQueryDocument,
         get rawSDL() {
           return printWithCache(PaginatedAllMarketOrdersQueryDocument);
@@ -4829,11 +4841,11 @@ const merger = new(BareMerger as any)({
         },
         location: 'PaginatedSubaccountOrdersQueryDocument.graphql'
       },{
-        document: OrdersByIdQueryDocument,
+        document: OnBookOrdersByIdQueryDocument,
         get rawSDL() {
-          return printWithCache(OrdersByIdQueryDocument);
+          return printWithCache(OnBookOrdersByIdQueryDocument);
         },
-        location: 'OrdersByIdQueryDocument.graphql'
+        location: 'OnBookOrdersByIdQueryDocument.graphql'
       },{
         document: SubaccountsForAddressDocument,
         get rawSDL() {
@@ -4868,6 +4880,24 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
   return getSdk<TOperationContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
+export type BookPriceLevelsQueryQueryVariables = Exact<{
+  marketEntityId: Scalars['String'];
+  minPriceX18Inclusive: Scalars['BigInt'];
+  maxPriceX18Exclusive: Scalars['BigInt'];
+}>;
+
+
+export type BookPriceLevelsQueryQuery = { orderbookPriceLevels: Array<Pick<OrderbookPriceLevel, 'id' | 'priceX18' | 'cumulativeSize'>> };
+
+export type HourlyHistoricalMarketDataQueryQueryVariables = Exact<{
+  marketEntityId: Scalars['String'];
+  minHourInclusive: Scalars['BigInt'];
+  maxHourExclusive: Scalars['BigInt'];
+}>;
+
+
+export type HourlyHistoricalMarketDataQueryQuery = { marketHourlySnapshots: Array<Pick<MarketHourlySnapshot, 'id' | 'hour' | 'volumeQuote'>> };
+
 export type PaginatedAllMarketOrdersQueryQueryVariables = Exact<{
   marketEntityId: Scalars['String'];
   filteredStatuses: Array<OrderStatus> | OrderStatus;
@@ -4894,12 +4924,12 @@ export type PaginatedSubaccountOrdersQueryQuery = { orders: Array<(
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
 
-export type OrdersByIDQueryQueryVariables = Exact<{
+export type OnBookOrdersByIDQueryQueryVariables = Exact<{
   orderEntityIds: Array<Scalars['String']> | Scalars['String'];
 }>;
 
 
-export type OrdersByIDQueryQuery = { orders: Array<(
+export type OnBookOrdersByIDQueryQuery = { orders: Array<(
     Pick<Order, 'id' | 'status' | 'priceX18' | 'queuePos' | 'expiration' | 'createdAt' | 'createdAtBlock' | 'initialAmount' | 'filledAmount' | 'collectedFee'>
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
@@ -4933,6 +4963,28 @@ export const OrderEntityFieldsFragmentFragmentDoc = gql`
   collectedFee
 }
     ` as unknown as DocumentNode<OrderEntityFieldsFragmentFragment, unknown>;
+export const BookPriceLevelsQueryDocument = gql`
+    query BookPriceLevelsQuery($marketEntityId: String!, $minPriceX18Inclusive: BigInt!, $maxPriceX18Exclusive: BigInt!) {
+  orderbookPriceLevels(
+    where: {market: $marketEntityId, priceX18_gte: $minPriceX18Inclusive, priceX18_lt: $maxPriceX18Exclusive}
+  ) {
+    id
+    priceX18
+    cumulativeSize
+  }
+}
+    ` as unknown as DocumentNode<BookPriceLevelsQueryQuery, BookPriceLevelsQueryQueryVariables>;
+export const HourlyHistoricalMarketDataQueryDocument = gql`
+    query HourlyHistoricalMarketDataQuery($marketEntityId: String!, $minHourInclusive: BigInt!, $maxHourExclusive: BigInt!) {
+  marketHourlySnapshots(
+    where: {market: $marketEntityId, hour_gte: $minTimeInclusive, hour_lt: $maxHourExclusive}
+  ) {
+    id
+    hour
+    volumeQuote
+  }
+}
+    ` as unknown as DocumentNode<HourlyHistoricalMarketDataQueryQuery, HourlyHistoricalMarketDataQueryQueryVariables>;
 export const PaginatedAllMarketOrdersQueryDocument = gql`
     query PaginatedAllMarketOrdersQuery($marketEntityId: String!, $filteredStatuses: [OrderStatus!]!, $first: Int, $skip: Int) {
   orders(
@@ -4955,13 +5007,13 @@ export const PaginatedSubaccountOrdersQueryDocument = gql`
   }
 }
     ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<PaginatedSubaccountOrdersQueryQuery, PaginatedSubaccountOrdersQueryQueryVariables>;
-export const OrdersByIDQueryDocument = gql`
-    query OrdersByIDQuery($orderEntityIds: [String!]!) {
+export const OnBookOrdersByIDQueryDocument = gql`
+    query OnBookOrdersByIDQuery($orderEntityIds: [String!]!) {
   orders(where: {id_in: $orderEntityIds}) {
     ...OrderEntityFieldsFragment
   }
 }
-    ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<OrdersByIDQueryQuery, OrdersByIDQueryQueryVariables>;
+    ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<OnBookOrdersByIDQueryQuery, OnBookOrdersByIDQueryQueryVariables>;
 export const SubaccountsForAddressDocument = gql`
     query SubaccountsForAddress($address: String!) {
   subaccounts(where: {owner: $address}) {
@@ -4977,17 +5029,25 @@ export const SubaccountsForAddressDocument = gql`
 
 
 
+
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
+    BookPriceLevelsQuery(variables: BookPriceLevelsQueryQueryVariables, options?: C): Promise<BookPriceLevelsQueryQuery> {
+      return requester<BookPriceLevelsQueryQuery, BookPriceLevelsQueryQueryVariables>(BookPriceLevelsQueryDocument, variables, options);
+    },
+    HourlyHistoricalMarketDataQuery(variables: HourlyHistoricalMarketDataQueryQueryVariables, options?: C): Promise<HourlyHistoricalMarketDataQueryQuery> {
+      return requester<HourlyHistoricalMarketDataQueryQuery, HourlyHistoricalMarketDataQueryQueryVariables>(HourlyHistoricalMarketDataQueryDocument, variables, options);
+    },
     PaginatedAllMarketOrdersQuery(variables: PaginatedAllMarketOrdersQueryQueryVariables, options?: C): Promise<PaginatedAllMarketOrdersQueryQuery> {
       return requester<PaginatedAllMarketOrdersQueryQuery, PaginatedAllMarketOrdersQueryQueryVariables>(PaginatedAllMarketOrdersQueryDocument, variables, options);
     },
     PaginatedSubaccountOrdersQuery(variables: PaginatedSubaccountOrdersQueryQueryVariables, options?: C): Promise<PaginatedSubaccountOrdersQueryQuery> {
       return requester<PaginatedSubaccountOrdersQueryQuery, PaginatedSubaccountOrdersQueryQueryVariables>(PaginatedSubaccountOrdersQueryDocument, variables, options);
     },
-    OrdersByIDQuery(variables: OrdersByIDQueryQueryVariables, options?: C): Promise<OrdersByIDQueryQuery> {
-      return requester<OrdersByIDQueryQuery, OrdersByIDQueryQueryVariables>(OrdersByIDQueryDocument, variables, options);
+    OnBookOrdersByIDQuery(variables: OnBookOrdersByIDQueryQueryVariables, options?: C): Promise<OnBookOrdersByIDQueryQuery> {
+      return requester<OnBookOrdersByIDQueryQuery, OnBookOrdersByIDQueryQueryVariables>(OnBookOrdersByIDQueryDocument, variables, options);
     },
     SubaccountsForAddress(variables: SubaccountsForAddressQueryVariables, options?: C): Promise<SubaccountsForAddressQuery> {
       return requester<SubaccountsForAddressQuery, SubaccountsForAddressQueryVariables>(SubaccountsForAddressDocument, variables, options);

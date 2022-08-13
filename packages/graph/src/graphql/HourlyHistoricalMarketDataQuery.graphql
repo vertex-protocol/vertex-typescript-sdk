@@ -1,0 +1,18 @@
+query HourlyHistoricalMarketDataQuery(
+  $marketEntityId: String!
+  $minHourInclusive: BigInt!
+  $maxHourExclusive: BigInt!
+) {
+  marketHourlySnapshots(
+    where: {
+      market: $marketEntityId
+      hour_gte: $minTimeInclusive
+      hour_lt: $maxHourExclusive
+    }
+  ) {
+    id
+    hour
+    volumeQuote
+    # TODO more fields when added
+  }
+}

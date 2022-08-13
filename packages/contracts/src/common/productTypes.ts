@@ -6,7 +6,19 @@ export enum ProductEngineType {
   PERP = 1,
 }
 
+export function toProductEngineType(val: number): ProductEngineType {
+  switch (val) {
+    case 0:
+      return ProductEngineType.SPOT;
+    case 1:
+      return ProductEngineType.PERP;
+    default:
+      throw new Error(`Unknown product engine type: ${val}`);
+  }
+}
+
 interface BaseProduct {
+  type: ProductEngineType;
   productId: number;
   oraclePrice: BigDecimal;
   longWeightInitial: BigDecimal;
@@ -16,12 +28,12 @@ interface BaseProduct {
 }
 
 export interface PerpProduct extends BaseProduct {
-  type: 'perp';
+  type: ProductEngineType.PERP;
   // TODO: funding stuff
 }
 
 export interface SpotProduct extends BaseProduct {
-  type: 'spot';
+  type: ProductEngineType.SPOT;
   interestFloor: BigDecimal;
   interestInflectionUtil: BigDecimal;
   interestSmallCap: BigDecimal;

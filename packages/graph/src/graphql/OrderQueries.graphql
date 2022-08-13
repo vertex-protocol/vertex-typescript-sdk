@@ -1,32 +1,34 @@
 query PaginatedAllMarketOrdersQuery(
-  $marketEntityId: String!,
-  $filteredStatuses: [OrderStatus!]!,
-  $first: Int,
-  $skip: Int,
+  $marketEntityId: String!
+  $filteredStatuses: [OrderStatus!]!
+  $first: Int
+  $skip: Int
 ) {
-  orders(where: {
-    status_in: $filteredStatuses,
-    market: $marketEntityId,
-  }, first: $first, skip: $skip) {
+  orders(
+    where: { status_in: $filteredStatuses, market: $marketEntityId }
+    first: $first
+    skip: $skip
+  ) {
     ...OrderEntityFieldsFragment
   }
 }
 
 query PaginatedSubaccountOrdersQuery(
-  $subaccountEntityId: String!,
-  $filteredStatuses: [OrderStatus!]!,
-  $first: Int,
-  $skip: Int,
+  $subaccountEntityId: String!
+  $filteredStatuses: [OrderStatus!]!
+  $first: Int
+  $skip: Int
 ) {
-  orders(where: {
-    subaccount: $subaccountEntityId,
-    status_in: $filteredStatuses,
-  }, first: $first, skip: $skip) {
+  orders(
+    where: { subaccount: $subaccountEntityId, status_in: $filteredStatuses }
+    first: $first
+    skip: $skip
+  ) {
     ...OrderEntityFieldsFragment
   }
 }
 
-query OrdersByIDQuery($orderEntityIds: [String!]!) {
+query OnBookOrdersByIDQuery($orderEntityIds: [String!]!) {
   orders(where: { id_in: $orderEntityIds }) {
     ...OrderEntityFieldsFragment
   }

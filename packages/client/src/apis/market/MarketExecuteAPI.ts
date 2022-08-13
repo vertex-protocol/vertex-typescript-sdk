@@ -2,10 +2,16 @@ import { BaseVertexAPI } from '../base';
 
 export class MarketExecuteAPI extends BaseVertexAPI {
   // Wrap the send orders util
-  async sendOrders() {}
+  async sendOrders() {
+    console.log('hi eslint');
+  }
 
   // No cancellations
-  async placeOrders() {}
+  async placeOrders() {
+    console.log('hi eslint');
+  }
 
-  async cancelOrders() {}
+  async cancelOrders() {
+    console.log('hi eslint');
+  }
 }

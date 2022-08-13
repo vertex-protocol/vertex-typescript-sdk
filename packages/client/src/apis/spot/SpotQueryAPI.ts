@@ -2,10 +2,16 @@ import { BaseVertexAPI } from '../base';
 
 export class SpotQueryAPI extends BaseVertexAPI {
   // From querier
-  async getAllSpotProducts() {}
+  async getAllSpotProducts() {
+    console.log('hi eslint');
+  }
 
   // From querier
-  async getSpotProducts() {}
+  async getSpotProducts() {
+    console.log('hi eslint');
+  }
 
-  async getHistoricalInterestRates() {}
+  async getHistoricalInterestRates() {
+    console.log('hi eslint');
+  }
 }

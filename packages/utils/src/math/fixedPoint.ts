@@ -2,7 +2,7 @@ import { BigNumber, BigNumberish } from 'ethers';
 import { fromBn, toBn } from 'evm-bn';
 import { BigDecimal, toBigDecimal } from './bigNumber';
 
-export function toX18(val: BigNumberish): BigNumber {
+export function toX18(val: BigNumberish | BigDecimal): BigNumber {
   return toFixedPoint(val, 18);
 }
 
@@ -23,6 +23,9 @@ export function fromFixedPoint(val: BigNumber, decimals = 18): BigDecimal {
  * Defaults to 18, which is X18 in contracts
  * ex. toFixedPoint(3.14, 2) => BN("314").
  */
-export function toFixedPoint(val: BigNumberish, decimals = 18): BigNumber {
+export function toFixedPoint(
+  val: BigNumberish | BigDecimal,
+  decimals = 18,
+): BigNumber {
   return toBn(val.toString(), decimals);
 }

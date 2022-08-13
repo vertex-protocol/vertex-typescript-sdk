@@ -16,12 +16,10 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
     return getSubaccountSummary(this.paramsWithContracts(params));
   }
 
-  // Filters here? can they return all?
-  async getAllEvents() {}
-
-  async getLiquidationEvents() {}
-
-  async getModifyCollateralEvents() {}
-
-  // TODO: The other events
+  // TODO: Events
+  // async getAllEvents() {}
+  //
+  // async getLiquidationEvents() {}
+  //
+  // async getModifyCollateralEvents() {}
 }

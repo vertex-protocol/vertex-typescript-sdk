@@ -2,11 +2,17 @@ import { BaseVertexAPI } from '../base';
 
 export class SpotExecuteAPI extends BaseVertexAPI {
   // By product ID
-  async increaseTokenAllowance() {}
+  async increaseTokenAllowance() {
+    console.log('hi eslint');
+  }
 
   // By product ID, optionally also addresses allowance
-  async modifyCollateral() {}
+  async modifyCollateral() {
+    console.log('hi eslint');
+  }
 
   // By product ID
-  async _mintMockERC20() {}
+  async _mintMockERC20() {
+    console.log('hi eslint');
+  }
 }

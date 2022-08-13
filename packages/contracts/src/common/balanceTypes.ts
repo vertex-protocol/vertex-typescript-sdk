@@ -1,21 +1,21 @@
-import { PerpProduct, ProductType, SpotProduct } from './productTypes';
+import { PerpProduct, ProductEngineType, SpotProduct } from './productTypes';
 import { BigDecimal } from '@vertex/utils';
 
 interface BaseBalance {
-  type: ProductType;
+  type: ProductEngineType;
   productId: number;
   amount: BigDecimal;
 }
 
 export interface PerpBalance extends BaseBalance {
-  type: 'perp';
+  type: ProductEngineType.PERP;
   vQuoteBalance: BigDecimal;
 }
 
 export type PerpBalanceWithProduct = PerpBalance & PerpProduct;
 
 export interface SpotBalance extends BaseBalance {
-  type: 'spot';
+  type: ProductEngineType.SPOT;
 }
 
 export type SpotBalanceWithProduct = SpotBalance & SpotProduct;

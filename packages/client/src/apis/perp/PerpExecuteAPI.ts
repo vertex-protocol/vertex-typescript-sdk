@@ -1,5 +1,7 @@
 import { BaseVertexAPI } from '../base';
 
 export class PerpExecuteAPI extends BaseVertexAPI {
-  async settlePerpPnl() {}
+  async settlePerpPnl() {
+    console.log('hi eslint');
+  }
 }

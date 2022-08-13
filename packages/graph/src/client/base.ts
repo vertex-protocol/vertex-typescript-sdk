@@ -12,6 +12,4 @@ export class BaseVertexGraphClient {
   constructor(opts?: GraphClientOpts) {
     this.graph = getBuiltGraphSDK({ endpoint: opts?.endpoint });
   }
-
-  // TODO: determine if the orders can do conditional filtering
 }

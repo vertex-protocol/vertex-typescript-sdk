@@ -1,19 +1,11 @@
 import { BaseVertexAPI } from '../base';
+import { getAllMarkets, GetAllMarketsResponse } from '@vertex/contracts';
 
 export class MarketQueryAPI extends BaseVertexAPI {
   // All markets from querier
-  async getAllMarkets() {}
+  async getAllMarkets(): Promise<GetAllMarketsResponse> {
+    return getAllMarkets(this.context.contracts);
+  }
 
-  // Orderbook price levels by product & specified per-side depth
-  async getOrderbook() {}
-
-  // Historical market prices by product
-  async getHistoricalPrices() {}
-
-  // Get orders by product
-  // Add filters that makes sense (ex. by subaccount, pagniation, etc)
-  async getMarketOrders() {}
-
-  // Get by price & queue pos
-  async getMarketOrder() {}
+  // TODO: add stuff given by `@vertex/graph`
 }
