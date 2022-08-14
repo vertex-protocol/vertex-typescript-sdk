@@ -1,4 +1,4 @@
-import { OrderbookID } from '@vertex/contracts';
+import { OrderbookID } from '@vertex-protocol/contracts';
 
 export function getSubaccountEntityId(subaccountId: number) {
   return `subaccount-${subaccountId}`;

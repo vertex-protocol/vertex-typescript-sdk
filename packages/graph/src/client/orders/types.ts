@@ -5,7 +5,7 @@ import {
   PaginatedSubaccountOrdersQueryQuery,
 } from '../../generated';
 import { PaginationParams } from '../types';
-import { OrderbookID } from '@vertex/contracts';
+import { OrderbookID } from '@vertex-protocol/contracts';
 
 export interface AllMarketOrdersParams extends PaginationParams {
   productId: number;

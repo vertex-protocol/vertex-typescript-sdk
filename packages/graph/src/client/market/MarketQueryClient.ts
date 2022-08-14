@@ -1,5 +1,5 @@
 import { BaseVertexGraphClient } from '../base';
-import { nowInSeconds, toX18 } from '@vertex/utils';
+import { nowInSeconds, toX18 } from '@vertex-protocol/utils';
 import { getMarketEntityId, toHourIndex } from '../../utils';
 import { MaxInt256 } from '@ethersproject/constants';
 import {

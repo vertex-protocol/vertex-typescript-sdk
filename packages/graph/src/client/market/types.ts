@@ -2,7 +2,7 @@ import {
   BookPriceLevelsQueryQuery,
   HourlyHistoricalMarketDataQueryQuery,
 } from '../../generated';
-import { BigDecimal } from '@vertex/utils/dist/math/bigNumber';
+import { BigDecimal } from '@vertex-protocol/utils';
 
 export interface OrderbookPriceLevelsParams {
   productId: number;
