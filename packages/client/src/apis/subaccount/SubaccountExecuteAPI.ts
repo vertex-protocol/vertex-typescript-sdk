@@ -2,7 +2,7 @@ import { BaseVertexAPI } from '../base';
 import {
   getLiquidateSubaccountArgs,
   LiquidateSubaccountParams,
-} from '@vertex/contracts';
+} from '@vertex-protocol/contracts';
 
 export class SubaccountExecuteAPI extends BaseVertexAPI {
   async liquidateSubaccount(params: LiquidateSubaccountParams) {

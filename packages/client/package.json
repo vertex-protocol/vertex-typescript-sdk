@@ -1,5 +1,5 @@
 {
-  "name": "@vertex/client",
+  "name": "@vertex-protocol/client",
   "version": "0.1.0",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
@@ -22,9 +22,9 @@
     "src"
   ],
   "dependencies": {
-    "@vertex/contracts": "*",
-    "@vertex/graph": "*",
-    "@vertex/utils": "*",
+    "@vertex-protocol/contracts": "*",
+    "@vertex-protocol/graph": "*",
+    "@vertex-protocol/utils": "*",
     "ethers": "^5.6.9",
     "ts-mixer": "^6.0.1"
   }

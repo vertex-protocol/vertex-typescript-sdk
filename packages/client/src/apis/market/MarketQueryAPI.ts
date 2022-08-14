@@ -1,5 +1,8 @@
 import { BaseVertexAPI } from '../base';
-import { getAllMarkets, GetAllMarketsResponse } from '@vertex/contracts';
+import {
+  getAllMarkets,
+  GetAllMarketsResponse,
+} from '@vertex-protocol/contracts';
 
 export class MarketQueryAPI extends BaseVertexAPI {
   // All markets from querier
@@ -7,5 +10,5 @@ export class MarketQueryAPI extends BaseVertexAPI {
     return getAllMarkets(this.context.contracts);
   }
 
-  // TODO: add stuff given by `@vertex/graph`
+  // TODO: add stuff given by `@vertex-protocol/graph`
 }

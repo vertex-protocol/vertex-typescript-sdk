@@ -1,6 +1,6 @@
 import { BigNumberish } from 'ethers';
 import { BalanceWithProduct, WithContracts } from '../common';
-import { BigDecimal, fromX18 } from '@vertex/utils';
+import { BigDecimal, fromX18 } from '@vertex-protocol/utils';
 import { IVertexQuerier } from '../typechain-types';
 import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
 

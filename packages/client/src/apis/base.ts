@@ -1,5 +1,5 @@
 import { VertexClientContext } from '../context';
-import { WithContracts } from '@vertex/contracts';
+import { WithContracts } from '@vertex-protocol/contracts';
 
 export class BaseVertexAPI {
   readonly context: VertexClientContext;

@@ -5,10 +5,10 @@ import {
   IVertexQuerier__factory,
   ProductEngineType,
   VertexContracts,
-} from '@vertex/contracts';
+} from '@vertex-protocol/contracts';
 import { Signer } from 'ethers';
 import { Provider } from '@ethersproject/providers';
-import { VertexGraphClient } from '@vertex/graph';
+import { VertexGraphClient } from '@vertex-protocol/graph';
 
 export interface VertexClientContextOpts {
   querierAddress: string;

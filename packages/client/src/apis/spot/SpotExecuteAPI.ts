@@ -2,7 +2,7 @@ import { BaseVertexAPI } from '../base';
 import {
   getModifyCollateralArgs,
   ModifyCollateralParams,
-} from '@vertex/contracts';
+} from '@vertex-protocol/contracts';
 
 export class SpotExecuteAPI extends BaseVertexAPI {
   // By product ID

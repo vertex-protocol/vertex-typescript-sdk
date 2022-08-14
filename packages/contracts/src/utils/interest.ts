@@ -1,5 +1,5 @@
 import { ISpotEngine } from '../typechain-types';
-import { BigDecimal, fromX18 } from '@vertex/utils';
+import { BigDecimal, fromX18 } from '@vertex-protocol/utils';
 
 export function calcTotalBorrowed(
   state: ISpotEngine.StateStructOutput,

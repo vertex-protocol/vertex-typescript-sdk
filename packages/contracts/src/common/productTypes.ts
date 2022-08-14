@@ -1,5 +1,5 @@
 // Enums do not get reflected in the ABI, so this must be manually defined
-import { BigDecimal } from '@vertex/utils';
+import { BigDecimal } from '@vertex-protocol/utils';
 
 export enum ProductEngineType {
   SPOT = 0,

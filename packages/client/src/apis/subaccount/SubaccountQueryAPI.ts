@@ -2,8 +2,8 @@ import { BaseVertexAPI } from '../base';
 import {
   getSubaccountSummary,
   GetSubaccountSummaryParams,
-} from '@vertex/contracts';
-import { GetSubaccountsParams } from '@vertex/graph';
+} from '@vertex-protocol/contracts';
+import { GetSubaccountsParams } from '@vertex-protocol/graph';
 
 export class SubaccountQueryAPI extends BaseVertexAPI {
   // By address

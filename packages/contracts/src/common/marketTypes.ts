@@ -1,5 +1,5 @@
 import { PerpProduct, ProductEngineType, SpotProduct } from './productTypes';
-import { BigDecimal } from '@vertex/utils';
+import { BigDecimal } from '@vertex-protocol/utils';
 
 export interface Market {
   productId: number;
