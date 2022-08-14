@@ -1,0 +1,18 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPointStrategy": "packages",
+  "entryPoints": [
+    "packages/utils",
+    "packages/graph",
+    "packages/contracts",
+    "packages/client"
+  ],
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "externalPattern": [
+    "./packages/contracts/src/typechain-types/**",
+    "./packages/graph/src/generated/**"
+  ],
+  "excludeExternals": true,
+  "out": "apps/docs"
+}
