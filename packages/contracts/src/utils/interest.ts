@@ -1,5 +1,11 @@
 import { ISpotEngine } from '../typechain-types';
-import { BigDecimal, fromX18 } from '@vertex-protocol/utils';
+import {
+  BigDecimal,
+  BigDecimalish,
+  fromX18,
+  SECONDS_IN_YEAR,
+  toBigDecimal,
+} from '@vertex-protocol/utils';
 
 export function calcTotalBorrowed(
   state: ISpotEngine.StateStructOutput,
@@ -17,36 +23,58 @@ export function calcTotalDeposited(
   );
 }
 
-// TODO
-// function borrowRateCalculator(config: any, util: number) {
-//   const annualRate =
-//     util < numberFromX18(config.interestInflectionUtilX18)
-//       ? numberFromX18(config.interestFloorX18) +
-//         (util / numberFromX18(config.interestInflectionUtilX18)) *
-//           numberFromX18(config.interestSmallCapX18)
-//       : numberFromX18(config.interestFloorX18) +
-//         numberFromX18(config.interestSmallCapX18) +
-//         ((1 - util) / (1 - numberFromX18(config.interestInflectionUtilX18))) *
-//           numberFromX18(config.interestLargeCapX18);
-//
-//   return annualRate / 31536000;
-// }
-//
-// function borrowRateMultiplier(config: any, util: number, time: number) {
-//   const rate = borrowRateCalculator(config, util);
-//   return (1 + rate) ** time;
-// }
-//
-// function realizedDepositRate(config: any, util: number, time: number) {
-//   const borrowMulti = borrowRateMultiplier(config, util, time);
-//   return util * (borrowMulti - 1) * 0.8;
-// }
-//
-// function depositRateMultiplier(config: any, util: number, time: number) {
-//   return 1 + realizedDepositRate(config, util, time);
-// }
-//
-// function feesMultiplier(config: any, util: number, time: number) {
-//   const borrowMulti = borrowRateMultiplier(config, util, time);
-//   return util * (borrowMulti - 1) - realizedDepositRate(config, util, time);
-// }
+export function calcUtilizationRatio(product: ISpotEngine.ProductStructOutput) {
+  return calcTotalBorrowed(product.state)
+    .abs()
+    .div(calcTotalDeposited(product.state));
+}
+
+export function calcBorrowRatePerSecond(
+  product: ISpotEngine.ProductStructOutput,
+) {
+  const {
+    interestFloorX18,
+    interestInflectionUtilX18,
+    interestSmallCapX18,
+    interestLargeCapX18,
+  } = product.config;
+  const utilization = calcUtilizationRatio(product);
+  const pastInflection = utilization.lt(fromX18(interestInflectionUtilX18));
+
+  let annualRate: BigDecimal;
+  if (pastInflection) {
+    const utilizationTerm = fromX18(interestLargeCapX18).times(
+      toBigDecimal(1)
+        .minus(utilization)
+        .div(toBigDecimal(1).minus(fromX18(interestInflectionUtilX18))),
+    );
+    annualRate = fromX18(interestFloorX18)
+      .plus(fromX18(interestSmallCapX18))
+      .plus(utilizationTerm);
+  } else {
+    const utilizationTerm = utilization
+      .div(fromX18(interestInflectionUtilX18))
+      .times(fromX18(interestSmallCapX18));
+    annualRate = fromX18(interestFloorX18).plus(utilizationTerm);
+  }
+
+  return annualRate.div(SECONDS_IN_YEAR).plus(1);
+}
+
+export function calcBorrowRateForTimeRange(
+  product: ISpotEngine.ProductStructOutput,
+  seconds: BigDecimalish,
+) {
+  return calcBorrowRatePerSecond(product).pow(toBigDecimal(seconds));
+}
+
+export function calcRealizedDepositRateForTimeRange(
+  product: ISpotEngine.ProductStructOutput,
+  seconds: BigDecimalish,
+  interestFeeFrac: BigDecimalish,
+) {
+  const utilization = calcUtilizationRatio(product);
+  return utilization
+    .times(calcBorrowRateForTimeRange(product, seconds).minus(1))
+    .times(toBigDecimal(1).minus(toBigDecimal(interestFeeFrac)));
+}
