@@ -16,7 +16,7 @@ export class SpotExecuteAPI extends BaseVertexAPI {
   ) {
     // TODO allowance
     if (params.includeApproval) {
-      // Get sum of all operations that are positive
+      // Get sum of all operations that are positive for each product
       // this.increaseTokenAllowance();
     }
 

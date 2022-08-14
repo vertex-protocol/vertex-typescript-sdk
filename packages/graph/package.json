@@ -5,7 +5,7 @@
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
   "license": "ISC",
-  "main": "dist/src/index.js",
+  "main": "./dist/src/index.js",
   "types": "./dist/index.d.ts",
   "source": "./src/index.ts",
   "publishConfig": {
