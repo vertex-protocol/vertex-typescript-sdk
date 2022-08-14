@@ -1,23 +1,60 @@
 import { BaseVertexAPI } from '../base';
 import {
+  ApproveAllowanceParams,
   getModifyCollateralArgs,
+  IERC20__factory,
+  MintMockERC20Params,
+  MockERC20__factory,
   ModifyCollateralParams,
 } from '@vertex-protocol/contracts';
+import { BigNumber } from 'ethers';
 
 export class SpotExecuteAPI extends BaseVertexAPI {
-  // By product ID
-  async increaseTokenAllowance() {
-    console.log('hi eslint');
+  async approveAllowance(params: ApproveAllowanceParams) {
+    const spotProduct = await this.context.contracts.spotEngine.getProduct(
+      params.productId,
+    );
+    const erc20 = await IERC20__factory.connect(
+      spotProduct.config.token,
+      this.context.signerOrProvider,
+    );
+    return erc20.approve(
+      this.context.contracts.clearinghouse.address,
+      params.amount,
+    );
   }
 
   // By product ID, optionally also addresses allowance
   async modifyCollateral(
     params: ModifyCollateralParams & { includeApproval?: boolean },
   ) {
-    // TODO allowance
     if (params.includeApproval) {
-      // Get sum of all operations that are positive for each product
-      // this.increaseTokenAllowance();
+      const productIdToApproveAmount: Record<string, BigNumber> = {};
+      params.operations.forEach((op) => {
+        const amount = BigNumber.from(op.amount);
+        if (amount.lte(0)) {
+          return;
+        }
+
+        const productIdStr = op.productId.toString();
+        const existingAmount = productIdToApproveAmount[productIdStr];
+
+        if (!existingAmount) {
+          productIdToApproveAmount[productIdStr] = amount;
+        } else {
+          productIdToApproveAmount[productIdStr] = existingAmount.add(amount);
+        }
+      });
+
+      const approvePromises = Object.keys(productIdToApproveAmount).map(
+        (productIdStr) => {
+          return this.approveAllowance({
+            productId: productIdStr,
+            amount: productIdToApproveAmount[productIdStr],
+          });
+        },
+      );
+      await Promise.all(approvePromises);
     }
 
     return this.context.contracts.clearinghouse.modifyCollateral(
@@ -25,8 +62,14 @@ export class SpotExecuteAPI extends BaseVertexAPI {
     );
   }
 
-  // By product ID
-  async _mintMockERC20() {
-    console.log('hi eslint');
+  async _mintMockERC20(params: MintMockERC20Params) {
+    const spotProduct = await this.context.contracts.spotEngine.getProduct(
+      params.productId,
+    );
+    const erc20 = await MockERC20__factory.connect(
+      spotProduct.config.token,
+      this.context.signerOrProvider,
+    );
+    return erc20.mint(erc20.signer.getAddress(), params.amount);
   }
 }

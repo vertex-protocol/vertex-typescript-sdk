@@ -4,6 +4,13 @@ import { OrderbookID } from '../common/orderTypes';
 
 export type ExecuteOverrides = Overrides & { from?: PromiseOrValue<string> };
 
+export interface ApproveAllowanceParams {
+  productId: BigNumberish;
+  amount: BigNumberish;
+}
+
+export type MintMockERC20Params = ApproveAllowanceParams;
+
 export interface ModifyCollateralParams {
   subaccountName: string;
   operations: {
