@@ -5,6 +5,7 @@ import {
   LiquidateSubaccountParams,
   ModifyCollateralParams,
   SendOrdersParams,
+  SettlePnlParams,
 } from './types';
 import { mapOrderbookRequest } from './utils';
 
@@ -43,4 +44,11 @@ export function getLiquidateSubaccountArgs(
   overrides?: ExecuteOverrides,
 ): Parameters<IClearinghouse['liquidateSubaccount']> {
   return [subaccountName, liquidateeSubaccountId, productId, amount, overrides];
+}
+
+export function getSettlePnlArgs(
+  { subaccountIds }: SettlePnlParams,
+  overrides?: ExecuteOverrides,
+): Parameters<IClearinghouse['settlePnl']> {
+  return [subaccountIds, overrides];
 }

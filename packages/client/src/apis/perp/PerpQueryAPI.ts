@@ -6,11 +6,6 @@ export class PerpQueryAPI extends BaseVertexAPI {
     console.log('hi eslint');
   }
 
-  // From querier
-  async getPerpProducts() {
-    console.log('hi eslint');
-  }
-
   async getHistoricalFundingRates() {
     console.log('hi eslint');
   }

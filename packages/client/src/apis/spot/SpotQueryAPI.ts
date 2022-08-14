@@ -6,12 +6,8 @@ export class SpotQueryAPI extends BaseVertexAPI {
     console.log('hi eslint');
   }
 
-  // From querier
-  async getSpotProducts() {
-    console.log('hi eslint');
-  }
-
   async getHistoricalInterestRates() {
+    // map snapshots -> rates
     console.log('hi eslint');
   }
 }

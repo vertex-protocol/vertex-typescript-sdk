@@ -1,7 +1,10 @@
 import { BaseVertexAPI } from '../base';
+import { getSettlePnlArgs, SettlePnlParams } from '@vertex/contracts';
 
 export class PerpExecuteAPI extends BaseVertexAPI {
-  async settlePerpPnl() {
-    console.log('hi eslint');
+  async settlePnl(params: SettlePnlParams) {
+    return this.context.contracts.clearinghouse.settlePnl(
+      ...getSettlePnlArgs(params),
+    );
   }
 }

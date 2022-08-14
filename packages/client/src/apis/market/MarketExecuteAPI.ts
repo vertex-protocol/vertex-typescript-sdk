@@ -1,17 +1,10 @@
 import { BaseVertexAPI } from '../base';
+import { getSendOrdersArgs, SendOrdersParams } from '@vertex/contracts';
 
 export class MarketExecuteAPI extends BaseVertexAPI {
-  // Wrap the send orders util
-  async sendOrders() {
-    console.log('hi eslint');
-  }
-
-  // No cancellations
-  async placeOrders() {
-    console.log('hi eslint');
-  }
-
-  async cancelOrders() {
-    console.log('hi eslint');
+  async sendOrders(params: SendOrdersParams) {
+    return this.context.contracts.clearinghouse.sendOrders(
+      ...getSendOrdersArgs(params),
+    );
   }
 }

@@ -1,4 +1,8 @@
 import { BaseVertexAPI } from '../base';
+import {
+  getModifyCollateralArgs,
+  ModifyCollateralParams,
+} from '@vertex/contracts';
 
 export class SpotExecuteAPI extends BaseVertexAPI {
   // By product ID
@@ -7,8 +11,18 @@ export class SpotExecuteAPI extends BaseVertexAPI {
   }
 
   // By product ID, optionally also addresses allowance
-  async modifyCollateral() {
-    console.log('hi eslint');
+  async modifyCollateral(
+    params: ModifyCollateralParams & { includeApproval?: boolean },
+  ) {
+    // TODO allowance
+    if (params.includeApproval) {
+      // Get sum of all operations that are positive
+      // this.increaseTokenAllowance();
+    }
+
+    return this.context.contracts.clearinghouse.modifyCollateral(
+      ...getModifyCollateralArgs(params),
+    );
   }
 
   // By product ID

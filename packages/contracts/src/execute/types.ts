@@ -40,3 +40,7 @@ export interface LiquidateSubaccountParams {
   productId: BigNumberish;
   amount: BigNumberish;
 }
+
+export interface SettlePnlParams {
+  subaccountIds: BigNumberish[];
+}

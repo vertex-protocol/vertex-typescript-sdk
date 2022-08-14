@@ -59,6 +59,7 @@ export interface IClearinghouseInterface extends utils.Interface {
     "modifyInsurance(int256)": FunctionFragment;
     "registerProductForId()": FunctionFragment;
     "sendOrders(string,uint32,(uint64,int256,int256)[])": FunctionFragment;
+    "settlePnl(uint64[])": FunctionFragment;
   };
 
   getFunction(
@@ -79,6 +80,7 @@ export interface IClearinghouseInterface extends utils.Interface {
       | "modifyInsurance"
       | "registerProductForId"
       | "sendOrders"
+      | "settlePnl"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -160,6 +162,10 @@ export interface IClearinghouseInterface extends utils.Interface {
       IClearinghouse.OrderRequestStruct[]
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "settlePnl",
+    values: [PromiseOrValue<BigNumberish>[]]
+  ): string;
 
   decodeFunctionResult(functionFragment: "addEngine", data: BytesLike): Result;
   decodeFunctionResult(
@@ -216,6 +222,7 @@ export interface IClearinghouseInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "sendOrders", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "settlePnl", data: BytesLike): Result;
 
   events: {
     "ClearinghouseInitialized(address,address,address)": EventFragment;
@@ -399,6 +406,11 @@ export interface IClearinghouse extends BaseContract {
       requests: IClearinghouse.OrderRequestStruct[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    settlePnl(
+      subaccountIds: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   addEngine(
@@ -477,6 +489,11 @@ export interface IClearinghouse extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  settlePnl(
+    subaccountIds: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     addEngine(
       engine: PromiseOrValue<string>,
@@ -549,6 +566,11 @@ export interface IClearinghouse extends BaseContract {
       subaccountName: PromiseOrValue<string>,
       productId: PromiseOrValue<BigNumberish>,
       requests: IClearinghouse.OrderRequestStruct[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    settlePnl(
+      subaccountIds: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -690,6 +712,11 @@ export interface IClearinghouse extends BaseContract {
       requests: IClearinghouse.OrderRequestStruct[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    settlePnl(
+      subaccountIds: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -768,6 +795,11 @@ export interface IClearinghouse extends BaseContract {
       subaccountName: PromiseOrValue<string>,
       productId: PromiseOrValue<BigNumberish>,
       requests: IClearinghouse.OrderRequestStruct[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    settlePnl(
+      subaccountIds: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

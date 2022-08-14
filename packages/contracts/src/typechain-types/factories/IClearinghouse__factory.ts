@@ -462,6 +462,19 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
+  {
+    inputs: [
+      {
+        internalType: "uint64[]",
+        name: "subaccountIds",
+        type: "uint64[]",
+      },
+    ],
+    name: "settlePnl",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
 ];
 
 export class IClearinghouse__factory {
