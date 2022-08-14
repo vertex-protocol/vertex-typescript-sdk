@@ -1,12 +1,14 @@
 import { BaseVertexAPI } from '../base';
 import {
-  getAllSpotProducts,
-  GetAllSpotProductsResponse,
+  getAllProducts,
+  isSpotProduct,
+  SpotProduct,
 } from '@vertex-protocol/contracts';
 
 export class SpotQueryAPI extends BaseVertexAPI {
-  async getAllSpotProducts(): Promise<GetAllSpotProductsResponse> {
-    return getAllSpotProducts(this.context.contracts);
+  async getAllSpotProducts(): Promise<SpotProduct[]> {
+    const allProducts = await getAllProducts(this.context.contracts);
+    return allProducts.filter(isSpotProduct);
   }
 
   async getHistoricalInterestRates() {

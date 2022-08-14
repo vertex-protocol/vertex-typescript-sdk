@@ -1,3 +1,3 @@
 export * from './getSubaccountSummary';
 export * from './getAllMarkets';
-export * from './getAllSpotProducts';
+export * from './getAllProducts';
