@@ -1,4 +1,4 @@
-import { BigDecimal } from './bigNumber';
+import { BigDecimal } from './bigDecimal';
 
 interface ClampOptions {
   min?: BigDecimal;

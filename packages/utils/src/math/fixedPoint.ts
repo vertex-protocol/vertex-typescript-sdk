@@ -1,6 +1,7 @@
 import { BigNumber, BigNumberish } from 'ethers';
 import { fromBn, toBn } from 'evm-bn';
-import { BigDecimal, toBigDecimal } from './bigNumber';
+import { toBigDecimal } from './bigNumber';
+import { BigDecimal } from './bigDecimal';
 
 export function toX18(val: BigNumberish | BigDecimal): BigNumber {
   return toFixedPoint(val, 18);

@@ -14,12 +14,6 @@
   "references": [
     {
       "path": "../utils"
-    },
-    {
-      "path": "../graph"
-    },
-    {
-      "path": "../contracts"
     }
   ]
 }

@@ -1,7 +1,5 @@
-import { BigNumber as BigDecimal } from 'bignumber.js';
 import { BigNumber as EthersBigNumber, BigNumberish } from 'ethers';
-
-export { BigNumber as BigDecimal } from 'bignumber.js';
+import { BigDecimal } from './bigDecimal';
 
 export function toEthersBN(val: BigDecimalish): EthersBigNumber {
   return EthersBigNumber.from(val instanceof BigDecimal ? val.toString() : val);

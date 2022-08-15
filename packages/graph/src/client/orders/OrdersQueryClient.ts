@@ -1,6 +1,5 @@
 import { BaseVertexGraphClient } from '../base';
 import {
-  AllMarketOrdersParams,
   AllMarketOrdersResponse,
   OrdersByIdParams,
   OrdersByIdResponse,
@@ -16,6 +15,7 @@ import {
   getOnBookOrderEntityId,
   getSubaccountEntityId,
 } from '../../utils';
+import { PaginationParams } from '../types';
 
 const ALL_STATUSES: OrderStatus[] = [
   'ON_BOOK',
@@ -24,7 +24,21 @@ const ALL_STATUSES: OrderStatus[] = [
   'FILLED',
 ];
 
+interface AllMarketOrdersParams extends PaginationParams {
+  productId: number;
+  // Allowed order statuses, if not given, defaults to all
+  statuses?: OrderStatus[];
+}
+
+/**
+ * @internal
+ */
 export class OrdersQueryClient extends BaseVertexGraphClient {
+  /**
+   * Get all orders for a given product with pagination.
+   *
+   * @param params Filtering parameters
+   */
   async getAllMarketOrders(
     params: AllMarketOrdersParams,
   ): Promise<AllMarketOrdersResponse> {
