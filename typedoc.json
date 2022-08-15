@@ -1,5 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
+  "commentStyle": "all",
   "entryPointStrategy": "packages",
   "entryPoints": [
     "packages/utils",
@@ -10,14 +11,16 @@
   "excludePrivate": true,
   "excludeProtected": true,
   "excludeInternal": true,
+  "excludeExternals": true,
   "externalPattern": [
-    "./packages/contracts/src/typechain-types/**",
-    "./packages/graph/src/generated/**",
-    "./packages/utils/src/math/bigDecimal.ts",
     "node_modules/**"
   ],
-  "excludeExternals": true,
   "out": "apps/docs",
+  "internalModule": "Internal",
+  "sort": [
+    "visibility",
+    "source-order"
+  ],
   "plugin": [
     "typedoc-plugin-missing-exports"
   ]

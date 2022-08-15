@@ -1,10 +1,18 @@
 import { BigDecimal } from './bigDecimal';
 
 interface ClampOptions {
+  // Inclusive minimum value
   min?: BigDecimal;
+  // Inclusive maximum value
   max?: BigDecimal;
 }
 
+/**
+ * Clamps a value between optional minimum and maximum values.
+ *
+ * @param val
+ * @param opts Clamp options
+ */
 export function clampBigDecimal(
   val: BigDecimal,
   opts: ClampOptions,

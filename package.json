@@ -10,7 +10,8 @@
     "clean": "npx lerna run clean",
     "build": "npx lerna run build",
     "dev": "npx lerna run dev",
-    "lint": "eslint './**/*.ts' --fix && prettier --write './**/*.{ts,graphql}'"
+    "lint": "eslint './**/*.ts' --fix && prettier --write './**/*.{ts,graphql}'",
+    "gen-typedoc": "npx typedoc"
   },
   "lint-staged": {
     "*.{ts,graphql}": "yarn lint"
