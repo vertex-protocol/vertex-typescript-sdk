@@ -10,6 +10,12 @@ import {
 } from './types';
 
 export class MarketQueryClient extends BaseVertexGraphClient {
+  /**
+   * Retrieve price levels for a given orderbook, which are cumulative order amounts at each price tick across
+   * the entire book.
+   *
+   * @param params
+   */
   async getOrderbookPriceLevels(
     params: OrderbookPriceLevelsParams,
   ): Promise<OrderbookPriceLevelsResponse> {
@@ -26,6 +32,11 @@ export class MarketQueryClient extends BaseVertexGraphClient {
     return data.orderbookPriceLevels;
   }
 
+  /**
+   * Returns hourly historical market data for a given product.
+   *
+   * @param params
+   */
   async getHourlyHistoricalMarketData(
     params: HourlyHistoricalMarketDataParams,
   ): Promise<HourlyHistoricalMarketDataResponse> {

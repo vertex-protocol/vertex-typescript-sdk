@@ -1,6 +1,12 @@
 import { createClientContext, VertexClientContextOpts } from './context';
 import { VertexClient } from './client';
 
+/**
+ * Creates a Vertex client from given options.
+ * {@label CLIENT}
+ *
+ * @param opts
+ */
 export async function createVertexClient(
   opts: VertexClientContextOpts,
 ): Promise<VertexClient> {

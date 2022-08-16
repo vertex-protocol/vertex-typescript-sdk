@@ -40,6 +40,8 @@ function healthInfoToStatus(
 
 /**
  * Returns a comprehensive summary for a subaaccount, including its balances and health
+ *
+ * {@label CONTRACTS}
  */
 export async function getSubaccountSummary({
   subaccountId,

@@ -4,6 +4,10 @@ import { SubaccountAPI } from './apis/subaccount';
 import { SpotAPI } from './apis/spot';
 import { PerpAPI } from './apis/perp';
 
+/**
+ * Client for querying and executing against Vertex Clearinghouse.
+ * Usually not instantiated directly. Instead, use {@link createVertexClient:CLIENT}.
+ */
 export class VertexClient {
   readonly context: VertexClientContext;
   readonly market: MarketAPI;

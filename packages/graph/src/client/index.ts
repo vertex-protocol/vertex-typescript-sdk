@@ -8,11 +8,16 @@ export * from './subaccount';
 export * from './orders';
 export * from './market';
 
+/**
+ * Client for common Clearinghouse Subgraph queries
+ */
 export class VertexGraphClient extends Mixin(
   SubaccountQueryClient,
   OrdersQueryClient,
   MarketQueryClient,
 ) {
-  // Allow raw GraphQL execution
+  /**
+   * This exposes the raw `execute` function of the underlying GraphQL client
+   */
   executeRaw = execute;
 }

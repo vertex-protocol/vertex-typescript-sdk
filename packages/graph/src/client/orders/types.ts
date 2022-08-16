@@ -7,14 +7,9 @@ import {
 import { PaginationParams } from '../types';
 import { OrderbookID } from '@vertex-protocol/contracts';
 
-/**
- * Hello World
- */
 export interface AllMarketOrdersParams extends PaginationParams {
   productId: number;
-  /**
-   * Allowed order statuses, if not given, defaults to all
-   */
+  // Allowed order statuses, if not given, defaults to all
   statuses?: OrderStatus[];
 }
 
@@ -23,6 +18,7 @@ export type AllMarketOrdersResponse =
 
 export interface SubaccountOrdersParams extends PaginationParams {
   subaccountId: number;
+  // Allowed order statuses, if not given, defaults to all
   statuses?: OrderStatus[];
 }
 

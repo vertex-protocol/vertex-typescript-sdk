@@ -1,5 +1,10 @@
 import { OrderbookID } from '@vertex-protocol/contracts';
 
+/**
+ * Utils for creating Graph entity IDs
+ * @packageDocumentation
+ */
+
 export function getSubaccountEntityId(subaccountId: number) {
   return `subaccount-${subaccountId}`;
 }

@@ -56,7 +56,7 @@ export function calcUtilizationRatio(product: ISpotEngine.ProductStructOutput) {
  *
  * The returned rate is annual rate / 31536000 seconds per year.
  *
- * {@label BORROW_INTEREST_CALC}
+ * {@label UTILS}
  * @param product SpotEngine product
  */
 export function calcBorrowRatePerSecond(

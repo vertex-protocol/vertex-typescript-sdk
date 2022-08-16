@@ -51,6 +51,11 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
     return data.orders;
   }
 
+  /**
+   * Get orders for a given subaccount with pagination
+   *
+   * @param params
+   */
   async getSubaccountOrders(
     params: SubaccountOrdersParams,
   ): Promise<SubaccountOrdersResponse> {
@@ -63,6 +68,11 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
     return data.orders;
   }
 
+  /**
+   * Retrieve on-book orders corresponding to the given compound orderbook IDs
+   *
+   * @param params
+   */
   async getOnBookOrdersByIds(
     params: OrdersByIdParams,
   ): Promise<OrdersByIdResponse> {

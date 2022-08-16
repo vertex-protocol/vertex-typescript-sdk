@@ -6,12 +6,16 @@ import {
 import { GetSubaccountsParams } from '@vertex-protocol/graph';
 
 export class SubaccountQueryAPI extends BaseVertexAPI {
-  // By address
-  async getSubaccounts(params: GetSubaccountsParams) {
+  /**
+   * {@link (VertexGraphClient.getSubaccountsForAddress)}
+   */
+  async getSubaccountsForAddress(params: GetSubaccountsParams) {
     return this.context.graph.getSubaccountsForAddress(params);
   }
 
-  // From querier
+  /**
+   * {@link (getSubaccountSummary:CONTRACTS)}
+   */
   async getSubaccountSummary(params: GetSubaccountSummaryParams) {
     return getSubaccountSummary(this.paramsWithContracts(params));
   }

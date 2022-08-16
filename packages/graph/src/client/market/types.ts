@@ -17,6 +17,7 @@ export interface HourlyHistoricalMarketDataParams {
   productId: number;
   // UNIX timestamp in seconds
   minTimeInclusive?: number;
+  // UNIX timestamp in seconds
   maxTimeExclusive?: number;
 }
 
