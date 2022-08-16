@@ -9,12 +9,16 @@ export interface ApproveAllowanceParams {
   amount: BigNumberish;
 }
 
-export type MintMockERC20Params = ApproveAllowanceParams;
+export interface MintMockERC20Params {
+  productId: BigNumberish;
+  amount: BigNumberish;
+}
 
 export interface ModifyCollateralParams {
   subaccountName: string;
   operations: {
     productId: BigNumberish;
+    // Positive to deposit, negative to withdraw
     amount: BigNumberish;
   }[];
 }
@@ -22,9 +26,11 @@ export interface ModifyCollateralParams {
 export type OrderbookRequest =
   | {
       type: 'new_order';
-      // IOC -> Fill as much as possible, don't place rest on book
-      // FOK -> Revert if not completely filled
-      // Number -> Expiration time in seconds
+      /**
+       * IOC -> Fill as much as possible, don't place rest on book
+       * FOK -> Revert if not completely filled
+       * Number -> Expiration time in seconds
+       */
       expiration: 'ioc' | 'fok' | number;
       price: 'market' | BigNumberish;
       // Positive for buy, negative for sell
@@ -43,6 +49,7 @@ export interface SendOrdersParams {
 
 export interface LiquidateSubaccountParams {
   subaccountName: string;
+  // Subaccount ID being liquidated
   liquidateeSubaccountId: BigNumberish;
   productId: BigNumberish;
   amount: BigNumberish;

@@ -305,7 +305,7 @@ const _abi = [
                           },
                           {
                             internalType: "int256",
-                            name: "ammPriceX18",
+                            name: "emaPriceX18",
                             type: "int256",
                           },
                           {
@@ -330,7 +330,7 @@ const _abi = [
                           },
                           {
                             internalType: "uint256",
-                            name: "ammPriceLastUpdated",
+                            name: "emaPriceLastUpdated",
                             type: "uint256",
                           },
                           {
@@ -774,7 +774,7 @@ const _abi = [
                       },
                       {
                         internalType: "int256",
-                        name: "ammPriceX18",
+                        name: "emaPriceX18",
                         type: "int256",
                       },
                       {
@@ -799,7 +799,7 @@ const _abi = [
                       },
                       {
                         internalType: "uint256",
-                        name: "ammPriceLastUpdated",
+                        name: "emaPriceLastUpdated",
                         type: "uint256",
                       },
                       {
@@ -1087,7 +1087,7 @@ const _abi = [
                       },
                       {
                         internalType: "int256",
-                        name: "ammPriceX18",
+                        name: "emaPriceX18",
                         type: "int256",
                       },
                       {
@@ -1112,7 +1112,7 @@ const _abi = [
                       },
                       {
                         internalType: "uint256",
-                        name: "ammPriceLastUpdated",
+                        name: "emaPriceLastUpdated",
                         type: "uint256",
                       },
                       {
@@ -1320,7 +1320,7 @@ const _abi = [
                   },
                   {
                     internalType: "int256",
-                    name: "ammPriceX18",
+                    name: "emaPriceX18",
                     type: "int256",
                   },
                   {
@@ -1345,7 +1345,7 @@ const _abi = [
                   },
                   {
                     internalType: "uint256",
-                    name: "ammPriceLastUpdated",
+                    name: "emaPriceLastUpdated",
                     type: "uint256",
                   },
                   {

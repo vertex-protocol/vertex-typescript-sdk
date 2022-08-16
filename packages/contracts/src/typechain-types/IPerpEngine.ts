@@ -73,12 +73,12 @@ export declare namespace IPerpEngine {
 
   export type StateStruct = {
     priceX18: PromiseOrValue<BigNumberish>;
-    ammPriceX18: PromiseOrValue<BigNumberish>;
+    emaPriceX18: PromiseOrValue<BigNumberish>;
     cumulativeFundingLongX18: PromiseOrValue<BigNumberish>;
     cumulativeFundingShortX18: PromiseOrValue<BigNumberish>;
     openInterestX18: PromiseOrValue<BigNumberish>;
     fundingLastUpdated: PromiseOrValue<BigNumberish>;
-    ammPriceLastUpdated: PromiseOrValue<BigNumberish>;
+    emaPriceLastUpdated: PromiseOrValue<BigNumberish>;
     availableSettleX18: PromiseOrValue<BigNumberish>;
   };
 
@@ -93,12 +93,12 @@ export declare namespace IPerpEngine {
     BigNumber
   ] & {
     priceX18: BigNumber;
-    ammPriceX18: BigNumber;
+    emaPriceX18: BigNumber;
     cumulativeFundingLongX18: BigNumber;
     cumulativeFundingShortX18: BigNumber;
     openInterestX18: BigNumber;
     fundingLastUpdated: BigNumber;
-    ammPriceLastUpdated: BigNumber;
+    emaPriceLastUpdated: BigNumber;
     availableSettleX18: BigNumber;
   };
 

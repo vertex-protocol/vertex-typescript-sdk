@@ -3,6 +3,9 @@ import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
 
 export type GetAllProductsResponse = Product[];
 
+/**
+ * Return all products registered with the clearinghouse. Calls querier internally.
+ */
 export async function getAllProducts({
   querier,
 }: WithContracts<unknown>): Promise<GetAllProductsResponse> {

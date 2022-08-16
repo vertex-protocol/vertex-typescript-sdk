@@ -53,7 +53,7 @@ export interface PerpProduct extends BaseProduct {
 /**
  * Represents a product stored in SpotEngine.
  *
- * See the calculation {@link calcTotalBorrowed} for more details on interest parameters
+ * See the calculation {@link (calcBorrowRatePerSecond:BORROW_INTEREST_CALC)} for more details on interest parameters
  */
 export interface SpotProduct extends BaseProduct {
   type: ProductEngineType.SPOT;

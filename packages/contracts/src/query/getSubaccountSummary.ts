@@ -4,9 +4,14 @@ import { BigDecimal, fromX18 } from '@vertex-protocol/utils';
 import { IVertexQuerier } from '../typechain-types';
 import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
 
+/**
+ * Encapsulates health for an account or an account balnace
+ */
 export interface HealthStatus {
   initialHealth: BigDecimal;
+  // Includes effect of outstanding orders
   maintenanceHealthWithOrders: BigDecimal;
+  // Excludes effect of outstanding orders
   maintenanceHealthNoOrders: BigDecimal;
 }
 
@@ -17,6 +22,7 @@ export interface GetSubaccountSummaryParams {
 export interface SubaccountSummaryResponse {
   balances: (BalanceWithProduct & {
     health: HealthStatus;
+    // Cumulative buy/sell amounts stored in the contracts
     cumulativeOrderAmounts: { buy: BigDecimal; sell: BigDecimal };
   })[];
   health: HealthStatus;
@@ -32,6 +38,9 @@ function healthInfoToStatus(
   };
 }
 
+/**
+ * Returns a comprehensive summary for a subaaccount, including its balances and health
+ */
 export async function getSubaccountSummary({
   subaccountId,
   querier,

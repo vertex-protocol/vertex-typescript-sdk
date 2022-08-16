@@ -7,6 +7,9 @@ import {
 
 export type GetAllMarketsResponse = MarketWithProduct[];
 
+/**
+ * Return all markets registered with the clearinghouse. Calls querier internally.
+ */
 export async function getAllMarkets({
   querier,
 }: WithContracts<unknown>): Promise<GetAllMarketsResponse> {

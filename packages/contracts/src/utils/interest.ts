@@ -7,6 +7,11 @@ import {
   toBigDecimal,
 } from '@vertex-protocol/utils';
 
+/**
+ * Calculate amount total borrowed for a product
+ *
+ * @param state SpotEngine product state
+ */
 export function calcTotalBorrowed(
   state: ISpotEngine.StateStructOutput,
 ): BigDecimal {
@@ -15,6 +20,11 @@ export function calcTotalBorrowed(
   );
 }
 
+/**
+ * Calculate amount total deposited for a product
+ *
+ * @param state SpotEngine product state
+ */
 export function calcTotalDeposited(
   state: ISpotEngine.StateStructOutput,
 ): BigDecimal {
@@ -23,12 +33,32 @@ export function calcTotalDeposited(
   );
 }
 
+/**
+ * Calculates utilization ratio = abs(total borrowed / total deposited)
+ *
+ * @param product SpotEngine product
+ */
 export function calcUtilizationRatio(product: ISpotEngine.ProductStructOutput) {
   return calcTotalBorrowed(product.state)
     .abs()
     .div(calcTotalDeposited(product.state));
 }
 
+/**
+ * Calculates per-second borrow interest rate for a product. For example, a returned rate of 0.1 indicates 10% borrower
+ * interest. The calculation for interest rate is as follows:
+ *
+ * If utilization ratio > inflection:
+ *  annual rate = (1 - utilization ratio) / (1 - inflection) * interestLargeCap + interestFloor + interestSmallCap
+ *
+ * If utilization ratio < inflection:
+ *  annual rate = utilization * interestSmallCap / inflection + utilization
+ *
+ * The returned rate is annual rate / 31536000 seconds per year.
+ *
+ * {@label BORROW_INTEREST_CALC}
+ * @param product SpotEngine product
+ */
 export function calcBorrowRatePerSecond(
   product: ISpotEngine.ProductStructOutput,
 ) {
@@ -58,16 +88,32 @@ export function calcBorrowRatePerSecond(
     annualRate = fromX18(interestFloorX18).plus(utilizationTerm);
   }
 
-  return annualRate.div(SECONDS_IN_YEAR).plus(1);
+  return annualRate.div(SECONDS_IN_YEAR);
 }
 
+/**
+ * Calculates borrower interest rate compounded for a period of time.
+ *
+ * @param product SpotEngine product
+ * @param seconds Number of seconds for the time period
+ */
 export function calcBorrowRateForTimeRange(
   product: ISpotEngine.ProductStructOutput,
   seconds: BigDecimalish,
 ) {
-  return calcBorrowRatePerSecond(product).pow(toBigDecimal(seconds));
+  return calcBorrowRatePerSecond(product)
+    .plus(1)
+    .pow(toBigDecimal(seconds))
+    .minus(1);
 }
 
+/**
+ * Calculate depositor interest rate compounded for a period of time.
+ *
+ * @param product SpotEngine product
+ * @param seconds Number of seconds for the time period
+ * @param interestFeeFrac Fraction of paid borrower interest that is paid as a fee (0.2 = 20% fee)
+ */
 export function calcRealizedDepositRateForTimeRange(
   product: ISpotEngine.ProductStructOutput,
   seconds: BigDecimalish,
@@ -75,6 +121,6 @@ export function calcRealizedDepositRateForTimeRange(
 ) {
   const utilization = calcUtilizationRatio(product);
   return utilization
-    .times(calcBorrowRateForTimeRange(product, seconds).minus(1))
+    .times(calcBorrowRateForTimeRange(product, seconds))
     .times(toBigDecimal(1).minus(toBigDecimal(interestFeeFrac)));
 }

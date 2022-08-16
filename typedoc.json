@@ -12,8 +12,13 @@
   "excludeProtected": true,
   "excludeInternal": true,
   "excludeExternals": true,
+  "exclude": [
+    "**/node_modules/**/*",
+    "**/dist/**/*"
+  ],
   "externalPattern": [
-    "node_modules/**"
+    "./packages/contracts/src/typechain-types/**",
+    "./packages/graph/src/generated/**"
   ],
   "out": "apps/docs",
   "internalModule": "Internal",

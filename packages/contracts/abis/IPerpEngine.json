@@ -421,7 +421,7 @@
               },
               {
                 "internalType": "int256",
-                "name": "ammPriceX18",
+                "name": "emaPriceX18",
                 "type": "int256"
               },
               {
@@ -446,7 +446,7 @@
               },
               {
                 "internalType": "uint256",
-                "name": "ammPriceLastUpdated",
+                "name": "emaPriceLastUpdated",
                 "type": "uint256"
               },
               {
@@ -526,7 +526,7 @@
               },
               {
                 "internalType": "int256",
-                "name": "ammPriceX18",
+                "name": "emaPriceX18",
                 "type": "int256"
               },
               {
@@ -551,7 +551,7 @@
               },
               {
                 "internalType": "uint256",
-                "name": "ammPriceLastUpdated",
+                "name": "emaPriceLastUpdated",
                 "type": "uint256"
               },
               {
@@ -671,7 +671,7 @@
               },
               {
                 "internalType": "int256",
-                "name": "ammPriceX18",
+                "name": "emaPriceX18",
                 "type": "int256"
               },
               {
@@ -696,7 +696,7 @@
               },
               {
                 "internalType": "uint256",
-                "name": "ammPriceLastUpdated",
+                "name": "emaPriceLastUpdated",
                 "type": "uint256"
               },
               {

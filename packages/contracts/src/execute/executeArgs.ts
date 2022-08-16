@@ -9,10 +9,17 @@ import {
 } from './types';
 import { mapOrderbookRequest } from './utils';
 
+/**
+ * Returns args to pass to `modifyCollateral` of the `ethers` Clearinghouse contract
+ *
+ * @param params
+ * @param overrides Ethers overrides
+ */
 export function getModifyCollateralArgs(
-  { subaccountName, operations }: ModifyCollateralParams,
+  params: ModifyCollateralParams,
   overrides?: ExecuteOverrides,
 ): Parameters<IClearinghouse['modifyCollateral']> {
+  const { subaccountName, operations } = params;
   const productIds: BigNumberish[] = [];
   const amounts: BigNumberish[] = [];
   operations.forEach(({ productId, amount }) => {
@@ -22,10 +29,17 @@ export function getModifyCollateralArgs(
   return [subaccountName, productIds, amounts, overrides];
 }
 
+/**
+ * Returns args to pass to `sendOrders` of the `ethers` Clearinghouse contract
+ *
+ * @param params
+ * @param overrides Ethers overrides
+ */
 export function getSendOrdersArgs(
-  { subaccountName, productId, requests }: SendOrdersParams,
+  params: SendOrdersParams,
   overrides?: ExecuteOverrides,
 ): Parameters<IClearinghouse['sendOrders']> {
+  const { subaccountName, productId, requests } = params;
   return [
     subaccountName,
     productId,
@@ -34,21 +48,29 @@ export function getSendOrdersArgs(
   ];
 }
 
+/**
+ * Returns args to pass to `liquidateSubaccount` of the `ethers` Clearinghouse contract
+ *
+ * @param params
+ * @param overrides Ethers overrides
+ */
 export function getLiquidateSubaccountArgs(
-  {
-    amount,
-    liquidateeSubaccountId,
-    productId,
-    subaccountName,
-  }: LiquidateSubaccountParams,
+  params: LiquidateSubaccountParams,
   overrides?: ExecuteOverrides,
 ): Parameters<IClearinghouse['liquidateSubaccount']> {
+  const { amount, liquidateeSubaccountId, productId, subaccountName } = params;
   return [subaccountName, liquidateeSubaccountId, productId, amount, overrides];
 }
 
+/**
+ * Returns args to pass to `settlePnl` of the `ethers` Clearinghouse contract
+ *
+ * @param params
+ * @param overrides Ethers overrides
+ */
 export function getSettlePnlArgs(
-  { subaccountIds }: SettlePnlParams,
+  params: SettlePnlParams,
   overrides?: ExecuteOverrides,
 ): Parameters<IClearinghouse['settlePnl']> {
-  return [subaccountIds, overrides];
+  return [params.subaccountIds, overrides];
 }
