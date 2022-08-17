@@ -1,11 +1,11 @@
-# `@vertex/graph`
+# `@vertex-protocol/graph`
 
-> TODO: description
+Export `VertexGraphClient`, which exposes a set of common 
+queries against the Vertex Clearinghouse subgraph.
 
-## Usage
+## Adding Queries
 
-```
-const graph = require('@vertex/graph');
-
-// TODO: DEMONSTRATE API
-```
+We use the [Graph Client](https://github.com/graphprotocol/graph-client) to generate
+typed GraphQL queries. To add a new query:
+- Add a `.graphql` file under `src/graphql`
+- Run `yarn run generate-graph-client`

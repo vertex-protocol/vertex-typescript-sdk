@@ -1,11 +1,3 @@
-# `@vertex/client`
+# `@vertex-protocol/client`
 
-> TODO: description
-
-## Usage
-
-```
-const client = require('@vertex/client');
-
-// TODO: DEMONSTRATE API
-```
+Composes the Graph, Contracts, and Utils packages into a `VertexClient`.
