@@ -14,12 +14,26 @@
 <li><a href="Vertex_Contracts.html">Vertex Contracts</a></li></ul>
 <h1>Module Vertex Contracts</h1></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/75551fe/packages/contracts/src/index.ts#L2">contracts/src/index.ts:2</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/ba31af3/packages/contracts/src/index.ts#L2">contracts/src/index.ts:2</a></li></ul></aside>
 <section class="tsd-panel-group">
 <section class="tsd-panel tsd-typography">
-<a href="#vertexcontracts" id="vertexcontracts" style="color: inherit; text-decoration: none;">
-  <h1><code>@vertex/contracts</code></h1>
+<a href="#vertex-protocolcontracts" id="vertex-protocolcontracts" style="color: inherit; text-decoration: none;">
+  <h1><code>@vertex-protocol/contracts</code></h1>
 </a>
+<p>Exports:</p>
+<ul>
+<li>Utils for interacting with the contract</li>
+<li>ABIs</li>
+<li>Typechain generated types</li>
+</ul>
+
+<a href="#updating-bindings" id="updating-bindings" style="color: inherit; text-decoration: none;">
+  <h2>Updating Bindings</h2>
+</a>
+<ul>
+<li>Copy <code>.env.example</code> &gt; <code>.env</code> and replace with the proper <code>$VERTEX_HOME</code> directory</li>
+<li>Run <code>yarn run update-bindings</code></li>
+</ul>
 </section></section>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
@@ -46,6 +60,8 @@
 <a href="../interfaces/Vertex_Contracts.HealthStatus.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Health<wbr/>Status</span></a>
 <a href="../interfaces/Vertex_Contracts.GetSubaccountSummaryParams.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Get<wbr/>Subaccount<wbr/>Summary<wbr/>Params</span></a>
 <a href="../interfaces/Vertex_Contracts.SubaccountSummaryResponse.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Subaccount<wbr/>Summary<wbr/>Response</span></a>
+<a href="../interfaces/Vertex_Contracts.TotalPortfolioValues.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Total<wbr/>Portfolio<wbr/>Values</span></a>
+<a href="../interfaces/Vertex_Contracts.MarginUsageFractions.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Margin<wbr/>Usage<wbr/>Fractions</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Type Aliases</h3>
@@ -85,6 +101,12 @@
 <a href="../functions/Vertex_Contracts.calcRealizedDepositRateForTimeRange.html" class="tsd-index-link tsd-kind-function tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>calc<wbr/>Realized<wbr/>Deposit<wbr/>Rate<wbr/>For<wbr/>Time<wbr/>Range</span></a>
 <a href="../functions/Vertex_Contracts.isSpotProduct.html" class="tsd-index-link tsd-kind-function tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>is<wbr/>Spot<wbr/>Product</span></a>
 <a href="../functions/Vertex_Contracts.isPerpProduct.html" class="tsd-index-link tsd-kind-function tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>is<wbr/>Perp<wbr/>Product</span></a>
+<a href="../functions/Vertex_Contracts.calcTotalPortfolioValues.html" class="tsd-index-link tsd-kind-function tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>calc<wbr/>Total<wbr/>Portfolio<wbr/>Values</span></a>
+<a href="../functions/Vertex_Contracts.calcSubaccountLeverage.html" class="tsd-index-link tsd-kind-function tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>calc<wbr/>Subaccount<wbr/>Leverage</span></a>
+<a href="../functions/Vertex_Contracts.calcMarginUsageFractions.html" class="tsd-index-link tsd-kind-function tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>calc<wbr/>Margin<wbr/>Usage<wbr/>Fractions</span></a>
+<a href="../functions/Vertex_Contracts.approximateMaxPositionSize.html" class="tsd-index-link tsd-kind-function tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>approximate<wbr/>Max<wbr/>Position<wbr/>Size</span></a>
+<a href="../functions/Vertex_Contracts.getLongLargePositionPenaltyWeightCalculator.html" class="tsd-index-link tsd-kind-function tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>get<wbr/>Long<wbr/>Large<wbr/>Position<wbr/>Penalty<wbr/>Weight<wbr/>Calculator</span></a>
+<a href="../functions/Vertex_Contracts.getShortLargePositionPenaltyWeightCalculator.html" class="tsd-index-link tsd-kind-function tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>get<wbr/>Short<wbr/>Large<wbr/>Position<wbr/>Penalty<wbr/>Weight<wbr/>Calculator</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Modules</h3>
@@ -171,7 +193,15 @@
 <li class="tsd-kind-function tsd-parent-kind-module"><a href="../functions/Vertex_Contracts.calcBorrowRateForTimeRange.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>calc<wbr/>Borrow<wbr/>Rate<wbr/>For<wbr/>Time<wbr/>Range</a></li>
 <li class="tsd-kind-function tsd-parent-kind-module"><a href="../functions/Vertex_Contracts.calcRealizedDepositRateForTimeRange.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>calc<wbr/>Realized<wbr/>Deposit<wbr/>Rate<wbr/>For<wbr/>Time<wbr/>Range</a></li>
 <li class="tsd-kind-function tsd-parent-kind-module"><a href="../functions/Vertex_Contracts.isSpotProduct.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>is<wbr/>Spot<wbr/>Product</a></li>
-<li class="tsd-kind-function tsd-parent-kind-module"><a href="../functions/Vertex_Contracts.isPerpProduct.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>is<wbr/>Perp<wbr/>Product</a></li></ul></nav></div></div>
+<li class="tsd-kind-function tsd-parent-kind-module"><a href="../functions/Vertex_Contracts.isPerpProduct.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>is<wbr/>Perp<wbr/>Product</a></li>
+<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/Vertex_Contracts.TotalPortfolioValues.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Total<wbr/>Portfolio<wbr/>Values</a></li>
+<li class="tsd-kind-function tsd-parent-kind-module"><a href="../functions/Vertex_Contracts.calcTotalPortfolioValues.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>calc<wbr/>Total<wbr/>Portfolio<wbr/>Values</a></li>
+<li class="tsd-kind-function tsd-parent-kind-module"><a href="../functions/Vertex_Contracts.calcSubaccountLeverage.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>calc<wbr/>Subaccount<wbr/>Leverage</a></li>
+<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/Vertex_Contracts.MarginUsageFractions.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Margin<wbr/>Usage<wbr/>Fractions</a></li>
+<li class="tsd-kind-function tsd-parent-kind-module"><a href="../functions/Vertex_Contracts.calcMarginUsageFractions.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>calc<wbr/>Margin<wbr/>Usage<wbr/>Fractions</a></li>
+<li class="tsd-kind-function tsd-parent-kind-module"><a href="../functions/Vertex_Contracts.approximateMaxPositionSize.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>approximate<wbr/>Max<wbr/>Position<wbr/>Size</a></li>
+<li class="tsd-kind-function tsd-parent-kind-module"><a href="../functions/Vertex_Contracts.getLongLargePositionPenaltyWeightCalculator.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>get<wbr/>Long<wbr/>Large<wbr/>Position<wbr/>Penalty<wbr/>Weight<wbr/>Calculator</a></li>
+<li class="tsd-kind-function tsd-parent-kind-module"><a href="../functions/Vertex_Contracts.getShortLargePositionPenaltyWeightCalculator.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>get<wbr/>Short<wbr/>Large<wbr/>Position<wbr/>Penalty<wbr/>Weight<wbr/>Calculator</a></li></ul></nav></div></div>
 <div class="container tsd-generator">
 <p style="line-height: 28px;">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
 <div class="overlay"></div><script src="../assets/main.js"></script></body></html>

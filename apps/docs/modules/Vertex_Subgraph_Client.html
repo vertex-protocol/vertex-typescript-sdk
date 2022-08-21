@@ -14,21 +14,24 @@
 <li><a href="Vertex_Subgraph_Client.html">Vertex Subgraph Client</a></li></ul>
 <h1>Module Vertex Subgraph Client</h1></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/75551fe/packages/graph/src/index.ts#L1">graph/src/index.ts:1</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/ba31af3/packages/graph/src/index.ts#L1">graph/src/index.ts:1</a></li></ul></aside>
 <section class="tsd-panel-group">
 <section class="tsd-panel tsd-typography">
-<a href="#vertexgraph" id="vertexgraph" style="color: inherit; text-decoration: none;">
-  <h1><code>@vertex/graph</code></h1>
+<a href="#vertex-protocolgraph" id="vertex-protocolgraph" style="color: inherit; text-decoration: none;">
+  <h1><code>@vertex-protocol/graph</code></h1>
 </a>
-<blockquote>
-<p>TODO: description</p>
-</blockquote>
+<p>Export <code>VertexGraphClient</code>, which exposes a set of common 
+queries against the Vertex Clearinghouse subgraph.</p>
 
-<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-  <h2>Usage</h2>
+<a href="#adding-queries" id="adding-queries" style="color: inherit; text-decoration: none;">
+  <h2>Adding Queries</h2>
 </a>
-<pre><code><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">graph</span><span class="hl-1"> = </span><span class="hl-3">require</span><span class="hl-1">(</span><span class="hl-4">&#39;@vertex/graph&#39;</span><span class="hl-1">);</span><br/><br/><span class="hl-5">// TODO: DEMONSTRATE API</span>
-</code></pre>
+<p>We use the <a href="https://github.com/graphprotocol/graph-client">Graph Client</a> to generate
+typed GraphQL queries. To add a new query:</p>
+<ul>
+<li>Add a <code>.graphql</code> file under <code>src/graphql</code></li>
+<li>Run <code>yarn run generate-graph-client</code></li>
+</ul>
 </section></section>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
