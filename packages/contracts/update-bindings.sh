@@ -28,9 +28,22 @@ for FILE in ${ABI_FILES[*]}
     echo "Copied $FILE"
   done
 
-
 echo "Generating Types"
 
 yarn run typechain --target ethers-v5 --out-dir 'src/typechain-types' './abis/*.json'
+
+echo "Updating deployments"
+
+SOURCE_DEPLOYMENTS_ROOT=$VERTEX_HOME/vertex-evm/
+DEST_DEPLOYMENTS_ROOT=src/common/
+DEPLOYMENT_FILES=(
+"deployment.arbitrumRinkeby.json"
+)
+
+for FILE in ${DEPLOYMENT_FILES[*]}
+  do
+    cp "$SOURCE_DEPLOYMENTS_ROOT/$FILE" "$DEST_DEPLOYMENTS_ROOT/$FILE"
+    echo "Copied $FILE"
+  done
 
 echo "Done"
