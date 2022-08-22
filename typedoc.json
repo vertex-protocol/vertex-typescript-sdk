@@ -3,10 +3,7 @@
   "commentStyle": "all",
   "entryPointStrategy": "packages",
   "entryPoints": [
-    "packages/utils",
-    "packages/graph",
-    "packages/contracts",
-    "packages/client"
+    "packages/**"
   ],
   "excludePrivate": true,
   "excludeProtected": true,
