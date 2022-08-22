@@ -22,15 +22,18 @@
     "src"
   ],
   "dependencies": {
-    "@vertex-protocol/contracts": "^0.1.0-alpha.0",
-    "@vertex-protocol/graph": "^0.1.0-alpha.0",
-    "@vertex-protocol/utils": "^0.1.0-alpha.0",
     "ts-mixer": "^6.0.1"
   },
   "devDependencies": {
+    "@vertex-protocol/contracts": "^0.1.0-alpha.0",
+    "@vertex-protocol/graph": "^0.1.0-alpha.0",
+    "@vertex-protocol/utils": "^0.1.0-alpha.0",
     "ethers": "^5.6.9"
   },
   "peerDependencies": {
+    "@vertex-protocol/contracts": "^0.1.0-alpha.0",
+    "@vertex-protocol/graph": "^0.1.0-alpha.0",
+    "@vertex-protocol/utils": "^0.1.0-alpha.0",
     "ethers": "^5.6.9"
   },
   "typedoc": {
