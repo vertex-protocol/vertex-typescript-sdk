@@ -35,10 +35,13 @@ yarn run typechain --target ethers-v5 --out-dir 'src/typechain-types' './abis/*.
 echo "Updating deployments"
 
 SOURCE_DEPLOYMENTS_ROOT=$VERTEX_HOME/vertex-evm/
-DEST_DEPLOYMENTS_ROOT=src/common/
+DEST_DEPLOYMENTS_ROOT=src/common/deployments
 DEPLOYMENT_FILES=(
 "deployment.arbitrumRinkeby.json"
 )
+
+rm -rf $DEST_DEPLOYMENTS_ROOT
+mkdir $DEST_DEPLOYMENTS_ROOT
 
 for FILE in ${DEPLOYMENT_FILES[*]}
   do
