@@ -14,6 +14,7 @@ export function mapEngineSpotProduct(
 ): Omit<SpotProduct, 'productId'> {
   return {
     type: ProductEngineType.SPOT,
+    tokenAddr: product.config.token,
     interestSmallCap: fromX18(product.config.interestSmallCapX18),
     interestLargeCap: fromX18(product.config.interestLargeCapX18),
     interestFloor: fromX18(product.config.interestFloorX18),

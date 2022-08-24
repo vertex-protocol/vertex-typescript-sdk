@@ -65,6 +65,7 @@ export interface PerpProduct extends BaseProduct {
  */
 export interface SpotProduct extends BaseProduct {
   type: ProductEngineType.SPOT;
+  tokenAddr: string;
   interestFloor: BigDecimal;
   interestInflectionUtil: BigDecimal;
   interestSmallCap: BigDecimal;
