@@ -1,4 +1,5 @@
 import { BigDecimal } from '@vertex-protocol/utils';
+import { IPerpEngine, ISpotEngine } from '../typechain-types';
 
 /**
  * Representation of the ProductEngineType enum used within the contract
@@ -40,6 +41,10 @@ interface BaseProduct {
   longWeightMaintenance: BigDecimal;
   // Weight used to calculate maint. health for a short position
   shortWeightMaintenance: BigDecimal;
+  // From contract
+  contractProduct:
+    | IPerpEngine.ProductStructOutput
+    | ISpotEngine.ProductStructOutput;
 }
 
 /**
@@ -47,7 +52,10 @@ interface BaseProduct {
  */
 export interface PerpProduct extends BaseProduct {
   type: ProductEngineType.PERP;
+  emaPrice: BigDecimal;
   // TODO: funding stuff
+
+  contractProduct: IPerpEngine.ProductStructOutput;
 }
 
 /**
@@ -66,6 +74,8 @@ export interface SpotProduct extends BaseProduct {
   totalDeposited: BigDecimal;
   // Total borrowed for this product
   totalBorrowed: BigDecimal;
+
+  contractProduct: ISpotEngine.ProductStructOutput;
 }
 
 export type Product = PerpProduct | SpotProduct;

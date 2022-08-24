@@ -1,6 +1,11 @@
 import { SubaccountSummaryResponse } from '../query';
 import { ProductEngineType } from '../common';
 import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
+import {
+  calcPerpBalanceNotionalValue,
+  calcPerpBalanceValue,
+  calcSpotBalanceValue,
+} from './balanceValue';
 
 export interface TotalPortfolioValues {
   // Sum of spot and perpNotional
@@ -34,14 +39,14 @@ export function calcTotalPortfolioValues(
 
   summary.balances.forEach((balance) => {
     if (balance.type === ProductEngineType.SPOT) {
-      const value = balance.amount.multipliedBy(balance.oraclePrice);
+      const value = calcSpotBalanceValue(balance);
 
       values.totalNotional = values.totalNotional.plus(value);
       values.netTotal = values.netTotal.plus(value);
       values.spot = values.spot.plus(value);
     } else if (balance.type === ProductEngineType.PERP) {
-      const notional = balance.amount.multipliedBy(balance.oraclePrice);
-      const value = notional.plus(balance.vQuoteBalance);
+      const notional = calcPerpBalanceNotionalValue(balance);
+      const value = calcPerpBalanceValue(balance);
 
       values.totalNotional = values.totalNotional.plus(notional);
       values.perpNotional = values.perpNotional.plus(notional);

@@ -9,7 +9,7 @@ import { toBigDecimal } from './bigNumber';
 
 export function sumBigDecimalBy<T>(
   collection: T[] | null | undefined,
-  iteratee: (value: T) => BigDecimal,
+  iteratee: (value: T) => BigDecimal.Value,
 ): BigDecimal {
   return (
     collection?.reduce((total, item) => {

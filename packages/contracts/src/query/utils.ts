@@ -25,6 +25,7 @@ export function mapEngineSpotProduct(
     longWeightInitial: fromX18(product.config.longWeightInitialX18),
     longWeightMaintenance: fromX18(product.config.longWeightMaintenanceX18),
     oraclePrice: fromX18(product.state.priceX18),
+    contractProduct: product,
   };
 }
 
@@ -38,6 +39,8 @@ export function mapEnginePerpProduct(
     longWeightInitial: fromX18(product.config.longWeightInitialX18),
     longWeightMaintenance: fromX18(product.config.longWeightMaintenanceX18),
     oraclePrice: fromX18(product.state.priceX18),
+    emaPrice: fromX18(product.state.emaPriceX18),
+    contractProduct: product,
   };
 }
 

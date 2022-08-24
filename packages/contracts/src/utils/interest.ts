@@ -6,11 +6,12 @@ import {
   SECONDS_IN_YEAR,
   toBigDecimal,
 } from '@vertex-protocol/utils';
+import { SpotProduct } from '../common';
 
 /**
  * Calculate amount total borrowed for a product
  *
- * @param state SpotEngine product state
+ * @param state SpotEngine product state. Uses the base contract type as it is used to map to the internal SpotProduct type.
  */
 export function calcTotalBorrowed(
   state: ISpotEngine.StateStructOutput,
@@ -21,9 +22,9 @@ export function calcTotalBorrowed(
 }
 
 /**
- * Calculate amount total deposited for a product
+ * Calculate amount total deposited for a product.
  *
- * @param state SpotEngine product state
+ * @param state SpotEngine product state. Uses the base contract type as it is used to map to the internal SpotProduct type.
  */
 export function calcTotalDeposited(
   state: ISpotEngine.StateStructOutput,
@@ -36,12 +37,10 @@ export function calcTotalDeposited(
 /**
  * Calculates utilization ratio = abs(total borrowed / total deposited)
  *
- * @param product SpotEngine product
+ * @param product Spot product
  */
-export function calcUtilizationRatio(product: ISpotEngine.ProductStructOutput) {
-  return calcTotalBorrowed(product.state)
-    .abs()
-    .div(calcTotalDeposited(product.state));
+export function calcUtilizationRatio(product: SpotProduct) {
+  return product.totalBorrowed.abs().div(product.totalDeposited);
 }
 
 /**
@@ -57,35 +56,31 @@ export function calcUtilizationRatio(product: ISpotEngine.ProductStructOutput) {
  * The returned rate is annual rate / 31536000 seconds per year.
  *
  * {@label UTILS}
- * @param product SpotEngine product
+ * @param product Spot product
  */
-export function calcBorrowRatePerSecond(
-  product: ISpotEngine.ProductStructOutput,
-) {
+export function calcBorrowRatePerSecond(product: SpotProduct) {
   const {
-    interestFloorX18,
-    interestInflectionUtilX18,
-    interestSmallCapX18,
-    interestLargeCapX18,
-  } = product.config;
+    interestFloor,
+    interestInflectionUtil,
+    interestSmallCap,
+    interestLargeCap,
+  } = product;
   const utilization = calcUtilizationRatio(product);
-  const pastInflection = utilization.lt(fromX18(interestInflectionUtilX18));
+  const pastInflection = utilization.lt(interestInflectionUtil);
 
   let annualRate: BigDecimal;
   if (pastInflection) {
-    const utilizationTerm = fromX18(interestLargeCapX18).times(
+    const utilizationTerm = interestLargeCap.times(
       toBigDecimal(1)
         .minus(utilization)
-        .div(toBigDecimal(1).minus(fromX18(interestInflectionUtilX18))),
+        .div(toBigDecimal(1).minus(interestInflectionUtil)),
     );
-    annualRate = fromX18(interestFloorX18)
-      .plus(fromX18(interestSmallCapX18))
-      .plus(utilizationTerm);
+    annualRate = interestFloor.plus(interestSmallCap).plus(utilizationTerm);
   } else {
     const utilizationTerm = utilization
-      .div(fromX18(interestInflectionUtilX18))
-      .times(fromX18(interestSmallCapX18));
-    annualRate = fromX18(interestFloorX18).plus(utilizationTerm);
+      .div(interestInflectionUtil)
+      .times(interestSmallCap);
+    annualRate = interestFloor.plus(utilizationTerm);
   }
 
   return annualRate.div(SECONDS_IN_YEAR);
@@ -94,11 +89,11 @@ export function calcBorrowRatePerSecond(
 /**
  * Calculates borrower interest rate compounded for a period of time.
  *
- * @param product SpotEngine product
+ * @param product Spot product
  * @param seconds Number of seconds for the time period
  */
 export function calcBorrowRateForTimeRange(
-  product: ISpotEngine.ProductStructOutput,
+  product: SpotProduct,
   seconds: BigDecimalish,
 ) {
   return calcBorrowRatePerSecond(product)
@@ -110,12 +105,12 @@ export function calcBorrowRateForTimeRange(
 /**
  * Calculate depositor interest rate compounded for a period of time.
  *
- * @param product SpotEngine product
+ * @param product Spot product
  * @param seconds Number of seconds for the time period
  * @param interestFeeFrac Fraction of paid borrower interest that is paid as a fee (0.2 = 20% fee)
  */
 export function calcRealizedDepositRateForTimeRange(
-  product: ISpotEngine.ProductStructOutput,
+  product: SpotProduct,
   seconds: BigDecimalish,
   interestFeeFrac: BigDecimalish,
 ) {
