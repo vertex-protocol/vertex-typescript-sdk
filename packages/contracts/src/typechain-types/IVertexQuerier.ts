@@ -116,11 +116,9 @@ export declare namespace IVertexQuerier {
     productType: PromiseOrValue<BigNumberish>;
     engine: PromiseOrValue<string>;
     orderbook: PromiseOrValue<string>;
-    bidX18: PromiseOrValue<BigNumberish>;
-    askX18: PromiseOrValue<BigNumberish>;
+    markPriceX18: PromiseOrValue<BigNumberish>;
     sizeIncrementX18: PromiseOrValue<BigNumberish>;
     priceIncrementX18: PromiseOrValue<BigNumberish>;
-    priceX18: PromiseOrValue<BigNumberish>;
     collectedFeesX18: PromiseOrValue<BigNumberish>;
   };
 
@@ -132,19 +130,15 @@ export declare namespace IVertexQuerier {
     BigNumber,
     BigNumber,
     BigNumber,
-    BigNumber,
-    BigNumber,
     BigNumber
   ] & {
     productId: number;
     productType: number;
     engine: string;
     orderbook: string;
-    bidX18: BigNumber;
-    askX18: BigNumber;
+    markPriceX18: BigNumber;
     sizeIncrementX18: BigNumber;
     priceIncrementX18: BigNumber;
-    priceX18: BigNumber;
     collectedFeesX18: BigNumber;
   };
 
@@ -165,44 +159,31 @@ export declare namespace IVertexQuerier {
   };
 
   export type HealthInfoStruct = {
-    unweightedWithOrdersX18: PromiseOrValue<BigNumberish>;
-    maintenanceWithOrdersX18: PromiseOrValue<BigNumberish>;
-    maintenanceNoOrdersX18: PromiseOrValue<BigNumberish>;
-    initialWithOrdersX18: PromiseOrValue<BigNumberish>;
+    initialX18: PromiseOrValue<BigNumberish>;
+    maintenanceX18: PromiseOrValue<BigNumberish>;
+    pnlX18: PromiseOrValue<BigNumberish>;
   };
 
-  export type HealthInfoStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
-  ] & {
-    unweightedWithOrdersX18: BigNumber;
-    maintenanceWithOrdersX18: BigNumber;
-    maintenanceNoOrdersX18: BigNumber;
-    initialWithOrdersX18: BigNumber;
+  export type HealthInfoStructOutput = [BigNumber, BigNumber, BigNumber] & {
+    initialX18: BigNumber;
+    maintenanceX18: BigNumber;
+    pnlX18: BigNumber;
   };
 
   export type SpotBalanceInfoStruct = {
     product: IVertexQuerier.SpotProductInfoStruct;
     balance: ISpotEngine.BalanceStruct;
     healthInfo: IVertexQuerier.HealthInfoStruct;
-    cumulativeBuyAmountX18: PromiseOrValue<BigNumberish>;
-    cumulativeSellAmountX18: PromiseOrValue<BigNumberish>;
   };
 
   export type SpotBalanceInfoStructOutput = [
     IVertexQuerier.SpotProductInfoStructOutput,
     ISpotEngine.BalanceStructOutput,
-    IVertexQuerier.HealthInfoStructOutput,
-    BigNumber,
-    BigNumber
+    IVertexQuerier.HealthInfoStructOutput
   ] & {
     product: IVertexQuerier.SpotProductInfoStructOutput;
     balance: ISpotEngine.BalanceStructOutput;
     healthInfo: IVertexQuerier.HealthInfoStructOutput;
-    cumulativeBuyAmountX18: BigNumber;
-    cumulativeSellAmountX18: BigNumber;
   };
 
   export type PerpProductInfoStruct = {
@@ -225,22 +206,16 @@ export declare namespace IVertexQuerier {
     product: IVertexQuerier.PerpProductInfoStruct;
     balance: IPerpEngine.BalanceStruct;
     healthInfo: IVertexQuerier.HealthInfoStruct;
-    cumulativeBuyAmountX18: PromiseOrValue<BigNumberish>;
-    cumulativeSellAmountX18: PromiseOrValue<BigNumberish>;
   };
 
   export type PerpBalanceInfoStructOutput = [
     IVertexQuerier.PerpProductInfoStructOutput,
     IPerpEngine.BalanceStructOutput,
-    IVertexQuerier.HealthInfoStructOutput,
-    BigNumber,
-    BigNumber
+    IVertexQuerier.HealthInfoStructOutput
   ] & {
     product: IVertexQuerier.PerpProductInfoStructOutput;
     balance: IPerpEngine.BalanceStructOutput;
     healthInfo: IVertexQuerier.HealthInfoStructOutput;
-    cumulativeBuyAmountX18: BigNumber;
-    cumulativeSellAmountX18: BigNumber;
   };
 
   export type AllBalanceInfoStruct = {

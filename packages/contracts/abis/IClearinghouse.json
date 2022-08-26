@@ -200,19 +200,55 @@
         "type": "uint64"
       },
       {
-        "internalType": "bool",
-        "name": "weighted",
-        "type": "bool"
+        "internalType": "enum IProductEngine.HealthType",
+        "name": "healthType",
+        "type": "uint8"
       },
       {
-        "internalType": "bool",
-        "name": "initial",
-        "type": "bool"
+        "components": [
+          {
+            "internalType": "uint32",
+            "name": "productId",
+            "type": "uint32"
+          },
+          {
+            "internalType": "int256",
+            "name": "amountDeltaX18",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "vQuoteDeltaX18",
+            "type": "int256"
+          }
+        ],
+        "internalType": "struct IProductEngine.HealthDelta[]",
+        "name": "healthDeltas",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "getHealthWithDeltasX18",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccount",
+        "type": "uint64"
       },
       {
-        "internalType": "bool",
-        "name": "withLimitOrders",
-        "type": "bool"
+        "internalType": "enum IProductEngine.HealthType",
+        "name": "healthType",
+        "type": "uint8"
       }
     ],
     "name": "getHealthX18",
@@ -240,25 +276,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "subaccount",
-        "type": "uint64"
-      }
-    ],
-    "name": "getLastLiquidationTime",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "getNumProducts",
     "outputs": [
@@ -279,6 +296,25 @@
         "internalType": "uint64",
         "name": "",
         "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      }
+    ],
+    "name": "getOrderbook",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -316,6 +352,25 @@
         "internalType": "uint64",
         "name": "",
         "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      }
+    ],
+    "name": "getSubaccountOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -408,46 +463,6 @@
         "type": "uint32"
       }
     ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "subaccountName",
-        "type": "string"
-      },
-      {
-        "internalType": "uint32",
-        "name": "productId",
-        "type": "uint32"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint64",
-            "name": "expiration",
-            "type": "uint64"
-          },
-          {
-            "internalType": "int256",
-            "name": "amountOrQueuePos",
-            "type": "int256"
-          },
-          {
-            "internalType": "int256",
-            "name": "priceX18",
-            "type": "int256"
-          }
-        ],
-        "internalType": "struct IClearinghouse.OrderRequest[]",
-        "name": "requests",
-        "type": "tuple[]"
-      }
-    ],
-    "name": "sendOrders",
-    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },

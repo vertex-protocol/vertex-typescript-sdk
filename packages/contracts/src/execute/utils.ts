@@ -1,11 +1,9 @@
-import { IClearinghouse } from '../typechain-types';
 import { BigNumber } from 'ethers';
 import { MaxInt256 } from '@ethersproject/constants';
 import { OrderbookRequest } from './types';
 
-export function mapOrderbookRequest(
-  request: OrderbookRequest,
-): IClearinghouse.OrderRequestStruct {
+// TODO consider how to handle this
+export function mapOrderbookRequest(request: OrderbookRequest) {
   if (request.type === 'new_order') {
     const expiration =
       {

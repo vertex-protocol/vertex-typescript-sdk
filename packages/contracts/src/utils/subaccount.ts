@@ -98,14 +98,14 @@ export function calcMarginUsageFractions(
         balance.health.initialHealth,
       );
       positiveHealths.maintenance = positiveHealths.maintenance.plus(
-        balance.health.maintenanceHealthWithOrders,
+        balance.health.maintenanceHealth,
       );
     } else {
       absNegativeHealths.initial = absNegativeHealths.initial.plus(
         balance.health.initialHealth.abs(),
       );
       absNegativeHealths.maintenance = absNegativeHealths.maintenance.plus(
-        balance.health.maintenanceHealthWithOrders.abs(),
+        balance.health.maintenanceHealth.abs(),
       );
     }
   });

@@ -99,19 +99,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-    ],
-    name: "clearOrders",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint32",
         name: "productId",
         type: "uint32",
@@ -146,22 +133,22 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "bool",
-        name: "weighted",
-        type: "bool",
+        internalType: "enum IProductEngine.HealthType",
+        name: "healthType",
+        type: "uint8",
       },
       {
-        internalType: "bool",
-        name: "initial",
-        type: "bool",
+        internalType: "int256",
+        name: "amountDeltaX18",
+        type: "int256",
       },
       {
-        internalType: "bool",
-        name: "withLimitOrders",
-        type: "bool",
+        internalType: "int256",
+        name: "vQuoteDeltaX18",
+        type: "int256",
       },
     ],
-    name: "getBalanceHealthX18",
+    name: "getBalanceHealthWithDeltaX18",
     outputs: [
       {
         internalType: "int256",
@@ -184,8 +171,13 @@ const _abi = [
         name: "productId",
         type: "uint32",
       },
+      {
+        internalType: "enum IProductEngine.HealthType",
+        name: "healthType",
+        type: "uint8",
+      },
     ],
-    name: "getBalancePnlX18",
+    name: "getBalanceHealthX18",
     outputs: [
       {
         internalType: "int256",
@@ -230,22 +222,34 @@ const _abi = [
         type: "uint64",
       },
       {
-        internalType: "bool",
-        name: "weighted",
-        type: "bool",
+        internalType: "enum IProductEngine.HealthType",
+        name: "healthType",
+        type: "uint8",
       },
       {
-        internalType: "bool",
-        name: "initial",
-        type: "bool",
-      },
-      {
-        internalType: "bool",
-        name: "withLimitOrders",
-        type: "bool",
+        components: [
+          {
+            internalType: "uint32",
+            name: "productId",
+            type: "uint32",
+          },
+          {
+            internalType: "int256",
+            name: "amountDeltaX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "vQuoteDeltaX18",
+            type: "int256",
+          },
+        ],
+        internalType: "struct IProductEngine.HealthDelta[]",
+        name: "healthDeltas",
+        type: "tuple[]",
       },
     ],
-    name: "getHealthX18",
+    name: "getHealthWithDeltasX18",
     outputs: [
       {
         internalType: "int256",
@@ -260,16 +264,21 @@ const _abi = [
     inputs: [
       {
         internalType: "uint64",
-        name: "subaccount",
+        name: "subaccountId",
         type: "uint64",
       },
+      {
+        internalType: "enum IProductEngine.HealthType",
+        name: "healthType",
+        type: "uint8",
+      },
     ],
-    name: "getLastLiquidationTime",
+    name: "getHealthX18",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "int256",
         name: "",
-        type: "uint256",
+        type: "int256",
       },
     ],
     stateMutability: "view",
@@ -440,46 +449,6 @@ const _abi = [
       },
     ],
     name: "initialize",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        components: [
-          {
-            internalType: "uint64",
-            name: "expiration",
-            type: "uint64",
-          },
-          {
-            internalType: "int256",
-            name: "amountOrQueuePos",
-            type: "int256",
-          },
-          {
-            internalType: "int256",
-            name: "priceX18",
-            type: "int256",
-          },
-        ],
-        internalType: "struct IClearinghouse.OrderRequest[]",
-        name: "requests",
-        type: "tuple[]",
-      },
-    ],
-    name: "sendOrders",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -9,10 +9,9 @@ import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
  */
 export interface HealthStatus {
   initialHealth: BigDecimal;
-  // Includes effect of outstanding orders
-  maintenanceHealthWithOrders: BigDecimal;
-  // Excludes effect of outstanding orders
-  maintenanceHealthNoOrders: BigDecimal;
+  maintenanceHealth: BigDecimal;
+  // This is the same as PnL
+  unweightedHealth: BigDecimal;
 }
 
 export interface GetSubaccountSummaryParams {
@@ -22,8 +21,6 @@ export interface GetSubaccountSummaryParams {
 export interface SubaccountSummaryResponse {
   balances: (BalanceWithProduct & {
     health: HealthStatus;
-    // Cumulative buy/sell amounts stored in the contracts
-    cumulativeOrderAmounts: { buy: BigDecimal; sell: BigDecimal };
   })[];
   health: HealthStatus;
 }
@@ -32,9 +29,9 @@ function healthInfoToStatus(
   healthInfo: IVertexQuerier.HealthInfoStructOutput,
 ): HealthStatus {
   return {
-    initialHealth: fromX18(healthInfo.initialWithOrdersX18),
-    maintenanceHealthNoOrders: fromX18(healthInfo.maintenanceNoOrdersX18),
-    maintenanceHealthWithOrders: fromX18(healthInfo.maintenanceWithOrdersX18),
+    initialHealth: fromX18(healthInfo.initialX18),
+    maintenanceHealth: fromX18(healthInfo.maintenanceX18),
+    unweightedHealth: fromX18(healthInfo.pnlX18),
   };
 }
 
@@ -55,10 +52,6 @@ export async function getSubaccountSummary({
   allBalances.spotBalances.forEach((spotBalance) => {
     balances.push({
       amount: fromX18(spotBalance.balance.amountX18),
-      cumulativeOrderAmounts: {
-        buy: fromX18(spotBalance.cumulativeBuyAmountX18),
-        sell: fromX18(spotBalance.cumulativeSellAmountX18),
-      },
       health: healthInfoToStatus(spotBalance.healthInfo),
       productId: spotBalance.product.productId,
       ...mapEngineSpotProduct(spotBalance.product.product),
@@ -68,10 +61,6 @@ export async function getSubaccountSummary({
   allBalances.perpBalances.forEach((perpBalance) => {
     balances.push({
       amount: fromX18(perpBalance.balance.amountX18),
-      cumulativeOrderAmounts: {
-        buy: fromX18(perpBalance.cumulativeBuyAmountX18),
-        sell: fromX18(perpBalance.cumulativeSellAmountX18),
-      },
       vQuoteBalance: fromX18(perpBalance.balance.vQuoteBalanceX18),
       health: healthInfoToStatus(perpBalance.healthInfo),
       productId: perpBalance.product.productId,

@@ -7,10 +7,8 @@ import { BigDecimal } from '@vertex-protocol/utils';
 export interface Market {
   productId: number;
   type: ProductEngineType;
-  // Latest bid price
-  bid: BigDecimal;
-  // Latest ask price
-  ask: BigDecimal;
+  // Latest orderbook mark price
+  markPrice: BigDecimal;
   // Price increment for the orderbook, order prices must be placed at multiples of this increment
   priceIncrement: BigDecimal;
   // Size increment for the orderbook, order sizes must be placed at multiples of this increment

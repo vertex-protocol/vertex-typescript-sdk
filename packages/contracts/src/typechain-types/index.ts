@@ -3,8 +3,8 @@
 /* eslint-disable */
 export type { IClearinghouse } from "./IClearinghouse";
 export type { IERC20 } from "./IERC20";
+export type { IOffchainBook } from "./IOffchainBook";
 export type { IOracle } from "./IOracle";
-export type { IOrderBook } from "./IOrderBook";
 export type { IPerpEngine } from "./IPerpEngine";
 export type { IProductEngine } from "./IProductEngine";
 export type { ISpotEngine } from "./ISpotEngine";
@@ -13,8 +13,8 @@ export type { MockERC20 } from "./MockERC20";
 export * as factories from "./factories";
 export { IClearinghouse__factory } from "./factories/IClearinghouse__factory";
 export { IERC20__factory } from "./factories/IERC20__factory";
+export { IOffchainBook__factory } from "./factories/IOffchainBook__factory";
 export { IOracle__factory } from "./factories/IOracle__factory";
-export { IOrderBook__factory } from "./factories/IOrderBook__factory";
 export { IPerpEngine__factory } from "./factories/IPerpEngine__factory";
 export { IProductEngine__factory } from "./factories/IProductEngine__factory";
 export { ISpotEngine__factory } from "./factories/ISpotEngine__factory";

@@ -23,6 +23,7 @@ export interface ModifyCollateralParams {
   }[];
 }
 
+// TODO: Change this type
 export type OrderbookRequest =
   | {
       type: 'new_order';
@@ -40,12 +41,6 @@ export type OrderbookRequest =
       type: 'cancel_order';
       id: OrderbookID;
     };
-
-export interface SendOrdersParams {
-  subaccountName: string;
-  productId: BigNumberish;
-  requests: OrderbookRequest[];
-}
 
 export interface LiquidateSubaccountParams {
   subaccountName: string;

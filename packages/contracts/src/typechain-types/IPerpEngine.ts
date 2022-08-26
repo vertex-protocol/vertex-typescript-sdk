@@ -46,6 +46,18 @@ export declare namespace IProductEngine {
     amountDeltaX18: BigNumber;
     vQuoteDeltaX18: BigNumber;
   };
+
+  export type HealthDeltaStruct = {
+    productId: PromiseOrValue<BigNumberish>;
+    amountDeltaX18: PromiseOrValue<BigNumberish>;
+    vQuoteDeltaX18: PromiseOrValue<BigNumberish>;
+  };
+
+  export type HealthDeltaStructOutput = [number, BigNumber, BigNumber] & {
+    productId: number;
+    amountDeltaX18: BigNumber;
+    vQuoteDeltaX18: BigNumber;
+  };
 }
 
 export declare namespace IPerpEngine {
@@ -128,31 +140,16 @@ export declare namespace IPerpEngine {
   };
 }
 
-export declare namespace IClearinghouse {
-  export type OrderRequestStruct = {
-    expiration: PromiseOrValue<BigNumberish>;
-    amountOrQueuePos: PromiseOrValue<BigNumberish>;
-    priceX18: PromiseOrValue<BigNumberish>;
-  };
-
-  export type OrderRequestStructOutput = [BigNumber, BigNumber, BigNumber] & {
-    expiration: BigNumber;
-    amountOrQueuePos: BigNumber;
-    priceX18: BigNumber;
-  };
-}
-
 export interface IPerpEngineInterface extends utils.Interface {
   functions: {
     "applyDeltas((uint32,uint64,int256,int256)[])": FunctionFragment;
-    "clearOrders(uint64)": FunctionFragment;
     "getBalanceAmountX18(uint32,uint64)": FunctionFragment;
-    "getBalanceHealthX18(uint64,uint32,bool,bool,bool)": FunctionFragment;
-    "getBalancePnlX18(uint64,uint32)": FunctionFragment;
+    "getBalanceHealthWithDeltaX18(uint64,uint32,uint8,int256,int256)": FunctionFragment;
+    "getBalanceHealthX18(uint64,uint32,uint8)": FunctionFragment;
     "getClearinghouse()": FunctionFragment;
     "getEngineType()": FunctionFragment;
-    "getHealthX18(uint64,bool,bool,bool)": FunctionFragment;
-    "getLastLiquidationTime(uint64)": FunctionFragment;
+    "getHealthWithDeltasX18(uint64,uint8,(uint32,int256,int256)[])": FunctionFragment;
+    "getHealthX18(uint64,uint8)": FunctionFragment;
     "getLiqPriceX18(uint32,int256)": FunctionFragment;
     "getMaximumLiquidatableX18(uint64,uint32,int256)": FunctionFragment;
     "getOracle()": FunctionFragment;
@@ -164,7 +161,6 @@ export interface IPerpEngineInterface extends utils.Interface {
     "getSettlementState(uint32,uint64)": FunctionFragment;
     "hasAssets(uint64)": FunctionFragment;
     "initialize(address,address,address,address,address)": FunctionFragment;
-    "sendOrders(uint64,uint32,(uint64,int256,int256)[])": FunctionFragment;
     "settlePnl(uint64)": FunctionFragment;
     "socializeProduct(uint32,int256,bool)": FunctionFragment;
   };
@@ -172,14 +168,13 @@ export interface IPerpEngineInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "applyDeltas"
-      | "clearOrders"
       | "getBalanceAmountX18"
+      | "getBalanceHealthWithDeltaX18"
       | "getBalanceHealthX18"
-      | "getBalancePnlX18"
       | "getClearinghouse"
       | "getEngineType"
+      | "getHealthWithDeltasX18"
       | "getHealthX18"
-      | "getLastLiquidationTime"
       | "getLiqPriceX18"
       | "getMaximumLiquidatableX18"
       | "getOracle"
@@ -191,7 +186,6 @@ export interface IPerpEngineInterface extends utils.Interface {
       | "getSettlementState"
       | "hasAssets"
       | "initialize"
-      | "sendOrders"
       | "settlePnl"
       | "socializeProduct"
   ): FunctionFragment;
@@ -201,26 +195,26 @@ export interface IPerpEngineInterface extends utils.Interface {
     values: [IProductEngine.ProductDeltaStruct[]]
   ): string;
   encodeFunctionData(
-    functionFragment: "clearOrders",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getBalanceAmountX18",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getBalanceHealthWithDeltaX18",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "getBalanceHealthX18",
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<boolean>,
-      PromiseOrValue<boolean>,
-      PromiseOrValue<boolean>
+      PromiseOrValue<BigNumberish>
     ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getBalancePnlX18",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getClearinghouse",
@@ -231,17 +225,16 @@ export interface IPerpEngineInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getHealthX18",
+    functionFragment: "getHealthWithDeltasX18",
     values: [
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<boolean>,
-      PromiseOrValue<boolean>,
-      PromiseOrValue<boolean>
+      PromiseOrValue<BigNumberish>,
+      IProductEngine.HealthDeltaStruct[]
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "getLastLiquidationTime",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: "getHealthX18",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getLiqPriceX18",
@@ -295,14 +288,6 @@ export interface IPerpEngineInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "sendOrders",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      IClearinghouse.OrderRequestStruct[]
-    ]
-  ): string;
-  encodeFunctionData(
     functionFragment: "settlePnl",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -320,19 +305,15 @@ export interface IPerpEngineInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "clearOrders",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getBalanceAmountX18",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getBalanceHealthX18",
+    functionFragment: "getBalanceHealthWithDeltaX18",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getBalancePnlX18",
+    functionFragment: "getBalanceHealthX18",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -344,11 +325,11 @@ export interface IPerpEngineInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getHealthX18",
+    functionFragment: "getHealthWithDeltasX18",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getLastLiquidationTime",
+    functionFragment: "getHealthX18",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -383,7 +364,6 @@ export interface IPerpEngineInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "hasAssets", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "sendOrders", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "settlePnl", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "socializeProduct",
@@ -460,29 +440,25 @@ export interface IPerpEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    clearOrders(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     getBalanceAmountX18(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    getBalanceHealthX18(
+    getBalanceHealthWithDeltaX18(
       subaccountId: PromiseOrValue<BigNumberish>,
       productId: PromiseOrValue<BigNumberish>,
-      weighted: PromiseOrValue<boolean>,
-      initial: PromiseOrValue<boolean>,
-      withLimitOrders: PromiseOrValue<boolean>,
+      healthType: PromiseOrValue<BigNumberish>,
+      amountDeltaX18: PromiseOrValue<BigNumberish>,
+      vQuoteDeltaX18: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    getBalancePnlX18(
+    getBalanceHealthX18(
       subaccountId: PromiseOrValue<BigNumberish>,
       productId: PromiseOrValue<BigNumberish>,
+      healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -490,16 +466,16 @@ export interface IPerpEngine extends BaseContract {
 
     getEngineType(overrides?: CallOverrides): Promise<[number]>;
 
-    getHealthX18(
+    getHealthWithDeltasX18(
       subaccountId: PromiseOrValue<BigNumberish>,
-      weighted: PromiseOrValue<boolean>,
-      initial: PromiseOrValue<boolean>,
-      withLimitOrders: PromiseOrValue<boolean>,
+      healthType: PromiseOrValue<BigNumberish>,
+      healthDeltas: IProductEngine.HealthDeltaStruct[],
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    getLastLiquidationTime(
-      subaccount: PromiseOrValue<BigNumberish>,
+    getHealthX18(
+      subaccountId: PromiseOrValue<BigNumberish>,
+      healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -573,13 +549,6 @@ export interface IPerpEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    sendOrders(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      requests: IClearinghouse.OrderRequestStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     settlePnl(
       subaccountId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -598,29 +567,25 @@ export interface IPerpEngine extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  clearOrders(
-    subaccountId: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   getBalanceAmountX18(
     productId: PromiseOrValue<BigNumberish>,
     subaccountId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  getBalanceHealthX18(
+  getBalanceHealthWithDeltaX18(
     subaccountId: PromiseOrValue<BigNumberish>,
     productId: PromiseOrValue<BigNumberish>,
-    weighted: PromiseOrValue<boolean>,
-    initial: PromiseOrValue<boolean>,
-    withLimitOrders: PromiseOrValue<boolean>,
+    healthType: PromiseOrValue<BigNumberish>,
+    amountDeltaX18: PromiseOrValue<BigNumberish>,
+    vQuoteDeltaX18: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  getBalancePnlX18(
+  getBalanceHealthX18(
     subaccountId: PromiseOrValue<BigNumberish>,
     productId: PromiseOrValue<BigNumberish>,
+    healthType: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -628,16 +593,16 @@ export interface IPerpEngine extends BaseContract {
 
   getEngineType(overrides?: CallOverrides): Promise<number>;
 
-  getHealthX18(
+  getHealthWithDeltasX18(
     subaccountId: PromiseOrValue<BigNumberish>,
-    weighted: PromiseOrValue<boolean>,
-    initial: PromiseOrValue<boolean>,
-    withLimitOrders: PromiseOrValue<boolean>,
+    healthType: PromiseOrValue<BigNumberish>,
+    healthDeltas: IProductEngine.HealthDeltaStruct[],
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  getLastLiquidationTime(
-    subaccount: PromiseOrValue<BigNumberish>,
+  getHealthX18(
+    subaccountId: PromiseOrValue<BigNumberish>,
+    healthType: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -711,13 +676,6 @@ export interface IPerpEngine extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  sendOrders(
-    subaccountId: PromiseOrValue<BigNumberish>,
-    productId: PromiseOrValue<BigNumberish>,
-    requests: IClearinghouse.OrderRequestStruct[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   settlePnl(
     subaccountId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -736,29 +694,25 @@ export interface IPerpEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    clearOrders(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     getBalanceAmountX18(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getBalanceHealthX18(
+    getBalanceHealthWithDeltaX18(
       subaccountId: PromiseOrValue<BigNumberish>,
       productId: PromiseOrValue<BigNumberish>,
-      weighted: PromiseOrValue<boolean>,
-      initial: PromiseOrValue<boolean>,
-      withLimitOrders: PromiseOrValue<boolean>,
+      healthType: PromiseOrValue<BigNumberish>,
+      amountDeltaX18: PromiseOrValue<BigNumberish>,
+      vQuoteDeltaX18: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getBalancePnlX18(
+    getBalanceHealthX18(
       subaccountId: PromiseOrValue<BigNumberish>,
       productId: PromiseOrValue<BigNumberish>,
+      healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -766,16 +720,16 @@ export interface IPerpEngine extends BaseContract {
 
     getEngineType(overrides?: CallOverrides): Promise<number>;
 
-    getHealthX18(
+    getHealthWithDeltasX18(
       subaccountId: PromiseOrValue<BigNumberish>,
-      weighted: PromiseOrValue<boolean>,
-      initial: PromiseOrValue<boolean>,
-      withLimitOrders: PromiseOrValue<boolean>,
+      healthType: PromiseOrValue<BigNumberish>,
+      healthDeltas: IProductEngine.HealthDeltaStruct[],
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getLastLiquidationTime(
-      subaccount: PromiseOrValue<BigNumberish>,
+    getHealthX18(
+      subaccountId: PromiseOrValue<BigNumberish>,
+      healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -849,13 +803,6 @@ export interface IPerpEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    sendOrders(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      requests: IClearinghouse.OrderRequestStruct[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     settlePnl(
       subaccountId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -898,29 +845,25 @@ export interface IPerpEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    clearOrders(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     getBalanceAmountX18(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getBalanceHealthX18(
+    getBalanceHealthWithDeltaX18(
       subaccountId: PromiseOrValue<BigNumberish>,
       productId: PromiseOrValue<BigNumberish>,
-      weighted: PromiseOrValue<boolean>,
-      initial: PromiseOrValue<boolean>,
-      withLimitOrders: PromiseOrValue<boolean>,
+      healthType: PromiseOrValue<BigNumberish>,
+      amountDeltaX18: PromiseOrValue<BigNumberish>,
+      vQuoteDeltaX18: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getBalancePnlX18(
+    getBalanceHealthX18(
       subaccountId: PromiseOrValue<BigNumberish>,
       productId: PromiseOrValue<BigNumberish>,
+      healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -928,16 +871,16 @@ export interface IPerpEngine extends BaseContract {
 
     getEngineType(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getHealthX18(
+    getHealthWithDeltasX18(
       subaccountId: PromiseOrValue<BigNumberish>,
-      weighted: PromiseOrValue<boolean>,
-      initial: PromiseOrValue<boolean>,
-      withLimitOrders: PromiseOrValue<boolean>,
+      healthType: PromiseOrValue<BigNumberish>,
+      healthDeltas: IProductEngine.HealthDeltaStruct[],
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getLastLiquidationTime(
-      subaccount: PromiseOrValue<BigNumberish>,
+    getHealthX18(
+      subaccountId: PromiseOrValue<BigNumberish>,
+      healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -999,13 +942,6 @@ export interface IPerpEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    sendOrders(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      requests: IClearinghouse.OrderRequestStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     settlePnl(
       subaccountId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1025,29 +961,25 @@ export interface IPerpEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    clearOrders(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     getBalanceAmountX18(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getBalanceHealthX18(
+    getBalanceHealthWithDeltaX18(
       subaccountId: PromiseOrValue<BigNumberish>,
       productId: PromiseOrValue<BigNumberish>,
-      weighted: PromiseOrValue<boolean>,
-      initial: PromiseOrValue<boolean>,
-      withLimitOrders: PromiseOrValue<boolean>,
+      healthType: PromiseOrValue<BigNumberish>,
+      amountDeltaX18: PromiseOrValue<BigNumberish>,
+      vQuoteDeltaX18: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getBalancePnlX18(
+    getBalanceHealthX18(
       subaccountId: PromiseOrValue<BigNumberish>,
       productId: PromiseOrValue<BigNumberish>,
+      healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1055,16 +987,16 @@ export interface IPerpEngine extends BaseContract {
 
     getEngineType(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getHealthX18(
+    getHealthWithDeltasX18(
       subaccountId: PromiseOrValue<BigNumberish>,
-      weighted: PromiseOrValue<boolean>,
-      initial: PromiseOrValue<boolean>,
-      withLimitOrders: PromiseOrValue<boolean>,
+      healthType: PromiseOrValue<BigNumberish>,
+      healthDeltas: IProductEngine.HealthDeltaStruct[],
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getLastLiquidationTime(
-      subaccount: PromiseOrValue<BigNumberish>,
+    getHealthX18(
+      subaccountId: PromiseOrValue<BigNumberish>,
+      healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1123,13 +1055,6 @@ export interface IPerpEngine extends BaseContract {
       _oracle: PromiseOrValue<string>,
       _admin: PromiseOrValue<string>,
       _fees: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    sendOrders(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      requests: IClearinghouse.OrderRequestStruct[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

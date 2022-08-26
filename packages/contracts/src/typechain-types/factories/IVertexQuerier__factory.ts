@@ -156,12 +156,7 @@ const _abi = [
                       },
                       {
                         internalType: "int256",
-                        name: "bidX18",
-                        type: "int256",
-                      },
-                      {
-                        internalType: "int256",
-                        name: "askX18",
+                        name: "markPriceX18",
                         type: "int256",
                       },
                       {
@@ -172,11 +167,6 @@ const _abi = [
                       {
                         internalType: "int256",
                         name: "priceIncrementX18",
-                        type: "int256",
-                      },
-                      {
-                        internalType: "int256",
-                        name: "priceX18",
                         type: "int256",
                       },
                       {
@@ -215,38 +205,23 @@ const _abi = [
                 components: [
                   {
                     internalType: "int256",
-                    name: "unweightedWithOrdersX18",
+                    name: "initialX18",
                     type: "int256",
                   },
                   {
                     internalType: "int256",
-                    name: "maintenanceWithOrdersX18",
+                    name: "maintenanceX18",
                     type: "int256",
                   },
                   {
                     internalType: "int256",
-                    name: "maintenanceNoOrdersX18",
-                    type: "int256",
-                  },
-                  {
-                    internalType: "int256",
-                    name: "initialWithOrdersX18",
+                    name: "pnlX18",
                     type: "int256",
                   },
                 ],
                 internalType: "struct IVertexQuerier.HealthInfo",
                 name: "healthInfo",
                 type: "tuple",
-              },
-              {
-                internalType: "int256",
-                name: "cumulativeBuyAmountX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "cumulativeSellAmountX18",
-                type: "int256",
               },
             ],
             internalType: "struct IVertexQuerier.SpotBalanceInfo[]",
@@ -372,12 +347,7 @@ const _abi = [
                       },
                       {
                         internalType: "int256",
-                        name: "bidX18",
-                        type: "int256",
-                      },
-                      {
-                        internalType: "int256",
-                        name: "askX18",
+                        name: "markPriceX18",
                         type: "int256",
                       },
                       {
@@ -388,11 +358,6 @@ const _abi = [
                       {
                         internalType: "int256",
                         name: "priceIncrementX18",
-                        type: "int256",
-                      },
-                      {
-                        internalType: "int256",
-                        name: "priceX18",
                         type: "int256",
                       },
                       {
@@ -436,38 +401,23 @@ const _abi = [
                 components: [
                   {
                     internalType: "int256",
-                    name: "unweightedWithOrdersX18",
+                    name: "initialX18",
                     type: "int256",
                   },
                   {
                     internalType: "int256",
-                    name: "maintenanceWithOrdersX18",
+                    name: "maintenanceX18",
                     type: "int256",
                   },
                   {
                     internalType: "int256",
-                    name: "maintenanceNoOrdersX18",
-                    type: "int256",
-                  },
-                  {
-                    internalType: "int256",
-                    name: "initialWithOrdersX18",
+                    name: "pnlX18",
                     type: "int256",
                   },
                 ],
                 internalType: "struct IVertexQuerier.HealthInfo",
                 name: "healthInfo",
                 type: "tuple",
-              },
-              {
-                internalType: "int256",
-                name: "cumulativeBuyAmountX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "cumulativeSellAmountX18",
-                type: "int256",
               },
             ],
             internalType: "struct IVertexQuerier.PerpBalanceInfo[]",
@@ -511,12 +461,7 @@ const _abi = [
           },
           {
             internalType: "int256",
-            name: "bidX18",
-            type: "int256",
-          },
-          {
-            internalType: "int256",
-            name: "askX18",
+            name: "markPriceX18",
             type: "int256",
           },
           {
@@ -527,11 +472,6 @@ const _abi = [
           {
             internalType: "int256",
             name: "priceIncrementX18",
-            type: "int256",
-          },
-          {
-            internalType: "int256",
-            name: "priceX18",
             type: "int256",
           },
           {
@@ -686,12 +626,7 @@ const _abi = [
                   },
                   {
                     internalType: "int256",
-                    name: "bidX18",
-                    type: "int256",
-                  },
-                  {
-                    internalType: "int256",
-                    name: "askX18",
+                    name: "markPriceX18",
                     type: "int256",
                   },
                   {
@@ -702,11 +637,6 @@ const _abi = [
                   {
                     internalType: "int256",
                     name: "priceIncrementX18",
-                    type: "int256",
-                  },
-                  {
-                    internalType: "int256",
-                    name: "priceX18",
                     type: "int256",
                   },
                   {
@@ -841,12 +771,7 @@ const _abi = [
                   },
                   {
                     internalType: "int256",
-                    name: "bidX18",
-                    type: "int256",
-                  },
-                  {
-                    internalType: "int256",
-                    name: "askX18",
+                    name: "markPriceX18",
                     type: "int256",
                   },
                   {
@@ -857,11 +782,6 @@ const _abi = [
                   {
                     internalType: "int256",
                     name: "priceIncrementX18",
-                    type: "int256",
-                  },
-                  {
-                    internalType: "int256",
-                    name: "priceX18",
                     type: "int256",
                   },
                   {
@@ -922,22 +842,17 @@ const _abi = [
         components: [
           {
             internalType: "int256",
-            name: "unweightedWithOrdersX18",
+            name: "initialX18",
             type: "int256",
           },
           {
             internalType: "int256",
-            name: "maintenanceWithOrdersX18",
+            name: "maintenanceX18",
             type: "int256",
           },
           {
             internalType: "int256",
-            name: "maintenanceNoOrdersX18",
-            type: "int256",
-          },
-          {
-            internalType: "int256",
-            name: "initialWithOrdersX18",
+            name: "pnlX18",
             type: "int256",
           },
         ],
@@ -983,12 +898,7 @@ const _abi = [
           },
           {
             internalType: "int256",
-            name: "bidX18",
-            type: "int256",
-          },
-          {
-            internalType: "int256",
-            name: "askX18",
+            name: "markPriceX18",
             type: "int256",
           },
           {
@@ -999,11 +909,6 @@ const _abi = [
           {
             internalType: "int256",
             name: "priceIncrementX18",
-            type: "int256",
-          },
-          {
-            internalType: "int256",
-            name: "priceX18",
             type: "int256",
           },
           {
@@ -1154,12 +1059,7 @@ const _abi = [
                   },
                   {
                     internalType: "int256",
-                    name: "bidX18",
-                    type: "int256",
-                  },
-                  {
-                    internalType: "int256",
-                    name: "askX18",
+                    name: "markPriceX18",
                     type: "int256",
                   },
                   {
@@ -1170,11 +1070,6 @@ const _abi = [
                   {
                     internalType: "int256",
                     name: "priceIncrementX18",
-                    type: "int256",
-                  },
-                  {
-                    internalType: "int256",
-                    name: "priceX18",
                     type: "int256",
                   },
                   {
@@ -1218,38 +1113,23 @@ const _abi = [
             components: [
               {
                 internalType: "int256",
-                name: "unweightedWithOrdersX18",
+                name: "initialX18",
                 type: "int256",
               },
               {
                 internalType: "int256",
-                name: "maintenanceWithOrdersX18",
+                name: "maintenanceX18",
                 type: "int256",
               },
               {
                 internalType: "int256",
-                name: "maintenanceNoOrdersX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "initialWithOrdersX18",
+                name: "pnlX18",
                 type: "int256",
               },
             ],
             internalType: "struct IVertexQuerier.HealthInfo",
             name: "healthInfo",
             type: "tuple",
-          },
-          {
-            internalType: "int256",
-            name: "cumulativeBuyAmountX18",
-            type: "int256",
-          },
-          {
-            internalType: "int256",
-            name: "cumulativeSellAmountX18",
-            type: "int256",
           },
         ],
         internalType: "struct IVertexQuerier.PerpBalanceInfo[]",
@@ -1387,12 +1267,7 @@ const _abi = [
               },
               {
                 internalType: "int256",
-                name: "bidX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "askX18",
+                name: "markPriceX18",
                 type: "int256",
               },
               {
@@ -1403,11 +1278,6 @@ const _abi = [
               {
                 internalType: "int256",
                 name: "priceIncrementX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "priceX18",
                 type: "int256",
               },
               {
@@ -1597,12 +1467,7 @@ const _abi = [
                   },
                   {
                     internalType: "int256",
-                    name: "bidX18",
-                    type: "int256",
-                  },
-                  {
-                    internalType: "int256",
-                    name: "askX18",
+                    name: "markPriceX18",
                     type: "int256",
                   },
                   {
@@ -1613,11 +1478,6 @@ const _abi = [
                   {
                     internalType: "int256",
                     name: "priceIncrementX18",
-                    type: "int256",
-                  },
-                  {
-                    internalType: "int256",
-                    name: "priceX18",
                     type: "int256",
                   },
                   {
@@ -1656,38 +1516,23 @@ const _abi = [
             components: [
               {
                 internalType: "int256",
-                name: "unweightedWithOrdersX18",
+                name: "initialX18",
                 type: "int256",
               },
               {
                 internalType: "int256",
-                name: "maintenanceWithOrdersX18",
+                name: "maintenanceX18",
                 type: "int256",
               },
               {
                 internalType: "int256",
-                name: "maintenanceNoOrdersX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "initialWithOrdersX18",
+                name: "pnlX18",
                 type: "int256",
               },
             ],
             internalType: "struct IVertexQuerier.HealthInfo",
             name: "healthInfo",
             type: "tuple",
-          },
-          {
-            internalType: "int256",
-            name: "cumulativeBuyAmountX18",
-            type: "int256",
-          },
-          {
-            internalType: "int256",
-            name: "cumulativeSellAmountX18",
-            type: "int256",
           },
         ],
         internalType: "struct IVertexQuerier.SpotBalanceInfo[]",
@@ -1840,12 +1685,7 @@ const _abi = [
               },
               {
                 internalType: "int256",
-                name: "bidX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "askX18",
+                name: "markPriceX18",
                 type: "int256",
               },
               {
@@ -1856,11 +1696,6 @@ const _abi = [
               {
                 internalType: "int256",
                 name: "priceIncrementX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "priceX18",
                 type: "int256",
               },
               {
