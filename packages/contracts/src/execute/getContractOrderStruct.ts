@@ -12,7 +12,7 @@ export function getContractOrderStruct(
     amount: request.amount,
     nonce: request.nonce,
     subaccount: request.subaccountId,
-    expiration: request.price,
+    expiration: request.expiration,
     priceX18: toX18(request.price),
   };
 }

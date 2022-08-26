@@ -1,4 +1,5 @@
 import { BigNumberish } from 'ethers';
+import { IOffchainBook } from '@vertex-protocol/contracts';
 
 /**
  * Base types
@@ -14,9 +15,8 @@ export type EngineAppResponse<TResult> =
       result: TResult;
     };
 
-// TODO: Once contract is up to date, this can be removed
 export interface EngineOrder {
-  subaccountId: BigNumberish;
+  subaccount: BigNumberish;
   priceX18: BigNumberish;
   amount: BigNumberish;
   expiration: BigNumberish;
@@ -24,16 +24,16 @@ export interface EngineOrder {
 }
 
 // Represents an order with an accompanying signature by the order sender
-export interface SignedOrder {
+export interface SignedEngineOrder {
   order: EngineOrder;
   signature: string;
 }
 
 export interface GetOrdersResult {
   // Currently enqueued for processing or placement on book
-  enqueued: SignedOrder[];
+  enqueued: SignedEngineOrder[];
   // Currently placed on book
-  open: SignedOrder[];
+  open: SignedEngineOrder[];
 }
 
 type BookTickLiquidity = {
@@ -59,7 +59,7 @@ interface BaseParams {
 }
 
 export interface SubmitOrderParams extends BaseParams {
-  order: SignedOrder;
+  order: IOffchainBook.SignedOrderStruct;
 }
 
 export interface SubmitOrderResponse {
@@ -67,8 +67,7 @@ export interface SubmitOrderResponse {
 }
 
 export interface CancelOrderParams extends BaseParams {
-  // TODO: Switch to digest
-  order: SignedOrder;
+  order: IOffchainBook.SignedOrderStruct;
 }
 
 export interface CancelOrderResponse {

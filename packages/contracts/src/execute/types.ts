@@ -30,7 +30,7 @@ export interface OrderbookRequest {
    * IOC/FOK not currently supported
    * Number -> Expiration time in seconds
    */
-  expiration: number;
+  expiration: BigNumberish;
   // Subaccount ID to use for this order, the resulting signed order must be signed by the owner of the subaccount
   subaccountId: BigNumberish;
   // Limit price

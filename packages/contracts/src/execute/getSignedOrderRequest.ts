@@ -1,4 +1,3 @@
-import { Signer } from 'ethers';
 import {
   TypedDataDomain,
   TypedDataField,
@@ -6,8 +5,7 @@ import {
 } from '@ethersproject/abstract-signer';
 import { IOffchainBook } from '../typechain-types';
 
-type ValidSigner = TypedDataSigner & Signer;
-type OrderAction = 'order' | 'cancellation';
+export type OrderAction = 'order' | 'cancellation';
 
 interface OrderSigningParams {
   // Order to sign
@@ -16,23 +14,25 @@ interface OrderSigningParams {
   orderbookAddress: string;
   // Either placing or cancelling
   action: OrderAction;
-  signer: ValidSigner;
+  // Chain ID for the signature
+  chainId: number;
+  signer: TypedDataSigner;
 }
 
 /**
  * Gives the EIP712 data domain for order signing
  *
  * @param orderbookAddress
- * @param signer
+ * @param chainId
  */
-export async function getVertexEIP712DataDomain(
+export function getVertexEIP712OrderDataDomain(
   orderbookAddress: string,
-  signer: ValidSigner,
-): Promise<TypedDataDomain> {
+  chainId: number,
+): TypedDataDomain {
   return {
     name: 'Vertex',
     version: '0.0.1',
-    chainId: await signer.getChainId(),
+    chainId: chainId,
     verifyingContract: orderbookAddress,
   };
 }
@@ -42,7 +42,7 @@ export async function getVertexEIP712DataDomain(
  *
  * @param action
  */
-export function getVertexEIP712Types(
+export function getVertexEIP712OrderTypes(
   action: OrderAction,
 ): { Order: Array<TypedDataField> } | { Cancellation: Array<TypedDataField> } {
   const types = [
@@ -57,6 +57,21 @@ export function getVertexEIP712Types(
         Order: types,
       }
     : { Cancellation: types };
+}
+
+/**
+ * Returns the EIP712 data value for order signing
+ *
+ * @param order
+ */
+export function getVertexEIP712OrderValue(order: IOffchainBook.OrderStruct) {
+  return {
+    subaccount: order.subaccount.toString(),
+    priceX18: order.priceX18.toString(),
+    amount: order.amount.toString(),
+    expiration: order.expiration.toString(),
+    nonce: order.nonce.toString(),
+  };
 }
 
 /**
@@ -82,14 +97,11 @@ export async function signContractOrderStruct(
   params: OrderSigningParams,
 ): Promise<string> {
   return params.signer._signTypedData(
-    await getVertexEIP712DataDomain(params.orderbookAddress, params.signer),
-    getVertexEIP712Types(params.action),
-    {
-      subaccount: params.order.subaccount.toString(),
-      priceX18: params.order.priceX18.toString(),
-      amount: params.order.amount.toString(),
-      expiration: params.order.expiration.toString(),
-      nonce: params.order.nonce.toString(),
-    },
+    await getVertexEIP712OrderDataDomain(
+      params.orderbookAddress,
+      params.chainId,
+    ),
+    getVertexEIP712OrderTypes(params.action),
+    getVertexEIP712OrderValue(params.order),
   );
 }
