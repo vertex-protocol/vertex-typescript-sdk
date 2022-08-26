@@ -1,6 +1,5 @@
 import { BigNumberish, Overrides } from 'ethers';
 import { PromiseOrValue } from '../typechain-types/common';
-import { OrderbookID } from '../common/orderTypes';
 
 export type ExecuteOverrides = Overrides & { from?: PromiseOrValue<string> };
 
@@ -23,24 +22,24 @@ export interface ModifyCollateralParams {
   }[];
 }
 
-// TODO: Change this type
-export type OrderbookRequest =
-  | {
-      type: 'new_order';
-      /**
-       * IOC -> Fill as much as possible, don't place rest on book
-       * FOK -> Revert if not completely filled
-       * Number -> Expiration time in seconds
-       */
-      expiration: 'ioc' | 'fok' | number;
-      price: 'market' | BigNumberish;
-      // Positive for buy, negative for sell
-      amount: BigNumberish;
-    }
-  | {
-      type: 'cancel_order';
-      id: OrderbookID;
-    };
+/**
+ * An abstraction type to be used to map to OffchainBook order structs
+ */
+export interface OrderbookRequest {
+  /**
+   * IOC/FOK not currently supported
+   * Number -> Expiration time in seconds
+   */
+  expiration: number;
+  // Subaccount ID to use for this order, the resulting signed order must be signed by the owner of the subaccount
+  subaccountId: BigNumberish;
+  // Limit price
+  price: BigNumberish;
+  // Positive for buy, negative for sell
+  amount: BigNumberish;
+  // A unique nonce to identify the order
+  nonce: BigNumberish;
+}
 
 export interface LiquidateSubaccountParams {
   subaccountName: string;

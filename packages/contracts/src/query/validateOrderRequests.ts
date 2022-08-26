@@ -1,3 +1,3 @@
 export async function validateOrderRequests() {
-  // Validate cancellations / order submissions from contract
+  // TODO Validate cancellations / order submissions from contract by calling pre/post validate (or `validateTransactions`
 }

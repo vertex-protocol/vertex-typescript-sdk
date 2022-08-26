@@ -21,7 +21,5 @@ export function getOnBookOrderEntityId(
   productId: number,
   orderbookId: OrderbookID,
 ) {
-  return `${getMarketEntityId(productId)}-${
-    orderbookId.priceX18
-  }-${orderbookId.queuePos.toString()}`;
+  return `${getMarketEntityId(productId)}-${orderbookId}`;
 }
