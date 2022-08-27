@@ -2025,6 +2025,8 @@ export type _Block_ = {
   hash?: Maybe<Scalars['Bytes']>;
   /** The block number */
   number: Scalars['Int'];
+  /** Timestamp of the block if available, format depends on the chain */
+  timestamp?: Maybe<Scalars['String']>;
 };
 
 /** The type for the top-level _meta field */
@@ -2481,6 +2483,7 @@ export type SubscriptionResolvers<ContextType = MeshContext & { endpoint: string
 export type _Block_Resolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['_Block_'] = ResolversParentTypes['_Block_']> = ResolversObject<{
   hash?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
   number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  timestamp?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4548,6 +4551,8 @@ export type _Block_ = {
   hash?: Maybe<Scalars['Bytes']>;
   /** The block number */
   number: Scalars['Int'];
+  /** Timestamp of the block if available, format depends on the chain */
+  timestamp?: Maybe<Scalars['String']>;
 };
 
 /** The type for the top-level _meta field */
@@ -4817,12 +4822,6 @@ const merger = new(BareMerger as any)({
     get documents() {
       return [
       {
-        document: BookPriceLevelsQueryDocument,
-        get rawSDL() {
-          return printWithCache(BookPriceLevelsQueryDocument);
-        },
-        location: 'BookPriceLevelsQueryDocument.graphql'
-      },{
         document: HourlyHistoricalMarketDataQueryDocument,
         get rawSDL() {
           return printWithCache(HourlyHistoricalMarketDataQueryDocument);
@@ -4880,15 +4879,6 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
   return getSdk<TOperationContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
-export type BookPriceLevelsQueryQueryVariables = Exact<{
-  marketEntityId: Scalars['String'];
-  minPriceX18Inclusive: Scalars['BigInt'];
-  maxPriceX18Exclusive: Scalars['BigInt'];
-}>;
-
-
-export type BookPriceLevelsQueryQuery = { orderbookPriceLevels: Array<Pick<OrderbookPriceLevel, 'id' | 'priceX18' | 'cumulativeSize'>> };
-
 export type HourlyHistoricalMarketDataQueryQueryVariables = Exact<{
   marketEntityId: Scalars['String'];
   minHourInclusive: Scalars['BigInt'];
@@ -4963,17 +4953,6 @@ export const OrderEntityFieldsFragmentFragmentDoc = gql`
   collectedFee
 }
     ` as unknown as DocumentNode<OrderEntityFieldsFragmentFragment, unknown>;
-export const BookPriceLevelsQueryDocument = gql`
-    query BookPriceLevelsQuery($marketEntityId: String!, $minPriceX18Inclusive: BigInt!, $maxPriceX18Exclusive: BigInt!) {
-  orderbookPriceLevels(
-    where: {market: $marketEntityId, priceX18_gte: $minPriceX18Inclusive, priceX18_lt: $maxPriceX18Exclusive}
-  ) {
-    id
-    priceX18
-    cumulativeSize
-  }
-}
-    ` as unknown as DocumentNode<BookPriceLevelsQueryQuery, BookPriceLevelsQueryQueryVariables>;
 export const HourlyHistoricalMarketDataQueryDocument = gql`
     query HourlyHistoricalMarketDataQuery($marketEntityId: String!, $minHourInclusive: BigInt!, $maxHourExclusive: BigInt!) {
   marketHourlySnapshots(
@@ -5030,13 +5009,9 @@ export const SubaccountsForAddressDocument = gql`
 
 
 
-
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
-    BookPriceLevelsQuery(variables: BookPriceLevelsQueryQueryVariables, options?: C): Promise<BookPriceLevelsQueryQuery> {
-      return requester<BookPriceLevelsQueryQuery, BookPriceLevelsQueryQueryVariables>(BookPriceLevelsQueryDocument, variables, options);
-    },
     HourlyHistoricalMarketDataQuery(variables: HourlyHistoricalMarketDataQueryQueryVariables, options?: C): Promise<HourlyHistoricalMarketDataQueryQuery> {
       return requester<HourlyHistoricalMarketDataQueryQuery, HourlyHistoricalMarketDataQueryQueryVariables>(HourlyHistoricalMarketDataQueryDocument, variables, options);
     },

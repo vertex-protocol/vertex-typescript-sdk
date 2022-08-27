@@ -1,17 +1,4 @@
-import {
-  BookPriceLevelsQueryQuery,
-  HourlyHistoricalMarketDataQueryQuery,
-} from '../../generated';
-import { BigDecimal } from '@vertex-protocol/utils';
-
-export interface OrderbookPriceLevelsParams {
-  productId: number;
-  minPriceInclusive?: BigDecimal;
-  maxPriceExclusive?: BigDecimal;
-}
-
-export type OrderbookPriceLevelsResponse =
-  BookPriceLevelsQueryQuery['orderbookPriceLevels'];
+import { HourlyHistoricalMarketDataQueryQuery } from '../../generated';
 
 export interface HourlyHistoricalMarketDataParams {
   productId: number;
