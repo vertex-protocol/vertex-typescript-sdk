@@ -6,14 +6,21 @@ import {
   getSignedOrderStruct,
   IClearinghouse__factory,
   IOffchainBook__factory,
+  OrderbookOrder,
+  OrderbookRequest,
 } from '@vertex-protocol/contracts';
 import { fromX18, MaxUint64 } from '@vertex-protocol/utils';
+
+const LOCALHOST = 'http://localhost:80';
+const TESTNET =
+  'http://load-appli-2uvu9ksv59sz-1062943129.us-east-2.elb.amazonaws.com/api';
 
 async function main() {
   const client = new OrdersClient({
     endpoint: 'http://localhost:80',
   });
   const signer = new Wallet(
+    // Hardhat deployer
     '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
     new ethers.providers.JsonRpcProvider(),
   );
@@ -31,17 +38,21 @@ async function main() {
   console.log('Subaccount ID', subaccountId.toString());
   console.log('Orderbook address', orderbookAddress);
 
-  const orderStruct = await getContractOrderStruct({
+  const order: OrderbookOrder = {
     amount: 10,
     expiration: MaxUint64,
     nonce: Date.now().toFixed(0),
     price: fromX18(BigNumber.from('1500000000000000000')).toString(),
     subaccountId,
-  });
-  const signedOrderStruct = await getSignedOrderStruct({
-    order: orderStruct,
-    orderbookAddress,
+  };
+  const orderRequest: OrderbookRequest = {
+    order,
     action: 'order',
+  };
+
+  const signedOrderStruct = await getSignedOrderStruct({
+    request: orderRequest,
+    orderbookAddress,
     chainId: await signer.getChainId(),
     signer: signer,
   });
@@ -51,12 +62,15 @@ async function main() {
     orderbookAddress,
   });
   const ethersDigest = await getOrderDigestEthers({
-    order: orderStruct,
+    request: orderRequest,
     action: 'order',
     orderbookAddress,
     chainId: await signer.getChainId(),
   });
-  const contractDigest = await orderbook.getDigest(orderStruct, false);
+  const contractDigest = await orderbook.getDigest(
+    getContractOrderStruct(order),
+    false,
+  );
 
   console.log('Sent order', digest, ethersDigest, contractDigest);
 
@@ -64,10 +78,13 @@ async function main() {
     throw Error('Digests do not match');
   }
 
-  const signedCancelOrderStruct = await getSignedOrderStruct({
-    order: orderStruct,
-    orderbookAddress,
+  const cancelRequest: OrderbookRequest = {
+    order,
     action: 'cancellation',
+  };
+  const signedCancelOrderStruct = await getSignedOrderStruct({
+    request: cancelRequest,
+    orderbookAddress,
     chainId: await signer.getChainId(),
     signer: signer,
   });

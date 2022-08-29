@@ -22,25 +22,6 @@ export interface ModifyCollateralParams {
   }[];
 }
 
-/**
- * An abstraction type to be used to map to OffchainBook order structs
- */
-export interface OrderbookRequest {
-  /**
-   * IOC/FOK not currently supported
-   * Number -> Expiration time in seconds
-   */
-  expiration: BigNumberish;
-  // Subaccount ID to use for this order, the resulting signed order must be signed by the owner of the subaccount
-  subaccountId: BigNumberish;
-  // Limit price
-  price: BigNumberish;
-  // Positive for buy, negative for sell
-  amount: BigNumberish;
-  // A unique nonce to identify the order
-  nonce: BigNumberish;
-}
-
 export interface LiquidateSubaccountParams {
   subaccountName: string;
   // Subaccount ID being liquidated

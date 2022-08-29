@@ -1,24 +1,24 @@
-import { IOffchainBook } from '../typechain-types';
 import { _TypedDataEncoder } from 'ethers/lib/utils';
 import {
+  getContractOrderStruct,
   getVertexEIP712OrderDataDomain,
   getVertexEIP712OrderTypes,
   getVertexEIP712OrderValue,
-  OrderAction,
 } from '../execute';
+import { OrderAction, OrderbookRequest } from '../common';
 
 interface OrderDigestParams {
-  order: IOffchainBook.OrderStruct;
+  request: OrderbookRequest;
   action: OrderAction;
   orderbookAddress: string;
   chainId: number;
 }
 
 export async function getOrderDigestEthers(params: OrderDigestParams) {
-  const { action, chainId, order, orderbookAddress } = params;
+  const { action, chainId, request, orderbookAddress } = params;
   return _TypedDataEncoder.hash(
     getVertexEIP712OrderDataDomain(orderbookAddress, chainId),
     getVertexEIP712OrderTypes(action),
-    getVertexEIP712OrderValue(order),
+    getVertexEIP712OrderValue(getContractOrderStruct(request.order)),
   );
 }

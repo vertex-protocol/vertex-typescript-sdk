@@ -4,20 +4,23 @@ import {
   TypedDataSigner,
 } from '@ethersproject/abstract-signer';
 import { IOffchainBook } from '../typechain-types';
+import { OrderAction, OrderbookRequest } from '../common';
+import { getContractOrderStruct } from './getContractOrderStruct';
 
-export type OrderAction = 'order' | 'cancellation';
-
-interface OrderSigningParams {
-  // Order to sign
-  order: IOffchainBook.OrderStruct;
+interface SingleOrderSigningParams {
+  // Order request to sign
+  request: OrderbookRequest;
   // Address of the orderbook the order will be sent to
   orderbookAddress: string;
-  // Either placing or cancelling
-  action: OrderAction;
   // Chain ID for the signature
   chainId: number;
   signer: TypedDataSigner;
 }
+
+type BatchOrderSigningParams = Omit<SingleOrderSigningParams, 'request'> & {
+  // Order requests to sign
+  requests: OrderbookRequest[];
+};
 
 /**
  * Gives the EIP712 data domain for order signing
@@ -75,17 +78,33 @@ export function getVertexEIP712OrderValue(order: IOffchainBook.OrderStruct) {
 }
 
 /**
- * Given an order, returns the fully signed order struct to submit to the matching engine
+ * Given an order request, returns the fully signed order struct to submit to the matching engine
  *
  * @param params
  */
 export async function getSignedOrderStruct(
-  params: OrderSigningParams,
+  params: SingleOrderSigningParams,
 ): Promise<IOffchainBook.SignedOrderStruct> {
   return {
-    order: params.order,
+    order: getContractOrderStruct(params.request.order),
     signature: await signContractOrderStruct(params),
   };
+}
+
+/**
+ * Given a batch of orders, sign them all
+ *
+ * @param params
+ */
+export async function getBatchSignedOrderStructs(
+  params: BatchOrderSigningParams,
+): Promise<IOffchainBook.SignedOrderStruct[]> {
+  const { requests, ...restSigningParams } = params;
+  return Promise.all(
+    requests.map((request) =>
+      getSignedOrderStruct({ ...restSigningParams, request }),
+    ),
+  );
 }
 
 /**
@@ -94,14 +113,14 @@ export async function getSignedOrderStruct(
  * @param params
  */
 export async function signContractOrderStruct(
-  params: OrderSigningParams,
+  params: SingleOrderSigningParams,
 ): Promise<string> {
   return params.signer._signTypedData(
     await getVertexEIP712OrderDataDomain(
       params.orderbookAddress,
       params.chainId,
     ),
-    getVertexEIP712OrderTypes(params.action),
-    getVertexEIP712OrderValue(params.order),
+    getVertexEIP712OrderTypes(params.request.action),
+    getVertexEIP712OrderValue(getContractOrderStruct(params.request.order)),
   );
 }
