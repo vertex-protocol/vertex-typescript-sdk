@@ -7,13 +7,13 @@ type GraphSDK = Sdk;
  */
 interface GraphClientOpts {
   // GraphQL endpoint
-  endpoint?: string;
+  endpoint: string;
 }
 
 export class BaseVertexGraphClient {
   readonly graph: GraphSDK;
 
-  constructor(opts?: GraphClientOpts) {
-    this.graph = getBuiltGraphSDK({ endpoint: opts?.endpoint });
+  constructor(opts: GraphClientOpts) {
+    this.graph = getBuiltGraphSDK({ endpoint: opts.endpoint });
   }
 }

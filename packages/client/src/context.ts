@@ -4,19 +4,25 @@ import {
   ISpotEngine__factory,
   IVertexQuerier__factory,
   ProductEngineType,
+  VERTEX_DEPLOYMENTS,
   VertexContracts,
 } from '@vertex-protocol/contracts';
 import { Signer } from 'ethers';
 import { Provider } from '@ethersproject/providers';
-import { VertexGraphClient } from '@vertex-protocol/graph';
+import {
+  GRAPH_CLIENT_ENDPOINTS,
+  VertexGraphClient,
+} from '@vertex-protocol/graph';
+import { ORDERS_CLIENT_ENDPOINTS, OrdersClient } from '@vertex-protocol/orders';
 
-export interface VertexClientContextOpts {
+interface VertexClientContextOpts {
   // Address of the Vertex querier
   querierAddress: string;
-  graphEndpoint?: string;
-  // Must be a signer to use any contract executions
-  signerOrProvider: Signer | Provider;
+  graphEndpoint: string;
+  offchainEngineEndpoint: string;
 }
+
+export type CreateVertexClientContextOpts = VertexClientContextOpts | 'testnet';
 
 /**
  * Context required to use the Vertex client.
@@ -26,6 +32,7 @@ export interface VertexClientContext {
   signerOrProvider: Signer | Provider;
   contracts: VertexContracts;
   graph: VertexGraphClient;
+  offchainEngine: OrdersClient;
 }
 
 /**
@@ -34,9 +41,21 @@ export interface VertexClientContext {
  * @param opts
  */
 export async function createClientContext(
-  opts: VertexClientContextOpts,
+  opts: CreateVertexClientContextOpts,
+  // Must be a signer to use any contract executions
+  signerOrProvider: Signer | Provider,
 ): Promise<VertexClientContext> {
-  const { querierAddress, graphEndpoint, signerOrProvider } = opts;
+  const { querierAddress, graphEndpoint, offchainEngineEndpoint } = (() => {
+    if (opts === 'testnet') {
+      return {
+        querierAddress: VERTEX_DEPLOYMENTS.testnet.querier,
+        graphEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet,
+        offchainEngineEndpoint: ORDERS_CLIENT_ENDPOINTS.testnet,
+      };
+    } else {
+      return opts;
+    }
+  })();
   const querier = IVertexQuerier__factory.connect(
     querierAddress,
     signerOrProvider,
@@ -63,5 +82,6 @@ export async function createClientContext(
       perpEngine: IPerpEngine__factory.connect(perpAddress, signerOrProvider),
     },
     graph: new VertexGraphClient({ endpoint: graphEndpoint }),
+    offchainEngine: new OrdersClient({ endpoint: offchainEngineEndpoint }),
   };
 }
