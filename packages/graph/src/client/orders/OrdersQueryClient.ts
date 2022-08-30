@@ -1,34 +1,18 @@
 import { BaseVertexGraphClient } from '../base';
 import {
+  AllMarketOrdersParams,
   AllMarketOrdersResponse,
   OrdersByIdParams,
   OrdersByIdResponse,
   SubaccountOrdersParams,
   SubaccountOrdersResponse,
 } from './types';
-import {
-  OnBookOrdersByIDQueryQueryVariables,
-  OrderStatus,
-} from '../../generated';
+import { OnBookOrdersByIDQueryQueryVariables } from '../../generated';
 import {
   getMarketEntityId,
   getOnBookOrderEntityId,
   getSubaccountEntityId,
 } from '../../utils';
-import { PaginationParams } from '../types';
-
-const ALL_STATUSES: OrderStatus[] = [
-  'ON_BOOK',
-  'INSTANT_FILL',
-  'CANCELLED',
-  'FILLED',
-];
-
-interface AllMarketOrdersParams extends PaginationParams {
-  productId: number;
-  // Allowed order statuses, if not given, defaults to all
-  statuses?: OrderStatus[];
-}
 
 /**
  * @internal
@@ -43,7 +27,6 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
     params: AllMarketOrdersParams,
   ): Promise<AllMarketOrdersResponse> {
     const data = await this.graph.PaginatedAllMarketOrdersQuery({
-      filteredStatuses: params.statuses ?? ALL_STATUSES,
       marketEntityId: getMarketEntityId(params.productId),
       first: params.first,
       skip: params.skip,
@@ -60,7 +43,6 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
     params: SubaccountOrdersParams,
   ): Promise<SubaccountOrdersResponse> {
     const data = await this.graph.PaginatedSubaccountOrdersQuery({
-      filteredStatuses: params.statuses ?? ALL_STATUSES,
       subaccountEntityId: getSubaccountEntityId(params.subaccountId),
       first: params.first,
       skip: params.skip,

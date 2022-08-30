@@ -4,6 +4,8 @@ sources:
       graphql:
         # Default to hosted version
         endpoint: '{context.endpoint:https://api.thegraph.com/subgraphs/name/frankfka/vertex-clearinghouse-sandbox}'
+        # For local schema updates
+    #        endpoint: '{context.endpoint:http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph}'
     transforms:
       # https://github.com/graphprotocol/graph-client
       - autoPagination:
@@ -11,9 +13,9 @@ sources:
       - blockTracking:
           validateSchema: true
           # Ignore the fields that you don't want to be tracked
-          ignoreFieldNames: [ ]
+          ignoreFieldNames: []
           # Exclude the operation with the following names
-          ignoreOperationNames: [ ]
+          ignoreOperationNames: []
 documents:
   - ./src/graphql/**/*.graphql
 
