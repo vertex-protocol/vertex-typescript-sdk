@@ -38,6 +38,31 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "uint64",
+        name: "subaccount",
+        type: "uint64",
+      },
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        indexed: false,
+        internalType: "int256",
+        name: "amount",
+        type: "int256",
+      },
+    ],
+    name: "SettlePnl",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "uint32",
         name: "productId",
         type: "uint32",

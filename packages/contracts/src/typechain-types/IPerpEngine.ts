@@ -373,11 +373,13 @@ export interface IPerpEngineInterface extends utils.Interface {
   events: {
     "AddProduct(uint32)": EventFragment;
     "ProductUpdate(uint32)": EventFragment;
+    "SettlePnl(uint64,uint32,int256)": EventFragment;
     "SocializeProduct(uint32,int256,int256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AddProduct"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ProductUpdate"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SettlePnl"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SocializeProduct"): EventFragment;
 }
 
@@ -394,6 +396,18 @@ export interface ProductUpdateEventObject {
 export type ProductUpdateEvent = TypedEvent<[number], ProductUpdateEventObject>;
 
 export type ProductUpdateEventFilter = TypedEventFilter<ProductUpdateEvent>;
+
+export interface SettlePnlEventObject {
+  subaccount: BigNumber;
+  productId: number;
+  amount: BigNumber;
+}
+export type SettlePnlEvent = TypedEvent<
+  [BigNumber, number, BigNumber],
+  SettlePnlEventObject
+>;
+
+export type SettlePnlEventFilter = TypedEventFilter<SettlePnlEvent>;
 
 export interface SocializeProductEventObject {
   productId: number;
@@ -826,6 +840,17 @@ export interface IPerpEngine extends BaseContract {
     ProductUpdate(
       productId?: PromiseOrValue<BigNumberish> | null
     ): ProductUpdateEventFilter;
+
+    "SettlePnl(uint64,uint32,int256)"(
+      subaccount?: PromiseOrValue<BigNumberish> | null,
+      productId?: null,
+      amount?: null
+    ): SettlePnlEventFilter;
+    SettlePnl(
+      subaccount?: PromiseOrValue<BigNumberish> | null,
+      productId?: null,
+      amount?: null
+    ): SettlePnlEventFilter;
 
     "SocializeProduct(uint32,int256,int256)"(
       productId?: PromiseOrValue<BigNumberish> | null,

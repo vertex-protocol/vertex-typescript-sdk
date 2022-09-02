@@ -13,7 +13,7 @@ const _abi = [
       {
         indexed: false,
         internalType: "bytes32",
-        name: "orderHash",
+        name: "orderDigest",
         type: "bytes32",
       },
       {
@@ -30,21 +30,33 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: "bytes32",
-        name: "takerHash",
+        name: "takerDigest",
         type: "bytes32",
       },
       {
-        indexed: false,
+        indexed: true,
         internalType: "bytes32",
-        name: "makerHash",
+        name: "makerDigest",
         type: "bytes32",
       },
       {
         indexed: false,
         internalType: "int256",
-        name: "amount",
+        name: "takerAmountDelta",
+        type: "int256",
+      },
+      {
+        indexed: false,
+        internalType: "int256",
+        name: "takerFee",
+        type: "int256",
+      },
+      {
+        indexed: false,
+        internalType: "int256",
+        name: "makerFee",
         type: "int256",
       },
     ],
@@ -55,13 +67,13 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: "bytes32",
-        name: "orderHash",
+        name: "orderDigest",
         type: "bytes32",
       },
       {
-        indexed: false,
+        indexed: true,
         internalType: "uint64",
         name: "subaccount",
         type: "uint64",

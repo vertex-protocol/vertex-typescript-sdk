@@ -237,14 +237,12 @@ export interface IClearinghouseInterface extends utils.Interface {
     "CreateSubaccount(address,string,uint64)": EventFragment;
     "Liquidation(uint64,uint64,uint32,int256,int256,int256)": EventFragment;
     "ModifyCollateral(int256,uint64,uint32)": EventFragment;
-    "SettlePnl(uint64,int256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "ClearinghouseInitialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CreateSubaccount"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Liquidation"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ModifyCollateral"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SettlePnl"): EventFragment;
 }
 
 export interface ClearinghouseInitializedEventObject {
@@ -300,17 +298,6 @@ export type ModifyCollateralEvent = TypedEvent<
 
 export type ModifyCollateralEventFilter =
   TypedEventFilter<ModifyCollateralEvent>;
-
-export interface SettlePnlEventObject {
-  subaccount: BigNumber;
-  amount: BigNumber;
-}
-export type SettlePnlEvent = TypedEvent<
-  [BigNumber, BigNumber],
-  SettlePnlEventObject
->;
-
-export type SettlePnlEventFilter = TypedEventFilter<SettlePnlEvent>;
 
 export interface IClearinghouse extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -642,15 +629,6 @@ export interface IClearinghouse extends BaseContract {
       subaccount?: PromiseOrValue<BigNumberish> | null,
       productId?: null
     ): ModifyCollateralEventFilter;
-
-    "SettlePnl(uint64,int256)"(
-      subaccount?: PromiseOrValue<BigNumberish> | null,
-      amount?: null
-    ): SettlePnlEventFilter;
-    SettlePnl(
-      subaccount?: PromiseOrValue<BigNumberish> | null,
-      amount?: null
-    ): SettlePnlEventFilter;
   };
 
   estimateGas: {

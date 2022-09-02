@@ -166,7 +166,7 @@ export interface IOffchainBookInterface extends utils.Interface {
 
   events: {
     "CancelOrder(bytes32,uint8)": EventFragment;
-    "FillOrder(bytes32,bytes32,int256)": EventFragment;
+    "FillOrder(bytes32,bytes32,int256,int256,int256)": EventFragment;
     "ReportOrder(bytes32,uint64,int256,int256)": EventFragment;
   };
 
@@ -176,7 +176,7 @@ export interface IOffchainBookInterface extends utils.Interface {
 }
 
 export interface CancelOrderEventObject {
-  orderHash: string;
+  orderDigest: string;
   reason: number;
 }
 export type CancelOrderEvent = TypedEvent<
@@ -187,19 +187,21 @@ export type CancelOrderEvent = TypedEvent<
 export type CancelOrderEventFilter = TypedEventFilter<CancelOrderEvent>;
 
 export interface FillOrderEventObject {
-  takerHash: string;
-  makerHash: string;
-  amount: BigNumber;
+  takerDigest: string;
+  makerDigest: string;
+  takerAmountDelta: BigNumber;
+  takerFee: BigNumber;
+  makerFee: BigNumber;
 }
 export type FillOrderEvent = TypedEvent<
-  [string, string, BigNumber],
+  [string, string, BigNumber, BigNumber, BigNumber],
   FillOrderEventObject
 >;
 
 export type FillOrderEventFilter = TypedEventFilter<FillOrderEvent>;
 
 export interface ReportOrderEventObject {
-  orderHash: string;
+  orderDigest: string;
   subaccount: BigNumber;
   amount: BigNumber;
   priceX18: BigNumber;
@@ -367,31 +369,35 @@ export interface IOffchainBook extends BaseContract {
 
   filters: {
     "CancelOrder(bytes32,uint8)"(
-      orderHash?: null,
+      orderDigest?: null,
       reason?: null
     ): CancelOrderEventFilter;
-    CancelOrder(orderHash?: null, reason?: null): CancelOrderEventFilter;
+    CancelOrder(orderDigest?: null, reason?: null): CancelOrderEventFilter;
 
-    "FillOrder(bytes32,bytes32,int256)"(
-      takerHash?: null,
-      makerHash?: null,
-      amount?: null
+    "FillOrder(bytes32,bytes32,int256,int256,int256)"(
+      takerDigest?: PromiseOrValue<BytesLike> | null,
+      makerDigest?: PromiseOrValue<BytesLike> | null,
+      takerAmountDelta?: null,
+      takerFee?: null,
+      makerFee?: null
     ): FillOrderEventFilter;
     FillOrder(
-      takerHash?: null,
-      makerHash?: null,
-      amount?: null
+      takerDigest?: PromiseOrValue<BytesLike> | null,
+      makerDigest?: PromiseOrValue<BytesLike> | null,
+      takerAmountDelta?: null,
+      takerFee?: null,
+      makerFee?: null
     ): FillOrderEventFilter;
 
     "ReportOrder(bytes32,uint64,int256,int256)"(
-      orderHash?: null,
-      subaccount?: null,
+      orderDigest?: PromiseOrValue<BytesLike> | null,
+      subaccount?: PromiseOrValue<BigNumberish> | null,
       amount?: null,
       priceX18?: null
     ): ReportOrderEventFilter;
     ReportOrder(
-      orderHash?: null,
-      subaccount?: null,
+      orderDigest?: PromiseOrValue<BytesLike> | null,
+      subaccount?: PromiseOrValue<BigNumberish> | null,
       amount?: null,
       priceX18?: null
     ): ReportOrderEventFilter;
