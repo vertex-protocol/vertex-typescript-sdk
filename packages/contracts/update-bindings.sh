@@ -8,7 +8,7 @@ fi
 ABI_FILES=(
 "IOracle.json"
 "IClearinghouse.json"
-"IOrderBook.json"
+"IOffchainBook.json"
 "IPerpEngine.json"
 "IProductEngine.json"
 "ISpotEngine.json"

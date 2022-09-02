@@ -4,10 +4,8 @@ import {
   ExecuteOverrides,
   LiquidateSubaccountParams,
   ModifyCollateralParams,
-  SendOrdersParams,
   SettlePnlParams,
 } from './types';
-import { mapOrderbookRequest } from './utils';
 
 /**
  * Returns args to pass to `modifyCollateral` of the `ethers` Clearinghouse contract
@@ -27,25 +25,6 @@ export function getModifyCollateralArgs(
     amounts.push(amount);
   });
   return [subaccountName, productIds, amounts, overrides];
-}
-
-/**
- * Returns args to pass to `sendOrders` of the `ethers` Clearinghouse contract
- *
- * @param params
- * @param overrides Ethers overrides
- */
-export function getSendOrdersArgs(
-  params: SendOrdersParams,
-  overrides?: ExecuteOverrides,
-): Parameters<IClearinghouse['sendOrders']> {
-  const { subaccountName, productId, requests } = params;
-  return [
-    subaccountName,
-    productId,
-    requests.map(mapOrderbookRequest),
-    overrides,
-  ];
 }
 
 /**

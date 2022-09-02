@@ -1,6 +1,5 @@
 import {
   OnBookOrdersByIDQueryQuery,
-  OrderStatus,
   PaginatedAllMarketOrdersQueryQuery,
   PaginatedSubaccountOrdersQueryQuery,
 } from '../../generated';
@@ -9,8 +8,6 @@ import { OrderbookID } from '@vertex-protocol/contracts';
 
 export interface AllMarketOrdersParams extends PaginationParams {
   productId: number;
-  // Allowed order statuses, if not given, defaults to all
-  statuses?: OrderStatus[];
 }
 
 export type AllMarketOrdersResponse =
@@ -18,8 +15,6 @@ export type AllMarketOrdersResponse =
 
 export interface SubaccountOrdersParams extends PaginationParams {
   subaccountId: number;
-  // Allowed order statuses, if not given, defaults to all
-  statuses?: OrderStatus[];
 }
 
 export type SubaccountOrdersResponse =

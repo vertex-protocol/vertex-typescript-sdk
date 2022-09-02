@@ -1,26 +1,20 @@
 query PaginatedAllMarketOrdersQuery(
   $marketEntityId: String!
-  $filteredStatuses: [OrderStatus!]!
   $first: Int
   $skip: Int
 ) {
-  orders(
-    where: { status_in: $filteredStatuses, market: $marketEntityId }
-    first: $first
-    skip: $skip
-  ) {
+  orders(where: { market: $marketEntityId }, first: $first, skip: $skip) {
     ...OrderEntityFieldsFragment
   }
 }
 
 query PaginatedSubaccountOrdersQuery(
   $subaccountEntityId: String!
-  $filteredStatuses: [OrderStatus!]!
   $first: Int
   $skip: Int
 ) {
   orders(
-    where: { subaccount: $subaccountEntityId, status_in: $filteredStatuses }
+    where: { subaccount: $subaccountEntityId }
     first: $first
     skip: $skip
   ) {
@@ -37,17 +31,14 @@ query OnBookOrdersByIDQuery($orderEntityIds: [String!]!) {
 # All fields on Order
 fragment OrderEntityFieldsFragment on Order {
   id
-  status
-  # TODO: onBookContract once synced
+  digest
+  validationResult
   priceX18
-  queuePos
   subaccount {
     subaccountId
   }
-  expiration
-  createdAt
-  createdAtBlock
-  initialAmount
+  reportedAt
+  reportedAtBlock
   filledAmount
   collectedFee
 }

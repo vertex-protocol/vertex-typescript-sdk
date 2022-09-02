@@ -1,3 +1,4 @@
 export * from './executeArgs';
 export * from './types';
-export * from './getSignedOrderRequest';
+export * from './getSignedOrderStruct';
+export * from './getContractOrderStruct';

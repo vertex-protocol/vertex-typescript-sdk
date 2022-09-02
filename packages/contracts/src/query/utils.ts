@@ -49,8 +49,7 @@ export function mapQuerierMarket(
   market: IVertexQuerier.MarketInfoStructOutput,
 ): Omit<Market, 'productId'> {
   return {
-    ask: fromX18(market.askX18),
-    bid: fromX18(market.bidX18),
+    markPrice: fromX18(market.markPriceX18),
     priceIncrement: fromX18(market.priceIncrementX18),
     sizeIncrement: fromX18(market.sizeIncrementX18),
     type: toProductEngineType(market.productType),

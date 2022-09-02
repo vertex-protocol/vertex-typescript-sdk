@@ -10,6 +10,10 @@ export class MarketQueryAPI extends BaseVertexAPI {
     return getAllMarkets(this.context.contracts);
   }
 
+  async getOrValidateOrders() {
+    // Call validateTransactions
+  }
+
   async getAllOrders() {
     // Get both enqueued and submitted orders by market ID, join by time
     // This is usually used for a running log of submitted orders

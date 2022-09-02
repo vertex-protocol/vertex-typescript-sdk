@@ -9,9 +9,14 @@ import {
   GetOrderByDigestResponse,
   GetSubaccountOrdersParams,
   GetSubaccountOrdersResponse,
+  SignedEngineOrder,
   SubmitOrderParams,
   SubmitOrderResponse,
 } from './types';
+import {
+  getVertexEIP712OrderValue,
+  IOffchainBook,
+} from '@vertex-protocol/contracts';
 
 /**
  * Configuration options for Vertex orders client
@@ -44,6 +49,15 @@ export class OrdersClient {
     return response.data.result;
   }
 
+  private static getSafeSignedOrder(
+    order: IOffchainBook.SignedOrderStruct,
+  ): SignedEngineOrder {
+    return {
+      signature: order.signature.toString(),
+      order: getVertexEIP712OrderValue(order.order),
+    };
+  }
+
   /**
    * Submits an order to matching engine
    *
@@ -53,7 +67,7 @@ export class OrdersClient {
     return OrdersClient.handleRequestPromise(
       axios.post(
         this.getRequestPath('orders', params.orderbookAddress),
-        params.order,
+        OrdersClient.getSafeSignedOrder(params.order),
       ),
     );
   }
@@ -66,8 +80,7 @@ export class OrdersClient {
   async cancelOrder(params: CancelOrderParams): Promise<CancelOrderResponse> {
     return OrdersClient.handleRequestPromise(
       axios.delete(this.getRequestPath('orders', params.orderbookAddress), {
-        // why alwin
-        data: params.order,
+        data: OrdersClient.getSafeSignedOrder(params.order),
       }),
     );
   }
@@ -136,8 +149,7 @@ export class OrdersClient {
       orders: 'order',
       liquidity: 'levels',
     };
-    return `${this.endpoint}/${
-      basePaths[type]
-    }/${orderbookAddress}${searchParams?.toString()}`;
+    const searchParamsStr = searchParams ? `?${searchParams.toString()}` : '';
+    return `${this.endpoint}/${basePaths[type]}/${orderbookAddress}${searchParamsStr}`;
   }
 }
