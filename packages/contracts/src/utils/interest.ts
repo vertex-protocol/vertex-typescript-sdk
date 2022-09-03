@@ -40,7 +40,7 @@ export function calcTotalDeposited(
  * @param product Spot product
  */
 export function calcUtilizationRatio(product: SpotProduct) {
-  if (product.totalDeposited.eq(0)) {
+  if (product.totalDeposited.eq(0) || product.totalBorrowed.eq(0)) {
     return toBigDecimal(0);
   }
   return product.totalBorrowed.abs().div(product.totalDeposited);
@@ -69,6 +69,9 @@ export function calcBorrowRatePerSecond(product: SpotProduct) {
     interestLargeCap,
   } = product;
   const utilization = calcUtilizationRatio(product);
+  if (utilization.eq(0)) {
+    return toBigDecimal(0);
+  }
   const pastInflection = utilization.lt(interestInflectionUtil);
 
   let annualRate: BigDecimal;
@@ -118,6 +121,9 @@ export function calcRealizedDepositRateForTimeRange(
   interestFeeFrac: BigDecimalish,
 ) {
   const utilization = calcUtilizationRatio(product);
+  if (utilization.eq(0)) {
+    return toBigDecimal(0);
+  }
   return utilization
     .times(calcBorrowRateForTimeRange(product, seconds))
     .times(toBigDecimal(1).minus(toBigDecimal(interestFeeFrac)));
