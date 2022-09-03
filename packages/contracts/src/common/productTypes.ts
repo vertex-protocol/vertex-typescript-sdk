@@ -1,6 +1,8 @@
 import { BigDecimal } from '@vertex-protocol/utils';
 import { IPerpEngine, ISpotEngine } from '../typechain-types';
 
+export const QUOTE_PRODUCT_ID = 0;
+
 /**
  * Representation of the ProductEngineType enum used within the contract
  * Enums do not get reflected in the ABI, so this must be manually defined

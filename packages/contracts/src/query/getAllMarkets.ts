@@ -9,6 +9,7 @@ export type GetAllMarketsResponse = MarketWithProduct[];
 
 /**
  * Return all markets registered with the clearinghouse. Calls querier internally.
+ * This also returns quote product with a zero market
  */
 export async function getAllMarkets({
   querier,
