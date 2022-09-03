@@ -7,7 +7,7 @@ import {
   toProductEngineType,
 } from '../common';
 import { fromX18 } from '@vertex-protocol/utils';
-import { calcTotalBorrowed, calcTotalDeposited } from '../utils/interest';
+import { calcTotalBorrowed, calcTotalDeposited } from '../utils';
 
 export function mapEngineSpotProduct(
   product: ISpotEngine.ProductStructOutput,

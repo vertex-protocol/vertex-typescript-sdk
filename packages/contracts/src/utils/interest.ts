@@ -40,6 +40,9 @@ export function calcTotalDeposited(
  * @param product Spot product
  */
 export function calcUtilizationRatio(product: SpotProduct) {
+  if (product.totalDeposited.eq(0)) {
+    return toBigDecimal(0);
+  }
   return product.totalBorrowed.abs().div(product.totalDeposited);
 }
 

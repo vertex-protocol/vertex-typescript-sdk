@@ -110,11 +110,16 @@ export function calcMarginUsageFractions(
     }
   });
 
+  const initialMarginUsage = positiveHealths.initial.eq(0)
+    ? toBigDecimal(0)
+    : absNegativeHealths.initial.div(positiveHealths.initial);
+  const maintenanceMarginUsage = positiveHealths.maintenance.eq(0)
+    ? toBigDecimal(0)
+    : absNegativeHealths.maintenance.div(positiveHealths.maintenance);
+
   return {
-    initial: absNegativeHealths.initial.div(positiveHealths.initial),
-    maintenance: absNegativeHealths.maintenance.div(
-      positiveHealths.maintenance,
-    ),
+    initial: initialMarginUsage,
+    maintenance: maintenanceMarginUsage,
   };
 }
 
