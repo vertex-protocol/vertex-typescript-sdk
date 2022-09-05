@@ -127,13 +127,11 @@ export function calcMarginUsageFractions(
   };
 }
 
-export interface MaxPositionEstimationParams {
-  // Current health of the subaccount
-  currentHealth: BigDecimal;
+export interface MaxPositionDeltaEstimationParams {
+  // Current health of the subaccount, not including the health for which the position size is being calculated
+  currentHealthWithoutExistingBalance: BigDecimal;
   // Oracle price of the product
   oraclePrice: BigDecimal;
-  // Estimated execution price of the product, for example, current market price, or limit price
-  executionPriceEstimate: BigDecimal;
   // Weight of the product - either long or short, initial or maintenance
   regularWeight: BigDecimal;
   // Whether the calculation is for a long position - if false, then short position
@@ -143,7 +141,10 @@ export interface MaxPositionEstimationParams {
 }
 
 /**
- * Returns the maximum new position size (absolute) that can be placed given current health and market conditions.
+ * Returns the maximum new position size that can be placed given current health WITHOUT accounting for any existing balance for this product.
+ * This means that if you have an existing balance for this product, its health must be subtracted from the current subaccount health.
+ * This is an estimation via Newton's method, but also because we don't account for health losses due to differences
+ * in execution and oracle price
  *
  * The max position is when the total sum of position healths is 0:
  *  sum(healths) = 0 = current health
@@ -152,7 +153,7 @@ export interface MaxPositionEstimationParams {
  *  (The execution price term is the estimated loss of quote health from executing the trade)
  *
  * solve for amt:
- *  amt = -current health / (weight * oraclePrice - executionPrice) if using regular weight
+ *  amt = -current health / (weight * oraclePrice - executionPrice) if using regular weight, assume execution price = oracle price for now
  *  for large position penalized weight, we need to run Newton's method as weight is a function of amount
  *
  * see: {@link getLongLargePositionPenaltyWeightCalculator:CONTRACTS} and  {@link getShortLargePositionPenaltyWeightCalculator:CONTRACTS}
@@ -160,24 +161,26 @@ export interface MaxPositionEstimationParams {
  * @param params
  */
 export function approximateMaxPositionSize(
-  params: MaxPositionEstimationParams,
+  params: MaxPositionDeltaEstimationParams,
 ) {
   const {
-    currentHealth,
-    executionPriceEstimate,
+    currentHealthWithoutExistingBalance,
     isLong,
     largePositionPenalty,
     oraclePrice,
     regularWeight,
   } = params;
+  const executionPriceEstimate = oraclePrice;
+
   const tol = toBigDecimal(0.01);
   const dx = toBigDecimal(0.0001);
   const maxIters = 50;
 
   // Take our initial guess at the amount implied by the regular weight
-  const start = currentHealth
+  const start = currentHealthWithoutExistingBalance
     .negated()
     .div(regularWeight.times(oraclePrice).minus(executionPriceEstimate));
+
   const penaltyWeightCalculator = isLong
     ? getLongLargePositionPenaltyWeightCalculator(largePositionPenalty)
     : getShortLargePositionPenaltyWeightCalculator(largePositionPenalty);
@@ -189,7 +192,7 @@ export function approximateMaxPositionSize(
       ? BigDecimal.min(regularWeight, largePositionWeight)
       : BigDecimal.max(regularWeight, largePositionWeight);
     const amountHealth = amount.multipliedBy(oraclePrice).multipliedBy(weight);
-    return currentHealth.plus(
+    return currentHealthWithoutExistingBalance.plus(
       amountHealth.minus(amount.times(executionPriceEstimate)),
     );
   }
