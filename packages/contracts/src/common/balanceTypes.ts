@@ -1,6 +1,8 @@
 import { PerpProduct, ProductEngineType, SpotProduct } from './productTypes';
 import { BigDecimal } from '@vertex-protocol/utils';
 
+export type BalanceSide = 'long' | 'short';
+
 /**
  * Shared properties of a product balance
  */

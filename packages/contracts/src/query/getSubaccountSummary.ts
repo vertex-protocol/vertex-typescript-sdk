@@ -3,16 +3,12 @@ import { BalanceWithProduct, WithContracts } from '../common';
 import { BigDecimal, fromX18 } from '@vertex-protocol/utils';
 import { IVertexQuerier } from '../typechain-types';
 import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
+import { HealthType } from '../common/healthTypes';
 
 /**
- * Encapsulates health for an account or an account balnace
+ * Encapsulates health for an account or an account balance
  */
-export interface HealthStatus {
-  initialHealth: BigDecimal;
-  maintenanceHealth: BigDecimal;
-  // This is the same as PnL
-  unweightedHealth: BigDecimal;
-}
+export type HealthStatus = Record<HealthType, BigDecimal>;
 
 export interface GetSubaccountSummaryParams {
   subaccountId: BigNumberish;
@@ -29,9 +25,9 @@ function healthInfoToStatus(
   healthInfo: IVertexQuerier.HealthInfoStructOutput,
 ): HealthStatus {
   return {
-    initialHealth: fromX18(healthInfo.initialX18),
-    maintenanceHealth: fromX18(healthInfo.maintenanceX18),
-    unweightedHealth: fromX18(healthInfo.pnlX18),
+    initial: fromX18(healthInfo.initialX18),
+    maintenance: fromX18(healthInfo.maintenanceX18),
+    unweighted: fromX18(healthInfo.pnlX18),
   };
 }
 

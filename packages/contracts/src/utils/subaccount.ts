@@ -1,15 +1,12 @@
 import { SubaccountSummaryResponse } from '../query';
-import { ProductEngineType } from '../common';
+import { BalanceSide, HealthType, ProductEngineType } from '../common';
 import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
 import {
   calcPerpBalanceNotionalValue,
   calcPerpBalanceValue,
   calcSpotBalanceValue,
 } from './balanceValue';
-import {
-  calcLongWeightWithPositionPenalty,
-  calcShortWeightWithPositionPenalty,
-} from './health';
+import { calcHealthForAmount, getRegularWeight } from './health';
 
 export interface TotalPortfolioValues {
   // Sum of spot and perpNotional
@@ -97,19 +94,19 @@ export function calcMarginUsageFractions(
 
   summary.balances.forEach((balance) => {
     // Initial & maintenance should have same signs
-    if (balance.health.initialHealth.gt(0)) {
+    if (balance.health.initial.gt(0)) {
       positiveHealths.initial = positiveHealths.initial.plus(
-        balance.health.initialHealth,
+        balance.health.initial,
       );
       positiveHealths.maintenance = positiveHealths.maintenance.plus(
-        balance.health.maintenanceHealth,
+        balance.health.maintenance,
       );
     } else {
       absNegativeHealths.initial = absNegativeHealths.initial.plus(
-        balance.health.initialHealth.abs(),
+        balance.health.initial.abs(),
       );
       absNegativeHealths.maintenance = absNegativeHealths.maintenance.plus(
-        balance.health.maintenanceHealth.abs(),
+        balance.health.maintenance.abs(),
       );
     }
   });
@@ -127,17 +124,25 @@ export function calcMarginUsageFractions(
   };
 }
 
-export interface MaxPositionDeltaEstimationParams {
-  // Current health of the subaccount, not including the health for which the position size is being calculated
-  currentHealthWithoutExistingBalance: BigDecimal;
-  // Oracle price of the product
-  oraclePrice: BigDecimal;
-  // Weight of the product - either long or short, initial or maintenance
-  regularWeight: BigDecimal;
-  // Whether the calculation is for a long position - if false, then short position
-  isLong: boolean;
-  // The large position penalty term for the product
-  largePositionPenalty: BigDecimal;
+export function getSubaccountSummaryWithDeltas(
+  existingSummary: SubaccountSummaryResponse,
+  deltas: { productId: number; amountDelta: BigDecimal }[],
+): SubaccountSummaryResponse {
+  // Clone the existing summary
+
+  // Track subaccount-wide health changes
+
+  // Update the balances
+
+  return existingSummary;
+}
+
+export interface MaxPositionSizeEstimationParams {
+  healthType: HealthType;
+  side: BalanceSide;
+  productId: number;
+  subaccountSummary: SubaccountSummaryResponse;
+  executionPriceEstimate: BigDecimal;
 }
 
 /**
@@ -149,53 +154,72 @@ export interface MaxPositionDeltaEstimationParams {
  * The max position is when the total sum of position healths is 0:
  *  sum(healths) = 0 = current health
  *  current health + (position health delta) = 0
- *  current health + (weight(amt) * amt * oraclePrice - amt * executionPrice) = 0
+ *  current health + (weight(amt) * amt * oraclePrice - (amt - existing_amt) * executionPrice) = 0
  *  (The execution price term is the estimated loss of quote health from executing the trade)
  *
  * solve for amt:
  *  amt = -current health / (weight * oraclePrice - executionPrice) if using regular weight, assume execution price = oracle price for now
  *  for large position penalized weight, we need to run Newton's method as weight is a function of amount
  *
- * see: {@link getLongLargePositionPenaltyWeightCalculator:CONTRACTS} and  {@link getShortLargePositionPenaltyWeightCalculator:CONTRACTS}
+ * NOTE: to calculate a max borrow position, simply pass `executionPriceEstimate` as zero, as there is no
+ * quote gain from borrowing without trading
  *
  * @param params
  */
 export function approximateMaxPositionSize(
-  params: MaxPositionDeltaEstimationParams,
+  params: MaxPositionSizeEstimationParams,
 ) {
   const {
-    currentHealthWithoutExistingBalance,
-    isLong,
-    largePositionPenalty,
-    oraclePrice,
-    regularWeight,
+    subaccountSummary,
+    side,
+    healthType,
+    productId,
+    executionPriceEstimate,
   } = params;
-  const executionPriceEstimate = oraclePrice;
 
   const tol = toBigDecimal(0.01);
   const dx = toBigDecimal(0.0001);
   const maxIters = 50;
 
-  // Take our initial guess at the amount implied by the regular weight
-  const start = currentHealthWithoutExistingBalance
-    .negated()
-    .div(regularWeight.times(oraclePrice).minus(executionPriceEstimate));
+  // Our starting health removes the health effect of the existing balance
+  const existingBalance = subaccountSummary.balances.find(
+    (balance) => balance.productId === productId,
+  );
+  if (existingBalance == null) {
+    // Zero balances should still be returned, so this is an error case
+    throw Error(`Balance info not found for the product ${productId}`);
+  }
 
-  const penaltyWeightCalculator = isLong
-    ? getLongLargePositionPenaltyWeightCalculator(largePositionPenalty)
-    : getShortLargePositionPenaltyWeightCalculator(largePositionPenalty);
+  const startingHealth = subaccountSummary.health[healthType].minus(
+    existingBalance.health[healthType],
+  );
+  const regularWeight = getRegularWeight(existingBalance, side, healthType);
+
+  // Take our initial guess at the amount implied by the regular weight, neglecting the quote health delta
+  // if switching sides
+  const start = startingHealth
+    .negated()
+    .div(
+      regularWeight
+        .times(existingBalance.oraclePrice)
+        .minus(executionPriceEstimate),
+    );
 
   // Given an amount, calculates health from simulating the trade
-  function calcHealthForSize(amount: BigDecimal) {
-    const largePositionWeight = penaltyWeightCalculator(amount);
-    const weight = isLong
-      ? BigDecimal.min(regularWeight, largePositionWeight)
-      : BigDecimal.max(regularWeight, largePositionWeight);
-    const amountHealth = amount.multipliedBy(oraclePrice).multipliedBy(weight);
-    return currentHealthWithoutExistingBalance.plus(
-      amountHealth.minus(amount.times(executionPriceEstimate)),
+  const calcHealthForSize = (amount: BigDecimal) => {
+    const healthForAmount = calcHealthForAmount(
+      existingBalance,
+      amount,
+      healthType,
     );
-  }
+    // Assume quote health is unweighted as an approximation
+    const quoteHealthDelta = amount
+      .minus(existingBalance.amount) // i.e. Amount delta
+      .times(executionPriceEstimate)
+      .negated();
+
+    return startingHealth.plus(healthForAmount.plus(quoteHealthDelta));
+  };
 
   // Run Newton's method: X_{n+1} = X_n - f(X_n) / f'(X_n)
   let curr = toBigDecimal(start);
@@ -204,7 +228,7 @@ export function approximateMaxPositionSize(
   while (calcHealthForSize(curr).abs().gt(tol)) {
     if (iters > maxIters) {
       console.warn(
-        'Iteration limit reached in approximateMaxPositionSize, returning non-amount penalized value',
+        'Iteration limit reached in approximateMaxPositionSize, returning initial guess',
       );
       return start;
     }
@@ -224,36 +248,8 @@ export function approximateMaxPositionSize(
     return BigDecimal.max(start, curr);
   } else {
     console.warn(
-      `Different signs for initial guess and Newton's method. With weight: ${start.toString()}, with position penalty ${curr.toString()}`,
+      `Different signs for initial guess and Newton's method. Initial guess: ${start.toString()}, with position penalty ${curr.toString()}`,
     );
     return start;
   }
-}
-
-/**
- * Returns a function to calculate the large position penalty weight for longs:
- * `1.1 / (1 + penalty * sqrt(amount.abs()))`
- * {@label CONTRACTS}
- *
- * @param penaltyTerm
- */
-export function getLongLargePositionPenaltyWeightCalculator(
-  penaltyTerm: BigDecimal,
-) {
-  return (amount: BigDecimal) =>
-    calcLongWeightWithPositionPenalty(penaltyTerm, amount);
-}
-
-/**
- * Returns a function to calculate the large position penalty weight for shorts:
- * `0.9 * (1 + penalty * sqrt(amount.abs()))`
- * {@label CONTRACTS}
- *
- * @param penaltyTerm
- */
-export function getShortLargePositionPenaltyWeightCalculator(
-  penaltyTerm: BigDecimal,
-) {
-  return (amount: BigDecimal) =>
-    calcShortWeightWithPositionPenalty(penaltyTerm, amount);
 }
