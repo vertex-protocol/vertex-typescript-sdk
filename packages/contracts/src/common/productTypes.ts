@@ -43,6 +43,8 @@ interface BaseProduct {
   longWeightMaintenance: BigDecimal;
   // Weight used to calculate maint. health for a short position
   shortWeightMaintenance: BigDecimal;
+  // Health penalty term for large position sizes
+  largePositionPenalty: BigDecimal;
   // From contract
   contractProduct:
     | IPerpEngine.ProductStructOutput

@@ -6,6 +6,10 @@ import {
   calcPerpBalanceValue,
   calcSpotBalanceValue,
 } from './balanceValue';
+import {
+  calcLongWeightWithPositionPenalty,
+  calcShortWeightWithPositionPenalty,
+} from './health';
 
 export interface TotalPortfolioValues {
   // Sum of spot and perpNotional
@@ -123,8 +127,22 @@ export function calcMarginUsageFractions(
   };
 }
 
+export interface MaxPositionEstimationParams {
+  // Current health of the subaccount
+  currentHealth: BigDecimal;
+  // Oracle price of the product
+  oraclePrice: BigDecimal;
+  // Estimated execution price of the product, for example, current market price, or limit price
+  executionPriceEstimate: BigDecimal;
+  // Weight of the product - either long or short, initial or maintenance
+  regularWeight: BigDecimal;
+  // Whether the calculation is for a long position - if false, then short position
+  isLong: boolean;
+  // The large position penalty term for the product
+  largePositionPenalty: BigDecimal;
+}
+
 /**
- * UNTESTED
  * Returns the maximum new position size (absolute) that can be placed given current health and market conditions.
  *
  * The max position is when the total sum of position healths is 0:
@@ -137,38 +155,58 @@ export function calcMarginUsageFractions(
  *  amt = -current health / (weight * oraclePrice - executionPrice) if using regular weight
  *  for large position penalized weight, we need to run Newton's method as weight is a function of amount
  *
- * @param currentHealth current health of the subaccount
- * @param oraclePrice oracle price of the product
- * @param executionPriceEstimate estimated execution price of the product, for example, current market price, or limit price
- * @param regularWeight weight of the product - either long or short, initial or maintenance
- * @param penaltyWeightCalculator function to calculate penalty weight given amount,
- *  see: {@link getLongLargePositionPenaltyWeightCalculator:CONTRACTS} and  {@link getShortLargePositionPenaltyWeightCalculator:CONTRACTS}
+ * see: {@link getLongLargePositionPenaltyWeightCalculator:CONTRACTS} and  {@link getShortLargePositionPenaltyWeightCalculator:CONTRACTS}
+ *
+ * @param params
  */
 export function approximateMaxPositionSize(
-  currentHealth: BigDecimal,
-  oraclePrice: BigDecimal,
-  executionPriceEstimate: BigDecimal,
-  regularWeight: BigDecimal,
-  penaltyWeightCalculator: (amount: BigDecimal) => BigDecimal,
+  params: MaxPositionEstimationParams,
 ) {
+  const {
+    currentHealth,
+    executionPriceEstimate,
+    isLong,
+    largePositionPenalty,
+    oraclePrice,
+    regularWeight,
+  } = params;
   const tol = toBigDecimal(0.01);
   const dx = toBigDecimal(0.0001);
+  const maxIters = 50;
 
   // Take our initial guess at the amount implied by the regular weight
   const start = currentHealth
     .negated()
     .div(regularWeight.times(oraclePrice).minus(executionPriceEstimate));
+  const penaltyWeightCalculator = isLong
+    ? getLongLargePositionPenaltyWeightCalculator(largePositionPenalty)
+    : getShortLargePositionPenaltyWeightCalculator(largePositionPenalty);
 
   // Given an amount, calculates health from simulating the trade
   function calcHealthForSize(amount: BigDecimal) {
-    const weight = penaltyWeightCalculator(amount);
+    const largePositionWeight = penaltyWeightCalculator(amount);
+    const weight = isLong
+      ? BigDecimal.min(regularWeight, largePositionWeight)
+      : BigDecimal.max(regularWeight, largePositionWeight);
     const amountHealth = amount.multipliedBy(oraclePrice).multipliedBy(weight);
-    return amountHealth.minus(amount.times(executionPriceEstimate));
+    return currentHealth.plus(
+      amountHealth.minus(amount.times(executionPriceEstimate)),
+    );
   }
 
   // Run Newton's method: X_{n+1} = X_n - f(X_n) / f'(X_n)
   let curr = toBigDecimal(start);
-  while (calcHealthForSize(curr).gt(tol)) {
+  let iters = 0;
+
+  while (calcHealthForSize(curr).abs().gt(tol)) {
+    if (iters > maxIters) {
+      console.warn(
+        'Iteration limit reached in approximateMaxPositionSize, returning non-amount penalized value',
+      );
+      return start;
+    }
+    iters++;
+
     // f'(X_n) = (f(X_n + dx) - f(X_n - dx)) / 2dx
     const derivative = calcHealthForSize(curr.plus(dx))
       .minus(calcHealthForSize(curr.minus(dx)))
@@ -182,9 +220,10 @@ export function approximateMaxPositionSize(
   } else if (start.lt(0) && curr.lt(0)) {
     return BigDecimal.max(start, curr);
   } else {
-    throw Error(
-      `Different signs for initial guess and Newton's method. With weight: ${start}, with position penalty ${curr}`,
+    console.warn(
+      `Different signs for initial guess and Newton's method. With weight: ${start.toString()}, with position penalty ${curr.toString()}`,
     );
+    return start;
   }
 }
 
@@ -199,9 +238,7 @@ export function getLongLargePositionPenaltyWeightCalculator(
   penaltyTerm: BigDecimal,
 ) {
   return (amount: BigDecimal) =>
-    toBigDecimal(1.1).div(
-      toBigDecimal(1).plus(penaltyTerm.multipliedBy(amount.abs().sqrt())),
-    );
+    calcLongWeightWithPositionPenalty(penaltyTerm, amount);
 }
 
 /**
@@ -215,7 +252,5 @@ export function getShortLargePositionPenaltyWeightCalculator(
   penaltyTerm: BigDecimal,
 ) {
   return (amount: BigDecimal) =>
-    toBigDecimal(0.9).times(
-      toBigDecimal(1).plus(penaltyTerm.multipliedBy(amount.abs().sqrt())),
-    );
+    calcShortWeightWithPositionPenalty(penaltyTerm, amount);
 }
