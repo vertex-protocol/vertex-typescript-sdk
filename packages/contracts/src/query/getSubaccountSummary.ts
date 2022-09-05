@@ -1,14 +1,12 @@
 import { BigNumberish } from 'ethers';
-import { BalanceWithProduct, WithContracts } from '../common';
-import { BigDecimal, fromX18 } from '@vertex-protocol/utils';
+import { BalanceWithProduct, HealthStatus, WithContracts } from '../common';
+import { fromX18 } from '@vertex-protocol/utils';
 import { IVertexQuerier } from '../typechain-types';
 import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
-import { HealthType } from '../common/healthTypes';
 
 /**
  * Encapsulates health for an account or an account balance
  */
-export type HealthStatus = Record<HealthType, BigDecimal>;
 
 export interface GetSubaccountSummaryParams {
   subaccountId: BigNumberish;
