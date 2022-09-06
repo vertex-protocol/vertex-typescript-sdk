@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 import {
   SignableRequestType,
   SignableRequestTypeToParams,
@@ -11,12 +10,9 @@ import {
 } from './signatureParamTypes';
 import { toX18 } from '@vertex-protocol/utils';
 
-// TODO: all values need to be stringified
-
 /**
  * Returns the EIP712 compatible values for signing.
  * TODO: Better typing here to remove stuff like `as DepositCollateralParams`?
- * TODO: lift individual handlers into functions to get rid of eslint disable
  *
  * @param requestType
  * @param params
@@ -27,51 +23,48 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
 ): Record<string, unknown> {
   switch (requestType) {
     case 'depositCollateral':
-      const depositParams = params as DepositCollateralParams;
-      return {
-        sender: depositParams.sender,
-        subaccountName: depositParams.subaccountName,
-        productId: depositParams.productId,
-        amount: depositParams.amount,
-        nonce: depositParams.nonce,
-      };
+      return getCollateralValues(params as DepositCollateralParams);
     case 'withdrawCollateral':
-      const withdrawParams = params as WithdrawCollateralParams;
-      return {
-        sender: withdrawParams.sender,
-        subaccountName: withdrawParams.subaccountName,
-        productId: withdrawParams.productId,
-        amount: withdrawParams.amount,
-        nonce: withdrawParams.nonce,
-      };
+      return getCollateralValues(params as WithdrawCollateralParams);
     case 'placeOrder':
-      const placeParams = params as OrderParams;
-      return {
-        subaccount: placeParams.subaccountId,
-        priceX18: toX18(placeParams.price),
-        amount: placeParams.amount,
-        expiration: placeParams.expiration,
-        nonce: placeParams.nonce,
-      };
+      return getOrderValues(params as OrderParams);
     case 'cancelOrder':
-      const cancelParams = params as OrderParams;
-      return {
-        subaccount: cancelParams.subaccountId,
-        priceX18: toX18(cancelParams.price),
-        amount: cancelParams.amount,
-        expiration: cancelParams.expiration,
-        nonce: cancelParams.nonce,
-      };
+      return getOrderValues(params as OrderParams);
     case 'liquidateSubaccount':
-      const liquidateParams = params as LiquidateSubaccountParams;
-      return {
-        sender: liquidateParams.sender,
-        subaccountName: liquidateParams.subaccountName,
-        liquidateeId: liquidateParams.liquidateeSubaccountId,
-        productId: liquidateParams.productId,
-        amount: liquidateParams.amount,
-        nonce: liquidateParams.nonce,
-      };
+      return getLiquidateSubaccountValues(params as LiquidateSubaccountParams);
   }
   throw Error(`Unknown request type: ${requestType}`);
+}
+
+function getCollateralValues(
+  params: DepositCollateralParams | WithdrawCollateralParams,
+) {
+  return {
+    sender: params.sender,
+    subaccountName: params.subaccountName,
+    productId: params.productId.toString(),
+    amount: params.amount.toString(),
+    nonce: params.nonce.toString(),
+  };
+}
+
+function getOrderValues(params: OrderParams) {
+  return {
+    subaccount: params.subaccountId.toString(),
+    priceX18: toX18(params.price).toString(),
+    amount: params.amount.toString(),
+    expiration: params.expiration.toString(),
+    nonce: params.nonce.toString(),
+  };
+}
+
+function getLiquidateSubaccountValues(params: LiquidateSubaccountParams) {
+  return {
+    sender: params.sender,
+    subaccountName: params.subaccountName,
+    liquidateeId: params.liquidateeSubaccountId.toString(),
+    productId: params.productId.toString(),
+    amount: params.amount.toString(),
+    nonce: params.nonce.toString(),
+  };
 }
