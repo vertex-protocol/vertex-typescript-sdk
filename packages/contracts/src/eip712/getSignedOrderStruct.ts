@@ -3,9 +3,9 @@ import {
   TypedDataField,
   TypedDataSigner,
 } from '@ethersproject/abstract-signer';
-import { IOffchainBook } from '../typechain-types';
 import { OrderAction, OrderbookRequest } from '../common';
 import { getContractOrderStruct } from './getContractOrderStruct';
+import { ISequencer } from '../typechain-types/IOffchainBook';
 
 interface SingleOrderSigningParams {
   // Order request to sign
@@ -67,7 +67,7 @@ export function getVertexEIP712OrderTypes(
  *
  * @param order
  */
-export function getVertexEIP712OrderValue(order: IOffchainBook.OrderStruct) {
+export function getVertexEIP712OrderValue(order: ISequencer.OrderStruct) {
   return {
     subaccount: order.subaccount.toString(),
     priceX18: order.priceX18.toString(),
@@ -84,7 +84,7 @@ export function getVertexEIP712OrderValue(order: IOffchainBook.OrderStruct) {
  */
 export async function getSignedOrderStruct(
   params: SingleOrderSigningParams,
-): Promise<IOffchainBook.SignedOrderStruct> {
+): Promise<ISequencer.SignedOrderStruct> {
   return {
     order: getContractOrderStruct(params.request.order),
     signature: await signContractOrderStruct(params),
@@ -98,7 +98,7 @@ export async function getSignedOrderStruct(
  */
 export async function getBatchSignedOrderStructs(
   params: BatchOrderSigningParams,
-): Promise<IOffchainBook.SignedOrderStruct[]> {
+): Promise<ISequencer.SignedOrderStruct[]> {
   const { requests, ...restSigningParams } = params;
   return Promise.all(
     requests.map((request) =>

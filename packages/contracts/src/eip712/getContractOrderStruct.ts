@@ -1,13 +1,13 @@
-import { IOffchainBook } from '../typechain-types';
 import { toX18 } from '@vertex-protocol/utils';
 import { OrderbookOrder } from '../common';
+import { ISequencer } from '../typechain-types/IOffchainBook';
 
 /**
  * Given an orderbook order, map to expected struct type by contracts
  */
 export function getContractOrderStruct(
   order: OrderbookOrder,
-): IOffchainBook.OrderStruct {
+): ISequencer.OrderStruct {
   return {
     amount: order.amount,
     nonce: order.nonce,

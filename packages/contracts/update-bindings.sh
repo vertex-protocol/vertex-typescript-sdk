@@ -6,7 +6,7 @@ if [[ -z "$VERTEX_HOME" ]]; then
 fi
 
 ABI_FILES=(
-"IOracle.json"
+"ISequencer.json"
 "IClearinghouse.json"
 "IOffchainBook.json"
 "IPerpEngine.json"

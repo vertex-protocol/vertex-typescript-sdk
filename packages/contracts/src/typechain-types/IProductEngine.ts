@@ -72,8 +72,6 @@ export interface IProductEngineInterface extends utils.Interface {
     "getHealthX18(uint64,uint8)": FunctionFragment;
     "getLiqPriceX18(uint32,int256)": FunctionFragment;
     "getMaximumLiquidatableX18(uint64,uint32,int256)": FunctionFragment;
-    "getOracle()": FunctionFragment;
-    "getOraclePriceX18(uint32)": FunctionFragment;
     "getOrderbook(uint32)": FunctionFragment;
     "getProductIds()": FunctionFragment;
     "hasAssets(uint64)": FunctionFragment;
@@ -93,8 +91,6 @@ export interface IProductEngineInterface extends utils.Interface {
       | "getHealthX18"
       | "getLiqPriceX18"
       | "getMaximumLiquidatableX18"
-      | "getOracle"
-      | "getOraclePriceX18"
       | "getOrderbook"
       | "getProductIds"
       | "hasAssets"
@@ -159,11 +155,6 @@ export interface IProductEngineInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ]
-  ): string;
-  encodeFunctionData(functionFragment: "getOracle", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "getOraclePriceX18",
-    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getOrderbook",
@@ -234,11 +225,6 @@ export interface IProductEngineInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getMaximumLiquidatableX18",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getOracle", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getOraclePriceX18",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -378,13 +364,6 @@ export interface IProductEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    getOracle(overrides?: CallOverrides): Promise<[string]>;
-
-    getOraclePriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -400,7 +379,7 @@ export interface IProductEngine extends BaseContract {
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _quote: PromiseOrValue<string>,
-      _oracle: PromiseOrValue<string>,
+      _sequencer: PromiseOrValue<string>,
       _admin: PromiseOrValue<string>,
       _fees: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -471,13 +450,6 @@ export interface IProductEngine extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  getOracle(overrides?: CallOverrides): Promise<string>;
-
-  getOraclePriceX18(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
   getOrderbook(
     productId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -493,7 +465,7 @@ export interface IProductEngine extends BaseContract {
   initialize(
     _clearinghouse: PromiseOrValue<string>,
     _quote: PromiseOrValue<string>,
-    _oracle: PromiseOrValue<string>,
+    _sequencer: PromiseOrValue<string>,
     _admin: PromiseOrValue<string>,
     _fees: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -564,13 +536,6 @@ export interface IProductEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getOracle(overrides?: CallOverrides): Promise<string>;
-
-    getOraclePriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -586,7 +551,7 @@ export interface IProductEngine extends BaseContract {
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _quote: PromiseOrValue<string>,
-      _oracle: PromiseOrValue<string>,
+      _sequencer: PromiseOrValue<string>,
       _admin: PromiseOrValue<string>,
       _fees: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -681,13 +646,6 @@ export interface IProductEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getOracle(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getOraclePriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -703,7 +661,7 @@ export interface IProductEngine extends BaseContract {
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _quote: PromiseOrValue<string>,
-      _oracle: PromiseOrValue<string>,
+      _sequencer: PromiseOrValue<string>,
       _admin: PromiseOrValue<string>,
       _fees: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -775,13 +733,6 @@ export interface IProductEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getOracle(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getOraclePriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -797,7 +748,7 @@ export interface IProductEngine extends BaseContract {
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _quote: PromiseOrValue<string>,
-      _oracle: PromiseOrValue<string>,
+      _sequencer: PromiseOrValue<string>,
       _admin: PromiseOrValue<string>,
       _fees: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }

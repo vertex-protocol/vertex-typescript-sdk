@@ -6,6 +6,7 @@ export type OrderbookID = string;
 export type OrderAction = 'order' | 'cancellation';
 
 /**
+ * TODO: Remove this
  * An abstraction type to be used to map to OffchainBook order structs
  */
 export interface OrderbookOrder {
@@ -44,6 +45,7 @@ export enum ValidationResult {
   RISK_CHECK_FAILED, // failed health check
   EXPIRED, // order expired
   CANCELLED, // order cancelled explicitly by user
+  FILLED, // fully filled
 }
 
 /**
@@ -68,6 +70,8 @@ export function toValidationResult(val: number): ValidationResult {
       return ValidationResult.EXPIRED;
     case 7:
       return ValidationResult.CANCELLED;
+    case 8:
+      return ValidationResult.FILLED;
     default:
       throw new Error(`Unknown validation result: ${val}`);
   }

@@ -1,5 +1,5 @@
 import { BigDecimal } from '@vertex-protocol/utils';
-import { IPerpEngine, ISpotEngine } from '../typechain-types';
+import { IPerpEngine, ISpotEngine } from '../../typechain-types';
 
 export const QUOTE_PRODUCT_ID = 0;
 

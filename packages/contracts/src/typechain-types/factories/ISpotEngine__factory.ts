@@ -335,38 +335,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "getOracle",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-    ],
-    name: "getOraclePriceX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "uint32",
@@ -683,7 +651,7 @@ const _abi = [
       },
       {
         internalType: "address",
-        name: "_oracle",
+        name: "_sequencer",
         type: "address",
       },
       {

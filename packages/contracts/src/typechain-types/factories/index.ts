@@ -4,9 +4,9 @@
 export { IClearinghouse__factory } from "./IClearinghouse__factory";
 export { IERC20__factory } from "./IERC20__factory";
 export { IOffchainBook__factory } from "./IOffchainBook__factory";
-export { IOracle__factory } from "./IOracle__factory";
 export { IPerpEngine__factory } from "./IPerpEngine__factory";
 export { IProductEngine__factory } from "./IProductEngine__factory";
+export { ISequencer__factory } from "./ISequencer__factory";
 export { ISpotEngine__factory } from "./ISpotEngine__factory";
 export { IVertexQuerier__factory } from "./IVertexQuerier__factory";
 export { MockERC20__factory } from "./MockERC20__factory";
