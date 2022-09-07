@@ -33,29 +33,35 @@ export class EngineServerExecuteClient extends EngineServerBaseClient {
     );
   }
 
-  async placeOrder(params: PlaceOrderParams) {
-    return this.execute('place_order', {
-      digest: await getOrderDigest({
-        chainId: params.chainId,
-        order: params.signedOrder.order,
-        orderbookAddress: params.orderbookAddress,
-      }),
+  async placeOrder(params: PlaceOrderParams): Promise<string> {
+    const digest = await getOrderDigest({
+      chainId: params.chainId,
+      order: params.signedOrder.order,
+      orderbookAddress: params.orderbookAddress,
+    });
+    await this.execute('place_order', {
+      digest,
       product_id: params.productId,
       signed_order: encodeSignedOrderTx(params.signedOrder),
     });
+
+    return digest;
   }
 
-  async cancelOrder(params: CancelOrderParams) {
-    return this.execute('cancel_order', {
-      digest: await getOrderDigest({
-        chainId: params.chainId,
-        order: params.signedOrder.order,
-        orderbookAddress: params.orderbookAddress,
-      }),
+  async cancelOrder(params: CancelOrderParams): Promise<string> {
+    const digest = await getOrderDigest({
+      chainId: params.chainId,
+      order: params.signedOrder.order,
+      orderbookAddress: params.orderbookAddress,
+    });
+    await this.execute('cancel_order', {
+      digest,
       product_id: params.productId,
       signed_order: encodeSignedOrderTx(params.signedOrder),
     });
+
+    return digest;
   }
 
-  // TODO: update time/price & settle PNL
+  // TODO: settle PNL
 }

@@ -8,6 +8,7 @@ import {
   RedisQueryRequest,
   RedisQueryRequestByType,
   RedisQueryRequestType,
+  RedisQueryResponse,
 } from './types';
 import { getRedisExecuteResultKey, getRedisQueryResultKey } from './utils';
 
@@ -66,10 +67,10 @@ export class EngineServerBaseClient {
     return this.waitForRedisResponse(resultKey, timeout);
   }
 
-  async query<TRequestType extends RedisQueryRequestType, TResponseType>(
+  async query<TRequestType extends RedisQueryRequestType>(
     requestType: TRequestType,
     params: RedisQueryRequestByType[TRequestType],
-  ): Promise<TResponseType> {
+  ): Promise<RedisQueryResponse<TRequestType>> {
     // Get request
     const resultKey = getRedisQueryResultKey(requestType, params);
     const redisRequest: RedisQueryRequest = {

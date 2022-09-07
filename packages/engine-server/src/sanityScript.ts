@@ -70,7 +70,14 @@ async function main() {
   console.log('Subaccount ID', subaccountId.toString());
 
   console.log('Querying products and subaccount');
-  // TODO
+
+  const products = await client.query('all_products', {});
+  console.log('All products', JSON.stringify(products, null, 2));
+
+  const subaccountInfo = await client.query('subaccount_info', {
+    subaccount_id: subaccountId.toNumber(),
+  });
+  console.log('Subaccount info', JSON.stringify(subaccountInfo, null, 2));
 
   console.log('Placing order');
   const productId = 1;
@@ -92,13 +99,33 @@ async function main() {
       verifyingContract: orderbookAddr,
     }),
   };
-  await client.placeOrder({
+  const orderDigest = await client.placeOrder({
     chainId,
     orderbookAddress: orderbookAddr,
     productId,
     signedOrder,
   });
   console.log('Done placing order');
+
+  const subaccountOrders = await client.query('subaccount_orders', {
+    product_id: productId,
+    subaccount_id: subaccountId.toNumber(),
+  });
+  console.log('Subaccount orders', JSON.stringify(subaccountOrders));
+  const marketLiquidity = await client.query('market_liquidity', {
+    depth: 10,
+    product_id: productId,
+  });
+  console.log('Market liquidity', JSON.stringify(marketLiquidity, null, 2));
+  const marketPrice = await client.query('market_price', {
+    product_id: productId,
+  });
+  console.log('Market price', JSON.stringify(marketPrice, null, 2));
+  const queriedOrder = await client.query('order', {
+    digest: orderDigest,
+    product_id: productId,
+  });
+  console.log('Queried order', JSON.stringify(queriedOrder, null, 2));
 
   console.log('Cancelling order');
   await client.cancelOrder({
@@ -108,6 +135,15 @@ async function main() {
     signedOrder,
   });
   console.log('Done cancelling order');
+
+  const subaccountOrdersAfterCancel = await client.query('subaccount_orders', {
+    product_id: productId,
+    subaccount_id: subaccountId.toNumber(),
+  });
+  console.log(
+    'Subaccount orders after cancellation',
+    JSON.stringify(subaccountOrdersAfterCancel),
+  );
 
   await client.teardown();
 }

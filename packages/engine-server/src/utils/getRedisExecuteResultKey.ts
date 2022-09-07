@@ -12,6 +12,7 @@ export function getRedisExecuteResultKey<
     case 'cancel_order':
       return null;
     default:
+      // TODO better keys
       return `${requestType}_${JSON.stringify(params)}`;
   }
 }
