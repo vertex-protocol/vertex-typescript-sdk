@@ -1,5 +1,10 @@
 import { BigNumberish } from 'ethers';
 
+export interface SignedTx<TBaseTx> {
+  tx: TBaseTx;
+  signature: string;
+}
+
 export interface DepositCollateralParams {
   // Address of sender
   sender: string;

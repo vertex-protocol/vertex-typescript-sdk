@@ -22,15 +22,15 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
   params: SignableRequestTypeToParams[TReqType],
 ): Record<string, unknown> {
   switch (requestType) {
-    case 'depositCollateral':
+    case 'deposit_collateral':
       return getCollateralValues(params as DepositCollateralParams);
-    case 'withdrawCollateral':
+    case 'withdraw_collateral':
       return getCollateralValues(params as WithdrawCollateralParams);
-    case 'placeOrder':
+    case 'place_order':
       return getOrderValues(params as OrderParams);
-    case 'cancelOrder':
+    case 'cancel_order':
       return getOrderValues(params as OrderParams);
-    case 'liquidateSubaccount':
+    case 'liquidate_subaccount':
       return getLiquidateSubaccountValues(params as LiquidateSubaccountParams);
   }
   throw Error(`Unknown request type: ${requestType}`);

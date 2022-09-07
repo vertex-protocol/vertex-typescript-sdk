@@ -6,11 +6,11 @@ import {
 } from './signatureParamTypes';
 
 export interface SignableRequestTypeToParams {
-  depositCollateral: DepositCollateralParams;
-  withdrawCollateral: WithdrawCollateralParams;
-  placeOrder: OrderParams;
-  cancelOrder: OrderParams;
-  liquidateSubaccount: LiquidateSubaccountParams;
+  deposit_collateral: DepositCollateralParams;
+  withdraw_collateral: WithdrawCollateralParams;
+  place_order: OrderParams;
+  cancel_order: OrderParams;
+  liquidate_subaccount: LiquidateSubaccountParams;
 }
 
 export type SignableRequestType = keyof SignableRequestTypeToParams;

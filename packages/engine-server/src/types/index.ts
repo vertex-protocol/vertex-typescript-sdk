@@ -1,3 +1,3 @@
-export * from './redisQueryRequestTypes';
-export * from './redisExecuteRequestTypes';
+export * from './redisQueryTypes';
+export * from './redisExecuteTypes';
 export * from './clientTypes';

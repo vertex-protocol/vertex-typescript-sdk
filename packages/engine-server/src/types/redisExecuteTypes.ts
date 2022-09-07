@@ -1,3 +1,10 @@
+export interface RedisExecutionResult {
+  status: 'success' | 'failure';
+  error?: {
+    message: string; // Revert message, defaulting to "" if none
+  };
+}
+
 export interface RedisPlaceOrderParams {
   product_id: number;
   // Bytes
@@ -14,8 +21,14 @@ export interface RedisCancelOrderParams {
   signed_order: string;
 }
 
-// TODO: extract these actions into a common type?
 export interface RedisExecuteRequestByType {
+  // String types are bytes
+  liquidate_subaccount: string;
+  deposit_collateral: string;
+  withdraw_collateral: string;
+  update_time: string;
+  update_price: string;
+  settle_pnl: string;
   place_order: RedisPlaceOrderParams;
   cancel_order: RedisCancelOrderParams;
 }
