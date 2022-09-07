@@ -63,13 +63,15 @@ export function encodeSignedOrderTx(
     ],
     [
       [
-        signed.order.subaccountId,
-        toX18(signed.order.price),
-        signed.order.amount,
-        signed.order.expiration,
-        signed.order.nonce,
+        [
+          signed.order.subaccountId,
+          toX18(signed.order.price),
+          signed.order.amount,
+          signed.order.expiration,
+          signed.order.nonce,
+        ],
+        signed.signature,
       ],
-      signed.signature,
     ],
   );
 }

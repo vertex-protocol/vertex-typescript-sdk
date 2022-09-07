@@ -19,7 +19,7 @@ export async function getOrderDigest(params: OrderDigestParams) {
   const { chainId, order, orderbookAddress } = params;
   return ethers.utils._TypedDataEncoder.hash(
     getVertexEIP712Domain(orderbookAddress, chainId),
-    getVertexEIP712Types('placeOrder'),
-    getVertexEIP712Values('placeOrder', order),
+    getVertexEIP712Types('place_order'),
+    getVertexEIP712Values('place_order', order),
   );
 }

@@ -3,6 +3,7 @@ import { OrderParams } from '@vertex-protocol/contracts';
 export interface EngineServerClientOpts {
   // Redis Endpoint URL
   url: string;
+  debugLogging?: boolean;
 }
 
 export interface PlaceOrderParams {

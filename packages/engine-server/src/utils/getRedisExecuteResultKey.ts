@@ -14,5 +14,4 @@ export function getRedisExecuteResultKey<
     default:
       return `${requestType}_${JSON.stringify(params)}`;
   }
-  return null;
 }

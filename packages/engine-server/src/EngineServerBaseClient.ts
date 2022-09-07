@@ -16,13 +16,15 @@ const DEFAULT_TIMEOUT_MS = 1000 * 10; // 10s
 export class EngineServerBaseClient {
   readonly redisEndpointUrl: string;
   readonly redisClient: RedisClientType;
+  readonly debugLoggingEnabled: boolean;
 
   /**
    * Note - `connect()` must be called before any other methods are used
    */
-  constructor({ url }: EngineServerClientOpts) {
+  constructor({ url, debugLogging }: EngineServerClientOpts) {
     this.redisEndpointUrl = url;
     this.redisClient = createClient({ url });
+    this.debugLoggingEnabled = debugLogging ?? false;
     this.redisClient.on('error', (err) => {
       console.error('[EngineServerClient] Error:', err);
     });
@@ -85,6 +87,10 @@ export class EngineServerBaseClient {
     requestType: 'execute' | 'query',
     data: RedisQueryRequest | RedisExecuteRequest,
   ) {
+    this.debugLog(
+      `[EngineServerClient] Sending ${requestType} request`,
+      JSON.stringify(data),
+    );
     await this.redisClient.rPush(requestType, JSON.stringify(data));
   }
 
@@ -92,11 +98,24 @@ export class EngineServerBaseClient {
     key: string,
     timeout = DEFAULT_TIMEOUT_MS,
   ): Promise<TOutput> {
+    this.debugLog(`[EngineServerClient] Waiting for ${key} response`);
+
     const result = await this.redisClient.blPop(key, timeout);
+    this.debugLog(
+      `[EngineServerClient] Response fetched for key ${key}`,
+      JSON.stringify(result),
+    );
     if (!result) {
       throw Error(`Timeout waiting for redis response for key ${key}`);
     }
 
     return JSON.parse(result.element);
+  }
+
+  private debugLog(message?: any, ...optionalParams: any[]): void {
+    if (!this.debugLoggingEnabled) {
+      return;
+    }
+    console.debug(message, ...optionalParams);
   }
 }

@@ -10,7 +10,7 @@ export function getVertexEIP712Types(
   requestType: SignableRequestType,
 ): Record<string, Array<TypedDataField>> {
   switch (requestType) {
-    case 'depositCollateral':
+    case 'deposit_collateral':
       return {
         DepositCollateral: [
           { name: 'sender', type: 'address' },
@@ -20,7 +20,7 @@ export function getVertexEIP712Types(
           { name: 'nonce', type: 'uint64' },
         ],
       };
-    case 'withdrawCollateral':
+    case 'withdraw_collateral':
       return {
         WithdrawCollateral: [
           { name: 'sender', type: 'address' },
@@ -30,7 +30,7 @@ export function getVertexEIP712Types(
           { name: 'nonce', type: 'uint64' },
         ],
       };
-    case 'placeOrder':
+    case 'place_order':
       return {
         Order: [
           { name: 'subaccount', type: 'uint64' },
@@ -40,7 +40,7 @@ export function getVertexEIP712Types(
           { name: 'nonce', type: 'uint64' },
         ],
       };
-    case 'cancelOrder':
+    case 'cancel_order':
       return {
         Cancellation: [
           { name: 'subaccount', type: 'uint64' },
@@ -50,7 +50,7 @@ export function getVertexEIP712Types(
           { name: 'nonce', type: 'uint64' },
         ],
       };
-    case 'liquidateSubaccount':
+    case 'liquidate_subaccount':
       return {
         LiquidateSubaccount: [
           { name: 'sender', type: 'address' },
