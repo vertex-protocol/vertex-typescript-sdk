@@ -111,7 +111,7 @@ export interface RedisQueryResponseByType {
 }
 
 export interface RedisQueryResponse<
-  TQueryType extends keyof RedisQueryResponseByType,
+  TQueryType extends keyof RedisQueryResponseByType = RedisQueryRequestType,
 > {
   status: 'success' | 'failure';
   data: RedisQueryResponseByType[TQueryType];
