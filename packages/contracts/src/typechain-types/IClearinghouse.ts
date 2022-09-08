@@ -133,6 +133,7 @@ export interface IClearinghouseInterface extends utils.Interface {
     "getNumSubaccounts()": FunctionFragment;
     "getOrderbook(uint32)": FunctionFragment;
     "getQuote()": FunctionFragment;
+    "getSequencer()": FunctionFragment;
     "getSubaccountId(address,string)": FunctionFragment;
     "getSubaccountOwner(uint64)": FunctionFragment;
     "getSupportedEngines()": FunctionFragment;
@@ -156,6 +157,7 @@ export interface IClearinghouseInterface extends utils.Interface {
       | "getNumSubaccounts"
       | "getOrderbook"
       | "getQuote"
+      | "getSequencer"
       | "getSubaccountId"
       | "getSubaccountOwner"
       | "getSupportedEngines"
@@ -211,6 +213,10 @@ export interface IClearinghouseInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "getQuote", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getSequencer",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "getSubaccountId",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
@@ -282,6 +288,10 @@ export interface IClearinghouseInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getQuote", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getSequencer",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getSubaccountId",
     data: BytesLike
@@ -453,6 +463,10 @@ export interface IClearinghouse extends BaseContract {
 
     getQuote(overrides?: CallOverrides): Promise<[string]>;
 
+    getSequencer(
+      overrides?: CallOverrides
+    ): Promise<[string] & { sequencer: string }>;
+
     getSubaccountId(
       owner: PromiseOrValue<string>,
       subaccountName: PromiseOrValue<string>,
@@ -538,6 +552,8 @@ export interface IClearinghouse extends BaseContract {
 
   getQuote(overrides?: CallOverrides): Promise<string>;
 
+  getSequencer(overrides?: CallOverrides): Promise<string>;
+
   getSubaccountId(
     owner: PromiseOrValue<string>,
     subaccountName: PromiseOrValue<string>,
@@ -622,6 +638,8 @@ export interface IClearinghouse extends BaseContract {
     ): Promise<string>;
 
     getQuote(overrides?: CallOverrides): Promise<string>;
+
+    getSequencer(overrides?: CallOverrides): Promise<string>;
 
     getSubaccountId(
       owner: PromiseOrValue<string>,
@@ -759,6 +777,8 @@ export interface IClearinghouse extends BaseContract {
 
     getQuote(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getSequencer(overrides?: CallOverrides): Promise<BigNumber>;
+
     getSubaccountId(
       owner: PromiseOrValue<string>,
       subaccountName: PromiseOrValue<string>,
@@ -844,6 +864,8 @@ export interface IClearinghouse extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getQuote(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getSequencer(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getSubaccountId(
       owner: PromiseOrValue<string>,

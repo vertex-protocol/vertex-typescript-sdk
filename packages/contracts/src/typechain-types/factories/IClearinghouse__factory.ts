@@ -366,6 +366,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getSequencer",
+    outputs: [
+      {
+        internalType: "address",
+        name: "sequencer",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
