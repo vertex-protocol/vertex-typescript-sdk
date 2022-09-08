@@ -1,5 +1,4 @@
 import { BigDecimal } from '@vertex-protocol/utils';
-import { IPerpEngine, ISpotEngine } from '../../typechain-types';
 
 export const QUOTE_PRODUCT_ID = 0;
 
@@ -45,10 +44,6 @@ interface BaseProduct {
   shortWeightMaintenance: BigDecimal;
   // Health penalty term for large position sizes
   largePositionPenalty: BigDecimal;
-  // From contract
-  contractProduct:
-    | IPerpEngine.ProductStructOutput
-    | ISpotEngine.ProductStructOutput;
 }
 
 /**
@@ -58,8 +53,6 @@ export interface PerpProduct extends BaseProduct {
   type: ProductEngineType.PERP;
   emaPrice: BigDecimal;
   // TODO: funding stuff
-
-  contractProduct: IPerpEngine.ProductStructOutput;
 }
 
 /**
@@ -79,8 +72,6 @@ export interface SpotProduct extends BaseProduct {
   totalDeposited: BigDecimal;
   // Total borrowed for this product
   totalBorrowed: BigDecimal;
-
-  contractProduct: ISpotEngine.ProductStructOutput;
 }
 
 export type Product = PerpProduct | SpotProduct;

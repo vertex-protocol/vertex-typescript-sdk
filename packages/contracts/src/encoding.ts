@@ -1,7 +1,7 @@
 import {
   DepositCollateralParams,
   LiquidateSubaccountParams,
-  OrderParams,
+  SignedOrderParams,
   SignedTx,
   WithdrawCollateralParams,
 } from './eip712';
@@ -53,10 +53,7 @@ export function encodeSignedCollateralTx(
   );
 }
 
-export function encodeSignedOrderTx(
-  // Not really a tx, but leverage the same type
-  signed: { order: OrderParams; signature: string },
-) {
+export function encodeSignedOrder(signed: SignedOrderParams) {
   return defaultAbiCoder.encode(
     [
       'tuple(tuple(uint64 subaccount, int256 priceX18, int256 amount, uint64 expiration, uint64 nonce) order, bytes signature)',

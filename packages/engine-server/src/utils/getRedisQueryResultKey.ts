@@ -18,7 +18,7 @@ export function getRedisQueryResultKey<
   const baseKey = `query_resp_${requestType}`;
   switch (requestType) {
     case 'all_products':
-      return `${baseKey}_all_products`;
+      return baseKey;
     case 'subaccount_info':
       return `${baseKey}_${
         (params as RedisSubaccountInfoQueryParams).subaccount_id

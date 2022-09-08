@@ -19,15 +19,20 @@ export function mapEngineSpotProduct(
     interestLargeCap: fromX18(product.config.interestLargeCapX18),
     interestFloor: fromX18(product.config.interestFloorX18),
     interestInflectionUtil: fromX18(product.config.interestInflectionUtilX18),
-    totalBorrowed: calcTotalBorrowed(product.state),
-    totalDeposited: calcTotalDeposited(product.state),
+    totalBorrowed: calcTotalBorrowed(
+      product.state.totalBorrowsNormalizedX18,
+      product.state.cumulativeBorrowsMultiplierX18,
+    ),
+    totalDeposited: calcTotalDeposited(
+      product.state.totalDepositsNormalizedX18,
+      product.state.cumulativeDepositsMultiplierX18,
+    ),
     shortWeightInitial: fromX18(product.config.shortWeightInitialX18),
     shortWeightMaintenance: fromX18(product.config.shortWeightMaintenanceX18),
     longWeightInitial: fromX18(product.config.longWeightInitialX18),
     longWeightMaintenance: fromX18(product.config.longWeightMaintenanceX18),
     largePositionPenalty: fromX18(product.config.largePositionPenaltyX18),
     oraclePrice: fromX18(product.state.priceX18),
-    contractProduct: product,
   };
 }
 
@@ -43,7 +48,6 @@ export function mapEnginePerpProduct(
     largePositionPenalty: fromX18(product.config.largePositionPenaltyX18),
     oraclePrice: fromX18(product.state.priceX18),
     emaPrice: fromX18(product.state.emaPriceX18),
-    contractProduct: product,
   };
 }
 

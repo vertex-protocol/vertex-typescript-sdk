@@ -1,4 +1,3 @@
-import { ISpotEngine } from '../typechain-types';
 import {
   BigDecimal,
   BigDecimalish,
@@ -7,30 +6,29 @@ import {
   toBigDecimal,
 } from '@vertex-protocol/utils';
 import { SpotProduct } from '../common';
+import { BigNumberish } from 'ethers';
 
 /**
  * Calculate amount total borrowed for a product
- *
- * @param state SpotEngine product state. Uses the base contract type as it is used to map to the internal SpotProduct type.
  */
 export function calcTotalBorrowed(
-  state: ISpotEngine.StateStructOutput,
+  totalBorrowsNormalizedX18: BigNumberish,
+  cumulativeBorrowsMultiplierX18: BigNumberish,
 ): BigDecimal {
-  return fromX18(state.totalBorrowsNormalizedX18).multipliedBy(
-    fromX18(state.cumulativeBorrowsMultiplierX18),
+  return fromX18(totalBorrowsNormalizedX18).multipliedBy(
+    fromX18(cumulativeBorrowsMultiplierX18),
   );
 }
 
 /**
  * Calculate amount total deposited for a product.
- *
- * @param state SpotEngine product state. Uses the base contract type as it is used to map to the internal SpotProduct type.
  */
 export function calcTotalDeposited(
-  state: ISpotEngine.StateStructOutput,
+  totalDepositsNormalizedX18: BigNumberish,
+  cumulativeDepositsMultiplierX18: BigNumberish,
 ): BigDecimal {
-  return fromX18(state.totalDepositsNormalizedX18).multipliedBy(
-    fromX18(state.cumulativeDepositsMultiplierX18),
+  return fromX18(totalDepositsNormalizedX18).multipliedBy(
+    fromX18(cumulativeDepositsMultiplierX18),
   );
 }
 

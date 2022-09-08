@@ -2,12 +2,9 @@ import {
   DepositCollateralParams,
   encodeSignedCollateralTx,
   encodeSignedLiquidateSubaccountTx,
-  encodeSignedOrderTx,
+  encodeSignedOrder,
   getOrderDigest,
-  getSignedTransactionRequest,
   LiquidateSubaccountParams,
-  SignableRequestType,
-  SignableRequestTypeToParams,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import {
@@ -84,7 +81,7 @@ export class EngineExecuteClient extends EngineBaseClient {
     await this.execute('place_order', {
       digest,
       product_id: params.productId,
-      signed_order: encodeSignedOrderTx(signedOrder),
+      signed_order: encodeSignedOrder(signedOrder),
     });
 
     return digest;
@@ -107,29 +104,11 @@ export class EngineExecuteClient extends EngineBaseClient {
     await this.execute('cancel_order', {
       digest,
       product_id: params.productId,
-      signed_order: encodeSignedOrderTx(signedOrder),
+      signed_order: encodeSignedOrder(signedOrder),
     });
 
     return digest;
   }
 
   // TODO: settle PNL
-
-  private async getSigningChainId(): Promise<number> {
-    return this.opts.signingChainId ?? (await this.opts.signer.getChainId());
-  }
-
-  private async sign<T extends SignableRequestType>(
-    requestType: T,
-    verifyingContract: string,
-    params: SignableRequestTypeToParams[T],
-  ) {
-    return getSignedTransactionRequest({
-      chainId: await this.getSigningChainId(),
-      requestParams: params,
-      requestType,
-      signer: this.opts.signer,
-      verifyingContract,
-    });
-  }
 }

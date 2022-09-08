@@ -23,7 +23,8 @@
     "src"
   ],
   "dependencies": {
-    "ts-mixer": "^6.0.1"
+    "ts-mixer": "^6.0.1",
+    "axios": "^0.27.2"
   },
   "devDependencies": {
     "@vertex-protocol/contracts": "^0.1.0-alpha.1",

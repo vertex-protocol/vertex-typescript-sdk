@@ -58,6 +58,7 @@ export interface RedisSubaccountInfoResponse {
   subaccount_id: BigNumberish;
   spot_balances: RedisSpotBalance[];
   perp_balances: RedisPerpBalance[];
+  all_products: RedisAllProductsResponse;
 }
 
 export interface RedisAllProductsResponse {
@@ -65,14 +66,19 @@ export interface RedisAllProductsResponse {
   perp_products: RedisPerpProduct[];
 }
 
+// Price, liquidity pairs
+export type RedisPriceTickLiquidity = [
+  priceX18: BigNumberish,
+  liquidity: BigNumberish,
+];
+
 export interface RedisMarketLiquidityResponse {
-  // Price, liquidity pairs
-  bids: [priceX18: BigNumberish, liquidity: BigNumberish][];
-  asks: [priceX18: BigNumberish, liquidity: BigNumberish][];
+  bids: RedisPriceTickLiquidity[];
+  asks: RedisPriceTickLiquidity[];
 }
 
 export interface RedisSubaccountOrdersResponse {
-  subaccount_id: bigint;
+  subaccount_id: BigNumberish;
   product_id: number;
   orders: RedisGetOrderResponse[];
 }
@@ -85,11 +91,11 @@ export interface RedisMarketPriceResponse {
 
 export interface RedisGetOrderResponse {
   product_id: number;
-  subaccount: bigint;
+  subaccount: BigNumberish;
   price_x18: BigNumberish;
   amount: BigNumberish;
-  expiration: bigint;
-  nonce: bigint;
+  expiration: BigNumberish;
+  nonce: BigNumberish;
   unfilled_amount: BigNumberish;
   digest: string;
 }

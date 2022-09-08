@@ -15,7 +15,6 @@ export function getSubaccountSummaryWithDeltas(
   deltas: { productId: number; amountDelta: BigDecimal }[],
 ): SubaccountSummaryResponse {
   // Clone the existing summary, this is somewhat hacky, but will work in 99% of circumstances
-  // Note that the `contractProduct` within each balance will not be changed
   const newSummary: SubaccountSummaryResponse = {
     health: {
       ...existingSummary.health,

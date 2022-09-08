@@ -18,16 +18,18 @@ export interface ExecuteRequestResponse {
   result_key: string | null;
 }
 
-export type GetExecuteResultQueryParams = ExecuteRequestResponse;
+export interface GetExecuteResultQueryParams {
+  result_key: string;
+}
 
 export type GetExecuteResultResponse = RedisExecutionResult;
 
-export interface QueryRequestQueryParams<
+export type QueryRequestQueryParams<
   T extends RedisQueryRequestType = RedisQueryRequestType,
-> {
+> = RedisQueryRequestByType[T] & {
   type: T;
-  params: RedisQueryRequestByType[T];
-}
+};
 
-export type QueryRequestResponse<T extends RedisQueryRequestType> =
-  RedisQueryResponse<T>;
+export type QueryRequestResponse<
+  T extends RedisQueryRequestType = RedisQueryRequestType,
+> = RedisQueryResponse<T>;

@@ -5,6 +5,11 @@ export interface SignedTx<TBaseTx> {
   signature: string;
 }
 
+export interface SignedOrderParams {
+  order: OrderParams;
+  signature: string;
+}
+
 export interface DepositCollateralParams {
   // Address of sender
   sender: string;

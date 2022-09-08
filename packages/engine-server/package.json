@@ -23,8 +23,7 @@
     "src"
   ],
   "dependencies": {
-    "redis": "^4.3.0",
-    "ts-mixer": "^6.0.1"
+    "redis": "^4.3.0"
   },
   "devDependencies": {
     "@vertex-protocol/contracts": "^0.1.0-alpha.1",
