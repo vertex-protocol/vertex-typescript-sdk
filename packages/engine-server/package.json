@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/engine-server",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -26,8 +26,8 @@
     "redis": "^4.3.0"
   },
   "devDependencies": {
-    "@vertex-protocol/contracts": "^0.1.0-alpha.1",
-    "@vertex-protocol/utils": "^0.1.0-alpha.1",
+    "@vertex-protocol/contracts": "^0.1.0-alpha.2",
+    "@vertex-protocol/utils": "^0.1.0-alpha.2",
     "ethers": "^5.6.9"
   },
   "peerDependencies": {
