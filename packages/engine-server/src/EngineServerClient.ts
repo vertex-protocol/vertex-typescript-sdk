@@ -45,7 +45,7 @@ export class EngineServerClient {
   async execute<TRequestType extends RedisExecuteRequestType>(
     requestType: TRequestType,
     params: RedisExecuteRequestByType[TRequestType],
-  ): Promise<string | null> {
+  ): Promise<string> {
     // Get request
     const resultKey = getRedisExecuteResultKey(requestType, params);
     const redisRequest: RedisExecuteRequest = {

@@ -9,6 +9,7 @@ import {
 } from '@vertex-protocol/contracts';
 import {
   CancelOrderParams,
+  OrderActionResult,
   PlaceOrderParams,
   WithSequencerAddr,
 } from './types';
@@ -64,7 +65,7 @@ export class EngineExecuteClient extends EngineBaseClient {
     );
   }
 
-  async placeOrder(params: PlaceOrderParams): Promise<string> {
+  async placeOrder(params: PlaceOrderParams): Promise<OrderActionResult> {
     const digest = await getOrderDigest({
       chainId: await this.getSigningChainId(),
       order: params.order,
@@ -78,16 +79,16 @@ export class EngineExecuteClient extends EngineBaseClient {
         params.order,
       ),
     };
-    await this.execute('place_order', {
+    const resultKey = await this.execute('place_order', {
       digest,
       product_id: params.productId,
       signed_order: encodeSignedOrder(signedOrder),
     });
 
-    return digest;
+    return { digest, executeResultKey: resultKey };
   }
 
-  async cancelOrder(params: CancelOrderParams): Promise<string> {
+  async cancelOrder(params: CancelOrderParams): Promise<OrderActionResult> {
     const digest = await getOrderDigest({
       chainId: await this.getSigningChainId(),
       order: params.order,
@@ -101,13 +102,13 @@ export class EngineExecuteClient extends EngineBaseClient {
         params.order,
       ),
     };
-    await this.execute('cancel_order', {
+    const resultKey = await this.execute('cancel_order', {
       digest,
       product_id: params.productId,
       signed_order: encodeSignedOrder(signedOrder),
     });
 
-    return digest;
+    return { digest, executeResultKey: resultKey };
   }
 
   // TODO: settle PNL

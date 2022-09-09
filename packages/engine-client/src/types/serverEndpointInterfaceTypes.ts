@@ -15,7 +15,7 @@ export interface ExecuteRequestBody<
 }
 
 export interface ExecuteRequestResponse {
-  result_key: string | null;
+  result_key: string;
 }
 
 export interface GetExecuteResultQueryParams {

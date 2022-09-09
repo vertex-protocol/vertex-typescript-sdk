@@ -83,7 +83,7 @@ async function main() {
     price: 10,
     subaccountId,
   };
-  const orderDigest = await client.placeOrder({
+  const { digest: orderDigest } = await client.placeOrder({
     orderbookAddr,
     productId,
     order,

@@ -37,7 +37,7 @@ export type RedisExecuteRequestType = keyof RedisExecuteRequestByType;
 
 export interface RedisExecuteRequest {
   // Redis output key to where execution results are sent
-  result_key: string | null;
+  result_key: string;
   // Request, keyed by ONE type, value of request params, this isn't the best typing here, resolve later
   request: Partial<RedisExecuteRequestByType>;
 }

@@ -9,6 +9,7 @@ import {
   EngineClientOpts,
   ExecuteRequestBody,
   ExecuteRequestResponse,
+  ExecuteResultKey,
   GetExecuteResultQueryParams,
   GetExecuteResultResponse,
   QueryRequestResponse,
@@ -63,7 +64,7 @@ export class EngineBaseClient {
   protected async execute<TRequestType extends RedisExecuteRequestType>(
     requestType: TRequestType,
     params: RedisExecuteRequestByType[TRequestType],
-  ): Promise<string | null> {
+  ): Promise<ExecuteResultKey> {
     const reqBody: ExecuteRequestBody = {
       type: requestType,
       params,
@@ -79,7 +80,9 @@ export class EngineBaseClient {
   }
 
   protected async getSigningChainId(): Promise<number> {
-    return this.opts.signingChainId ?? (await this.opts.signer.getChainId());
+    return (
+      this.opts.signingChainId ?? (await this.opts.signer?.getChainId()) ?? -1
+    );
   }
 
   protected async sign<T extends SignableRequestType>(
@@ -87,6 +90,9 @@ export class EngineBaseClient {
     verifyingContract: string,
     params: SignableRequestTypeToParams[T],
   ) {
+    if (this.opts.signer == null) {
+      throw Error('No signer provided');
+    }
     return getSignedTransactionRequest({
       chainId: await this.getSigningChainId(),
       requestParams: params,
