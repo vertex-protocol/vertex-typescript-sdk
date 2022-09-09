@@ -496,7 +496,7 @@ export interface ISpotEngine extends BaseContract {
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _quote: PromiseOrValue<string>,
-      _sequencer: PromiseOrValue<string>,
+      _endpoint: PromiseOrValue<string>,
       _admin: PromiseOrValue<string>,
       _fees: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -595,7 +595,7 @@ export interface ISpotEngine extends BaseContract {
   initialize(
     _clearinghouse: PromiseOrValue<string>,
     _quote: PromiseOrValue<string>,
-    _sequencer: PromiseOrValue<string>,
+    _endpoint: PromiseOrValue<string>,
     _admin: PromiseOrValue<string>,
     _fees: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -694,7 +694,7 @@ export interface ISpotEngine extends BaseContract {
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _quote: PromiseOrValue<string>,
-      _sequencer: PromiseOrValue<string>,
+      _endpoint: PromiseOrValue<string>,
       _admin: PromiseOrValue<string>,
       _fees: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -815,7 +815,7 @@ export interface ISpotEngine extends BaseContract {
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _quote: PromiseOrValue<string>,
-      _sequencer: PromiseOrValue<string>,
+      _endpoint: PromiseOrValue<string>,
       _admin: PromiseOrValue<string>,
       _fees: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -913,7 +913,7 @@ export interface ISpotEngine extends BaseContract {
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _quote: PromiseOrValue<string>,
-      _sequencer: PromiseOrValue<string>,
+      _endpoint: PromiseOrValue<string>,
       _admin: PromiseOrValue<string>,
       _fees: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }

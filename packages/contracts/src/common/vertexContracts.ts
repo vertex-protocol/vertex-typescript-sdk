@@ -1,7 +1,7 @@
 import {
   IClearinghouse,
+  IEndpoint,
   IPerpEngine,
-  ISequencer,
   ISpotEngine,
   IVertexQuerier,
 } from '../typechain-types';
@@ -11,7 +11,7 @@ import {
  */
 export interface VertexContracts {
   querier: IVertexQuerier;
-  sequencer: ISequencer;
+  endpoint: IEndpoint;
   clearinghouse: IClearinghouse;
   spotEngine: ISpotEngine;
   perpEngine: IPerpEngine;

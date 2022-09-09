@@ -10,8 +10,8 @@ export interface EngineClientOpts {
   signingChainId?: number;
 }
 
-export type WithSequencerAddr<T> = T & {
-  sequencerAddr: string;
+export type WithEndpointAddr<T> = T & {
+  endpointAddr: string;
 };
 
 export type ExecuteResultKey = string;

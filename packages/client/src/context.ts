@@ -1,7 +1,7 @@
 import {
   IClearinghouse__factory,
+  IEndpoint__factory,
   IPerpEngine__factory,
-  ISequencer__factory,
   ISpotEngine__factory,
   IVertexQuerier__factory,
   ProductEngineType,
@@ -86,7 +86,7 @@ export async function createClientContext(
     chainSignerOrProvider,
   );
 
-  const sequencerAddress = await clearinghouse.getSequencer();
+  const endpointContractAddress = await clearinghouse.getEndpoint();
   const spotAddress = await clearinghouse.getEngineByType(
     ProductEngineType.SPOT,
   );
@@ -107,8 +107,8 @@ export async function createClientContext(
     contracts: {
       querier,
       clearinghouse,
-      sequencer: ISequencer__factory.connect(
-        sequencerAddress,
+      endpoint: IEndpoint__factory.connect(
+        endpointContractAddress,
         chainSignerOrProvider,
       ),
       spotEngine: ISpotEngine__factory.connect(

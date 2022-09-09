@@ -11,17 +11,17 @@ import {
   CancelOrderParams,
   OrderActionResult,
   PlaceOrderParams,
-  WithSequencerAddr,
+  WithEndpointAddr,
 } from './types';
 import { EngineBaseClient } from './EngineBaseClient';
 
 export class EngineExecuteClient extends EngineBaseClient {
   async liquidateSubaccount(
-    params: WithSequencerAddr<LiquidateSubaccountParams>,
+    params: WithEndpointAddr<LiquidateSubaccountParams>,
   ) {
     const signature = await this.sign(
       'liquidate_subaccount',
-      params.sequencerAddr,
+      params.endpointAddr,
       params,
     );
     return this.execute(
@@ -33,10 +33,10 @@ export class EngineExecuteClient extends EngineBaseClient {
     );
   }
 
-  async depositCollateral(params: WithSequencerAddr<DepositCollateralParams>) {
+  async depositCollateral(params: WithEndpointAddr<DepositCollateralParams>) {
     const signature = await this.sign(
       'deposit_collateral',
-      params.sequencerAddr,
+      params.endpointAddr,
       params,
     );
     return this.execute(
@@ -48,12 +48,10 @@ export class EngineExecuteClient extends EngineBaseClient {
     );
   }
 
-  async withdrawCollateral(
-    params: WithSequencerAddr<WithdrawCollateralParams>,
-  ) {
+  async withdrawCollateral(params: WithEndpointAddr<WithdrawCollateralParams>) {
     const signature = await this.sign(
       'withdraw_collateral',
-      params.sequencerAddr,
+      params.endpointAddr,
       params,
     );
     return this.execute(

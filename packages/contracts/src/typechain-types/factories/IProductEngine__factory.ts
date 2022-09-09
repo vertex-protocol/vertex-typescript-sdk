@@ -402,7 +402,7 @@ const _abi = [
       },
       {
         internalType: "address",
-        name: "_sequencer",
+        name: "_endpoint",
         type: "address",
       },
       {

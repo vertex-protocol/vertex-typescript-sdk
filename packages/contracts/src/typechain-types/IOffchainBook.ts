@@ -27,7 +27,7 @@ import type {
   PromiseOrValue,
 } from "./common";
 
-export declare namespace ISequencer {
+export declare namespace IEndpoint {
   export type OrderStruct = {
     subaccount: PromiseOrValue<BigNumberish>;
     priceX18: PromiseOrValue<BigNumberish>;
@@ -51,29 +51,29 @@ export declare namespace ISequencer {
   };
 
   export type SignedOrderStruct = {
-    order: ISequencer.OrderStruct;
+    order: IEndpoint.OrderStruct;
     signature: PromiseOrValue<BytesLike>;
   };
 
   export type SignedOrderStructOutput = [
-    ISequencer.OrderStructOutput,
+    IEndpoint.OrderStructOutput,
     string
-  ] & { order: ISequencer.OrderStructOutput; signature: string };
+  ] & { order: IEndpoint.OrderStructOutput; signature: string };
 
   export type MatchOrdersStruct = {
     book: PromiseOrValue<string>;
-    taker: ISequencer.SignedOrderStruct;
-    maker: ISequencer.SignedOrderStruct;
+    taker: IEndpoint.SignedOrderStruct;
+    maker: IEndpoint.SignedOrderStruct;
   };
 
   export type MatchOrdersStructOutput = [
     string,
-    ISequencer.SignedOrderStructOutput,
-    ISequencer.SignedOrderStructOutput
+    IEndpoint.SignedOrderStructOutput,
+    IEndpoint.SignedOrderStructOutput
   ] & {
     book: string;
-    taker: ISequencer.SignedOrderStructOutput;
-    maker: ISequencer.SignedOrderStructOutput;
+    taker: IEndpoint.SignedOrderStructOutput;
+    maker: IEndpoint.SignedOrderStructOutput;
   };
 }
 
@@ -120,7 +120,7 @@ export interface IOffchainBookInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "dumpFees", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getDigest",
-    values: [ISequencer.OrderStruct, PromiseOrValue<boolean>]
+    values: [IEndpoint.OrderStruct, PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "getMarkPriceX18",
@@ -142,15 +142,15 @@ export interface IOffchainBookInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "matchOrders",
-    values: [ISequencer.MatchOrdersStruct]
+    values: [IEndpoint.MatchOrdersStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "validateCancellation",
-    values: [ISequencer.SignedOrderStruct]
+    values: [IEndpoint.SignedOrderStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "validateOrder",
-    values: [ISequencer.SignedOrderStruct]
+    values: [IEndpoint.SignedOrderStruct]
   ): string;
 
   decodeFunctionResult(functionFragment: "dumpFees", data: BytesLike): Result;
@@ -255,7 +255,7 @@ export interface IOffchainBook extends BaseContract {
     ): Promise<ContractTransaction>;
 
     getDigest(
-      order: ISequencer.OrderStruct,
+      order: IEndpoint.OrderStruct,
       isCancellation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<[string]>;
@@ -269,7 +269,7 @@ export interface IOffchainBook extends BaseContract {
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _engine: PromiseOrValue<string>,
-      _sequencer: PromiseOrValue<string>,
+      _endpoint: PromiseOrValue<string>,
       _admin: PromiseOrValue<string>,
       _fees: PromiseOrValue<string>,
       _productId: PromiseOrValue<BigNumberish>,
@@ -279,17 +279,17 @@ export interface IOffchainBook extends BaseContract {
     ): Promise<ContractTransaction>;
 
     matchOrders(
-      tx: ISequencer.MatchOrdersStruct,
+      tx: IEndpoint.MatchOrdersStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     validateCancellation(
-      order: ISequencer.SignedOrderStruct,
+      order: IEndpoint.SignedOrderStruct,
       overrides?: CallOverrides
     ): Promise<[number]>;
 
     validateOrder(
-      order: ISequencer.SignedOrderStruct,
+      order: IEndpoint.SignedOrderStruct,
       overrides?: CallOverrides
     ): Promise<[number]>;
   };
@@ -299,7 +299,7 @@ export interface IOffchainBook extends BaseContract {
   ): Promise<ContractTransaction>;
 
   getDigest(
-    order: ISequencer.OrderStruct,
+    order: IEndpoint.OrderStruct,
     isCancellation: PromiseOrValue<boolean>,
     overrides?: CallOverrides
   ): Promise<string>;
@@ -313,7 +313,7 @@ export interface IOffchainBook extends BaseContract {
   initialize(
     _clearinghouse: PromiseOrValue<string>,
     _engine: PromiseOrValue<string>,
-    _sequencer: PromiseOrValue<string>,
+    _endpoint: PromiseOrValue<string>,
     _admin: PromiseOrValue<string>,
     _fees: PromiseOrValue<string>,
     _productId: PromiseOrValue<BigNumberish>,
@@ -323,17 +323,17 @@ export interface IOffchainBook extends BaseContract {
   ): Promise<ContractTransaction>;
 
   matchOrders(
-    tx: ISequencer.MatchOrdersStruct,
+    tx: IEndpoint.MatchOrdersStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   validateCancellation(
-    order: ISequencer.SignedOrderStruct,
+    order: IEndpoint.SignedOrderStruct,
     overrides?: CallOverrides
   ): Promise<number>;
 
   validateOrder(
-    order: ISequencer.SignedOrderStruct,
+    order: IEndpoint.SignedOrderStruct,
     overrides?: CallOverrides
   ): Promise<number>;
 
@@ -341,7 +341,7 @@ export interface IOffchainBook extends BaseContract {
     dumpFees(overrides?: CallOverrides): Promise<void>;
 
     getDigest(
-      order: ISequencer.OrderStruct,
+      order: IEndpoint.OrderStruct,
       isCancellation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<string>;
@@ -355,7 +355,7 @@ export interface IOffchainBook extends BaseContract {
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _engine: PromiseOrValue<string>,
-      _sequencer: PromiseOrValue<string>,
+      _endpoint: PromiseOrValue<string>,
       _admin: PromiseOrValue<string>,
       _fees: PromiseOrValue<string>,
       _productId: PromiseOrValue<BigNumberish>,
@@ -365,17 +365,17 @@ export interface IOffchainBook extends BaseContract {
     ): Promise<void>;
 
     matchOrders(
-      tx: ISequencer.MatchOrdersStruct,
+      tx: IEndpoint.MatchOrdersStruct,
       overrides?: CallOverrides
     ): Promise<[number, number]>;
 
     validateCancellation(
-      order: ISequencer.SignedOrderStruct,
+      order: IEndpoint.SignedOrderStruct,
       overrides?: CallOverrides
     ): Promise<number>;
 
     validateOrder(
-      order: ISequencer.SignedOrderStruct,
+      order: IEndpoint.SignedOrderStruct,
       overrides?: CallOverrides
     ): Promise<number>;
   };
@@ -422,7 +422,7 @@ export interface IOffchainBook extends BaseContract {
     ): Promise<BigNumber>;
 
     getDigest(
-      order: ISequencer.OrderStruct,
+      order: IEndpoint.OrderStruct,
       isCancellation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -434,7 +434,7 @@ export interface IOffchainBook extends BaseContract {
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _engine: PromiseOrValue<string>,
-      _sequencer: PromiseOrValue<string>,
+      _endpoint: PromiseOrValue<string>,
       _admin: PromiseOrValue<string>,
       _fees: PromiseOrValue<string>,
       _productId: PromiseOrValue<BigNumberish>,
@@ -444,17 +444,17 @@ export interface IOffchainBook extends BaseContract {
     ): Promise<BigNumber>;
 
     matchOrders(
-      tx: ISequencer.MatchOrdersStruct,
+      tx: IEndpoint.MatchOrdersStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     validateCancellation(
-      order: ISequencer.SignedOrderStruct,
+      order: IEndpoint.SignedOrderStruct,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     validateOrder(
-      order: ISequencer.SignedOrderStruct,
+      order: IEndpoint.SignedOrderStruct,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
@@ -465,7 +465,7 @@ export interface IOffchainBook extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getDigest(
-      order: ISequencer.OrderStruct,
+      order: IEndpoint.OrderStruct,
       isCancellation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -477,7 +477,7 @@ export interface IOffchainBook extends BaseContract {
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _engine: PromiseOrValue<string>,
-      _sequencer: PromiseOrValue<string>,
+      _endpoint: PromiseOrValue<string>,
       _admin: PromiseOrValue<string>,
       _fees: PromiseOrValue<string>,
       _productId: PromiseOrValue<BigNumberish>,
@@ -487,17 +487,17 @@ export interface IOffchainBook extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     matchOrders(
-      tx: ISequencer.MatchOrdersStruct,
+      tx: IEndpoint.MatchOrdersStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     validateCancellation(
-      order: ISequencer.SignedOrderStruct,
+      order: IEndpoint.SignedOrderStruct,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     validateOrder(
-      order: ISequencer.SignedOrderStruct,
+      order: IEndpoint.SignedOrderStruct,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

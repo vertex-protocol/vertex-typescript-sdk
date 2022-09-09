@@ -16,7 +16,7 @@ const _abi = [
       {
         indexed: false,
         internalType: "address",
-        name: "sequencer",
+        name: "endpoint",
         type: "address",
       },
       {
@@ -176,7 +176,7 @@ const _abi = [
             type: "uint64",
           },
         ],
-        internalType: "struct ISequencer.DepositCollateral",
+        internalType: "struct IEndpoint.DepositCollateral",
         name: "tx",
         type: "tuple",
       },
@@ -184,6 +184,49 @@ const _abi = [
     name: "depositCollateral",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "sender",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint64",
+            name: "nonce",
+            type: "uint64",
+          },
+        ],
+        internalType: "struct IEndpoint.DepositInsurance",
+        name: "tx",
+        type: "tuple",
+      },
+    ],
+    name: "depositInsurance",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getEndpoint",
+    outputs: [
+      {
+        internalType: "address",
+        name: "endpoint",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -366,19 +409,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "getSequencer",
-    outputs: [
-      {
-        internalType: "address",
-        name: "sequencer",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "address",
@@ -469,25 +499,12 @@ const _abi = [
             type: "uint64",
           },
         ],
-        internalType: "struct ISequencer.LiquidateSubaccount",
+        internalType: "struct IEndpoint.LiquidateSubaccount",
         name: "tx",
         type: "tuple",
       },
     ],
     name: "liquidateSubaccount",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "int256",
-        name: "amount",
-        type: "int256",
-      },
-    ],
-    name: "modifyInsurance",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -515,7 +532,7 @@ const _abi = [
             type: "uint64[]",
           },
         ],
-        internalType: "struct ISequencer.SettlePnl",
+        internalType: "struct IEndpoint.SettlePnl",
         name: "tx",
         type: "tuple",
       },
@@ -555,7 +572,7 @@ const _abi = [
             type: "uint64",
           },
         ],
-        internalType: "struct ISequencer.WithdrawCollateral",
+        internalType: "struct IEndpoint.WithdrawCollateral",
         name: "tx",
         type: "tuple",
       },

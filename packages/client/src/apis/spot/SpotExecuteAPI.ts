@@ -17,7 +17,7 @@ export class SpotExecuteAPI extends BaseVertexAPI {
 
     return this.context.engineClient.depositCollateral({
       sender,
-      sequencerAddr: this.context.contracts.sequencer.address,
+      endpointAddr: this.context.contracts.endpoint.address,
       ...params,
     });
   }
@@ -29,7 +29,7 @@ export class SpotExecuteAPI extends BaseVertexAPI {
 
     return this.context.engineClient.withdrawCollateral({
       sender,
-      sequencerAddr: this.context.contracts.sequencer.address,
+      endpointAddr: this.context.contracts.endpoint.address,
       ...params,
     });
   }

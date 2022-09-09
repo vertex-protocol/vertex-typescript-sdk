@@ -123,7 +123,7 @@
             "type": "uint64"
           }
         ],
-        "internalType": "struct ISequencer.Order",
+        "internalType": "struct IEndpoint.Order",
         "name": "order",
         "type": "tuple"
       },
@@ -206,7 +206,7 @@
       },
       {
         "internalType": "address",
-        "name": "_sequencer",
+        "name": "_endpoint",
         "type": "address"
       },
       {
@@ -279,7 +279,7 @@
                     "type": "uint64"
                   }
                 ],
-                "internalType": "struct ISequencer.Order",
+                "internalType": "struct IEndpoint.Order",
                 "name": "order",
                 "type": "tuple"
               },
@@ -289,7 +289,7 @@
                 "type": "bytes"
               }
             ],
-            "internalType": "struct ISequencer.SignedOrder",
+            "internalType": "struct IEndpoint.SignedOrder",
             "name": "taker",
             "type": "tuple"
           },
@@ -323,7 +323,7 @@
                     "type": "uint64"
                   }
                 ],
-                "internalType": "struct ISequencer.Order",
+                "internalType": "struct IEndpoint.Order",
                 "name": "order",
                 "type": "tuple"
               },
@@ -333,12 +333,12 @@
                 "type": "bytes"
               }
             ],
-            "internalType": "struct ISequencer.SignedOrder",
+            "internalType": "struct IEndpoint.SignedOrder",
             "name": "maker",
             "type": "tuple"
           }
         ],
-        "internalType": "struct ISequencer.MatchOrders",
+        "internalType": "struct IEndpoint.MatchOrders",
         "name": "tx",
         "type": "tuple"
       }
@@ -391,7 +391,7 @@
                 "type": "uint64"
               }
             ],
-            "internalType": "struct ISequencer.Order",
+            "internalType": "struct IEndpoint.Order",
             "name": "order",
             "type": "tuple"
           },
@@ -401,7 +401,7 @@
             "type": "bytes"
           }
         ],
-        "internalType": "struct ISequencer.SignedOrder",
+        "internalType": "struct IEndpoint.SignedOrder",
         "name": "order",
         "type": "tuple"
       }
@@ -449,7 +449,7 @@
                 "type": "uint64"
               }
             ],
-            "internalType": "struct ISequencer.Order",
+            "internalType": "struct IEndpoint.Order",
             "name": "order",
             "type": "tuple"
           },
@@ -459,7 +459,7 @@
             "type": "bytes"
           }
         ],
-        "internalType": "struct ISequencer.SignedOrder",
+        "internalType": "struct IEndpoint.SignedOrder",
         "name": "order",
         "type": "tuple"
       }

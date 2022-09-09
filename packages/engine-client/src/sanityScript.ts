@@ -51,7 +51,7 @@ async function main() {
   };
   const resultKey = await client.depositCollateral({
     ...depositParams,
-    sequencerAddr,
+    endpointAddr: sequencerAddr,
   });
   console.log('Done depositing collateral, looking for result');
   const result = await client.getExecuteResult(resultKey!);
