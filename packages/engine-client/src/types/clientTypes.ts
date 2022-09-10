@@ -13,5 +13,3 @@ export interface EngineClientOpts {
 export type WithEndpointAddr<T> = T & {
   endpointAddr: string;
 };
-
-export type ExecuteResultKey = string;

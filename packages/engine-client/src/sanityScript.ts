@@ -2,7 +2,6 @@ import { ethers, Wallet } from 'ethers';
 import {
   DepositCollateralParams,
   IClearinghouse__factory,
-  MockERC20__factory,
   OrderParams,
 } from '@vertex-protocol/contracts';
 import { MaxUint64 } from '@vertex-protocol/utils';
@@ -20,7 +19,7 @@ async function main() {
   );
 
   const client = new EngineClient({
-    url: 'http://localhost:3000/api/engine',
+    url: 'http://localhost:8000',
     signer,
   });
 
@@ -33,13 +32,13 @@ async function main() {
   );
 
   // Mint some tokens
-  const quote = await MockERC20__factory.connect(
-    await clearinghouse.getQuote(),
-    signer,
-  );
-  await quote.mint(signer.address, 100000);
-  await quote.approve(clearinghouseAddr, 100000);
-  console.log('Minted & approved');
+  // const quote = await MockERC20__factory.connect(
+  //   await clearinghouse.getQuote(),
+  //   signer,
+  // );
+  // await quote.mint(signer.address, 100000);
+  // await quote.approve(clearinghouseAddr, 100000);
+  // console.log('Minted & approved');
 
   // Deposit collateral
   const depositParams: DepositCollateralParams = {
@@ -49,13 +48,11 @@ async function main() {
     amount: 100,
     nonce: getNonce(),
   };
-  const resultKey = await client.depositCollateral({
+  const depositResult = await client.depositCollateral({
     ...depositParams,
     endpointAddr: sequencerAddr,
   });
-  console.log('Done depositing collateral, looking for result');
-  const result = await client.getExecuteResult(resultKey!);
-  console.log('Deposit result', result);
+  console.log('Done depositing collateral, result', depositResult);
 
   const subaccountId = await clearinghouse.getSubaccountId(
     signer.address,
@@ -68,10 +65,10 @@ async function main() {
   const products = await client.getAllMarkets();
   console.log('All products', JSON.stringify(products, null, 2));
 
-  const subaccountInfo = await client.getSubaccountSummary({
-    subaccountId,
-  });
-  console.log('Subaccount info', JSON.stringify(subaccountInfo, null, 2));
+  // const subaccountInfo = await client.getSubaccountSummary({
+  //   subaccountId,
+  // });
+  // console.log('Subaccount info', JSON.stringify(subaccountInfo, null, 2));
 
   console.log('Placing order');
   const productId = 1;
@@ -83,49 +80,49 @@ async function main() {
     price: 10,
     subaccountId,
   };
-  const { digest: orderDigest } = await client.placeOrder({
+  const placeResult = await client.placeOrder({
     orderbookAddr,
     productId,
     order,
   });
-  console.log('Done placing order');
+  console.log('Done placing order', placeResult);
 
-  const subaccountOrders = await client.getSubaccountOrders({
-    productId,
-    subaccountId,
-  });
-  console.log('Subaccount orders', JSON.stringify(subaccountOrders));
-  const marketLiquidity = await client.getMarketLiquidity({
-    depth: 10,
-    productId,
-  });
-  console.log('Market liquidity', JSON.stringify(marketLiquidity, null, 2));
-  const marketPrice = await client.getMarketPrice({
-    productId,
-  });
-  console.log('Market price', JSON.stringify(marketPrice, null, 2));
-  const queriedOrder = await client.getOrder({
-    digest: orderDigest,
-    productId,
-  });
-  console.log('Queried order', JSON.stringify(queriedOrder, null, 2));
+  // const subaccountOrders = await client.getSubaccountOrders({
+  //   productId,
+  //   subaccountId,
+  // });
+  // console.log('Subaccount orders', JSON.stringify(subaccountOrders));
+  // const marketLiquidity = await client.getMarketLiquidity({
+  //   depth: 10,
+  //   productId,
+  // });
+  // console.log('Market liquidity', JSON.stringify(marketLiquidity, null, 2));
+  // const marketPrice = await client.getMarketPrice({
+  //   productId,
+  // });
+  // console.log('Market price', JSON.stringify(marketPrice, null, 2));
+  // const queriedOrder = await client.getOrder({
+  //   digest: orderDigest,
+  //   productId,
+  // });
+  // console.log('Queried order', JSON.stringify(queriedOrder, null, 2));
 
   console.log('Cancelling order');
-  await client.cancelOrder({
+  const cancelResult = await client.cancelOrder({
     orderbookAddr,
     productId,
     order,
   });
-  console.log('Done cancelling order');
+  console.log('Done cancelling order', cancelResult);
 
-  const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
-    productId,
-    subaccountId,
-  });
-  console.log(
-    'Subaccount orders after cancellation',
-    JSON.stringify(subaccountOrdersAfterCancel),
-  );
+  // const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
+  //   productId,
+  //   subaccountId,
+  // });
+  // console.log(
+  //   'Subaccount orders after cancellation',
+  //   JSON.stringify(subaccountOrdersAfterCancel),
+  // );
 }
 
 main();

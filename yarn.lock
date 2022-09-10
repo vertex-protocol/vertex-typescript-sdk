@@ -2857,6 +2857,13 @@
     "@typescript-eslint/types" "5.33.0"
     eslint-visitor-keys "^3.3.0"
 
+"@vertex-protocol/engine-server@^0.1.0-alpha.2":
+  version "0.1.0-alpha.2"
+  resolved "https://npm.pkg.github.com/download/@vertex-protocol/engine-server/0.1.0-alpha.2/270b30e4ad9c9f0509308aa095e16858b49bcc32#270b30e4ad9c9f0509308aa095e16858b49bcc32"
+  integrity sha512-rSKTtjoCldgSicsBRpUKnvNKvazUYVKqz+Vtp6sMgjX2BV7U1XdVptwCa6doK6LDV5DS93xkgsOLylbazpPGSw==
+  dependencies:
+    redis "^4.3.0"
+
 "@whatwg-node/fetch@^0.2.4", "@whatwg-node/fetch@^0.2.6", "@whatwg-node/fetch@^0.2.7":
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/@whatwg-node/fetch/-/fetch-0.2.8.tgz#ccfa4a32873fcd5442a6a0c18e3fd3ae934329c4"

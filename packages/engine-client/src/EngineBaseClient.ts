@@ -1,18 +1,13 @@
 import {
-  RedisExecuteRequestByType,
-  RedisExecuteRequestType,
-  RedisQueryRequestByType,
-  RedisQueryRequestType,
-  RedisQueryResponseByType,
-} from '@vertex-protocol/engine-server';
-import {
   EngineClientOpts,
-  ExecuteRequestBody,
-  ExecuteRequestResponse,
-  ExecuteResultKey,
-  GetExecuteResultQueryParams,
-  GetExecuteResultResponse,
-  QueryRequestResponse,
+  EngineExecuteRequestBody,
+  EngineExecuteRequestResponse,
+  EngineQueryRequestResponse,
+  EngineServerExecuteRequestByType,
+  EngineServerExecuteRequestType,
+  EngineServerQueryRequestByType,
+  EngineServerQueryRequestType,
+  EngineServerQueryResponseByType,
 } from './types';
 import {
   getSignedTransactionRequest,
@@ -29,54 +24,38 @@ export class EngineBaseClient {
     this.opts = opts;
   }
 
-  async getExecuteResult(resultKey: string): Promise<GetExecuteResultResponse> {
-    const queryParams: GetExecuteResultQueryParams = {
-      result_key: resultKey,
-    };
-
-    const requestUrl = `${this.opts.url}/execute-result?${new URLSearchParams(
-      queryParams as Record<string, any>,
-    ).toString()}`;
-    const response = await axios.get<GetExecuteResultResponse>(requestUrl);
-
-    this.checkResponseStatus(response);
-    this.checkServerStatus(response);
-
-    return response.data;
-  }
-
-  protected async query<TRequestType extends RedisQueryRequestType>(
+  protected async query<TRequestType extends EngineServerQueryRequestType>(
     requestType: TRequestType,
-    params: RedisQueryRequestByType[TRequestType],
-  ): Promise<RedisQueryResponseByType[TRequestType]> {
+    params: EngineServerQueryRequestByType[TRequestType],
+  ): Promise<EngineServerQueryResponseByType[TRequestType]> {
     const requestUrl = `${this.opts.url}/query?${new URLSearchParams({
       ...params,
       type: requestType,
     } as Record<string, any>).toString()}`;
-    const response = await axios.get<QueryRequestResponse>(requestUrl);
+    const response = await axios.get<EngineQueryRequestResponse>(requestUrl);
 
     this.checkResponseStatus(response);
     this.checkServerStatus(response);
 
-    return response.data.data as RedisQueryResponseByType[TRequestType];
+    return response.data.data as EngineServerQueryResponseByType[TRequestType];
   }
 
-  protected async execute<TRequestType extends RedisExecuteRequestType>(
+  protected async execute<TRequestType extends EngineServerExecuteRequestType>(
     requestType: TRequestType,
-    params: RedisExecuteRequestByType[TRequestType],
-  ): Promise<ExecuteResultKey> {
-    const reqBody: ExecuteRequestBody = {
-      type: requestType,
-      params,
+    params: EngineServerExecuteRequestByType[TRequestType],
+  ): Promise<EngineExecuteRequestResponse> {
+    const reqBody: EngineExecuteRequestBody = {
+      [requestType]: params,
     };
-    const response = await axios.post<ExecuteRequestResponse>(
+    const response = await axios.post<EngineExecuteRequestResponse>(
       `${this.opts.url}/execute`,
       reqBody,
     );
 
     this.checkResponseStatus(response);
+    this.checkServerStatus(response);
 
-    return response.data.result_key;
+    return response.data;
   }
 
   protected async getSigningChainId(): Promise<number> {
@@ -111,7 +90,9 @@ export class EngineBaseClient {
   }
 
   private checkServerStatus(
-    response: AxiosResponse<GetExecuteResultResponse | QueryRequestResponse>,
+    response: AxiosResponse<
+      EngineExecuteRequestResponse | EngineQueryRequestResponse
+    >,
   ) {
     if (response.data.status !== 'success') {
       throw Error(`Error from server: ${JSON.stringify(response.data)}`);

@@ -18,8 +18,5 @@
     {
       "path": "../contracts"
     },
-    {
-      "path": "../engine-server"
-    }
   ]
 }

@@ -1,2 +1,0 @@
-# `@vertex-protocol/engine-server`
-

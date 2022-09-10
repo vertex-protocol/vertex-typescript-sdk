@@ -1,7 +1,7 @@
 import { BigNumberish } from 'ethers';
 
-export interface RedisSpotProduct {
-  productId: number;
+export interface EngineServerSpotProduct {
+  product_id: number;
   price_x18: BigNumberish;
   cumulative_deposits_multiplier_x18: BigNumberish;
   cumulative_borrows_multiplier_x18: BigNumberish;
@@ -10,16 +10,16 @@ export interface RedisSpotProduct {
   last_update_time: BigNumberish;
 }
 
-export interface RedisSpotBalance {
-  productId: number;
+export interface EngineServerSpotBalance {
+  product_id: number;
   amount_x18: BigNumberish;
   initial_x18: BigNumberish;
   maintenance_x18: BigNumberish;
   pnl_x18: BigNumberish;
 }
 
-export interface RedisPerpProduct {
-  productId: number;
+export interface EngineServerPerpProduct {
+  product_id: number;
   price_x18: BigNumberish;
   ema_price_x18: BigNumberish;
   cumulative_funding_long_x18: BigNumberish;
@@ -30,8 +30,8 @@ export interface RedisPerpProduct {
   available_settle_x18: BigNumberish;
 }
 
-export interface RedisPerpBalance {
-  productId: number;
+export interface EngineServerPerpBalance {
+  product_id: number;
   amount_x18: BigNumberish;
   v_quote_balance_x18: BigNumberish;
   last_cumulative_funding_x18: BigNumberish;

@@ -7,12 +7,9 @@ import {
   MockERC20__factory,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
-import { ExecuteResultKey } from '@vertex-protocol/engine-client';
 
 export class SpotExecuteAPI extends BaseVertexAPI {
-  async deposit(
-    params: Omit<DepositCollateralParams, 'sender'>,
-  ): Promise<ExecuteResultKey> {
+  async deposit(params: Omit<DepositCollateralParams, 'sender'>) {
     const sender = await this.getEngineSigner().getAddress();
 
     return this.context.engineClient.depositCollateral({
@@ -22,9 +19,7 @@ export class SpotExecuteAPI extends BaseVertexAPI {
     });
   }
 
-  async withdraw(
-    params: Omit<WithdrawCollateralParams, 'sender'>,
-  ): Promise<string | null> {
+  async withdraw(params: Omit<WithdrawCollateralParams, 'sender'>) {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
     return this.context.engineClient.withdrawCollateral({

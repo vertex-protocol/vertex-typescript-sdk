@@ -11,14 +11,12 @@ import {
 import { BigNumber } from 'ethers';
 import { fromX18, toBigDecimal, toEthersBN } from '@vertex-protocol/utils';
 import {
-  RedisGetOrderResponse,
-  RedisPerpProduct,
-  RedisPriceTickLiquidity,
-  RedisSpotProduct,
-} from '@vertex-protocol/engine-server';
-import {
   EngineOrder,
   EnginePriceTickLiquidity,
+  EngineServerGetOrderResponse,
+  EngineServerPerpProduct,
+  EngineServerPriceTickLiquidity,
+  EngineServerSpotProduct,
   GetEngineAllMarketsResponse,
   GetEngineMarketLiquidityParams,
   GetEngineMarketLiquidityResponse,
@@ -46,10 +44,10 @@ export class EngineQueryClient extends EngineBaseClient {
 
     baseResponse.spot_balances.forEach((spotBalance) => {
       const product = baseResponse.all_products.spot_products.find(
-        (product) => product.productId === spotBalance.productId,
+        (product) => product.product_id === spotBalance.product_id,
       );
       if (!product) {
-        throw Error(`Could not find product ${spotBalance.productId}`);
+        throw Error(`Could not find product ${spotBalance.product_id}`);
       }
 
       balances.push({
@@ -59,17 +57,17 @@ export class EngineQueryClient extends EngineBaseClient {
           maintenance: toBigDecimal(0),
           unweighted: toBigDecimal(0),
         },
-        productId: product.productId,
-        ...mapRedisSpotProduct(product).product,
+        productId: product.product_id,
+        ...mapEngineServerSpotProduct(product).product,
       });
     });
 
     baseResponse.perp_balances.forEach((perpBalance) => {
       const product = baseResponse.all_products.perp_products.find(
-        (product) => product.productId === perpBalance.productId,
+        (product) => product.product_id === perpBalance.product_id,
       );
       if (!product) {
-        throw Error(`Could not find product ${perpBalance.productId}`);
+        throw Error(`Could not find product ${perpBalance.product_id}`);
       }
 
       balances.push({
@@ -80,8 +78,8 @@ export class EngineQueryClient extends EngineBaseClient {
           maintenance: toBigDecimal(0),
           unweighted: toBigDecimal(0),
         },
-        productId: product.productId,
-        ...mapRedisPerpProduct(product).product,
+        productId: product.product_id,
+        ...mapEngineServerPerpProduct(product).product,
       });
     });
 
@@ -100,10 +98,10 @@ export class EngineQueryClient extends EngineBaseClient {
 
     const baseResponse = await this.query('all_products', {});
     baseResponse.spot_products.forEach((spotProduct) => {
-      markets.push(mapRedisSpotProduct(spotProduct));
+      markets.push(mapEngineServerSpotProduct(spotProduct));
     });
     baseResponse.perp_products.forEach((perpProduct) => {
-      markets.push(mapRedisPerpProduct(perpProduct));
+      markets.push(mapEngineServerPerpProduct(perpProduct));
     });
 
     return markets;
@@ -117,7 +115,7 @@ export class EngineQueryClient extends EngineBaseClient {
       product_id: params.productId,
     });
 
-    return mapRedisOrder(baseResponse);
+    return mapEngineServerOrder(baseResponse);
   }
 
   async validateOrderParams(
@@ -160,7 +158,7 @@ export class EngineQueryClient extends EngineBaseClient {
     });
 
     return {
-      orders: baseResponse.orders.map(mapRedisOrder),
+      orders: baseResponse.orders.map(mapEngineServerOrder),
       productId: params.productId,
       subaccountId: BigNumber.from(baseResponse.subaccount_id).toNumber(),
     };
@@ -174,8 +172,8 @@ export class EngineQueryClient extends EngineBaseClient {
       depth: params.depth,
     });
     return {
-      asks: baseResponse.asks.map(mapRedisTickLiquidity),
-      bids: baseResponse.bids.map(mapRedisTickLiquidity),
+      asks: baseResponse.asks.map(mapEngineServerTickLiquidity),
+      bids: baseResponse.bids.map(mapEngineServerTickLiquidity),
     };
   }
 
@@ -193,8 +191,8 @@ export class EngineQueryClient extends EngineBaseClient {
   }
 }
 
-function mapRedisTickLiquidity(
-  tick: RedisPriceTickLiquidity,
+function mapEngineServerTickLiquidity(
+  tick: EngineServerPriceTickLiquidity,
 ): EnginePriceTickLiquidity {
   return {
     price: fromX18(tick[0]),
@@ -202,7 +200,9 @@ function mapRedisTickLiquidity(
   };
 }
 
-function mapRedisOrder(order: RedisGetOrderResponse): EngineOrder {
+function mapEngineServerOrder(
+  order: EngineServerGetOrderResponse,
+): EngineOrder {
   return {
     digest: order.digest,
     expiration: toBigDecimal(order.expiration),
@@ -215,10 +215,12 @@ function mapRedisOrder(order: RedisGetOrderResponse): EngineOrder {
   };
 }
 
-function mapRedisSpotProduct(product: RedisSpotProduct): SpotMarket {
+function mapEngineServerSpotProduct(
+  product: EngineServerSpotProduct,
+): SpotMarket {
   return {
     type: ProductEngineType.SPOT,
-    productId: product.productId,
+    productId: product.product_id,
     markPrice: toBigDecimal(0),
     priceIncrement: toBigDecimal(0),
     product: {
@@ -248,10 +250,12 @@ function mapRedisSpotProduct(product: RedisSpotProduct): SpotMarket {
   };
 }
 
-function mapRedisPerpProduct(product: RedisPerpProduct): PerpMarket {
+function mapEngineServerPerpProduct(
+  product: EngineServerPerpProduct,
+): PerpMarket {
   return {
     type: ProductEngineType.PERP,
-    productId: product.productId,
+    productId: product.product_id,
     markPrice: toBigDecimal(0),
     priceIncrement: toBigDecimal(0),
     sizeIncrement: toBigDecimal(0),

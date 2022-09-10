@@ -7,12 +7,7 @@ import {
   LiquidateSubaccountParams,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
-import {
-  CancelOrderParams,
-  OrderActionResult,
-  PlaceOrderParams,
-  WithEndpointAddr,
-} from './types';
+import { CancelOrderParams, PlaceOrderParams, WithEndpointAddr } from './types';
 import { EngineBaseClient } from './EngineBaseClient';
 
 export class EngineExecuteClient extends EngineBaseClient {
@@ -63,7 +58,8 @@ export class EngineExecuteClient extends EngineBaseClient {
     );
   }
 
-  async placeOrder(params: PlaceOrderParams): Promise<OrderActionResult> {
+  // TODO: type result
+  async placeOrder(params: PlaceOrderParams) {
     const digest = await getOrderDigest({
       chainId: await this.getSigningChainId(),
       order: params.order,
@@ -77,16 +73,16 @@ export class EngineExecuteClient extends EngineBaseClient {
         params.order,
       ),
     };
-    const resultKey = await this.execute('place_order', {
+    const executeResult = await this.execute('place_order', {
       digest,
       product_id: params.productId,
       signed_order: encodeSignedOrder(signedOrder),
     });
 
-    return { digest, executeResultKey: resultKey };
+    return { digest, ...executeResult };
   }
 
-  async cancelOrder(params: CancelOrderParams): Promise<OrderActionResult> {
+  async cancelOrder(params: CancelOrderParams) {
     const digest = await getOrderDigest({
       chainId: await this.getSigningChainId(),
       order: params.order,
@@ -100,13 +96,13 @@ export class EngineExecuteClient extends EngineBaseClient {
         params.order,
       ),
     };
-    const resultKey = await this.execute('cancel_order', {
+    const executeResult = await this.execute('cancel_order', {
       digest,
       product_id: params.productId,
       signed_order: encodeSignedOrder(signedOrder),
     });
 
-    return { digest, executeResultKey: resultKey };
+    return { digest, ...executeResult };
   }
 
   // TODO: settle PNL

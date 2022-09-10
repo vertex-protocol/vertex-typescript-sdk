@@ -1,16 +1,11 @@
 import { VertexClientContext } from '../context';
 import { WithContracts } from '@vertex-protocol/contracts';
-import { ExecuteResultKey } from '@vertex-protocol/engine-client';
 
 export class BaseVertexAPI {
   readonly context: VertexClientContext;
 
   constructor(context: VertexClientContext) {
     this.context = context;
-  }
-
-  async getEngineExecuteResult(resultKey: ExecuteResultKey) {
-    return this.context.engineClient.getExecuteResult(resultKey);
   }
 
   protected getEngineSigner() {
