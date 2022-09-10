@@ -65,6 +65,9 @@ export function calcTotalPortfolioValues(
  */
 export function calcSubaccountLeverage(summary: SubaccountSummaryResponse) {
   const { totalNotional, netTotal } = calcTotalPortfolioValues(summary);
+  if (netTotal.eq(0)) {
+    return toBigDecimal(0);
+  }
   return totalNotional.dividedBy(netTotal);
 }
 

@@ -1,4 +1,4 @@
-import { createClient, RedisClientType } from 'redis';
+import { createCluster, RedisClusterType } from 'redis';
 import {
   EngineServerClientOpts,
   RedisExecuteRequest,
@@ -16,7 +16,7 @@ const DEFAULT_TIMEOUT_MS = 1000 * 10; // 10s
 
 export class EngineServerClient {
   readonly redisEndpointUrl: string;
-  readonly redisClient: RedisClientType;
+  readonly redisClient: RedisClusterType;
   readonly debugLoggingEnabled: boolean;
 
   /**
@@ -24,7 +24,13 @@ export class EngineServerClient {
    */
   constructor({ url, debugLogging }: EngineServerClientOpts) {
     this.redisEndpointUrl = url;
-    this.redisClient = createClient({ url });
+    this.redisClient = createCluster({
+      rootNodes: [
+        {
+          url,
+        },
+      ],
+    });
     this.debugLoggingEnabled = debugLogging ?? false;
     this.redisClient.on('error', (err) => {
       console.error('[EngineServerClient] Error:', err);
