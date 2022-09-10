@@ -95,58 +95,6 @@ const _abi = [
     type: "event",
   },
   {
-    inputs: [
-      {
-        components: [
-          {
-            components: [
-              {
-                internalType: "uint64",
-                name: "subaccount",
-                type: "uint64",
-              },
-              {
-                internalType: "int256",
-                name: "priceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "amount",
-                type: "int256",
-              },
-              {
-                internalType: "uint64",
-                name: "expiration",
-                type: "uint64",
-              },
-              {
-                internalType: "uint64",
-                name: "nonce",
-                type: "uint64",
-              },
-            ],
-            internalType: "struct IOffchainBook.Order",
-            name: "order",
-            type: "tuple",
-          },
-          {
-            internalType: "bytes",
-            name: "signature",
-            type: "bytes",
-          },
-        ],
-        internalType: "struct IOffchainBook.SignedOrder[]",
-        name: "orders",
-        type: "tuple[]",
-      },
-    ],
-    name: "cancelOrders",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "dumpFees",
     outputs: [],
@@ -183,7 +131,7 @@ const _abi = [
             type: "uint64",
           },
         ],
-        internalType: "struct IOffchainBook.Order",
+        internalType: "struct IEndpoint.Order",
         name: "order",
         type: "tuple",
       },
@@ -265,6 +213,16 @@ const _abi = [
         type: "address",
       },
       {
+        internalType: "address",
+        name: "_endpoint",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_admin",
+        type: "address",
+      },
+      {
         internalType: "contract IFeeCalculator",
         name: "_fees",
         type: "address",
@@ -295,66 +253,115 @@ const _abi = [
       {
         components: [
           {
+            internalType: "address",
+            name: "book",
+            type: "address",
+          },
+          {
             components: [
               {
-                internalType: "uint64",
-                name: "subaccount",
-                type: "uint64",
+                components: [
+                  {
+                    internalType: "uint64",
+                    name: "subaccount",
+                    type: "uint64",
+                  },
+                  {
+                    internalType: "int256",
+                    name: "priceX18",
+                    type: "int256",
+                  },
+                  {
+                    internalType: "int256",
+                    name: "amount",
+                    type: "int256",
+                  },
+                  {
+                    internalType: "uint64",
+                    name: "expiration",
+                    type: "uint64",
+                  },
+                  {
+                    internalType: "uint64",
+                    name: "nonce",
+                    type: "uint64",
+                  },
+                ],
+                internalType: "struct IEndpoint.Order",
+                name: "order",
+                type: "tuple",
               },
               {
-                internalType: "int256",
-                name: "priceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "amount",
-                type: "int256",
-              },
-              {
-                internalType: "uint64",
-                name: "expiration",
-                type: "uint64",
-              },
-              {
-                internalType: "uint64",
-                name: "nonce",
-                type: "uint64",
+                internalType: "bytes",
+                name: "signature",
+                type: "bytes",
               },
             ],
-            internalType: "struct IOffchainBook.Order",
-            name: "order",
+            internalType: "struct IEndpoint.SignedOrder",
+            name: "taker",
             type: "tuple",
           },
           {
-            internalType: "bytes",
-            name: "signature",
-            type: "bytes",
+            components: [
+              {
+                components: [
+                  {
+                    internalType: "uint64",
+                    name: "subaccount",
+                    type: "uint64",
+                  },
+                  {
+                    internalType: "int256",
+                    name: "priceX18",
+                    type: "int256",
+                  },
+                  {
+                    internalType: "int256",
+                    name: "amount",
+                    type: "int256",
+                  },
+                  {
+                    internalType: "uint64",
+                    name: "expiration",
+                    type: "uint64",
+                  },
+                  {
+                    internalType: "uint64",
+                    name: "nonce",
+                    type: "uint64",
+                  },
+                ],
+                internalType: "struct IEndpoint.Order",
+                name: "order",
+                type: "tuple",
+              },
+              {
+                internalType: "bytes",
+                name: "signature",
+                type: "bytes",
+              },
+            ],
+            internalType: "struct IEndpoint.SignedOrder",
+            name: "maker",
+            type: "tuple",
           },
         ],
-        internalType: "struct IOffchainBook.SignedOrder[]",
-        name: "orders",
-        type: "tuple[]",
+        internalType: "struct IEndpoint.MatchOrders",
+        name: "tx",
+        type: "tuple",
       },
     ],
     name: "matchOrders",
     outputs: [
       {
-        components: [
-          {
-            internalType: "int256",
-            name: "amount",
-            type: "int256",
-          },
-          {
-            internalType: "enum IOffchainBook.ValidationResult",
-            name: "result",
-            type: "uint8",
-          },
-        ],
-        internalType: "struct IOffchainBook.FillStatus[]",
+        internalType: "enum IOffchainBook.ValidationResult",
         name: "",
-        type: "tuple[]",
+        type: "uint8",
+      },
+      {
+        internalType: "enum IOffchainBook.ValidationResult",
+        name: "",
+        type: "uint8",
       },
     ],
     stateMutability: "nonpayable",
@@ -392,7 +399,7 @@ const _abi = [
                 type: "uint64",
               },
             ],
-            internalType: "struct IOffchainBook.Order",
+            internalType: "struct IEndpoint.Order",
             name: "order",
             type: "tuple",
           },
@@ -402,34 +409,75 @@ const _abi = [
             type: "bytes",
           },
         ],
-        internalType: "struct IOffchainBook.SignedOrder[]",
-        name: "transactions",
-        type: "tuple[]",
-      },
-      {
-        internalType: "bool[]",
-        name: "isCancellation",
-        type: "bool[]",
+        internalType: "struct IEndpoint.SignedOrder",
+        name: "order",
+        type: "tuple",
       },
     ],
-    name: "validateTransactions",
+    name: "validateCancellation",
     outputs: [
+      {
+        internalType: "enum IOffchainBook.ValidationResult",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
       {
         components: [
           {
-            internalType: "int256",
-            name: "amount",
-            type: "int256",
+            components: [
+              {
+                internalType: "uint64",
+                name: "subaccount",
+                type: "uint64",
+              },
+              {
+                internalType: "int256",
+                name: "priceX18",
+                type: "int256",
+              },
+              {
+                internalType: "int256",
+                name: "amount",
+                type: "int256",
+              },
+              {
+                internalType: "uint64",
+                name: "expiration",
+                type: "uint64",
+              },
+              {
+                internalType: "uint64",
+                name: "nonce",
+                type: "uint64",
+              },
+            ],
+            internalType: "struct IEndpoint.Order",
+            name: "order",
+            type: "tuple",
           },
           {
-            internalType: "enum IOffchainBook.ValidationResult",
-            name: "result",
-            type: "uint8",
+            internalType: "bytes",
+            name: "signature",
+            type: "bytes",
           },
         ],
-        internalType: "struct IOffchainBook.FillStatus[]",
+        internalType: "struct IEndpoint.SignedOrder",
+        name: "order",
+        type: "tuple",
+      },
+    ],
+    name: "validateOrder",
+    outputs: [
+      {
+        internalType: "enum IOffchainBook.ValidationResult",
         name: "",
-        type: "tuple[]",
+        type: "uint8",
       },
     ],
     stateMutability: "view",

@@ -1,5 +1,6 @@
 import {
   IClearinghouse,
+  IEndpoint,
   IPerpEngine,
   ISpotEngine,
   IVertexQuerier,
@@ -10,6 +11,7 @@ import {
  */
 export interface VertexContracts {
   querier: IVertexQuerier;
+  endpoint: IEndpoint;
   clearinghouse: IClearinghouse;
   spotEngine: ISpotEngine;
   perpEngine: IPerpEngine;

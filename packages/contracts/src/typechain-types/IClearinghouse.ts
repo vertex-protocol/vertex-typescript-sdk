@@ -27,6 +27,97 @@ import type {
   PromiseOrValue,
 } from "./common";
 
+export declare namespace IEndpoint {
+  export type DepositCollateralStruct = {
+    sender: PromiseOrValue<string>;
+    subaccountName: PromiseOrValue<string>;
+    productId: PromiseOrValue<BigNumberish>;
+    amount: PromiseOrValue<BigNumberish>;
+    nonce: PromiseOrValue<BigNumberish>;
+  };
+
+  export type DepositCollateralStructOutput = [
+    string,
+    string,
+    number,
+    BigNumber,
+    BigNumber
+  ] & {
+    sender: string;
+    subaccountName: string;
+    productId: number;
+    amount: BigNumber;
+    nonce: BigNumber;
+  };
+
+  export type DepositInsuranceStruct = {
+    sender: PromiseOrValue<string>;
+    amount: PromiseOrValue<BigNumberish>;
+    nonce: PromiseOrValue<BigNumberish>;
+  };
+
+  export type DepositInsuranceStructOutput = [string, BigNumber, BigNumber] & {
+    sender: string;
+    amount: BigNumber;
+    nonce: BigNumber;
+  };
+
+  export type LiquidateSubaccountStruct = {
+    sender: PromiseOrValue<string>;
+    subaccountName: PromiseOrValue<string>;
+    liquidateeId: PromiseOrValue<BigNumberish>;
+    productId: PromiseOrValue<BigNumberish>;
+    amount: PromiseOrValue<BigNumberish>;
+    nonce: PromiseOrValue<BigNumberish>;
+  };
+
+  export type LiquidateSubaccountStructOutput = [
+    string,
+    string,
+    BigNumber,
+    number,
+    BigNumber,
+    BigNumber
+  ] & {
+    sender: string;
+    subaccountName: string;
+    liquidateeId: BigNumber;
+    productId: number;
+    amount: BigNumber;
+    nonce: BigNumber;
+  };
+
+  export type SettlePnlStruct = {
+    subaccountIds: PromiseOrValue<BigNumberish>[];
+  };
+
+  export type SettlePnlStructOutput = [BigNumber[]] & {
+    subaccountIds: BigNumber[];
+  };
+
+  export type WithdrawCollateralStruct = {
+    sender: PromiseOrValue<string>;
+    subaccountName: PromiseOrValue<string>;
+    productId: PromiseOrValue<BigNumberish>;
+    amount: PromiseOrValue<BigNumberish>;
+    nonce: PromiseOrValue<BigNumberish>;
+  };
+
+  export type WithdrawCollateralStructOutput = [
+    string,
+    string,
+    number,
+    BigNumber,
+    BigNumber
+  ] & {
+    sender: string;
+    subaccountName: string;
+    productId: number;
+    amount: BigNumber;
+    nonce: BigNumber;
+  };
+}
+
 export declare namespace IProductEngine {
   export type HealthDeltaStruct = {
     productId: PromiseOrValue<BigNumberish>;
@@ -44,6 +135,9 @@ export declare namespace IProductEngine {
 export interface IClearinghouseInterface extends utils.Interface {
   functions: {
     "addEngine(address,uint8)": FunctionFragment;
+    "depositCollateral((address,string,uint32,uint256,uint64))": FunctionFragment;
+    "depositInsurance((address,uint256,uint64))": FunctionFragment;
+    "getEndpoint()": FunctionFragment;
     "getEngineByProduct(uint32)": FunctionFragment;
     "getEngineByType(uint8)": FunctionFragment;
     "getHealthWithDeltasX18(uint64,uint8,(uint32,int256,int256)[])": FunctionFragment;
@@ -56,16 +150,18 @@ export interface IClearinghouseInterface extends utils.Interface {
     "getSubaccountId(address,string)": FunctionFragment;
     "getSubaccountOwner(uint64)": FunctionFragment;
     "getSupportedEngines()": FunctionFragment;
-    "liquidateSubaccount(string,uint64,uint32,int256)": FunctionFragment;
-    "modifyCollateral(string,uint32[],int256[])": FunctionFragment;
-    "modifyInsurance(int256)": FunctionFragment;
+    "liquidateSubaccount((address,string,uint64,uint32,int256,uint64))": FunctionFragment;
     "registerProductForId()": FunctionFragment;
-    "settlePnl(uint64[])": FunctionFragment;
+    "settlePnl((uint64[]))": FunctionFragment;
+    "withdrawCollateral((address,string,uint32,uint256,uint64))": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "addEngine"
+      | "depositCollateral"
+      | "depositInsurance"
+      | "getEndpoint"
       | "getEngineByProduct"
       | "getEngineByType"
       | "getHealthWithDeltasX18"
@@ -79,15 +175,26 @@ export interface IClearinghouseInterface extends utils.Interface {
       | "getSubaccountOwner"
       | "getSupportedEngines"
       | "liquidateSubaccount"
-      | "modifyCollateral"
-      | "modifyInsurance"
       | "registerProductForId"
       | "settlePnl"
+      | "withdrawCollateral"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "addEngine",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositCollateral",
+    values: [IEndpoint.DepositCollateralStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositInsurance",
+    values: [IEndpoint.DepositInsuranceStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getEndpoint",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getEngineByProduct",
@@ -140,24 +247,7 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "liquidateSubaccount",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "modifyCollateral",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>[],
-      PromiseOrValue<BigNumberish>[]
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "modifyInsurance",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [IEndpoint.LiquidateSubaccountStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "registerProductForId",
@@ -165,10 +255,26 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "settlePnl",
-    values: [PromiseOrValue<BigNumberish>[]]
+    values: [IEndpoint.SettlePnlStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawCollateral",
+    values: [IEndpoint.WithdrawCollateralStruct]
   ): string;
 
   decodeFunctionResult(functionFragment: "addEngine", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "depositCollateral",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositInsurance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getEndpoint",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getEngineByProduct",
     data: BytesLike
@@ -219,18 +325,14 @@ export interface IClearinghouseInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "modifyCollateral",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "modifyInsurance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "registerProductForId",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "settlePnl", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawCollateral",
+    data: BytesLike
+  ): Result;
 
   events: {
     "ClearinghouseInitialized(address,address,address)": EventFragment;
@@ -246,8 +348,8 @@ export interface IClearinghouseInterface extends utils.Interface {
 }
 
 export interface ClearinghouseInitializedEventObject {
+  endpoint: string;
   quote: string;
-  oracle: string;
   fees: string;
 }
 export type ClearinghouseInitializedEvent = TypedEvent<
@@ -332,6 +434,20 @@ export interface IClearinghouse extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    depositCollateral(
+      tx: IEndpoint.DepositCollateralStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    depositInsurance(
+      tx: IEndpoint.DepositInsuranceStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    getEndpoint(
+      overrides?: CallOverrides
+    ): Promise<[string] & { endpoint: string }>;
+
     getEngineByProduct(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -382,22 +498,7 @@ export interface IClearinghouse extends BaseContract {
     getSupportedEngines(overrides?: CallOverrides): Promise<[number[]]>;
 
     liquidateSubaccount(
-      subaccountName: PromiseOrValue<string>,
-      liquidateeId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    modifyCollateral(
-      subaccountName: PromiseOrValue<string>,
-      productIds: PromiseOrValue<BigNumberish>[],
-      amounts: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    modifyInsurance(
-      amount: PromiseOrValue<BigNumberish>,
+      tx: IEndpoint.LiquidateSubaccountStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -406,7 +507,12 @@ export interface IClearinghouse extends BaseContract {
     ): Promise<ContractTransaction>;
 
     settlePnl(
-      subaccountIds: PromiseOrValue<BigNumberish>[],
+      tx: IEndpoint.SettlePnlStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    withdrawCollateral(
+      tx: IEndpoint.WithdrawCollateralStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -416,6 +522,18 @@ export interface IClearinghouse extends BaseContract {
     engineType: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  depositCollateral(
+    tx: IEndpoint.DepositCollateralStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  depositInsurance(
+    tx: IEndpoint.DepositInsuranceStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  getEndpoint(overrides?: CallOverrides): Promise<string>;
 
   getEngineByProduct(
     productId: PromiseOrValue<BigNumberish>,
@@ -467,22 +585,7 @@ export interface IClearinghouse extends BaseContract {
   getSupportedEngines(overrides?: CallOverrides): Promise<number[]>;
 
   liquidateSubaccount(
-    subaccountName: PromiseOrValue<string>,
-    liquidateeId: PromiseOrValue<BigNumberish>,
-    productId: PromiseOrValue<BigNumberish>,
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  modifyCollateral(
-    subaccountName: PromiseOrValue<string>,
-    productIds: PromiseOrValue<BigNumberish>[],
-    amounts: PromiseOrValue<BigNumberish>[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  modifyInsurance(
-    amount: PromiseOrValue<BigNumberish>,
+    tx: IEndpoint.LiquidateSubaccountStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -491,7 +594,12 @@ export interface IClearinghouse extends BaseContract {
   ): Promise<ContractTransaction>;
 
   settlePnl(
-    subaccountIds: PromiseOrValue<BigNumberish>[],
+    tx: IEndpoint.SettlePnlStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  withdrawCollateral(
+    tx: IEndpoint.WithdrawCollateralStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -501,6 +609,18 @@ export interface IClearinghouse extends BaseContract {
       engineType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    depositCollateral(
+      tx: IEndpoint.DepositCollateralStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    depositInsurance(
+      tx: IEndpoint.DepositInsuranceStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    getEndpoint(overrides?: CallOverrides): Promise<string>;
 
     getEngineByProduct(
       productId: PromiseOrValue<BigNumberish>,
@@ -552,42 +672,32 @@ export interface IClearinghouse extends BaseContract {
     getSupportedEngines(overrides?: CallOverrides): Promise<number[]>;
 
     liquidateSubaccount(
-      subaccountName: PromiseOrValue<string>,
-      liquidateeId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    modifyCollateral(
-      subaccountName: PromiseOrValue<string>,
-      productIds: PromiseOrValue<BigNumberish>[],
-      amounts: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    modifyInsurance(
-      amount: PromiseOrValue<BigNumberish>,
+      tx: IEndpoint.LiquidateSubaccountStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
     registerProductForId(overrides?: CallOverrides): Promise<number>;
 
     settlePnl(
-      subaccountIds: PromiseOrValue<BigNumberish>[],
+      tx: IEndpoint.SettlePnlStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    withdrawCollateral(
+      tx: IEndpoint.WithdrawCollateralStruct,
       overrides?: CallOverrides
     ): Promise<void>;
   };
 
   filters: {
     "ClearinghouseInitialized(address,address,address)"(
+      endpoint?: null,
       quote?: null,
-      oracle?: null,
       fees?: null
     ): ClearinghouseInitializedEventFilter;
     ClearinghouseInitialized(
+      endpoint?: null,
       quote?: null,
-      oracle?: null,
       fees?: null
     ): ClearinghouseInitializedEventFilter;
 
@@ -637,6 +747,18 @@ export interface IClearinghouse extends BaseContract {
       engineType: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    depositCollateral(
+      tx: IEndpoint.DepositCollateralStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    depositInsurance(
+      tx: IEndpoint.DepositInsuranceStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    getEndpoint(overrides?: CallOverrides): Promise<BigNumber>;
 
     getEngineByProduct(
       productId: PromiseOrValue<BigNumberish>,
@@ -688,22 +810,7 @@ export interface IClearinghouse extends BaseContract {
     getSupportedEngines(overrides?: CallOverrides): Promise<BigNumber>;
 
     liquidateSubaccount(
-      subaccountName: PromiseOrValue<string>,
-      liquidateeId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    modifyCollateral(
-      subaccountName: PromiseOrValue<string>,
-      productIds: PromiseOrValue<BigNumberish>[],
-      amounts: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    modifyInsurance(
-      amount: PromiseOrValue<BigNumberish>,
+      tx: IEndpoint.LiquidateSubaccountStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -712,7 +819,12 @@ export interface IClearinghouse extends BaseContract {
     ): Promise<BigNumber>;
 
     settlePnl(
-      subaccountIds: PromiseOrValue<BigNumberish>[],
+      tx: IEndpoint.SettlePnlStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    withdrawCollateral(
+      tx: IEndpoint.WithdrawCollateralStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -723,6 +835,18 @@ export interface IClearinghouse extends BaseContract {
       engineType: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    depositCollateral(
+      tx: IEndpoint.DepositCollateralStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    depositInsurance(
+      tx: IEndpoint.DepositInsuranceStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getEndpoint(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getEngineByProduct(
       productId: PromiseOrValue<BigNumberish>,
@@ -776,22 +900,7 @@ export interface IClearinghouse extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     liquidateSubaccount(
-      subaccountName: PromiseOrValue<string>,
-      liquidateeId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    modifyCollateral(
-      subaccountName: PromiseOrValue<string>,
-      productIds: PromiseOrValue<BigNumberish>[],
-      amounts: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    modifyInsurance(
-      amount: PromiseOrValue<BigNumberish>,
+      tx: IEndpoint.LiquidateSubaccountStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -800,7 +909,12 @@ export interface IClearinghouse extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     settlePnl(
-      subaccountIds: PromiseOrValue<BigNumberish>[],
+      tx: IEndpoint.SettlePnlStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdrawCollateral(
+      tx: IEndpoint.WithdrawCollateralStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

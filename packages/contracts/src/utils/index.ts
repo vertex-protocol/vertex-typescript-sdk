@@ -3,5 +3,4 @@ export * from './interest';
 export * from './productTypeFilter';
 export * from './subaccount';
 export * from './balanceValue';
-export * from './orderDigest';
 export * from './health';

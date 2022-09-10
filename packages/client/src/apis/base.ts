@@ -8,6 +8,14 @@ export class BaseVertexAPI {
     this.context = context;
   }
 
+  protected getEngineSigner() {
+    const signer = this.context.engineSigner;
+    if (!signer) {
+      throw Error('No engine signer');
+    }
+    return signer;
+  }
+
   protected paramsWithContracts<T>(params: T): WithContracts<T> {
     return {
       ...params,

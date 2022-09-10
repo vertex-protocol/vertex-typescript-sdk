@@ -1,5 +1,6 @@
 import {
   IClearinghouse__factory,
+  IEndpoint__factory,
   IPerpEngine__factory,
   ISpotEngine__factory,
   IVertexQuerier__factory,
@@ -13,8 +14,26 @@ import {
   GRAPH_CLIENT_ENDPOINTS,
   VertexGraphClient,
 } from '@vertex-protocol/graph';
-import { ORDERS_CLIENT_ENDPOINTS, OrdersClient } from '@vertex-protocol/orders';
+import { TypedDataSigner } from '@ethersproject/abstract-signer';
+import { EngineClient } from '@vertex-protocol/engine-client';
 
+/**
+ * Context required to use the Vertex client.
+ */
+export interface VertexClientContext {
+  // Must be a signer to use any contract executions, used for queries/executions to the chain
+  chainSignerOrProvider: Signer | Provider;
+  // Signer for offchain engine transactions, defaults to chainSignerOrProvider, this can be overridden
+  // in cases like the frontend, where we can allow signers on a different chain to execute transactions
+  engineSigner?: TypedDataSigner & Signer;
+  contracts: VertexContracts;
+  graph: VertexGraphClient;
+  engineClient: EngineClient;
+}
+
+/**
+ * Args for creating a context
+ */
 interface VertexClientContextOpts {
   // Address of the Vertex querier
   querierAddress: string;
@@ -22,50 +41,52 @@ interface VertexClientContextOpts {
   offchainEngineEndpoint: string;
 }
 
-export type CreateVertexClientContextOpts = VertexClientContextOpts | 'testnet';
-
 /**
- * Context required to use the Vertex client.
+ * Args for signing configuration for creating a context
  */
-export interface VertexClientContext {
-  // Must be a signer to use any contract executions
-  signerOrProvider: Signer | Provider;
-  contracts: VertexContracts;
-  graph: VertexGraphClient;
-  offchainEngine: OrdersClient;
+export interface CreateVertexClientContextSignerOpts
+  extends Pick<VertexClientContext, 'chainSignerOrProvider' | 'engineSigner'> {
+  // Override the EIP712 signing chain ID, otherwise the chain ID of the engineSigner will be used
+  engineSigningChainId?: number;
 }
+
+export type CreateVertexClientContextOpts = VertexClientContextOpts | 'testnet';
 
 /**
  * Utility function to create client context from options
  *
  * @param opts
+ * @param signerOpts
  */
 export async function createClientContext(
   opts: CreateVertexClientContextOpts,
-  // Must be a signer to use any contract executions
-  signerOrProvider: Signer | Provider,
+  signerOpts: CreateVertexClientContextSignerOpts,
 ): Promise<VertexClientContext> {
   const { querierAddress, graphEndpoint, offchainEngineEndpoint } = (() => {
     if (opts === 'testnet') {
       return {
         querierAddress: VERTEX_DEPLOYMENTS.testnet.querier,
         graphEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet,
-        offchainEngineEndpoint: ORDERS_CLIENT_ENDPOINTS.testnet,
+        // TODO: Update this to the correct endpoint
+        offchainEngineEndpoint: 'http://localhost:3000/api/engine',
       };
     } else {
       return opts;
     }
   })();
+  const { chainSignerOrProvider, engineSigner: engineSignerParam } = signerOpts;
+
   const querier = IVertexQuerier__factory.connect(
     querierAddress,
-    signerOrProvider,
+    chainSignerOrProvider,
   );
   const clearinghouseAddress = (await querier.getConfig()).clearinghouse;
   const clearinghouse = await IClearinghouse__factory.connect(
     clearinghouseAddress,
-    signerOrProvider,
+    chainSignerOrProvider,
   );
 
+  const endpointContractAddress = await clearinghouse.getEndpoint();
   const spotAddress = await clearinghouse.getEngineByType(
     ProductEngineType.SPOT,
   );
@@ -73,15 +94,37 @@ export async function createClientContext(
     ProductEngineType.PERP,
   );
 
+  // TODO: hack - better checking here
+  const chainTypedDataSigner =
+    chainSignerOrProvider instanceof Signer
+      ? (chainSignerOrProvider as TypedDataSigner & Signer)
+      : undefined;
+  const engineSigner = engineSignerParam ?? chainTypedDataSigner;
+
   return {
-    signerOrProvider,
+    chainSignerOrProvider: chainSignerOrProvider,
+    engineSigner: engineSigner,
     contracts: {
       querier,
       clearinghouse,
-      spotEngine: ISpotEngine__factory.connect(spotAddress, signerOrProvider),
-      perpEngine: IPerpEngine__factory.connect(perpAddress, signerOrProvider),
+      endpoint: IEndpoint__factory.connect(
+        endpointContractAddress,
+        chainSignerOrProvider,
+      ),
+      spotEngine: ISpotEngine__factory.connect(
+        spotAddress,
+        chainSignerOrProvider,
+      ),
+      perpEngine: IPerpEngine__factory.connect(
+        perpAddress,
+        chainSignerOrProvider,
+      ),
     },
     graph: new VertexGraphClient({ endpoint: graphEndpoint }),
-    offchainEngine: new OrdersClient({ endpoint: offchainEngineEndpoint }),
+    engineClient: new EngineClient({
+      url: offchainEngineEndpoint,
+      signer: engineSigner,
+      signingChainId: signerOpts.engineSigningChainId,
+    }),
   };
 }

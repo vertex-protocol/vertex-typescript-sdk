@@ -1,18 +1,20 @@
-import { createClientContext, CreateVertexClientContextOpts } from './context';
+import {
+  createClientContext,
+  CreateVertexClientContextOpts,
+  CreateVertexClientContextSignerOpts,
+} from './context';
 import { VertexClient } from './client';
-import { Signer } from 'ethers';
-import { Provider } from '@ethersproject/providers';
 
 /**
  * Creates a Vertex client from given options.
  * {@label CLIENT}
  *
  * @param opts
- * @param signerOrProvider
+ * @param signerOpts
  */
 export async function createVertexClient(
   opts: CreateVertexClientContextOpts,
-  signerOrProvider: Signer | Provider,
+  signerOpts: CreateVertexClientContextSignerOpts,
 ): Promise<VertexClient> {
-  return new VertexClient(await createClientContext(opts, signerOrProvider));
+  return new VertexClient(await createClientContext(opts, signerOpts));
 }

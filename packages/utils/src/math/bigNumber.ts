@@ -15,7 +15,7 @@ export type BigDecimalish = BigDecimal | BigDecimal.Value | BigNumberish;
  * @param val
  */
 export function toEthersBN(val: BigDecimalish): EthersBigNumber {
-  return EthersBigNumber.from(val instanceof BigDecimal ? val.toString() : val);
+  return EthersBigNumber.from(val instanceof BigDecimal ? val.toFixed(0) : val);
 }
 
 /**

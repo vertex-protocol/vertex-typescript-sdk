@@ -16,13 +16,13 @@ const _abi = [
       {
         indexed: false,
         internalType: "address",
-        name: "quote",
+        name: "endpoint",
         type: "address",
       },
       {
         indexed: false,
         internalType: "address",
-        name: "oracle",
+        name: "quote",
         type: "address",
       },
       {
@@ -144,6 +144,89 @@ const _abi = [
     name: "addEngine",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "sender",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "subaccountName",
+            type: "string",
+          },
+          {
+            internalType: "uint32",
+            name: "productId",
+            type: "uint32",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint64",
+            name: "nonce",
+            type: "uint64",
+          },
+        ],
+        internalType: "struct IEndpoint.DepositCollateral",
+        name: "tx",
+        type: "tuple",
+      },
+    ],
+    name: "depositCollateral",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "sender",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint64",
+            name: "nonce",
+            type: "uint64",
+          },
+        ],
+        internalType: "struct IEndpoint.DepositInsurance",
+        name: "tx",
+        type: "tuple",
+      },
+    ],
+    name: "depositInsurance",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getEndpoint",
+    outputs: [
+      {
+        internalType: "address",
+        name: "endpoint",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -384,63 +467,44 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "string",
-        name: "subaccountName",
-        type: "string",
-      },
-      {
-        internalType: "uint64",
-        name: "liquidateeId",
-        type: "uint64",
-      },
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        internalType: "int256",
-        name: "amount",
-        type: "int256",
+        components: [
+          {
+            internalType: "address",
+            name: "sender",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "subaccountName",
+            type: "string",
+          },
+          {
+            internalType: "uint64",
+            name: "liquidateeId",
+            type: "uint64",
+          },
+          {
+            internalType: "uint32",
+            name: "productId",
+            type: "uint32",
+          },
+          {
+            internalType: "int256",
+            name: "amount",
+            type: "int256",
+          },
+          {
+            internalType: "uint64",
+            name: "nonce",
+            type: "uint64",
+          },
+        ],
+        internalType: "struct IEndpoint.LiquidateSubaccount",
+        name: "tx",
+        type: "tuple",
       },
     ],
     name: "liquidateSubaccount",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "subaccountName",
-        type: "string",
-      },
-      {
-        internalType: "uint32[]",
-        name: "productIds",
-        type: "uint32[]",
-      },
-      {
-        internalType: "int256[]",
-        name: "amounts",
-        type: "int256[]",
-      },
-    ],
-    name: "modifyCollateral",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "int256",
-        name: "amount",
-        type: "int256",
-      },
-    ],
-    name: "modifyInsurance",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -461,12 +525,59 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64[]",
-        name: "subaccountIds",
-        type: "uint64[]",
+        components: [
+          {
+            internalType: "uint64[]",
+            name: "subaccountIds",
+            type: "uint64[]",
+          },
+        ],
+        internalType: "struct IEndpoint.SettlePnl",
+        name: "tx",
+        type: "tuple",
       },
     ],
     name: "settlePnl",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "sender",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "subaccountName",
+            type: "string",
+          },
+          {
+            internalType: "uint32",
+            name: "productId",
+            type: "uint32",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint64",
+            name: "nonce",
+            type: "uint64",
+          },
+        ],
+        internalType: "struct IEndpoint.WithdrawCollateral",
+        name: "tx",
+        type: "tuple",
+      },
+    ],
+    name: "withdrawCollateral",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -17,7 +17,7 @@ export function toX18(val: BigNumberish | BigDecimal): BigNumber {
  *
  * @param val
  */
-export function fromX18(val: BigNumber): BigDecimal {
+export function fromX18(val: BigNumberish): BigDecimal {
   return fromFixedPoint(val, 18);
 }
 
@@ -29,8 +29,8 @@ export function fromX18(val: BigNumber): BigDecimal {
  * @param val
  * @param decimals number of fixed point decimal places in `val`
  */
-export function fromFixedPoint(val: BigNumber, decimals = 18): BigDecimal {
-  return toBigDecimal(fromBn(val, decimals));
+export function fromFixedPoint(val: BigNumberish, decimals = 18): BigDecimal {
+  return toBigDecimal(fromBn(BigNumber.from(val), decimals));
 }
 
 /**
