@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/contracts",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -25,7 +25,7 @@
   ],
   "devDependencies": {
     "@typechain/ethers-v5": "^10.1.0",
-    "@vertex-protocol/utils": "^0.1.0-alpha.2",
+    "@vertex-protocol/utils": "^0.1.0-alpha.3",
     "env-cmd": "^10.1.0",
     "typechain": "^8.1.0"
   },
