@@ -7,8 +7,12 @@ import {
   LiquidateSubaccountParams,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
-import { CancelOrderParams, PlaceOrderParams, WithEndpointAddr } from './types';
+import { CancelOrderParams, PlaceOrderParams } from './types';
 import { EngineBaseClient } from './EngineBaseClient';
+
+type WithEndpointAddr<T> = T & {
+  endpointAddr: string;
+};
 
 export class EngineExecuteClient extends EngineBaseClient {
   async liquidateSubaccount(

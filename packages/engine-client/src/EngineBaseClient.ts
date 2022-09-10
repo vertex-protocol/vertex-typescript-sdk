@@ -1,12 +1,10 @@
 import {
-  EngineClientOpts,
-  EngineExecuteRequestBody,
-  EngineExecuteRequestResponse,
-  EngineQueryRequestResponse,
   EngineServerExecuteRequestByType,
   EngineServerExecuteRequestType,
+  EngineServerExecutionResult,
   EngineServerQueryRequestByType,
   EngineServerQueryRequestType,
+  EngineServerQueryResponse,
   EngineServerQueryResponseByType,
 } from './types';
 import {
@@ -16,6 +14,32 @@ import {
 } from '@vertex-protocol/contracts';
 import axios, { AxiosResponse } from 'axios';
 import { URLSearchParams } from 'url';
+import { TypedDataSigner } from '@ethersproject/abstract-signer';
+import { Signer } from 'ethers';
+
+export interface EngineClientOpts {
+  // Server URL
+  url: string;
+  // Signer for EIP712 signing, if not provided, execute requests will error
+  signer?: TypedDataSigner & Signer;
+  // Chain ID override for EIP712 signing
+  signingChainId?: number;
+}
+
+// Only 1 key can be defined per execute request
+type EngineExecuteRequestBody = Partial<EngineServerExecuteRequestByType>;
+
+type EngineExecuteRequestResponse = EngineServerExecutionResult;
+
+type EngineQueryRequestParams<
+  T extends EngineServerQueryRequestType = EngineServerQueryRequestType,
+> = EngineServerQueryRequestByType[T] & {
+  type: T;
+};
+
+type EngineQueryRequestResponse<
+  T extends EngineServerQueryRequestType = EngineServerQueryRequestType,
+> = EngineServerQueryResponse<T>;
 
 export class EngineBaseClient {
   readonly opts: EngineClientOpts;
@@ -28,10 +52,11 @@ export class EngineBaseClient {
     requestType: TRequestType,
     params: EngineServerQueryRequestByType[TRequestType],
   ): Promise<EngineServerQueryResponseByType[TRequestType]> {
-    const requestUrl = `${this.opts.url}/query?${new URLSearchParams({
+    const queryParams = new URLSearchParams({
       ...params,
       type: requestType,
-    } as Record<string, any>).toString()}`;
+    } as Record<string, any>);
+    const requestUrl = `${this.opts.url}/query?${queryParams.toString()}`;
     const response = await axios.get<EngineQueryRequestResponse>(requestUrl);
 
     this.checkResponseStatus(response);
