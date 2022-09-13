@@ -23,18 +23,11 @@
     "src"
   ],
   "dependencies": {
-    "axios": "^0.27.2",
-    "ts-mixer": "^6.0.1"
-  },
-  "devDependencies": {
     "@vertex-protocol/contracts": "^0.1.0-alpha.3",
     "@vertex-protocol/utils": "^0.1.0-alpha.3",
-    "ethers": "^5.6.9"
-  },
-  "peerDependencies": {
-    "@vertex-protocol/contracts": "^0.1.0-alpha.1",
-    "@vertex-protocol/utils": "^0.1.0-alpha.1",
-    "ethers": "^5.6.9"
+    "axios": "^0.27.2",
+    "ethers": "^5.6.9",
+    "ts-mixer": "^6.0.1"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
