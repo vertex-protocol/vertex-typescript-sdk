@@ -226,12 +226,12 @@ function mapEngineServerSpotProduct(
     product: {
       type: ProductEngineType.SPOT,
       totalBorrowed: calcTotalBorrowed(
-        toEthersBN(fromX18(product.total_borrows_normalized_x18)),
-        toEthersBN(fromX18(product.cumulative_borrows_multiplier_x18)),
+        toEthersBN(product.total_borrows_normalized_x18),
+        toEthersBN(product.cumulative_borrows_multiplier_x18),
       ),
       totalDeposited: calcTotalDeposited(
-        toEthersBN(fromX18(product.total_deposits_normalized_x18)),
-        toEthersBN(fromX18(product.cumulative_deposits_multiplier_x18)),
+        toEthersBN(product.total_deposits_normalized_x18),
+        toEthersBN(product.cumulative_deposits_multiplier_x18),
       ),
       // TODO
       oraclePrice: toBigDecimal(0),
