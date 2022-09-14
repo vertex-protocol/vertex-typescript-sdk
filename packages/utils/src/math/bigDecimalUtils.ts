@@ -6,7 +6,6 @@ import { toBigDecimal } from './bigNumber';
  * @param collection
  * @param iteratee
  */
-
 export function sumBigDecimalBy<T>(
   collection: T[] | null | undefined,
   iteratee: (value: T) => BigDecimal.Value,

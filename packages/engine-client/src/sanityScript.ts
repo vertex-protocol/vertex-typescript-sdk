@@ -2,13 +2,39 @@ import { ethers, Wallet } from 'ethers';
 import {
   DepositCollateralParams,
   IClearinghouse__factory,
+  ISpotEngine__factory,
   OrderParams,
 } from '@vertex-protocol/contracts';
-import { MaxUint64 } from '@vertex-protocol/utils';
+import { fromX18, MaxUint64 } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
 
 function getNonce() {
   return Date.now().toFixed(0) + (Math.random() * 1000).toFixed(0);
+}
+
+async function testPrice() {
+  // Hardhat deployers
+  const signer = new Wallet(
+    '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
+    new ethers.providers.JsonRpcProvider(),
+  );
+
+  const clearinghouseAddr = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
+  const clearinghouse = await IClearinghouse__factory.connect(
+    clearinghouseAddr,
+    signer,
+  );
+  const spotEngine = await ISpotEngine__factory.connect(
+    await clearinghouse.getEngineByProduct(1),
+    signer,
+  );
+  const state = (await spotEngine.getProduct(1)).state;
+
+  console.log(
+    'Price',
+    state.priceX18.toString(),
+    fromX18(state.priceX18).toString(),
+  );
 }
 
 async function main() {
@@ -121,4 +147,4 @@ async function main() {
   );
 }
 
-main();
+testPrice();

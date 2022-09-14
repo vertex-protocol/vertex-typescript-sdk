@@ -25,9 +25,12 @@ export interface TotalPortfolioValues {
  * Return total portfolio values in terms of quote
  *
  * @param summary
+ * @param productDecimalsByProductId Token decimals by product ID, if given for a product, will divide the
+ *  absolute amount by the decimals given, defaults to 0
  */
 export function calcTotalPortfolioValues(
   summary: SubaccountSummaryResponse,
+  productDecimalsByProductId: Record<number, number> = {},
 ): TotalPortfolioValues {
   const values: TotalPortfolioValues = {
     netTotal: toBigDecimal(0),
@@ -38,15 +41,16 @@ export function calcTotalPortfolioValues(
   };
 
   summary.balances.forEach((balance) => {
+    const decimals = productDecimalsByProductId[balance.productId] ?? 0;
     if (balance.type === ProductEngineType.SPOT) {
-      const value = calcSpotBalanceValue(balance);
+      const value = calcSpotBalanceValue(balance, decimals);
 
       values.totalNotional = values.totalNotional.plus(value);
       values.netTotal = values.netTotal.plus(value);
       values.spot = values.spot.plus(value);
     } else if (balance.type === ProductEngineType.PERP) {
-      const notional = calcPerpBalanceNotionalValue(balance);
-      const value = calcPerpBalanceValue(balance);
+      const notional = calcPerpBalanceNotionalValue(balance, decimals);
+      const value = calcPerpBalanceValue(balance, decimals);
 
       values.totalNotional = values.totalNotional.plus(notional);
       values.perpNotional = values.perpNotional.plus(notional);
@@ -62,9 +66,16 @@ export function calcTotalPortfolioValues(
  * Leverage calculated as totalNotional / netTotal
  *
  * @param summary
+ * @param productDecimalsByProductId
  */
-export function calcSubaccountLeverage(summary: SubaccountSummaryResponse) {
-  const { totalNotional, netTotal } = calcTotalPortfolioValues(summary);
+export function calcSubaccountLeverage(
+  summary: SubaccountSummaryResponse,
+  productDecimalsByProductId: Record<number, number> = {},
+) {
+  const { totalNotional, netTotal } = calcTotalPortfolioValues(
+    summary,
+    productDecimalsByProductId,
+  );
   if (netTotal.eq(0)) {
     return toBigDecimal(0);
   }
