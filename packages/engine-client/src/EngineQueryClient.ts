@@ -221,8 +221,9 @@ function mapEngineServerSpotProduct(
   return {
     type: ProductEngineType.SPOT,
     productId: product.product_id,
-    markPrice: toBigDecimal(0),
-    priceIncrement: toBigDecimal(0),
+    markPrice: toBigDecimal(product.book_info.mark_price_x18),
+    priceIncrement: toBigDecimal(product.book_info.price_increment_x18),
+    sizeIncrement: toBigDecimal(product.book_info.size_increment_x18),
     product: {
       type: ProductEngineType.SPOT,
       totalBorrowed: calcTotalBorrowed(
@@ -233,20 +234,26 @@ function mapEngineServerSpotProduct(
         toEthersBN(product.total_deposits_normalized_x18),
         toEthersBN(product.cumulative_deposits_multiplier_x18),
       ),
-      // TODO
-      oraclePrice: toBigDecimal(0),
-      interestFloor: toBigDecimal(0),
-      interestInflectionUtil: toBigDecimal(0),
-      interestLargeCap: toBigDecimal(0),
-      interestSmallCap: toBigDecimal(0),
-      largePositionPenalty: toBigDecimal(0),
-      longWeightInitial: toBigDecimal(0),
-      longWeightMaintenance: toBigDecimal(0),
-      shortWeightInitial: toBigDecimal(0),
-      shortWeightMaintenance: toBigDecimal(0),
-      tokenAddr: '',
+      oraclePrice: toBigDecimal(product.oracle_price_x18),
+      interestFloor: toBigDecimal(product.config.interest_floor_x18),
+      interestInflectionUtil: toBigDecimal(
+        product.config.interest_inflection_util_x18,
+      ),
+      interestLargeCap: toBigDecimal(product.config.interest_large_cap_x18),
+      interestSmallCap: toBigDecimal(product.config.interest_small_cap_x18),
+      largePositionPenalty: toBigDecimal(
+        product.config.large_position_penalty_x18,
+      ),
+      longWeightInitial: toBigDecimal(product.config.long_weight_initial_x18),
+      longWeightMaintenance: toBigDecimal(
+        product.config.long_weight_maintenance_x18,
+      ),
+      shortWeightInitial: toBigDecimal(product.config.short_weight_initial_x18),
+      shortWeightMaintenance: toBigDecimal(
+        product.config.short_weight_maintenance_x18,
+      ),
+      tokenAddr: product.config.token,
     },
-    sizeIncrement: toBigDecimal(0),
   };
 }
 
@@ -256,18 +263,24 @@ function mapEngineServerPerpProduct(
   return {
     type: ProductEngineType.PERP,
     productId: product.product_id,
-    markPrice: toBigDecimal(0),
-    priceIncrement: toBigDecimal(0),
-    sizeIncrement: toBigDecimal(0),
+    markPrice: toBigDecimal(product.book_info.mark_price_x18),
+    priceIncrement: toBigDecimal(product.book_info.price_increment_x18),
+    sizeIncrement: toBigDecimal(product.book_info.size_increment_x18),
     product: {
       type: ProductEngineType.PERP,
       emaPrice: fromX18(product.ema_price_x18),
-      oraclePrice: toBigDecimal(0),
-      largePositionPenalty: toBigDecimal(0),
-      longWeightInitial: toBigDecimal(0),
-      longWeightMaintenance: toBigDecimal(0),
-      shortWeightInitial: toBigDecimal(0),
-      shortWeightMaintenance: toBigDecimal(0),
+      oraclePrice: toBigDecimal(product.oracle_price_x18),
+      largePositionPenalty: toBigDecimal(
+        product.config.large_position_penalty_x18,
+      ),
+      longWeightInitial: toBigDecimal(product.config.long_weight_initial_x18),
+      longWeightMaintenance: toBigDecimal(
+        product.config.long_weight_maintenance_x18,
+      ),
+      shortWeightInitial: toBigDecimal(product.config.short_weight_initial_x18),
+      shortWeightMaintenance: toBigDecimal(
+        product.config.short_weight_maintenance_x18,
+      ),
     },
   };
 }
