@@ -7,7 +7,11 @@ import {
   LiquidateSubaccountParams,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
-import { CancelOrderParams, PlaceOrderParams } from './types';
+import {
+  CancelOrderParams,
+  OrderActionResult,
+  PlaceOrderParams,
+} from './types';
 import { EngineBaseClient } from './EngineBaseClient';
 
 type WithEndpointAddr<T> = T & {
@@ -62,8 +66,7 @@ export class EngineExecuteClient extends EngineBaseClient {
     );
   }
 
-  // TODO: type result
-  async placeOrder(params: PlaceOrderParams) {
+  async placeOrder(params: PlaceOrderParams): Promise<OrderActionResult> {
     const digest = await getOrderDigest({
       chainId: await this.getSigningChainId(),
       order: params.order,
@@ -86,7 +89,7 @@ export class EngineExecuteClient extends EngineBaseClient {
     return { digest, ...executeResult };
   }
 
-  async cancelOrder(params: CancelOrderParams) {
+  async cancelOrder(params: CancelOrderParams): Promise<OrderActionResult> {
     const digest = await getOrderDigest({
       chainId: await this.getSigningChainId(),
       order: params.order,

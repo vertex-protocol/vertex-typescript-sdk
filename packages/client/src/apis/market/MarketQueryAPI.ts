@@ -3,6 +3,10 @@ import {
   getAllMarkets,
   GetAllMarketsResponse,
 } from '@vertex-protocol/contracts';
+import {
+  GetOrdersForSubaccountParams,
+  GetOrdersForSubaccountResponse,
+} from './queryTypes';
 
 export class MarketQueryAPI extends BaseVertexAPI {
   // All markets from querier
@@ -14,14 +18,21 @@ export class MarketQueryAPI extends BaseVertexAPI {
     // Call validateTransactions
   }
 
-  async getAllOrders() {
+  async getLatestSubmittedOrders() {
     // Get both enqueued and submitted orders by market ID, join by time
     // This is usually used for a running log of submitted orders
     // For these joins, expose dependency-less functions that can be used independently
   }
 
-  async getOrdersForSubaccount() {
-    // Get both enqueued and submitted orders by market ID but filtered by subaccount, join by time
+  async getOrdersForSubaccount(
+    params: GetOrdersForSubaccountParams,
+  ): Promise<GetOrdersForSubaccountResponse> {
+    // TODO: Impl graph for historical
+    return {
+      engineOrders: (
+        await this.context.engineClient.getSubaccountOrders(params)
+      ).orders,
+    };
   }
 
   async getOrdersById() {

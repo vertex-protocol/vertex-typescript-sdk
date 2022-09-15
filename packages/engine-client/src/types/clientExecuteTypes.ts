@@ -1,4 +1,5 @@
 import { OrderParams } from '@vertex-protocol/contracts';
+import { EngineServerExecutionResult } from './serverExecuteTypes';
 
 export interface PlaceOrderParams {
   productId: number;
@@ -7,3 +8,7 @@ export interface PlaceOrderParams {
 }
 
 export type CancelOrderParams = PlaceOrderParams;
+
+export interface OrderActionResult extends EngineServerExecutionResult {
+  digest: string;
+}
