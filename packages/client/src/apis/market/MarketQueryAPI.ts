@@ -7,6 +7,8 @@ import {
   GetOrdersForSubaccountParams,
   GetOrdersForSubaccountResponse,
 } from './queryTypes';
+import { GetCandlesticksParams } from '@vertex-protocol/graph';
+import { GetEngineMarketPriceParams } from '@vertex-protocol/engine-client';
 
 export class MarketQueryAPI extends BaseVertexAPI {
   // All markets from querier
@@ -43,8 +45,22 @@ export class MarketQueryAPI extends BaseVertexAPI {
     // From min price inclusive to max price exclusive, hits only offchain book, as on-chain is filled
   }
 
-  async getCandlesticks() {
-    // Fetch candlesticks using graph
+  /**
+   * Historical candlesticks from the Graph, use getLatestMarketPrice for the latest orderbook prices
+   *
+   * @param params
+   */
+  async getCandlesticks(params: GetCandlesticksParams) {
+    return this.context.graph.getCandlesticks(params);
+  }
+
+  /**
+   * Retrieves the latest off-chain orderbook price from the engine
+   *
+   * @param params
+   */
+  async getLatestMarketPrice(params: GetEngineMarketPriceParams) {
+    return this.context.engineClient.getMarketPrice(params);
   }
 
   async getHourlyHistoricalMarketData() {

@@ -1,0 +1,20 @@
+query CandlesticksQuery(
+  $marketEntityId: String!
+  $maxTimeInclusive: BigInt!
+  $limit: Int!
+) {
+  candlesticks(
+    where: { market: $marketEntityId, time_lte: $maxTimeInclusive }
+    orderBy: time
+    orderDirection: desc
+    first: $limit
+  ) {
+    id
+    time
+    openX18
+    closeX18
+    highX18
+    lowX18
+    volumeQuote
+  }
+}

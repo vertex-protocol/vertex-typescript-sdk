@@ -1,34 +1,14 @@
-// @ts-nocheck
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
-import { gql } from '@graphql-mesh/utils';
 
-import type { GetMeshOptions } from '@graphql-mesh/runtime';
-import type { YamlConfig } from '@graphql-mesh/types';
-import { PubSub } from '@graphql-mesh/utils';
-import { DefaultLogger } from '@graphql-mesh/utils';
-import MeshCache from "@graphql-mesh/cache-localforage";
-import { fetch as fetchFn } from '@whatwg-node/fetch';
+import { InContextSdkMethod } from '@graphql-mesh/types';
+import { MeshContext } from '@graphql-mesh/runtime';
+import { Scalars } from '../..';
 
-import GraphqlHandler from "@graphql-mesh/graphql"
-import AutoPaginationTransform from "@graphprotocol/client-auto-pagination";
-import BlockTrackingTransform from "@graphprotocol/client-block-tracking";
-import BareMerger from "@graphql-mesh/merger-bare";
-import { printWithCache } from '@graphql-mesh/utils';
-import { createMeshHTTPHandler } from '@graphql-mesh/http';
-import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext, MeshInstance } from '@graphql-mesh/runtime';
-import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
-import { path as pathModule } from '@graphql-mesh/cross-helpers';
-import type { ClearinghouseContext } from './sources/Clearinghouse/types';
-export type Maybe<T> = T | null;
+export namespace ClearinghouseTypes {
+  export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
-
-
-
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -3551,1037 +3531,213 @@ export type _SubgraphErrorPolicy_ =
   /** If the subgraph has indexing errors, data will be omitted. The default. */
   | 'deny';
 
-export type WithIndex<TObject> = TObject & Record<string, any>;
-export type ResolversObject<TObject> = WithIndex<TObject>;
-
-export type ResolverTypeWrapper<T> = Promise<T> | T;
-
-
-export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
-  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
-};
-export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
-
-export type ResolverFn<TResult, TParent, TContext, TArgs> = (
-  parent: TParent,
-  args: TArgs,
-  context: TContext,
-  info: GraphQLResolveInfo
-) => Promise<TResult> | TResult;
-
-export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
-  parent: TParent,
-  args: TArgs,
-  context: TContext,
-  info: GraphQLResolveInfo
-) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
-
-export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
-  parent: TParent,
-  args: TArgs,
-  context: TContext,
-  info: GraphQLResolveInfo
-) => TResult | Promise<TResult>;
-
-export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
-  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
-  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
 }
-
-export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
-  subscribe: SubscriptionSubscribeFn<any, TParent, TContext, TArgs>;
-  resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
-}
-
-export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
-  | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
-  | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
-
-export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
-  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
-  | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
-
-export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
-  parent: TParent,
-  context: TContext,
-  info: GraphQLResolveInfo
-) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
-
-export type IsTypeOfResolverFn<T = {}, TContext = {}> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
-
-export type NextResolverFn<T> = () => Promise<T>;
-
-export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs = {}> = (
-  next: NextResolverFn<TResult>,
-  parent: TParent,
-  args: TArgs,
-  context: TContext,
-  info: GraphQLResolveInfo
-) => TResult | Promise<TResult>;
-
-/** Mapping between all available schema types and the resolvers types */
-export type ResolversTypes = ResolversObject<{
-  BigDecimal: ResolverTypeWrapper<Scalars['BigDecimal']>;
-  BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
-  Block_height: Block_height;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  Bytes: ResolverTypeWrapper<Scalars['Bytes']>;
-  CancelOrderEvent: ResolverTypeWrapper<CancelOrderEvent>;
-  CancelOrderEvent_filter: CancelOrderEvent_filter;
-  CancelOrderEvent_orderBy: CancelOrderEvent_orderBy;
-  Candlestick: ResolverTypeWrapper<Candlestick>;
-  Candlestick_filter: Candlestick_filter;
-  Candlestick_orderBy: Candlestick_orderBy;
-  Clearinghouse: ResolverTypeWrapper<Clearinghouse>;
-  Clearinghouse_filter: Clearinghouse_filter;
-  Clearinghouse_orderBy: Clearinghouse_orderBy;
-  ClosedPerpBalance: ResolverTypeWrapper<ClosedPerpBalance>;
-  ClosedPerpBalance_filter: ClosedPerpBalance_filter;
-  ClosedPerpBalance_orderBy: ClosedPerpBalance_orderBy;
-  ClosedSpotBalance: ResolverTypeWrapper<ClosedSpotBalance>;
-  ClosedSpotBalance_filter: ClosedSpotBalance_filter;
-  ClosedSpotBalance_orderBy: ClosedSpotBalance_orderBy;
-  FillOrderEvent: ResolverTypeWrapper<FillOrderEvent>;
-  FillOrderEvent_filter: FillOrderEvent_filter;
-  FillOrderEvent_orderBy: FillOrderEvent_orderBy;
-  Float: ResolverTypeWrapper<Scalars['Float']>;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
-  LiquidationEvent: ResolverTypeWrapper<LiquidationEvent>;
-  LiquidationEvent_filter: LiquidationEvent_filter;
-  LiquidationEvent_orderBy: LiquidationEvent_orderBy;
-  Market: ResolverTypeWrapper<Market>;
-  MarketHourlySnapshot: ResolverTypeWrapper<MarketHourlySnapshot>;
-  MarketHourlySnapshot_filter: MarketHourlySnapshot_filter;
-  MarketHourlySnapshot_orderBy: MarketHourlySnapshot_orderBy;
-  Market_filter: Market_filter;
-  Market_orderBy: Market_orderBy;
-  ModifyCollateralEvent: ResolverTypeWrapper<ModifyCollateralEvent>;
-  ModifyCollateralEvent_filter: ModifyCollateralEvent_filter;
-  ModifyCollateralEvent_orderBy: ModifyCollateralEvent_orderBy;
-  Order: ResolverTypeWrapper<Order>;
-  OrderDirection: OrderDirection;
-  OrderValidationResult: OrderValidationResult;
-  Order_filter: Order_filter;
-  Order_orderBy: Order_orderBy;
-  PerpBalanceSummary: ResolverTypeWrapper<PerpBalanceSummary>;
-  PerpBalanceSummary_filter: PerpBalanceSummary_filter;
-  PerpBalanceSummary_orderBy: PerpBalanceSummary_orderBy;
-  PerpEngine: ResolverTypeWrapper<PerpEngine>;
-  PerpEngine_filter: PerpEngine_filter;
-  PerpEngine_orderBy: PerpEngine_orderBy;
-  PerpProduct: ResolverTypeWrapper<PerpProduct>;
-  PerpProductHourlySnapshot: ResolverTypeWrapper<PerpProductHourlySnapshot>;
-  PerpProductHourlySnapshot_filter: PerpProductHourlySnapshot_filter;
-  PerpProductHourlySnapshot_orderBy: PerpProductHourlySnapshot_orderBy;
-  PerpProduct_filter: PerpProduct_filter;
-  PerpProduct_orderBy: PerpProduct_orderBy;
-  PlaceOrderEvent: ResolverTypeWrapper<PlaceOrderEvent>;
-  PlaceOrderEvent_filter: PlaceOrderEvent_filter;
-  PlaceOrderEvent_orderBy: PlaceOrderEvent_orderBy;
-  Query: ResolverTypeWrapper<{}>;
-  SettlePnlEvent: ResolverTypeWrapper<SettlePnlEvent>;
-  SettlePnlEvent_filter: SettlePnlEvent_filter;
-  SettlePnlEvent_orderBy: SettlePnlEvent_orderBy;
-  SocializeProductEvent: ResolverTypeWrapper<SocializeProductEvent>;
-  SocializeProductEvent_filter: SocializeProductEvent_filter;
-  SocializeProductEvent_orderBy: SocializeProductEvent_orderBy;
-  SpotBalanceSummary: ResolverTypeWrapper<SpotBalanceSummary>;
-  SpotBalanceSummary_filter: SpotBalanceSummary_filter;
-  SpotBalanceSummary_orderBy: SpotBalanceSummary_orderBy;
-  SpotEngine: ResolverTypeWrapper<SpotEngine>;
-  SpotEngine_filter: SpotEngine_filter;
-  SpotEngine_orderBy: SpotEngine_orderBy;
-  SpotProduct: ResolverTypeWrapper<SpotProduct>;
-  SpotProductHourlySnapshot: ResolverTypeWrapper<SpotProductHourlySnapshot>;
-  SpotProductHourlySnapshot_filter: SpotProductHourlySnapshot_filter;
-  SpotProductHourlySnapshot_orderBy: SpotProductHourlySnapshot_orderBy;
-  SpotProduct_filter: SpotProduct_filter;
-  SpotProduct_orderBy: SpotProduct_orderBy;
-  String: ResolverTypeWrapper<Scalars['String']>;
-  Subaccount: ResolverTypeWrapper<Subaccount>;
-  Subaccount_filter: Subaccount_filter;
-  Subaccount_orderBy: Subaccount_orderBy;
-  Subscription: ResolverTypeWrapper<{}>;
-  TradeSummary: ResolverTypeWrapper<TradeSummary>;
-  TradeSummary_filter: TradeSummary_filter;
-  TradeSummary_orderBy: TradeSummary_orderBy;
-  _Block_: ResolverTypeWrapper<_Block_>;
-  _Meta_: ResolverTypeWrapper<_Meta_>;
-  _SubgraphErrorPolicy_: _SubgraphErrorPolicy_;
-}>;
-
-/** Mapping between all available schema types and the resolvers parents */
-export type ResolversParentTypes = ResolversObject<{
-  BigDecimal: Scalars['BigDecimal'];
-  BigInt: Scalars['BigInt'];
-  Block_height: Block_height;
-  Boolean: Scalars['Boolean'];
-  Bytes: Scalars['Bytes'];
-  CancelOrderEvent: CancelOrderEvent;
-  CancelOrderEvent_filter: CancelOrderEvent_filter;
-  Candlestick: Candlestick;
-  Candlestick_filter: Candlestick_filter;
-  Clearinghouse: Clearinghouse;
-  Clearinghouse_filter: Clearinghouse_filter;
-  ClosedPerpBalance: ClosedPerpBalance;
-  ClosedPerpBalance_filter: ClosedPerpBalance_filter;
-  ClosedSpotBalance: ClosedSpotBalance;
-  ClosedSpotBalance_filter: ClosedSpotBalance_filter;
-  FillOrderEvent: FillOrderEvent;
-  FillOrderEvent_filter: FillOrderEvent_filter;
-  Float: Scalars['Float'];
-  ID: Scalars['ID'];
-  Int: Scalars['Int'];
-  LiquidationEvent: LiquidationEvent;
-  LiquidationEvent_filter: LiquidationEvent_filter;
-  Market: Market;
-  MarketHourlySnapshot: MarketHourlySnapshot;
-  MarketHourlySnapshot_filter: MarketHourlySnapshot_filter;
-  Market_filter: Market_filter;
-  ModifyCollateralEvent: ModifyCollateralEvent;
-  ModifyCollateralEvent_filter: ModifyCollateralEvent_filter;
-  Order: Order;
-  Order_filter: Order_filter;
-  PerpBalanceSummary: PerpBalanceSummary;
-  PerpBalanceSummary_filter: PerpBalanceSummary_filter;
-  PerpEngine: PerpEngine;
-  PerpEngine_filter: PerpEngine_filter;
-  PerpProduct: PerpProduct;
-  PerpProductHourlySnapshot: PerpProductHourlySnapshot;
-  PerpProductHourlySnapshot_filter: PerpProductHourlySnapshot_filter;
-  PerpProduct_filter: PerpProduct_filter;
-  PlaceOrderEvent: PlaceOrderEvent;
-  PlaceOrderEvent_filter: PlaceOrderEvent_filter;
-  Query: {};
-  SettlePnlEvent: SettlePnlEvent;
-  SettlePnlEvent_filter: SettlePnlEvent_filter;
-  SocializeProductEvent: SocializeProductEvent;
-  SocializeProductEvent_filter: SocializeProductEvent_filter;
-  SpotBalanceSummary: SpotBalanceSummary;
-  SpotBalanceSummary_filter: SpotBalanceSummary_filter;
-  SpotEngine: SpotEngine;
-  SpotEngine_filter: SpotEngine_filter;
-  SpotProduct: SpotProduct;
-  SpotProductHourlySnapshot: SpotProductHourlySnapshot;
-  SpotProductHourlySnapshot_filter: SpotProductHourlySnapshot_filter;
-  SpotProduct_filter: SpotProduct_filter;
-  String: Scalars['String'];
-  Subaccount: Subaccount;
-  Subaccount_filter: Subaccount_filter;
-  Subscription: {};
-  TradeSummary: TradeSummary;
-  TradeSummary_filter: TradeSummary_filter;
-  _Block_: _Block_;
-  _Meta_: _Meta_;
-}>;
-
-export type entityDirectiveArgs = { };
-
-export type entityDirectiveResolver<Result, Parent, ContextType = MeshContext & { endpoint: string }, Args = entityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type subgraphIdDirectiveArgs = {
-  id: Scalars['String'];
+export type QueryClearinghouseSdk = {
+  /** undefined **/
+  clearinghouse: InContextSdkMethod<ClearinghouseTypes.Query['clearinghouse'], ClearinghouseTypes.QueryclearinghouseArgs, MeshContext>,
+  /** undefined **/
+  clearinghouses: InContextSdkMethod<ClearinghouseTypes.Query['clearinghouses'], ClearinghouseTypes.QueryclearinghousesArgs, MeshContext>,
+  /** undefined **/
+  spotEngine: InContextSdkMethod<ClearinghouseTypes.Query['spotEngine'], ClearinghouseTypes.QueryspotEngineArgs, MeshContext>,
+  /** undefined **/
+  spotEngines: InContextSdkMethod<ClearinghouseTypes.Query['spotEngines'], ClearinghouseTypes.QueryspotEnginesArgs, MeshContext>,
+  /** undefined **/
+  perpEngine: InContextSdkMethod<ClearinghouseTypes.Query['perpEngine'], ClearinghouseTypes.QueryperpEngineArgs, MeshContext>,
+  /** undefined **/
+  perpEngines: InContextSdkMethod<ClearinghouseTypes.Query['perpEngines'], ClearinghouseTypes.QueryperpEnginesArgs, MeshContext>,
+  /** undefined **/
+  spotProduct: InContextSdkMethod<ClearinghouseTypes.Query['spotProduct'], ClearinghouseTypes.QueryspotProductArgs, MeshContext>,
+  /** undefined **/
+  spotProducts: InContextSdkMethod<ClearinghouseTypes.Query['spotProducts'], ClearinghouseTypes.QueryspotProductsArgs, MeshContext>,
+  /** undefined **/
+  spotProductHourlySnapshot: InContextSdkMethod<ClearinghouseTypes.Query['spotProductHourlySnapshot'], ClearinghouseTypes.QueryspotProductHourlySnapshotArgs, MeshContext>,
+  /** undefined **/
+  spotProductHourlySnapshots: InContextSdkMethod<ClearinghouseTypes.Query['spotProductHourlySnapshots'], ClearinghouseTypes.QueryspotProductHourlySnapshotsArgs, MeshContext>,
+  /** undefined **/
+  perpProduct: InContextSdkMethod<ClearinghouseTypes.Query['perpProduct'], ClearinghouseTypes.QueryperpProductArgs, MeshContext>,
+  /** undefined **/
+  perpProducts: InContextSdkMethod<ClearinghouseTypes.Query['perpProducts'], ClearinghouseTypes.QueryperpProductsArgs, MeshContext>,
+  /** undefined **/
+  perpProductHourlySnapshot: InContextSdkMethod<ClearinghouseTypes.Query['perpProductHourlySnapshot'], ClearinghouseTypes.QueryperpProductHourlySnapshotArgs, MeshContext>,
+  /** undefined **/
+  perpProductHourlySnapshots: InContextSdkMethod<ClearinghouseTypes.Query['perpProductHourlySnapshots'], ClearinghouseTypes.QueryperpProductHourlySnapshotsArgs, MeshContext>,
+  /** undefined **/
+  market: InContextSdkMethod<ClearinghouseTypes.Query['market'], ClearinghouseTypes.QuerymarketArgs, MeshContext>,
+  /** undefined **/
+  markets: InContextSdkMethod<ClearinghouseTypes.Query['markets'], ClearinghouseTypes.QuerymarketsArgs, MeshContext>,
+  /** undefined **/
+  marketHourlySnapshot: InContextSdkMethod<ClearinghouseTypes.Query['marketHourlySnapshot'], ClearinghouseTypes.QuerymarketHourlySnapshotArgs, MeshContext>,
+  /** undefined **/
+  marketHourlySnapshots: InContextSdkMethod<ClearinghouseTypes.Query['marketHourlySnapshots'], ClearinghouseTypes.QuerymarketHourlySnapshotsArgs, MeshContext>,
+  /** undefined **/
+  candlestick: InContextSdkMethod<ClearinghouseTypes.Query['candlestick'], ClearinghouseTypes.QuerycandlestickArgs, MeshContext>,
+  /** undefined **/
+  candlesticks: InContextSdkMethod<ClearinghouseTypes.Query['candlesticks'], ClearinghouseTypes.QuerycandlesticksArgs, MeshContext>,
+  /** undefined **/
+  order: InContextSdkMethod<ClearinghouseTypes.Query['order'], ClearinghouseTypes.QueryorderArgs, MeshContext>,
+  /** undefined **/
+  orders: InContextSdkMethod<ClearinghouseTypes.Query['orders'], ClearinghouseTypes.QueryordersArgs, MeshContext>,
+  /** undefined **/
+  modifyCollateralEvent: InContextSdkMethod<ClearinghouseTypes.Query['modifyCollateralEvent'], ClearinghouseTypes.QuerymodifyCollateralEventArgs, MeshContext>,
+  /** undefined **/
+  modifyCollateralEvents: InContextSdkMethod<ClearinghouseTypes.Query['modifyCollateralEvents'], ClearinghouseTypes.QuerymodifyCollateralEventsArgs, MeshContext>,
+  /** undefined **/
+  settlePnlEvent: InContextSdkMethod<ClearinghouseTypes.Query['settlePnlEvent'], ClearinghouseTypes.QuerysettlePnlEventArgs, MeshContext>,
+  /** undefined **/
+  settlePnlEvents: InContextSdkMethod<ClearinghouseTypes.Query['settlePnlEvents'], ClearinghouseTypes.QuerysettlePnlEventsArgs, MeshContext>,
+  /** undefined **/
+  liquidationEvent: InContextSdkMethod<ClearinghouseTypes.Query['liquidationEvent'], ClearinghouseTypes.QueryliquidationEventArgs, MeshContext>,
+  /** undefined **/
+  liquidationEvents: InContextSdkMethod<ClearinghouseTypes.Query['liquidationEvents'], ClearinghouseTypes.QueryliquidationEventsArgs, MeshContext>,
+  /** undefined **/
+  socializeProductEvent: InContextSdkMethod<ClearinghouseTypes.Query['socializeProductEvent'], ClearinghouseTypes.QuerysocializeProductEventArgs, MeshContext>,
+  /** undefined **/
+  socializeProductEvents: InContextSdkMethod<ClearinghouseTypes.Query['socializeProductEvents'], ClearinghouseTypes.QuerysocializeProductEventsArgs, MeshContext>,
+  /** undefined **/
+  placeOrderEvent: InContextSdkMethod<ClearinghouseTypes.Query['placeOrderEvent'], ClearinghouseTypes.QueryplaceOrderEventArgs, MeshContext>,
+  /** undefined **/
+  placeOrderEvents: InContextSdkMethod<ClearinghouseTypes.Query['placeOrderEvents'], ClearinghouseTypes.QueryplaceOrderEventsArgs, MeshContext>,
+  /** undefined **/
+  fillOrderEvent: InContextSdkMethod<ClearinghouseTypes.Query['fillOrderEvent'], ClearinghouseTypes.QueryfillOrderEventArgs, MeshContext>,
+  /** undefined **/
+  fillOrderEvents: InContextSdkMethod<ClearinghouseTypes.Query['fillOrderEvents'], ClearinghouseTypes.QueryfillOrderEventsArgs, MeshContext>,
+  /** undefined **/
+  cancelOrderEvent: InContextSdkMethod<ClearinghouseTypes.Query['cancelOrderEvent'], ClearinghouseTypes.QuerycancelOrderEventArgs, MeshContext>,
+  /** undefined **/
+  cancelOrderEvents: InContextSdkMethod<ClearinghouseTypes.Query['cancelOrderEvents'], ClearinghouseTypes.QuerycancelOrderEventsArgs, MeshContext>,
+  /** undefined **/
+  subaccount: InContextSdkMethod<ClearinghouseTypes.Query['subaccount'], ClearinghouseTypes.QuerysubaccountArgs, MeshContext>,
+  /** undefined **/
+  subaccounts: InContextSdkMethod<ClearinghouseTypes.Query['subaccounts'], ClearinghouseTypes.QuerysubaccountsArgs, MeshContext>,
+  /** undefined **/
+  tradeSummary: InContextSdkMethod<ClearinghouseTypes.Query['tradeSummary'], ClearinghouseTypes.QuerytradeSummaryArgs, MeshContext>,
+  /** undefined **/
+  tradeSummaries: InContextSdkMethod<ClearinghouseTypes.Query['tradeSummaries'], ClearinghouseTypes.QuerytradeSummariesArgs, MeshContext>,
+  /** undefined **/
+  spotBalanceSummary: InContextSdkMethod<ClearinghouseTypes.Query['spotBalanceSummary'], ClearinghouseTypes.QueryspotBalanceSummaryArgs, MeshContext>,
+  /** undefined **/
+  spotBalanceSummaries: InContextSdkMethod<ClearinghouseTypes.Query['spotBalanceSummaries'], ClearinghouseTypes.QueryspotBalanceSummariesArgs, MeshContext>,
+  /** undefined **/
+  closedSpotBalance: InContextSdkMethod<ClearinghouseTypes.Query['closedSpotBalance'], ClearinghouseTypes.QueryclosedSpotBalanceArgs, MeshContext>,
+  /** undefined **/
+  closedSpotBalances: InContextSdkMethod<ClearinghouseTypes.Query['closedSpotBalances'], ClearinghouseTypes.QueryclosedSpotBalancesArgs, MeshContext>,
+  /** undefined **/
+  perpBalanceSummary: InContextSdkMethod<ClearinghouseTypes.Query['perpBalanceSummary'], ClearinghouseTypes.QueryperpBalanceSummaryArgs, MeshContext>,
+  /** undefined **/
+  perpBalanceSummaries: InContextSdkMethod<ClearinghouseTypes.Query['perpBalanceSummaries'], ClearinghouseTypes.QueryperpBalanceSummariesArgs, MeshContext>,
+  /** undefined **/
+  closedPerpBalance: InContextSdkMethod<ClearinghouseTypes.Query['closedPerpBalance'], ClearinghouseTypes.QueryclosedPerpBalanceArgs, MeshContext>,
+  /** undefined **/
+  closedPerpBalances: InContextSdkMethod<ClearinghouseTypes.Query['closedPerpBalances'], ClearinghouseTypes.QueryclosedPerpBalancesArgs, MeshContext>,
+  /** Access to subgraph metadata **/
+  _meta: InContextSdkMethod<ClearinghouseTypes.Query['_meta'], ClearinghouseTypes.Query_metaArgs, MeshContext>
 };
 
-export type subgraphIdDirectiveResolver<Result, Parent, ContextType = MeshContext & { endpoint: string }, Args = subgraphIdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type MutationClearinghouseSdk = {
 
-export type derivedFromDirectiveArgs = {
-  field: Scalars['String'];
 };
 
-export type derivedFromDirectiveResolver<Result, Parent, ContextType = MeshContext & { endpoint: string }, Args = derivedFromDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export interface BigDecimalScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigDecimal'], any> {
-  name: 'BigDecimal';
-}
-
-export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
-  name: 'BigInt';
-}
-
-export interface BytesScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Bytes'], any> {
-  name: 'Bytes';
-}
-
-export type CancelOrderEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['CancelOrderEvent'] = ResolversParentTypes['CancelOrderEvent']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  order?: Resolver<ResolversTypes['Order'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type CandlestickResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Candlestick'] = ResolversParentTypes['Candlestick']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
-  time?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  period?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  openX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  closeX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  lowX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  highX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeBase?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeQuote?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ClearinghouseResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Clearinghouse'] = ResolversParentTypes['Clearinghouse']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  quoteProduct?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
-  spotEngine?: Resolver<ResolversTypes['SpotEngine'], ParentType, ContextType>;
-  perpEngine?: Resolver<ResolversTypes['PerpEngine'], ParentType, ContextType>;
-  numSubaccounts?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  numProducts?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  subaccounts?: Resolver<Array<ResolversTypes['Subaccount']>, ParentType, ContextType, RequireFields<ClearinghousesubaccountsArgs, 'skip' | 'first'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ClosedPerpBalanceResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['ClosedPerpBalance'] = ResolversParentTypes['ClosedPerpBalance']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  balance?: Resolver<ResolversTypes['PerpBalanceSummary'], ParentType, ContextType>;
-  timeOpened?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  timeClosed?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  netFunding?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ClosedSpotBalanceResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['ClosedSpotBalance'] = ResolversParentTypes['ClosedSpotBalance']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  balance?: Resolver<ResolversTypes['SpotBalanceSummary'], ParentType, ContextType>;
-  timeOpened?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  timeClosed?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  netInterest?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type FillOrderEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['FillOrderEvent'] = ResolversParentTypes['FillOrderEvent']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  order?: Resolver<ResolversTypes['Order'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type LiquidationEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['LiquidationEvent'] = ResolversParentTypes['LiquidationEvent']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  liquidator?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  liquidatee?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  liquidatorBaseDelta?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  liquidatorQuoteDelta?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  insuranceCoverage?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type MarketResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Market'] = ResolversParentTypes['Market']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  clearinghouse?: Resolver<ResolversTypes['Clearinghouse'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  orderbook?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
-  sizeIncrementX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  priceIncrementX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  createdAtBlock?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  markPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  lastFillPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeBase?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeQuote?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeNumOrders?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  candlesticks?: Resolver<Array<ResolversTypes['Candlestick']>, ParentType, ContextType, RequireFields<MarketcandlesticksArgs, 'skip' | 'first'>>;
-  orders?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType, RequireFields<MarketordersArgs, 'skip' | 'first'>>;
-  snapshots?: Resolver<Array<ResolversTypes['MarketHourlySnapshot']>, ParentType, ContextType, RequireFields<MarketsnapshotsArgs, 'skip' | 'first'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type MarketHourlySnapshotResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['MarketHourlySnapshot'] = ResolversParentTypes['MarketHourlySnapshot']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  hour?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
-  markPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  lastFillPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeBase?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeQuote?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeNumOrders?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ModifyCollateralEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['ModifyCollateralEvent'] = ResolversParentTypes['ModifyCollateralEvent']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  amount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type OrderResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  digest?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
-  validationResult?: Resolver<ResolversTypes['OrderValidationResult'], ParentType, ContextType>;
-  priceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
-  reportedAt?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  reportedAtBlock?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  filledAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  collectedFee?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type PerpBalanceSummaryResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['PerpBalanceSummary'] = ResolversParentTypes['PerpBalanceSummary']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  timeOpened?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  vQuoteWithoutFunding?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  totalNetFunding?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  closedBalances?: Resolver<Array<ResolversTypes['ClosedPerpBalance']>, ParentType, ContextType, RequireFields<PerpBalanceSummaryclosedBalancesArgs, 'skip' | 'first'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type PerpEngineResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['PerpEngine'] = ResolversParentTypes['PerpEngine']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  clearinghouse?: Resolver<ResolversTypes['Clearinghouse'], ParentType, ContextType>;
-  products?: Resolver<Array<ResolversTypes['PerpProduct']>, ParentType, ContextType, RequireFields<PerpEngineproductsArgs, 'skip' | 'first'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type PerpProductResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['PerpProduct'] = ResolversParentTypes['PerpProduct']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
-  engine?: Resolver<ResolversTypes['PerpEngine'], ParentType, ContextType>;
-  priceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  emaPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  cumulativeFundingLongX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  cumulativeFundingShortX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  openInterestX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  availableSettleX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  snapshots?: Resolver<Array<ResolversTypes['PerpProductHourlySnapshot']>, ParentType, ContextType, RequireFields<PerpProductsnapshotsArgs, 'skip' | 'first'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type PerpProductHourlySnapshotResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['PerpProductHourlySnapshot'] = ResolversParentTypes['PerpProductHourlySnapshot']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  hour?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  product?: Resolver<ResolversTypes['PerpProduct'], ParentType, ContextType>;
-  priceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  emaPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  cumulativeFundingLongX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  cumulativeFundingShortX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  openInterestX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  availableSettleX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type PlaceOrderEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['PlaceOrderEvent'] = ResolversParentTypes['PlaceOrderEvent']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  order?: Resolver<ResolversTypes['Order'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type QueryResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  clearinghouse?: Resolver<Maybe<ResolversTypes['Clearinghouse']>, ParentType, ContextType, RequireFields<QueryclearinghouseArgs, 'id' | 'subgraphError'>>;
-  clearinghouses?: Resolver<Array<ResolversTypes['Clearinghouse']>, ParentType, ContextType, RequireFields<QueryclearinghousesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  spotEngine?: Resolver<Maybe<ResolversTypes['SpotEngine']>, ParentType, ContextType, RequireFields<QueryspotEngineArgs, 'id' | 'subgraphError'>>;
-  spotEngines?: Resolver<Array<ResolversTypes['SpotEngine']>, ParentType, ContextType, RequireFields<QueryspotEnginesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  perpEngine?: Resolver<Maybe<ResolversTypes['PerpEngine']>, ParentType, ContextType, RequireFields<QueryperpEngineArgs, 'id' | 'subgraphError'>>;
-  perpEngines?: Resolver<Array<ResolversTypes['PerpEngine']>, ParentType, ContextType, RequireFields<QueryperpEnginesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  spotProduct?: Resolver<Maybe<ResolversTypes['SpotProduct']>, ParentType, ContextType, RequireFields<QueryspotProductArgs, 'id' | 'subgraphError'>>;
-  spotProducts?: Resolver<Array<ResolversTypes['SpotProduct']>, ParentType, ContextType, RequireFields<QueryspotProductsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  spotProductHourlySnapshot?: Resolver<Maybe<ResolversTypes['SpotProductHourlySnapshot']>, ParentType, ContextType, RequireFields<QueryspotProductHourlySnapshotArgs, 'id' | 'subgraphError'>>;
-  spotProductHourlySnapshots?: Resolver<Array<ResolversTypes['SpotProductHourlySnapshot']>, ParentType, ContextType, RequireFields<QueryspotProductHourlySnapshotsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  perpProduct?: Resolver<Maybe<ResolversTypes['PerpProduct']>, ParentType, ContextType, RequireFields<QueryperpProductArgs, 'id' | 'subgraphError'>>;
-  perpProducts?: Resolver<Array<ResolversTypes['PerpProduct']>, ParentType, ContextType, RequireFields<QueryperpProductsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  perpProductHourlySnapshot?: Resolver<Maybe<ResolversTypes['PerpProductHourlySnapshot']>, ParentType, ContextType, RequireFields<QueryperpProductHourlySnapshotArgs, 'id' | 'subgraphError'>>;
-  perpProductHourlySnapshots?: Resolver<Array<ResolversTypes['PerpProductHourlySnapshot']>, ParentType, ContextType, RequireFields<QueryperpProductHourlySnapshotsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  market?: Resolver<Maybe<ResolversTypes['Market']>, ParentType, ContextType, RequireFields<QuerymarketArgs, 'id' | 'subgraphError'>>;
-  markets?: Resolver<Array<ResolversTypes['Market']>, ParentType, ContextType, RequireFields<QuerymarketsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  marketHourlySnapshot?: Resolver<Maybe<ResolversTypes['MarketHourlySnapshot']>, ParentType, ContextType, RequireFields<QuerymarketHourlySnapshotArgs, 'id' | 'subgraphError'>>;
-  marketHourlySnapshots?: Resolver<Array<ResolversTypes['MarketHourlySnapshot']>, ParentType, ContextType, RequireFields<QuerymarketHourlySnapshotsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  candlestick?: Resolver<Maybe<ResolversTypes['Candlestick']>, ParentType, ContextType, RequireFields<QuerycandlestickArgs, 'id' | 'subgraphError'>>;
-  candlesticks?: Resolver<Array<ResolversTypes['Candlestick']>, ParentType, ContextType, RequireFields<QuerycandlesticksArgs, 'skip' | 'first' | 'subgraphError'>>;
-  order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, RequireFields<QueryorderArgs, 'id' | 'subgraphError'>>;
-  orders?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType, RequireFields<QueryordersArgs, 'skip' | 'first' | 'subgraphError'>>;
-  modifyCollateralEvent?: Resolver<Maybe<ResolversTypes['ModifyCollateralEvent']>, ParentType, ContextType, RequireFields<QuerymodifyCollateralEventArgs, 'id' | 'subgraphError'>>;
-  modifyCollateralEvents?: Resolver<Array<ResolversTypes['ModifyCollateralEvent']>, ParentType, ContextType, RequireFields<QuerymodifyCollateralEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  settlePnlEvent?: Resolver<Maybe<ResolversTypes['SettlePnlEvent']>, ParentType, ContextType, RequireFields<QuerysettlePnlEventArgs, 'id' | 'subgraphError'>>;
-  settlePnlEvents?: Resolver<Array<ResolversTypes['SettlePnlEvent']>, ParentType, ContextType, RequireFields<QuerysettlePnlEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  liquidationEvent?: Resolver<Maybe<ResolversTypes['LiquidationEvent']>, ParentType, ContextType, RequireFields<QueryliquidationEventArgs, 'id' | 'subgraphError'>>;
-  liquidationEvents?: Resolver<Array<ResolversTypes['LiquidationEvent']>, ParentType, ContextType, RequireFields<QueryliquidationEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  socializeProductEvent?: Resolver<Maybe<ResolversTypes['SocializeProductEvent']>, ParentType, ContextType, RequireFields<QuerysocializeProductEventArgs, 'id' | 'subgraphError'>>;
-  socializeProductEvents?: Resolver<Array<ResolversTypes['SocializeProductEvent']>, ParentType, ContextType, RequireFields<QuerysocializeProductEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  placeOrderEvent?: Resolver<Maybe<ResolversTypes['PlaceOrderEvent']>, ParentType, ContextType, RequireFields<QueryplaceOrderEventArgs, 'id' | 'subgraphError'>>;
-  placeOrderEvents?: Resolver<Array<ResolversTypes['PlaceOrderEvent']>, ParentType, ContextType, RequireFields<QueryplaceOrderEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  fillOrderEvent?: Resolver<Maybe<ResolversTypes['FillOrderEvent']>, ParentType, ContextType, RequireFields<QueryfillOrderEventArgs, 'id' | 'subgraphError'>>;
-  fillOrderEvents?: Resolver<Array<ResolversTypes['FillOrderEvent']>, ParentType, ContextType, RequireFields<QueryfillOrderEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  cancelOrderEvent?: Resolver<Maybe<ResolversTypes['CancelOrderEvent']>, ParentType, ContextType, RequireFields<QuerycancelOrderEventArgs, 'id' | 'subgraphError'>>;
-  cancelOrderEvents?: Resolver<Array<ResolversTypes['CancelOrderEvent']>, ParentType, ContextType, RequireFields<QuerycancelOrderEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  subaccount?: Resolver<Maybe<ResolversTypes['Subaccount']>, ParentType, ContextType, RequireFields<QuerysubaccountArgs, 'id' | 'subgraphError'>>;
-  subaccounts?: Resolver<Array<ResolversTypes['Subaccount']>, ParentType, ContextType, RequireFields<QuerysubaccountsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  tradeSummary?: Resolver<Maybe<ResolversTypes['TradeSummary']>, ParentType, ContextType, RequireFields<QuerytradeSummaryArgs, 'id' | 'subgraphError'>>;
-  tradeSummaries?: Resolver<Array<ResolversTypes['TradeSummary']>, ParentType, ContextType, RequireFields<QuerytradeSummariesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  spotBalanceSummary?: Resolver<Maybe<ResolversTypes['SpotBalanceSummary']>, ParentType, ContextType, RequireFields<QueryspotBalanceSummaryArgs, 'id' | 'subgraphError'>>;
-  spotBalanceSummaries?: Resolver<Array<ResolversTypes['SpotBalanceSummary']>, ParentType, ContextType, RequireFields<QueryspotBalanceSummariesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  closedSpotBalance?: Resolver<Maybe<ResolversTypes['ClosedSpotBalance']>, ParentType, ContextType, RequireFields<QueryclosedSpotBalanceArgs, 'id' | 'subgraphError'>>;
-  closedSpotBalances?: Resolver<Array<ResolversTypes['ClosedSpotBalance']>, ParentType, ContextType, RequireFields<QueryclosedSpotBalancesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  perpBalanceSummary?: Resolver<Maybe<ResolversTypes['PerpBalanceSummary']>, ParentType, ContextType, RequireFields<QueryperpBalanceSummaryArgs, 'id' | 'subgraphError'>>;
-  perpBalanceSummaries?: Resolver<Array<ResolversTypes['PerpBalanceSummary']>, ParentType, ContextType, RequireFields<QueryperpBalanceSummariesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  closedPerpBalance?: Resolver<Maybe<ResolversTypes['ClosedPerpBalance']>, ParentType, ContextType, RequireFields<QueryclosedPerpBalanceArgs, 'id' | 'subgraphError'>>;
-  closedPerpBalances?: Resolver<Array<ResolversTypes['ClosedPerpBalance']>, ParentType, ContextType, RequireFields<QueryclosedPerpBalancesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  _meta?: Resolver<Maybe<ResolversTypes['_Meta_']>, ParentType, ContextType, Partial<Query_metaArgs>>;
-}>;
-
-export type SettlePnlEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SettlePnlEvent'] = ResolversParentTypes['SettlePnlEvent']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  amount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type SocializeProductEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SocializeProductEvent'] = ResolversParentTypes['SocializeProductEvent']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  socializedQuote?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  socializedBase?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type SpotBalanceSummaryResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SpotBalanceSummary'] = ResolversParentTypes['SpotBalanceSummary']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  timeOpened?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  netRealAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  totalNetInterest?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  closedBalances?: Resolver<Array<ResolversTypes['ClosedSpotBalance']>, ParentType, ContextType, RequireFields<SpotBalanceSummaryclosedBalancesArgs, 'skip' | 'first'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type SpotEngineResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SpotEngine'] = ResolversParentTypes['SpotEngine']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  clearinghouse?: Resolver<ResolversTypes['Clearinghouse'], ParentType, ContextType>;
-  products?: Resolver<Array<ResolversTypes['SpotProduct']>, ParentType, ContextType, RequireFields<SpotEngineproductsArgs, 'skip' | 'first'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type SpotProductResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SpotProduct'] = ResolversParentTypes['SpotProduct']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
-  engine?: Resolver<ResolversTypes['SpotEngine'], ParentType, ContextType>;
-  priceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  cumulativeDepositsMultiplierX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  cumulativeBorrowsMultiplierX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  totalDepositsNormalizedX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  totalBorrowsNormalizedX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  snapshots?: Resolver<Array<ResolversTypes['SpotProductHourlySnapshot']>, ParentType, ContextType, RequireFields<SpotProductsnapshotsArgs, 'skip' | 'first'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type SpotProductHourlySnapshotResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SpotProductHourlySnapshot'] = ResolversParentTypes['SpotProductHourlySnapshot']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  hour?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  product?: Resolver<ResolversTypes['SpotProduct'], ParentType, ContextType>;
-  priceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  cumulativeDepositsMultiplierX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  cumulativeBorrowsMultiplierX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  totalDepositsNormalizedX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  totalBorrowsNormalizedX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type SubaccountResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Subaccount'] = ResolversParentTypes['Subaccount']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  clearinghouse?: Resolver<ResolversTypes['Clearinghouse'], ParentType, ContextType>;
-  subaccountId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  owner?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  createdAtBlock?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  orders?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType, RequireFields<SubaccountordersArgs, 'skip' | 'first'>>;
-  tradeSummaries?: Resolver<Array<ResolversTypes['TradeSummary']>, ParentType, ContextType, RequireFields<SubaccounttradeSummariesArgs, 'skip' | 'first'>>;
-  spotBalanceSummaries?: Resolver<Array<ResolversTypes['SpotBalanceSummary']>, ParentType, ContextType, RequireFields<SubaccountspotBalanceSummariesArgs, 'skip' | 'first'>>;
-  perpBalanceSummaries?: Resolver<Array<ResolversTypes['PerpBalanceSummary']>, ParentType, ContextType, RequireFields<SubaccountperpBalanceSummariesArgs, 'skip' | 'first'>>;
-  modifyCollateralEvents?: Resolver<Array<ResolversTypes['ModifyCollateralEvent']>, ParentType, ContextType, RequireFields<SubaccountmodifyCollateralEventsArgs, 'skip' | 'first'>>;
-  settlePnlEvents?: Resolver<Array<ResolversTypes['SettlePnlEvent']>, ParentType, ContextType, RequireFields<SubaccountsettlePnlEventsArgs, 'skip' | 'first'>>;
-  liquidateeEvents?: Resolver<Array<ResolversTypes['LiquidationEvent']>, ParentType, ContextType, RequireFields<SubaccountliquidateeEventsArgs, 'skip' | 'first'>>;
-  liquidatorEvents?: Resolver<Array<ResolversTypes['LiquidationEvent']>, ParentType, ContextType, RequireFields<SubaccountliquidatorEventsArgs, 'skip' | 'first'>>;
-  placeOrderEvents?: Resolver<Array<ResolversTypes['PlaceOrderEvent']>, ParentType, ContextType, RequireFields<SubaccountplaceOrderEventsArgs, 'skip' | 'first'>>;
-  fillOrderEvents?: Resolver<Array<ResolversTypes['FillOrderEvent']>, ParentType, ContextType, RequireFields<SubaccountfillOrderEventsArgs, 'skip' | 'first'>>;
-  cancelOrderEvents?: Resolver<Array<ResolversTypes['CancelOrderEvent']>, ParentType, ContextType, RequireFields<SubaccountcancelOrderEventsArgs, 'skip' | 'first'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type SubscriptionResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
-  clearinghouse?: SubscriptionResolver<Maybe<ResolversTypes['Clearinghouse']>, "clearinghouse", ParentType, ContextType, RequireFields<SubscriptionclearinghouseArgs, 'id' | 'subgraphError'>>;
-  clearinghouses?: SubscriptionResolver<Array<ResolversTypes['Clearinghouse']>, "clearinghouses", ParentType, ContextType, RequireFields<SubscriptionclearinghousesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  spotEngine?: SubscriptionResolver<Maybe<ResolversTypes['SpotEngine']>, "spotEngine", ParentType, ContextType, RequireFields<SubscriptionspotEngineArgs, 'id' | 'subgraphError'>>;
-  spotEngines?: SubscriptionResolver<Array<ResolversTypes['SpotEngine']>, "spotEngines", ParentType, ContextType, RequireFields<SubscriptionspotEnginesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  perpEngine?: SubscriptionResolver<Maybe<ResolversTypes['PerpEngine']>, "perpEngine", ParentType, ContextType, RequireFields<SubscriptionperpEngineArgs, 'id' | 'subgraphError'>>;
-  perpEngines?: SubscriptionResolver<Array<ResolversTypes['PerpEngine']>, "perpEngines", ParentType, ContextType, RequireFields<SubscriptionperpEnginesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  spotProduct?: SubscriptionResolver<Maybe<ResolversTypes['SpotProduct']>, "spotProduct", ParentType, ContextType, RequireFields<SubscriptionspotProductArgs, 'id' | 'subgraphError'>>;
-  spotProducts?: SubscriptionResolver<Array<ResolversTypes['SpotProduct']>, "spotProducts", ParentType, ContextType, RequireFields<SubscriptionspotProductsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  spotProductHourlySnapshot?: SubscriptionResolver<Maybe<ResolversTypes['SpotProductHourlySnapshot']>, "spotProductHourlySnapshot", ParentType, ContextType, RequireFields<SubscriptionspotProductHourlySnapshotArgs, 'id' | 'subgraphError'>>;
-  spotProductHourlySnapshots?: SubscriptionResolver<Array<ResolversTypes['SpotProductHourlySnapshot']>, "spotProductHourlySnapshots", ParentType, ContextType, RequireFields<SubscriptionspotProductHourlySnapshotsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  perpProduct?: SubscriptionResolver<Maybe<ResolversTypes['PerpProduct']>, "perpProduct", ParentType, ContextType, RequireFields<SubscriptionperpProductArgs, 'id' | 'subgraphError'>>;
-  perpProducts?: SubscriptionResolver<Array<ResolversTypes['PerpProduct']>, "perpProducts", ParentType, ContextType, RequireFields<SubscriptionperpProductsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  perpProductHourlySnapshot?: SubscriptionResolver<Maybe<ResolversTypes['PerpProductHourlySnapshot']>, "perpProductHourlySnapshot", ParentType, ContextType, RequireFields<SubscriptionperpProductHourlySnapshotArgs, 'id' | 'subgraphError'>>;
-  perpProductHourlySnapshots?: SubscriptionResolver<Array<ResolversTypes['PerpProductHourlySnapshot']>, "perpProductHourlySnapshots", ParentType, ContextType, RequireFields<SubscriptionperpProductHourlySnapshotsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  market?: SubscriptionResolver<Maybe<ResolversTypes['Market']>, "market", ParentType, ContextType, RequireFields<SubscriptionmarketArgs, 'id' | 'subgraphError'>>;
-  markets?: SubscriptionResolver<Array<ResolversTypes['Market']>, "markets", ParentType, ContextType, RequireFields<SubscriptionmarketsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  marketHourlySnapshot?: SubscriptionResolver<Maybe<ResolversTypes['MarketHourlySnapshot']>, "marketHourlySnapshot", ParentType, ContextType, RequireFields<SubscriptionmarketHourlySnapshotArgs, 'id' | 'subgraphError'>>;
-  marketHourlySnapshots?: SubscriptionResolver<Array<ResolversTypes['MarketHourlySnapshot']>, "marketHourlySnapshots", ParentType, ContextType, RequireFields<SubscriptionmarketHourlySnapshotsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  candlestick?: SubscriptionResolver<Maybe<ResolversTypes['Candlestick']>, "candlestick", ParentType, ContextType, RequireFields<SubscriptioncandlestickArgs, 'id' | 'subgraphError'>>;
-  candlesticks?: SubscriptionResolver<Array<ResolversTypes['Candlestick']>, "candlesticks", ParentType, ContextType, RequireFields<SubscriptioncandlesticksArgs, 'skip' | 'first' | 'subgraphError'>>;
-  order?: SubscriptionResolver<Maybe<ResolversTypes['Order']>, "order", ParentType, ContextType, RequireFields<SubscriptionorderArgs, 'id' | 'subgraphError'>>;
-  orders?: SubscriptionResolver<Array<ResolversTypes['Order']>, "orders", ParentType, ContextType, RequireFields<SubscriptionordersArgs, 'skip' | 'first' | 'subgraphError'>>;
-  modifyCollateralEvent?: SubscriptionResolver<Maybe<ResolversTypes['ModifyCollateralEvent']>, "modifyCollateralEvent", ParentType, ContextType, RequireFields<SubscriptionmodifyCollateralEventArgs, 'id' | 'subgraphError'>>;
-  modifyCollateralEvents?: SubscriptionResolver<Array<ResolversTypes['ModifyCollateralEvent']>, "modifyCollateralEvents", ParentType, ContextType, RequireFields<SubscriptionmodifyCollateralEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  settlePnlEvent?: SubscriptionResolver<Maybe<ResolversTypes['SettlePnlEvent']>, "settlePnlEvent", ParentType, ContextType, RequireFields<SubscriptionsettlePnlEventArgs, 'id' | 'subgraphError'>>;
-  settlePnlEvents?: SubscriptionResolver<Array<ResolversTypes['SettlePnlEvent']>, "settlePnlEvents", ParentType, ContextType, RequireFields<SubscriptionsettlePnlEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  liquidationEvent?: SubscriptionResolver<Maybe<ResolversTypes['LiquidationEvent']>, "liquidationEvent", ParentType, ContextType, RequireFields<SubscriptionliquidationEventArgs, 'id' | 'subgraphError'>>;
-  liquidationEvents?: SubscriptionResolver<Array<ResolversTypes['LiquidationEvent']>, "liquidationEvents", ParentType, ContextType, RequireFields<SubscriptionliquidationEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  socializeProductEvent?: SubscriptionResolver<Maybe<ResolversTypes['SocializeProductEvent']>, "socializeProductEvent", ParentType, ContextType, RequireFields<SubscriptionsocializeProductEventArgs, 'id' | 'subgraphError'>>;
-  socializeProductEvents?: SubscriptionResolver<Array<ResolversTypes['SocializeProductEvent']>, "socializeProductEvents", ParentType, ContextType, RequireFields<SubscriptionsocializeProductEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  placeOrderEvent?: SubscriptionResolver<Maybe<ResolversTypes['PlaceOrderEvent']>, "placeOrderEvent", ParentType, ContextType, RequireFields<SubscriptionplaceOrderEventArgs, 'id' | 'subgraphError'>>;
-  placeOrderEvents?: SubscriptionResolver<Array<ResolversTypes['PlaceOrderEvent']>, "placeOrderEvents", ParentType, ContextType, RequireFields<SubscriptionplaceOrderEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  fillOrderEvent?: SubscriptionResolver<Maybe<ResolversTypes['FillOrderEvent']>, "fillOrderEvent", ParentType, ContextType, RequireFields<SubscriptionfillOrderEventArgs, 'id' | 'subgraphError'>>;
-  fillOrderEvents?: SubscriptionResolver<Array<ResolversTypes['FillOrderEvent']>, "fillOrderEvents", ParentType, ContextType, RequireFields<SubscriptionfillOrderEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  cancelOrderEvent?: SubscriptionResolver<Maybe<ResolversTypes['CancelOrderEvent']>, "cancelOrderEvent", ParentType, ContextType, RequireFields<SubscriptioncancelOrderEventArgs, 'id' | 'subgraphError'>>;
-  cancelOrderEvents?: SubscriptionResolver<Array<ResolversTypes['CancelOrderEvent']>, "cancelOrderEvents", ParentType, ContextType, RequireFields<SubscriptioncancelOrderEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  subaccount?: SubscriptionResolver<Maybe<ResolversTypes['Subaccount']>, "subaccount", ParentType, ContextType, RequireFields<SubscriptionsubaccountArgs, 'id' | 'subgraphError'>>;
-  subaccounts?: SubscriptionResolver<Array<ResolversTypes['Subaccount']>, "subaccounts", ParentType, ContextType, RequireFields<SubscriptionsubaccountsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  tradeSummary?: SubscriptionResolver<Maybe<ResolversTypes['TradeSummary']>, "tradeSummary", ParentType, ContextType, RequireFields<SubscriptiontradeSummaryArgs, 'id' | 'subgraphError'>>;
-  tradeSummaries?: SubscriptionResolver<Array<ResolversTypes['TradeSummary']>, "tradeSummaries", ParentType, ContextType, RequireFields<SubscriptiontradeSummariesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  spotBalanceSummary?: SubscriptionResolver<Maybe<ResolversTypes['SpotBalanceSummary']>, "spotBalanceSummary", ParentType, ContextType, RequireFields<SubscriptionspotBalanceSummaryArgs, 'id' | 'subgraphError'>>;
-  spotBalanceSummaries?: SubscriptionResolver<Array<ResolversTypes['SpotBalanceSummary']>, "spotBalanceSummaries", ParentType, ContextType, RequireFields<SubscriptionspotBalanceSummariesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  closedSpotBalance?: SubscriptionResolver<Maybe<ResolversTypes['ClosedSpotBalance']>, "closedSpotBalance", ParentType, ContextType, RequireFields<SubscriptionclosedSpotBalanceArgs, 'id' | 'subgraphError'>>;
-  closedSpotBalances?: SubscriptionResolver<Array<ResolversTypes['ClosedSpotBalance']>, "closedSpotBalances", ParentType, ContextType, RequireFields<SubscriptionclosedSpotBalancesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  perpBalanceSummary?: SubscriptionResolver<Maybe<ResolversTypes['PerpBalanceSummary']>, "perpBalanceSummary", ParentType, ContextType, RequireFields<SubscriptionperpBalanceSummaryArgs, 'id' | 'subgraphError'>>;
-  perpBalanceSummaries?: SubscriptionResolver<Array<ResolversTypes['PerpBalanceSummary']>, "perpBalanceSummaries", ParentType, ContextType, RequireFields<SubscriptionperpBalanceSummariesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  closedPerpBalance?: SubscriptionResolver<Maybe<ResolversTypes['ClosedPerpBalance']>, "closedPerpBalance", ParentType, ContextType, RequireFields<SubscriptionclosedPerpBalanceArgs, 'id' | 'subgraphError'>>;
-  closedPerpBalances?: SubscriptionResolver<Array<ResolversTypes['ClosedPerpBalance']>, "closedPerpBalances", ParentType, ContextType, RequireFields<SubscriptionclosedPerpBalancesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
-}>;
-
-export type TradeSummaryResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['TradeSummary'] = ResolversParentTypes['TradeSummary']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  totalEntryQuoteAmountAbs?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  totalEntryAmountAbs?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  totalCloseQuoteAmountAbs?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  totalCloseAmountAbs?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type _Block_Resolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['_Block_'] = ResolversParentTypes['_Block_']> = ResolversObject<{
-  hash?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
-  number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type _Meta_Resolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['_Meta_'] = ResolversParentTypes['_Meta_']> = ResolversObject<{
-  block?: Resolver<ResolversTypes['_Block_'], ParentType, ContextType>;
-  deployment?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  hasIndexingErrors?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type Resolvers<ContextType = MeshContext & { endpoint: string }> = ResolversObject<{
-  BigDecimal?: GraphQLScalarType;
-  BigInt?: GraphQLScalarType;
-  Bytes?: GraphQLScalarType;
-  CancelOrderEvent?: CancelOrderEventResolvers<ContextType>;
-  Candlestick?: CandlestickResolvers<ContextType>;
-  Clearinghouse?: ClearinghouseResolvers<ContextType>;
-  ClosedPerpBalance?: ClosedPerpBalanceResolvers<ContextType>;
-  ClosedSpotBalance?: ClosedSpotBalanceResolvers<ContextType>;
-  FillOrderEvent?: FillOrderEventResolvers<ContextType>;
-  LiquidationEvent?: LiquidationEventResolvers<ContextType>;
-  Market?: MarketResolvers<ContextType>;
-  MarketHourlySnapshot?: MarketHourlySnapshotResolvers<ContextType>;
-  ModifyCollateralEvent?: ModifyCollateralEventResolvers<ContextType>;
-  Order?: OrderResolvers<ContextType>;
-  PerpBalanceSummary?: PerpBalanceSummaryResolvers<ContextType>;
-  PerpEngine?: PerpEngineResolvers<ContextType>;
-  PerpProduct?: PerpProductResolvers<ContextType>;
-  PerpProductHourlySnapshot?: PerpProductHourlySnapshotResolvers<ContextType>;
-  PlaceOrderEvent?: PlaceOrderEventResolvers<ContextType>;
-  Query?: QueryResolvers<ContextType>;
-  SettlePnlEvent?: SettlePnlEventResolvers<ContextType>;
-  SocializeProductEvent?: SocializeProductEventResolvers<ContextType>;
-  SpotBalanceSummary?: SpotBalanceSummaryResolvers<ContextType>;
-  SpotEngine?: SpotEngineResolvers<ContextType>;
-  SpotProduct?: SpotProductResolvers<ContextType>;
-  SpotProductHourlySnapshot?: SpotProductHourlySnapshotResolvers<ContextType>;
-  Subaccount?: SubaccountResolvers<ContextType>;
-  Subscription?: SubscriptionResolvers<ContextType>;
-  TradeSummary?: TradeSummaryResolvers<ContextType>;
-  _Block_?: _Block_Resolvers<ContextType>;
-  _Meta_?: _Meta_Resolvers<ContextType>;
-}>;
-
-export type DirectiveResolvers<ContextType = MeshContext & { endpoint: string }> = ResolversObject<{
-  entity?: entityDirectiveResolver<any, any, ContextType>;
-  subgraphId?: subgraphIdDirectiveResolver<any, any, ContextType>;
-  derivedFrom?: derivedFromDirectiveResolver<any, any, ContextType>;
-}>;
-
-export type MeshContext = ClearinghouseContext & BaseMeshContext;
-
-
-const baseDir = pathModule.join(typeof __dirname === 'string' ? __dirname : '/', '..');
-
-const importFn = (moduleId: string) => {
-  const relativeModuleId = (pathModule.isAbsolute(moduleId) ? pathModule.relative(baseDir, moduleId) : moduleId).split('\\').join('/').replace(baseDir + '/', '');
-  switch(relativeModuleId) {
-    case ".graphclient/sources/Clearinghouse/introspectionSchema":
-      return import("./sources/Clearinghouse/introspectionSchema");
-    
-    default:
-      return Promise.reject(new Error(`Cannot find module '${relativeModuleId}'.`));
-  }
+export type SubscriptionClearinghouseSdk = {
+  /** undefined **/
+  clearinghouse: InContextSdkMethod<ClearinghouseTypes.Subscription['clearinghouse'], ClearinghouseTypes.SubscriptionclearinghouseArgs, MeshContext>,
+  /** undefined **/
+  clearinghouses: InContextSdkMethod<ClearinghouseTypes.Subscription['clearinghouses'], ClearinghouseTypes.SubscriptionclearinghousesArgs, MeshContext>,
+  /** undefined **/
+  spotEngine: InContextSdkMethod<ClearinghouseTypes.Subscription['spotEngine'], ClearinghouseTypes.SubscriptionspotEngineArgs, MeshContext>,
+  /** undefined **/
+  spotEngines: InContextSdkMethod<ClearinghouseTypes.Subscription['spotEngines'], ClearinghouseTypes.SubscriptionspotEnginesArgs, MeshContext>,
+  /** undefined **/
+  perpEngine: InContextSdkMethod<ClearinghouseTypes.Subscription['perpEngine'], ClearinghouseTypes.SubscriptionperpEngineArgs, MeshContext>,
+  /** undefined **/
+  perpEngines: InContextSdkMethod<ClearinghouseTypes.Subscription['perpEngines'], ClearinghouseTypes.SubscriptionperpEnginesArgs, MeshContext>,
+  /** undefined **/
+  spotProduct: InContextSdkMethod<ClearinghouseTypes.Subscription['spotProduct'], ClearinghouseTypes.SubscriptionspotProductArgs, MeshContext>,
+  /** undefined **/
+  spotProducts: InContextSdkMethod<ClearinghouseTypes.Subscription['spotProducts'], ClearinghouseTypes.SubscriptionspotProductsArgs, MeshContext>,
+  /** undefined **/
+  spotProductHourlySnapshot: InContextSdkMethod<ClearinghouseTypes.Subscription['spotProductHourlySnapshot'], ClearinghouseTypes.SubscriptionspotProductHourlySnapshotArgs, MeshContext>,
+  /** undefined **/
+  spotProductHourlySnapshots: InContextSdkMethod<ClearinghouseTypes.Subscription['spotProductHourlySnapshots'], ClearinghouseTypes.SubscriptionspotProductHourlySnapshotsArgs, MeshContext>,
+  /** undefined **/
+  perpProduct: InContextSdkMethod<ClearinghouseTypes.Subscription['perpProduct'], ClearinghouseTypes.SubscriptionperpProductArgs, MeshContext>,
+  /** undefined **/
+  perpProducts: InContextSdkMethod<ClearinghouseTypes.Subscription['perpProducts'], ClearinghouseTypes.SubscriptionperpProductsArgs, MeshContext>,
+  /** undefined **/
+  perpProductHourlySnapshot: InContextSdkMethod<ClearinghouseTypes.Subscription['perpProductHourlySnapshot'], ClearinghouseTypes.SubscriptionperpProductHourlySnapshotArgs, MeshContext>,
+  /** undefined **/
+  perpProductHourlySnapshots: InContextSdkMethod<ClearinghouseTypes.Subscription['perpProductHourlySnapshots'], ClearinghouseTypes.SubscriptionperpProductHourlySnapshotsArgs, MeshContext>,
+  /** undefined **/
+  market: InContextSdkMethod<ClearinghouseTypes.Subscription['market'], ClearinghouseTypes.SubscriptionmarketArgs, MeshContext>,
+  /** undefined **/
+  markets: InContextSdkMethod<ClearinghouseTypes.Subscription['markets'], ClearinghouseTypes.SubscriptionmarketsArgs, MeshContext>,
+  /** undefined **/
+  marketHourlySnapshot: InContextSdkMethod<ClearinghouseTypes.Subscription['marketHourlySnapshot'], ClearinghouseTypes.SubscriptionmarketHourlySnapshotArgs, MeshContext>,
+  /** undefined **/
+  marketHourlySnapshots: InContextSdkMethod<ClearinghouseTypes.Subscription['marketHourlySnapshots'], ClearinghouseTypes.SubscriptionmarketHourlySnapshotsArgs, MeshContext>,
+  /** undefined **/
+  candlestick: InContextSdkMethod<ClearinghouseTypes.Subscription['candlestick'], ClearinghouseTypes.SubscriptioncandlestickArgs, MeshContext>,
+  /** undefined **/
+  candlesticks: InContextSdkMethod<ClearinghouseTypes.Subscription['candlesticks'], ClearinghouseTypes.SubscriptioncandlesticksArgs, MeshContext>,
+  /** undefined **/
+  order: InContextSdkMethod<ClearinghouseTypes.Subscription['order'], ClearinghouseTypes.SubscriptionorderArgs, MeshContext>,
+  /** undefined **/
+  orders: InContextSdkMethod<ClearinghouseTypes.Subscription['orders'], ClearinghouseTypes.SubscriptionordersArgs, MeshContext>,
+  /** undefined **/
+  modifyCollateralEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['modifyCollateralEvent'], ClearinghouseTypes.SubscriptionmodifyCollateralEventArgs, MeshContext>,
+  /** undefined **/
+  modifyCollateralEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['modifyCollateralEvents'], ClearinghouseTypes.SubscriptionmodifyCollateralEventsArgs, MeshContext>,
+  /** undefined **/
+  settlePnlEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['settlePnlEvent'], ClearinghouseTypes.SubscriptionsettlePnlEventArgs, MeshContext>,
+  /** undefined **/
+  settlePnlEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['settlePnlEvents'], ClearinghouseTypes.SubscriptionsettlePnlEventsArgs, MeshContext>,
+  /** undefined **/
+  liquidationEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['liquidationEvent'], ClearinghouseTypes.SubscriptionliquidationEventArgs, MeshContext>,
+  /** undefined **/
+  liquidationEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['liquidationEvents'], ClearinghouseTypes.SubscriptionliquidationEventsArgs, MeshContext>,
+  /** undefined **/
+  socializeProductEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['socializeProductEvent'], ClearinghouseTypes.SubscriptionsocializeProductEventArgs, MeshContext>,
+  /** undefined **/
+  socializeProductEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['socializeProductEvents'], ClearinghouseTypes.SubscriptionsocializeProductEventsArgs, MeshContext>,
+  /** undefined **/
+  placeOrderEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['placeOrderEvent'], ClearinghouseTypes.SubscriptionplaceOrderEventArgs, MeshContext>,
+  /** undefined **/
+  placeOrderEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['placeOrderEvents'], ClearinghouseTypes.SubscriptionplaceOrderEventsArgs, MeshContext>,
+  /** undefined **/
+  fillOrderEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['fillOrderEvent'], ClearinghouseTypes.SubscriptionfillOrderEventArgs, MeshContext>,
+  /** undefined **/
+  fillOrderEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['fillOrderEvents'], ClearinghouseTypes.SubscriptionfillOrderEventsArgs, MeshContext>,
+  /** undefined **/
+  cancelOrderEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['cancelOrderEvent'], ClearinghouseTypes.SubscriptioncancelOrderEventArgs, MeshContext>,
+  /** undefined **/
+  cancelOrderEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['cancelOrderEvents'], ClearinghouseTypes.SubscriptioncancelOrderEventsArgs, MeshContext>,
+  /** undefined **/
+  subaccount: InContextSdkMethod<ClearinghouseTypes.Subscription['subaccount'], ClearinghouseTypes.SubscriptionsubaccountArgs, MeshContext>,
+  /** undefined **/
+  subaccounts: InContextSdkMethod<ClearinghouseTypes.Subscription['subaccounts'], ClearinghouseTypes.SubscriptionsubaccountsArgs, MeshContext>,
+  /** undefined **/
+  tradeSummary: InContextSdkMethod<ClearinghouseTypes.Subscription['tradeSummary'], ClearinghouseTypes.SubscriptiontradeSummaryArgs, MeshContext>,
+  /** undefined **/
+  tradeSummaries: InContextSdkMethod<ClearinghouseTypes.Subscription['tradeSummaries'], ClearinghouseTypes.SubscriptiontradeSummariesArgs, MeshContext>,
+  /** undefined **/
+  spotBalanceSummary: InContextSdkMethod<ClearinghouseTypes.Subscription['spotBalanceSummary'], ClearinghouseTypes.SubscriptionspotBalanceSummaryArgs, MeshContext>,
+  /** undefined **/
+  spotBalanceSummaries: InContextSdkMethod<ClearinghouseTypes.Subscription['spotBalanceSummaries'], ClearinghouseTypes.SubscriptionspotBalanceSummariesArgs, MeshContext>,
+  /** undefined **/
+  closedSpotBalance: InContextSdkMethod<ClearinghouseTypes.Subscription['closedSpotBalance'], ClearinghouseTypes.SubscriptionclosedSpotBalanceArgs, MeshContext>,
+  /** undefined **/
+  closedSpotBalances: InContextSdkMethod<ClearinghouseTypes.Subscription['closedSpotBalances'], ClearinghouseTypes.SubscriptionclosedSpotBalancesArgs, MeshContext>,
+  /** undefined **/
+  perpBalanceSummary: InContextSdkMethod<ClearinghouseTypes.Subscription['perpBalanceSummary'], ClearinghouseTypes.SubscriptionperpBalanceSummaryArgs, MeshContext>,
+  /** undefined **/
+  perpBalanceSummaries: InContextSdkMethod<ClearinghouseTypes.Subscription['perpBalanceSummaries'], ClearinghouseTypes.SubscriptionperpBalanceSummariesArgs, MeshContext>,
+  /** undefined **/
+  closedPerpBalance: InContextSdkMethod<ClearinghouseTypes.Subscription['closedPerpBalance'], ClearinghouseTypes.SubscriptionclosedPerpBalanceArgs, MeshContext>,
+  /** undefined **/
+  closedPerpBalances: InContextSdkMethod<ClearinghouseTypes.Subscription['closedPerpBalances'], ClearinghouseTypes.SubscriptionclosedPerpBalancesArgs, MeshContext>,
+  /** Access to subgraph metadata **/
+  _meta: InContextSdkMethod<ClearinghouseTypes.Subscription['_meta'], ClearinghouseTypes.Subscription_metaArgs, MeshContext>
 };
-
-const rootStore = new MeshStore('.graphclient', new FsStoreStorageAdapter({
-  cwd: baseDir,
-  importFn,
-  fileType: "ts",
-}), {
-  readonly: true,
-  validate: false
-});
-
-export const rawServeConfig: YamlConfig.Config['serve'] = undefined as any
-export async function getMeshOptions(): Promise<GetMeshOptions> {
-const pubsub = new PubSub();
-const sourcesStore = rootStore.child('sources');
-const logger = new DefaultLogger("GraphClient");
-const cache = new (MeshCache as any)({
-      ...({} as any),
-      importFn,
-      store: rootStore.child('cache'),
-      pubsub,
-      logger,
-    } as any)
-
-const sources = [];
-const transforms = [];
-const additionalEnvelopPlugins = [];
-const clearinghouseTransforms = [];
-const additionalTypeDefs = [] as any[];
-const clearinghouseHandler = new GraphqlHandler({
-              name: "Clearinghouse",
-              config: {"endpoint":"{context.endpoint:http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph}"},
-              baseDir,
-              cache,
-              pubsub,
-              store: sourcesStore.child("Clearinghouse"),
-              logger: logger.child("Clearinghouse"),
-              importFn,
-            });
-clearinghouseTransforms[0] = new AutoPaginationTransform({
-                  apiName: "Clearinghouse",
-                  config: {"validateSchema":true},
-                  baseDir,
-                  cache,
-                  pubsub,
-                  importFn
-                });
-clearinghouseTransforms[1] = new BlockTrackingTransform({
-                  apiName: "Clearinghouse",
-                  config: {"validateSchema":true,"ignoreFieldNames":[],"ignoreOperationNames":[]},
-                  baseDir,
-                  cache,
-                  pubsub,
-                  importFn
-                });
-sources[0] = {
-          name: 'Clearinghouse',
-          handler: clearinghouseHandler,
-          transforms: clearinghouseTransforms
-        }
-const additionalResolvers = [] as any[]
-const merger = new(BareMerger as any)({
-        cache,
-        pubsub,
-        logger: logger.child('bareMerger'),
-        store: rootStore.child('bareMerger')
-      })
-
-  return {
-    sources,
-    transforms,
-    additionalTypeDefs,
-    additionalResolvers,
-    cache,
-    pubsub,
-    merger,
-    logger,
-    additionalEnvelopPlugins,
-    get documents() {
-      return [
-      {
-        document: CandlesticksQueryDocument,
-        get rawSDL() {
-          return printWithCache(CandlesticksQueryDocument);
-        },
-        location: 'CandlesticksQueryDocument.graphql'
-      },{
-        document: HourlyHistoricalMarketDataQueryDocument,
-        get rawSDL() {
-          return printWithCache(HourlyHistoricalMarketDataQueryDocument);
-        },
-        location: 'HourlyHistoricalMarketDataQueryDocument.graphql'
-      },{
-        document: PaginatedAllMarketOrdersQueryDocument,
-        get rawSDL() {
-          return printWithCache(PaginatedAllMarketOrdersQueryDocument);
-        },
-        location: 'PaginatedAllMarketOrdersQueryDocument.graphql'
-      },{
-        document: PaginatedSubaccountOrdersQueryDocument,
-        get rawSDL() {
-          return printWithCache(PaginatedSubaccountOrdersQueryDocument);
-        },
-        location: 'PaginatedSubaccountOrdersQueryDocument.graphql'
-      },{
-        document: OnBookOrdersByIdQueryDocument,
-        get rawSDL() {
-          return printWithCache(OnBookOrdersByIdQueryDocument);
-        },
-        location: 'OnBookOrdersByIdQueryDocument.graphql'
-      },{
-        document: SubaccountsForAddressDocument,
-        get rawSDL() {
-          return printWithCache(SubaccountsForAddressDocument);
-        },
-        location: 'SubaccountsForAddressDocument.graphql'
-      }
-    ];
-    },
-    fetchFn,
-  };
-}
-
-export function createBuiltMeshHTTPHandler() {
-  return createMeshHTTPHandler({
-    baseDir,
-    getBuiltMesh,
-    rawServeConfig: undefined,
-  })
-}
-
-
-let meshInstance$: Promise<MeshInstance<MeshContext>>;
-
-export function getBuiltGraphClient(): Promise<MeshInstance<MeshContext>> {
-  if (meshInstance$ == null) {
-    meshInstance$ = getMeshOptions().then(meshOptions => getMesh<MeshContext>(meshOptions)).then(mesh => {
-      const id$ = mesh.pubsub.subscribe('destroy', () => {
-        meshInstance$ = undefined;
-        id$.then(id => mesh.pubsub.unsubscribe(id)).catch(err => console.error(err));
-      });
-      return mesh;
-    });
-  }
-  return meshInstance$;
-}
-
-export const execute: ExecuteMeshFn = (...args) => getBuiltGraphClient().then(({ execute }) => execute(...args));
-
-export const subscribe: SubscribeMeshFn = (...args) => getBuiltGraphClient().then(({ subscribe }) => subscribe(...args));
-export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(globalContext?: TGlobalContext) {
-  const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
-  return getSdk<TOperationContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
-}
-export type CandlesticksQueryQueryVariables = Exact<{
-  marketEntityId: Scalars['String'];
-  maxTimeInclusive: Scalars['BigInt'];
-  limit: Scalars['Int'];
-}>;
-
-
-export type CandlesticksQueryQuery = { candlesticks: Array<Pick<Candlestick, 'id' | 'time' | 'openX18' | 'closeX18' | 'highX18' | 'lowX18' | 'volumeQuote'>> };
-
-export type HourlyHistoricalMarketDataQueryQueryVariables = Exact<{
-  marketEntityId: Scalars['String'];
-  minHourInclusive: Scalars['BigInt'];
-  maxHourExclusive: Scalars['BigInt'];
-}>;
-
-
-export type HourlyHistoricalMarketDataQueryQuery = { marketHourlySnapshots: Array<Pick<MarketHourlySnapshot, 'id' | 'hour' | 'volumeQuote'>> };
-
-export type PaginatedAllMarketOrdersQueryQueryVariables = Exact<{
-  marketEntityId: Scalars['String'];
-  first?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type PaginatedAllMarketOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
-    & { subaccount: Pick<Subaccount, 'subaccountId'> }
-  )> };
-
-export type PaginatedSubaccountOrdersQueryQueryVariables = Exact<{
-  subaccountEntityId: Scalars['String'];
-  first?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type PaginatedSubaccountOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
-    & { subaccount: Pick<Subaccount, 'subaccountId'> }
-  )> };
-
-export type OnBookOrdersByIDQueryQueryVariables = Exact<{
-  orderEntityIds: Array<Scalars['ID']> | Scalars['ID'];
-}>;
-
-
-export type OnBookOrdersByIDQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
-    & { subaccount: Pick<Subaccount, 'subaccountId'> }
-  )> };
-
-export type OrderEntityFieldsFragmentFragment = (
-  Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
-  & { subaccount: Pick<Subaccount, 'subaccountId'> }
-);
-
-export type SubaccountsForAddressQueryVariables = Exact<{
-  address: Scalars['Bytes'];
-}>;
-
-
-export type SubaccountsForAddressQuery = { subaccounts: Array<Pick<Subaccount, 'id' | 'name' | 'subaccountId' | 'owner'>> };
-
-export const OrderEntityFieldsFragmentFragmentDoc = gql`
-    fragment OrderEntityFieldsFragment on Order {
-  id
-  digest
-  validationResult
-  priceX18
-  subaccount {
-    subaccountId
-  }
-  reportedAt
-  reportedAtBlock
-  filledAmount
-  collectedFee
-}
-    ` as unknown as DocumentNode<OrderEntityFieldsFragmentFragment, unknown>;
-export const CandlesticksQueryDocument = gql`
-    query CandlesticksQuery($marketEntityId: String!, $maxTimeInclusive: BigInt!, $limit: Int!) {
-  candlesticks(
-    where: {market: $marketEntityId, time_lte: $maxTimeInclusive}
-    orderBy: time
-    orderDirection: desc
-    first: $limit
-  ) {
-    id
-    time
-    openX18
-    closeX18
-    highX18
-    lowX18
-    volumeQuote
-  }
-}
-    ` as unknown as DocumentNode<CandlesticksQueryQuery, CandlesticksQueryQueryVariables>;
-export const HourlyHistoricalMarketDataQueryDocument = gql`
-    query HourlyHistoricalMarketDataQuery($marketEntityId: String!, $minHourInclusive: BigInt!, $maxHourExclusive: BigInt!) {
-  marketHourlySnapshots(
-    where: {market: $marketEntityId, hour_gte: $minHourInclusive, hour_lt: $maxHourExclusive}
-  ) {
-    id
-    hour
-    volumeQuote
-  }
-}
-    ` as unknown as DocumentNode<HourlyHistoricalMarketDataQueryQuery, HourlyHistoricalMarketDataQueryQueryVariables>;
-export const PaginatedAllMarketOrdersQueryDocument = gql`
-    query PaginatedAllMarketOrdersQuery($marketEntityId: String!, $first: Int, $skip: Int) {
-  orders(where: {market: $marketEntityId}, first: $first, skip: $skip) {
-    ...OrderEntityFieldsFragment
-  }
-}
-    ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<PaginatedAllMarketOrdersQueryQuery, PaginatedAllMarketOrdersQueryQueryVariables>;
-export const PaginatedSubaccountOrdersQueryDocument = gql`
-    query PaginatedSubaccountOrdersQuery($subaccountEntityId: String!, $first: Int, $skip: Int) {
-  orders(where: {subaccount: $subaccountEntityId}, first: $first, skip: $skip) {
-    ...OrderEntityFieldsFragment
-  }
-}
-    ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<PaginatedSubaccountOrdersQueryQuery, PaginatedSubaccountOrdersQueryQueryVariables>;
-export const OnBookOrdersByIDQueryDocument = gql`
-    query OnBookOrdersByIDQuery($orderEntityIds: [ID!]!) {
-  orders(where: {id_in: $orderEntityIds}) {
-    ...OrderEntityFieldsFragment
-  }
-}
-    ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<OnBookOrdersByIDQueryQuery, OnBookOrdersByIDQueryQueryVariables>;
-export const SubaccountsForAddressDocument = gql`
-    query SubaccountsForAddress($address: Bytes!) {
-  subaccounts(where: {owner: $address}) {
-    id
-    name
-    subaccountId
-    owner
-  }
-}
-    ` as unknown as DocumentNode<SubaccountsForAddressQuery, SubaccountsForAddressQueryVariables>;
-
-
-
-
-
-
-
-export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
-export function getSdk<C, E>(requester: Requester<C, E>) {
-  return {
-    CandlesticksQuery(variables: CandlesticksQueryQueryVariables, options?: C): Promise<CandlesticksQueryQuery> {
-      return requester<CandlesticksQueryQuery, CandlesticksQueryQueryVariables>(CandlesticksQueryDocument, variables, options) as Promise<CandlesticksQueryQuery>;
-    },
-    HourlyHistoricalMarketDataQuery(variables: HourlyHistoricalMarketDataQueryQueryVariables, options?: C): Promise<HourlyHistoricalMarketDataQueryQuery> {
-      return requester<HourlyHistoricalMarketDataQueryQuery, HourlyHistoricalMarketDataQueryQueryVariables>(HourlyHistoricalMarketDataQueryDocument, variables, options) as Promise<HourlyHistoricalMarketDataQueryQuery>;
-    },
-    PaginatedAllMarketOrdersQuery(variables: PaginatedAllMarketOrdersQueryQueryVariables, options?: C): Promise<PaginatedAllMarketOrdersQueryQuery> {
-      return requester<PaginatedAllMarketOrdersQueryQuery, PaginatedAllMarketOrdersQueryQueryVariables>(PaginatedAllMarketOrdersQueryDocument, variables, options) as Promise<PaginatedAllMarketOrdersQueryQuery>;
-    },
-    PaginatedSubaccountOrdersQuery(variables: PaginatedSubaccountOrdersQueryQueryVariables, options?: C): Promise<PaginatedSubaccountOrdersQueryQuery> {
-      return requester<PaginatedSubaccountOrdersQueryQuery, PaginatedSubaccountOrdersQueryQueryVariables>(PaginatedSubaccountOrdersQueryDocument, variables, options) as Promise<PaginatedSubaccountOrdersQueryQuery>;
-    },
-    OnBookOrdersByIDQuery(variables: OnBookOrdersByIDQueryQueryVariables, options?: C): Promise<OnBookOrdersByIDQueryQuery> {
-      return requester<OnBookOrdersByIDQueryQuery, OnBookOrdersByIDQueryQueryVariables>(OnBookOrdersByIDQueryDocument, variables, options) as Promise<OnBookOrdersByIDQueryQuery>;
-    },
-    SubaccountsForAddress(variables: SubaccountsForAddressQueryVariables, options?: C): Promise<SubaccountsForAddressQuery> {
-      return requester<SubaccountsForAddressQuery, SubaccountsForAddressQueryVariables>(SubaccountsForAddressDocument, variables, options) as Promise<SubaccountsForAddressQuery>;
-    }
-  };
-}
-export type Sdk = ReturnType<typeof getSdk>;
+export type ClearinghouseContext = {
+      ["Clearinghouse"]: { Query: QueryClearinghouseSdk, Mutation: MutationClearinghouseSdk, Subscription: SubscriptionClearinghouseSdk },
+      ["endpoint"]: Scalars['ID']
+    };

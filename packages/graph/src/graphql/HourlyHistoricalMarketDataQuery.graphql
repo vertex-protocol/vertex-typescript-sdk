@@ -6,7 +6,7 @@ query HourlyHistoricalMarketDataQuery(
   marketHourlySnapshots(
     where: {
       market: $marketEntityId
-      hour_gte: $minTimeInclusive
+      hour_gte: $minHourInclusive
       hour_lt: $maxHourExclusive
     }
   ) {

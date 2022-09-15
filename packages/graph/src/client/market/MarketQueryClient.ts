@@ -1,10 +1,14 @@
 import { BaseVertexGraphClient } from '../base';
-import { nowInSeconds } from '@vertex-protocol/utils';
+import { fromX18, nowInSeconds, toBigDecimal } from '@vertex-protocol/utils';
 import { getMarketEntityId, toHourIndex } from '../../utils';
 import {
+  Candlestick,
+  GetCandlesticksParams,
+  GetCandlesticksResponse,
   HourlyHistoricalMarketDataParams,
   HourlyHistoricalMarketDataResponse,
 } from './types';
+import { toBigInt } from '../../utils/bigInt';
 
 export class MarketQueryClient extends BaseVertexGraphClient {
   /**
@@ -17,14 +21,39 @@ export class MarketQueryClient extends BaseVertexGraphClient {
   ): Promise<HourlyHistoricalMarketDataResponse> {
     const data = await this.graph.HourlyHistoricalMarketDataQuery({
       marketEntityId: getMarketEntityId(params.productId),
-      maxHourExclusive: params.maxTimeExclusive
-        ? toHourIndex(params.maxTimeExclusive)
-        : toHourIndex(nowInSeconds()),
-      minHourInclusive: params.minTimeInclusive
-        ? toHourIndex(params.minTimeInclusive)
-        : 0,
+      maxHourExclusive: toBigInt(
+        params.maxTimeExclusive
+          ? toHourIndex(params.maxTimeExclusive)
+          : toHourIndex(nowInSeconds()),
+      ),
+      minHourInclusive: toBigInt(
+        params.minTimeInclusive ? toHourIndex(params.minTimeInclusive) : 0,
+      ),
     });
 
     return data.marketHourlySnapshots;
+  }
+
+  async getCandlesticks(
+    params: GetCandlesticksParams,
+  ): Promise<GetCandlesticksResponse> {
+    const data = await this.graph.CandlesticksQuery({
+      limit: params.limit ?? 100,
+      marketEntityId: getMarketEntityId(params.productId),
+      maxTimeInclusive: toBigInt(params.beforeTime ?? Date.now()),
+    });
+
+    return {
+      candlesticks: data.candlesticks.map((snapshot): Candlestick => {
+        return {
+          close: fromX18(snapshot.closeX18).toNumber(),
+          high: fromX18(snapshot.highX18).toNumber(),
+          low: fromX18(snapshot.lowX18).toNumber(),
+          open: fromX18(snapshot.openX18).toNumber(),
+          time: toBigDecimal(snapshot.volumeQuote).toNumber(),
+          volume: toBigDecimal(snapshot.volumeQuote).toNumber(),
+        };
+      }),
+    };
   }
 }

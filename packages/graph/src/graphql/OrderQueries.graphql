@@ -22,7 +22,7 @@ query PaginatedSubaccountOrdersQuery(
   }
 }
 
-query OnBookOrdersByIDQuery($orderEntityIds: [String!]!) {
+query OnBookOrdersByIDQuery($orderEntityIds: [ID!]!) {
   orders(where: { id_in: $orderEntityIds }) {
     ...OrderEntityFieldsFragment
   }
