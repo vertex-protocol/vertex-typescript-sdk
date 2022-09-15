@@ -8,7 +8,18 @@ import type { MockERC20, MockERC20Interface } from "../MockERC20";
 
 const _abi = [
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "string",
+        name: "name_",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "symbol_",
+        type: "string",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "constructor",
   },

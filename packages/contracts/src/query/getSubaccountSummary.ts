@@ -1,5 +1,5 @@
 import { BigNumberish } from 'ethers';
-import { BalanceWithProduct, HealthStatus, WithContracts } from '../common';
+import { BalanceWithProduct, HealthStatus, WithContract } from '../common';
 import { fromX18 } from '@vertex-protocol/utils';
 import { IVertexQuerier } from '../typechain-types';
 import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
@@ -37,7 +37,10 @@ function healthInfoToStatus(
 export async function getSubaccountSummary({
   subaccountId,
   querier,
-}: WithContracts<GetSubaccountSummaryParams>): Promise<SubaccountSummaryResponse> {
+}: WithContract<
+  'querier',
+  GetSubaccountSummaryParams
+>): Promise<SubaccountSummaryResponse> {
   const healthInfo = await querier.getHealthInfo(subaccountId);
   const allBalances = await querier.getAllBalances(subaccountId);
 

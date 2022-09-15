@@ -27,7 +27,7 @@ export interface IEndpointInterface extends utils.Interface {
   functions: {
     "getPriceX18(uint32)": FunctionFragment;
     "getTime()": FunctionFragment;
-    "initialize(address,address)": FunctionFragment;
+    "submitSlowModeTransaction(bytes)": FunctionFragment;
     "submitTransactions(bytes[])": FunctionFragment;
   };
 
@@ -35,7 +35,7 @@ export interface IEndpointInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "getPriceX18"
       | "getTime"
-      | "initialize"
+      | "submitSlowModeTransaction"
       | "submitTransactions"
   ): FunctionFragment;
 
@@ -45,8 +45,8 @@ export interface IEndpointInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "getTime", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "initialize",
-    values: [PromiseOrValue<string>, PromiseOrValue<string>]
+    functionFragment: "submitSlowModeTransaction",
+    values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "submitTransactions",
@@ -58,7 +58,10 @@ export interface IEndpointInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getTime", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "submitSlowModeTransaction",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "submitTransactions",
     data: BytesLike
@@ -101,9 +104,8 @@ export interface IEndpoint extends BaseContract {
 
     getTime(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    initialize(
-      _sequencer: PromiseOrValue<string>,
-      _clearinghouse: PromiseOrValue<string>,
+    submitSlowModeTransaction(
+      transaction: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -120,9 +122,8 @@ export interface IEndpoint extends BaseContract {
 
   getTime(overrides?: CallOverrides): Promise<BigNumber>;
 
-  initialize(
-    _sequencer: PromiseOrValue<string>,
-    _clearinghouse: PromiseOrValue<string>,
+  submitSlowModeTransaction(
+    transaction: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -139,9 +140,8 @@ export interface IEndpoint extends BaseContract {
 
     getTime(overrides?: CallOverrides): Promise<BigNumber>;
 
-    initialize(
-      _sequencer: PromiseOrValue<string>,
-      _clearinghouse: PromiseOrValue<string>,
+    submitSlowModeTransaction(
+      transaction: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -161,9 +161,8 @@ export interface IEndpoint extends BaseContract {
 
     getTime(overrides?: CallOverrides): Promise<BigNumber>;
 
-    initialize(
-      _sequencer: PromiseOrValue<string>,
-      _clearinghouse: PromiseOrValue<string>,
+    submitSlowModeTransaction(
+      transaction: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -181,9 +180,8 @@ export interface IEndpoint extends BaseContract {
 
     getTime(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    initialize(
-      _sequencer: PromiseOrValue<string>,
-      _clearinghouse: PromiseOrValue<string>,
+    submitSlowModeTransaction(
+      transaction: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

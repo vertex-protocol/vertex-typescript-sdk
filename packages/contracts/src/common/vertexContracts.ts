@@ -17,5 +17,7 @@ export interface VertexContracts {
   perpEngine: IPerpEngine;
 }
 
-// Utility type to bundle parameters with contracts
+// Utility types to bundle parameters with contracts
 export type WithContracts<T> = T & VertexContracts;
+export type WithContract<TContractName extends keyof VertexContracts, T> = T &
+  Pick<VertexContracts, TContractName>;

@@ -42,17 +42,12 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_sequencer",
-        type: "address",
-      },
-      {
-        internalType: "contract IClearinghouse",
-        name: "_clearinghouse",
-        type: "address",
+        internalType: "bytes",
+        name: "transaction",
+        type: "bytes",
       },
     ],
-    name: "initialize",
+    name: "submitSlowModeTransaction",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
