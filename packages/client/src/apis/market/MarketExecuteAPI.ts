@@ -1,13 +1,5 @@
 import { BaseVertexAPI } from '../base';
-import {
-  CancelOrderParams,
-  PlaceOrderParams,
-} from '@vertex-protocol/engine-client';
-
-export type OrderActionParams = Omit<
-  PlaceOrderParams | CancelOrderParams,
-  'orderbookAddr'
->;
+import { OrderActionParams } from './executeTypes';
 
 export class MarketExecuteAPI extends BaseVertexAPI {
   async placeOrder(params: OrderActionParams) {
