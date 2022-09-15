@@ -40,20 +40,18 @@ export class MarketQueryClient extends BaseVertexGraphClient {
     const data = await this.graph.CandlesticksQuery({
       limit: params.limit ?? 100,
       marketEntityId: getMarketEntityId(params.productId),
-      maxTimeInclusive: toBigInt(params.beforeTime ?? Date.now()),
+      maxTimeInclusive: toBigInt(params.beforeTime ?? nowInSeconds()),
     });
 
-    return {
-      candlesticks: data.candlesticks.map((snapshot): Candlestick => {
-        return {
-          close: fromX18(snapshot.closeX18).toNumber(),
-          high: fromX18(snapshot.highX18).toNumber(),
-          low: fromX18(snapshot.lowX18).toNumber(),
-          open: fromX18(snapshot.openX18).toNumber(),
-          time: toBigDecimal(snapshot.volumeQuote).toNumber(),
-          volume: toBigDecimal(snapshot.volumeQuote).toNumber(),
-        };
-      }),
-    };
+    return data.candlesticks.map((snapshot): Candlestick => {
+      return {
+        close: fromX18(snapshot.closeX18).toNumber(),
+        high: fromX18(snapshot.highX18).toNumber(),
+        low: fromX18(snapshot.lowX18).toNumber(),
+        open: fromX18(snapshot.openX18).toNumber(),
+        time: toBigDecimal(snapshot.time).toNumber(),
+        volume: toBigDecimal(snapshot.volumeQuote).toNumber(),
+      };
+    });
   }
 }

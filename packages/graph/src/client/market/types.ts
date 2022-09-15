@@ -21,8 +21,9 @@ export interface GetCandlesticksParams {
   limit?: number;
 }
 
-// Tradingview compatible bars
+// Semi-Tradingview compatible bars
 export interface Candlestick {
+  // In SECONDS, for TV compat, this needs to be in millis
   time: number;
   open: number;
   high: number;
@@ -31,6 +32,4 @@ export interface Candlestick {
   volume: number;
 }
 
-export interface GetCandlesticksResponse {
-  candlesticks: Candlestick[];
-}
+export type GetCandlesticksResponse = Candlestick[];
