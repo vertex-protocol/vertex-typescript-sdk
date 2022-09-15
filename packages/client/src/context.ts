@@ -15,7 +15,10 @@ import {
   VertexGraphClient,
 } from '@vertex-protocol/graph';
 import { TypedDataSigner } from '@ethersproject/abstract-signer';
-import { EngineClient } from '@vertex-protocol/engine-client';
+import {
+  ENGINE_CLIENT_ENDPOINTS,
+  EngineClient,
+} from '@vertex-protocol/engine-client';
 
 /**
  * Context required to use the Vertex client.
@@ -68,7 +71,7 @@ export async function createClientContext(
         querierAddress: VERTEX_DEPLOYMENTS.testnet.querier,
         graphEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet,
         // TODO: Update this to the correct endpoint
-        offchainEngineEndpoint: 'http://localhost:3000/api/engine',
+        offchainEngineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
       };
     } else {
       return opts;
