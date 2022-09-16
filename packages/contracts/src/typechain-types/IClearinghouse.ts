@@ -145,6 +145,7 @@ export interface IClearinghouseInterface extends utils.Interface {
     "getInsurance()": FunctionFragment;
     "getNumProducts()": FunctionFragment;
     "getNumSubaccounts()": FunctionFragment;
+    "getOraclePriceX18(uint32)": FunctionFragment;
     "getOrderbook(uint32)": FunctionFragment;
     "getQuote()": FunctionFragment;
     "getSubaccountId(address,string)": FunctionFragment;
@@ -169,6 +170,7 @@ export interface IClearinghouseInterface extends utils.Interface {
       | "getInsurance"
       | "getNumProducts"
       | "getNumSubaccounts"
+      | "getOraclePriceX18"
       | "getOrderbook"
       | "getQuote"
       | "getSubaccountId"
@@ -227,6 +229,10 @@ export interface IClearinghouseInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getNumSubaccounts",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getOraclePriceX18",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getOrderbook",
@@ -301,6 +307,10 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getNumSubaccounts",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getOraclePriceX18",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -477,6 +487,11 @@ export interface IClearinghouse extends BaseContract {
 
     getNumSubaccounts(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    getOraclePriceX18(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -564,6 +579,11 @@ export interface IClearinghouse extends BaseContract {
 
   getNumSubaccounts(overrides?: CallOverrides): Promise<BigNumber>;
 
+  getOraclePriceX18(
+    productId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   getOrderbook(
     productId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -650,6 +670,11 @@ export interface IClearinghouse extends BaseContract {
     getNumProducts(overrides?: CallOverrides): Promise<number>;
 
     getNumSubaccounts(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getOraclePriceX18(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
@@ -789,6 +814,11 @@ export interface IClearinghouse extends BaseContract {
 
     getNumSubaccounts(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getOraclePriceX18(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -876,6 +906,11 @@ export interface IClearinghouse extends BaseContract {
     getNumProducts(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getNumSubaccounts(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getOraclePriceX18(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,

@@ -384,6 +384,25 @@ const _abi = [
         type: "uint32",
       },
     ],
+    name: "getOraclePriceX18",
+    outputs: [
+      {
+        internalType: "int256",
+        name: "",
+        type: "int256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+    ],
     name: "getOrderbook",
     outputs: [
       {
