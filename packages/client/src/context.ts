@@ -70,7 +70,6 @@ export async function createClientContext(
       return {
         querierAddress: VERTEX_DEPLOYMENTS.testnet.querier,
         graphEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet,
-        // TODO: Update this to the correct endpoint
         offchainEngineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
       };
     } else {
