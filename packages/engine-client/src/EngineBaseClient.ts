@@ -13,7 +13,6 @@ import {
   SignableRequestTypeToParams,
 } from '@vertex-protocol/contracts';
 import axios, { AxiosResponse } from 'axios';
-import { URLSearchParams } from 'url';
 import { TypedDataSigner } from '@ethersproject/abstract-signer';
 import { Signer } from 'ethers';
 
@@ -52,11 +51,14 @@ export class EngineBaseClient {
     requestType: TRequestType,
     params: EngineServerQueryRequestByType[TRequestType],
   ): Promise<EngineServerQueryResponseByType[TRequestType]> {
-    const queryParams = new URLSearchParams({
+    const queryParams: Record<string, string | number> = {
       ...params,
       type: requestType,
-    } as Record<string, any>);
-    const requestUrl = `${this.opts.url}/query?${queryParams.toString()}`;
+    };
+    const queryString = Object.keys(queryParams)
+      .map((key) => `${key}=${queryParams[key]}`)
+      .join('&');
+    const requestUrl = `${this.opts.url}/query?${queryString}`;
     const response = await axios.get<EngineQueryRequestResponse>(requestUrl);
 
     this.checkResponseStatus(response);
