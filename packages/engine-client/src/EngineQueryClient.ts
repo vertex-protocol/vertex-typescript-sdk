@@ -53,9 +53,9 @@ export class EngineQueryClient extends EngineBaseClient {
       balances.push({
         amount: fromX18(spotBalance.amount_x18),
         health: {
-          initial: toBigDecimal(0),
-          maintenance: toBigDecimal(0),
-          unweighted: toBigDecimal(0),
+          initial: toBigDecimal(spotBalance.initial_x18),
+          maintenance: toBigDecimal(spotBalance.maintenance_x18),
+          unweighted: toBigDecimal(spotBalance.pnl_x18),
         },
         productId: product.product_id,
         ...mapEngineServerSpotProduct(product).product,
@@ -74,9 +74,9 @@ export class EngineQueryClient extends EngineBaseClient {
         amount: fromX18(perpBalance.amount_x18),
         vQuoteBalance: fromX18(perpBalance.v_quote_balance_x18),
         health: {
-          initial: toBigDecimal(0),
-          maintenance: toBigDecimal(0),
-          unweighted: toBigDecimal(0),
+          initial: toBigDecimal(perpBalance.initial_x18),
+          maintenance: toBigDecimal(perpBalance.maintenance_x18),
+          unweighted: toBigDecimal(perpBalance.pnl_x18),
         },
         productId: product.product_id,
         ...mapEngineServerPerpProduct(product).product,
@@ -86,6 +86,7 @@ export class EngineQueryClient extends EngineBaseClient {
     return {
       balances: balances,
       health: {
+        // TODO
         initial: toBigDecimal(0),
         maintenance: toBigDecimal(0),
         unweighted: toBigDecimal(0),

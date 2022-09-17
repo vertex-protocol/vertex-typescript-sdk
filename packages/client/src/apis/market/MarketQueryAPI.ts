@@ -16,6 +16,10 @@ export class MarketQueryAPI extends BaseVertexAPI {
     return getAllMarkets(this.context.contracts);
   }
 
+  async getAllEngineMarkets(): Promise<GetAllMarketsResponse> {
+    return this.context.engineClient.getAllMarkets();
+  }
+
   async getOrValidateOrders() {
     // Call validateTransactions
   }
