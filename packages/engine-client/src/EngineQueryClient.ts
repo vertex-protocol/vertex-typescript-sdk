@@ -86,10 +86,9 @@ export class EngineQueryClient extends EngineBaseClient {
     return {
       balances: balances,
       health: {
-        // TODO
-        initial: toBigDecimal(0),
-        maintenance: toBigDecimal(0),
-        unweighted: toBigDecimal(0),
+        initial: toBigDecimal(baseResponse.initial_health_x18),
+        maintenance: toBigDecimal(baseResponse.maintenance_health_x18),
+        unweighted: toBigDecimal(baseResponse.pnl_health_x18),
       },
     };
   }

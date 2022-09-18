@@ -56,6 +56,9 @@ export interface EngineServerQueryRequest {
 
 export interface EngineServerSubaccountInfoResponse {
   subaccount_id: BigNumberish;
+  initial_health_x18: BigNumberish;
+  maintenance_health_x18: BigNumberish;
+  pnl_health_x18: BigNumberish;
   spot_balances: EngineServerSpotBalance[];
   perp_balances: EngineServerPerpBalance[];
   all_products: EngineServerAllProductsResponse;
