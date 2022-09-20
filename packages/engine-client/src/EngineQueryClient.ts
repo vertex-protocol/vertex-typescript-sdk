@@ -234,7 +234,7 @@ function mapEngineServerSpotProduct(
         toEthersBN(product.total_deposits_normalized_x18),
         toEthersBN(product.cumulative_deposits_multiplier_x18),
       ),
-      oraclePrice: toBigDecimal(product.oracle_price_x18),
+      oraclePrice: fromX18(product.oracle_price_x18),
       interestFloor: toBigDecimal(product.config.interest_floor_x18),
       interestInflectionUtil: toBigDecimal(
         product.config.interest_inflection_util_x18,
