@@ -212,6 +212,13 @@ function mapEngineServerOrder(
     subaccountId: toBigDecimal(order.subaccount).toNumber(),
     totalAmount: toBigDecimal(order.amount),
     unfilledAmount: toBigDecimal(order.unfilled_amount),
+    orderParams: {
+      amount: order.amount,
+      expiration: order.expiration,
+      nonce: order.nonce,
+      price: order.price_x18,
+      subaccountId: order.subaccount,
+    },
   };
 }
 

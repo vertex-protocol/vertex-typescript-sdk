@@ -30,6 +30,8 @@ export interface EngineOrder {
   expiration: BigDecimal;
   nonce: BigDecimal;
   digest: string;
+  // Raw order params for cancellation
+  orderParams: OrderParams;
 }
 
 export type GetEngineOrderResponse = EngineOrder;
