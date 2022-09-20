@@ -212,11 +212,12 @@ function mapEngineServerOrder(
     subaccountId: toBigDecimal(order.subaccount).toNumber(),
     totalAmount: toBigDecimal(order.amount),
     unfilledAmount: toBigDecimal(order.unfilled_amount),
+    // Standardizes from hex
     orderParams: {
-      amount: order.amount,
-      expiration: order.expiration,
-      nonce: order.nonce,
-      price: order.price_x18,
+      amount: toBigDecimal(order.amount).toString(),
+      expiration: toBigDecimal(order.expiration).toString(),
+      nonce: toBigDecimal(order.nonce).toString(),
+      price: fromX18(order.price_x18).toString(),
       subaccountId: order.subaccount,
     },
   };
@@ -276,7 +277,7 @@ function mapEngineServerPerpProduct(
     product: {
       type: ProductEngineType.PERP,
       emaPrice: fromX18(product.ema_price_x18),
-      oraclePrice: toBigDecimal(product.oracle_price_x18),
+      oraclePrice: fromX18(product.oracle_price_x18),
       largePositionPenalty: toBigDecimal(
         product.config.large_position_penalty_x18,
       ),
