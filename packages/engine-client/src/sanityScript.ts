@@ -96,7 +96,7 @@ async function main() {
   const productId = 1;
   const orderbookAddr = await clearinghouse.getOrderbook(productId);
   const order: OrderParams = {
-    amount: 1,
+    amount: -1,
     expiration: MaxUint64,
     nonce: getNonce(),
     price: 10,
@@ -145,6 +145,27 @@ async function main() {
     'Subaccount orders after cancellation',
     JSON.stringify(subaccountOrdersAfterCancel),
   );
+
+  // Withdraw collateral
+  const withdrawParams: DepositCollateralParams = {
+    sender: signer.address,
+    subaccountName: 'default',
+    productId: 0,
+    amount: 100,
+    nonce: getNonce(),
+  };
+
+  const withdrawResult = await client.withdrawCollateral({
+    ...depositParams,
+    endpointAddr: sequencerAddr,
+  });
+
+  console.log('Done withdrawing collateral, result', withdrawResult);
+
+  const subaccountInfoAtEnd = await client.getSubaccountSummary({
+    subaccountId,
+  });
+  console.log('Subaccount info', JSON.stringify(subaccountInfoAtEnd, null, 2));
 }
 
-testPrice();
+main();
