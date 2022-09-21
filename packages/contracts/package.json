@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/contracts",
-  "version": "0.1.0-alpha.7",
+  "version": "0.1.0-alpha.8",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -27,7 +27,7 @@
     "@ethersproject/abi": "^5.6.4",
     "@ethersproject/constants": "^5.6.1",
     "@ethersproject/providers": "^5.6.8",
-    "@vertex-protocol/utils": "^0.1.0-alpha.7",
+    "@vertex-protocol/utils": "^0.1.0-alpha.8",
     "ethers": "^5.7.1"
   },
   "devDependencies": {
