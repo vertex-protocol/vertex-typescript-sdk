@@ -1,10 +1,10 @@
 query CandlesticksQuery(
   $marketEntityId: String!
-  $maxTimeInclusive: BigInt!
+  $maxTimeExclusive: BigInt!
   $limit: Int!
 ) {
   candlesticks(
-    where: { market: $marketEntityId, time_lte: $maxTimeInclusive }
+    where: { market: $marketEntityId, time_lt: $maxTimeExclusive }
     orderBy: time
     orderDirection: desc
     first: $limit

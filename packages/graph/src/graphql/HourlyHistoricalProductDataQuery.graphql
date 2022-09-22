@@ -1,0 +1,30 @@
+# This will attempt to query both, but only one will match - an unfortunate result of the way we have to split spot & perp snapshots
+query HourlyHistoricalProductDataQuery(
+  $productEntityId: String!
+  $minHourInclusive: BigInt!
+  $maxHourExclusive: BigInt!
+) {
+  spotProductHourlySnapshots(
+    where: {
+      product: $productEntityId
+      hour_gte: $minHourInclusive
+      hour_lt: $maxHourExclusive
+    }
+  ) {
+    id
+    hour
+    priceX18
+  }
+  perpProductHourlySnapshots(
+    where: {
+      product: $productEntityId
+      hour_gte: $minHourInclusive
+      hour_lt: $maxHourExclusive
+    }
+  ) {
+    id
+    hour
+    priceX18
+    openInterestX18
+  }
+}

@@ -1,7 +1,7 @@
 query HourlyHistoricalMarketDataQuery(
   $marketEntityId: String!
-  $minHourInclusive: BigInt!
   $maxHourExclusive: BigInt!
+  $minHourInclusive: BigInt!
 ) {
   marketHourlySnapshots(
     where: {
@@ -12,7 +12,8 @@ query HourlyHistoricalMarketDataQuery(
   ) {
     id
     hour
+    volumeNumOrders
     volumeQuote
-    # TODO more fields when added
+    lastFillPriceX18
   }
 }

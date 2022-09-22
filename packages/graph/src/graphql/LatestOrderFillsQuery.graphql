@@ -1,0 +1,14 @@
+query LatestOrderFillsQuery($marketEntityId: String!) {
+  fillOrderEvents(
+    where: { market: $marketEntityId }
+    orderBy: blockTime
+    orderDirection: desc
+    first: 100
+  ) {
+    blockTime
+    takerAmountDelta
+    makerOrder {
+      priceX18
+    }
+  }
+}

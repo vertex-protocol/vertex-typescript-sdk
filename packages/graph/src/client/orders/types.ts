@@ -5,6 +5,20 @@ import {
 } from '../../generated';
 import { PaginationParams } from '../types';
 import { OrderbookID } from '@vertex-protocol/contracts';
+import { BigDecimal } from '@vertex-protocol/utils';
+
+interface LatestOrderFill {
+  // UNIX Seconds
+  time: number;
+  takeAmountDelta: BigDecimal;
+  price: BigDecimal;
+}
+
+export interface LatestOrderFillsParams {
+  productId: number;
+}
+
+export type LatestOrderFillsResponse = LatestOrderFill[];
 
 export interface AllMarketOrdersParams extends PaginationParams {
   productId: number;

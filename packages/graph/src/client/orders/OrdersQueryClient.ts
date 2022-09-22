@@ -2,6 +2,7 @@ import { BaseVertexGraphClient } from '../base';
 import {
   AllMarketOrdersParams,
   AllMarketOrdersResponse,
+  LatestOrderFillsParams,
   OrdersByIdParams,
   OrdersByIdResponse,
   SubaccountOrdersParams,
@@ -13,11 +14,22 @@ import {
   getOnBookOrderEntityId,
   getSubaccountEntityId,
 } from '../../utils';
+import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 
-/**
- * @internal
- */
 export class OrdersQueryClient extends BaseVertexGraphClient {
+  async getLatestOrderFills(params: LatestOrderFillsParams) {
+    const data = await this.graph.LatestOrderFillsQuery({
+      marketEntityId: getMarketEntityId(params.productId),
+    });
+    return data.fillOrderEvents.map((event) => {
+      return {
+        time: event.blockTime,
+        takerAmountDelta: toBigDecimal(event.takerAmountDelta),
+        price: fromX18(event.makerOrder.priceX18),
+      };
+    });
+  }
+
   /**
    * Get all orders for a given product with pagination.
    *

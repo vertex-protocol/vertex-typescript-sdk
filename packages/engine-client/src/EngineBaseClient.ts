@@ -30,16 +30,13 @@ type EngineExecuteRequestBody = Partial<EngineServerExecuteRequestByType>;
 
 type EngineExecuteRequestResponse = EngineServerExecutionResult;
 
-type EngineQueryRequestParams<
-  T extends EngineServerQueryRequestType = EngineServerQueryRequestType,
-> = EngineServerQueryRequestByType[T] & {
-  type: T;
-};
-
 type EngineQueryRequestResponse<
   T extends EngineServerQueryRequestType = EngineServerQueryRequestType,
 > = EngineServerQueryResponse<T>;
 
+/**
+ * Base client for all engine requests
+ */
 export class EngineBaseClient {
   readonly opts: EngineClientOpts;
 
@@ -47,6 +44,13 @@ export class EngineBaseClient {
     this.opts = opts;
   }
 
+  /**
+   * Queries the engine, all query params are stringified into the query string
+   *
+   * @param requestType
+   * @param params
+   * @protected
+   */
   protected async query<TRequestType extends EngineServerQueryRequestType>(
     requestType: TRequestType,
     params: EngineServerQueryRequestByType[TRequestType],
@@ -67,6 +71,13 @@ export class EngineBaseClient {
     return response.data.data as EngineServerQueryResponseByType[TRequestType];
   }
 
+  /**
+   * POSTs an execute message to the engine
+   *
+   * @param requestType
+   * @param params
+   * @protected
+   */
   protected async execute<TRequestType extends EngineServerExecuteRequestType>(
     requestType: TRequestType,
     params: EngineServerExecuteRequestByType[TRequestType],
@@ -91,6 +102,14 @@ export class EngineBaseClient {
     );
   }
 
+  /**
+   * Signs a given request with the signer provided to the engine
+   *
+   * @param requestType
+   * @param verifyingContract
+   * @param params
+   * @protected
+   */
   protected async sign<T extends SignableRequestType>(
     requestType: T,
     verifyingContract: string,

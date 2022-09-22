@@ -3,10 +3,12 @@ import { SubaccountQueryClient } from './subaccount';
 import { OrdersQueryClient } from './orders';
 import { execute } from '../generated';
 import { MarketQueryClient } from './market';
+import { ProductQueryClient } from './product';
 
 export * from './subaccount';
 export * from './orders';
 export * from './market';
+export * from './product';
 
 /**
  * Client for common Clearinghouse Subgraph queries
@@ -14,6 +16,7 @@ export * from './market';
 export class VertexGraphClient extends Mixin(
   SubaccountQueryClient,
   OrdersQueryClient,
+  ProductQueryClient,
   MarketQueryClient,
 ) {
   /**

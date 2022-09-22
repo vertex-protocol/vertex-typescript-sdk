@@ -1,6 +1,6 @@
 import { BaseVertexGraphClient } from '../base';
 import { fromX18, nowInSeconds, toBigDecimal } from '@vertex-protocol/utils';
-import { getMarketEntityId, toHourIndex } from '../../utils';
+import { fromHourIndex, getMarketEntityId, toHourIndex } from '../../utils';
 import {
   Candlestick,
   GetCandlesticksParams,
@@ -28,16 +28,28 @@ export class MarketQueryClient extends BaseVertexGraphClient {
         : 0,
     });
 
-    return data.marketHourlySnapshots;
+    return data.marketHourlySnapshots.map((snapshot) => {
+      return {
+        approximateSnapshotTime: fromHourIndex(snapshot.hour),
+        cumulativeVolumeQuote: toBigDecimal(snapshot.volumeQuote),
+        cumulativeNumOrders: toBigDecimal(snapshot.volumeNumOrders),
+        lastFilledPrice: fromX18(snapshot.lastFillPriceX18),
+      };
+    });
   }
 
+  /**
+   * Returns candlesticks for a given product.
+   *
+   * @param params
+   */
   async getCandlesticks(
     params: GetCandlesticksParams,
   ): Promise<GetCandlesticksResponse> {
     const data = await this.graph.CandlesticksQuery({
       limit: params.limit ?? 100,
       marketEntityId: getMarketEntityId(params.productId),
-      maxTimeInclusive: Math.floor(params.beforeTime ?? nowInSeconds()),
+      maxTimeExclusive: Math.floor(params.beforeTime ?? nowInSeconds()),
     });
 
     // Reverse the array as we want data in reverse chronological order

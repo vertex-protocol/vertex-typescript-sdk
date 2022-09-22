@@ -1,0 +1,92 @@
+query SubaccountEventHistoryQuery(
+  $subaccountEntityId: String!
+  $maxTimeExclusive: BigInt!
+  $minTimeInclusive: BigInt!
+  # This enables hacky filtering of events
+  $modifyCollateralLimit: Int
+  $settlePnlLimit: Int
+  $liquidateeLimit: Int
+  $reportOrderLimit: Int
+  $cancelOrderLimit: Int
+) {
+  modifyCollateralEvents(
+    where: {
+      subaccount: $subaccountEntityId
+      blockTime_lt: $maxTimeExclusive
+      blockTime_gt: $minTimeInclusive
+    }
+    orderBy: blockTime
+    orderDirection: desc
+    first: $modifyCollateralLimit
+  ) {
+    id
+    blockTime
+
+    amount
+    productId
+  }
+  settlePnlEvents(
+    where: {
+      subaccount: $subaccountEntityId
+      blockTime_lt: $maxTimeExclusive
+      blockTime_gt: $minTimeInclusive
+    }
+    orderBy: blockTime
+    orderDirection: desc
+    first: $settlePnlLimit
+  ) {
+    id
+    blockTime
+
+    amount
+    productId
+  }
+  liquidationEvents(
+    where: {
+      liquidatee: $subaccountEntityId
+      blockTime_lt: $maxTimeExclusive
+      blockTime_gt: $minTimeInclusive
+    }
+    orderBy: blockTime
+    orderDirection: desc
+    first: $liquidateeLimit
+  ) {
+    id
+    blockTime
+
+    productId
+    liquidatorBaseDelta
+    liquidatorQuoteDelta
+    insuranceCoverage
+  }
+  reportOrderEvents(
+    where: {
+      subaccount: $subaccountEntityId
+      blockTime_lt: $maxTimeExclusive
+      blockTime_gt: $minTimeInclusive
+    }
+    orderBy: blockTime
+    orderDirection: desc
+    first: $reportOrderLimit
+  ) {
+    id
+    blockTime
+
+    # TODO: more fields
+  }
+  cancelOrderEvents(
+    where: {
+      subaccount: $subaccountEntityId
+      blockTime_lt: $maxTimeExclusive
+      blockTime_gt: $minTimeInclusive
+    }
+    orderBy: blockTime
+    orderDirection: desc
+    first: $cancelOrderLimit
+  ) {
+    id
+    blockTime
+
+    # TODO: more fields
+  }
+}

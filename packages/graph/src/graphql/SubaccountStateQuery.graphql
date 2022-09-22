@@ -1,0 +1,36 @@
+# Current subaccount state with ongoing trades and balances
+query SubaccountStateQuery($subaccountEntityId: ID!) {
+  subaccount(id: $subaccountEntityId) {
+    id
+    owner
+    name
+
+    createdAt
+    createdAtBlock
+
+    tradeSummaries {
+      id
+      productId
+      totalEntryQuoteAmountAbs
+      totalEntryAmountAbs
+      totalCloseQuoteAmountAbs
+      totalCloseAmountAbs
+    }
+
+    spotBalanceSummaries {
+      id
+      productId
+      timeOpened
+      netRealAmount
+      totalNetInterest
+    }
+
+    perpBalanceSummaries {
+      id
+      productId
+      timeOpened
+      vQuoteWithoutFunding
+      totalNetFunding
+    }
+  }
+}

@@ -1,5 +1,5 @@
-import { HourlyHistoricalMarketDataQueryQuery } from '../../generated';
 import { CandlestickPeriod } from './CandlestickPeriod';
+import { BigDecimal } from '@vertex-protocol/utils';
 
 export interface HourlyHistoricalMarketDataParams {
   productId: number;
@@ -9,8 +9,16 @@ export interface HourlyHistoricalMarketDataParams {
   maxTimeExclusive?: number;
 }
 
-export type HourlyHistoricalMarketDataResponse =
-  HourlyHistoricalMarketDataQueryQuery['marketHourlySnapshots'];
+interface MarketHourlySnapshot {
+  // UNIX seconds
+  approximateSnapshotTime: number;
+  // From beginning of time, to get changes between 2 snapshots, subtract
+  cumulativeNumOrders: BigDecimal;
+  cumulativeVolumeQuote: BigDecimal;
+  lastFilledPrice: BigDecimal;
+}
+
+export type HourlyHistoricalMarketDataResponse = MarketHourlySnapshot[];
 
 export interface GetCandlesticksParams {
   productId: number;

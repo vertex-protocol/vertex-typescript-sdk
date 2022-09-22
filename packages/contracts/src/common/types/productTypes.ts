@@ -75,4 +75,3 @@ export interface SpotProduct extends BaseProduct {
 }
 
 export type Product = PerpProduct | SpotProduct;
-export type ProductType = Product['type'];

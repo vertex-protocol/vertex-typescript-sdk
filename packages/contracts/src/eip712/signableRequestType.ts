@@ -5,6 +5,9 @@ import {
   WithdrawCollateralParams,
 } from './signatureParamTypes';
 
+/**
+ * All possible requests to be signed, to the expected params
+ */
 export interface SignableRequestTypeToParams {
   deposit_collateral: DepositCollateralParams;
   withdraw_collateral: WithdrawCollateralParams;
