@@ -10,9 +10,11 @@ import { fromX18 } from '@vertex-protocol/utils';
 import { calcTotalBorrowed, calcTotalDeposited } from '../utils';
 
 export function mapEngineSpotProduct(
+  productId: number,
   product: ISpotEngine.ProductStructOutput,
-): Omit<SpotProduct, 'productId'> {
+): SpotProduct {
   return {
+    productId,
     type: ProductEngineType.SPOT,
     tokenAddr: product.config.token,
     interestSmallCap: fromX18(product.config.interestSmallCapX18),
@@ -37,9 +39,11 @@ export function mapEngineSpotProduct(
 }
 
 export function mapEnginePerpProduct(
+  productId: number,
   product: IPerpEngine.ProductStructOutput,
-): Omit<PerpProduct, 'productId'> {
+): PerpProduct {
   return {
+    productId,
     type: ProductEngineType.PERP,
     shortWeightInitial: fromX18(product.config.shortWeightInitialX18),
     shortWeightMaintenance: fromX18(product.config.shortWeightMaintenanceX18),

@@ -3,17 +3,12 @@ import {
   AllMarketOrdersParams,
   AllMarketOrdersResponse,
   LatestOrderFillsParams,
-  OrdersByIdParams,
-  OrdersByIdResponse,
+  OrderByDigestParams,
+  OrderByDigestResponse,
   SubaccountOrdersParams,
   SubaccountOrdersResponse,
 } from './types';
-import { OnBookOrdersByIDQueryQueryVariables } from '../../generated';
-import {
-  getMarketEntityId,
-  getOnBookOrderEntityId,
-  getSubaccountEntityId,
-} from '../../utils';
+import { getMarketEntityId, getSubaccountEntityId } from '../../utils';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 
 export class OrdersQueryClient extends BaseVertexGraphClient {
@@ -63,20 +58,17 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
   }
 
   /**
-   * Retrieve on-book orders corresponding to the given compound orderbook IDs
+   * Retrieve an order by digest, returning an empty array if not found
    *
    * @param params
    */
-  async getOnBookOrdersByIds(
-    params: OrdersByIdParams,
-  ): Promise<OrdersByIdResponse> {
-    const orderEntityIds: OnBookOrdersByIDQueryQueryVariables['orderEntityIds'] =
-      params.ids.map((id) => {
-        return getOnBookOrderEntityId(id.productId, id.orderbookId);
-      });
-    const data = await this.graph.OnBookOrdersByIDQuery({
-      orderEntityIds,
+  async getOrderByDigest(
+    params: OrderByDigestParams,
+  ): Promise<OrderByDigestResponse | undefined> {
+    const data = await this.graph.OrderByDigestQuery({
+      digest: params.digest,
+      marketEntityId: getMarketEntityId(params.productId),
     });
-    return data.orders;
+    return data.orders[0];
   }
 }

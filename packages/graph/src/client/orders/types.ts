@@ -1,10 +1,9 @@
 import {
-  OnBookOrdersByIDQueryQuery,
+  OrderByDigestQueryQuery,
   PaginatedAllMarketOrdersQueryQuery,
   PaginatedSubaccountOrdersQueryQuery,
 } from '../../generated';
 import { PaginationParams } from '../types';
-import { OrderbookID } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils';
 
 interface LatestOrderFill {
@@ -34,11 +33,13 @@ export interface SubaccountOrdersParams extends PaginationParams {
 export type SubaccountOrdersResponse =
   PaginatedSubaccountOrdersQueryQuery['orders'];
 
-export interface OrdersByIdParams {
-  ids: {
-    productId: number;
-    orderbookId: OrderbookID;
-  }[];
+export interface OrderByDigestParams {
+  productId: number;
+  digest: string;
 }
 
-export type OrdersByIdResponse = OnBookOrdersByIDQueryQuery['orders'];
+type ArrayElement<T> = T extends readonly (infer U)[] ? U : never;
+
+export type OrderByDigestResponse = ArrayElement<
+  OrderByDigestQueryQuery['orders']
+>;

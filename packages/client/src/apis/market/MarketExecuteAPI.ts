@@ -2,6 +2,10 @@ import { BaseVertexAPI } from '../base';
 import { OrderActionParams } from './executeTypes';
 
 export class MarketExecuteAPI extends BaseVertexAPI {
+  /**
+   * Places an order through the engine
+   * @param params
+   */
   async placeOrder(params: OrderActionParams) {
     const { productId, order } = params;
     const orderbookAddr = await this.getOrderbookAddress(productId);
@@ -12,6 +16,10 @@ export class MarketExecuteAPI extends BaseVertexAPI {
     });
   }
 
+  /**
+   * Cancels an order through the engine
+   * @param params
+   */
   async cancelOrder(params: OrderActionParams) {
     const { productId, order } = params;
     const orderbookAddr = await this.getOrderbookAddress(productId);

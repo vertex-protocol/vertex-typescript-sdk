@@ -22,8 +22,8 @@ query PaginatedSubaccountOrdersQuery(
   }
 }
 
-query OnBookOrdersByIDQuery($orderEntityIds: [ID!]!) {
-  orders(where: { id_in: $orderEntityIds }) {
+query OrderByDigestQuery($digest: Bytes!, $marketEntityId: String!) {
+  orders(where: { digest: $digest, market: $marketEntityId }) {
     ...OrderEntityFieldsFragment
   }
 }

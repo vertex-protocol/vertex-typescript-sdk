@@ -1,12 +1,12 @@
-import { BigNumberish } from 'ethers';
-import { EngineOrder } from '@vertex-protocol/engine-client';
+import { OrderByDigestResponse } from '@vertex-protocol/graph';
+import { GetEngineOrderResponse } from '@vertex-protocol/engine-client';
 
-export interface GetOrdersForSubaccountParams {
+export interface GetOrderByDigestParams {
   productId: number;
-  subaccountId: BigNumberish;
+  digest: string;
 }
 
-// TODO: This needs consolidation with graph data
-export interface GetOrdersForSubaccountResponse {
-  engineOrders: EngineOrder[];
+export interface GetOrderByDigestResponse {
+  graph?: OrderByDigestResponse;
+  engine?: GetEngineOrderResponse;
 }

@@ -4638,11 +4638,11 @@ const merger = new(BareMerger as any)({
         },
         location: 'PaginatedSubaccountOrdersQueryDocument.graphql'
       },{
-        document: OnBookOrdersByIdQueryDocument,
+        document: OrderByDigestQueryDocument,
         get rawSDL() {
-          return printWithCache(OnBookOrdersByIdQueryDocument);
+          return printWithCache(OrderByDigestQueryDocument);
         },
-        location: 'OnBookOrdersByIdQueryDocument.graphql'
+        location: 'OrderByDigestQueryDocument.graphql'
       },{
         document: SubaccountEventHistoryQueryDocument,
         get rawSDL() {
@@ -4772,12 +4772,13 @@ export type PaginatedSubaccountOrdersQueryQuery = { orders: Array<(
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
 
-export type OnBookOrdersByIDQueryQueryVariables = Exact<{
-  orderEntityIds: Array<Scalars['ID']> | Scalars['ID'];
+export type OrderByDigestQueryQueryVariables = Exact<{
+  digest: Scalars['Bytes'];
+  marketEntityId: Scalars['String'];
 }>;
 
 
-export type OnBookOrdersByIDQueryQuery = { orders: Array<(
+export type OrderByDigestQueryQuery = { orders: Array<(
     Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
@@ -4997,13 +4998,13 @@ export const PaginatedSubaccountOrdersQueryDocument = gql`
   }
 }
     ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<PaginatedSubaccountOrdersQueryQuery, PaginatedSubaccountOrdersQueryQueryVariables>;
-export const OnBookOrdersByIDQueryDocument = gql`
-    query OnBookOrdersByIDQuery($orderEntityIds: [ID!]!) {
-  orders(where: {id_in: $orderEntityIds}) {
+export const OrderByDigestQueryDocument = gql`
+    query OrderByDigestQuery($digest: Bytes!, $marketEntityId: String!) {
+  orders(where: {digest: $digest, market: $marketEntityId}) {
     ...OrderEntityFieldsFragment
   }
 }
-    ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<OnBookOrdersByIDQueryQuery, OnBookOrdersByIDQueryQueryVariables>;
+    ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<OrderByDigestQueryQuery, OrderByDigestQueryQueryVariables>;
 export const SubaccountEventHistoryQueryDocument = gql`
     query SubaccountEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $modifyCollateralLimit: Int, $settlePnlLimit: Int, $liquidateeLimit: Int, $reportOrderLimit: Int, $cancelOrderLimit: Int) {
   modifyCollateralEvents(
@@ -5162,8 +5163,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     PaginatedSubaccountOrdersQuery(variables: PaginatedSubaccountOrdersQueryQueryVariables, options?: C): Promise<PaginatedSubaccountOrdersQueryQuery> {
       return requester<PaginatedSubaccountOrdersQueryQuery, PaginatedSubaccountOrdersQueryQueryVariables>(PaginatedSubaccountOrdersQueryDocument, variables, options) as Promise<PaginatedSubaccountOrdersQueryQuery>;
     },
-    OnBookOrdersByIDQuery(variables: OnBookOrdersByIDQueryQueryVariables, options?: C): Promise<OnBookOrdersByIDQueryQuery> {
-      return requester<OnBookOrdersByIDQueryQuery, OnBookOrdersByIDQueryQueryVariables>(OnBookOrdersByIDQueryDocument, variables, options) as Promise<OnBookOrdersByIDQueryQuery>;
+    OrderByDigestQuery(variables: OrderByDigestQueryQueryVariables, options?: C): Promise<OrderByDigestQueryQuery> {
+      return requester<OrderByDigestQueryQuery, OrderByDigestQueryQueryVariables>(OrderByDigestQueryDocument, variables, options) as Promise<OrderByDigestQueryQuery>;
     },
     SubaccountEventHistoryQuery(variables: SubaccountEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountEventHistoryQueryQuery> {
       return requester<SubaccountEventHistoryQueryQuery, SubaccountEventHistoryQueryQueryVariables>(SubaccountEventHistoryQueryDocument, variables, options) as Promise<SubaccountEventHistoryQueryQuery>;

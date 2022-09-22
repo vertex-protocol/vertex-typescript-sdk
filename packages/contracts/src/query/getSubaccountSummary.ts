@@ -50,8 +50,10 @@ export async function getSubaccountSummary({
     balances.push({
       amount: fromX18(spotBalance.balance.amountX18),
       health: healthInfoToStatus(spotBalance.healthInfo),
-      productId: spotBalance.product.productId,
-      ...mapEngineSpotProduct(spotBalance.product.product),
+      ...mapEngineSpotProduct(
+        spotBalance.product.productId,
+        spotBalance.product.product,
+      ),
     });
   });
 
@@ -60,8 +62,10 @@ export async function getSubaccountSummary({
       amount: fromX18(perpBalance.balance.amountX18),
       vQuoteBalance: fromX18(perpBalance.balance.vQuoteBalanceX18),
       health: healthInfoToStatus(perpBalance.healthInfo),
-      productId: perpBalance.product.productId,
-      ...mapEnginePerpProduct(perpBalance.product.product),
+      ...mapEnginePerpProduct(
+        perpBalance.product.productId,
+        perpBalance.product.product,
+      ),
     });
   });
 

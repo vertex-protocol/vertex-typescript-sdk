@@ -20,14 +20,11 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
     return getSubaccountSummary(this.paramsWithContracts(params));
   }
 
+  /**
+   * Gets the subaccount state according to the offchain engine
+   * @param params
+   */
   async getEngineSubaccountSummary(params: GetSubaccountSummaryParams) {
     return this.context.engineClient.getSubaccountSummary(params);
   }
-
-  // TODO: Events
-  // async getAllEvents() {}
-  //
-  // async getLiquidationEvents() {}
-  //
-  // async getModifyCollateralEvents() {}
 }
