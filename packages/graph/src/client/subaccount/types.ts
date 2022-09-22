@@ -1,7 +1,9 @@
 import {
   SubaccountEventHistoryQueryQuery,
+  SubaccountMakerFillEventHistoryQueryQuery,
   SubaccountsForAddressQuery,
   SubaccountStateQueryQuery,
+  SubaccountTakerFillEventHistoryQueryQuery,
 } from '../../generated';
 
 export interface GetSubaccountsParams {
@@ -36,4 +38,7 @@ export interface GetSubaccountEventsParams {
   includeEventTypes?: GraphSubaccountEvent[];
 }
 
-export type GetSubaccountEventsResponse = SubaccountEventHistoryQueryQuery;
+export type GetSubaccountEventsResponse = SubaccountEventHistoryQueryQuery & {
+  takerFillOrderEvents: SubaccountTakerFillEventHistoryQueryQuery['fillOrderEvents'];
+  makerFillOrderEvents: SubaccountMakerFillEventHistoryQueryQuery['fillOrderEvents'];
+};

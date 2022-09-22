@@ -48,10 +48,14 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
   async getSubaccountEvents(
     params: GetSubaccountEventsParams,
   ): Promise<GetSubaccountEventsResponse> {
-    const data = await this.graph.SubaccountEventHistoryQuery({
+    const baseQueryVariables = {
       subaccountEntityId: getSubaccountEntityId(params.subaccountId),
       maxTimeExclusive: params.maxTimeExclusive ?? nowInSeconds(),
       minTimeInclusive: params.minTimeInclusive ?? 0,
+    };
+
+    const baseHistoryQueryData = await this.graph.SubaccountEventHistoryQuery({
+      ...baseQueryVariables,
       // Filter by limit
       liquidateeLimit: toEventLimitField(
         'liquidatee',
@@ -68,9 +72,37 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
         params.includeEventTypes,
       ),
     });
-    // TODO: Separate queries for taker & maker events
+    const response: GetSubaccountEventsResponse = {
+      ...baseHistoryQueryData,
+      takerFillOrderEvents: [],
+      makerFillOrderEvents: [],
+    };
 
-    return data;
+    // Need to query taker & maker fill events separately
+    const takerFillEventLimit = toEventLimitField(
+      'taker_fill_order',
+      params.includeEventTypes,
+    );
+    const makerFillEventLimit = toEventLimitField(
+      'maker_fill_order',
+      params.includeEventTypes,
+    );
+    if (takerFillEventLimit === undefined) {
+      const takerEventData =
+        await this.graph.SubaccountTakerFillEventHistoryQuery(
+          baseQueryVariables,
+        );
+      response.takerFillOrderEvents = takerEventData.fillOrderEvents;
+    }
+    if (makerFillEventLimit === undefined) {
+      const makerEventData =
+        await this.graph.SubaccountMakerFillEventHistoryQuery(
+          baseQueryVariables,
+        );
+      response.makerFillOrderEvents = makerEventData.fillOrderEvents;
+    }
+
+    return response;
   }
 }
 

@@ -4650,6 +4650,18 @@ const merger = new(BareMerger as any)({
         },
         location: 'SubaccountEventHistoryQueryDocument.graphql'
       },{
+        document: SubaccountTakerFillEventHistoryQueryDocument,
+        get rawSDL() {
+          return printWithCache(SubaccountTakerFillEventHistoryQueryDocument);
+        },
+        location: 'SubaccountTakerFillEventHistoryQueryDocument.graphql'
+      },{
+        document: SubaccountMakerFillEventHistoryQueryDocument,
+        get rawSDL() {
+          return printWithCache(SubaccountMakerFillEventHistoryQueryDocument);
+        },
+        location: 'SubaccountMakerFillEventHistoryQueryDocument.graphql'
+      },{
         document: SubaccountStateQueryDocument,
         get rawSDL() {
           return printWithCache(SubaccountStateQueryDocument);
@@ -4789,6 +4801,60 @@ export type SubaccountEventHistoryQueryQueryVariables = Exact<{
 
 export type SubaccountEventHistoryQueryQuery = { modifyCollateralEvents: Array<Pick<ModifyCollateralEvent, 'id' | 'blockTime' | 'amount' | 'productId'>>, settlePnlEvents: Array<Pick<SettlePnlEvent, 'id' | 'blockTime' | 'amount' | 'productId'>>, liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'productId' | 'liquidatorBaseDelta' | 'liquidatorQuoteDelta' | 'insuranceCoverage'>>, reportOrderEvents: Array<Pick<ReportOrderEvent, 'id' | 'blockTime'>>, cancelOrderEvents: Array<Pick<CancelOrderEvent, 'id' | 'blockTime'>> };
 
+export type SubaccountTakerFillEventHistoryQueryQueryVariables = Exact<{
+  subaccountEntityId: Scalars['String'];
+  maxTimeExclusive: Scalars['BigInt'];
+  minTimeInclusive: Scalars['BigInt'];
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SubaccountTakerFillEventHistoryQueryQuery = { fillOrderEvents: Array<(
+    Pick<FillOrderEvent, 'id' | 'blockTime' | 'takerAmountDelta' | 'makerFee' | 'takerFee'>
+    & { makerOrder: (
+      Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
+      & { subaccount: Pick<Subaccount, 'subaccountId'> }
+    ), takerOrder: (
+      Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
+      & { subaccount: Pick<Subaccount, 'subaccountId'> }
+    ) }
+  )> };
+
+export type SubaccountMakerFillEventHistoryQueryQueryVariables = Exact<{
+  subaccountEntityId: Scalars['String'];
+  maxTimeExclusive: Scalars['BigInt'];
+  minTimeInclusive: Scalars['BigInt'];
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SubaccountMakerFillEventHistoryQueryQuery = { fillOrderEvents: Array<(
+    Pick<FillOrderEvent, 'id' | 'blockTime' | 'takerAmountDelta' | 'makerFee' | 'takerFee'>
+    & { makerOrder: (
+      Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
+      & { subaccount: Pick<Subaccount, 'subaccountId'> }
+    ), takerOrder: (
+      Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
+      & { subaccount: Pick<Subaccount, 'subaccountId'> }
+    ) }
+  )> };
+
+export type FillOrderEventFragmentFragment = (
+  Pick<FillOrderEvent, 'id' | 'blockTime' | 'takerAmountDelta' | 'makerFee' | 'takerFee'>
+  & { makerOrder: (
+    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
+    & { subaccount: Pick<Subaccount, 'subaccountId'> }
+  ), takerOrder: (
+    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
+    & { subaccount: Pick<Subaccount, 'subaccountId'> }
+  ) }
+);
+
+export type EventOrderFragmentFragment = (
+  Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
+  & { subaccount: Pick<Subaccount, 'subaccountId'> }
+);
+
 export type SubaccountStateQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['ID'];
 }>;
@@ -4821,6 +4887,36 @@ export const OrderEntityFieldsFragmentFragmentDoc = gql`
   collectedFee
 }
     ` as unknown as DocumentNode<OrderEntityFieldsFragmentFragment, unknown>;
+export const EventOrderFragmentFragmentDoc = gql`
+    fragment EventOrderFragment on Order {
+  id
+  digest
+  validationResult
+  priceX18
+  subaccount {
+    subaccountId
+  }
+  reportedAt
+  reportedAtBlock
+  filledAmount
+  collectedFee
+}
+    ` as unknown as DocumentNode<EventOrderFragmentFragment, unknown>;
+export const FillOrderEventFragmentFragmentDoc = gql`
+    fragment FillOrderEventFragment on FillOrderEvent {
+  id
+  blockTime
+  takerAmountDelta
+  makerFee
+  takerFee
+  makerOrder {
+    ...EventOrderFragment
+  }
+  takerOrder {
+    ...EventOrderFragment
+  }
+}
+    ${EventOrderFragmentFragmentDoc}` as unknown as DocumentNode<FillOrderEventFragmentFragment, unknown>;
 export const CandlesticksQueryDocument = gql`
     query CandlesticksQuery($marketEntityId: String!, $maxTimeExclusive: BigInt!, $limit: Int!) {
   candlesticks(
@@ -4965,6 +5061,30 @@ export const SubaccountEventHistoryQueryDocument = gql`
   }
 }
     ` as unknown as DocumentNode<SubaccountEventHistoryQueryQuery, SubaccountEventHistoryQueryQueryVariables>;
+export const SubaccountTakerFillEventHistoryQueryDocument = gql`
+    query SubaccountTakerFillEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $limit: Int) {
+  fillOrderEvents(
+    where: {taker: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
+    orderBy: blockTime
+    orderDirection: desc
+    first: $limit
+  ) {
+    ...FillOrderEventFragment
+  }
+}
+    ${FillOrderEventFragmentFragmentDoc}` as unknown as DocumentNode<SubaccountTakerFillEventHistoryQueryQuery, SubaccountTakerFillEventHistoryQueryQueryVariables>;
+export const SubaccountMakerFillEventHistoryQueryDocument = gql`
+    query SubaccountMakerFillEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $limit: Int) {
+  fillOrderEvents(
+    where: {maker: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
+    orderBy: blockTime
+    orderDirection: desc
+    first: $limit
+  ) {
+    ...FillOrderEventFragment
+  }
+}
+    ${FillOrderEventFragmentFragmentDoc}` as unknown as DocumentNode<SubaccountMakerFillEventHistoryQueryQuery, SubaccountMakerFillEventHistoryQueryQueryVariables>;
 export const SubaccountStateQueryDocument = gql`
     query SubaccountStateQuery($subaccountEntityId: ID!) {
   subaccount(id: $subaccountEntityId) {
@@ -5019,6 +5139,8 @@ export const SubaccountsForAddressDocument = gql`
 
 
 
+
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -5045,6 +5167,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     SubaccountEventHistoryQuery(variables: SubaccountEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountEventHistoryQueryQuery> {
       return requester<SubaccountEventHistoryQueryQuery, SubaccountEventHistoryQueryQueryVariables>(SubaccountEventHistoryQueryDocument, variables, options) as Promise<SubaccountEventHistoryQueryQuery>;
+    },
+    SubaccountTakerFillEventHistoryQuery(variables: SubaccountTakerFillEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountTakerFillEventHistoryQueryQuery> {
+      return requester<SubaccountTakerFillEventHistoryQueryQuery, SubaccountTakerFillEventHistoryQueryQueryVariables>(SubaccountTakerFillEventHistoryQueryDocument, variables, options) as Promise<SubaccountTakerFillEventHistoryQueryQuery>;
+    },
+    SubaccountMakerFillEventHistoryQuery(variables: SubaccountMakerFillEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountMakerFillEventHistoryQueryQuery> {
+      return requester<SubaccountMakerFillEventHistoryQueryQuery, SubaccountMakerFillEventHistoryQueryQueryVariables>(SubaccountMakerFillEventHistoryQueryDocument, variables, options) as Promise<SubaccountMakerFillEventHistoryQueryQuery>;
     },
     SubaccountStateQuery(variables: SubaccountStateQueryQueryVariables, options?: C): Promise<SubaccountStateQueryQuery> {
       return requester<SubaccountStateQueryQuery, SubaccountStateQueryQueryVariables>(SubaccountStateQueryDocument, variables, options) as Promise<SubaccountStateQueryQuery>;

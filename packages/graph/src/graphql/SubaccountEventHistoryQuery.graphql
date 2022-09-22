@@ -90,3 +90,73 @@ query SubaccountEventHistoryQuery(
     # TODO: more fields
   }
 }
+
+# Separate queries for taker/maker order fills, as we can't match an "OR" on the taker/maker fields
+query SubaccountTakerFillEventHistoryQuery(
+  $subaccountEntityId: String!
+  $maxTimeExclusive: BigInt!
+  $minTimeInclusive: BigInt!
+  $limit: Int
+) {
+  fillOrderEvents(
+    where: {
+      taker: $subaccountEntityId
+      blockTime_lt: $maxTimeExclusive
+      blockTime_gt: $minTimeInclusive
+    }
+    orderBy: blockTime
+    orderDirection: desc
+    first: $limit
+  ) {
+    ...FillOrderEventFragment
+  }
+}
+query SubaccountMakerFillEventHistoryQuery(
+  $subaccountEntityId: String!
+  $maxTimeExclusive: BigInt!
+  $minTimeInclusive: BigInt!
+  $limit: Int
+) {
+  fillOrderEvents(
+    where: {
+      maker: $subaccountEntityId
+      blockTime_lt: $maxTimeExclusive
+      blockTime_gt: $minTimeInclusive
+    }
+    orderBy: blockTime
+    orderDirection: desc
+    first: $limit
+  ) {
+    ...FillOrderEventFragment
+  }
+}
+
+fragment FillOrderEventFragment on FillOrderEvent {
+  id
+  blockTime
+
+  takerAmountDelta
+  makerFee
+  takerFee
+  makerOrder {
+    ...EventOrderFragment
+  }
+  takerOrder {
+    ...EventOrderFragment
+  }
+}
+
+# All fields on Order
+fragment EventOrderFragment on Order {
+  id
+  digest
+  validationResult
+  priceX18
+  subaccount {
+    subaccountId
+  }
+  reportedAt
+  reportedAtBlock
+  filledAmount
+  collectedFee
+}
