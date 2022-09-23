@@ -53,9 +53,9 @@ export function mapEngineServerSpotProduct(
   return {
     type: ProductEngineType.SPOT,
     productId: product.product_id,
-    markPrice: toBigDecimal(product.book_info.mark_price_x18),
-    priceIncrement: toBigDecimal(product.book_info.price_increment_x18),
-    sizeIncrement: toBigDecimal(product.book_info.size_increment_x18),
+    markPrice: fromX18(product.book_info.mark_price_x18),
+    priceIncrement: fromX18(product.book_info.price_increment_x18),
+    sizeIncrement: fromX18(product.book_info.size_increment_x18),
     product: {
       type: ProductEngineType.SPOT,
       totalBorrowed: calcTotalBorrowed(
@@ -67,21 +67,19 @@ export function mapEngineServerSpotProduct(
         toEthersBN(product.cumulative_deposits_multiplier_x18),
       ),
       oraclePrice: fromX18(product.oracle_price_x18),
-      interestFloor: toBigDecimal(product.config.interest_floor_x18),
-      interestInflectionUtil: toBigDecimal(
+      interestFloor: fromX18(product.config.interest_floor_x18),
+      interestInflectionUtil: fromX18(
         product.config.interest_inflection_util_x18,
       ),
-      interestLargeCap: toBigDecimal(product.config.interest_large_cap_x18),
-      interestSmallCap: toBigDecimal(product.config.interest_small_cap_x18),
-      largePositionPenalty: toBigDecimal(
-        product.config.large_position_penalty_x18,
-      ),
-      longWeightInitial: toBigDecimal(product.config.long_weight_initial_x18),
-      longWeightMaintenance: toBigDecimal(
+      interestLargeCap: fromX18(product.config.interest_large_cap_x18),
+      interestSmallCap: fromX18(product.config.interest_small_cap_x18),
+      largePositionPenalty: fromX18(product.config.large_position_penalty_x18),
+      longWeightInitial: fromX18(product.config.long_weight_initial_x18),
+      longWeightMaintenance: fromX18(
         product.config.long_weight_maintenance_x18,
       ),
-      shortWeightInitial: toBigDecimal(product.config.short_weight_initial_x18),
-      shortWeightMaintenance: toBigDecimal(
+      shortWeightInitial: fromX18(product.config.short_weight_initial_x18),
+      shortWeightMaintenance: fromX18(
         product.config.short_weight_maintenance_x18,
       ),
       tokenAddr: product.config.token,
@@ -95,22 +93,20 @@ export function mapEngineServerPerpProduct(
   return {
     type: ProductEngineType.PERP,
     productId: product.product_id,
-    markPrice: toBigDecimal(product.book_info.mark_price_x18),
-    priceIncrement: toBigDecimal(product.book_info.price_increment_x18),
-    sizeIncrement: toBigDecimal(product.book_info.size_increment_x18),
+    markPrice: fromX18(product.book_info.mark_price_x18),
+    priceIncrement: fromX18(product.book_info.price_increment_x18),
+    sizeIncrement: fromX18(product.book_info.size_increment_x18),
     product: {
       type: ProductEngineType.PERP,
       emaPrice: fromX18(product.ema_price_x18),
       oraclePrice: fromX18(product.oracle_price_x18),
-      largePositionPenalty: toBigDecimal(
-        product.config.large_position_penalty_x18,
-      ),
-      longWeightInitial: toBigDecimal(product.config.long_weight_initial_x18),
-      longWeightMaintenance: toBigDecimal(
+      largePositionPenalty: fromX18(product.config.large_position_penalty_x18),
+      longWeightInitial: fromX18(product.config.long_weight_initial_x18),
+      longWeightMaintenance: fromX18(
         product.config.long_weight_maintenance_x18,
       ),
-      shortWeightInitial: toBigDecimal(product.config.short_weight_initial_x18),
-      shortWeightMaintenance: toBigDecimal(
+      shortWeightInitial: fromX18(product.config.short_weight_initial_x18),
+      shortWeightMaintenance: fromX18(
         product.config.short_weight_maintenance_x18,
       ),
     },
