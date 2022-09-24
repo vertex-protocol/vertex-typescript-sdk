@@ -3,7 +3,6 @@ import {
   SignableRequestTypeToParams,
 } from './signableRequestType';
 import {
-  DepositCollateralParams,
   LiquidateSubaccountParams,
   OrderParams,
   WithdrawCollateralParams,
@@ -12,7 +11,6 @@ import { toX18 } from '@vertex-protocol/utils';
 
 /**
  * Returns the EIP712 compatible values for signing.
- * TODO: Better typing here to remove stuff like `as DepositCollateralParams`?
  *
  * @param requestType
  * @param params
@@ -22,10 +20,8 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
   params: SignableRequestTypeToParams[TReqType],
 ): Record<string, unknown> {
   switch (requestType) {
-    case 'deposit_collateral':
-      return getCollateralValues(params as DepositCollateralParams);
     case 'withdraw_collateral':
-      return getCollateralValues(params as WithdrawCollateralParams);
+      return getWithdrawCollateralValues(params as WithdrawCollateralParams);
     case 'place_order':
       return getOrderValues(params as OrderParams);
     case 'cancel_order':
@@ -36,9 +32,7 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
   throw Error(`Unknown request type: ${requestType}`);
 }
 
-function getCollateralValues(
-  params: DepositCollateralParams | WithdrawCollateralParams,
-) {
+function getWithdrawCollateralValues(params: WithdrawCollateralParams) {
   return {
     sender: params.sender,
     subaccountName: params.subaccountName,
@@ -50,7 +44,8 @@ function getCollateralValues(
 
 function getOrderValues(params: OrderParams) {
   return {
-    subaccount: params.subaccountId.toString(),
+    sender: params.sender,
+    subaccountName: params.subaccountName,
     priceX18: toX18(params.price).toString(),
     amount: params.amount.toString(),
     expiration: params.expiration.toString(),

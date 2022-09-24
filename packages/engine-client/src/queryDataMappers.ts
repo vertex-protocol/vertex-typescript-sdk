@@ -33,7 +33,8 @@ export function mapEngineServerOrder(
     nonce: toBigDecimal(order.nonce),
     price: fromX18(order.price_x18),
     productId: order.product_id,
-    subaccountId: toBigDecimal(order.subaccount).toNumber(),
+    sender: order.sender,
+    subaccountName: order.subaccount_name,
     totalAmount: toBigDecimal(order.amount),
     unfilledAmount: toBigDecimal(order.unfilled_amount),
     // Standardizes from hex
@@ -42,7 +43,8 @@ export function mapEngineServerOrder(
       expiration: toBigDecimal(order.expiration).toString(),
       nonce: toBigDecimal(order.nonce).toString(),
       price: fromX18(order.price_x18).toString(),
-      subaccountId: order.subaccount,
+      sender: order.sender,
+      subaccountName: order.subaccount_name,
     },
   };
 }

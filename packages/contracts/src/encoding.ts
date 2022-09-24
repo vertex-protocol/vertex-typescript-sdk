@@ -1,5 +1,4 @@
 import {
-  DepositCollateralParams,
   LiquidateSubaccountParams,
   SignedOrderParams,
   SignedTx,
@@ -31,8 +30,8 @@ export function encodeSignedLiquidateSubaccountTx(
   );
 }
 
-export function encodeSignedCollateralTx(
-  signed: SignedTx<DepositCollateralParams | WithdrawCollateralParams>,
+export function encodeSignedWithdrawCollateralTx(
+  signed: SignedTx<WithdrawCollateralParams>,
 ) {
   return defaultAbiCoder.encode(
     [
@@ -56,12 +55,13 @@ export function encodeSignedCollateralTx(
 export function encodeSignedOrder(signed: SignedOrderParams) {
   return defaultAbiCoder.encode(
     [
-      'tuple(tuple(uint64 subaccount, int256 priceX18, int256 amount, uint64 expiration, uint64 nonce) order, bytes signature)',
+      'tuple(tuple(address sender, string subaccountName, int256 priceX18, int256 amount, uint64 expiration, uint64 nonce) order, bytes signature)',
     ],
     [
       [
         [
-          signed.order.subaccountId,
+          signed.order.sender,
+          signed.order.subaccountName,
           toX18(signed.order.price),
           signed.order.amount,
           signed.order.expiration,

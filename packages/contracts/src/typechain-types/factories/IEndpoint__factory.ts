@@ -10,6 +10,29 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "string",
+        name: "subaccountName",
+        type: "string",
+      },
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "depositCollateral",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint32",
         name: "productId",
         type: "uint32",

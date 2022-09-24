@@ -10,7 +10,7 @@ export interface SignedOrderParams {
   signature: string;
 }
 
-export interface DepositCollateralParams {
+export interface WithdrawCollateralParams {
   // Address of sender
   sender: string;
   subaccountName: string;
@@ -18,8 +18,6 @@ export interface DepositCollateralParams {
   amount: BigNumberish;
   nonce: BigNumberish;
 }
-
-export type WithdrawCollateralParams = DepositCollateralParams;
 
 export interface LiquidateSubaccountParams {
   // Address of sender
@@ -39,8 +37,10 @@ export interface OrderParams {
    * Number -> Expiration time in seconds
    */
   expiration: BigNumberish;
-  // Subaccount ID to use for this order, the resulting signed order must be signed by the owner of the subaccount
-  subaccountId: BigNumberish;
+  // Sender address of the order
+  sender: string;
+  // Sender subaccount name
+  subaccountName: string;
   // Limit price
   price: BigNumberish;
   // Positive for buy, negative for sell

@@ -177,13 +177,15 @@ export class EngineQueryClient extends EngineBaseClient {
   ): Promise<GetEngineSubaccountOrdersResponse> {
     const baseResponse = await this.query('subaccount_orders', {
       product_id: params.productId,
-      subaccount_id: BigNumber.from(params.subaccountId).toNumber(),
+      sender: params.sender,
+      subaccount_name: params.subaccountName,
     });
 
     return {
       orders: baseResponse.orders.map(mapEngineServerOrder),
       productId: params.productId,
-      subaccountId: BigNumber.from(baseResponse.subaccount_id).toNumber(),
+      sender: baseResponse.sender,
+      subaccountName: baseResponse.subaccount_name,
     };
   }
 

@@ -1,35 +1,3 @@
-import { BigNumberish } from 'ethers';
-
-// TODO: Change when Graph is finalized
-export type OrderbookID = string;
-
-export type OrderAction = 'order' | 'cancellation';
-
-/**
- * TODO: Remove this
- * An abstraction type to be used to map to OffchainBook order structs
- */
-export interface OrderbookOrder {
-  /**
-   * IOC/FOK not currently supported
-   * Number -> Expiration time in seconds
-   */
-  expiration: BigNumberish;
-  // Subaccount ID to use for this order, the resulting signed order must be signed by the owner of the subaccount
-  subaccountId: BigNumberish;
-  // Limit price
-  price: BigNumberish;
-  // Positive for buy, negative for sell
-  amount: BigNumberish;
-  // A unique nonce to identify the order
-  nonce: BigNumberish;
-}
-
-export interface OrderbookRequest {
-  action: OrderAction;
-  order: OrderbookOrder;
-}
-
 /**
  * Representation of the ValidationResult enum used within the contract
  * Enums do not get reflected in the ABI, so this must be manually defined

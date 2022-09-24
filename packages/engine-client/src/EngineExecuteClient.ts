@@ -1,8 +1,7 @@
 import {
-  DepositCollateralParams,
-  encodeSignedCollateralTx,
   encodeSignedLiquidateSubaccountTx,
   encodeSignedOrder,
+  encodeSignedWithdrawCollateralTx,
   getOrderDigest,
   LiquidateSubaccountParams,
   WithdrawCollateralParams,
@@ -36,21 +35,6 @@ export class EngineExecuteClient extends EngineBaseClient {
     );
   }
 
-  async depositCollateral(params: WithEndpointAddr<DepositCollateralParams>) {
-    const signature = await this.sign(
-      'deposit_collateral',
-      params.endpointAddr,
-      params,
-    );
-    return this.execute(
-      'deposit_collateral',
-      encodeSignedCollateralTx({
-        tx: params,
-        signature,
-      }),
-    );
-  }
-
   async withdrawCollateral(params: WithEndpointAddr<WithdrawCollateralParams>) {
     const signature = await this.sign(
       'withdraw_collateral',
@@ -59,7 +43,7 @@ export class EngineExecuteClient extends EngineBaseClient {
     );
     return this.execute(
       'withdraw_collateral',
-      encodeSignedCollateralTx({
+      encodeSignedWithdrawCollateralTx({
         tx: params,
         signature,
       }),

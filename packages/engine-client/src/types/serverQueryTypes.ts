@@ -26,7 +26,8 @@ export interface EngineServerValidateOrderQueryParams {
 }
 
 export interface EngineServerSubaccountOrdersQueryParams {
-  subaccount_id: number;
+  sender: string;
+  subaccount_name: string;
   product_id: number;
 }
 
@@ -81,7 +82,8 @@ export interface EngineServerMarketLiquidityResponse {
 }
 
 export interface EngineServerSubaccountOrdersResponse {
-  subaccount_id: BigNumberish;
+  sender: string;
+  subaccount_name: string;
   product_id: number;
   orders: EngineServerGetOrderResponse[];
 }
@@ -94,7 +96,8 @@ export interface EngineServerMarketPriceResponse {
 
 export interface EngineServerGetOrderResponse {
   product_id: number;
-  subaccount: BigNumberish;
+  sender: string;
+  subaccount_name: string;
   price_x18: BigNumberish;
   amount: BigNumberish;
   expiration: BigNumberish;

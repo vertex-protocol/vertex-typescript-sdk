@@ -6,7 +6,6 @@ import {
   SubaccountSummaryResponse,
 } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
-import { BigNumberish } from 'ethers';
 
 export type GetEngineSubaccountSummaryParams = GetSubaccountSummaryParams;
 
@@ -21,7 +20,8 @@ export interface GetEngineOrderParams {
 
 export interface EngineOrder {
   productId: number;
-  subaccountId: number;
+  sender: string;
+  subaccountName: string;
   price: BigDecimal;
   // Amount initially requested
   totalAmount: BigDecimal;
@@ -53,12 +53,14 @@ export interface ValidateEngineOrderResponse {
 }
 
 export interface GetEngineSubaccountOrdersParams {
-  subaccountId: BigNumberish;
+  sender: string;
+  subaccountName: string;
   productId: number;
 }
 
 export interface GetEngineSubaccountOrdersResponse {
-  subaccountId: BigNumberish;
+  sender: string;
+  subaccountName: string;
   productId: number;
   orders: EngineOrder[];
 }

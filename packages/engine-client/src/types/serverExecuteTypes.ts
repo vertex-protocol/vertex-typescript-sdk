@@ -24,7 +24,6 @@ export interface EngineServerCancelOrderParams {
 export interface EngineServerExecuteRequestByType {
   // String types are bytes
   liquidate_subaccount: string;
-  deposit_collateral: string;
   withdraw_collateral: string;
   update_time: string;
   update_price: string;

@@ -25,6 +25,7 @@ import type {
 
 export interface IEndpointInterface extends utils.Interface {
   functions: {
+    "depositCollateral(string,uint32,uint256)": FunctionFragment;
     "getPriceX18(uint32)": FunctionFragment;
     "getTime()": FunctionFragment;
     "submitSlowModeTransaction(bytes)": FunctionFragment;
@@ -33,12 +34,21 @@ export interface IEndpointInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "depositCollateral"
       | "getPriceX18"
       | "getTime"
       | "submitSlowModeTransaction"
       | "submitTransactions"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "depositCollateral",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
   encodeFunctionData(
     functionFragment: "getPriceX18",
     values: [PromiseOrValue<BigNumberish>]
@@ -53,6 +63,10 @@ export interface IEndpointInterface extends utils.Interface {
     values: [PromiseOrValue<BytesLike>[]]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "depositCollateral",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getPriceX18",
     data: BytesLike
@@ -97,6 +111,13 @@ export interface IEndpoint extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    depositCollateral(
+      subaccountName: PromiseOrValue<string>,
+      productId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -114,6 +135,13 @@ export interface IEndpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
+
+  depositCollateral(
+    subaccountName: PromiseOrValue<string>,
+    productId: PromiseOrValue<BigNumberish>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   getPriceX18(
     productId: PromiseOrValue<BigNumberish>,
@@ -133,6 +161,13 @@ export interface IEndpoint extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    depositCollateral(
+      subaccountName: PromiseOrValue<string>,
+      productId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -154,6 +189,13 @@ export interface IEndpoint extends BaseContract {
   filters: {};
 
   estimateGas: {
+    depositCollateral(
+      subaccountName: PromiseOrValue<string>,
+      productId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -173,6 +215,13 @@ export interface IEndpoint extends BaseContract {
   };
 
   populateTransaction: {
+    depositCollateral(
+      subaccountName: PromiseOrValue<string>,
+      productId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides

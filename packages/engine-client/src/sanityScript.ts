@@ -1,9 +1,11 @@
 import { ethers, Wallet } from 'ethers';
 import {
-  DepositCollateralParams,
+  depositCollateral,
   IClearinghouse__factory,
+  IEndpoint__factory,
   ISpotEngine__factory,
   OrderParams,
+  WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import { fromX18, MaxUint64 } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
@@ -50,31 +52,26 @@ async function main() {
   });
 
   const clearinghouseAddr = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
-  const sequencerAddr = '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853';
 
   const clearinghouse = await IClearinghouse__factory.connect(
     clearinghouseAddr,
     signer,
   );
-  const id = await clearinghouse.getSubaccountId(
-    '0xEAe27Ae6412147Ed6d5692Fd91709DaD6dbfc342',
-    'default',
-  );
-  console.log('ID', id.toNumber());
+  const endpointAddr = await clearinghouse.getEndpoint();
+  const endpoint = await IEndpoint__factory.connect(endpointAddr, signer);
 
   // Deposit collateral
-  const depositParams: DepositCollateralParams = {
-    sender: signer.address,
-    subaccountName: 'default',
-    productId: 0,
+  const depositTx = await depositCollateral({
     amount: 100,
-    nonce: getNonce(),
-  };
-  const depositResult = await client.depositCollateral({
-    ...depositParams,
-    endpointAddr: sequencerAddr,
+    endpoint,
+    productId: 0,
+    subaccountName: 'default',
   });
-  console.log('Done depositing collateral, result', depositResult);
+  await depositTx.wait();
+  console.log('Done depositing collateral');
+
+  // Wait for slow mode
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const subaccountId = await clearinghouse.getSubaccountId(
     signer.address,
@@ -96,11 +93,12 @@ async function main() {
   const productId = 1;
   const orderbookAddr = await clearinghouse.getOrderbook(productId);
   const order: OrderParams = {
+    sender: signer.address,
+    subaccountName: 'default',
     amount: -1,
     expiration: MaxUint64,
     nonce: getNonce(),
     price: 10,
-    subaccountId,
   };
   const placeResult = await client.placeOrder({
     orderbookAddr,
@@ -111,7 +109,8 @@ async function main() {
 
   const subaccountOrders = await client.getSubaccountOrders({
     productId,
-    subaccountId,
+    subaccountName: 'default',
+    sender: signer.address,
   });
   console.log('Subaccount orders', JSON.stringify(subaccountOrders));
   const marketLiquidity = await client.getMarketLiquidity({
@@ -139,7 +138,8 @@ async function main() {
 
   const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
     productId,
-    subaccountId,
+    sender: signer.address,
+    subaccountName: 'default',
   });
   console.log(
     'Subaccount orders after cancellation',
@@ -147,7 +147,7 @@ async function main() {
   );
 
   // Withdraw collateral
-  const withdrawParams: DepositCollateralParams = {
+  const withdrawParams: WithdrawCollateralParams = {
     sender: signer.address,
     subaccountName: 'default',
     productId: 0,
@@ -156,8 +156,8 @@ async function main() {
   };
 
   const withdrawResult = await client.withdrawCollateral({
-    ...depositParams,
-    endpointAddr: sequencerAddr,
+    ...withdrawParams,
+    endpointAddr,
   });
 
   console.log('Done withdrawing collateral, result', withdrawResult);

@@ -29,7 +29,8 @@ import type {
 
 export declare namespace IEndpoint {
   export type OrderStruct = {
-    subaccount: PromiseOrValue<BigNumberish>;
+    sender: PromiseOrValue<string>;
+    subaccountName: PromiseOrValue<string>;
     priceX18: PromiseOrValue<BigNumberish>;
     amount: PromiseOrValue<BigNumberish>;
     expiration: PromiseOrValue<BigNumberish>;
@@ -37,13 +38,15 @@ export declare namespace IEndpoint {
   };
 
   export type OrderStructOutput = [
-    BigNumber,
+    string,
+    string,
     BigNumber,
     BigNumber,
     BigNumber,
     BigNumber
   ] & {
-    subaccount: BigNumber;
+    sender: string;
+    subaccountName: string;
     priceX18: BigNumber;
     amount: BigNumber;
     expiration: BigNumber;
@@ -96,13 +99,13 @@ export declare namespace IOffchainBook {
 export interface IOffchainBookInterface extends utils.Interface {
   functions: {
     "dumpFees()": FunctionFragment;
-    "getDigest((uint64,int256,int256,uint64,uint64),bool)": FunctionFragment;
+    "getDigest((address,string,int256,int256,uint64,uint64),bool)": FunctionFragment;
     "getMarkPriceX18()": FunctionFragment;
     "getMarket()": FunctionFragment;
     "initialize(address,address,address,address,address,uint32,int256,int256)": FunctionFragment;
-    "matchOrders((address,((uint64,int256,int256,uint64,uint64),bytes),((uint64,int256,int256,uint64,uint64),bytes)))": FunctionFragment;
-    "validateCancellation(((uint64,int256,int256,uint64,uint64),bytes))": FunctionFragment;
-    "validateOrder(((uint64,int256,int256,uint64,uint64),bytes))": FunctionFragment;
+    "matchOrders((address,((address,string,int256,int256,uint64,uint64),bytes),((address,string,int256,int256,uint64,uint64),bytes)))": FunctionFragment;
+    "validateCancellation(((address,string,int256,int256,uint64,uint64),bytes))": FunctionFragment;
+    "validateOrder(((address,string,int256,int256,uint64,uint64),bytes))": FunctionFragment;
   };
 
   getFunction(

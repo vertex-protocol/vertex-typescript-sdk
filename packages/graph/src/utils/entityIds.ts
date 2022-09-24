@@ -1,5 +1,3 @@
-import { OrderbookID } from '@vertex-protocol/contracts';
-
 /**
  * Utils for creating Graph entity IDs
  * @packageDocumentation
@@ -15,11 +13,4 @@ export function getProductEntityId(productId: number) {
 
 export function getMarketEntityId(productId: number) {
   return getProductEntityId(productId).concat('-market');
-}
-
-export function getOnBookOrderEntityId(
-  productId: number,
-  orderbookId: OrderbookID,
-) {
-  return `${getMarketEntityId(productId)}-${orderbookId}`;
 }
