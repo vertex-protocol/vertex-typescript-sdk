@@ -34,6 +34,7 @@ export function calcTotalDeposited(
 
 /**
  * Calculates utilization ratio = abs(total borrowed / total deposited)
+ * TODO: The calculations below would benefit from a "roughly zero" check
  *
  * @param product Spot product
  */
@@ -100,10 +101,13 @@ export function calcBorrowRateForTimeRange(
   product: SpotProduct,
   seconds: BigDecimalish,
 ) {
-  return calcBorrowRatePerSecond(product)
-    .plus(1)
-    .pow(toBigDecimal(seconds))
-    .minus(1);
+  const borrowRatePerSecond = calcBorrowRatePerSecond(product);
+
+  // Convert to number for this, with some loss of precision, but using `.pow()` causes us to hit browser resource limits
+  const borrowRateForTime =
+    borrowRatePerSecond.plus(1).toNumber() ** toBigDecimal(seconds).toNumber() -
+    1;
+  return toBigDecimal(borrowRateForTime);
 }
 
 /**
