@@ -1,13 +1,12 @@
 import {
-  encodeSignedLiquidateSubaccountTx,
-  encodeSignedOrder,
-  encodeSignedWithdrawCollateralTx,
   getOrderDigest,
+  getVertexEIP712Values,
   LiquidateSubaccountParams,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import {
   CancelOrderParams,
+  EngineServerOrderParams,
   OrderActionResult,
   PlaceOrderParams,
 } from './types';
@@ -17,6 +16,7 @@ type WithEndpointAddr<T> = T & {
   endpointAddr: string;
 };
 
+// TODO: Lots of typehacks here, should be resolved by adding typing to getVertexEIP712Values
 export class EngineExecuteClient extends EngineBaseClient {
   async liquidateSubaccount(
     params: WithEndpointAddr<LiquidateSubaccountParams>,
@@ -26,13 +26,13 @@ export class EngineExecuteClient extends EngineBaseClient {
       params.endpointAddr,
       params,
     );
-    return this.execute(
-      'liquidate_subaccount',
-      encodeSignedLiquidateSubaccountTx({
-        tx: params,
-        signature,
-      }),
-    );
+    return this.execute('liquidate_subaccount', {
+      signature,
+      tx: getVertexEIP712Values(
+        'liquidate_subaccount',
+        params,
+      ) as unknown as LiquidateSubaccountParams,
+    });
   }
 
   async withdrawCollateral(params: WithEndpointAddr<WithdrawCollateralParams>) {
@@ -41,13 +41,13 @@ export class EngineExecuteClient extends EngineBaseClient {
       params.endpointAddr,
       params,
     );
-    return this.execute(
-      'withdraw_collateral',
-      encodeSignedWithdrawCollateralTx({
-        tx: params,
-        signature,
-      }),
-    );
+    return this.execute('withdraw_collateral', {
+      signature,
+      tx: getVertexEIP712Values(
+        'withdraw_collateral',
+        params,
+      ) as unknown as WithdrawCollateralParams,
+    });
   }
 
   async placeOrder(params: PlaceOrderParams): Promise<OrderActionResult> {
@@ -56,18 +56,17 @@ export class EngineExecuteClient extends EngineBaseClient {
       order: params.order,
       orderbookAddress: params.orderbookAddr,
     });
-    const signedOrder = {
-      order: params.order,
+    const executeResult = await this.execute('place_order', {
+      product_id: params.productId,
+      order: getVertexEIP712Values(
+        'place_order',
+        params.order,
+      ) as EngineServerOrderParams,
       signature: await this.sign(
         'place_order',
         params.orderbookAddr,
         params.order,
       ),
-    };
-    const executeResult = await this.execute('place_order', {
-      digest,
-      product_id: params.productId,
-      signed_order: encodeSignedOrder(signedOrder),
     });
 
     return { digest, ...executeResult };
@@ -79,18 +78,17 @@ export class EngineExecuteClient extends EngineBaseClient {
       order: params.order,
       orderbookAddress: params.orderbookAddr,
     });
-    const signedOrder = {
-      order: params.order,
+    const executeResult = await this.execute('cancel_order', {
+      product_id: params.productId,
+      cancellation: getVertexEIP712Values(
+        'cancel_order',
+        params.order,
+      ) as EngineServerOrderParams,
       signature: await this.sign(
         'cancel_order',
         params.orderbookAddr,
         params.order,
       ),
-    };
-    const executeResult = await this.execute('cancel_order', {
-      digest,
-      product_id: params.productId,
-      signed_order: encodeSignedOrder(signedOrder),
     });
 
     return { digest, ...executeResult };

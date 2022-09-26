@@ -8,6 +8,7 @@ import {
   WithdrawCollateralParams,
 } from './signatureParamTypes';
 import { toX18 } from '@vertex-protocol/utils';
+import { BigNumber } from 'ethers';
 
 /**
  * Returns the EIP712 compatible values for signing.
@@ -36,9 +37,9 @@ function getWithdrawCollateralValues(params: WithdrawCollateralParams) {
   return {
     sender: params.sender,
     subaccountName: params.subaccountName,
-    productId: params.productId.toString(),
-    amount: params.amount.toString(),
-    nonce: params.nonce.toString(),
+    productId: params.productId,
+    amount: BigNumber.from(params.amount).toString(),
+    nonce: BigNumber.from(params.nonce).toNumber(),
   };
 }
 
@@ -47,9 +48,9 @@ function getOrderValues(params: OrderParams) {
     sender: params.sender,
     subaccountName: params.subaccountName,
     priceX18: toX18(params.price).toString(),
-    amount: params.amount.toString(),
-    expiration: params.expiration.toString(),
-    nonce: params.nonce.toString(),
+    amount: BigNumber.from(params.amount).toString(),
+    expiration: BigNumber.from(params.expiration).toNumber(),
+    nonce: BigNumber.from(params.nonce).toNumber(),
   };
 }
 
@@ -57,9 +58,9 @@ function getLiquidateSubaccountValues(params: LiquidateSubaccountParams) {
   return {
     sender: params.sender,
     subaccountName: params.subaccountName,
-    liquidateeId: params.liquidateeSubaccountId.toString(),
-    productId: params.productId.toString(),
-    amount: params.amount.toString(),
-    nonce: params.nonce.toString(),
+    liquidateeId: params.liquidateeId.toString(),
+    productId: params.productId,
+    amount: BigNumber.from(params.amount).toString(),
+    nonce: BigNumber.from(params.nonce).toNumber(),
   };
 }

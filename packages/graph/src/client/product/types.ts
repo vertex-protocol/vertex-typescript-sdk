@@ -16,10 +16,7 @@ interface BaseProductHourlySnapshot {
 
 export type SpotProductHourlySnapshot = BaseProductHourlySnapshot;
 
-export interface PerpProductHourlySnapshot {
-  // UNIX seconds
-  approximateSnapshotTime: number;
-  oraclePrice: BigDecimal;
+export interface PerpProductHourlySnapshot extends BaseProductHourlySnapshot {
   openInterest: BigDecimal;
 }
 

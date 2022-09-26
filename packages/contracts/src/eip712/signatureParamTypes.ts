@@ -24,8 +24,8 @@ export interface LiquidateSubaccountParams {
   sender: string;
   subaccountName: string;
   // Subaccount ID being liquidated
-  liquidateeSubaccountId: BigNumberish;
-  productId: BigNumberish;
+  liquidateeId: BigNumberish;
+  productId: number;
   amount: BigNumberish;
   nonce: BigNumberish;
 }

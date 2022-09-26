@@ -9,7 +9,7 @@ export interface HourlyHistoricalMarketDataParams {
   maxTimeExclusive?: number;
 }
 
-interface MarketHourlySnapshot {
+export interface MarketHourlySnapshot {
   // UNIX seconds
   approximateSnapshotTime: number;
   // From beginning of time, to get changes between 2 snapshots, subtract

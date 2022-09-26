@@ -7,11 +7,15 @@ import {
   OrderParams,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
-import { fromX18, MaxUint64 } from '@vertex-protocol/utils';
+import { fromX18, nowInSeconds } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
 
 function getNonce() {
   return Date.now().toFixed(0) + (Math.random() * 1000).toFixed(0);
+}
+
+function getExpiration() {
+  return nowInSeconds() + 1000;
 }
 
 async function testPrice() {
@@ -71,7 +75,7 @@ async function main() {
   console.log('Done depositing collateral');
 
   // Wait for slow mode
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   const subaccountId = await clearinghouse.getSubaccountId(
     signer.address,
@@ -96,7 +100,7 @@ async function main() {
     sender: signer.address,
     subaccountName: 'default',
     amount: -1,
-    expiration: MaxUint64,
+    expiration: getExpiration(),
     nonce: getNonce(),
     price: 10,
   };

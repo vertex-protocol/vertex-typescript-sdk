@@ -1,3 +1,10 @@
+import {
+  LiquidateSubaccountParams,
+  OrderParams,
+  SignedTx,
+  WithdrawCollateralParams,
+} from '@vertex-protocol/contracts';
+
 export interface EngineServerExecutionResult {
   status: 'success' | 'failure';
   error?: {
@@ -5,29 +12,27 @@ export interface EngineServerExecutionResult {
   };
 }
 
+export type EngineServerOrderParams = Omit<OrderParams, 'price'> & {
+  priceX18: string;
+};
+
 export interface EngineServerPlaceOrderParams {
   product_id: number;
+  order: EngineServerOrderParams;
   // Bytes
-  digest: string;
-  // Bytes
-  signed_order: string;
+  signature: string;
 }
 
 export interface EngineServerCancelOrderParams {
   product_id: number;
+  cancellation: EngineServerOrderParams;
   // Bytes
-  digest: string;
-  // Bytes
-  signed_order: string;
+  signature: string;
 }
 
 export interface EngineServerExecuteRequestByType {
-  // String types are bytes
-  liquidate_subaccount: string;
-  withdraw_collateral: string;
-  update_time: string;
-  update_price: string;
-  settle_pnl: string;
+  liquidate_subaccount: SignedTx<LiquidateSubaccountParams>;
+  withdraw_collateral: SignedTx<WithdrawCollateralParams>;
   place_order: EngineServerPlaceOrderParams;
   cancel_order: EngineServerCancelOrderParams;
 }

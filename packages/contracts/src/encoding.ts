@@ -7,6 +7,10 @@ import {
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { toX18 } from '@vertex-protocol/utils';
 
+/*
+In general, things aren't being used, but keeping for now
+ */
+
 export function encodeSignedLiquidateSubaccountTx(
   signed: SignedTx<LiquidateSubaccountParams>,
 ) {
@@ -19,7 +23,7 @@ export function encodeSignedLiquidateSubaccountTx(
         [
           signed.tx.sender,
           signed.tx.subaccountName,
-          signed.tx.liquidateeSubaccountId,
+          signed.tx.liquidateeId,
           signed.tx.productId,
           signed.tx.amount,
           signed.tx.nonce,
