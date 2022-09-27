@@ -4,8 +4,20 @@ import {
   GetSubaccountSummaryParams,
 } from '@vertex-protocol/contracts';
 import { GetSubaccountsParams } from '@vertex-protocol/graph';
+import { GetSubaccountIdParams } from './queryTypes';
 
 export class SubaccountQueryAPI extends BaseVertexAPI {
+  /**
+   * Calls contract directly to get a subaccount ID, returns a number to make things easier
+   */
+  async getSubaccountId(params: GetSubaccountIdParams): Promise<number> {
+    const bnId = await this.context.contracts.clearinghouse.getSubaccountId(
+      params.address,
+      params.name,
+    );
+    return Number(bnId);
+  }
+
   /**
    * {@link (VertexGraphClient.getSubaccountsForAddress)}
    */

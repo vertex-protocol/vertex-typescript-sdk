@@ -59,6 +59,7 @@ export function mapEngineServerSpotProduct(
     priceIncrement: fromX18(product.book_info.price_increment_x18),
     sizeIncrement: fromX18(product.book_info.size_increment_x18),
     product: {
+      productId: product.product_id,
       type: ProductEngineType.SPOT,
       totalBorrowed: calcTotalBorrowed(
         toEthersBN(product.total_borrows_normalized_x18),
@@ -99,6 +100,7 @@ export function mapEngineServerPerpProduct(
     priceIncrement: fromX18(product.book_info.price_increment_x18),
     sizeIncrement: fromX18(product.book_info.size_increment_x18),
     product: {
+      productId: product.product_id,
       type: ProductEngineType.PERP,
       emaPrice: fromX18(product.ema_price_x18),
       oraclePrice: fromX18(product.oracle_price_x18),

@@ -1,4 +1,9 @@
-import { PerpProduct, ProductEngineType, SpotProduct } from './productTypes';
+import {
+  PerpProduct,
+  Product,
+  ProductEngineType,
+  SpotProduct,
+} from './productTypes';
 import { BigDecimal } from '@vertex-protocol/utils';
 
 /**
@@ -7,6 +12,7 @@ import { BigDecimal } from '@vertex-protocol/utils';
 export interface Market {
   productId: number;
   type: ProductEngineType;
+  product: Product;
   // Latest orderbook mark price
   markPrice: BigDecimal;
   // Price increment for the orderbook, order prices must be placed at multiples of this increment
@@ -16,11 +22,11 @@ export interface Market {
 }
 
 /**
- * Perp market with perp producti nfo
+ * Perp market with perp product info
  */
 export interface PerpMarket extends Market {
   type: ProductEngineType.PERP;
-  product: Omit<PerpProduct, 'productId'>;
+  product: PerpProduct;
 }
 
 /**
@@ -28,7 +34,7 @@ export interface PerpMarket extends Market {
  */
 export interface SpotMarket extends Market {
   type: ProductEngineType.SPOT;
-  product: Omit<SpotProduct, 'productId'>;
+  product: SpotProduct;
 }
 
 export type MarketWithProduct = PerpMarket | SpotMarket;

@@ -58,7 +58,6 @@ export class EngineQueryClient extends EngineBaseClient {
           maintenance: toBigDecimal(spotBalance.maintenance_x18),
           unweighted: toBigDecimal(spotBalance.pnl_x18),
         },
-        productId: product.product_id,
         ...mapEngineServerSpotProduct(product).product,
       });
     });
@@ -79,7 +78,6 @@ export class EngineQueryClient extends EngineBaseClient {
           maintenance: toBigDecimal(perpBalance.maintenance_x18),
           unweighted: toBigDecimal(perpBalance.pnl_x18),
         },
-        productId: product.product_id,
         ...mapEngineServerPerpProduct(product).product,
       });
     });

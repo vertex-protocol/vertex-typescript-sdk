@@ -57,8 +57,9 @@ export function mapEnginePerpProduct(
 
 export function mapQuerierMarket(
   market: IVertexQuerier.MarketInfoStructOutput,
-): Omit<Market, 'productId'> {
+): Omit<Market, 'product'> {
   return {
+    productId: market.productId,
     markPrice: fromX18(market.markPriceX18),
     priceIncrement: fromX18(market.priceIncrementX18),
     sizeIncrement: fromX18(market.sizeIncrementX18),

@@ -19,20 +19,17 @@ export async function getAllMarkets({
 
   contractData.spotProducts.forEach((productInfo) => {
     markets.push({
-      productId: productInfo.productId,
-      product: mapEngineSpotProduct(productInfo.productId, productInfo.product),
       ...mapQuerierMarket(productInfo.market),
-      // This makes TS happy
       type: ProductEngineType.SPOT,
+      product: mapEngineSpotProduct(productInfo.productId, productInfo.product),
     });
   });
 
   contractData.perpProducts.forEach((productInfo) => {
     markets.push({
-      productId: productInfo.productId,
-      product: mapEnginePerpProduct(productInfo.productId, productInfo.product),
       ...mapQuerierMarket(productInfo.market),
       type: ProductEngineType.PERP,
+      product: mapEnginePerpProduct(productInfo.productId, productInfo.product),
     });
   });
 
