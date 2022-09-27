@@ -9,7 +9,7 @@ import {
   GraphSubaccountEvent,
 } from './types';
 import { getSubaccountEntityId } from '../../utils';
-import { nowInSeconds } from '@vertex-protocol/utils';
+import { nowInSeconds, toBigDecimal } from '@vertex-protocol/utils';
 
 export class SubaccountQueryClient extends BaseVertexGraphClient {
   /**
@@ -33,11 +33,37 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
    */
   async getSubaccountState(
     params: GetSubaccountStateParams,
-  ): Promise<GetSubaccountStateResponse> {
+  ): Promise<GetSubaccountStateResponse | undefined> {
     const data = await this.graph.SubaccountStateQuery({
       subaccountEntityId: getSubaccountEntityId(params.subaccountId),
     });
-    return data.subaccount;
+    if (data.subaccount == null) {
+      return;
+    }
+
+    return {
+      name: data.subaccount.name,
+      spotBalanceSummaries: data.subaccount.spotBalanceSummaries.map(
+        (summary) => {
+          return {
+            productId: Number(summary.productId),
+            timeOpened: Number(summary.timeOpened),
+            netRealAmount: toBigDecimal(summary.netRealAmount),
+            totalNetInterest: toBigDecimal(summary.totalNetInterest),
+          };
+        },
+      ),
+      perpBalanceSummaries: data.subaccount.perpBalanceSummaries.map(
+        (summary) => {
+          return {
+            productId: Number(summary.productId),
+            timeOpened: Number(summary.timeOpened),
+            vQuoteWithoutFunding: toBigDecimal(summary.vQuoteWithoutFunding),
+            totalNetFunding: toBigDecimal(summary.totalNetFunding),
+          };
+        },
+      ),
+    };
   }
 
   /**

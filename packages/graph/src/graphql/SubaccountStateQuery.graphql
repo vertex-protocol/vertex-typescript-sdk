@@ -8,15 +8,6 @@ query SubaccountStateQuery($subaccountEntityId: ID!) {
     createdAt
     createdAtBlock
 
-    tradeSummaries {
-      id
-      productId
-      totalEntryQuoteAmountAbs
-      totalEntryAmountAbs
-      totalCloseQuoteAmountAbs
-      totalCloseAmountAbs
-    }
-
     spotBalanceSummaries {
       id
       productId

@@ -2,9 +2,9 @@ import {
   SubaccountEventHistoryQueryQuery,
   SubaccountMakerFillEventHistoryQueryQuery,
   SubaccountsForAddressQuery,
-  SubaccountStateQueryQuery,
   SubaccountTakerFillEventHistoryQueryQuery,
 } from '../../generated';
+import { BigDecimal } from '@vertex-protocol/utils';
 
 export interface GetSubaccountsParams {
   address: string;
@@ -16,8 +16,21 @@ export interface GetSubaccountStateParams {
   subaccountId: number;
 }
 
-export type GetSubaccountStateResponse =
-  SubaccountStateQueryQuery['subaccount'];
+export interface GetSubaccountStateResponse {
+  name: string;
+  spotBalanceSummaries: {
+    productId: number;
+    timeOpened: number;
+    netRealAmount: BigDecimal;
+    totalNetInterest: BigDecimal;
+  }[];
+  perpBalanceSummaries: {
+    productId: number;
+    timeOpened: number;
+    vQuoteWithoutFunding: BigDecimal;
+    totalNetFunding: BigDecimal;
+  }[];
+}
 
 export type GraphSubaccountEvent =
   | 'cancel_order'
