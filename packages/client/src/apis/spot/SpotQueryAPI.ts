@@ -3,10 +3,9 @@ import {
   isSpotProduct,
   SpotProduct,
 } from '@vertex-protocol/contracts';
-import { DepositParams } from './types';
-import { Signer } from 'ethers';
-import { toBigDecimal } from '@vertex-protocol/utils';
+import { BigNumber, Signer } from 'ethers';
 import { BaseSpotAPI } from './BaseSpotAPI';
+import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
 
 export class SpotQueryAPI extends BaseSpotAPI {
   /**
@@ -18,16 +17,27 @@ export class SpotQueryAPI extends BaseSpotAPI {
   }
 
   /**
-   * Determines if additional spend approval is required
+   * Helper to get current token balance in the user's wallet (i.e. not in a Vertex subaccount)
    */
-  async requiresDepositApproval(params: DepositParams): Promise<boolean> {
-    const token = await this.getTokenContractForProduct(params.productId);
+  async getTokenWalletBalance(productId: number): Promise<BigNumber> {
+    const token = await this.getTokenContractForProduct(productId);
     // Force cast here
     const signer = this.context.chainSignerOrProvider as Signer;
-    const allowance = await token.allowance(
-      signer.getAddress(),
-      this.context.contracts.endpoint.address,
+    return token.balanceOf(signer.getAddress());
+  }
+
+  /**
+   * Helper to get current token allowance
+   */
+  async getTokenAllowance(productId: number): Promise<BigDecimal> {
+    const token = await this.getTokenContractForProduct(productId);
+    // Force cast here
+    const signer = this.context.chainSignerOrProvider as Signer;
+    return toBigDecimal(
+      await token.allowance(
+        signer.getAddress(),
+        this.context.contracts.endpoint.address,
+      ),
     );
-    return toBigDecimal(allowance).lt(toBigDecimal(params.amount));
   }
 }

@@ -30,6 +30,7 @@ export class SpotExecuteAPI extends BaseSpotAPI {
   }
 
   async approveAllowance(params: ApproveAllowanceParams) {
+    console.log('HERE');
     return approveDepositAllowance({
       amount: params.amount,
       endpoint: this.context.contracts.endpoint,
