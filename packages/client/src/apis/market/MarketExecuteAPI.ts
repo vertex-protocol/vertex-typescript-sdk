@@ -10,7 +10,10 @@ export class MarketExecuteAPI extends BaseVertexAPI {
     const { productId, order } = params;
     const orderbookAddr = await this.getOrderbookAddress(productId);
     return this.context.engineClient.placeOrder({
-      order,
+      order: {
+        ...order,
+        sender: (await this.context.engineSigner?.getAddress()) ?? '',
+      },
       orderbookAddr,
       productId,
     });
@@ -24,7 +27,10 @@ export class MarketExecuteAPI extends BaseVertexAPI {
     const { productId, order } = params;
     const orderbookAddr = await this.getOrderbookAddress(productId);
     return this.context.engineClient.cancelOrder({
-      order,
+      order: {
+        ...order,
+        sender: (await this.context.engineSigner?.getAddress()) ?? '',
+      },
       orderbookAddr,
       productId,
     });
