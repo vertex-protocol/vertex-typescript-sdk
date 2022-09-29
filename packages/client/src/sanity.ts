@@ -68,7 +68,8 @@ async function main() {
   // State from Arbitrum
   await vertexClient.subaccount.getSubaccountSummary({ subaccountId });
   await vertexClient.market.getOpenSubaccountOrders({
-    subaccountId,
+    sender: await signer.getAddress(),
+    subaccountName: 'default',
     productId: 1,
   });
 
