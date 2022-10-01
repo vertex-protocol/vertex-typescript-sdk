@@ -5,6 +5,7 @@ import {
   SubaccountTakerFillEventHistoryQueryQuery,
 } from '../../generated';
 import { BigDecimal } from '@vertex-protocol/utils';
+import { PaginationParams } from '../types';
 
 export interface GetSubaccountsParams {
   address: string;
@@ -41,7 +42,12 @@ export type GraphSubaccountEvent =
   | 'place_order'
   | 'settle_pnl';
 
-export interface GetSubaccountEventsParams {
+export interface GetPaginatedSubaccountEventsParams extends PaginationParams {
+  subaccountId: number;
+  type: GraphSubaccountEvent;
+}
+
+export interface GetSubaccountEventsByTimeParams {
   subaccountId: number;
   // UNIX timestamp in seconds
   minTimeInclusive?: number;

@@ -14,5 +14,6 @@ module.exports = {
   rules: {
     'prettier/prettier': 2,
     'no-constant-condition': 0,
+    'no-case-declarations': 0,
   },
 };

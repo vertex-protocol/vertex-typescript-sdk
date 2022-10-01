@@ -37,7 +37,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   BigDecimal: any;
-  BigInt: string | number;
+  BigInt: any;
   Bytes: any;
 };
 
@@ -4792,6 +4792,7 @@ export type SubaccountEventHistoryQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
   maxTimeExclusive: Scalars['BigInt'];
   minTimeInclusive: Scalars['BigInt'];
+  skip?: InputMaybe<Scalars['Int']>;
   modifyCollateralLimit?: InputMaybe<Scalars['Int']>;
   settlePnlLimit?: InputMaybe<Scalars['Int']>;
   liquidateeLimit?: InputMaybe<Scalars['Int']>;
@@ -4807,6 +4808,7 @@ export type SubaccountTakerFillEventHistoryQueryQueryVariables = Exact<{
   maxTimeExclusive: Scalars['BigInt'];
   minTimeInclusive: Scalars['BigInt'];
   limit?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -4826,6 +4828,7 @@ export type SubaccountMakerFillEventHistoryQueryQueryVariables = Exact<{
   maxTimeExclusive: Scalars['BigInt'];
   minTimeInclusive: Scalars['BigInt'];
   limit?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -4863,7 +4866,7 @@ export type SubaccountStateQueryQueryVariables = Exact<{
 
 export type SubaccountStateQueryQuery = { subaccount?: Maybe<(
     Pick<Subaccount, 'id' | 'owner' | 'name' | 'createdAt' | 'createdAtBlock'>
-    & { tradeSummaries: Array<Pick<TradeSummary, 'id' | 'productId' | 'totalEntryQuoteAmountAbs' | 'totalEntryAmountAbs' | 'totalCloseQuoteAmountAbs' | 'totalCloseAmountAbs'>>, spotBalanceSummaries: Array<Pick<SpotBalanceSummary, 'id' | 'productId' | 'timeOpened' | 'netRealAmount' | 'totalNetInterest'>>, perpBalanceSummaries: Array<Pick<PerpBalanceSummary, 'id' | 'productId' | 'timeOpened' | 'vQuoteWithoutFunding' | 'totalNetFunding'>> }
+    & { spotBalanceSummaries: Array<Pick<SpotBalanceSummary, 'id' | 'productId' | 'timeOpened' | 'netRealAmount' | 'totalNetInterest'>>, perpBalanceSummaries: Array<Pick<PerpBalanceSummary, 'id' | 'productId' | 'timeOpened' | 'vQuoteWithoutFunding' | 'totalNetFunding'>> }
   )> };
 
 export type SubaccountsForAddressQueryVariables = Exact<{
@@ -5006,12 +5009,13 @@ export const OrderByDigestQueryDocument = gql`
 }
     ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<OrderByDigestQueryQuery, OrderByDigestQueryQueryVariables>;
 export const SubaccountEventHistoryQueryDocument = gql`
-    query SubaccountEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $modifyCollateralLimit: Int, $settlePnlLimit: Int, $liquidateeLimit: Int, $reportOrderLimit: Int, $cancelOrderLimit: Int) {
+    query SubaccountEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $skip: Int, $modifyCollateralLimit: Int, $settlePnlLimit: Int, $liquidateeLimit: Int, $reportOrderLimit: Int, $cancelOrderLimit: Int) {
   modifyCollateralEvents(
     where: {subaccount: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
     orderBy: blockTime
     orderDirection: desc
     first: $modifyCollateralLimit
+    skip: $skip
   ) {
     id
     blockTime
@@ -5023,6 +5027,7 @@ export const SubaccountEventHistoryQueryDocument = gql`
     orderBy: blockTime
     orderDirection: desc
     first: $settlePnlLimit
+    skip: $skip
   ) {
     id
     blockTime
@@ -5034,6 +5039,7 @@ export const SubaccountEventHistoryQueryDocument = gql`
     orderBy: blockTime
     orderDirection: desc
     first: $liquidateeLimit
+    skip: $skip
   ) {
     id
     blockTime
@@ -5047,6 +5053,7 @@ export const SubaccountEventHistoryQueryDocument = gql`
     orderBy: blockTime
     orderDirection: desc
     first: $reportOrderLimit
+    skip: $skip
   ) {
     id
     blockTime
@@ -5056,6 +5063,7 @@ export const SubaccountEventHistoryQueryDocument = gql`
     orderBy: blockTime
     orderDirection: desc
     first: $cancelOrderLimit
+    skip: $skip
   ) {
     id
     blockTime
@@ -5063,24 +5071,26 @@ export const SubaccountEventHistoryQueryDocument = gql`
 }
     ` as unknown as DocumentNode<SubaccountEventHistoryQueryQuery, SubaccountEventHistoryQueryQueryVariables>;
 export const SubaccountTakerFillEventHistoryQueryDocument = gql`
-    query SubaccountTakerFillEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $limit: Int) {
+    query SubaccountTakerFillEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $limit: Int, $skip: Int) {
   fillOrderEvents(
     where: {taker: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
     orderBy: blockTime
     orderDirection: desc
     first: $limit
+    skip: $skip
   ) {
     ...FillOrderEventFragment
   }
 }
     ${FillOrderEventFragmentFragmentDoc}` as unknown as DocumentNode<SubaccountTakerFillEventHistoryQueryQuery, SubaccountTakerFillEventHistoryQueryQueryVariables>;
 export const SubaccountMakerFillEventHistoryQueryDocument = gql`
-    query SubaccountMakerFillEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $limit: Int) {
+    query SubaccountMakerFillEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $limit: Int, $skip: Int) {
   fillOrderEvents(
     where: {maker: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
     orderBy: blockTime
     orderDirection: desc
     first: $limit
+    skip: $skip
   ) {
     ...FillOrderEventFragment
   }
@@ -5094,14 +5104,6 @@ export const SubaccountStateQueryDocument = gql`
     name
     createdAt
     createdAtBlock
-    tradeSummaries {
-      id
-      productId
-      totalEntryQuoteAmountAbs
-      totalEntryAmountAbs
-      totalCloseQuoteAmountAbs
-      totalCloseAmountAbs
-    }
     spotBalanceSummaries {
       id
       productId

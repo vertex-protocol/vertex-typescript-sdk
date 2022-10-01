@@ -2,6 +2,8 @@ query SubaccountEventHistoryQuery(
   $subaccountEntityId: String!
   $maxTimeExclusive: BigInt!
   $minTimeInclusive: BigInt!
+  # Currently applies for all, and used for pagination, the thought is that you only paginate 1 type of event at once
+  $skip: Int
   # This enables hacky filtering of events
   $modifyCollateralLimit: Int
   $settlePnlLimit: Int
@@ -18,6 +20,7 @@ query SubaccountEventHistoryQuery(
     orderBy: blockTime
     orderDirection: desc
     first: $modifyCollateralLimit
+    skip: $skip
   ) {
     id
     blockTime
@@ -34,6 +37,7 @@ query SubaccountEventHistoryQuery(
     orderBy: blockTime
     orderDirection: desc
     first: $settlePnlLimit
+    skip: $skip
   ) {
     id
     blockTime
@@ -50,6 +54,7 @@ query SubaccountEventHistoryQuery(
     orderBy: blockTime
     orderDirection: desc
     first: $liquidateeLimit
+    skip: $skip
   ) {
     id
     blockTime
@@ -68,6 +73,7 @@ query SubaccountEventHistoryQuery(
     orderBy: blockTime
     orderDirection: desc
     first: $reportOrderLimit
+    skip: $skip
   ) {
     id
     blockTime
@@ -83,6 +89,7 @@ query SubaccountEventHistoryQuery(
     orderBy: blockTime
     orderDirection: desc
     first: $cancelOrderLimit
+    skip: $skip
   ) {
     id
     blockTime
@@ -97,6 +104,7 @@ query SubaccountTakerFillEventHistoryQuery(
   $maxTimeExclusive: BigInt!
   $minTimeInclusive: BigInt!
   $limit: Int
+  $skip: Int
 ) {
   fillOrderEvents(
     where: {
@@ -107,6 +115,7 @@ query SubaccountTakerFillEventHistoryQuery(
     orderBy: blockTime
     orderDirection: desc
     first: $limit
+    skip: $skip
   ) {
     ...FillOrderEventFragment
   }
@@ -116,6 +125,7 @@ query SubaccountMakerFillEventHistoryQuery(
   $maxTimeExclusive: BigInt!
   $minTimeInclusive: BigInt!
   $limit: Int
+  $skip: Int
 ) {
   fillOrderEvents(
     where: {
@@ -126,6 +136,7 @@ query SubaccountMakerFillEventHistoryQuery(
     orderBy: blockTime
     orderDirection: desc
     first: $limit
+    skip: $skip
   ) {
     ...FillOrderEventFragment
   }

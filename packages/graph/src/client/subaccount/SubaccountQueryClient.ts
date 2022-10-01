@@ -1,6 +1,7 @@
 import { BaseVertexGraphClient } from '../base';
 import {
-  GetSubaccountEventsParams,
+  GetPaginatedSubaccountEventsParams,
+  GetSubaccountEventsByTimeParams,
   GetSubaccountEventsResponse,
   GetSubaccountsParams,
   GetSubaccountsResponse,
@@ -67,12 +68,76 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
   }
 
   /**
-   * Retrieves on-chain events for a given subaccount
+   * Retrieves on-chain events for a given subaccount based on time
    *
    * @param params
    */
-  async getSubaccountEvents(
-    params: GetSubaccountEventsParams,
+  async getSubaccountPaginatedEvents(
+    params: GetPaginatedSubaccountEventsParams,
+  ): Promise<GetSubaccountEventsResponse> {
+    const baseResponse: GetSubaccountEventsResponse = {
+      cancelOrderEvents: [],
+      liquidationEvents: [],
+      makerFillOrderEvents: [],
+      modifyCollateralEvents: [],
+      reportOrderEvents: [],
+      settlePnlEvents: [],
+      takerFillOrderEvents: [],
+    };
+
+    const baseQueryVariables = {
+      subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+      maxTimeExclusive: nowInSeconds(),
+      minTimeInclusive: 0,
+      skip: params.skip,
+    };
+    switch (params.type) {
+      // Separate queries for fills
+      case 'maker_fill_order':
+        const makerEventData =
+          await this.graph.SubaccountMakerFillEventHistoryQuery({
+            ...baseQueryVariables,
+            limit: params.first,
+          });
+        return {
+          ...baseResponse,
+          makerFillOrderEvents: makerEventData.fillOrderEvents,
+        };
+      case 'taker_fill_order':
+        const takerEventData =
+          await this.graph.SubaccountTakerFillEventHistoryQuery({
+            ...baseQueryVariables,
+            limit: params.first,
+          });
+        return {
+          ...baseResponse,
+          takerFillOrderEvents: takerEventData.fillOrderEvents,
+        };
+      default:
+        const baseHistoryQueryData =
+          await this.graph.SubaccountEventHistoryQuery({
+            ...baseQueryVariables,
+            // Filter by limit
+            liquidateeLimit: 0,
+            modifyCollateralLimit: 0,
+            settlePnlLimit: 0,
+            reportOrderLimit: 0,
+            cancelOrderLimit: 0,
+          });
+        return {
+          ...baseResponse,
+          ...baseHistoryQueryData,
+        };
+    }
+  }
+
+  /**
+   * Retrieves on-chain events for a given subaccount based on time
+   *
+   * @param params
+   */
+  async getSubaccountEventsByTime(
+    params: GetSubaccountEventsByTimeParams,
   ): Promise<GetSubaccountEventsResponse> {
     const baseQueryVariables = {
       subaccountEntityId: getSubaccountEntityId(params.subaccountId),
