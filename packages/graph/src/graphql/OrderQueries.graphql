@@ -40,5 +40,6 @@ fragment OrderEntityFieldsFragment on Order {
   reportedAt
   reportedAtBlock
   filledAmount
+  totalAmount
   collectedFee
 }

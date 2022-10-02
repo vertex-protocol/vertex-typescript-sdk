@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import { GraphQLResolveInfo, SelectionSetNode, FieldNode, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 import { gql } from '@graphql-mesh/utils';
 
@@ -10,6 +10,8 @@ import { DefaultLogger } from '@graphql-mesh/utils';
 import MeshCache from "@graphql-mesh/cache-localforage";
 import { fetch as fetchFn } from '@whatwg-node/fetch';
 
+import { MeshResolvedSource } from '@graphql-mesh/runtime';
+import { MeshTransform, MeshPlugin } from '@graphql-mesh/types';
 import GraphqlHandler from "@graphql-mesh/graphql"
 import AutoPaginationTransform from "@graphprotocol/client-auto-pagination";
 import BlockTrackingTransform from "@graphprotocol/client-block-tracking";
@@ -19,7 +21,8 @@ import { createMeshHTTPHandler } from '@graphql-mesh/http';
 import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext, MeshInstance } from '@graphql-mesh/runtime';
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
-import type { ClearinghouseContext } from './sources/Clearinghouse/types';
+import { ImportFn } from '@graphql-mesh/types';
+import type { ClearinghouseTypes } from './sources/Clearinghouse/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -3806,7 +3809,21 @@ export type ResolverTypeWrapper<T> = Promise<T> | T;
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
+
+export type LegacyStitchingResolver<TResult, TParent, TContext, TArgs> = {
+  fragment: string;
+  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
+};
+
+export type NewStitchingResolver<TResult, TParent, TContext, TArgs> = {
+  selectionSet: string | ((fieldNode: FieldNode) => SelectionSetNode);
+  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
+};
+export type StitchingResolver<TResult, TParent, TContext, TArgs> = LegacyStitchingResolver<TResult, TParent, TContext, TArgs> | NewStitchingResolver<TResult, TParent, TContext, TArgs>;
+export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
+  | ResolverFn<TResult, TParent, TContext, TArgs>
+  | ResolverWithResolve<TResult, TParent, TContext, TArgs>
+  | StitchingResolver<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -4507,16 +4524,16 @@ export type DirectiveResolvers<ContextType = MeshContext & { endpoint: string }>
   derivedFrom?: derivedFromDirectiveResolver<any, any, ContextType>;
 }>;
 
-export type MeshContext = ClearinghouseContext & BaseMeshContext;
+export type MeshContext = ClearinghouseTypes.Context & BaseMeshContext;
 
 
 const baseDir = pathModule.join(typeof __dirname === 'string' ? __dirname : '/', '..');
 
-const importFn = (moduleId: string) => {
+const importFn: ImportFn = <T>(moduleId: string) => {
   const relativeModuleId = (pathModule.isAbsolute(moduleId) ? pathModule.relative(baseDir, moduleId) : moduleId).split('\\').join('/').replace(baseDir + '/', '');
   switch(relativeModuleId) {
     case ".graphclient/sources/Clearinghouse/introspectionSchema":
-      return import("./sources/Clearinghouse/introspectionSchema");
+      return import("./sources/Clearinghouse/introspectionSchema") as T;
     
     default:
       return Promise.reject(new Error(`Cannot find module '${relativeModuleId}'.`));
@@ -4545,9 +4562,9 @@ const cache = new (MeshCache as any)({
       logger,
     } as any)
 
-const sources = [];
-const transforms = [];
-const additionalEnvelopPlugins = [];
+const sources: MeshResolvedSource[] = [];
+const transforms: MeshTransform[] = [];
+const additionalEnvelopPlugins: MeshPlugin<any>[] = [];
 const clearinghouseTransforms = [];
 const additionalTypeDefs = [] as any[];
 const clearinghouseHandler = new GraphqlHandler({
@@ -4683,20 +4700,20 @@ const merger = new(BareMerger as any)({
 export function createBuiltMeshHTTPHandler() {
   return createMeshHTTPHandler({
     baseDir,
-    getBuiltMesh,
+    getBuiltMesh: getBuiltGraphClient,
     rawServeConfig: undefined,
   })
 }
 
 
-let meshInstance$: Promise<MeshInstance<MeshContext>>;
+let meshInstance$: Promise<MeshInstance> | undefined;
 
-export function getBuiltGraphClient(): Promise<MeshInstance<MeshContext>> {
+export function getBuiltGraphClient(): Promise<MeshInstance> {
   if (meshInstance$ == null) {
-    meshInstance$ = getMeshOptions().then(meshOptions => getMesh<MeshContext>(meshOptions)).then(mesh => {
-      const id$ = mesh.pubsub.subscribe('destroy', () => {
+    meshInstance$ = getMeshOptions().then(meshOptions => getMesh(meshOptions)).then(mesh => {
+      const id = mesh.pubsub.subscribe('destroy', () => {
         meshInstance$ = undefined;
-        id$.then(id => mesh.pubsub.unsubscribe(id)).catch(err => console.error(err));
+        mesh.pubsub.unsubscribe(id);
       });
       return mesh;
     });
@@ -4709,7 +4726,7 @@ export const execute: ExecuteMeshFn = (...args) => getBuiltGraphClient().then(({
 export const subscribe: SubscribeMeshFn = (...args) => getBuiltGraphClient().then(({ subscribe }) => subscribe(...args));
 export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(globalContext?: TGlobalContext) {
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
-  return getSdk<TOperationContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
+  return getSdk<TOperationContext, TGlobalContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
 export type CandlesticksQueryQueryVariables = Exact<{
   marketEntityId: Scalars['String'];
@@ -4756,7 +4773,7 @@ export type PaginatedAllMarketOrdersQueryQueryVariables = Exact<{
 
 
 export type PaginatedAllMarketOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'collectedFee'>
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
 
@@ -4768,7 +4785,7 @@ export type PaginatedSubaccountOrdersQueryQueryVariables = Exact<{
 
 
 export type PaginatedSubaccountOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'collectedFee'>
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
 
@@ -4779,12 +4796,12 @@ export type OrderByDigestQueryQueryVariables = Exact<{
 
 
 export type OrderByDigestQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'collectedFee'>
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
 
 export type OrderEntityFieldsFragmentFragment = (
-  Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
+  Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'collectedFee'>
   & { subaccount: Pick<Subaccount, 'subaccountId'> }
 );
 
@@ -4888,6 +4905,7 @@ export const OrderEntityFieldsFragmentFragmentDoc = gql`
   reportedAt
   reportedAtBlock
   filledAmount
+  totalAmount
   collectedFee
 }
     ` as unknown as DocumentNode<OrderEntityFieldsFragmentFragment, unknown>;

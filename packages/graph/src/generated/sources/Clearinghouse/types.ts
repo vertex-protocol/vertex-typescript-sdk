@@ -1,7 +1,7 @@
+// @ts-nocheck
 
 import { InContextSdkMethod } from '@graphql-mesh/types';
 import { MeshContext } from '@graphql-mesh/runtime';
-import { Scalars } from '../..';
 
 export namespace ClearinghouseTypes {
   export type Maybe<T> = T | null;
@@ -17,7 +17,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   BigDecimal: any;
-  BigInt: bigint;
+  BigInt: any;
   Bytes: any;
 };
 
@@ -3777,213 +3777,214 @@ export type _SubgraphErrorPolicy_ =
   /** If the subgraph has indexing errors, data will be omitted. The default. */
   | 'deny';
 
-}
-export type QueryClearinghouseSdk = {
-  /** undefined **/
-  clearinghouse: InContextSdkMethod<ClearinghouseTypes.Query['clearinghouse'], ClearinghouseTypes.QueryclearinghouseArgs, MeshContext>,
-  /** undefined **/
-  clearinghouses: InContextSdkMethod<ClearinghouseTypes.Query['clearinghouses'], ClearinghouseTypes.QueryclearinghousesArgs, MeshContext>,
-  /** undefined **/
-  spotEngine: InContextSdkMethod<ClearinghouseTypes.Query['spotEngine'], ClearinghouseTypes.QueryspotEngineArgs, MeshContext>,
-  /** undefined **/
-  spotEngines: InContextSdkMethod<ClearinghouseTypes.Query['spotEngines'], ClearinghouseTypes.QueryspotEnginesArgs, MeshContext>,
-  /** undefined **/
-  perpEngine: InContextSdkMethod<ClearinghouseTypes.Query['perpEngine'], ClearinghouseTypes.QueryperpEngineArgs, MeshContext>,
-  /** undefined **/
-  perpEngines: InContextSdkMethod<ClearinghouseTypes.Query['perpEngines'], ClearinghouseTypes.QueryperpEnginesArgs, MeshContext>,
-  /** undefined **/
-  spotProduct: InContextSdkMethod<ClearinghouseTypes.Query['spotProduct'], ClearinghouseTypes.QueryspotProductArgs, MeshContext>,
-  /** undefined **/
-  spotProducts: InContextSdkMethod<ClearinghouseTypes.Query['spotProducts'], ClearinghouseTypes.QueryspotProductsArgs, MeshContext>,
-  /** undefined **/
-  spotProductHourlySnapshot: InContextSdkMethod<ClearinghouseTypes.Query['spotProductHourlySnapshot'], ClearinghouseTypes.QueryspotProductHourlySnapshotArgs, MeshContext>,
-  /** undefined **/
-  spotProductHourlySnapshots: InContextSdkMethod<ClearinghouseTypes.Query['spotProductHourlySnapshots'], ClearinghouseTypes.QueryspotProductHourlySnapshotsArgs, MeshContext>,
-  /** undefined **/
-  perpProduct: InContextSdkMethod<ClearinghouseTypes.Query['perpProduct'], ClearinghouseTypes.QueryperpProductArgs, MeshContext>,
-  /** undefined **/
-  perpProducts: InContextSdkMethod<ClearinghouseTypes.Query['perpProducts'], ClearinghouseTypes.QueryperpProductsArgs, MeshContext>,
-  /** undefined **/
-  perpProductHourlySnapshot: InContextSdkMethod<ClearinghouseTypes.Query['perpProductHourlySnapshot'], ClearinghouseTypes.QueryperpProductHourlySnapshotArgs, MeshContext>,
-  /** undefined **/
-  perpProductHourlySnapshots: InContextSdkMethod<ClearinghouseTypes.Query['perpProductHourlySnapshots'], ClearinghouseTypes.QueryperpProductHourlySnapshotsArgs, MeshContext>,
-  /** undefined **/
-  market: InContextSdkMethod<ClearinghouseTypes.Query['market'], ClearinghouseTypes.QuerymarketArgs, MeshContext>,
-  /** undefined **/
-  markets: InContextSdkMethod<ClearinghouseTypes.Query['markets'], ClearinghouseTypes.QuerymarketsArgs, MeshContext>,
-  /** undefined **/
-  marketHourlySnapshot: InContextSdkMethod<ClearinghouseTypes.Query['marketHourlySnapshot'], ClearinghouseTypes.QuerymarketHourlySnapshotArgs, MeshContext>,
-  /** undefined **/
-  marketHourlySnapshots: InContextSdkMethod<ClearinghouseTypes.Query['marketHourlySnapshots'], ClearinghouseTypes.QuerymarketHourlySnapshotsArgs, MeshContext>,
-  /** undefined **/
-  candlestick: InContextSdkMethod<ClearinghouseTypes.Query['candlestick'], ClearinghouseTypes.QuerycandlestickArgs, MeshContext>,
-  /** undefined **/
-  candlesticks: InContextSdkMethod<ClearinghouseTypes.Query['candlesticks'], ClearinghouseTypes.QuerycandlesticksArgs, MeshContext>,
-  /** undefined **/
-  order: InContextSdkMethod<ClearinghouseTypes.Query['order'], ClearinghouseTypes.QueryorderArgs, MeshContext>,
-  /** undefined **/
-  orders: InContextSdkMethod<ClearinghouseTypes.Query['orders'], ClearinghouseTypes.QueryordersArgs, MeshContext>,
-  /** undefined **/
-  modifyCollateralEvent: InContextSdkMethod<ClearinghouseTypes.Query['modifyCollateralEvent'], ClearinghouseTypes.QuerymodifyCollateralEventArgs, MeshContext>,
-  /** undefined **/
-  modifyCollateralEvents: InContextSdkMethod<ClearinghouseTypes.Query['modifyCollateralEvents'], ClearinghouseTypes.QuerymodifyCollateralEventsArgs, MeshContext>,
-  /** undefined **/
-  settlePnlEvent: InContextSdkMethod<ClearinghouseTypes.Query['settlePnlEvent'], ClearinghouseTypes.QuerysettlePnlEventArgs, MeshContext>,
-  /** undefined **/
-  settlePnlEvents: InContextSdkMethod<ClearinghouseTypes.Query['settlePnlEvents'], ClearinghouseTypes.QuerysettlePnlEventsArgs, MeshContext>,
-  /** undefined **/
-  liquidationEvent: InContextSdkMethod<ClearinghouseTypes.Query['liquidationEvent'], ClearinghouseTypes.QueryliquidationEventArgs, MeshContext>,
-  /** undefined **/
-  liquidationEvents: InContextSdkMethod<ClearinghouseTypes.Query['liquidationEvents'], ClearinghouseTypes.QueryliquidationEventsArgs, MeshContext>,
-  /** undefined **/
-  socializeProductEvent: InContextSdkMethod<ClearinghouseTypes.Query['socializeProductEvent'], ClearinghouseTypes.QuerysocializeProductEventArgs, MeshContext>,
-  /** undefined **/
-  socializeProductEvents: InContextSdkMethod<ClearinghouseTypes.Query['socializeProductEvents'], ClearinghouseTypes.QuerysocializeProductEventsArgs, MeshContext>,
-  /** undefined **/
-  reportOrderEvent: InContextSdkMethod<ClearinghouseTypes.Query['reportOrderEvent'], ClearinghouseTypes.QueryreportOrderEventArgs, MeshContext>,
-  /** undefined **/
-  reportOrderEvents: InContextSdkMethod<ClearinghouseTypes.Query['reportOrderEvents'], ClearinghouseTypes.QueryreportOrderEventsArgs, MeshContext>,
-  /** undefined **/
-  fillOrderEvent: InContextSdkMethod<ClearinghouseTypes.Query['fillOrderEvent'], ClearinghouseTypes.QueryfillOrderEventArgs, MeshContext>,
-  /** undefined **/
-  fillOrderEvents: InContextSdkMethod<ClearinghouseTypes.Query['fillOrderEvents'], ClearinghouseTypes.QueryfillOrderEventsArgs, MeshContext>,
-  /** undefined **/
-  cancelOrderEvent: InContextSdkMethod<ClearinghouseTypes.Query['cancelOrderEvent'], ClearinghouseTypes.QuerycancelOrderEventArgs, MeshContext>,
-  /** undefined **/
-  cancelOrderEvents: InContextSdkMethod<ClearinghouseTypes.Query['cancelOrderEvents'], ClearinghouseTypes.QuerycancelOrderEventsArgs, MeshContext>,
-  /** undefined **/
-  subaccount: InContextSdkMethod<ClearinghouseTypes.Query['subaccount'], ClearinghouseTypes.QuerysubaccountArgs, MeshContext>,
-  /** undefined **/
-  subaccounts: InContextSdkMethod<ClearinghouseTypes.Query['subaccounts'], ClearinghouseTypes.QuerysubaccountsArgs, MeshContext>,
-  /** undefined **/
-  tradeSummary: InContextSdkMethod<ClearinghouseTypes.Query['tradeSummary'], ClearinghouseTypes.QuerytradeSummaryArgs, MeshContext>,
-  /** undefined **/
-  tradeSummaries: InContextSdkMethod<ClearinghouseTypes.Query['tradeSummaries'], ClearinghouseTypes.QuerytradeSummariesArgs, MeshContext>,
-  /** undefined **/
-  spotBalanceSummary: InContextSdkMethod<ClearinghouseTypes.Query['spotBalanceSummary'], ClearinghouseTypes.QueryspotBalanceSummaryArgs, MeshContext>,
-  /** undefined **/
-  spotBalanceSummaries: InContextSdkMethod<ClearinghouseTypes.Query['spotBalanceSummaries'], ClearinghouseTypes.QueryspotBalanceSummariesArgs, MeshContext>,
-  /** undefined **/
-  closedSpotBalance: InContextSdkMethod<ClearinghouseTypes.Query['closedSpotBalance'], ClearinghouseTypes.QueryclosedSpotBalanceArgs, MeshContext>,
-  /** undefined **/
-  closedSpotBalances: InContextSdkMethod<ClearinghouseTypes.Query['closedSpotBalances'], ClearinghouseTypes.QueryclosedSpotBalancesArgs, MeshContext>,
-  /** undefined **/
-  perpBalanceSummary: InContextSdkMethod<ClearinghouseTypes.Query['perpBalanceSummary'], ClearinghouseTypes.QueryperpBalanceSummaryArgs, MeshContext>,
-  /** undefined **/
-  perpBalanceSummaries: InContextSdkMethod<ClearinghouseTypes.Query['perpBalanceSummaries'], ClearinghouseTypes.QueryperpBalanceSummariesArgs, MeshContext>,
-  /** undefined **/
-  closedPerpBalance: InContextSdkMethod<ClearinghouseTypes.Query['closedPerpBalance'], ClearinghouseTypes.QueryclosedPerpBalanceArgs, MeshContext>,
-  /** undefined **/
-  closedPerpBalances: InContextSdkMethod<ClearinghouseTypes.Query['closedPerpBalances'], ClearinghouseTypes.QueryclosedPerpBalancesArgs, MeshContext>,
+  export type QuerySdk = {
+      /** null **/
+  clearinghouse: InContextSdkMethod<Query['clearinghouse'], QueryclearinghouseArgs, MeshContext>,
+  /** null **/
+  clearinghouses: InContextSdkMethod<Query['clearinghouses'], QueryclearinghousesArgs, MeshContext>,
+  /** null **/
+  spotEngine: InContextSdkMethod<Query['spotEngine'], QueryspotEngineArgs, MeshContext>,
+  /** null **/
+  spotEngines: InContextSdkMethod<Query['spotEngines'], QueryspotEnginesArgs, MeshContext>,
+  /** null **/
+  perpEngine: InContextSdkMethod<Query['perpEngine'], QueryperpEngineArgs, MeshContext>,
+  /** null **/
+  perpEngines: InContextSdkMethod<Query['perpEngines'], QueryperpEnginesArgs, MeshContext>,
+  /** null **/
+  spotProduct: InContextSdkMethod<Query['spotProduct'], QueryspotProductArgs, MeshContext>,
+  /** null **/
+  spotProducts: InContextSdkMethod<Query['spotProducts'], QueryspotProductsArgs, MeshContext>,
+  /** null **/
+  spotProductHourlySnapshot: InContextSdkMethod<Query['spotProductHourlySnapshot'], QueryspotProductHourlySnapshotArgs, MeshContext>,
+  /** null **/
+  spotProductHourlySnapshots: InContextSdkMethod<Query['spotProductHourlySnapshots'], QueryspotProductHourlySnapshotsArgs, MeshContext>,
+  /** null **/
+  perpProduct: InContextSdkMethod<Query['perpProduct'], QueryperpProductArgs, MeshContext>,
+  /** null **/
+  perpProducts: InContextSdkMethod<Query['perpProducts'], QueryperpProductsArgs, MeshContext>,
+  /** null **/
+  perpProductHourlySnapshot: InContextSdkMethod<Query['perpProductHourlySnapshot'], QueryperpProductHourlySnapshotArgs, MeshContext>,
+  /** null **/
+  perpProductHourlySnapshots: InContextSdkMethod<Query['perpProductHourlySnapshots'], QueryperpProductHourlySnapshotsArgs, MeshContext>,
+  /** null **/
+  market: InContextSdkMethod<Query['market'], QuerymarketArgs, MeshContext>,
+  /** null **/
+  markets: InContextSdkMethod<Query['markets'], QuerymarketsArgs, MeshContext>,
+  /** null **/
+  marketHourlySnapshot: InContextSdkMethod<Query['marketHourlySnapshot'], QuerymarketHourlySnapshotArgs, MeshContext>,
+  /** null **/
+  marketHourlySnapshots: InContextSdkMethod<Query['marketHourlySnapshots'], QuerymarketHourlySnapshotsArgs, MeshContext>,
+  /** null **/
+  candlestick: InContextSdkMethod<Query['candlestick'], QuerycandlestickArgs, MeshContext>,
+  /** null **/
+  candlesticks: InContextSdkMethod<Query['candlesticks'], QuerycandlesticksArgs, MeshContext>,
+  /** null **/
+  order: InContextSdkMethod<Query['order'], QueryorderArgs, MeshContext>,
+  /** null **/
+  orders: InContextSdkMethod<Query['orders'], QueryordersArgs, MeshContext>,
+  /** null **/
+  modifyCollateralEvent: InContextSdkMethod<Query['modifyCollateralEvent'], QuerymodifyCollateralEventArgs, MeshContext>,
+  /** null **/
+  modifyCollateralEvents: InContextSdkMethod<Query['modifyCollateralEvents'], QuerymodifyCollateralEventsArgs, MeshContext>,
+  /** null **/
+  settlePnlEvent: InContextSdkMethod<Query['settlePnlEvent'], QuerysettlePnlEventArgs, MeshContext>,
+  /** null **/
+  settlePnlEvents: InContextSdkMethod<Query['settlePnlEvents'], QuerysettlePnlEventsArgs, MeshContext>,
+  /** null **/
+  liquidationEvent: InContextSdkMethod<Query['liquidationEvent'], QueryliquidationEventArgs, MeshContext>,
+  /** null **/
+  liquidationEvents: InContextSdkMethod<Query['liquidationEvents'], QueryliquidationEventsArgs, MeshContext>,
+  /** null **/
+  socializeProductEvent: InContextSdkMethod<Query['socializeProductEvent'], QuerysocializeProductEventArgs, MeshContext>,
+  /** null **/
+  socializeProductEvents: InContextSdkMethod<Query['socializeProductEvents'], QuerysocializeProductEventsArgs, MeshContext>,
+  /** null **/
+  reportOrderEvent: InContextSdkMethod<Query['reportOrderEvent'], QueryreportOrderEventArgs, MeshContext>,
+  /** null **/
+  reportOrderEvents: InContextSdkMethod<Query['reportOrderEvents'], QueryreportOrderEventsArgs, MeshContext>,
+  /** null **/
+  fillOrderEvent: InContextSdkMethod<Query['fillOrderEvent'], QueryfillOrderEventArgs, MeshContext>,
+  /** null **/
+  fillOrderEvents: InContextSdkMethod<Query['fillOrderEvents'], QueryfillOrderEventsArgs, MeshContext>,
+  /** null **/
+  cancelOrderEvent: InContextSdkMethod<Query['cancelOrderEvent'], QuerycancelOrderEventArgs, MeshContext>,
+  /** null **/
+  cancelOrderEvents: InContextSdkMethod<Query['cancelOrderEvents'], QuerycancelOrderEventsArgs, MeshContext>,
+  /** null **/
+  subaccount: InContextSdkMethod<Query['subaccount'], QuerysubaccountArgs, MeshContext>,
+  /** null **/
+  subaccounts: InContextSdkMethod<Query['subaccounts'], QuerysubaccountsArgs, MeshContext>,
+  /** null **/
+  tradeSummary: InContextSdkMethod<Query['tradeSummary'], QuerytradeSummaryArgs, MeshContext>,
+  /** null **/
+  tradeSummaries: InContextSdkMethod<Query['tradeSummaries'], QuerytradeSummariesArgs, MeshContext>,
+  /** null **/
+  spotBalanceSummary: InContextSdkMethod<Query['spotBalanceSummary'], QueryspotBalanceSummaryArgs, MeshContext>,
+  /** null **/
+  spotBalanceSummaries: InContextSdkMethod<Query['spotBalanceSummaries'], QueryspotBalanceSummariesArgs, MeshContext>,
+  /** null **/
+  closedSpotBalance: InContextSdkMethod<Query['closedSpotBalance'], QueryclosedSpotBalanceArgs, MeshContext>,
+  /** null **/
+  closedSpotBalances: InContextSdkMethod<Query['closedSpotBalances'], QueryclosedSpotBalancesArgs, MeshContext>,
+  /** null **/
+  perpBalanceSummary: InContextSdkMethod<Query['perpBalanceSummary'], QueryperpBalanceSummaryArgs, MeshContext>,
+  /** null **/
+  perpBalanceSummaries: InContextSdkMethod<Query['perpBalanceSummaries'], QueryperpBalanceSummariesArgs, MeshContext>,
+  /** null **/
+  closedPerpBalance: InContextSdkMethod<Query['closedPerpBalance'], QueryclosedPerpBalanceArgs, MeshContext>,
+  /** null **/
+  closedPerpBalances: InContextSdkMethod<Query['closedPerpBalances'], QueryclosedPerpBalancesArgs, MeshContext>,
   /** Access to subgraph metadata **/
-  _meta: InContextSdkMethod<ClearinghouseTypes.Query['_meta'], ClearinghouseTypes.Query_metaArgs, MeshContext>
-};
+  _meta: InContextSdkMethod<Query['_meta'], Query_metaArgs, MeshContext>
+  };
 
-export type MutationClearinghouseSdk = {
+  export type MutationSdk = {
+    
+  };
 
-};
-
-export type SubscriptionClearinghouseSdk = {
-  /** undefined **/
-  clearinghouse: InContextSdkMethod<ClearinghouseTypes.Subscription['clearinghouse'], ClearinghouseTypes.SubscriptionclearinghouseArgs, MeshContext>,
-  /** undefined **/
-  clearinghouses: InContextSdkMethod<ClearinghouseTypes.Subscription['clearinghouses'], ClearinghouseTypes.SubscriptionclearinghousesArgs, MeshContext>,
-  /** undefined **/
-  spotEngine: InContextSdkMethod<ClearinghouseTypes.Subscription['spotEngine'], ClearinghouseTypes.SubscriptionspotEngineArgs, MeshContext>,
-  /** undefined **/
-  spotEngines: InContextSdkMethod<ClearinghouseTypes.Subscription['spotEngines'], ClearinghouseTypes.SubscriptionspotEnginesArgs, MeshContext>,
-  /** undefined **/
-  perpEngine: InContextSdkMethod<ClearinghouseTypes.Subscription['perpEngine'], ClearinghouseTypes.SubscriptionperpEngineArgs, MeshContext>,
-  /** undefined **/
-  perpEngines: InContextSdkMethod<ClearinghouseTypes.Subscription['perpEngines'], ClearinghouseTypes.SubscriptionperpEnginesArgs, MeshContext>,
-  /** undefined **/
-  spotProduct: InContextSdkMethod<ClearinghouseTypes.Subscription['spotProduct'], ClearinghouseTypes.SubscriptionspotProductArgs, MeshContext>,
-  /** undefined **/
-  spotProducts: InContextSdkMethod<ClearinghouseTypes.Subscription['spotProducts'], ClearinghouseTypes.SubscriptionspotProductsArgs, MeshContext>,
-  /** undefined **/
-  spotProductHourlySnapshot: InContextSdkMethod<ClearinghouseTypes.Subscription['spotProductHourlySnapshot'], ClearinghouseTypes.SubscriptionspotProductHourlySnapshotArgs, MeshContext>,
-  /** undefined **/
-  spotProductHourlySnapshots: InContextSdkMethod<ClearinghouseTypes.Subscription['spotProductHourlySnapshots'], ClearinghouseTypes.SubscriptionspotProductHourlySnapshotsArgs, MeshContext>,
-  /** undefined **/
-  perpProduct: InContextSdkMethod<ClearinghouseTypes.Subscription['perpProduct'], ClearinghouseTypes.SubscriptionperpProductArgs, MeshContext>,
-  /** undefined **/
-  perpProducts: InContextSdkMethod<ClearinghouseTypes.Subscription['perpProducts'], ClearinghouseTypes.SubscriptionperpProductsArgs, MeshContext>,
-  /** undefined **/
-  perpProductHourlySnapshot: InContextSdkMethod<ClearinghouseTypes.Subscription['perpProductHourlySnapshot'], ClearinghouseTypes.SubscriptionperpProductHourlySnapshotArgs, MeshContext>,
-  /** undefined **/
-  perpProductHourlySnapshots: InContextSdkMethod<ClearinghouseTypes.Subscription['perpProductHourlySnapshots'], ClearinghouseTypes.SubscriptionperpProductHourlySnapshotsArgs, MeshContext>,
-  /** undefined **/
-  market: InContextSdkMethod<ClearinghouseTypes.Subscription['market'], ClearinghouseTypes.SubscriptionmarketArgs, MeshContext>,
-  /** undefined **/
-  markets: InContextSdkMethod<ClearinghouseTypes.Subscription['markets'], ClearinghouseTypes.SubscriptionmarketsArgs, MeshContext>,
-  /** undefined **/
-  marketHourlySnapshot: InContextSdkMethod<ClearinghouseTypes.Subscription['marketHourlySnapshot'], ClearinghouseTypes.SubscriptionmarketHourlySnapshotArgs, MeshContext>,
-  /** undefined **/
-  marketHourlySnapshots: InContextSdkMethod<ClearinghouseTypes.Subscription['marketHourlySnapshots'], ClearinghouseTypes.SubscriptionmarketHourlySnapshotsArgs, MeshContext>,
-  /** undefined **/
-  candlestick: InContextSdkMethod<ClearinghouseTypes.Subscription['candlestick'], ClearinghouseTypes.SubscriptioncandlestickArgs, MeshContext>,
-  /** undefined **/
-  candlesticks: InContextSdkMethod<ClearinghouseTypes.Subscription['candlesticks'], ClearinghouseTypes.SubscriptioncandlesticksArgs, MeshContext>,
-  /** undefined **/
-  order: InContextSdkMethod<ClearinghouseTypes.Subscription['order'], ClearinghouseTypes.SubscriptionorderArgs, MeshContext>,
-  /** undefined **/
-  orders: InContextSdkMethod<ClearinghouseTypes.Subscription['orders'], ClearinghouseTypes.SubscriptionordersArgs, MeshContext>,
-  /** undefined **/
-  modifyCollateralEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['modifyCollateralEvent'], ClearinghouseTypes.SubscriptionmodifyCollateralEventArgs, MeshContext>,
-  /** undefined **/
-  modifyCollateralEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['modifyCollateralEvents'], ClearinghouseTypes.SubscriptionmodifyCollateralEventsArgs, MeshContext>,
-  /** undefined **/
-  settlePnlEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['settlePnlEvent'], ClearinghouseTypes.SubscriptionsettlePnlEventArgs, MeshContext>,
-  /** undefined **/
-  settlePnlEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['settlePnlEvents'], ClearinghouseTypes.SubscriptionsettlePnlEventsArgs, MeshContext>,
-  /** undefined **/
-  liquidationEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['liquidationEvent'], ClearinghouseTypes.SubscriptionliquidationEventArgs, MeshContext>,
-  /** undefined **/
-  liquidationEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['liquidationEvents'], ClearinghouseTypes.SubscriptionliquidationEventsArgs, MeshContext>,
-  /** undefined **/
-  socializeProductEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['socializeProductEvent'], ClearinghouseTypes.SubscriptionsocializeProductEventArgs, MeshContext>,
-  /** undefined **/
-  socializeProductEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['socializeProductEvents'], ClearinghouseTypes.SubscriptionsocializeProductEventsArgs, MeshContext>,
-  /** undefined **/
-  reportOrderEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['reportOrderEvent'], ClearinghouseTypes.SubscriptionreportOrderEventArgs, MeshContext>,
-  /** undefined **/
-  reportOrderEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['reportOrderEvents'], ClearinghouseTypes.SubscriptionreportOrderEventsArgs, MeshContext>,
-  /** undefined **/
-  fillOrderEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['fillOrderEvent'], ClearinghouseTypes.SubscriptionfillOrderEventArgs, MeshContext>,
-  /** undefined **/
-  fillOrderEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['fillOrderEvents'], ClearinghouseTypes.SubscriptionfillOrderEventsArgs, MeshContext>,
-  /** undefined **/
-  cancelOrderEvent: InContextSdkMethod<ClearinghouseTypes.Subscription['cancelOrderEvent'], ClearinghouseTypes.SubscriptioncancelOrderEventArgs, MeshContext>,
-  /** undefined **/
-  cancelOrderEvents: InContextSdkMethod<ClearinghouseTypes.Subscription['cancelOrderEvents'], ClearinghouseTypes.SubscriptioncancelOrderEventsArgs, MeshContext>,
-  /** undefined **/
-  subaccount: InContextSdkMethod<ClearinghouseTypes.Subscription['subaccount'], ClearinghouseTypes.SubscriptionsubaccountArgs, MeshContext>,
-  /** undefined **/
-  subaccounts: InContextSdkMethod<ClearinghouseTypes.Subscription['subaccounts'], ClearinghouseTypes.SubscriptionsubaccountsArgs, MeshContext>,
-  /** undefined **/
-  tradeSummary: InContextSdkMethod<ClearinghouseTypes.Subscription['tradeSummary'], ClearinghouseTypes.SubscriptiontradeSummaryArgs, MeshContext>,
-  /** undefined **/
-  tradeSummaries: InContextSdkMethod<ClearinghouseTypes.Subscription['tradeSummaries'], ClearinghouseTypes.SubscriptiontradeSummariesArgs, MeshContext>,
-  /** undefined **/
-  spotBalanceSummary: InContextSdkMethod<ClearinghouseTypes.Subscription['spotBalanceSummary'], ClearinghouseTypes.SubscriptionspotBalanceSummaryArgs, MeshContext>,
-  /** undefined **/
-  spotBalanceSummaries: InContextSdkMethod<ClearinghouseTypes.Subscription['spotBalanceSummaries'], ClearinghouseTypes.SubscriptionspotBalanceSummariesArgs, MeshContext>,
-  /** undefined **/
-  closedSpotBalance: InContextSdkMethod<ClearinghouseTypes.Subscription['closedSpotBalance'], ClearinghouseTypes.SubscriptionclosedSpotBalanceArgs, MeshContext>,
-  /** undefined **/
-  closedSpotBalances: InContextSdkMethod<ClearinghouseTypes.Subscription['closedSpotBalances'], ClearinghouseTypes.SubscriptionclosedSpotBalancesArgs, MeshContext>,
-  /** undefined **/
-  perpBalanceSummary: InContextSdkMethod<ClearinghouseTypes.Subscription['perpBalanceSummary'], ClearinghouseTypes.SubscriptionperpBalanceSummaryArgs, MeshContext>,
-  /** undefined **/
-  perpBalanceSummaries: InContextSdkMethod<ClearinghouseTypes.Subscription['perpBalanceSummaries'], ClearinghouseTypes.SubscriptionperpBalanceSummariesArgs, MeshContext>,
-  /** undefined **/
-  closedPerpBalance: InContextSdkMethod<ClearinghouseTypes.Subscription['closedPerpBalance'], ClearinghouseTypes.SubscriptionclosedPerpBalanceArgs, MeshContext>,
-  /** undefined **/
-  closedPerpBalances: InContextSdkMethod<ClearinghouseTypes.Subscription['closedPerpBalances'], ClearinghouseTypes.SubscriptionclosedPerpBalancesArgs, MeshContext>,
+  export type SubscriptionSdk = {
+      /** null **/
+  clearinghouse: InContextSdkMethod<Subscription['clearinghouse'], SubscriptionclearinghouseArgs, MeshContext>,
+  /** null **/
+  clearinghouses: InContextSdkMethod<Subscription['clearinghouses'], SubscriptionclearinghousesArgs, MeshContext>,
+  /** null **/
+  spotEngine: InContextSdkMethod<Subscription['spotEngine'], SubscriptionspotEngineArgs, MeshContext>,
+  /** null **/
+  spotEngines: InContextSdkMethod<Subscription['spotEngines'], SubscriptionspotEnginesArgs, MeshContext>,
+  /** null **/
+  perpEngine: InContextSdkMethod<Subscription['perpEngine'], SubscriptionperpEngineArgs, MeshContext>,
+  /** null **/
+  perpEngines: InContextSdkMethod<Subscription['perpEngines'], SubscriptionperpEnginesArgs, MeshContext>,
+  /** null **/
+  spotProduct: InContextSdkMethod<Subscription['spotProduct'], SubscriptionspotProductArgs, MeshContext>,
+  /** null **/
+  spotProducts: InContextSdkMethod<Subscription['spotProducts'], SubscriptionspotProductsArgs, MeshContext>,
+  /** null **/
+  spotProductHourlySnapshot: InContextSdkMethod<Subscription['spotProductHourlySnapshot'], SubscriptionspotProductHourlySnapshotArgs, MeshContext>,
+  /** null **/
+  spotProductHourlySnapshots: InContextSdkMethod<Subscription['spotProductHourlySnapshots'], SubscriptionspotProductHourlySnapshotsArgs, MeshContext>,
+  /** null **/
+  perpProduct: InContextSdkMethod<Subscription['perpProduct'], SubscriptionperpProductArgs, MeshContext>,
+  /** null **/
+  perpProducts: InContextSdkMethod<Subscription['perpProducts'], SubscriptionperpProductsArgs, MeshContext>,
+  /** null **/
+  perpProductHourlySnapshot: InContextSdkMethod<Subscription['perpProductHourlySnapshot'], SubscriptionperpProductHourlySnapshotArgs, MeshContext>,
+  /** null **/
+  perpProductHourlySnapshots: InContextSdkMethod<Subscription['perpProductHourlySnapshots'], SubscriptionperpProductHourlySnapshotsArgs, MeshContext>,
+  /** null **/
+  market: InContextSdkMethod<Subscription['market'], SubscriptionmarketArgs, MeshContext>,
+  /** null **/
+  markets: InContextSdkMethod<Subscription['markets'], SubscriptionmarketsArgs, MeshContext>,
+  /** null **/
+  marketHourlySnapshot: InContextSdkMethod<Subscription['marketHourlySnapshot'], SubscriptionmarketHourlySnapshotArgs, MeshContext>,
+  /** null **/
+  marketHourlySnapshots: InContextSdkMethod<Subscription['marketHourlySnapshots'], SubscriptionmarketHourlySnapshotsArgs, MeshContext>,
+  /** null **/
+  candlestick: InContextSdkMethod<Subscription['candlestick'], SubscriptioncandlestickArgs, MeshContext>,
+  /** null **/
+  candlesticks: InContextSdkMethod<Subscription['candlesticks'], SubscriptioncandlesticksArgs, MeshContext>,
+  /** null **/
+  order: InContextSdkMethod<Subscription['order'], SubscriptionorderArgs, MeshContext>,
+  /** null **/
+  orders: InContextSdkMethod<Subscription['orders'], SubscriptionordersArgs, MeshContext>,
+  /** null **/
+  modifyCollateralEvent: InContextSdkMethod<Subscription['modifyCollateralEvent'], SubscriptionmodifyCollateralEventArgs, MeshContext>,
+  /** null **/
+  modifyCollateralEvents: InContextSdkMethod<Subscription['modifyCollateralEvents'], SubscriptionmodifyCollateralEventsArgs, MeshContext>,
+  /** null **/
+  settlePnlEvent: InContextSdkMethod<Subscription['settlePnlEvent'], SubscriptionsettlePnlEventArgs, MeshContext>,
+  /** null **/
+  settlePnlEvents: InContextSdkMethod<Subscription['settlePnlEvents'], SubscriptionsettlePnlEventsArgs, MeshContext>,
+  /** null **/
+  liquidationEvent: InContextSdkMethod<Subscription['liquidationEvent'], SubscriptionliquidationEventArgs, MeshContext>,
+  /** null **/
+  liquidationEvents: InContextSdkMethod<Subscription['liquidationEvents'], SubscriptionliquidationEventsArgs, MeshContext>,
+  /** null **/
+  socializeProductEvent: InContextSdkMethod<Subscription['socializeProductEvent'], SubscriptionsocializeProductEventArgs, MeshContext>,
+  /** null **/
+  socializeProductEvents: InContextSdkMethod<Subscription['socializeProductEvents'], SubscriptionsocializeProductEventsArgs, MeshContext>,
+  /** null **/
+  reportOrderEvent: InContextSdkMethod<Subscription['reportOrderEvent'], SubscriptionreportOrderEventArgs, MeshContext>,
+  /** null **/
+  reportOrderEvents: InContextSdkMethod<Subscription['reportOrderEvents'], SubscriptionreportOrderEventsArgs, MeshContext>,
+  /** null **/
+  fillOrderEvent: InContextSdkMethod<Subscription['fillOrderEvent'], SubscriptionfillOrderEventArgs, MeshContext>,
+  /** null **/
+  fillOrderEvents: InContextSdkMethod<Subscription['fillOrderEvents'], SubscriptionfillOrderEventsArgs, MeshContext>,
+  /** null **/
+  cancelOrderEvent: InContextSdkMethod<Subscription['cancelOrderEvent'], SubscriptioncancelOrderEventArgs, MeshContext>,
+  /** null **/
+  cancelOrderEvents: InContextSdkMethod<Subscription['cancelOrderEvents'], SubscriptioncancelOrderEventsArgs, MeshContext>,
+  /** null **/
+  subaccount: InContextSdkMethod<Subscription['subaccount'], SubscriptionsubaccountArgs, MeshContext>,
+  /** null **/
+  subaccounts: InContextSdkMethod<Subscription['subaccounts'], SubscriptionsubaccountsArgs, MeshContext>,
+  /** null **/
+  tradeSummary: InContextSdkMethod<Subscription['tradeSummary'], SubscriptiontradeSummaryArgs, MeshContext>,
+  /** null **/
+  tradeSummaries: InContextSdkMethod<Subscription['tradeSummaries'], SubscriptiontradeSummariesArgs, MeshContext>,
+  /** null **/
+  spotBalanceSummary: InContextSdkMethod<Subscription['spotBalanceSummary'], SubscriptionspotBalanceSummaryArgs, MeshContext>,
+  /** null **/
+  spotBalanceSummaries: InContextSdkMethod<Subscription['spotBalanceSummaries'], SubscriptionspotBalanceSummariesArgs, MeshContext>,
+  /** null **/
+  closedSpotBalance: InContextSdkMethod<Subscription['closedSpotBalance'], SubscriptionclosedSpotBalanceArgs, MeshContext>,
+  /** null **/
+  closedSpotBalances: InContextSdkMethod<Subscription['closedSpotBalances'], SubscriptionclosedSpotBalancesArgs, MeshContext>,
+  /** null **/
+  perpBalanceSummary: InContextSdkMethod<Subscription['perpBalanceSummary'], SubscriptionperpBalanceSummaryArgs, MeshContext>,
+  /** null **/
+  perpBalanceSummaries: InContextSdkMethod<Subscription['perpBalanceSummaries'], SubscriptionperpBalanceSummariesArgs, MeshContext>,
+  /** null **/
+  closedPerpBalance: InContextSdkMethod<Subscription['closedPerpBalance'], SubscriptionclosedPerpBalanceArgs, MeshContext>,
+  /** null **/
+  closedPerpBalances: InContextSdkMethod<Subscription['closedPerpBalances'], SubscriptionclosedPerpBalancesArgs, MeshContext>,
   /** Access to subgraph metadata **/
-  _meta: InContextSdkMethod<ClearinghouseTypes.Subscription['_meta'], ClearinghouseTypes.Subscription_metaArgs, MeshContext>
-};
-export type ClearinghouseContext = {
-      ["Clearinghouse"]: { Query: QueryClearinghouseSdk, Mutation: MutationClearinghouseSdk, Subscription: SubscriptionClearinghouseSdk },
+  _meta: InContextSdkMethod<Subscription['_meta'], Subscription_metaArgs, MeshContext>
+  };
+
+  export type Context = {
+      ["Clearinghouse"]: { Query: QuerySdk, Mutation: MutationSdk, Subscription: SubscriptionSdk },
       ["endpoint"]: Scalars['ID']
     };
+}
