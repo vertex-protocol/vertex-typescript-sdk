@@ -39,7 +39,7 @@ export type GraphSubaccountEvent =
   | 'taker_fill_order'
   | 'liquidatee'
   | 'modify_collateral'
-  | 'place_order'
+  | 'report_order'
   | 'settle_pnl';
 
 export interface GetPaginatedSubaccountEventsParams extends PaginationParams {
