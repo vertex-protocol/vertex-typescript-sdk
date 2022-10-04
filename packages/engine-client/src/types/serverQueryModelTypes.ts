@@ -36,7 +36,6 @@ export interface EngineServerSpotProduct {
   total_deposits_normalized_x18: BigNumberish;
   total_borrows_normalized_x18: BigNumberish;
   last_update_time: BigNumberish;
-  oracle_price_x18: BigNumberish;
   config: EngineServerSpotConfig;
   book_info: EngineServerBookInfo;
 }
@@ -59,7 +58,6 @@ export interface EngineServerPerpProduct {
   funding_last_updated: BigNumberish;
   ema_price_last_updated: BigNumberish;
   available_settle_x18: BigNumberish;
-  oracle_price_x18: BigNumberish;
   config: EngineServerPerpConfig;
   book_info: EngineServerBookInfo;
 }

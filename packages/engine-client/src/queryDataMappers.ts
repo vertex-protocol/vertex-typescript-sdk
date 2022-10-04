@@ -69,7 +69,7 @@ export function mapEngineServerSpotProduct(
         toEthersBN(product.total_deposits_normalized_x18),
         toEthersBN(product.cumulative_deposits_multiplier_x18),
       ),
-      oraclePrice: fromX18(product.oracle_price_x18),
+      oraclePrice: fromX18(product.price_x18),
       interestFloor: fromX18(product.config.interest_floor_x18),
       interestInflectionUtil: fromX18(
         product.config.interest_inflection_util_x18,
@@ -103,7 +103,7 @@ export function mapEngineServerPerpProduct(
       productId: product.product_id,
       type: ProductEngineType.PERP,
       emaPrice: fromX18(product.ema_price_x18),
-      oraclePrice: fromX18(product.oracle_price_x18),
+      oraclePrice: fromX18(product.price_x18),
       largePositionPenalty: fromX18(product.config.large_position_penalty_x18),
       longWeightInitial: fromX18(product.config.long_weight_initial_x18),
       longWeightMaintenance: fromX18(
