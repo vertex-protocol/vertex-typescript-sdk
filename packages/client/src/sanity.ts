@@ -9,8 +9,14 @@ function getNonce() {
 
 async function main() {
   const signer = new Wallet(
-    '',
-    ethers.providers.getDefaultProvider('arbitrum'),
+    'xxx',
+    new ethers.providers.StaticJsonRpcProvider(
+      'https://rinkeby.arbitrum.io/rpc',
+      {
+        name: 'arbitrum-rinkeby',
+        chainId: 421611,
+      },
+    ),
   );
 
   const vertexClient = await createVertexClient('testnet', {
@@ -18,6 +24,8 @@ async function main() {
     chainSignerOrProvider: signer,
     engineSigner: signer,
   });
+
+  // TODO: will need to mint tokens & approve here.
 
   const depositTx = await vertexClient.spot.deposit({
     subaccountName: 'default',
@@ -82,3 +90,5 @@ async function main() {
     nonce: getNonce(),
   });
 }
+
+main();
