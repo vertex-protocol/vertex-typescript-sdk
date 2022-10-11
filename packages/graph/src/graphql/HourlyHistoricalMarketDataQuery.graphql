@@ -9,6 +9,8 @@ query HourlyHistoricalMarketDataQuery(
       hour_gte: $minHourInclusive
       hour_lt: $maxHourExclusive
     }
+    orderBy: hour
+    orderDirection: desc
   ) {
     id
     hour

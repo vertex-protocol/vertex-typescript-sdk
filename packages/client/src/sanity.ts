@@ -25,7 +25,16 @@ async function main() {
     engineSigner: signer,
   });
 
-  // TODO: will need to mint tokens & approve here.
+  await vertexClient.spot._mintMockERC20({
+    // 10 tokens
+    amount: 10,
+    productId: 0,
+  });
+
+  await vertexClient.spot.approveAllowance({
+    amount: 10,
+    productId: 0,
+  });
 
   const depositTx = await vertexClient.spot.deposit({
     subaccountName: 'default',
