@@ -1181,6 +1181,7 @@ enum ModifyCollateralEvent_orderBy {
 
 type Order {
   id: ID!
+  sender: Bytes!
   digest: Bytes!
   validationResult: OrderValidationResult!
   priceX18: BigInt!
@@ -1191,6 +1192,8 @@ type Order {
   totalAmount: BigInt!
   filledAmount: BigInt!
   collectedFee: BigInt!
+  expiration: BigInt!
+  nonce: BigInt!
 }
 
 """Defines the order direction, either ascending or descending"""
@@ -1221,6 +1224,12 @@ input Order_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
   digest: Bytes
   digest_not: Bytes
   digest_in: [Bytes!]
@@ -1321,12 +1330,29 @@ input Order_filter {
   collectedFee_lte: BigInt
   collectedFee_in: [BigInt!]
   collectedFee_not_in: [BigInt!]
+  expiration: BigInt
+  expiration_not: BigInt
+  expiration_gt: BigInt
+  expiration_lt: BigInt
+  expiration_gte: BigInt
+  expiration_lte: BigInt
+  expiration_in: [BigInt!]
+  expiration_not_in: [BigInt!]
+  nonce: BigInt
+  nonce_not: BigInt
+  nonce_gt: BigInt
+  nonce_lt: BigInt
+  nonce_gte: BigInt
+  nonce_lte: BigInt
+  nonce_in: [BigInt!]
+  nonce_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
 
 enum Order_orderBy {
   id
+  sender
   digest
   validationResult
   priceX18
@@ -1337,6 +1363,8 @@ enum Order_orderBy {
   totalAmount
   filledAmount
   collectedFee
+  expiration
+  nonce
 }
 
 type PerpBalanceSummary {
