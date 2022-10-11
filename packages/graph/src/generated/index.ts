@@ -1233,6 +1233,7 @@ export type ModifyCollateralEvent_orderBy =
 
 export type Order = {
   id: Scalars['ID'];
+  sender: Scalars['Bytes'];
   digest: Scalars['Bytes'];
   validationResult: OrderValidationResult;
   priceX18: Scalars['BigInt'];
@@ -1243,6 +1244,8 @@ export type Order = {
   totalAmount: Scalars['BigInt'];
   filledAmount: Scalars['BigInt'];
   collectedFee: Scalars['BigInt'];
+  expiration: Scalars['BigInt'];
+  nonce: Scalars['BigInt'];
 };
 
 /** Defines the order direction, either ascending or descending */
@@ -1271,6 +1274,12 @@ export type Order_filter = {
   id_lte?: InputMaybe<Scalars['ID']>;
   id_in?: InputMaybe<Array<Scalars['ID']>>;
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  sender?: InputMaybe<Scalars['Bytes']>;
+  sender_not?: InputMaybe<Scalars['Bytes']>;
+  sender_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_contains?: InputMaybe<Scalars['Bytes']>;
+  sender_not_contains?: InputMaybe<Scalars['Bytes']>;
   digest?: InputMaybe<Scalars['Bytes']>;
   digest_not?: InputMaybe<Scalars['Bytes']>;
   digest_in?: InputMaybe<Array<Scalars['Bytes']>>;
@@ -1371,12 +1380,29 @@ export type Order_filter = {
   collectedFee_lte?: InputMaybe<Scalars['BigInt']>;
   collectedFee_in?: InputMaybe<Array<Scalars['BigInt']>>;
   collectedFee_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  expiration?: InputMaybe<Scalars['BigInt']>;
+  expiration_not?: InputMaybe<Scalars['BigInt']>;
+  expiration_gt?: InputMaybe<Scalars['BigInt']>;
+  expiration_lt?: InputMaybe<Scalars['BigInt']>;
+  expiration_gte?: InputMaybe<Scalars['BigInt']>;
+  expiration_lte?: InputMaybe<Scalars['BigInt']>;
+  expiration_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  expiration_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  nonce?: InputMaybe<Scalars['BigInt']>;
+  nonce_not?: InputMaybe<Scalars['BigInt']>;
+  nonce_gt?: InputMaybe<Scalars['BigInt']>;
+  nonce_lt?: InputMaybe<Scalars['BigInt']>;
+  nonce_gte?: InputMaybe<Scalars['BigInt']>;
+  nonce_lte?: InputMaybe<Scalars['BigInt']>;
+  nonce_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  nonce_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
 
 export type Order_orderBy =
   | 'id'
+  | 'sender'
   | 'digest'
   | 'validationResult'
   | 'priceX18'
@@ -1386,7 +1412,9 @@ export type Order_orderBy =
   | 'reportedAtBlock'
   | 'totalAmount'
   | 'filledAmount'
-  | 'collectedFee';
+  | 'collectedFee'
+  | 'expiration'
+  | 'nonce';
 
 export type PerpBalanceSummary = {
   id: Scalars['ID'];
@@ -4198,6 +4226,7 @@ export type ModifyCollateralEventResolvers<ContextType = MeshContext & { endpoin
 
 export type OrderResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  sender?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   digest?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   validationResult?: Resolver<ResolversTypes['OrderValidationResult'], ParentType, ContextType>;
   priceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -4208,6 +4237,8 @@ export type OrderResolvers<ContextType = MeshContext & { endpoint: string }, Par
   totalAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   filledAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   collectedFee?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  expiration?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  nonce?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4569,7 +4600,7 @@ const clearinghouseTransforms = [];
 const additionalTypeDefs = [] as any[];
 const clearinghouseHandler = new GraphqlHandler({
               name: "Clearinghouse",
-              config: {"endpoint":"{context.endpoint:https://api.thegraph.com/subgraphs/name/frankfka/vertex-clearinghouse-sandbox}"},
+              config: {"endpoint":"{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}"},
               baseDir,
               cache,
               pubsub,

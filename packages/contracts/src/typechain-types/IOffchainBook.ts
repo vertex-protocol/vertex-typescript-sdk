@@ -180,7 +180,7 @@ export interface IOffchainBookInterface extends utils.Interface {
   events: {
     "CancelOrder(bytes32,uint8)": EventFragment;
     "FillOrder(bytes32,bytes32,int256,int256,int256)": EventFragment;
-    "ReportOrder(bytes32,uint64,int256,int256)": EventFragment;
+    "ReportOrder(bytes32,uint64,address,int256,int256,uint64,uint64)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "CancelOrder"): EventFragment;
@@ -216,11 +216,14 @@ export type FillOrderEventFilter = TypedEventFilter<FillOrderEvent>;
 export interface ReportOrderEventObject {
   orderDigest: string;
   subaccount: BigNumber;
-  amount: BigNumber;
+  sender: string;
   priceX18: BigNumber;
+  amount: BigNumber;
+  expiration: BigNumber;
+  nonce: BigNumber;
 }
 export type ReportOrderEvent = TypedEvent<
-  [string, BigNumber, BigNumber, BigNumber],
+  [string, BigNumber, string, BigNumber, BigNumber, BigNumber, BigNumber],
   ReportOrderEventObject
 >;
 
@@ -405,17 +408,23 @@ export interface IOffchainBook extends BaseContract {
       makerFee?: null
     ): FillOrderEventFilter;
 
-    "ReportOrder(bytes32,uint64,int256,int256)"(
+    "ReportOrder(bytes32,uint64,address,int256,int256,uint64,uint64)"(
       orderDigest?: PromiseOrValue<BytesLike> | null,
       subaccount?: PromiseOrValue<BigNumberish> | null,
+      sender?: null,
+      priceX18?: null,
       amount?: null,
-      priceX18?: null
+      expiration?: null,
+      nonce?: null
     ): ReportOrderEventFilter;
     ReportOrder(
       orderDigest?: PromiseOrValue<BytesLike> | null,
       subaccount?: PromiseOrValue<BigNumberish> | null,
+      sender?: null,
+      priceX18?: null,
       amount?: null,
-      priceX18?: null
+      expiration?: null,
+      nonce?: null
     ): ReportOrderEventFilter;
   };
 

@@ -72,15 +72,33 @@
       },
       {
         "indexed": false,
-        "internalType": "int256",
-        "name": "amount",
-        "type": "int256"
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
       },
       {
         "indexed": false,
         "internalType": "int256",
         "name": "priceX18",
         "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "amount",
+        "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "expiration",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "nonce",
+        "type": "uint64"
       }
     ],
     "name": "ReportOrder",
