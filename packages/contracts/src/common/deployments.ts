@@ -1,5 +1,5 @@
 import { VertexContracts } from './vertexContracts';
-import ArbitrumRinkebyDeployment from './deployments/deployment.arbitrumRinkeby.json';
+import ArbitrumGoerliDeployment from './deployments/deployment.arbitrumGoerli.json';
 
 export type VertexDeploymentAddresses = {
   [K in keyof VertexContracts]: string;
@@ -12,7 +12,7 @@ export const VERTEX_DEPLOYMENTS: Record<
   'testnet' | 'mainnet',
   VertexDeploymentAddresses
 > = {
-  testnet: ArbitrumRinkebyDeployment,
+  testnet: ArbitrumGoerliDeployment,
   // Not deployed yet
-  mainnet: ArbitrumRinkebyDeployment,
+  mainnet: ArbitrumGoerliDeployment,
 };
