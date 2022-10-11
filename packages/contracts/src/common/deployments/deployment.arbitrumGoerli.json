@@ -1,0 +1,12 @@
+{
+  "nodeUrl": "https://goerli-rollup.arbitrum.io/rpc",
+  "clearinghouseGraphUrl": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli",
+  "startBlock": 569889,
+  "deployer": "0x3c06e307BA6Ab81E8Ff6661c1559ce8027744AE5",
+  "quote": "0xbC47901f4d2C5fc871ae0037Ea05c3F614690781",
+  "querier": "0xEC1149dF1559eaDB0Af4cf6d9BeAc7a08Aa9f694",
+  "clearinghouse": "0xA1c062ddEf8f7B0a97e3Bb219108Ce73410772cE",
+  "endpoint": "0xf72BE10454B2fB514A2639da885045C89e3EB693",
+  "spotEngine": "0xB61B069d741C98DA3302986BF107aA9083b64133",
+  "perpEngine": "0xA1DbC395Cbaa8c7b74456697C42ADa8F2b08CAbb"
+}

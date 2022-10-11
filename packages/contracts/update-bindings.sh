@@ -37,7 +37,7 @@ echo "Updating deployments"
 SOURCE_DEPLOYMENTS_ROOT=$VERTEX_HOME/vertex-evm/
 DEST_DEPLOYMENTS_ROOT=src/common/deployments
 DEPLOYMENT_FILES=(
-"deployment.arbitrumRinkeby.json"
+"deployment.arbitrumGoerli.json"
 )
 
 rm -rf $DEST_DEPLOYMENTS_ROOT

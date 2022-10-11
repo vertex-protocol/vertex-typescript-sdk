@@ -13,6 +13,13 @@
           "user-agent": "JS GraphQL"
         },
         "introspect": false
+      },
+      "Arbitrum Goerli": {
+        "url": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": false
       }
     }
   }
