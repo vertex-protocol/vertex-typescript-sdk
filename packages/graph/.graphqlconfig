@@ -7,13 +7,6 @@
         "url": "http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph",
         "introspect": false
       },
-      "Arbitrum Rinkeby": {
-        "url": "https://api.thegraph.com/subgraphs/name/frankfka/vertex-clearinghouse-sandbox",
-        "headers": {
-          "user-agent": "JS GraphQL"
-        },
-        "introspect": false
-      },
       "Arbitrum Goerli": {
         "url": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli",
         "headers": {

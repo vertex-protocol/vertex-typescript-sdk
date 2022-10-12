@@ -37,9 +37,13 @@ fragment OrderEntityFieldsFragment on Order {
   subaccount {
     subaccountId
   }
+  market {
+    productId
+  }
   reportedAt
   reportedAtBlock
   filledAmount
   totalAmount
+  quoteAmount
   collectedFee
 }
