@@ -119,16 +119,12 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
             ...baseQueryVariables,
             // Unfortunately need to pass in a non-zero limit for query to work
             // need to rethink this
-            liquidateeLimit:
-              params.type === 'liquidatee' ? params.first : undefined,
+            liquidateeLimit: params.type === 'liquidatee' ? params.first : 1,
             modifyCollateralLimit:
-              params.type === 'modify_collateral' ? params.first : undefined,
-            settlePnlLimit:
-              params.type === 'settle_pnl' ? params.first : undefined,
-            reportOrderLimit:
-              params.type === 'report_order' ? params.first : undefined,
-            cancelOrderLimit:
-              params.type === 'cancel_order' ? params.first : undefined,
+              params.type === 'modify_collateral' ? params.first : 1,
+            settlePnlLimit: params.type === 'settle_pnl' ? params.first : 1,
+            reportOrderLimit: params.type === 'report_order' ? params.first : 1,
+            cancelOrderLimit: params.type === 'cancel_order' ? params.first : 1,
           });
         return {
           ...baseResponse,
