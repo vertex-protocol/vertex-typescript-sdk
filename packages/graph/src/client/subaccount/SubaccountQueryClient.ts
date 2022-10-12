@@ -117,12 +117,14 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
         const baseHistoryQueryData =
           await this.graph.SubaccountEventHistoryQuery({
             ...baseQueryVariables,
-            // Filter by limit
-            liquidateeLimit: 0,
-            modifyCollateralLimit: 0,
-            settlePnlLimit: 0,
-            reportOrderLimit: 0,
-            cancelOrderLimit: 0,
+            // Unfortunately need to pass in a non-zero limit for query to work
+            // need to rethink this
+            liquidateeLimit: params.type === 'liquidatee' ? params.first : 0,
+            modifyCollateralLimit:
+              params.type === 'modify_collateral' ? params.first : 0,
+            settlePnlLimit: params.type === 'settle_pnl' ? params.first : 0,
+            reportOrderLimit: params.type === 'report_order' ? params.first : 0,
+            cancelOrderLimit: params.type === 'cancel_order' ? params.first : 0,
           });
         return {
           ...baseResponse,
