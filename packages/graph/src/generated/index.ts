@@ -4611,7 +4611,7 @@ const clearinghouseTransforms = [];
 const additionalTypeDefs = [] as any[];
 const clearinghouseHandler = new GraphqlHandler({
               name: "Clearinghouse",
-              config: {"endpoint":"{context.endpoint:https://api.thegraph.com/subgraphs/id/QmYBL3NQmJEvLKR6z3rSAJMqTg4P5CygRYErdnwXa1p6j5}"},
+              config: {"endpoint":"{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}"},
               baseDir,
               cache,
               pubsub,
@@ -4815,7 +4815,7 @@ export type PaginatedAllMarketOrdersQueryQueryVariables = Exact<{
 
 
 export type PaginatedAllMarketOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
     & { subaccount: Pick<Subaccount, 'subaccountId'>, market: Pick<Market, 'productId'> }
   )> };
 
@@ -4827,7 +4827,7 @@ export type PaginatedSubaccountOrdersQueryQueryVariables = Exact<{
 
 
 export type PaginatedSubaccountOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
     & { subaccount: Pick<Subaccount, 'subaccountId'>, market: Pick<Market, 'productId'> }
   )> };
 
@@ -4838,12 +4838,12 @@ export type OrderByDigestQueryQueryVariables = Exact<{
 
 
 export type OrderByDigestQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
     & { subaccount: Pick<Subaccount, 'subaccountId'>, market: Pick<Market, 'productId'> }
   )> };
 
 export type OrderEntityFieldsFragmentFragment = (
-  Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'collectedFee'>
+  Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
   & { subaccount: Pick<Subaccount, 'subaccountId'>, market: Pick<Market, 'productId'> }
 );
 
@@ -4951,6 +4951,7 @@ export const OrderEntityFieldsFragmentFragmentDoc = gql`
   reportedAtBlock
   filledAmount
   totalAmount
+  quoteAmount
   collectedFee
 }
     ` as unknown as DocumentNode<OrderEntityFieldsFragmentFragment, unknown>;
