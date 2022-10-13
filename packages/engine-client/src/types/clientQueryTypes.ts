@@ -32,6 +32,7 @@ export interface EngineOrder {
   digest: string;
   // Raw order params for cancellation
   orderParams: OrderParams;
+  placementTime: number;
 }
 
 export type GetEngineOrderResponse = EngineOrder;

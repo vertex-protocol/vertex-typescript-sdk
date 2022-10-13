@@ -104,6 +104,7 @@ export interface EngineServerGetOrderResponse {
   nonce: BigNumberish;
   unfilled_amount: BigNumberish;
   digest: string;
+  placed_at: number;
 }
 
 export interface EngineServerValidateOrderResponse {
