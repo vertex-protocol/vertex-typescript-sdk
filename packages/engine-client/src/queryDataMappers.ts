@@ -46,6 +46,7 @@ export function mapEngineServerOrder(
       sender: order.sender,
       subaccountName: order.subaccount_name,
     },
+    placementTime: order.placed_at,
   };
 }
 
