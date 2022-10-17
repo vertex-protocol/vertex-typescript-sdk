@@ -11,10 +11,10 @@ async function main() {
   const signer = new Wallet(
     'xxx',
     new ethers.providers.StaticJsonRpcProvider(
-      'https://rinkeby.arbitrum.io/rpc',
+      'https://goerli-rollup.arbitrum.io/rpc',
       {
-        name: 'arbitrum-rinkeby',
-        chainId: 421611,
+        name: 'arbitrum-goerli',
+        chainId: 421613,
       },
     ),
   );
