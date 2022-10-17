@@ -8,6 +8,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "source": "./src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": "https://github.com/vertex-protocol/vertex-sdk",
   "scripts": {
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
@@ -38,5 +41,5 @@
     "readmeFile": "./README.md",
     "displayName": "Vertex Contracts"
   },
-  "gitHead": "60126587ae452ab8594b4cc48506cef4ecd4c205"
+  "gitHead": "5511a4ece847a20c07d766b0726bf07c1658d9ef"
 }
