@@ -15,9 +15,6 @@
     "dist",
     "src"
   ],
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/vertex-protocol/vertex-sdk",
