@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/client",
-  "version": "0.1.0-alpha.21",
+  "version": "0.1.0-alpha.22",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -20,10 +20,10 @@
     "src"
   ],
   "dependencies": {
-    "@vertex-protocol/contracts": "^0.1.0-alpha.21",
-    "@vertex-protocol/engine-client": "^0.1.0-alpha.21",
-    "@vertex-protocol/graph": "^0.1.0-alpha.21",
-    "@vertex-protocol/utils": "^0.1.0-alpha.21",
+    "@vertex-protocol/contracts": "^0.1.0-alpha.22",
+    "@vertex-protocol/engine-client": "^0.1.0-alpha.22",
+    "@vertex-protocol/graph": "^0.1.0-alpha.22",
+    "@vertex-protocol/utils": "^0.1.0-alpha.22",
     "ethers": "^5.7.1",
     "ts-mixer": "^6.0.1"
   },
