@@ -28,6 +28,7 @@ export function calcPerpBalanceNotionalValue(
 ): BigDecimal {
   return balanceWithProduct.amount
     .multipliedBy(balanceWithProduct.oraclePrice)
+    .abs()
     .div(10 ** decimals);
 }
 

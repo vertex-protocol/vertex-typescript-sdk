@@ -1132,6 +1132,7 @@ export type ModifyCollateralEvent = {
   subaccount: Subaccount;
   amount: Scalars['BigInt'];
   productId: Scalars['BigInt'];
+  newBalanceAmount: Scalars['BigInt'];
 };
 
 export type ModifyCollateralEvent_filter = {
@@ -1196,6 +1197,14 @@ export type ModifyCollateralEvent_filter = {
   productId_lte?: InputMaybe<Scalars['BigInt']>;
   productId_in?: InputMaybe<Array<Scalars['BigInt']>>;
   productId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  newBalanceAmount?: InputMaybe<Scalars['BigInt']>;
+  newBalanceAmount_not?: InputMaybe<Scalars['BigInt']>;
+  newBalanceAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  newBalanceAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  newBalanceAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  newBalanceAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  newBalanceAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  newBalanceAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -1206,7 +1215,8 @@ export type ModifyCollateralEvent_orderBy =
   | 'blockTime'
   | 'subaccount'
   | 'amount'
-  | 'productId';
+  | 'productId'
+  | 'newBalanceAmount';
 
 export type Order = {
   id: Scalars['ID'];

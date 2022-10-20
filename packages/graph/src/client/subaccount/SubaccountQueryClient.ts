@@ -64,6 +64,19 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
           };
         },
       ),
+      tradeSummaries: data.subaccount.tradeSummaries.map((summary) => {
+        return {
+          productId: Number(summary.productId),
+          totalEntryQuoteAmountAbs: toBigDecimal(
+            summary.totalEntryQuoteAmountAbs,
+          ),
+          totalEntryAmountAbs: toBigDecimal(summary.totalEntryAmountAbs),
+          totalCloseQuoteAmountAbs: toBigDecimal(
+            summary.totalCloseQuoteAmountAbs,
+          ),
+          totalCloseAmountAbs: toBigDecimal(summary.totalCloseAmountAbs),
+        };
+      }),
     };
   }
 

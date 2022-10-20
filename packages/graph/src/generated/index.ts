@@ -1155,6 +1155,7 @@ export type ModifyCollateralEvent = {
   subaccount: Subaccount;
   amount: Scalars['BigInt'];
   productId: Scalars['BigInt'];
+  newBalanceAmount: Scalars['BigInt'];
 };
 
 export type ModifyCollateralEvent_filter = {
@@ -1219,6 +1220,14 @@ export type ModifyCollateralEvent_filter = {
   productId_lte?: InputMaybe<Scalars['BigInt']>;
   productId_in?: InputMaybe<Array<Scalars['BigInt']>>;
   productId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  newBalanceAmount?: InputMaybe<Scalars['BigInt']>;
+  newBalanceAmount_not?: InputMaybe<Scalars['BigInt']>;
+  newBalanceAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  newBalanceAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  newBalanceAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  newBalanceAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  newBalanceAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  newBalanceAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -1229,7 +1238,8 @@ export type ModifyCollateralEvent_orderBy =
   | 'blockTime'
   | 'subaccount'
   | 'amount'
-  | 'productId';
+  | 'productId'
+  | 'newBalanceAmount';
 
 export type Order = {
   id: Scalars['ID'];
@@ -4231,6 +4241,7 @@ export type ModifyCollateralEventResolvers<ContextType = MeshContext & { endpoin
   subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
   amount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  newBalanceAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4925,7 +4936,7 @@ export type SubaccountStateQueryQueryVariables = Exact<{
 
 export type SubaccountStateQueryQuery = { subaccount?: Maybe<(
     Pick<Subaccount, 'id' | 'owner' | 'name' | 'createdAt' | 'createdAtBlock'>
-    & { spotBalanceSummaries: Array<Pick<SpotBalanceSummary, 'id' | 'productId' | 'timeOpened' | 'netRealAmount' | 'totalNetInterest'>>, perpBalanceSummaries: Array<Pick<PerpBalanceSummary, 'id' | 'productId' | 'timeOpened' | 'vQuoteWithoutFunding' | 'totalNetFunding'>> }
+    & { spotBalanceSummaries: Array<Pick<SpotBalanceSummary, 'id' | 'productId' | 'timeOpened' | 'netRealAmount' | 'totalNetInterest'>>, perpBalanceSummaries: Array<Pick<PerpBalanceSummary, 'id' | 'productId' | 'timeOpened' | 'vQuoteWithoutFunding' | 'totalNetFunding'>>, tradeSummaries: Array<Pick<TradeSummary, 'id' | 'productId' | 'totalEntryQuoteAmountAbs' | 'totalEntryAmountAbs' | 'totalCloseQuoteAmountAbs' | 'totalCloseAmountAbs'>> }
   )> };
 
 export type SubaccountsForAddressQueryVariables = Exact<{
@@ -5183,6 +5194,14 @@ export const SubaccountStateQueryDocument = gql`
       timeOpened
       vQuoteWithoutFunding
       totalNetFunding
+    }
+    tradeSummaries {
+      id
+      productId
+      totalEntryQuoteAmountAbs
+      totalEntryAmountAbs
+      totalCloseQuoteAmountAbs
+      totalCloseAmountAbs
     }
   }
 }

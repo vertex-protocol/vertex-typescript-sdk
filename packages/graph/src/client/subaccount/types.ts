@@ -31,6 +31,13 @@ export interface GetSubaccountStateResponse {
     vQuoteWithoutFunding: BigDecimal;
     totalNetFunding: BigDecimal;
   }[];
+  tradeSummaries: {
+    productId: number;
+    totalEntryQuoteAmountAbs: BigDecimal;
+    totalEntryAmountAbs: BigDecimal;
+    totalCloseQuoteAmountAbs: BigDecimal;
+    totalCloseAmountAbs: BigDecimal;
+  }[];
 }
 
 export type GraphSubaccountEvent =

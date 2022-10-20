@@ -23,5 +23,14 @@ query SubaccountStateQuery($subaccountEntityId: ID!) {
       vQuoteWithoutFunding
       totalNetFunding
     }
+
+    tradeSummaries {
+      id
+      productId
+      totalEntryQuoteAmountAbs
+      totalEntryAmountAbs
+      totalCloseQuoteAmountAbs
+      totalCloseAmountAbs
+    }
   }
 }

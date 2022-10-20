@@ -1102,6 +1102,7 @@ type ModifyCollateralEvent {
   subaccount: Subaccount!
   amount: BigInt!
   productId: BigInt!
+  newBalanceAmount: BigInt!
 }
 
 input ModifyCollateralEvent_filter {
@@ -1166,6 +1167,14 @@ input ModifyCollateralEvent_filter {
   productId_lte: BigInt
   productId_in: [BigInt!]
   productId_not_in: [BigInt!]
+  newBalanceAmount: BigInt
+  newBalanceAmount_not: BigInt
+  newBalanceAmount_gt: BigInt
+  newBalanceAmount_lt: BigInt
+  newBalanceAmount_gte: BigInt
+  newBalanceAmount_lte: BigInt
+  newBalanceAmount_in: [BigInt!]
+  newBalanceAmount_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
@@ -1177,6 +1186,7 @@ enum ModifyCollateralEvent_orderBy {
   subaccount
   amount
   productId
+  newBalanceAmount
 }
 
 type Order {
