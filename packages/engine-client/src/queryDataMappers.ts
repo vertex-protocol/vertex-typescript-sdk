@@ -114,6 +114,7 @@ export function mapEngineServerPerpProduct(
       shortWeightMaintenance: fromX18(
         product.config.short_weight_maintenance_x18,
       ),
+      openInterest: fromX18(product.open_interest_x18),
     },
   };
 }

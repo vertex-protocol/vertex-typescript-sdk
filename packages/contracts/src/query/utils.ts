@@ -52,6 +52,7 @@ export function mapEnginePerpProduct(
     largePositionPenalty: fromX18(product.config.largePositionPenaltyX18),
     oraclePrice: fromX18(product.state.priceX18),
     emaPrice: fromX18(product.state.emaPriceX18),
+    openInterest: fromX18(product.state.openInterestX18),
   };
 }
 
