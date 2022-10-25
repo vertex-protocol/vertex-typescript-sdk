@@ -30,7 +30,7 @@ export function fromX18(val: BigNumberish): BigDecimal {
  * @param decimals number of fixed point decimal places in `val`
  */
 export function fromFixedPoint(val: BigNumberish, decimals = 18): BigDecimal {
-  return toBigDecimal(fromBn(BigNumber.from(val), decimals));
+  return toBigDecimal(fromBn(BigNumber.from(val), decimals ? decimals : 18));
 }
 
 /**
@@ -46,5 +46,5 @@ export function toFixedPoint(
   val: BigNumberish | BigDecimal,
   decimals = 18,
 ): BigNumber {
-  return toBn(val.toString(), decimals);
+  return toBn(val.toString(), decimals ? decimals : 18);
 }
