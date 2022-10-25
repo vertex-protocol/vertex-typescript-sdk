@@ -3,7 +3,13 @@ query PaginatedAllMarketOrdersQuery(
   $first: Int
   $skip: Int
 ) {
-  orders(where: { market: $marketEntityId }, first: $first, skip: $skip) {
+  orders(
+    where: { market: $marketEntityId }
+    first: $first
+    skip: $skip
+    orderDirection: desc
+    orderBy: reportedAt
+  ) {
     ...OrderEntityFieldsFragment
   }
 }
@@ -17,6 +23,8 @@ query PaginatedSubaccountOrdersQuery(
     where: { subaccount: $subaccountEntityId }
     first: $first
     skip: $skip
+    orderDirection: desc
+    orderBy: reportedAt
   ) {
     ...OrderEntityFieldsFragment
   }

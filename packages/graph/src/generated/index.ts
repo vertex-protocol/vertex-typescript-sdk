@@ -5066,14 +5066,26 @@ export const LatestOrderFillsQueryDocument = gql`
     ` as unknown as DocumentNode<LatestOrderFillsQueryQuery, LatestOrderFillsQueryQueryVariables>;
 export const PaginatedAllMarketOrdersQueryDocument = gql`
     query PaginatedAllMarketOrdersQuery($marketEntityId: String!, $first: Int, $skip: Int) {
-  orders(where: {market: $marketEntityId}, first: $first, skip: $skip) {
+  orders(
+    where: {market: $marketEntityId}
+    first: $first
+    skip: $skip
+    orderDirection: desc
+    orderBy: reportedAt
+  ) {
     ...OrderEntityFieldsFragment
   }
 }
     ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<PaginatedAllMarketOrdersQueryQuery, PaginatedAllMarketOrdersQueryQueryVariables>;
 export const PaginatedSubaccountOrdersQueryDocument = gql`
     query PaginatedSubaccountOrdersQuery($subaccountEntityId: String!, $first: Int, $skip: Int) {
-  orders(where: {subaccount: $subaccountEntityId}, first: $first, skip: $skip) {
+  orders(
+    where: {subaccount: $subaccountEntityId}
+    first: $first
+    skip: $skip
+    orderDirection: desc
+    orderBy: reportedAt
+  ) {
     ...OrderEntityFieldsFragment
   }
 }
