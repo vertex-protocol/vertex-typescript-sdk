@@ -141,7 +141,7 @@ export class EngineBaseClient {
     >,
   ) {
     if (response.data.status !== 'success') {
-      throw Error(`Error from server: ${JSON.stringify(response.data)}`);
+      throw response.data;
     }
   }
 }
