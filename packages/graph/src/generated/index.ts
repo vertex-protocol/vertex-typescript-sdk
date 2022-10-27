@@ -4714,6 +4714,18 @@ const merger = new(BareMerger as any)({
         },
         location: 'OrderByDigestQueryDocument.graphql'
       },{
+        document: SubaccountModifyCollateralEventHistoryQueryDocument,
+        get rawSDL() {
+          return printWithCache(SubaccountModifyCollateralEventHistoryQueryDocument);
+        },
+        location: 'SubaccountModifyCollateralEventHistoryQueryDocument.graphql'
+      },{
+        document: SubaccountLiquidationEventHistoryQueryDocument,
+        get rawSDL() {
+          return printWithCache(SubaccountLiquidationEventHistoryQueryDocument);
+        },
+        location: 'SubaccountLiquidationEventHistoryQueryDocument.graphql'
+      },{
         document: SubaccountEventHistoryQueryDocument,
         get rawSDL() {
           return printWithCache(SubaccountEventHistoryQueryDocument);
@@ -4857,6 +4869,28 @@ export type OrderEntityFieldsFragmentFragment = (
   Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
   & { subaccount: Pick<Subaccount, 'subaccountId'>, market: Pick<Market, 'productId'> }
 );
+
+export type SubaccountModifyCollateralEventHistoryQueryQueryVariables = Exact<{
+  subaccountEntityId: Scalars['String'];
+  maxTimeExclusive: Scalars['BigInt'];
+  minTimeInclusive: Scalars['BigInt'];
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SubaccountModifyCollateralEventHistoryQueryQuery = { modifyCollateralEvents: Array<Pick<ModifyCollateralEvent, 'id' | 'blockTime' | 'amount' | 'productId'>> };
+
+export type SubaccountLiquidationEventHistoryQueryQueryVariables = Exact<{
+  subaccountEntityId: Scalars['String'];
+  maxTimeExclusive: Scalars['BigInt'];
+  minTimeInclusive: Scalars['BigInt'];
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SubaccountLiquidationEventHistoryQueryQuery = { liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'productId' | 'liquidatorBaseDelta' | 'liquidatorQuoteDelta' | 'insuranceCoverage'>> };
 
 export type SubaccountEventHistoryQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
@@ -5097,6 +5131,40 @@ export const OrderByDigestQueryDocument = gql`
   }
 }
     ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<OrderByDigestQueryQuery, OrderByDigestQueryQueryVariables>;
+export const SubaccountModifyCollateralEventHistoryQueryDocument = gql`
+    query SubaccountModifyCollateralEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $skip: Int, $first: Int) {
+  modifyCollateralEvents(
+    where: {subaccount: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
+    orderBy: blockTime
+    orderDirection: desc
+    first: $first
+    skip: $skip
+  ) {
+    id
+    blockTime
+    amount
+    productId
+  }
+}
+    ` as unknown as DocumentNode<SubaccountModifyCollateralEventHistoryQueryQuery, SubaccountModifyCollateralEventHistoryQueryQueryVariables>;
+export const SubaccountLiquidationEventHistoryQueryDocument = gql`
+    query SubaccountLiquidationEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $skip: Int, $first: Int) {
+  liquidationEvents(
+    where: {liquidatee: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
+    orderBy: blockTime
+    orderDirection: desc
+    first: $first
+    skip: $skip
+  ) {
+    id
+    blockTime
+    productId
+    liquidatorBaseDelta
+    liquidatorQuoteDelta
+    insuranceCoverage
+  }
+}
+    ` as unknown as DocumentNode<SubaccountLiquidationEventHistoryQueryQuery, SubaccountLiquidationEventHistoryQueryQueryVariables>;
 export const SubaccountEventHistoryQueryDocument = gql`
     query SubaccountEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $skip: Int, $modifyCollateralLimit: Int, $settlePnlLimit: Int, $liquidateeLimit: Int, $reportOrderLimit: Int, $cancelOrderLimit: Int) {
   modifyCollateralEvents(
@@ -5241,6 +5309,8 @@ export const SubaccountsForAddressDocument = gql`
 
 
 
+
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -5264,6 +5334,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     OrderByDigestQuery(variables: OrderByDigestQueryQueryVariables, options?: C): Promise<OrderByDigestQueryQuery> {
       return requester<OrderByDigestQueryQuery, OrderByDigestQueryQueryVariables>(OrderByDigestQueryDocument, variables, options) as Promise<OrderByDigestQueryQuery>;
+    },
+    SubaccountModifyCollateralEventHistoryQuery(variables: SubaccountModifyCollateralEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountModifyCollateralEventHistoryQueryQuery> {
+      return requester<SubaccountModifyCollateralEventHistoryQueryQuery, SubaccountModifyCollateralEventHistoryQueryQueryVariables>(SubaccountModifyCollateralEventHistoryQueryDocument, variables, options) as Promise<SubaccountModifyCollateralEventHistoryQueryQuery>;
+    },
+    SubaccountLiquidationEventHistoryQuery(variables: SubaccountLiquidationEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountLiquidationEventHistoryQueryQuery> {
+      return requester<SubaccountLiquidationEventHistoryQueryQuery, SubaccountLiquidationEventHistoryQueryQueryVariables>(SubaccountLiquidationEventHistoryQueryDocument, variables, options) as Promise<SubaccountLiquidationEventHistoryQueryQuery>;
     },
     SubaccountEventHistoryQuery(variables: SubaccountEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountEventHistoryQueryQuery> {
       return requester<SubaccountEventHistoryQueryQuery, SubaccountEventHistoryQueryQueryVariables>(SubaccountEventHistoryQueryDocument, variables, options) as Promise<SubaccountEventHistoryQueryQuery>;

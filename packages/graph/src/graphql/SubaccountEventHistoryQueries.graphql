@@ -1,3 +1,57 @@
+query SubaccountModifyCollateralEventHistoryQuery(
+  $subaccountEntityId: String!
+  $maxTimeExclusive: BigInt!
+  $minTimeInclusive: BigInt!
+  $skip: Int
+  $first: Int
+) {
+  modifyCollateralEvents(
+    where: {
+      subaccount: $subaccountEntityId
+      blockTime_lt: $maxTimeExclusive
+      blockTime_gt: $minTimeInclusive
+    }
+    orderBy: blockTime
+    orderDirection: desc
+    first: $first
+    skip: $skip
+  ) {
+    id
+    blockTime
+
+    amount
+    productId
+  }
+}
+
+query SubaccountLiquidationEventHistoryQuery(
+  $subaccountEntityId: String!
+  $maxTimeExclusive: BigInt!
+  $minTimeInclusive: BigInt!
+  $skip: Int
+  $first: Int
+) {
+  liquidationEvents(
+    where: {
+      liquidatee: $subaccountEntityId
+      blockTime_lt: $maxTimeExclusive
+      blockTime_gt: $minTimeInclusive
+    }
+    orderBy: blockTime
+    orderDirection: desc
+    first: $first
+    skip: $skip
+  ) {
+    id
+    blockTime
+
+    productId
+    liquidatorBaseDelta
+    liquidatorQuoteDelta
+    insuranceCoverage
+  }
+}
+
 query SubaccountEventHistoryQuery(
   $subaccountEntityId: String!
   $maxTimeExclusive: BigInt!
