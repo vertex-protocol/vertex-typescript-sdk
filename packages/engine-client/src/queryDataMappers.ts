@@ -38,6 +38,7 @@ export function mapEngineServerOrder(
     totalAmount: toBigDecimal(order.amount),
     unfilledAmount: toBigDecimal(order.unfilled_amount),
     // Standardizes from hex
+    // toFixed is required as toString gives values with `e`
     orderParams: {
       amount: toBigDecimal(order.amount).toFixed(),
       expiration: toBigDecimal(order.expiration).toFixed(),
