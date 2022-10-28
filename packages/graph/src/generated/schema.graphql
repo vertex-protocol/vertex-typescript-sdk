@@ -1191,6 +1191,7 @@ enum ModifyCollateralEvent_orderBy {
 
 type Order {
   id: ID!
+  type: OrderType!
   sender: Bytes!
   digest: Bytes!
   validationResult: OrderValidationResult!
@@ -1204,6 +1205,7 @@ type Order {
   quoteAmount: BigInt!
   collectedFee: BigInt!
   expiration: BigInt!
+  realExpiration: BigInt!
   nonce: BigInt!
 }
 
@@ -1211,6 +1213,14 @@ type Order {
 enum OrderDirection {
   asc
   desc
+}
+
+enum OrderType {
+  DEFAULT
+  IOC
+  FOK
+  POST_ONLY
+  UNKNOWN
 }
 
 enum OrderValidationResult {
@@ -1235,6 +1245,10 @@ input Order_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
+  type: OrderType
+  type_not: OrderType
+  type_in: [OrderType!]
+  type_not_in: [OrderType!]
   sender: Bytes
   sender_not: Bytes
   sender_in: [Bytes!]
@@ -1357,6 +1371,14 @@ input Order_filter {
   expiration_lte: BigInt
   expiration_in: [BigInt!]
   expiration_not_in: [BigInt!]
+  realExpiration: BigInt
+  realExpiration_not: BigInt
+  realExpiration_gt: BigInt
+  realExpiration_lt: BigInt
+  realExpiration_gte: BigInt
+  realExpiration_lte: BigInt
+  realExpiration_in: [BigInt!]
+  realExpiration_not_in: [BigInt!]
   nonce: BigInt
   nonce_not: BigInt
   nonce_gt: BigInt
@@ -1371,6 +1393,7 @@ input Order_filter {
 
 enum Order_orderBy {
   id
+  type
   sender
   digest
   validationResult
@@ -1384,6 +1407,7 @@ enum Order_orderBy {
   quoteAmount
   collectedFee
   expiration
+  realExpiration
   nonce
 }
 

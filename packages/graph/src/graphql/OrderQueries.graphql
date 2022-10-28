@@ -30,6 +30,23 @@ query PaginatedSubaccountOrdersQuery(
   }
 }
 
+query PaginatedSubaccountOrdersForProductsQuery(
+  $subaccountEntityId: String!
+  $allowedMarkets: [String!]!
+  $first: Int
+  $skip: Int
+) {
+  orders(
+    where: { subaccount: $subaccountEntityId, market_in: $allowedMarkets }
+    first: $first
+    skip: $skip
+    orderDirection: desc
+    orderBy: reportedAt
+  ) {
+    ...OrderEntityFieldsFragment
+  }
+}
+
 query OrderByDigestQuery($digest: Bytes!, $marketEntityId: String!) {
   orders(where: { digest: $digest, market: $marketEntityId }) {
     ...OrderEntityFieldsFragment

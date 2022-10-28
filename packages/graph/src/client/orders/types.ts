@@ -1,6 +1,7 @@
 import {
   OrderByDigestQueryQuery,
   PaginatedAllMarketOrdersQueryQuery,
+  PaginatedSubaccountOrdersForProductsQueryQuery,
   PaginatedSubaccountOrdersQueryQuery,
 } from '../../generated';
 import { PaginationParams } from '../types';
@@ -32,6 +33,14 @@ export interface SubaccountOrdersParams extends PaginationParams {
 
 export type SubaccountOrdersResponse =
   PaginatedSubaccountOrdersQueryQuery['orders'];
+
+export interface SubaccountOrdersForProductsParams extends PaginationParams {
+  subaccountId: number;
+  productIds: number[];
+}
+
+export type SubaccountOrdersForProductsResponse =
+  PaginatedSubaccountOrdersForProductsQueryQuery['orders'];
 
 export interface OrderByDigestParams {
   productId: number;

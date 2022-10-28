@@ -5,6 +5,8 @@ import {
   LatestOrderFillsParams,
   OrderByDigestParams,
   OrderByDigestResponse,
+  SubaccountOrdersForProductsParams,
+  SubaccountOrdersForProductsResponse,
   SubaccountOrdersParams,
   SubaccountOrdersResponse,
 } from './types';
@@ -51,6 +53,23 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
   ): Promise<SubaccountOrdersResponse> {
     const data = await this.graph.PaginatedSubaccountOrdersQuery({
       subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+      first: params.first,
+      skip: params.skip,
+    });
+    return data.orders;
+  }
+
+  /**
+   * Get orders for a given subaccount for specific markets with pagination
+   *
+   * @param params
+   */
+  async getSubaccountOrdersForProducts(
+    params: SubaccountOrdersForProductsParams,
+  ): Promise<SubaccountOrdersForProductsResponse> {
+    const data = await this.graph.PaginatedSubaccountOrdersForProductsQuery({
+      subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+      allowedMarkets: params.productIds.map(getMarketEntityId),
       first: params.first,
       skip: params.skip,
     });

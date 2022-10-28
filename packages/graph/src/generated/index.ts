@@ -1243,6 +1243,7 @@ export type ModifyCollateralEvent_orderBy =
 
 export type Order = {
   id: Scalars['ID'];
+  type: OrderType;
   sender: Scalars['Bytes'];
   digest: Scalars['Bytes'];
   validationResult: OrderValidationResult;
@@ -1256,6 +1257,7 @@ export type Order = {
   quoteAmount: Scalars['BigInt'];
   collectedFee: Scalars['BigInt'];
   expiration: Scalars['BigInt'];
+  realExpiration: Scalars['BigInt'];
   nonce: Scalars['BigInt'];
 };
 
@@ -1263,6 +1265,13 @@ export type Order = {
 export type OrderDirection =
   | 'asc'
   | 'desc';
+
+export type OrderType =
+  | 'DEFAULT'
+  | 'IOC'
+  | 'FOK'
+  | 'POST_ONLY'
+  | 'UNKNOWN';
 
 export type OrderValidationResult =
   | 'PENDING'
@@ -1285,6 +1294,10 @@ export type Order_filter = {
   id_lte?: InputMaybe<Scalars['ID']>;
   id_in?: InputMaybe<Array<Scalars['ID']>>;
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  type?: InputMaybe<OrderType>;
+  type_not?: InputMaybe<OrderType>;
+  type_in?: InputMaybe<Array<OrderType>>;
+  type_not_in?: InputMaybe<Array<OrderType>>;
   sender?: InputMaybe<Scalars['Bytes']>;
   sender_not?: InputMaybe<Scalars['Bytes']>;
   sender_in?: InputMaybe<Array<Scalars['Bytes']>>;
@@ -1407,6 +1420,14 @@ export type Order_filter = {
   expiration_lte?: InputMaybe<Scalars['BigInt']>;
   expiration_in?: InputMaybe<Array<Scalars['BigInt']>>;
   expiration_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  realExpiration?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_not?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_gt?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_lt?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_gte?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_lte?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  realExpiration_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   nonce?: InputMaybe<Scalars['BigInt']>;
   nonce_not?: InputMaybe<Scalars['BigInt']>;
   nonce_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1421,6 +1442,7 @@ export type Order_filter = {
 
 export type Order_orderBy =
   | 'id'
+  | 'type'
   | 'sender'
   | 'digest'
   | 'validationResult'
@@ -1434,6 +1456,7 @@ export type Order_orderBy =
   | 'quoteAmount'
   | 'collectedFee'
   | 'expiration'
+  | 'realExpiration'
   | 'nonce';
 
 export type PerpBalanceSummary = {
@@ -3973,6 +3996,7 @@ export type ResolversTypes = ResolversObject<{
   ModifyCollateralEvent_orderBy: ModifyCollateralEvent_orderBy;
   Order: ResolverTypeWrapper<Order>;
   OrderDirection: OrderDirection;
+  OrderType: OrderType;
   OrderValidationResult: OrderValidationResult;
   Order_filter: Order_filter;
   Order_orderBy: Order_orderBy;
@@ -4247,6 +4271,7 @@ export type ModifyCollateralEventResolvers<ContextType = MeshContext & { endpoin
 
 export type OrderResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['OrderType'], ParentType, ContextType>;
   sender?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   digest?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   validationResult?: Resolver<ResolversTypes['OrderValidationResult'], ParentType, ContextType>;
@@ -4260,6 +4285,7 @@ export type OrderResolvers<ContextType = MeshContext & { endpoint: string }, Par
   quoteAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   collectedFee?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   expiration?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  realExpiration?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   nonce?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -4708,6 +4734,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'PaginatedSubaccountOrdersQueryDocument.graphql'
       },{
+        document: PaginatedSubaccountOrdersForProductsQueryDocument,
+        get rawSDL() {
+          return printWithCache(PaginatedSubaccountOrdersForProductsQueryDocument);
+        },
+        location: 'PaginatedSubaccountOrdersForProductsQueryDocument.graphql'
+      },{
         document: OrderByDigestQueryDocument,
         get rawSDL() {
           return printWithCache(OrderByDigestQueryDocument);
@@ -4850,6 +4882,19 @@ export type PaginatedSubaccountOrdersQueryQueryVariables = Exact<{
 
 
 export type PaginatedSubaccountOrdersQueryQuery = { orders: Array<(
+    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
+    & { subaccount: Pick<Subaccount, 'subaccountId'>, market: Pick<Market, 'productId'> }
+  )> };
+
+export type PaginatedSubaccountOrdersForProductsQueryQueryVariables = Exact<{
+  subaccountEntityId: Scalars['String'];
+  allowedMarkets: Array<Scalars['String']> | Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type PaginatedSubaccountOrdersForProductsQueryQuery = { orders: Array<(
     Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
     & { subaccount: Pick<Subaccount, 'subaccountId'>, market: Pick<Market, 'productId'> }
   )> };
@@ -5124,6 +5169,19 @@ export const PaginatedSubaccountOrdersQueryDocument = gql`
   }
 }
     ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<PaginatedSubaccountOrdersQueryQuery, PaginatedSubaccountOrdersQueryQueryVariables>;
+export const PaginatedSubaccountOrdersForProductsQueryDocument = gql`
+    query PaginatedSubaccountOrdersForProductsQuery($subaccountEntityId: String!, $allowedMarkets: [String!]!, $first: Int, $skip: Int) {
+  orders(
+    where: {subaccount: $subaccountEntityId, market_in: $allowedMarkets}
+    first: $first
+    skip: $skip
+    orderDirection: desc
+    orderBy: reportedAt
+  ) {
+    ...OrderEntityFieldsFragment
+  }
+}
+    ${OrderEntityFieldsFragmentFragmentDoc}` as unknown as DocumentNode<PaginatedSubaccountOrdersForProductsQueryQuery, PaginatedSubaccountOrdersForProductsQueryQueryVariables>;
 export const OrderByDigestQueryDocument = gql`
     query OrderByDigestQuery($digest: Bytes!, $marketEntityId: String!) {
   orders(where: {digest: $digest, market: $marketEntityId}) {
@@ -5311,6 +5369,7 @@ export const SubaccountsForAddressDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -5331,6 +5390,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     PaginatedSubaccountOrdersQuery(variables: PaginatedSubaccountOrdersQueryQueryVariables, options?: C): Promise<PaginatedSubaccountOrdersQueryQuery> {
       return requester<PaginatedSubaccountOrdersQueryQuery, PaginatedSubaccountOrdersQueryQueryVariables>(PaginatedSubaccountOrdersQueryDocument, variables, options) as Promise<PaginatedSubaccountOrdersQueryQuery>;
+    },
+    PaginatedSubaccountOrdersForProductsQuery(variables: PaginatedSubaccountOrdersForProductsQueryQueryVariables, options?: C): Promise<PaginatedSubaccountOrdersForProductsQueryQuery> {
+      return requester<PaginatedSubaccountOrdersForProductsQueryQuery, PaginatedSubaccountOrdersForProductsQueryQueryVariables>(PaginatedSubaccountOrdersForProductsQueryDocument, variables, options) as Promise<PaginatedSubaccountOrdersForProductsQueryQuery>;
     },
     OrderByDigestQuery(variables: OrderByDigestQueryQueryVariables, options?: C): Promise<OrderByDigestQueryQuery> {
       return requester<OrderByDigestQueryQuery, OrderByDigestQueryQueryVariables>(OrderByDigestQueryDocument, variables, options) as Promise<OrderByDigestQueryQuery>;

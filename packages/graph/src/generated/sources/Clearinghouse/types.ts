@@ -1220,6 +1220,7 @@ export type ModifyCollateralEvent_orderBy =
 
 export type Order = {
   id: Scalars['ID'];
+  type: OrderType;
   sender: Scalars['Bytes'];
   digest: Scalars['Bytes'];
   validationResult: OrderValidationResult;
@@ -1233,6 +1234,7 @@ export type Order = {
   quoteAmount: Scalars['BigInt'];
   collectedFee: Scalars['BigInt'];
   expiration: Scalars['BigInt'];
+  realExpiration: Scalars['BigInt'];
   nonce: Scalars['BigInt'];
 };
 
@@ -1240,6 +1242,13 @@ export type Order = {
 export type OrderDirection =
   | 'asc'
   | 'desc';
+
+export type OrderType =
+  | 'DEFAULT'
+  | 'IOC'
+  | 'FOK'
+  | 'POST_ONLY'
+  | 'UNKNOWN';
 
 export type OrderValidationResult =
   | 'PENDING'
@@ -1262,6 +1271,10 @@ export type Order_filter = {
   id_lte?: InputMaybe<Scalars['ID']>;
   id_in?: InputMaybe<Array<Scalars['ID']>>;
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  type?: InputMaybe<OrderType>;
+  type_not?: InputMaybe<OrderType>;
+  type_in?: InputMaybe<Array<OrderType>>;
+  type_not_in?: InputMaybe<Array<OrderType>>;
   sender?: InputMaybe<Scalars['Bytes']>;
   sender_not?: InputMaybe<Scalars['Bytes']>;
   sender_in?: InputMaybe<Array<Scalars['Bytes']>>;
@@ -1384,6 +1397,14 @@ export type Order_filter = {
   expiration_lte?: InputMaybe<Scalars['BigInt']>;
   expiration_in?: InputMaybe<Array<Scalars['BigInt']>>;
   expiration_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  realExpiration?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_not?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_gt?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_lt?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_gte?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_lte?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  realExpiration_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   nonce?: InputMaybe<Scalars['BigInt']>;
   nonce_not?: InputMaybe<Scalars['BigInt']>;
   nonce_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1398,6 +1419,7 @@ export type Order_filter = {
 
 export type Order_orderBy =
   | 'id'
+  | 'type'
   | 'sender'
   | 'digest'
   | 'validationResult'
@@ -1411,6 +1433,7 @@ export type Order_orderBy =
   | 'quoteAmount'
   | 'collectedFee'
   | 'expiration'
+  | 'realExpiration'
   | 'nonce';
 
 export type PerpBalanceSummary = {
