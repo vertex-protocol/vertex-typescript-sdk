@@ -4,6 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
+  "private": true,
   "scripts": {
     "prepare": "husky install",
     "clean": "npx lerna run clean",
