@@ -49,7 +49,7 @@ function getOrderValues(params: OrderParams) {
     subaccountName: params.subaccountName,
     priceX18: toX18(params.price).toString(),
     amount: BigNumber.from(params.amount).toString(),
-    expiration: BigNumber.from(params.expiration).toNumber(),
+    expiration: BigNumber.from(params.expiration).toString(),
     nonce: BigNumber.from(params.nonce).toNumber(),
   };
 }

@@ -46,5 +46,6 @@ export function toFixedPoint(
   val: BigNumberish | BigDecimal,
   decimals = 18,
 ): BigNumber {
-  return toBn(val.toString(), decimals ? decimals : 18);
+  const valToParse = val instanceof BigDecimal ? val.toFixed() : val.toString();
+  return toBn(valToParse, decimals ? decimals : 18);
 }

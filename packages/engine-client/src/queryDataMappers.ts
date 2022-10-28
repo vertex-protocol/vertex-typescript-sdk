@@ -39,10 +39,10 @@ export function mapEngineServerOrder(
     unfilledAmount: toBigDecimal(order.unfilled_amount),
     // Standardizes from hex
     orderParams: {
-      amount: toBigDecimal(order.amount).toString(),
-      expiration: toBigDecimal(order.expiration).toString(),
-      nonce: toBigDecimal(order.nonce).toString(),
-      price: fromX18(order.price_x18).toString(),
+      amount: toBigDecimal(order.amount).toFixed(),
+      expiration: toBigDecimal(order.expiration).toFixed(),
+      nonce: toBigDecimal(order.nonce).toFixed(),
+      price: fromX18(order.price_x18).toFixed(),
       sender: order.sender,
       subaccountName: order.subaccount_name,
     },
