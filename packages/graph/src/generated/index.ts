@@ -4758,23 +4758,11 @@ const merger = new(BareMerger as any)({
         },
         location: 'SubaccountLiquidationEventHistoryQueryDocument.graphql'
       },{
-        document: SubaccountEventHistoryQueryDocument,
+        document: SubaccountSettlementEventHistoryQueryDocument,
         get rawSDL() {
-          return printWithCache(SubaccountEventHistoryQueryDocument);
+          return printWithCache(SubaccountSettlementEventHistoryQueryDocument);
         },
-        location: 'SubaccountEventHistoryQueryDocument.graphql'
-      },{
-        document: SubaccountTakerFillEventHistoryQueryDocument,
-        get rawSDL() {
-          return printWithCache(SubaccountTakerFillEventHistoryQueryDocument);
-        },
-        location: 'SubaccountTakerFillEventHistoryQueryDocument.graphql'
-      },{
-        document: SubaccountMakerFillEventHistoryQueryDocument,
-        get rawSDL() {
-          return printWithCache(SubaccountMakerFillEventHistoryQueryDocument);
-        },
-        location: 'SubaccountMakerFillEventHistoryQueryDocument.graphql'
+        location: 'SubaccountSettlementEventHistoryQueryDocument.graphql'
       },{
         document: SubaccountStateQueryDocument,
         get rawSDL() {
@@ -4937,76 +4925,16 @@ export type SubaccountLiquidationEventHistoryQueryQueryVariables = Exact<{
 
 export type SubaccountLiquidationEventHistoryQueryQuery = { liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'productId' | 'liquidatorBaseDelta' | 'liquidatorQuoteDelta' | 'insuranceCoverage'>> };
 
-export type SubaccountEventHistoryQueryQueryVariables = Exact<{
+export type SubaccountSettlementEventHistoryQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
   maxTimeExclusive: Scalars['BigInt'];
   minTimeInclusive: Scalars['BigInt'];
   skip?: InputMaybe<Scalars['Int']>;
-  modifyCollateralLimit?: InputMaybe<Scalars['Int']>;
-  settlePnlLimit?: InputMaybe<Scalars['Int']>;
-  liquidateeLimit?: InputMaybe<Scalars['Int']>;
-  reportOrderLimit?: InputMaybe<Scalars['Int']>;
-  cancelOrderLimit?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type SubaccountEventHistoryQueryQuery = { modifyCollateralEvents: Array<Pick<ModifyCollateralEvent, 'id' | 'blockTime' | 'amount' | 'productId'>>, settlePnlEvents: Array<Pick<SettlePnlEvent, 'id' | 'blockTime' | 'amount' | 'productId'>>, liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'productId' | 'liquidatorBaseDelta' | 'liquidatorQuoteDelta' | 'insuranceCoverage'>>, reportOrderEvents: Array<Pick<ReportOrderEvent, 'id' | 'blockTime'>>, cancelOrderEvents: Array<Pick<CancelOrderEvent, 'id' | 'blockTime'>> };
-
-export type SubaccountTakerFillEventHistoryQueryQueryVariables = Exact<{
-  subaccountEntityId: Scalars['String'];
-  maxTimeExclusive: Scalars['BigInt'];
-  minTimeInclusive: Scalars['BigInt'];
-  limit?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SubaccountTakerFillEventHistoryQueryQuery = { fillOrderEvents: Array<(
-    Pick<FillOrderEvent, 'id' | 'blockTime' | 'takerAmountDelta' | 'makerFee' | 'takerFee'>
-    & { makerOrder: (
-      Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
-      & { subaccount: Pick<Subaccount, 'subaccountId'> }
-    ), takerOrder: (
-      Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
-      & { subaccount: Pick<Subaccount, 'subaccountId'> }
-    ) }
-  )> };
-
-export type SubaccountMakerFillEventHistoryQueryQueryVariables = Exact<{
-  subaccountEntityId: Scalars['String'];
-  maxTimeExclusive: Scalars['BigInt'];
-  minTimeInclusive: Scalars['BigInt'];
-  limit?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SubaccountMakerFillEventHistoryQueryQuery = { fillOrderEvents: Array<(
-    Pick<FillOrderEvent, 'id' | 'blockTime' | 'takerAmountDelta' | 'makerFee' | 'takerFee'>
-    & { makerOrder: (
-      Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
-      & { subaccount: Pick<Subaccount, 'subaccountId'> }
-    ), takerOrder: (
-      Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
-      & { subaccount: Pick<Subaccount, 'subaccountId'> }
-    ) }
-  )> };
-
-export type FillOrderEventFragmentFragment = (
-  Pick<FillOrderEvent, 'id' | 'blockTime' | 'takerAmountDelta' | 'makerFee' | 'takerFee'>
-  & { makerOrder: (
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
-    & { subaccount: Pick<Subaccount, 'subaccountId'> }
-  ), takerOrder: (
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
-    & { subaccount: Pick<Subaccount, 'subaccountId'> }
-  ) }
-);
-
-export type EventOrderFragmentFragment = (
-  Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'collectedFee'>
-  & { subaccount: Pick<Subaccount, 'subaccountId'> }
-);
+export type SubaccountSettlementEventHistoryQueryQuery = { settlePnlEvents: Array<Pick<SettlePnlEvent, 'id' | 'blockTime' | 'productId' | 'amount'>> };
 
 export type SubaccountStateQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['ID'];
@@ -5045,36 +4973,6 @@ export const OrderEntityFieldsFragmentFragmentDoc = gql`
   collectedFee
 }
     ` as unknown as DocumentNode<OrderEntityFieldsFragmentFragment, unknown>;
-export const EventOrderFragmentFragmentDoc = gql`
-    fragment EventOrderFragment on Order {
-  id
-  digest
-  validationResult
-  priceX18
-  subaccount {
-    subaccountId
-  }
-  reportedAt
-  reportedAtBlock
-  filledAmount
-  collectedFee
-}
-    ` as unknown as DocumentNode<EventOrderFragmentFragment, unknown>;
-export const FillOrderEventFragmentFragmentDoc = gql`
-    fragment FillOrderEventFragment on FillOrderEvent {
-  id
-  blockTime
-  takerAmountDelta
-  makerFee
-  takerFee
-  makerOrder {
-    ...EventOrderFragment
-  }
-  takerOrder {
-    ...EventOrderFragment
-  }
-}
-    ${EventOrderFragmentFragmentDoc}` as unknown as DocumentNode<FillOrderEventFragmentFragment, unknown>;
 export const CandlesticksQueryDocument = gql`
     query CandlesticksQuery($marketEntityId: String!, $maxTimeExclusive: BigInt!, $limit: Int!) {
   candlesticks(
@@ -5223,94 +5121,22 @@ export const SubaccountLiquidationEventHistoryQueryDocument = gql`
   }
 }
     ` as unknown as DocumentNode<SubaccountLiquidationEventHistoryQueryQuery, SubaccountLiquidationEventHistoryQueryQueryVariables>;
-export const SubaccountEventHistoryQueryDocument = gql`
-    query SubaccountEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $skip: Int, $modifyCollateralLimit: Int, $settlePnlLimit: Int, $liquidateeLimit: Int, $reportOrderLimit: Int, $cancelOrderLimit: Int) {
-  modifyCollateralEvents(
-    where: {subaccount: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
-    orderBy: blockTime
-    orderDirection: desc
-    first: $modifyCollateralLimit
-    skip: $skip
-  ) {
-    id
-    blockTime
-    amount
-    productId
-  }
+export const SubaccountSettlementEventHistoryQueryDocument = gql`
+    query SubaccountSettlementEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $skip: Int, $first: Int) {
   settlePnlEvents(
     where: {subaccount: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
     orderBy: blockTime
     orderDirection: desc
-    first: $settlePnlLimit
+    first: $first
     skip: $skip
   ) {
     id
     blockTime
+    productId
     amount
-    productId
-  }
-  liquidationEvents(
-    where: {liquidatee: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
-    orderBy: blockTime
-    orderDirection: desc
-    first: $liquidateeLimit
-    skip: $skip
-  ) {
-    id
-    blockTime
-    productId
-    liquidatorBaseDelta
-    liquidatorQuoteDelta
-    insuranceCoverage
-  }
-  reportOrderEvents(
-    where: {subaccount: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
-    orderBy: blockTime
-    orderDirection: desc
-    first: $reportOrderLimit
-    skip: $skip
-  ) {
-    id
-    blockTime
-  }
-  cancelOrderEvents(
-    where: {subaccount: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
-    orderBy: blockTime
-    orderDirection: desc
-    first: $cancelOrderLimit
-    skip: $skip
-  ) {
-    id
-    blockTime
   }
 }
-    ` as unknown as DocumentNode<SubaccountEventHistoryQueryQuery, SubaccountEventHistoryQueryQueryVariables>;
-export const SubaccountTakerFillEventHistoryQueryDocument = gql`
-    query SubaccountTakerFillEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $limit: Int, $skip: Int) {
-  fillOrderEvents(
-    where: {taker: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
-    orderBy: blockTime
-    orderDirection: desc
-    first: $limit
-    skip: $skip
-  ) {
-    ...FillOrderEventFragment
-  }
-}
-    ${FillOrderEventFragmentFragmentDoc}` as unknown as DocumentNode<SubaccountTakerFillEventHistoryQueryQuery, SubaccountTakerFillEventHistoryQueryQueryVariables>;
-export const SubaccountMakerFillEventHistoryQueryDocument = gql`
-    query SubaccountMakerFillEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $limit: Int, $skip: Int) {
-  fillOrderEvents(
-    where: {maker: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
-    orderBy: blockTime
-    orderDirection: desc
-    first: $limit
-    skip: $skip
-  ) {
-    ...FillOrderEventFragment
-  }
-}
-    ${FillOrderEventFragmentFragmentDoc}` as unknown as DocumentNode<SubaccountMakerFillEventHistoryQueryQuery, SubaccountMakerFillEventHistoryQueryQueryVariables>;
+    ` as unknown as DocumentNode<SubaccountSettlementEventHistoryQueryQuery, SubaccountSettlementEventHistoryQueryQueryVariables>;
 export const SubaccountStateQueryDocument = gql`
     query SubaccountStateQuery($subaccountEntityId: ID!) {
   subaccount(id: $subaccountEntityId) {
@@ -5368,8 +5194,6 @@ export const SubaccountsForAddressDocument = gql`
 
 
 
-
-
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -5403,14 +5227,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     SubaccountLiquidationEventHistoryQuery(variables: SubaccountLiquidationEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountLiquidationEventHistoryQueryQuery> {
       return requester<SubaccountLiquidationEventHistoryQueryQuery, SubaccountLiquidationEventHistoryQueryQueryVariables>(SubaccountLiquidationEventHistoryQueryDocument, variables, options) as Promise<SubaccountLiquidationEventHistoryQueryQuery>;
     },
-    SubaccountEventHistoryQuery(variables: SubaccountEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountEventHistoryQueryQuery> {
-      return requester<SubaccountEventHistoryQueryQuery, SubaccountEventHistoryQueryQueryVariables>(SubaccountEventHistoryQueryDocument, variables, options) as Promise<SubaccountEventHistoryQueryQuery>;
-    },
-    SubaccountTakerFillEventHistoryQuery(variables: SubaccountTakerFillEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountTakerFillEventHistoryQueryQuery> {
-      return requester<SubaccountTakerFillEventHistoryQueryQuery, SubaccountTakerFillEventHistoryQueryQueryVariables>(SubaccountTakerFillEventHistoryQueryDocument, variables, options) as Promise<SubaccountTakerFillEventHistoryQueryQuery>;
-    },
-    SubaccountMakerFillEventHistoryQuery(variables: SubaccountMakerFillEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountMakerFillEventHistoryQueryQuery> {
-      return requester<SubaccountMakerFillEventHistoryQueryQuery, SubaccountMakerFillEventHistoryQueryQueryVariables>(SubaccountMakerFillEventHistoryQueryDocument, variables, options) as Promise<SubaccountMakerFillEventHistoryQueryQuery>;
+    SubaccountSettlementEventHistoryQuery(variables: SubaccountSettlementEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountSettlementEventHistoryQueryQuery> {
+      return requester<SubaccountSettlementEventHistoryQueryQuery, SubaccountSettlementEventHistoryQueryQueryVariables>(SubaccountSettlementEventHistoryQueryDocument, variables, options) as Promise<SubaccountSettlementEventHistoryQueryQuery>;
     },
     SubaccountStateQuery(variables: SubaccountStateQueryQueryVariables, options?: C): Promise<SubaccountStateQueryQuery> {
       return requester<SubaccountStateQueryQuery, SubaccountStateQueryQueryVariables>(SubaccountStateQueryDocument, variables, options) as Promise<SubaccountStateQueryQuery>;

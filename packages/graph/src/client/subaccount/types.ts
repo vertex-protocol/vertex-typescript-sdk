@@ -1,5 +1,7 @@
 import {
+  SubaccountLiquidationEventHistoryQueryQuery,
   SubaccountModifyCollateralEventHistoryQueryQuery,
+  SubaccountSettlementEventHistoryQueryQuery,
   SubaccountsForAddressQuery,
 } from '../../generated';
 import { BigDecimal } from '@vertex-protocol/utils';
@@ -38,17 +40,7 @@ export interface GetSubaccountStateResponse {
   }[];
 }
 
-export type GraphSubaccountEvent =
-  | 'cancel_order'
-  | 'maker_fill_order'
-  | 'taker_fill_order'
-  | 'liquidatee'
-  | 'modify_collateral'
-  | 'report_order'
-  | 'settle_pnl';
-
-export interface GetPaginatedSubaccountModifyCollateralEventsParams
-  extends PaginationParams {
+export interface PaginatedSubaccountEventsParams extends PaginationParams {
   subaccountId: number;
   // UNIX timestamp in seconds
   minTimeInclusive?: number;
@@ -58,3 +50,9 @@ export interface GetPaginatedSubaccountModifyCollateralEventsParams
 
 export type GetPaginatedSubaccountModifyCollateralEventsResponse =
   SubaccountModifyCollateralEventHistoryQueryQuery['modifyCollateralEvents'];
+
+export type GetPaginatedSubaccountLiquidationEventsResponse =
+  SubaccountLiquidationEventHistoryQueryQuery['liquidationEvents'];
+
+export type GetPaginatedSubaccountSettlementEventsResponse =
+  SubaccountSettlementEventHistoryQueryQuery['settlePnlEvents'];

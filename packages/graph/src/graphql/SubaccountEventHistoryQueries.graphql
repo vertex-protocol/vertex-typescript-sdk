@@ -52,36 +52,13 @@ query SubaccountLiquidationEventHistoryQuery(
   }
 }
 
-query SubaccountEventHistoryQuery(
+query SubaccountSettlementEventHistoryQuery(
   $subaccountEntityId: String!
   $maxTimeExclusive: BigInt!
   $minTimeInclusive: BigInt!
-  # Currently applies for all, and used for pagination, the thought is that you only paginate 1 type of event at once
   $skip: Int
-  # This enables hacky filtering of events
-  $modifyCollateralLimit: Int
-  $settlePnlLimit: Int
-  $liquidateeLimit: Int
-  $reportOrderLimit: Int
-  $cancelOrderLimit: Int
+  $first: Int
 ) {
-  modifyCollateralEvents(
-    where: {
-      subaccount: $subaccountEntityId
-      blockTime_lt: $maxTimeExclusive
-      blockTime_gt: $minTimeInclusive
-    }
-    orderBy: blockTime
-    orderDirection: desc
-    first: $modifyCollateralLimit
-    skip: $skip
-  ) {
-    id
-    blockTime
-
-    amount
-    productId
-  }
   settlePnlEvents(
     where: {
       subaccount: $subaccountEntityId
@@ -90,138 +67,13 @@ query SubaccountEventHistoryQuery(
     }
     orderBy: blockTime
     orderDirection: desc
-    first: $settlePnlLimit
+    first: $first
     skip: $skip
   ) {
     id
     blockTime
 
+    productId
     amount
-    productId
   }
-  liquidationEvents(
-    where: {
-      liquidatee: $subaccountEntityId
-      blockTime_lt: $maxTimeExclusive
-      blockTime_gt: $minTimeInclusive
-    }
-    orderBy: blockTime
-    orderDirection: desc
-    first: $liquidateeLimit
-    skip: $skip
-  ) {
-    id
-    blockTime
-
-    productId
-    liquidatorBaseDelta
-    liquidatorQuoteDelta
-    insuranceCoverage
-  }
-  reportOrderEvents(
-    where: {
-      subaccount: $subaccountEntityId
-      blockTime_lt: $maxTimeExclusive
-      blockTime_gt: $minTimeInclusive
-    }
-    orderBy: blockTime
-    orderDirection: desc
-    first: $reportOrderLimit
-    skip: $skip
-  ) {
-    id
-    blockTime
-
-    # TODO: more fields
-  }
-  cancelOrderEvents(
-    where: {
-      subaccount: $subaccountEntityId
-      blockTime_lt: $maxTimeExclusive
-      blockTime_gt: $minTimeInclusive
-    }
-    orderBy: blockTime
-    orderDirection: desc
-    first: $cancelOrderLimit
-    skip: $skip
-  ) {
-    id
-    blockTime
-
-    # TODO: more fields
-  }
-}
-
-# Separate queries for taker/maker order fills, as we can't match an "OR" on the taker/maker fields
-query SubaccountTakerFillEventHistoryQuery(
-  $subaccountEntityId: String!
-  $maxTimeExclusive: BigInt!
-  $minTimeInclusive: BigInt!
-  $limit: Int
-  $skip: Int
-) {
-  fillOrderEvents(
-    where: {
-      taker: $subaccountEntityId
-      blockTime_lt: $maxTimeExclusive
-      blockTime_gt: $minTimeInclusive
-    }
-    orderBy: blockTime
-    orderDirection: desc
-    first: $limit
-    skip: $skip
-  ) {
-    ...FillOrderEventFragment
-  }
-}
-query SubaccountMakerFillEventHistoryQuery(
-  $subaccountEntityId: String!
-  $maxTimeExclusive: BigInt!
-  $minTimeInclusive: BigInt!
-  $limit: Int
-  $skip: Int
-) {
-  fillOrderEvents(
-    where: {
-      maker: $subaccountEntityId
-      blockTime_lt: $maxTimeExclusive
-      blockTime_gt: $minTimeInclusive
-    }
-    orderBy: blockTime
-    orderDirection: desc
-    first: $limit
-    skip: $skip
-  ) {
-    ...FillOrderEventFragment
-  }
-}
-
-fragment FillOrderEventFragment on FillOrderEvent {
-  id
-  blockTime
-
-  takerAmountDelta
-  makerFee
-  takerFee
-  makerOrder {
-    ...EventOrderFragment
-  }
-  takerOrder {
-    ...EventOrderFragment
-  }
-}
-
-# All fields on Order
-fragment EventOrderFragment on Order {
-  id
-  digest
-  validationResult
-  priceX18
-  subaccount {
-    subaccountId
-  }
-  reportedAt
-  reportedAtBlock
-  filledAmount
-  collectedFee
 }

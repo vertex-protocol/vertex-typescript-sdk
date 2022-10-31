@@ -1,11 +1,13 @@
 import { BaseVertexGraphClient } from '../base';
 import {
-  GetPaginatedSubaccountModifyCollateralEventsParams,
+  GetPaginatedSubaccountLiquidationEventsResponse,
   GetPaginatedSubaccountModifyCollateralEventsResponse,
+  GetPaginatedSubaccountSettlementEventsResponse,
   GetSubaccountsParams,
   GetSubaccountsResponse,
   GetSubaccountStateParams,
   GetSubaccountStateResponse,
+  PaginatedSubaccountEventsParams,
 } from './types';
 import { getSubaccountEntityId } from '../../utils';
 import { nowInSeconds, toBigDecimal } from '@vertex-protocol/utils';
@@ -84,7 +86,7 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
    * @param params
    */
   async getSubaccountPaginatedModifyCollateralEvents(
-    params: GetPaginatedSubaccountModifyCollateralEventsParams,
+    params: PaginatedSubaccountEventsParams,
   ): Promise<GetPaginatedSubaccountModifyCollateralEventsResponse> {
     const baseResponse =
       await this.graph.SubaccountModifyCollateralEventHistoryQuery({
@@ -95,5 +97,44 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
         first: params.first,
       });
     return baseResponse.modifyCollateralEvents;
+  }
+
+  /**
+   * Retrieves on-chain liquidation events for a given subaccount
+   *
+   * @param params
+   */
+  async getSubaccountPaginatedLiquidationEvents(
+    params: PaginatedSubaccountEventsParams,
+  ): Promise<GetPaginatedSubaccountLiquidationEventsResponse> {
+    const baseResponse =
+      await this.graph.SubaccountLiquidationEventHistoryQuery({
+        subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+        maxTimeExclusive: params.maxTimeExclusive ?? nowInSeconds(),
+        minTimeInclusive: params.minTimeInclusive ?? 0,
+        skip: params.skip,
+        first: params.first,
+      });
+    return baseResponse.liquidationEvents;
+  }
+
+  /**
+   * Retrieves on-chain settlement events for a given subaccount
+   *
+   * @param params
+   */
+  async getSubaccountPaginatedSettlementEvents(
+    params: PaginatedSubaccountEventsParams,
+  ): Promise<GetPaginatedSubaccountSettlementEventsResponse> {
+    const baseResponse = await this.graph.SubaccountSettlementEventHistoryQuery(
+      {
+        subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+        maxTimeExclusive: params.maxTimeExclusive ?? nowInSeconds(),
+        minTimeInclusive: params.minTimeInclusive ?? 0,
+        skip: params.skip,
+        first: params.first,
+      },
+    );
+    return baseResponse.settlePnlEvents;
   }
 }
