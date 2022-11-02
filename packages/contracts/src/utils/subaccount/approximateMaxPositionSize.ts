@@ -79,6 +79,8 @@ export function approximateMaxPositionSize(
     const healthForAmount = calcHealthForAmount(
       existingBalance,
       amount,
+      // Passing 0 as vQuote for now, this fn isnt used / working
+      toBigDecimal(0),
       healthType,
     );
     // Assume quote health is unweighted as an approximation

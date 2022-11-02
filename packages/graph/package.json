@@ -23,7 +23,7 @@
     "src"
   ],
   "devDependencies": {
-    "@graphprotocol/client-cli": "^2.2.11"
+    "@graphprotocol/client-cli": "^2.2.15"
   },
   "dependencies": {
     "@ethersproject/constants": "^5.7.0",
@@ -40,5 +40,5 @@
     "readmeFile": "./README.md",
     "displayName": "Vertex Subgraph Client"
   },
-  "gitHead": "10a83daf359356370f7172e1ff820fdb852d1dac"
+  "gitHead": "0694bc6b5cd9a1d33f0f69977a37ed3e75fe2eec"
 }

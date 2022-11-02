@@ -1,7 +1,8 @@
 import { SubaccountSummaryResponse } from '../../query';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
-import { HealthStatus } from '../../common';
+import { HealthStatus, ProductEngineType } from '../../common';
 import { calcHealthForAmount } from '../health';
+import { toBigDecimal } from '@vertex-protocol/utils';
 
 /**
  * Given a series of deltas, estimate the resulting subaccount summary. Modifies balance amounts and all healths, but
@@ -12,7 +13,12 @@ import { calcHealthForAmount } from '../health';
  */
 export function getSubaccountSummaryWithDeltas(
   existingSummary: SubaccountSummaryResponse,
-  deltas: { productId: number; amountDelta: BigDecimal }[],
+  deltas: {
+    productId: number;
+    amountDelta: BigDecimal;
+    // Pass for perps
+    vQuoteDelta?: BigDecimal;
+  }[],
 ): SubaccountSummaryResponse {
   // Clone the existing summary, this is somewhat hacky, but will work in 99% of circumstances
   const newSummary: SubaccountSummaryResponse = {
@@ -38,10 +44,34 @@ export function getSubaccountSummaryWithDeltas(
     // Update balance
     const startingHealths = balance.health;
     balance.amount = balance.amount.plus(delta.amountDelta);
+    // Consideration for perps
+    if (balance.type === ProductEngineType.PERP && delta.vQuoteDelta) {
+      balance.vQuoteBalance = balance.vQuoteBalance.plus(delta.vQuoteDelta);
+    }
+    const vQuoteBalance =
+      balance.type === ProductEngineType.PERP
+        ? balance.vQuoteBalance
+        : toBigDecimal(0);
+    // Calculate new health
     const endingHealths: HealthStatus = {
-      initial: calcHealthForAmount(balance, balance.amount, 'initial'),
-      maintenance: calcHealthForAmount(balance, balance.amount, 'maintenance'),
-      unweighted: calcHealthForAmount(balance, balance.amount, 'unweighted'),
+      initial: calcHealthForAmount(
+        balance,
+        balance.amount,
+        vQuoteBalance,
+        'initial',
+      ),
+      maintenance: calcHealthForAmount(
+        balance,
+        balance.amount,
+        vQuoteBalance,
+        'maintenance',
+      ),
+      unweighted: calcHealthForAmount(
+        balance,
+        balance.amount,
+        vQuoteBalance,
+        'unweighted',
+      ),
     };
     balance.health = endingHealths;
 

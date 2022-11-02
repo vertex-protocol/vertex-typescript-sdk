@@ -6,16 +6,18 @@ import { BalanceSide, HealthType, Product } from '../common';
  * Given a balance and product, calculate the appropriate contract health
  *
  * @param amount
+ * @param vQuoteBalance
  * @param type
  * @param product
  */
 export function calcHealthForAmount(
   product: Product,
   amount: BigDecimal,
+  vQuoteBalance: BigDecimal,
   type: HealthType,
 ): BigDecimal {
   const weight = calcWeightForAmount(product, amount, type);
-  return weight.times(amount).times(product.oraclePrice);
+  return weight.times(amount).times(product.oraclePrice).plus(vQuoteBalance);
 }
 
 /**
