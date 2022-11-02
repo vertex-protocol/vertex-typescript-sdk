@@ -4,7 +4,7 @@ import {
   MarketWithProduct,
 } from '@vertex-protocol/contracts';
 import { BigNumber } from 'ethers';
-import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
+import { fromX18 } from '@vertex-protocol/utils';
 import {
   GetEngineAllMarketsResponse,
   GetEngineMarketLiquidityParams,
@@ -54,9 +54,9 @@ export class EngineQueryClient extends EngineBaseClient {
       balances.push({
         amount: fromX18(spotBalance.amount_x18),
         health: {
-          initial: toBigDecimal(spotBalance.initial_x18),
-          maintenance: toBigDecimal(spotBalance.maintenance_x18),
-          unweighted: toBigDecimal(spotBalance.pnl_x18),
+          initial: fromX18(spotBalance.initial_x18),
+          maintenance: fromX18(spotBalance.maintenance_x18),
+          unweighted: fromX18(spotBalance.pnl_x18),
         },
         ...mapEngineServerSpotProduct(product).product,
       });
@@ -74,9 +74,9 @@ export class EngineQueryClient extends EngineBaseClient {
         amount: fromX18(perpBalance.amount_x18),
         vQuoteBalance: fromX18(perpBalance.v_quote_balance_x18),
         health: {
-          initial: toBigDecimal(perpBalance.initial_x18),
-          maintenance: toBigDecimal(perpBalance.maintenance_x18),
-          unweighted: toBigDecimal(perpBalance.pnl_x18),
+          initial: fromX18(perpBalance.initial_x18),
+          maintenance: fromX18(perpBalance.maintenance_x18),
+          unweighted: fromX18(perpBalance.pnl_x18),
         },
         ...mapEngineServerPerpProduct(product).product,
       });
@@ -85,9 +85,9 @@ export class EngineQueryClient extends EngineBaseClient {
     return {
       balances: balances,
       health: {
-        initial: toBigDecimal(baseResponse.initial_health_x18),
-        maintenance: toBigDecimal(baseResponse.maintenance_health_x18),
-        unweighted: toBigDecimal(baseResponse.pnl_health_x18),
+        initial: fromX18(baseResponse.initial_health_x18),
+        maintenance: fromX18(baseResponse.maintenance_health_x18),
+        unweighted: fromX18(baseResponse.pnl_health_x18),
       },
     };
   }

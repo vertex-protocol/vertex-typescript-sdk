@@ -15,7 +15,7 @@ export function calcHealthForAmount(
   type: HealthType,
 ): BigDecimal {
   const weight = calcWeightForAmount(product, amount, type);
-  return weight.times(amount);
+  return weight.times(amount).times(product.oraclePrice);
 }
 
 /**
