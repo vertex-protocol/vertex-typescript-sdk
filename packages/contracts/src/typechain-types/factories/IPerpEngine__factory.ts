@@ -70,13 +70,7 @@ const _abi = [
       {
         indexed: false,
         internalType: "int256",
-        name: "socializedQuote",
-        type: "int256",
-      },
-      {
-        indexed: false,
-        internalType: "int256",
-        name: "socializedBase",
+        name: "amountSocializedX18",
         type: "int256",
       },
     ],
@@ -130,84 +124,33 @@ const _abi = [
         name: "subaccountId",
         type: "uint64",
       },
-    ],
-    name: "getBalanceAmountX18",
-    outputs: [
       {
-        internalType: "int256",
-        name: "",
-        type: "int256",
+        internalType: "uint256",
+        name: "amountLpX18",
+        type: "uint256",
       },
     ],
-    stateMutability: "view",
+    name: "burnLp",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint64",
-        name: "subaccountId",
+        name: "liquidateeId",
         type: "uint64",
       },
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        internalType: "enum IProductEngine.HealthType",
-        name: "healthType",
-        type: "uint8",
-      },
-      {
-        internalType: "int256",
-        name: "amountDeltaX18",
-        type: "int256",
-      },
-      {
-        internalType: "int256",
-        name: "vQuoteDeltaX18",
-        type: "int256",
-      },
-    ],
-    name: "getBalanceHealthWithDeltaX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
       {
         internalType: "uint64",
-        name: "subaccountId",
+        name: "liquidatorId",
         type: "uint64",
       },
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        internalType: "enum IProductEngine.HealthType",
-        name: "healthType",
-        type: "uint8",
-      },
     ],
-    name: "getBalanceHealthX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
+    name: "decomposeLps",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -239,116 +182,12 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-      {
-        internalType: "enum IProductEngine.HealthType",
-        name: "healthType",
-        type: "uint8",
-      },
-      {
-        components: [
-          {
-            internalType: "uint32",
-            name: "productId",
-            type: "uint32",
-          },
-          {
-            internalType: "int256",
-            name: "amountDeltaX18",
-            type: "int256",
-          },
-          {
-            internalType: "int256",
-            name: "vQuoteDeltaX18",
-            type: "int256",
-          },
-        ],
-        internalType: "struct IProductEngine.HealthDelta[]",
-        name: "healthDeltas",
-        type: "tuple[]",
-      },
-    ],
-    name: "getHealthWithDeltasX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-      {
-        internalType: "enum IProductEngine.HealthType",
-        name: "healthType",
-        type: "uint8",
-      },
-    ],
-    name: "getHealthX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint32",
         name: "productId",
         type: "uint32",
       },
-      {
-        internalType: "int256",
-        name: "amountX18",
-        type: "int256",
-      },
     ],
-    name: "getLiqPriceX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        internalType: "int256",
-        name: "healthAmountX18",
-        type: "int256",
-      },
-    ],
-    name: "getMaximumLiquidatableX18",
+    name: "getMarkPrice",
     outputs: [
       {
         internalType: "int256",
@@ -373,233 +212,6 @@ const _abi = [
         internalType: "address",
         name: "",
         type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-    ],
-    name: "getProduct",
-    outputs: [
-      {
-        components: [
-          {
-            components: [
-              {
-                internalType: "int256",
-                name: "longWeightInitialX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "shortWeightInitialX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "longWeightMaintenanceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "shortWeightMaintenanceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "largePositionPenaltyX18",
-                type: "int256",
-              },
-            ],
-            internalType: "struct IPerpEngine.Config",
-            name: "config",
-            type: "tuple",
-          },
-          {
-            components: [
-              {
-                internalType: "int256",
-                name: "priceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "emaPriceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "cumulativeFundingLongX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "cumulativeFundingShortX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "openInterestX18",
-                type: "int256",
-              },
-              {
-                internalType: "uint256",
-                name: "fundingLastUpdated",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "emaPriceLastUpdated",
-                type: "uint256",
-              },
-              {
-                internalType: "int256",
-                name: "availableSettleX18",
-                type: "int256",
-              },
-            ],
-            internalType: "struct IPerpEngine.State",
-            name: "state",
-            type: "tuple",
-          },
-        ],
-        internalType: "struct IPerpEngine.Product",
-        name: "",
-        type: "tuple",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-    ],
-    name: "getProductAndBalance",
-    outputs: [
-      {
-        components: [
-          {
-            components: [
-              {
-                internalType: "int256",
-                name: "longWeightInitialX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "shortWeightInitialX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "longWeightMaintenanceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "shortWeightMaintenanceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "largePositionPenaltyX18",
-                type: "int256",
-              },
-            ],
-            internalType: "struct IPerpEngine.Config",
-            name: "config",
-            type: "tuple",
-          },
-          {
-            components: [
-              {
-                internalType: "int256",
-                name: "priceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "emaPriceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "cumulativeFundingLongX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "cumulativeFundingShortX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "openInterestX18",
-                type: "int256",
-              },
-              {
-                internalType: "uint256",
-                name: "fundingLastUpdated",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "emaPriceLastUpdated",
-                type: "uint256",
-              },
-              {
-                internalType: "int256",
-                name: "availableSettleX18",
-                type: "int256",
-              },
-            ],
-            internalType: "struct IPerpEngine.State",
-            name: "state",
-            type: "tuple",
-          },
-        ],
-        internalType: "struct IPerpEngine.Product",
-        name: "",
-        type: "tuple",
-      },
-      {
-        components: [
-          {
-            internalType: "int256",
-            name: "amountX18",
-            type: "int256",
-          },
-          {
-            internalType: "int256",
-            name: "vQuoteBalanceX18",
-            type: "int256",
-          },
-          {
-            internalType: "int256",
-            name: "lastCumulativeFundingX18",
-            type: "int256",
-          },
-        ],
-        internalType: "struct IPerpEngine.Balance",
-        name: "",
-        type: "tuple",
       },
     ],
     stateMutability: "view",
@@ -641,87 +253,82 @@ const _abi = [
       {
         components: [
           {
-            components: [
-              {
-                internalType: "int256",
-                name: "longWeightInitialX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "shortWeightInitialX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "longWeightMaintenanceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "shortWeightMaintenanceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "largePositionPenaltyX18",
-                type: "int256",
-              },
-            ],
-            internalType: "struct IPerpEngine.Config",
-            name: "config",
-            type: "tuple",
+            internalType: "int256",
+            name: "supply",
+            type: "int256",
           },
           {
-            components: [
-              {
-                internalType: "int256",
-                name: "priceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "emaPriceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "cumulativeFundingLongX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "cumulativeFundingShortX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "openInterestX18",
-                type: "int256",
-              },
-              {
-                internalType: "uint256",
-                name: "fundingLastUpdated",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "emaPriceLastUpdated",
-                type: "uint256",
-              },
-              {
-                internalType: "int256",
-                name: "availableSettleX18",
-                type: "int256",
-              },
-            ],
-            internalType: "struct IPerpEngine.State",
-            name: "state",
-            type: "tuple",
+            internalType: "int256",
+            name: "cumulativeFundingPerLpX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "base",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "quote",
+            type: "int256",
+          },
+          {
+            internalType: "uint256",
+            name: "lastUpdateTime",
+            type: "uint256",
           },
         ],
-        internalType: "struct IPerpEngine.Product",
-        name: "product",
+        internalType: "struct IPerpEngine.LpState",
+        name: "lpState",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "int256",
+            name: "amountX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "lastCumulativeFundingX18",
+            type: "int256",
+          },
+        ],
+        internalType: "struct IPerpEngine.LpBalance",
+        name: "lpBalance",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "int256",
+            name: "cumulativeFundingLongX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "cumulativeFundingShortX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "availableSettleX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "openInterestX18",
+            type: "int256",
+          },
+          {
+            internalType: "uint256",
+            name: "lastUpdateTime",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IPerpEngine.State",
+        name: "state",
         type: "tuple",
       },
       {
@@ -753,17 +360,193 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
         internalType: "uint64",
         name: "subaccountId",
         type: "uint64",
       },
     ],
-    name: "hasAssets",
+    name: "getStateAndBalance",
     outputs: [
       {
-        internalType: "bool",
+        components: [
+          {
+            internalType: "int256",
+            name: "cumulativeFundingLongX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "cumulativeFundingShortX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "availableSettleX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "openInterestX18",
+            type: "int256",
+          },
+          {
+            internalType: "uint256",
+            name: "lastUpdateTime",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IPerpEngine.State",
         name: "",
-        type: "bool",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "int256",
+            name: "amountX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "vQuoteBalanceX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "lastCumulativeFundingX18",
+            type: "int256",
+          },
+        ],
+        internalType: "struct IPerpEngine.Balance",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "uint64",
+        name: "subaccountId",
+        type: "uint64",
+      },
+    ],
+    name: "getStatesAndBalances",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "int256",
+            name: "supply",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "cumulativeFundingPerLpX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "base",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "quote",
+            type: "int256",
+          },
+          {
+            internalType: "uint256",
+            name: "lastUpdateTime",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IPerpEngine.LpState",
+        name: "",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "int256",
+            name: "amountX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "lastCumulativeFundingX18",
+            type: "int256",
+          },
+        ],
+        internalType: "struct IPerpEngine.LpBalance",
+        name: "",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "int256",
+            name: "cumulativeFundingLongX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "cumulativeFundingShortX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "availableSettleX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "openInterestX18",
+            type: "int256",
+          },
+          {
+            internalType: "uint256",
+            name: "lastUpdateTime",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IPerpEngine.State",
+        name: "",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "int256",
+            name: "amountX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "vQuoteBalanceX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "lastCumulativeFundingX18",
+            type: "int256",
+          },
+        ],
+        internalType: "struct IPerpEngine.Balance",
+        name: "",
+        type: "tuple",
       },
     ],
     stateMutability: "view",
@@ -805,6 +588,34 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "uint64",
+        name: "subaccountId",
+        type: "uint64",
+      },
+      {
+        internalType: "uint256",
+        name: "amountBaseX18",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amountQuoteX18",
+        type: "uint256",
+      },
+    ],
+    name: "mintLp",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint64",
         name: "subaccountId",
         type: "uint64",
@@ -824,23 +635,73 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint64",
+        name: "subaccountId",
+        type: "uint64",
+      },
+      {
+        internalType: "int256",
+        name: "insuranceX18",
+        type: "int256",
+      },
+    ],
+    name: "socializeSubaccount",
+    outputs: [
+      {
+        internalType: "int256",
+        name: "",
+        type: "int256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint32",
         name: "productId",
         type: "uint32",
       },
       {
+        internalType: "uint64",
+        name: "subaccountId",
+        type: "uint64",
+      },
+      {
         internalType: "int256",
-        name: "vQuoteX18",
+        name: "amount",
         type: "int256",
       },
       {
-        internalType: "bool",
-        name: "isLong",
-        type: "bool",
+        internalType: "int256",
+        name: "priceX18",
+        type: "int256",
+      },
+      {
+        internalType: "int256",
+        name: "sizeIncrement",
+        type: "int256",
+      },
+      {
+        internalType: "int256",
+        name: "lpSpreadX18",
+        type: "int256",
       },
     ],
-    name: "socializeProduct",
-    outputs: [],
+    name: "swapLp",
+    outputs: [
+      {
+        internalType: "int256",
+        name: "",
+        type: "int256",
+      },
+      {
+        internalType: "int256",
+        name: "",
+        type: "int256",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "function",
   },

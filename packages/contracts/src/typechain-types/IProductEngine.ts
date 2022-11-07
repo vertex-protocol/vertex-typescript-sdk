@@ -46,56 +46,36 @@ export declare namespace IProductEngine {
     amountDeltaX18: BigNumber;
     vQuoteDeltaX18: BigNumber;
   };
-
-  export type HealthDeltaStruct = {
-    productId: PromiseOrValue<BigNumberish>;
-    amountDeltaX18: PromiseOrValue<BigNumberish>;
-    vQuoteDeltaX18: PromiseOrValue<BigNumberish>;
-  };
-
-  export type HealthDeltaStructOutput = [number, BigNumber, BigNumber] & {
-    productId: number;
-    amountDeltaX18: BigNumber;
-    vQuoteDeltaX18: BigNumber;
-  };
 }
 
 export interface IProductEngineInterface extends utils.Interface {
   functions: {
     "applyDeltas((uint32,uint64,int256,int256)[])": FunctionFragment;
-    "getBalanceAmountX18(uint32,uint64)": FunctionFragment;
-    "getBalanceHealthWithDeltaX18(uint64,uint32,uint8,int256,int256)": FunctionFragment;
-    "getBalanceHealthX18(uint64,uint32,uint8)": FunctionFragment;
+    "burnLp(uint32,uint64,uint256)": FunctionFragment;
+    "decomposeLps(uint64,uint64)": FunctionFragment;
     "getClearinghouse()": FunctionFragment;
     "getEngineType()": FunctionFragment;
-    "getHealthWithDeltasX18(uint64,uint8,(uint32,int256,int256)[])": FunctionFragment;
-    "getHealthX18(uint64,uint8)": FunctionFragment;
-    "getLiqPriceX18(uint32,int256)": FunctionFragment;
-    "getMaximumLiquidatableX18(uint64,uint32,int256)": FunctionFragment;
     "getOrderbook(uint32)": FunctionFragment;
     "getProductIds()": FunctionFragment;
-    "hasAssets(uint64)": FunctionFragment;
     "initialize(address,address,address,address,address)": FunctionFragment;
-    "socializeProduct(uint32,int256,bool)": FunctionFragment;
+    "mintLp(uint32,uint64,uint256,uint256)": FunctionFragment;
+    "socializeSubaccount(uint64,int256)": FunctionFragment;
+    "swapLp(uint32,uint64,int256,int256,int256,int256)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "applyDeltas"
-      | "getBalanceAmountX18"
-      | "getBalanceHealthWithDeltaX18"
-      | "getBalanceHealthX18"
+      | "burnLp"
+      | "decomposeLps"
       | "getClearinghouse"
       | "getEngineType"
-      | "getHealthWithDeltasX18"
-      | "getHealthX18"
-      | "getLiqPriceX18"
-      | "getMaximumLiquidatableX18"
       | "getOrderbook"
       | "getProductIds"
-      | "hasAssets"
       | "initialize"
-      | "socializeProduct"
+      | "mintLp"
+      | "socializeSubaccount"
+      | "swapLp"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -103,26 +83,16 @@ export interface IProductEngineInterface extends utils.Interface {
     values: [IProductEngine.ProductDeltaStruct[]]
   ): string;
   encodeFunctionData(
-    functionFragment: "getBalanceAmountX18",
+    functionFragment: "burnLp",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "decomposeLps",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getBalanceHealthWithDeltaX18",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getBalanceHealthX18",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
   ): string;
   encodeFunctionData(
     functionFragment: "getClearinghouse",
@@ -133,40 +103,12 @@ export interface IProductEngineInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getHealthWithDeltasX18",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      IProductEngine.HealthDeltaStruct[]
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getHealthX18",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getLiqPriceX18",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getMaximumLiquidatableX18",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getOrderbook",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getProductIds",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "hasAssets",
-    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
@@ -179,11 +121,27 @@ export interface IProductEngineInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "socializeProduct",
+    functionFragment: "mintLp",
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<boolean>
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "socializeSubaccount",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "swapLp",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
     ]
   ): string;
 
@@ -191,16 +149,9 @@ export interface IProductEngineInterface extends utils.Interface {
     functionFragment: "applyDeltas",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "burnLp", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getBalanceAmountX18",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getBalanceHealthWithDeltaX18",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getBalanceHealthX18",
+    functionFragment: "decomposeLps",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -212,22 +163,6 @@ export interface IProductEngineInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getHealthWithDeltasX18",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getHealthX18",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getLiqPriceX18",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getMaximumLiquidatableX18",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getOrderbook",
     data: BytesLike
   ): Result;
@@ -235,17 +170,18 @@ export interface IProductEngineInterface extends utils.Interface {
     functionFragment: "getProductIds",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "hasAssets", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "mintLp", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "socializeProduct",
+    functionFragment: "socializeSubaccount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "swapLp", data: BytesLike): Result;
 
   events: {
     "AddProduct(uint32)": EventFragment;
     "ProductUpdate(uint32)": EventFragment;
-    "SocializeProduct(uint32,int256,int256)": EventFragment;
+    "SocializeProduct(uint32,int256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AddProduct"): EventFragment;
@@ -269,11 +205,10 @@ export type ProductUpdateEventFilter = TypedEventFilter<ProductUpdateEvent>;
 
 export interface SocializeProductEventObject {
   productId: number;
-  socializedQuote: BigNumber;
-  socializedBase: BigNumber;
+  amountSocializedX18: BigNumber;
 }
 export type SocializeProductEvent = TypedEvent<
-  [number, BigNumber, BigNumber],
+  [number, BigNumber],
   SocializeProductEventObject
 >;
 
@@ -312,57 +247,22 @@ export interface IProductEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    getBalanceAmountX18(
+    burnLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+      amountLpX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
-    getBalanceHealthWithDeltaX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      amountDeltaX18: PromiseOrValue<BigNumberish>,
-      vQuoteDeltaX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    getBalanceHealthX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    decomposeLps(
+      liquidateeId: PromiseOrValue<BigNumberish>,
+      liquidatorId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     getClearinghouse(overrides?: CallOverrides): Promise<[string]>;
 
     getEngineType(overrides?: CallOverrides): Promise<[number]>;
-
-    getHealthWithDeltasX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      healthDeltas: IProductEngine.HealthDeltaStruct[],
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    getHealthX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    getLiqPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      amountX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    getMaximumLiquidatableX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      healthAmountX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
 
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
@@ -370,11 +270,6 @@ export interface IProductEngine extends BaseContract {
     ): Promise<[string]>;
 
     getProductIds(overrides?: CallOverrides): Promise<[number[]]>;
-
-    hasAssets(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
 
     initialize(
       _clearinghouse: PromiseOrValue<string>,
@@ -385,10 +280,27 @@ export interface IProductEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    socializeProduct(
+    mintLp(
       productId: PromiseOrValue<BigNumberish>,
-      vQuoteX18: PromiseOrValue<BigNumberish>,
-      isLong: PromiseOrValue<boolean>,
+      subaccountId: PromiseOrValue<BigNumberish>,
+      amountBaseX18: PromiseOrValue<BigNumberish>,
+      amountQuoteX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    socializeSubaccount(
+      subaccountId: PromiseOrValue<BigNumberish>,
+      insuranceX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    swapLp(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccountId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      priceX18: PromiseOrValue<BigNumberish>,
+      sizeIncrement: PromiseOrValue<BigNumberish>,
+      lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -398,57 +310,22 @@ export interface IProductEngine extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  getBalanceAmountX18(
+  burnLp(
     productId: PromiseOrValue<BigNumberish>,
     subaccountId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+    amountLpX18: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
-  getBalanceHealthWithDeltaX18(
-    subaccountId: PromiseOrValue<BigNumberish>,
-    productId: PromiseOrValue<BigNumberish>,
-    healthType: PromiseOrValue<BigNumberish>,
-    amountDeltaX18: PromiseOrValue<BigNumberish>,
-    vQuoteDeltaX18: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getBalanceHealthX18(
-    subaccountId: PromiseOrValue<BigNumberish>,
-    productId: PromiseOrValue<BigNumberish>,
-    healthType: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  decomposeLps(
+    liquidateeId: PromiseOrValue<BigNumberish>,
+    liquidatorId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   getClearinghouse(overrides?: CallOverrides): Promise<string>;
 
   getEngineType(overrides?: CallOverrides): Promise<number>;
-
-  getHealthWithDeltasX18(
-    subaccountId: PromiseOrValue<BigNumberish>,
-    healthType: PromiseOrValue<BigNumberish>,
-    healthDeltas: IProductEngine.HealthDeltaStruct[],
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getHealthX18(
-    subaccountId: PromiseOrValue<BigNumberish>,
-    healthType: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getLiqPriceX18(
-    productId: PromiseOrValue<BigNumberish>,
-    amountX18: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getMaximumLiquidatableX18(
-    subaccountId: PromiseOrValue<BigNumberish>,
-    productId: PromiseOrValue<BigNumberish>,
-    healthAmountX18: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
 
   getOrderbook(
     productId: PromiseOrValue<BigNumberish>,
@@ -456,11 +333,6 @@ export interface IProductEngine extends BaseContract {
   ): Promise<string>;
 
   getProductIds(overrides?: CallOverrides): Promise<number[]>;
-
-  hasAssets(
-    subaccountId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
 
   initialize(
     _clearinghouse: PromiseOrValue<string>,
@@ -471,10 +343,27 @@ export interface IProductEngine extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  socializeProduct(
+  mintLp(
     productId: PromiseOrValue<BigNumberish>,
-    vQuoteX18: PromiseOrValue<BigNumberish>,
-    isLong: PromiseOrValue<boolean>,
+    subaccountId: PromiseOrValue<BigNumberish>,
+    amountBaseX18: PromiseOrValue<BigNumberish>,
+    amountQuoteX18: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  socializeSubaccount(
+    subaccountId: PromiseOrValue<BigNumberish>,
+    insuranceX18: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  swapLp(
+    productId: PromiseOrValue<BigNumberish>,
+    subaccountId: PromiseOrValue<BigNumberish>,
+    amount: PromiseOrValue<BigNumberish>,
+    priceX18: PromiseOrValue<BigNumberish>,
+    sizeIncrement: PromiseOrValue<BigNumberish>,
+    lpSpreadX18: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -484,57 +373,22 @@ export interface IProductEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    getBalanceAmountX18(
+    burnLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
+      amountLpX18: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<void>;
 
-    getBalanceHealthWithDeltaX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      amountDeltaX18: PromiseOrValue<BigNumberish>,
-      vQuoteDeltaX18: PromiseOrValue<BigNumberish>,
+    decomposeLps(
+      liquidateeId: PromiseOrValue<BigNumberish>,
+      liquidatorId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getBalanceHealthX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<void>;
 
     getClearinghouse(overrides?: CallOverrides): Promise<string>;
 
     getEngineType(overrides?: CallOverrides): Promise<number>;
-
-    getHealthWithDeltasX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      healthDeltas: IProductEngine.HealthDeltaStruct[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getHealthX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getLiqPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      amountX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getMaximumLiquidatableX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      healthAmountX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
@@ -542,11 +396,6 @@ export interface IProductEngine extends BaseContract {
     ): Promise<string>;
 
     getProductIds(overrides?: CallOverrides): Promise<number[]>;
-
-    hasAssets(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
 
     initialize(
       _clearinghouse: PromiseOrValue<string>,
@@ -557,12 +406,29 @@ export interface IProductEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    socializeProduct(
+    mintLp(
       productId: PromiseOrValue<BigNumberish>,
-      vQuoteX18: PromiseOrValue<BigNumberish>,
-      isLong: PromiseOrValue<boolean>,
+      subaccountId: PromiseOrValue<BigNumberish>,
+      amountBaseX18: PromiseOrValue<BigNumberish>,
+      amountQuoteX18: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    socializeSubaccount(
+      subaccountId: PromiseOrValue<BigNumberish>,
+      insuranceX18: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    swapLp(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccountId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      priceX18: PromiseOrValue<BigNumberish>,
+      sizeIncrement: PromiseOrValue<BigNumberish>,
+      lpSpreadX18: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber, BigNumber]>;
   };
 
   filters: {
@@ -576,15 +442,13 @@ export interface IProductEngine extends BaseContract {
       productId?: PromiseOrValue<BigNumberish> | null
     ): ProductUpdateEventFilter;
 
-    "SocializeProduct(uint32,int256,int256)"(
+    "SocializeProduct(uint32,int256)"(
       productId?: PromiseOrValue<BigNumberish> | null,
-      socializedQuote?: null,
-      socializedBase?: null
+      amountSocializedX18?: null
     ): SocializeProductEventFilter;
     SocializeProduct(
       productId?: PromiseOrValue<BigNumberish> | null,
-      socializedQuote?: null,
-      socializedBase?: null
+      amountSocializedX18?: null
     ): SocializeProductEventFilter;
   };
 
@@ -594,57 +458,22 @@ export interface IProductEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getBalanceAmountX18(
+    burnLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      amountLpX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getBalanceHealthWithDeltaX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      amountDeltaX18: PromiseOrValue<BigNumberish>,
-      vQuoteDeltaX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getBalanceHealthX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+    decomposeLps(
+      liquidateeId: PromiseOrValue<BigNumberish>,
+      liquidatorId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     getClearinghouse(overrides?: CallOverrides): Promise<BigNumber>;
 
     getEngineType(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getHealthWithDeltasX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      healthDeltas: IProductEngine.HealthDeltaStruct[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getHealthX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getLiqPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      amountX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getMaximumLiquidatableX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      healthAmountX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
@@ -652,11 +481,6 @@ export interface IProductEngine extends BaseContract {
     ): Promise<BigNumber>;
 
     getProductIds(overrides?: CallOverrides): Promise<BigNumber>;
-
-    hasAssets(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     initialize(
       _clearinghouse: PromiseOrValue<string>,
@@ -667,10 +491,27 @@ export interface IProductEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    socializeProduct(
+    mintLp(
       productId: PromiseOrValue<BigNumberish>,
-      vQuoteX18: PromiseOrValue<BigNumberish>,
-      isLong: PromiseOrValue<boolean>,
+      subaccountId: PromiseOrValue<BigNumberish>,
+      amountBaseX18: PromiseOrValue<BigNumberish>,
+      amountQuoteX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    socializeSubaccount(
+      subaccountId: PromiseOrValue<BigNumberish>,
+      insuranceX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    swapLp(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccountId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      priceX18: PromiseOrValue<BigNumberish>,
+      sizeIncrement: PromiseOrValue<BigNumberish>,
+      lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -681,57 +522,22 @@ export interface IProductEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    getBalanceAmountX18(
+    burnLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      amountLpX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    getBalanceHealthWithDeltaX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      amountDeltaX18: PromiseOrValue<BigNumberish>,
-      vQuoteDeltaX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getBalanceHealthX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+    decomposeLps(
+      liquidateeId: PromiseOrValue<BigNumberish>,
+      liquidatorId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     getClearinghouse(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getEngineType(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getHealthWithDeltasX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      healthDeltas: IProductEngine.HealthDeltaStruct[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getHealthX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getLiqPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      amountX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getMaximumLiquidatableX18(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      productId: PromiseOrValue<BigNumberish>,
-      healthAmountX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
@@ -739,11 +545,6 @@ export interface IProductEngine extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getProductIds(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    hasAssets(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     initialize(
       _clearinghouse: PromiseOrValue<string>,
@@ -754,10 +555,27 @@ export interface IProductEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    socializeProduct(
+    mintLp(
       productId: PromiseOrValue<BigNumberish>,
-      vQuoteX18: PromiseOrValue<BigNumberish>,
-      isLong: PromiseOrValue<boolean>,
+      subaccountId: PromiseOrValue<BigNumberish>,
+      amountBaseX18: PromiseOrValue<BigNumberish>,
+      amountQuoteX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    socializeSubaccount(
+      subaccountId: PromiseOrValue<BigNumberish>,
+      insuranceX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    swapLp(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccountId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      priceX18: PromiseOrValue<BigNumberish>,
+      sizeIncrement: PromiseOrValue<BigNumberish>,
+      lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

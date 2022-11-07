@@ -51,7 +51,7 @@ interface BaseProduct {
  */
 export interface PerpProduct extends BaseProduct {
   type: ProductEngineType.PERP;
-  emaPrice: BigDecimal;
+  markPrice: BigDecimal;
   // Current open interest
   openInterest: BigDecimal;
 }

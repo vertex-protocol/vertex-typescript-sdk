@@ -66,7 +66,8 @@ export declare namespace IEndpoint {
     sender: PromiseOrValue<string>;
     subaccountName: PromiseOrValue<string>;
     liquidateeId: PromiseOrValue<BigNumberish>;
-    productId: PromiseOrValue<BigNumberish>;
+    mode: PromiseOrValue<BigNumberish>;
+    healthGroup: PromiseOrValue<BigNumberish>;
     amount: PromiseOrValue<BigNumberish>;
     nonce: PromiseOrValue<BigNumberish>;
   };
@@ -76,13 +77,15 @@ export declare namespace IEndpoint {
     string,
     BigNumber,
     number,
+    number,
     BigNumber,
     BigNumber
   ] & {
     sender: string;
     subaccountName: string;
     liquidateeId: BigNumber;
-    productId: number;
+    mode: number;
+    healthGroup: number;
     amount: BigNumber;
     nonce: BigNumber;
   };
@@ -118,17 +121,49 @@ export declare namespace IEndpoint {
   };
 }
 
-export declare namespace IProductEngine {
-  export type HealthDeltaStruct = {
-    productId: PromiseOrValue<BigNumberish>;
-    amountDeltaX18: PromiseOrValue<BigNumberish>;
-    vQuoteDeltaX18: PromiseOrValue<BigNumberish>;
+export declare namespace IClearinghouseState {
+  export type RiskStruct = {
+    longWeightInitialX18: PromiseOrValue<BigNumberish>;
+    shortWeightInitialX18: PromiseOrValue<BigNumberish>;
+    longWeightMaintenanceX18: PromiseOrValue<BigNumberish>;
+    shortWeightMaintenanceX18: PromiseOrValue<BigNumberish>;
+    largePositionPenaltyX18: PromiseOrValue<BigNumberish>;
   };
 
-  export type HealthDeltaStructOutput = [number, BigNumber, BigNumber] & {
-    productId: number;
-    amountDeltaX18: BigNumber;
-    vQuoteDeltaX18: BigNumber;
+  export type RiskStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ] & {
+    longWeightInitialX18: BigNumber;
+    shortWeightInitialX18: BigNumber;
+    longWeightMaintenanceX18: BigNumber;
+    shortWeightMaintenanceX18: BigNumber;
+    largePositionPenaltyX18: BigNumber;
+  };
+
+  export type RiskStoreStruct = {
+    longWeightInitial: PromiseOrValue<BigNumberish>;
+    shortWeightInitial: PromiseOrValue<BigNumberish>;
+    longWeightMaintenance: PromiseOrValue<BigNumberish>;
+    shortWeightMaintenance: PromiseOrValue<BigNumberish>;
+    largePositionPenalty: PromiseOrValue<BigNumberish>;
+  };
+
+  export type RiskStoreStructOutput = [
+    number,
+    number,
+    number,
+    number,
+    number
+  ] & {
+    longWeightInitial: number;
+    shortWeightInitial: number;
+    longWeightMaintenance: number;
+    shortWeightMaintenance: number;
+    largePositionPenalty: number;
   };
 }
 
@@ -140,7 +175,6 @@ export interface IClearinghouseInterface extends utils.Interface {
     "getEndpoint()": FunctionFragment;
     "getEngineByProduct(uint32)": FunctionFragment;
     "getEngineByType(uint8)": FunctionFragment;
-    "getHealthWithDeltasX18(uint64,uint8,(uint32,int256,int256)[])": FunctionFragment;
     "getHealthX18(uint64,uint8)": FunctionFragment;
     "getInsurance()": FunctionFragment;
     "getNumProducts()": FunctionFragment;
@@ -148,11 +182,12 @@ export interface IClearinghouseInterface extends utils.Interface {
     "getOraclePriceX18(uint32)": FunctionFragment;
     "getOrderbook(uint32)": FunctionFragment;
     "getQuote()": FunctionFragment;
+    "getRisk(uint32)": FunctionFragment;
     "getSubaccountId(address,string)": FunctionFragment;
     "getSubaccountOwner(uint64)": FunctionFragment;
     "getSupportedEngines()": FunctionFragment;
-    "liquidateSubaccount((address,string,uint64,uint32,int256,uint64))": FunctionFragment;
-    "registerProductForId()": FunctionFragment;
+    "liquidateSubaccount((address,string,uint64,uint8,uint32,int256,uint64))": FunctionFragment;
+    "registerProductForId((int48,int48,int48,int48,int48),uint32)": FunctionFragment;
     "settlePnl((uint64[]))": FunctionFragment;
     "withdrawCollateral((address,string,uint32,uint256,uint64))": FunctionFragment;
   };
@@ -165,7 +200,6 @@ export interface IClearinghouseInterface extends utils.Interface {
       | "getEndpoint"
       | "getEngineByProduct"
       | "getEngineByType"
-      | "getHealthWithDeltasX18"
       | "getHealthX18"
       | "getInsurance"
       | "getNumProducts"
@@ -173,6 +207,7 @@ export interface IClearinghouseInterface extends utils.Interface {
       | "getOraclePriceX18"
       | "getOrderbook"
       | "getQuote"
+      | "getRisk"
       | "getSubaccountId"
       | "getSubaccountOwner"
       | "getSupportedEngines"
@@ -207,14 +242,6 @@ export interface IClearinghouseInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getHealthWithDeltasX18",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      IProductEngine.HealthDeltaStruct[]
-    ]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getHealthX18",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
@@ -240,6 +267,10 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "getQuote", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "getRisk",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getSubaccountId",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
@@ -257,7 +288,7 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "registerProductForId",
-    values?: undefined
+    values: [IClearinghouseState.RiskStoreStruct, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "settlePnl",
@@ -290,10 +321,6 @@ export interface IClearinghouseInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getHealthWithDeltasX18",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getHealthX18",
     data: BytesLike
   ): Result;
@@ -318,6 +345,7 @@ export interface IClearinghouseInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getQuote", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getRisk", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getSubaccountId",
     data: BytesLike
@@ -468,15 +496,8 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    getHealthWithDeltasX18(
-      subaccount: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      healthDeltas: IProductEngine.HealthDeltaStruct[],
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     getHealthX18(
-      subaccount: PromiseOrValue<BigNumberish>,
+      subaccountId: PromiseOrValue<BigNumberish>,
       healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
@@ -499,6 +520,11 @@ export interface IClearinghouse extends BaseContract {
 
     getQuote(overrides?: CallOverrides): Promise<[string]>;
 
+    getRisk(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[IClearinghouseState.RiskStructOutput]>;
+
     getSubaccountId(
       owner: PromiseOrValue<string>,
       subaccountName: PromiseOrValue<string>,
@@ -518,6 +544,8 @@ export interface IClearinghouse extends BaseContract {
     ): Promise<ContractTransaction>;
 
     registerProductForId(
+      riskStore: IClearinghouseState.RiskStoreStruct,
+      healthGroup: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -560,15 +588,8 @@ export interface IClearinghouse extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  getHealthWithDeltasX18(
-    subaccount: PromiseOrValue<BigNumberish>,
-    healthType: PromiseOrValue<BigNumberish>,
-    healthDeltas: IProductEngine.HealthDeltaStruct[],
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
   getHealthX18(
-    subaccount: PromiseOrValue<BigNumberish>,
+    subaccountId: PromiseOrValue<BigNumberish>,
     healthType: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
@@ -591,6 +612,11 @@ export interface IClearinghouse extends BaseContract {
 
   getQuote(overrides?: CallOverrides): Promise<string>;
 
+  getRisk(
+    productId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<IClearinghouseState.RiskStructOutput>;
+
   getSubaccountId(
     owner: PromiseOrValue<string>,
     subaccountName: PromiseOrValue<string>,
@@ -610,6 +636,8 @@ export interface IClearinghouse extends BaseContract {
   ): Promise<ContractTransaction>;
 
   registerProductForId(
+    riskStore: IClearinghouseState.RiskStoreStruct,
+    healthGroup: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -652,15 +680,8 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    getHealthWithDeltasX18(
-      subaccount: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      healthDeltas: IProductEngine.HealthDeltaStruct[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     getHealthX18(
-      subaccount: PromiseOrValue<BigNumberish>,
+      subaccountId: PromiseOrValue<BigNumberish>,
       healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -683,6 +704,11 @@ export interface IClearinghouse extends BaseContract {
 
     getQuote(overrides?: CallOverrides): Promise<string>;
 
+    getRisk(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<IClearinghouseState.RiskStructOutput>;
+
     getSubaccountId(
       owner: PromiseOrValue<string>,
       subaccountName: PromiseOrValue<string>,
@@ -701,7 +727,11 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    registerProductForId(overrides?: CallOverrides): Promise<number>;
+    registerProductForId(
+      riskStore: IClearinghouseState.RiskStoreStruct,
+      healthGroup: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<number>;
 
     settlePnl(
       tx: IEndpoint.SettlePnlStruct,
@@ -795,15 +825,8 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getHealthWithDeltasX18(
-      subaccount: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      healthDeltas: IProductEngine.HealthDeltaStruct[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     getHealthX18(
-      subaccount: PromiseOrValue<BigNumberish>,
+      subaccountId: PromiseOrValue<BigNumberish>,
       healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -826,6 +849,11 @@ export interface IClearinghouse extends BaseContract {
 
     getQuote(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getRisk(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getSubaccountId(
       owner: PromiseOrValue<string>,
       subaccountName: PromiseOrValue<string>,
@@ -845,6 +873,8 @@ export interface IClearinghouse extends BaseContract {
     ): Promise<BigNumber>;
 
     registerProductForId(
+      riskStore: IClearinghouseState.RiskStoreStruct,
+      healthGroup: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -888,15 +918,8 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getHealthWithDeltasX18(
-      subaccount: PromiseOrValue<BigNumberish>,
-      healthType: PromiseOrValue<BigNumberish>,
-      healthDeltas: IProductEngine.HealthDeltaStruct[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     getHealthX18(
-      subaccount: PromiseOrValue<BigNumberish>,
+      subaccountId: PromiseOrValue<BigNumberish>,
       healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -919,6 +942,11 @@ export interface IClearinghouse extends BaseContract {
 
     getQuote(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    getRisk(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getSubaccountId(
       owner: PromiseOrValue<string>,
       subaccountName: PromiseOrValue<string>,
@@ -940,6 +968,8 @@ export interface IClearinghouse extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     registerProductForId(
+      riskStore: IClearinghouseState.RiskStoreStruct,
+      healthGroup: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

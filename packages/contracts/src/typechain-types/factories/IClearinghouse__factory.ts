@@ -271,53 +271,7 @@ const _abi = [
     inputs: [
       {
         internalType: "uint64",
-        name: "subaccount",
-        type: "uint64",
-      },
-      {
-        internalType: "enum IProductEngine.HealthType",
-        name: "healthType",
-        type: "uint8",
-      },
-      {
-        components: [
-          {
-            internalType: "uint32",
-            name: "productId",
-            type: "uint32",
-          },
-          {
-            internalType: "int256",
-            name: "amountDeltaX18",
-            type: "int256",
-          },
-          {
-            internalType: "int256",
-            name: "vQuoteDeltaX18",
-            type: "int256",
-          },
-        ],
-        internalType: "struct IProductEngine.HealthDelta[]",
-        name: "healthDeltas",
-        type: "tuple[]",
-      },
-    ],
-    name: "getHealthWithDeltasX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "subaccount",
+        name: "subaccountId",
         type: "uint64",
       },
       {
@@ -430,6 +384,52 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+    ],
+    name: "getRisk",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "int256",
+            name: "longWeightInitialX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "shortWeightInitialX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "longWeightMaintenanceX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "shortWeightMaintenanceX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "largePositionPenaltyX18",
+            type: "int256",
+          },
+        ],
+        internalType: "struct IClearinghouseState.Risk",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "owner",
         type: "address",
@@ -503,8 +503,13 @@ const _abi = [
             type: "uint64",
           },
           {
+            internalType: "uint8",
+            name: "mode",
+            type: "uint8",
+          },
+          {
             internalType: "uint32",
-            name: "productId",
+            name: "healthGroup",
             type: "uint32",
           },
           {
@@ -529,7 +534,45 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "int48",
+            name: "longWeightInitial",
+            type: "int48",
+          },
+          {
+            internalType: "int48",
+            name: "shortWeightInitial",
+            type: "int48",
+          },
+          {
+            internalType: "int48",
+            name: "longWeightMaintenance",
+            type: "int48",
+          },
+          {
+            internalType: "int48",
+            name: "shortWeightMaintenance",
+            type: "int48",
+          },
+          {
+            internalType: "int48",
+            name: "largePositionPenalty",
+            type: "int48",
+          },
+        ],
+        internalType: "struct IClearinghouseState.RiskStore",
+        name: "riskStore",
+        type: "tuple",
+      },
+      {
+        internalType: "uint32",
+        name: "healthGroup",
+        type: "uint32",
+      },
+    ],
     name: "registerProductForId",
     outputs: [
       {

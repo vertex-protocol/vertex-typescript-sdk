@@ -12,14 +12,10 @@ export async function getAllProducts({
   const contractData = await querier.getAllProducts();
   const products: Product[] = [];
   contractData.spotProducts.forEach((productInfo) => {
-    products.push(
-      mapEngineSpotProduct(productInfo.productId, productInfo.product),
-    );
+    products.push(mapEngineSpotProduct(productInfo));
   });
   contractData.perpProducts.forEach((productInfo) => {
-    products.push(
-      mapEnginePerpProduct(productInfo.productId, productInfo.product),
-    );
+    products.push(mapEnginePerpProduct(productInfo));
   });
 
   return products;

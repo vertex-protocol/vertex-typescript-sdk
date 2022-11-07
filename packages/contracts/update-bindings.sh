@@ -12,7 +12,7 @@ ABI_FILES=(
 "IPerpEngine.json"
 "IProductEngine.json"
 "ISpotEngine.json"
-"IVertexQuerier.json"
+"FQuerier.json"
 "IERC20.json"
 "MockERC20.json"
 )

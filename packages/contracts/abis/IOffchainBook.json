@@ -3,65 +3,9 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "bytes32",
-        "name": "orderDigest",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "enum IOffchainBook.ValidationResult",
-        "name": "reason",
-        "type": "uint8"
-      }
-    ],
-    "name": "CancelOrder",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "takerDigest",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "makerDigest",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "int256",
-        "name": "takerAmountDelta",
-        "type": "int256"
-      },
-      {
-        "indexed": false,
-        "internalType": "int256",
-        "name": "takerFee",
-        "type": "int256"
-      },
-      {
-        "indexed": false,
-        "internalType": "int256",
-        "name": "makerFee",
-        "type": "int256"
-      }
-    ],
-    "name": "FillOrder",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "orderDigest",
+        "name": "digest",
         "type": "bytes32"
       },
       {
@@ -69,12 +13,6 @@
         "internalType": "uint64",
         "name": "subaccount",
         "type": "uint64"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
       },
       {
         "indexed": false,
@@ -99,9 +37,27 @@
         "internalType": "uint64",
         "name": "nonce",
         "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "feeAmountX18",
+        "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "baseDeltaX18",
+        "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "quoteDeltaX18",
+        "type": "int256"
       }
     ],
-    "name": "ReportOrder",
+    "name": "FillOrder",
     "type": "event"
   },
   {
@@ -169,19 +125,6 @@
   },
   {
     "inputs": [],
-    "name": "getMarkPriceX18",
-    "outputs": [
-      {
-        "internalType": "int256",
-        "name": "",
-        "type": "int256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "getMarket",
     "outputs": [
       {
@@ -193,12 +136,17 @@
           },
           {
             "internalType": "int256",
-            "name": "sizeIncrementX18",
+            "name": "sizeIncrement",
             "type": "int256"
           },
           {
             "internalType": "int256",
             "name": "priceIncrementX18",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "lpSpreadX18",
             "type": "int256"
           },
           {
@@ -249,12 +197,17 @@
       },
       {
         "internalType": "int256",
-        "name": "_sizeIncrementX18",
+        "name": "_sizeIncrement",
         "type": "int256"
       },
       {
         "internalType": "int256",
         "name": "_priceIncrementX18",
+        "type": "int256"
+      },
+      {
+        "internalType": "int256",
+        "name": "_lpSpreadX18",
         "type": "int256"
       }
     ],
@@ -271,6 +224,11 @@
             "internalType": "address",
             "name": "book",
             "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "amm",
+            "type": "bool"
           },
           {
             "components": [
@@ -377,18 +335,7 @@
       }
     ],
     "name": "matchOrders",
-    "outputs": [
-      {
-        "internalType": "enum IOffchainBook.ValidationResult",
-        "name": "",
-        "type": "uint8"
-      },
-      {
-        "internalType": "enum IOffchainBook.ValidationResult",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -447,72 +394,9 @@
     "name": "validateCancellation",
     "outputs": [
       {
-        "internalType": "enum IOffchainBook.ValidationResult",
+        "internalType": "bool",
         "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "components": [
-              {
-                "internalType": "address",
-                "name": "sender",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "subaccountName",
-                "type": "string"
-              },
-              {
-                "internalType": "int256",
-                "name": "priceX18",
-                "type": "int256"
-              },
-              {
-                "internalType": "int256",
-                "name": "amount",
-                "type": "int256"
-              },
-              {
-                "internalType": "uint64",
-                "name": "expiration",
-                "type": "uint64"
-              },
-              {
-                "internalType": "uint64",
-                "name": "nonce",
-                "type": "uint64"
-              }
-            ],
-            "internalType": "struct IEndpoint.Order",
-            "name": "order",
-            "type": "tuple"
-          },
-          {
-            "internalType": "bytes",
-            "name": "signature",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct IEndpoint.SignedOrder",
-        "name": "order",
-        "type": "tuple"
-      }
-    ],
-    "name": "validateOrder",
-    "outputs": [
-      {
-        "internalType": "enum IOffchainBook.ValidationResult",
-        "name": "",
-        "type": "uint8"
+        "type": "bool"
       }
     ],
     "stateMutability": "view",

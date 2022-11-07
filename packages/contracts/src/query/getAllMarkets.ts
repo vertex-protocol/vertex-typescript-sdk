@@ -1,9 +1,6 @@
 import { MarketWithProduct, ProductEngineType, WithContracts } from '../common';
-import {
-  mapEnginePerpProduct,
-  mapEngineSpotProduct,
-  mapQuerierMarket,
-} from './utils';
+import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
+import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 
 export type GetAllMarketsResponse = MarketWithProduct[];
 
@@ -19,17 +16,21 @@ export async function getAllMarkets({
 
   contractData.spotProducts.forEach((productInfo) => {
     markets.push({
-      ...mapQuerierMarket(productInfo.market),
+      productId: productInfo.productId,
       type: ProductEngineType.SPOT,
-      product: mapEngineSpotProduct(productInfo.productId, productInfo.product),
+      product: mapEngineSpotProduct(productInfo),
+      priceIncrement: fromX18(productInfo.bookInfo.priceIncrementX18),
+      sizeIncrement: toBigDecimal(productInfo.bookInfo.sizeIncrement),
     });
   });
 
   contractData.perpProducts.forEach((productInfo) => {
     markets.push({
-      ...mapQuerierMarket(productInfo.market),
+      productId: productInfo.productId,
       type: ProductEngineType.PERP,
-      product: mapEnginePerpProduct(productInfo.productId, productInfo.product),
+      product: mapEnginePerpProduct(productInfo),
+      priceIncrement: fromX18(productInfo.bookInfo.priceIncrementX18),
+      sizeIncrement: toBigDecimal(productInfo.bookInfo.sizeIncrement),
     });
   });
 

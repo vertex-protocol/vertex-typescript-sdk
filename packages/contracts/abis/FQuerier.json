@@ -1,0 +1,1387 @@
+[
+  {
+    "inputs": [],
+    "name": "getAllProducts",
+    "outputs": [
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "uint32",
+                "name": "productId",
+                "type": "uint32"
+              },
+              {
+                "internalType": "int256",
+                "name": "oraclePriceX18",
+                "type": "int256"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "longWeightInitialX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "shortWeightInitialX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "longWeightMaintenanceX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "shortWeightMaintenanceX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "largePositionPenaltyX18",
+                    "type": "int256"
+                  }
+                ],
+                "internalType": "struct IClearinghouseState.Risk",
+                "name": "risk",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "interestInflectionUtilX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "interestFloorX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "interestSmallCapX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "interestLargeCapX18",
+                    "type": "int256"
+                  }
+                ],
+                "internalType": "struct ISpotEngine.Config",
+                "name": "config",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "cumulativeDepositsMultiplierX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "cumulativeBorrowsMultiplierX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "totalDepositsNormalizedX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "totalBorrowsNormalizedX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "lastUpdateTime",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct ISpotEngine.State",
+                "name": "state",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "supply",
+                    "type": "int256"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int256",
+                        "name": "amountX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "lastCumulativeMultiplierX18",
+                        "type": "int256"
+                      }
+                    ],
+                    "internalType": "struct ISpotEngine.Balance",
+                    "name": "quote",
+                    "type": "tuple"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int256",
+                        "name": "amountX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "lastCumulativeMultiplierX18",
+                        "type": "int256"
+                      }
+                    ],
+                    "internalType": "struct ISpotEngine.Balance",
+                    "name": "base",
+                    "type": "tuple"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "lastUpdateTime",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct ISpotEngine.LpState",
+                "name": "lpState",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "sizeIncrement",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "priceIncrementX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "collectedFeesX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "lpSpreadX18",
+                    "type": "int256"
+                  }
+                ],
+                "internalType": "struct FQuerier.BookInfo",
+                "name": "bookInfo",
+                "type": "tuple"
+              }
+            ],
+            "internalType": "struct FQuerier.SpotProduct[]",
+            "name": "spotProducts",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint32",
+                "name": "productId",
+                "type": "uint32"
+              },
+              {
+                "internalType": "int256",
+                "name": "oraclePriceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "markPriceX18",
+                "type": "int256"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "longWeightInitialX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "shortWeightInitialX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "longWeightMaintenanceX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "shortWeightMaintenanceX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "largePositionPenaltyX18",
+                    "type": "int256"
+                  }
+                ],
+                "internalType": "struct IClearinghouseState.Risk",
+                "name": "risk",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "cumulativeFundingLongX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "cumulativeFundingShortX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "availableSettleX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "openInterestX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "lastUpdateTime",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct IPerpEngine.State",
+                "name": "state",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "supply",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "cumulativeFundingPerLpX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "base",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "quote",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "lastUpdateTime",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct IPerpEngine.LpState",
+                "name": "lpState",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "sizeIncrement",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "priceIncrementX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "collectedFeesX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "lpSpreadX18",
+                    "type": "int256"
+                  }
+                ],
+                "internalType": "struct FQuerier.BookInfo",
+                "name": "bookInfo",
+                "type": "tuple"
+              }
+            ],
+            "internalType": "struct FQuerier.PerpProduct[]",
+            "name": "perpProducts",
+            "type": "tuple[]"
+          }
+        ],
+        "internalType": "struct FQuerier.ProductInfo",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "contract IProductEngine",
+        "name": "engine",
+        "type": "address"
+      }
+    ],
+    "name": "getBookInfo",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "int256",
+            "name": "sizeIncrement",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "priceIncrementX18",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "collectedFeesX18",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "lpSpreadX18",
+            "type": "int256"
+          }
+        ],
+        "internalType": "struct FQuerier.BookInfo",
+        "name": "bookInfo",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint32[]",
+        "name": "productIds",
+        "type": "uint32[]"
+      }
+    ],
+    "name": "getPerpBalances",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint32",
+            "name": "productId",
+            "type": "uint32"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "amountX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "lastCumulativeFundingX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct IPerpEngine.LpBalance",
+            "name": "lpBalance",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "amountX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "vQuoteBalanceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "lastCumulativeFundingX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct IPerpEngine.Balance",
+            "name": "balance",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct FQuerier.PerpBalance[]",
+        "name": "perpBalances",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32[]",
+        "name": "productIds",
+        "type": "uint32[]"
+      }
+    ],
+    "name": "getPerpProducts",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint32",
+            "name": "productId",
+            "type": "uint32"
+          },
+          {
+            "internalType": "int256",
+            "name": "oraclePriceX18",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "markPriceX18",
+            "type": "int256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "longWeightInitialX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "shortWeightInitialX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "longWeightMaintenanceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "shortWeightMaintenanceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "largePositionPenaltyX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct IClearinghouseState.Risk",
+            "name": "risk",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "cumulativeFundingLongX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "cumulativeFundingShortX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "availableSettleX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "openInterestX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "lastUpdateTime",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IPerpEngine.State",
+            "name": "state",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "supply",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "cumulativeFundingPerLpX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "base",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "quote",
+                "type": "int256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "lastUpdateTime",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IPerpEngine.LpState",
+            "name": "lpState",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "sizeIncrement",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "priceIncrementX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "collectedFeesX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "lpSpreadX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct FQuerier.BookInfo",
+            "name": "bookInfo",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct FQuerier.PerpProduct[]",
+        "name": "perpProducts",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint32[]",
+        "name": "productIds",
+        "type": "uint32[]"
+      }
+    ],
+    "name": "getSpotBalances",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint32",
+            "name": "productId",
+            "type": "uint32"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "amountX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct ISpotEngine.LpBalance",
+            "name": "lpBalance",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "amountX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "lastCumulativeMultiplierX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct ISpotEngine.Balance",
+            "name": "balance",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct FQuerier.SpotBalance[]",
+        "name": "spotBalances",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32[]",
+        "name": "productIds",
+        "type": "uint32[]"
+      }
+    ],
+    "name": "getSpotProducts",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint32",
+            "name": "productId",
+            "type": "uint32"
+          },
+          {
+            "internalType": "int256",
+            "name": "oraclePriceX18",
+            "type": "int256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "longWeightInitialX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "shortWeightInitialX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "longWeightMaintenanceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "shortWeightMaintenanceX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "largePositionPenaltyX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct IClearinghouseState.Risk",
+            "name": "risk",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+              },
+              {
+                "internalType": "int256",
+                "name": "interestInflectionUtilX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "interestFloorX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "interestSmallCapX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "interestLargeCapX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct ISpotEngine.Config",
+            "name": "config",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "cumulativeDepositsMultiplierX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "cumulativeBorrowsMultiplierX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "totalDepositsNormalizedX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "totalBorrowsNormalizedX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "lastUpdateTime",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ISpotEngine.State",
+            "name": "state",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "supply",
+                "type": "int256"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "amountX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "lastCumulativeMultiplierX18",
+                    "type": "int256"
+                  }
+                ],
+                "internalType": "struct ISpotEngine.Balance",
+                "name": "quote",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "amountX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "lastCumulativeMultiplierX18",
+                    "type": "int256"
+                  }
+                ],
+                "internalType": "struct ISpotEngine.Balance",
+                "name": "base",
+                "type": "tuple"
+              },
+              {
+                "internalType": "uint256",
+                "name": "lastUpdateTime",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ISpotEngine.LpState",
+            "name": "lpState",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "int256",
+                "name": "sizeIncrement",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "priceIncrementX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "collectedFeesX18",
+                "type": "int256"
+              },
+              {
+                "internalType": "int256",
+                "name": "lpSpreadX18",
+                "type": "int256"
+              }
+            ],
+            "internalType": "struct FQuerier.BookInfo",
+            "name": "bookInfo",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct FQuerier.SpotProduct[]",
+        "name": "spotProducts",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      }
+    ],
+    "name": "getSubaccountInfo",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint64",
+            "name": "subaccountId",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bool",
+            "name": "exists",
+            "type": "bool"
+          },
+          {
+            "internalType": "int256",
+            "name": "initialHealthX18",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "maintenanceHealthX18",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "pnlHealthX18",
+            "type": "int256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint32",
+                "name": "productId",
+                "type": "uint32"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "amountX18",
+                    "type": "int256"
+                  }
+                ],
+                "internalType": "struct ISpotEngine.LpBalance",
+                "name": "lpBalance",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "amountX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "lastCumulativeMultiplierX18",
+                    "type": "int256"
+                  }
+                ],
+                "internalType": "struct ISpotEngine.Balance",
+                "name": "balance",
+                "type": "tuple"
+              }
+            ],
+            "internalType": "struct FQuerier.SpotBalance[]",
+            "name": "spotBalances",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint32",
+                "name": "productId",
+                "type": "uint32"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "amountX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "lastCumulativeFundingX18",
+                    "type": "int256"
+                  }
+                ],
+                "internalType": "struct IPerpEngine.LpBalance",
+                "name": "lpBalance",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int256",
+                    "name": "amountX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "vQuoteBalanceX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "lastCumulativeFundingX18",
+                    "type": "int256"
+                  }
+                ],
+                "internalType": "struct IPerpEngine.Balance",
+                "name": "balance",
+                "type": "tuple"
+              }
+            ],
+            "internalType": "struct FQuerier.PerpBalance[]",
+            "name": "perpBalances",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "components": [
+                  {
+                    "internalType": "uint32",
+                    "name": "productId",
+                    "type": "uint32"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "oraclePriceX18",
+                    "type": "int256"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int256",
+                        "name": "longWeightInitialX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "shortWeightInitialX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "longWeightMaintenanceX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "shortWeightMaintenanceX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "largePositionPenaltyX18",
+                        "type": "int256"
+                      }
+                    ],
+                    "internalType": "struct IClearinghouseState.Risk",
+                    "name": "risk",
+                    "type": "tuple"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "address",
+                        "name": "token",
+                        "type": "address"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "interestInflectionUtilX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "interestFloorX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "interestSmallCapX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "interestLargeCapX18",
+                        "type": "int256"
+                      }
+                    ],
+                    "internalType": "struct ISpotEngine.Config",
+                    "name": "config",
+                    "type": "tuple"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int256",
+                        "name": "cumulativeDepositsMultiplierX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "cumulativeBorrowsMultiplierX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "totalDepositsNormalizedX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "totalBorrowsNormalizedX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "lastUpdateTime",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct ISpotEngine.State",
+                    "name": "state",
+                    "type": "tuple"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int256",
+                        "name": "supply",
+                        "type": "int256"
+                      },
+                      {
+                        "components": [
+                          {
+                            "internalType": "int256",
+                            "name": "amountX18",
+                            "type": "int256"
+                          },
+                          {
+                            "internalType": "int256",
+                            "name": "lastCumulativeMultiplierX18",
+                            "type": "int256"
+                          }
+                        ],
+                        "internalType": "struct ISpotEngine.Balance",
+                        "name": "quote",
+                        "type": "tuple"
+                      },
+                      {
+                        "components": [
+                          {
+                            "internalType": "int256",
+                            "name": "amountX18",
+                            "type": "int256"
+                          },
+                          {
+                            "internalType": "int256",
+                            "name": "lastCumulativeMultiplierX18",
+                            "type": "int256"
+                          }
+                        ],
+                        "internalType": "struct ISpotEngine.Balance",
+                        "name": "base",
+                        "type": "tuple"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "lastUpdateTime",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct ISpotEngine.LpState",
+                    "name": "lpState",
+                    "type": "tuple"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int256",
+                        "name": "sizeIncrement",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "priceIncrementX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "collectedFeesX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "lpSpreadX18",
+                        "type": "int256"
+                      }
+                    ],
+                    "internalType": "struct FQuerier.BookInfo",
+                    "name": "bookInfo",
+                    "type": "tuple"
+                  }
+                ],
+                "internalType": "struct FQuerier.SpotProduct[]",
+                "name": "spotProducts",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "uint32",
+                    "name": "productId",
+                    "type": "uint32"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "oraclePriceX18",
+                    "type": "int256"
+                  },
+                  {
+                    "internalType": "int256",
+                    "name": "markPriceX18",
+                    "type": "int256"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int256",
+                        "name": "longWeightInitialX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "shortWeightInitialX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "longWeightMaintenanceX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "shortWeightMaintenanceX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "largePositionPenaltyX18",
+                        "type": "int256"
+                      }
+                    ],
+                    "internalType": "struct IClearinghouseState.Risk",
+                    "name": "risk",
+                    "type": "tuple"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int256",
+                        "name": "cumulativeFundingLongX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "cumulativeFundingShortX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "availableSettleX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "openInterestX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "lastUpdateTime",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct IPerpEngine.State",
+                    "name": "state",
+                    "type": "tuple"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int256",
+                        "name": "supply",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "cumulativeFundingPerLpX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "base",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "quote",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "lastUpdateTime",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct IPerpEngine.LpState",
+                    "name": "lpState",
+                    "type": "tuple"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int256",
+                        "name": "sizeIncrement",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "priceIncrementX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "collectedFeesX18",
+                        "type": "int256"
+                      },
+                      {
+                        "internalType": "int256",
+                        "name": "lpSpreadX18",
+                        "type": "int256"
+                      }
+                    ],
+                    "internalType": "struct FQuerier.BookInfo",
+                    "name": "bookInfo",
+                    "type": "tuple"
+                  }
+                ],
+                "internalType": "struct FQuerier.PerpProduct[]",
+                "name": "perpProducts",
+                "type": "tuple[]"
+              }
+            ],
+            "internalType": "struct FQuerier.ProductInfo",
+            "name": "allProducts",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct FQuerier.SubaccountInfo",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_clearinghouse",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
