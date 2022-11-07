@@ -1,4 +1,5 @@
 query LatestOrderFillsQuery($marketEntityId: String!) {
+  # TODO: need to filter for taker only
   fillOrderEvents(
     where: { market: $marketEntityId }
     orderBy: blockTime
@@ -6,8 +7,9 @@ query LatestOrderFillsQuery($marketEntityId: String!) {
     first: 100
   ) {
     blockTime
-    takerAmountDelta
-    makerOrder {
+    quoteDeltaX18
+    amountDeltaX18
+    order {
       priceX18
     }
   }

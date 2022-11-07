@@ -15,6 +15,6 @@ query CandlesticksQuery(
     closeX18
     highX18
     lowX18
-    volumeQuote
+    volumeQuoteX18
   }
 }

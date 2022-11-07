@@ -21,8 +21,8 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
     return data.fillOrderEvents.map((event) => {
       return {
         time: event.blockTime,
-        takerAmountDelta: toBigDecimal(event.takerAmountDelta),
-        price: fromX18(event.makerOrder.priceX18),
+        takerAmountDelta: toBigDecimal(event.amountDeltaX18),
+        price: fromX18(event.order.priceX18),
       };
     });
   }

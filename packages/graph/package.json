@@ -23,7 +23,7 @@
     "src"
   ],
   "devDependencies": {
-    "@graphprotocol/client-cli": "^2.2.15"
+    "@graphprotocol/client-cli": "2.2.15"
   },
   "dependencies": {
     "@ethersproject/constants": "^5.7.0",

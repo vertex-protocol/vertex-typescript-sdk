@@ -57,7 +57,6 @@ query OrderByDigestQuery($digest: Bytes!, $marketEntityId: String!) {
 fragment OrderEntityFieldsFragment on Order {
   id
   digest
-  validationResult
   priceX18
   subaccount {
     subaccountId
@@ -67,8 +66,8 @@ fragment OrderEntityFieldsFragment on Order {
   }
   reportedAt
   reportedAtBlock
-  filledAmount
+  filledAmountX18
   totalAmount
-  quoteAmount
-  collectedFee
+  quoteAmountX18
+  collectedFeeX18
 }
