@@ -1,9 +1,9 @@
 import {
+  FQuerier__factory,
   IClearinghouse__factory,
   IEndpoint__factory,
   IPerpEngine__factory,
   ISpotEngine__factory,
-  IVertexQuerier__factory,
   ProductEngineType,
   VERTEX_DEPLOYMENTS,
   VertexContracts,
@@ -78,7 +78,7 @@ export async function createClientContext(
   })();
   const { chainSignerOrProvider, engineSigner: engineSignerParam } = signerOpts;
 
-  const querier = IVertexQuerier__factory.connect(
+  const querier = FQuerier__factory.connect(
     querierAddress,
     chainSignerOrProvider,
   );
@@ -89,6 +89,11 @@ export async function createClientContext(
   );
 
   const endpointContractAddress = await clearinghouse.getEndpoint();
+  const endpoint = await IEndpoint__factory.connect(
+    endpointContractAddress,
+    chainSignerOrProvider,
+  );
+
   const spotAddress = await clearinghouse.getEngineByType(
     ProductEngineType.SPOT,
   );
@@ -109,10 +114,7 @@ export async function createClientContext(
     contracts: {
       querier,
       clearinghouse,
-      endpoint: IEndpoint__factory.connect(
-        endpointContractAddress,
-        chainSignerOrProvider,
-      ),
+      endpoint,
       spotEngine: ISpotEngine__factory.connect(
         spotAddress,
         chainSignerOrProvider,

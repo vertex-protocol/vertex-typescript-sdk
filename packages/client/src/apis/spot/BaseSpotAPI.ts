@@ -6,11 +6,9 @@ export class BaseSpotAPI extends BaseVertexAPI {
    * Retrieves the ERC20 token contract for a spot product
    */
   async getTokenContractForProduct(productId: number): Promise<IERC20> {
-    const product = await this.context.contracts.spotEngine.getProduct(
-      productId,
-    );
+    const config = await this.context.contracts.spotEngine.getConfig(productId);
     return IERC20__factory.connect(
-      product[0].token,
+      config.token,
       this.context.chainSignerOrProvider,
     );
   }

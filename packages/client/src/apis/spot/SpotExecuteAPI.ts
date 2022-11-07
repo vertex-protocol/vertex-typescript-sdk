@@ -38,11 +38,11 @@ export class SpotExecuteAPI extends BaseSpotAPI {
   }
 
   async _mintMockERC20(params: MintMockERC20Params) {
-    const spotProduct = await this.context.contracts.spotEngine.getProduct(
+    const config = await this.context.contracts.spotEngine.getConfig(
       params.productId,
     );
     const erc20 = await MockERC20__factory.connect(
-      spotProduct.config.token,
+      config.token,
       this.context.chainSignerOrProvider,
     );
     return erc20.mint(erc20.signer.getAddress(), params.amount);

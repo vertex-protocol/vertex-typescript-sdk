@@ -56,6 +56,7 @@ export interface EngineServerQueryRequest {
 }
 
 export interface EngineServerSubaccountInfoResponse {
+  exists: boolean;
   subaccount_id: BigNumberish;
   initial_health_x18: BigNumberish;
   maintenance_health_x18: BigNumberish;

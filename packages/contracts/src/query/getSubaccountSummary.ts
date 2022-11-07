@@ -18,9 +18,8 @@ export interface SubaccountSummaryResponse {
   health: HealthStatus;
 }
 
-function healthInfoToStatus(
-  healthInfo: IVertexQuerier.HealthInfoStructOutput,
-): HealthStatus {
+// TODO: per balance health
+function healthInfoToStatus(healthInfo: any): HealthStatus {
   return {
     initial: fromX18(healthInfo.initialX18),
     maintenance: fromX18(healthInfo.maintenanceX18),
@@ -55,7 +54,7 @@ export async function getSubaccountSummary({
 
     balances.push({
       amount: fromX18(spotBalance.balance.amountX18),
-      health: healthInfoToStatus(spotBalance.healthInfo),
+      health: healthInfoToStatus(spotBalance),
       ...mapEngineSpotProduct(product),
     });
   });
@@ -72,13 +71,13 @@ export async function getSubaccountSummary({
     balances.push({
       amount: fromX18(perpBalance.balance.amountX18),
       vQuoteBalance: fromX18(perpBalance.balance.vQuoteBalanceX18),
-      health: healthInfoToStatus(perpBalance.healthInfo),
+      health: healthInfoToStatus(perpBalance),
       ...mapEnginePerpProduct(product),
     });
   });
 
   return {
-    health: healthInfoToStatus(healthInfo),
+    health: healthInfoToStatus(subaccountInfo),
     balances,
   };
 }
