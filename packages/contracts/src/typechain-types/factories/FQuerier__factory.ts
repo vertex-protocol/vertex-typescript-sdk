@@ -294,6 +294,11 @@ const _abi = [
                   },
                   {
                     internalType: "int256",
+                    name: "lastCumulativeFundingX18",
+                    type: "int256",
+                  },
+                  {
+                    internalType: "int256",
                     name: "cumulativeFundingPerLpX18",
                     type: "int256",
                   },
@@ -399,6 +404,19 @@ const _abi = [
         internalType: "struct FQuerier.BookInfo",
         name: "bookInfo",
         type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getClearinghouse",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
       },
     ],
     stateMutability: "view",
@@ -570,6 +588,11 @@ const _abi = [
               {
                 internalType: "int256",
                 name: "supply",
+                type: "int256",
+              },
+              {
+                internalType: "int256",
+                name: "lastCumulativeFundingX18",
                 type: "int256",
               },
               {
@@ -1306,6 +1329,11 @@ const _abi = [
                       {
                         internalType: "int256",
                         name: "supply",
+                        type: "int256",
+                      },
+                      {
+                        internalType: "int256",
+                        name: "lastCumulativeFundingX18",
                         type: "int256",
                       },
                       {

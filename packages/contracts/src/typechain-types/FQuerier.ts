@@ -304,6 +304,7 @@ export declare namespace IPerpEngine {
 
   export type LpStateStruct = {
     supply: PromiseOrValue<BigNumberish>;
+    lastCumulativeFundingX18: PromiseOrValue<BigNumberish>;
     cumulativeFundingPerLpX18: PromiseOrValue<BigNumberish>;
     base: PromiseOrValue<BigNumberish>;
     quote: PromiseOrValue<BigNumberish>;
@@ -315,9 +316,11 @@ export declare namespace IPerpEngine {
     BigNumber,
     BigNumber,
     BigNumber,
+    BigNumber,
     BigNumber
   ] & {
     supply: BigNumber;
+    lastCumulativeFundingX18: BigNumber;
     cumulativeFundingPerLpX18: BigNumber;
     base: BigNumber;
     quote: BigNumber;
@@ -351,6 +354,7 @@ export interface FQuerierInterface extends utils.Interface {
   functions: {
     "getAllProducts()": FunctionFragment;
     "getBookInfo(uint32,address)": FunctionFragment;
+    "getClearinghouse()": FunctionFragment;
     "getPerpBalances(uint64,uint32[])": FunctionFragment;
     "getPerpProducts(uint32[])": FunctionFragment;
     "getSpotBalances(uint64,uint32[])": FunctionFragment;
@@ -363,6 +367,7 @@ export interface FQuerierInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "getAllProducts"
       | "getBookInfo"
+      | "getClearinghouse"
       | "getPerpBalances"
       | "getPerpProducts"
       | "getSpotBalances"
@@ -378,6 +383,10 @@ export interface FQuerierInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getBookInfo",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getClearinghouse",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getPerpBalances",
@@ -410,6 +419,10 @@ export interface FQuerierInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getBookInfo",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getClearinghouse",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -478,6 +491,8 @@ export interface FQuerier extends BaseContract {
       }
     >;
 
+    getClearinghouse(overrides?: CallOverrides): Promise<[string]>;
+
     getPerpBalances(
       subaccountId: PromiseOrValue<BigNumberish>,
       productIds: PromiseOrValue<BigNumberish>[],
@@ -537,6 +552,8 @@ export interface FQuerier extends BaseContract {
     overrides?: CallOverrides
   ): Promise<FQuerier.BookInfoStructOutput>;
 
+  getClearinghouse(overrides?: CallOverrides): Promise<string>;
+
   getPerpBalances(
     subaccountId: PromiseOrValue<BigNumberish>,
     productIds: PromiseOrValue<BigNumberish>[],
@@ -579,6 +596,8 @@ export interface FQuerier extends BaseContract {
       engine: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<FQuerier.BookInfoStructOutput>;
+
+    getClearinghouse(overrides?: CallOverrides): Promise<string>;
 
     getPerpBalances(
       subaccountId: PromiseOrValue<BigNumberish>,
@@ -624,6 +643,8 @@ export interface FQuerier extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getClearinghouse(overrides?: CallOverrides): Promise<BigNumber>;
+
     getPerpBalances(
       subaccountId: PromiseOrValue<BigNumberish>,
       productIds: PromiseOrValue<BigNumberish>[],
@@ -665,6 +686,8 @@ export interface FQuerier extends BaseContract {
       engine: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    getClearinghouse(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getPerpBalances(
       subaccountId: PromiseOrValue<BigNumberish>,

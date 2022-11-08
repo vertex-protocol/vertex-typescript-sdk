@@ -28,7 +28,7 @@ import type {
 } from "./common";
 
 export declare namespace IEndpoint {
-  export type DepositCollateralStruct = {
+  export type BurnLpStruct = {
     sender: PromiseOrValue<string>;
     subaccountName: PromiseOrValue<string>;
     productId: PromiseOrValue<BigNumberish>;
@@ -36,7 +36,7 @@ export declare namespace IEndpoint {
     nonce: PromiseOrValue<BigNumberish>;
   };
 
-  export type DepositCollateralStructOutput = [
+  export type BurnLpStructOutput = [
     string,
     string,
     number,
@@ -48,6 +48,25 @@ export declare namespace IEndpoint {
     productId: number;
     amount: BigNumber;
     nonce: BigNumber;
+  };
+
+  export type DepositCollateralStruct = {
+    sender: PromiseOrValue<string>;
+    subaccountName: PromiseOrValue<string>;
+    productId: PromiseOrValue<BigNumberish>;
+    amount: PromiseOrValue<BigNumberish>;
+  };
+
+  export type DepositCollateralStructOutput = [
+    string,
+    string,
+    number,
+    BigNumber
+  ] & {
+    sender: string;
+    subaccountName: string;
+    productId: number;
+    amount: BigNumber;
   };
 
   export type DepositInsuranceStruct = {
@@ -87,6 +106,34 @@ export declare namespace IEndpoint {
     mode: number;
     healthGroup: number;
     amount: BigNumber;
+    nonce: BigNumber;
+  };
+
+  export type MintLpStruct = {
+    sender: PromiseOrValue<string>;
+    subaccountName: PromiseOrValue<string>;
+    productId: PromiseOrValue<BigNumberish>;
+    amountBase: PromiseOrValue<BigNumberish>;
+    quoteAmountLow: PromiseOrValue<BigNumberish>;
+    quoteAmountHigh: PromiseOrValue<BigNumberish>;
+    nonce: PromiseOrValue<BigNumberish>;
+  };
+
+  export type MintLpStructOutput = [
+    string,
+    string,
+    number,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ] & {
+    sender: string;
+    subaccountName: string;
+    productId: number;
+    amountBase: BigNumber;
+    quoteAmountLow: BigNumber;
+    quoteAmountHigh: BigNumber;
     nonce: BigNumber;
   };
 
@@ -170,7 +217,8 @@ export declare namespace IClearinghouseState {
 export interface IClearinghouseInterface extends utils.Interface {
   functions: {
     "addEngine(address,uint8)": FunctionFragment;
-    "depositCollateral((address,string,uint32,uint256,uint64))": FunctionFragment;
+    "burnLp((address,string,uint32,uint256,uint64))": FunctionFragment;
+    "depositCollateral((address,string,uint32,uint256))": FunctionFragment;
     "depositInsurance((address,uint256,uint64))": FunctionFragment;
     "getEndpoint()": FunctionFragment;
     "getEngineByProduct(uint32)": FunctionFragment;
@@ -187,6 +235,7 @@ export interface IClearinghouseInterface extends utils.Interface {
     "getSubaccountOwner(uint64)": FunctionFragment;
     "getSupportedEngines()": FunctionFragment;
     "liquidateSubaccount((address,string,uint64,uint8,uint32,int256,uint64))": FunctionFragment;
+    "mintLp((address,string,uint32,uint256,uint256,uint256,uint64))": FunctionFragment;
     "registerProductForId((int48,int48,int48,int48,int48),uint32)": FunctionFragment;
     "settlePnl((uint64[]))": FunctionFragment;
     "withdrawCollateral((address,string,uint32,uint256,uint64))": FunctionFragment;
@@ -195,6 +244,7 @@ export interface IClearinghouseInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "addEngine"
+      | "burnLp"
       | "depositCollateral"
       | "depositInsurance"
       | "getEndpoint"
@@ -212,6 +262,7 @@ export interface IClearinghouseInterface extends utils.Interface {
       | "getSubaccountOwner"
       | "getSupportedEngines"
       | "liquidateSubaccount"
+      | "mintLp"
       | "registerProductForId"
       | "settlePnl"
       | "withdrawCollateral"
@@ -220,6 +271,10 @@ export interface IClearinghouseInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "addEngine",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "burnLp",
+    values: [IEndpoint.BurnLpStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "depositCollateral",
@@ -287,6 +342,10 @@ export interface IClearinghouseInterface extends utils.Interface {
     values: [IEndpoint.LiquidateSubaccountStruct]
   ): string;
   encodeFunctionData(
+    functionFragment: "mintLp",
+    values: [IEndpoint.MintLpStruct]
+  ): string;
+  encodeFunctionData(
     functionFragment: "registerProductForId",
     values: [IClearinghouseState.RiskStoreStruct, PromiseOrValue<BigNumberish>]
   ): string;
@@ -300,6 +359,7 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "addEngine", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "burnLp", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "depositCollateral",
     data: BytesLike
@@ -362,6 +422,7 @@ export interface IClearinghouseInterface extends utils.Interface {
     functionFragment: "liquidateSubaccount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "mintLp", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "registerProductForId",
     data: BytesLike
@@ -375,7 +436,7 @@ export interface IClearinghouseInterface extends utils.Interface {
   events: {
     "ClearinghouseInitialized(address,address,address)": EventFragment;
     "CreateSubaccount(address,string,uint64)": EventFragment;
-    "Liquidation(uint64,uint64,uint32,int256,int256,int256)": EventFragment;
+    "Liquidation(uint64,uint64,uint8,uint32,int256,int256,int256)": EventFragment;
     "ModifyCollateral(int256,uint64,uint32)": EventFragment;
   };
 
@@ -414,13 +475,14 @@ export type CreateSubaccountEventFilter =
 export interface LiquidationEventObject {
   liquidatorSubaccount: BigNumber;
   liquidateeSubaccount: BigNumber;
-  productId: number;
-  liquidatorBaseDelta: BigNumber;
-  liquidatorQuoteDelta: BigNumber;
+  mode: number;
+  healthGroup: number;
+  amount: BigNumber;
+  amountQuote: BigNumber;
   insuranceCoverage: BigNumber;
 }
 export type LiquidationEvent = TypedEvent<
-  [BigNumber, BigNumber, number, BigNumber, BigNumber, BigNumber],
+  [BigNumber, BigNumber, number, number, BigNumber, BigNumber, BigNumber],
   LiquidationEventObject
 >;
 
@@ -469,6 +531,11 @@ export interface IClearinghouse extends BaseContract {
     addEngine(
       engine: PromiseOrValue<string>,
       engineType: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    burnLp(
+      tx: IEndpoint.BurnLpStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -543,6 +610,11 @@ export interface IClearinghouse extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    mintLp(
+      tx: IEndpoint.MintLpStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     registerProductForId(
       riskStore: IClearinghouseState.RiskStoreStruct,
       healthGroup: PromiseOrValue<BigNumberish>,
@@ -563,6 +635,11 @@ export interface IClearinghouse extends BaseContract {
   addEngine(
     engine: PromiseOrValue<string>,
     engineType: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  burnLp(
+    tx: IEndpoint.BurnLpStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -635,6 +712,11 @@ export interface IClearinghouse extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  mintLp(
+    tx: IEndpoint.MintLpStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   registerProductForId(
     riskStore: IClearinghouseState.RiskStoreStruct,
     healthGroup: PromiseOrValue<BigNumberish>,
@@ -655,6 +737,11 @@ export interface IClearinghouse extends BaseContract {
     addEngine(
       engine: PromiseOrValue<string>,
       engineType: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    burnLp(
+      tx: IEndpoint.BurnLpStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -727,6 +814,11 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    mintLp(
+      tx: IEndpoint.MintLpStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     registerProductForId(
       riskStore: IClearinghouseState.RiskStoreStruct,
       healthGroup: PromiseOrValue<BigNumberish>,
@@ -767,20 +859,22 @@ export interface IClearinghouse extends BaseContract {
       subaccount?: null
     ): CreateSubaccountEventFilter;
 
-    "Liquidation(uint64,uint64,uint32,int256,int256,int256)"(
+    "Liquidation(uint64,uint64,uint8,uint32,int256,int256,int256)"(
       liquidatorSubaccount?: PromiseOrValue<BigNumberish> | null,
       liquidateeSubaccount?: PromiseOrValue<BigNumberish> | null,
-      productId?: PromiseOrValue<BigNumberish> | null,
-      liquidatorBaseDelta?: null,
-      liquidatorQuoteDelta?: null,
+      mode?: PromiseOrValue<BigNumberish> | null,
+      healthGroup?: null,
+      amount?: null,
+      amountQuote?: null,
       insuranceCoverage?: null
     ): LiquidationEventFilter;
     Liquidation(
       liquidatorSubaccount?: PromiseOrValue<BigNumberish> | null,
       liquidateeSubaccount?: PromiseOrValue<BigNumberish> | null,
-      productId?: PromiseOrValue<BigNumberish> | null,
-      liquidatorBaseDelta?: null,
-      liquidatorQuoteDelta?: null,
+      mode?: PromiseOrValue<BigNumberish> | null,
+      healthGroup?: null,
+      amount?: null,
+      amountQuote?: null,
       insuranceCoverage?: null
     ): LiquidationEventFilter;
 
@@ -800,6 +894,11 @@ export interface IClearinghouse extends BaseContract {
     addEngine(
       engine: PromiseOrValue<string>,
       engineType: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    burnLp(
+      tx: IEndpoint.BurnLpStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -872,6 +971,11 @@ export interface IClearinghouse extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    mintLp(
+      tx: IEndpoint.MintLpStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     registerProductForId(
       riskStore: IClearinghouseState.RiskStoreStruct,
       healthGroup: PromiseOrValue<BigNumberish>,
@@ -893,6 +997,11 @@ export interface IClearinghouse extends BaseContract {
     addEngine(
       engine: PromiseOrValue<string>,
       engineType: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    burnLp(
+      tx: IEndpoint.BurnLpStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -964,6 +1073,11 @@ export interface IClearinghouse extends BaseContract {
 
     liquidateSubaccount(
       tx: IEndpoint.LiquidateSubaccountStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    mintLp(
+      tx: IEndpoint.MintLpStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

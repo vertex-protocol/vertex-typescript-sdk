@@ -48,6 +48,12 @@ const _abi = [
       },
       {
         indexed: false,
+        internalType: "bool",
+        name: "isTaker",
+        type: "bool",
+      },
+      {
+        indexed: false,
         internalType: "int256",
         name: "feeAmountX18",
         type: "int256",
@@ -234,6 +240,75 @@ const _abi = [
             type: "address",
           },
           {
+            components: [
+              {
+                components: [
+                  {
+                    internalType: "address",
+                    name: "sender",
+                    type: "address",
+                  },
+                  {
+                    internalType: "string",
+                    name: "subaccountName",
+                    type: "string",
+                  },
+                  {
+                    internalType: "int256",
+                    name: "priceX18",
+                    type: "int256",
+                  },
+                  {
+                    internalType: "int256",
+                    name: "amount",
+                    type: "int256",
+                  },
+                  {
+                    internalType: "uint64",
+                    name: "expiration",
+                    type: "uint64",
+                  },
+                  {
+                    internalType: "uint64",
+                    name: "nonce",
+                    type: "uint64",
+                  },
+                ],
+                internalType: "struct IEndpoint.Order",
+                name: "order",
+                type: "tuple",
+              },
+              {
+                internalType: "bytes",
+                name: "signature",
+                type: "bytes",
+              },
+            ],
+            internalType: "struct IEndpoint.SignedOrder",
+            name: "taker",
+            type: "tuple",
+          },
+        ],
+        internalType: "struct IEndpoint.MatchOrderAMM",
+        name: "tx",
+        type: "tuple",
+      },
+    ],
+    name: "matchOrderAMM",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "book",
+            type: "address",
+          },
+          {
             internalType: "bool",
             name: "amm",
             type: "bool",
@@ -343,6 +418,46 @@ const _abi = [
       },
     ],
     name: "matchOrders",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "sender",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "subaccountName",
+            type: "string",
+          },
+          {
+            internalType: "address",
+            name: "book",
+            type: "address",
+          },
+          {
+            internalType: "int256",
+            name: "amount",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "priceX18",
+            type: "int256",
+          },
+        ],
+        internalType: "struct IEndpoint.SwapAMM",
+        name: "tx",
+        type: "tuple",
+      },
+    ],
+    name: "swapAMM",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

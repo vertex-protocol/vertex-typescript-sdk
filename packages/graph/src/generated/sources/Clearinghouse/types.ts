@@ -447,6 +447,7 @@ export type FillOrderEvent = {
   blockTime: Scalars['BigInt'];
   subaccount: Subaccount;
   order: Order;
+  isTaker: Scalars['Boolean'];
   feeQuoteX18: Scalars['BigInt'];
   amountDeltaX18: Scalars['BigInt'];
   quoteDeltaX18: Scalars['BigInt'];
@@ -540,6 +541,10 @@ export type FillOrderEvent_filter = {
   order_not_ends_with?: InputMaybe<Scalars['String']>;
   order_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   order_?: InputMaybe<Order_filter>;
+  isTaker?: InputMaybe<Scalars['Boolean']>;
+  isTaker_not?: InputMaybe<Scalars['Boolean']>;
+  isTaker_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isTaker_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
   feeQuoteX18?: InputMaybe<Scalars['BigInt']>;
   feeQuoteX18_not?: InputMaybe<Scalars['BigInt']>;
   feeQuoteX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -575,6 +580,7 @@ export type FillOrderEvent_orderBy =
   | 'blockTime'
   | 'subaccount'
   | 'order'
+  | 'isTaker'
   | 'feeQuoteX18'
   | 'amountDeltaX18'
   | 'quoteDeltaX18';
@@ -1073,6 +1079,7 @@ export type Order = {
   type: OrderType;
   digest: Scalars['Bytes'];
   priceX18: Scalars['BigInt'];
+  isTaker: Scalars['Boolean'];
   expiration: Scalars['BigInt'];
   realExpiration: Scalars['BigInt'];
   subaccount: Subaccount;
@@ -1124,6 +1131,10 @@ export type Order_filter = {
   priceX18_lte?: InputMaybe<Scalars['BigInt']>;
   priceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   priceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  isTaker?: InputMaybe<Scalars['Boolean']>;
+  isTaker_not?: InputMaybe<Scalars['Boolean']>;
+  isTaker_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isTaker_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
   expiration?: InputMaybe<Scalars['BigInt']>;
   expiration_not?: InputMaybe<Scalars['BigInt']>;
   expiration_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1239,6 +1250,7 @@ export type Order_orderBy =
   | 'type'
   | 'digest'
   | 'priceX18'
+  | 'isTaker'
   | 'expiration'
   | 'realExpiration'
   | 'subaccount'
@@ -1786,6 +1798,10 @@ export type Query = {
   perpBalanceSummaries: Array<PerpBalanceSummary>;
   closedPerpBalance?: Maybe<ClosedPerpBalance>;
   closedPerpBalances: Array<ClosedPerpBalance>;
+  submitTransactionsEvent?: Maybe<SubmitTransactionsEvent>;
+  submitTransactionsEvents: Array<SubmitTransactionsEvent>;
+  submitSlowModeTransactionEvent?: Maybe<SubmitSlowModeTransactionEvent>;
+  submitSlowModeTransactionEvents: Array<SubmitSlowModeTransactionEvent>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -2182,6 +2198,42 @@ export type QueryclosedPerpBalancesArgs = {
   orderBy?: InputMaybe<ClosedPerpBalance_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<ClosedPerpBalance_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerysubmitTransactionsEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerysubmitTransactionsEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<SubmitTransactionsEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<SubmitTransactionsEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerysubmitSlowModeTransactionEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerysubmitSlowModeTransactionEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<SubmitSlowModeTransactionEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<SubmitSlowModeTransactionEvent_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2996,6 +3048,80 @@ export type Subaccount_orderBy =
   | 'liquidatorEvents'
   | 'fillOrderEvents';
 
+export type SubmitSlowModeTransactionEvent = {
+  id: Scalars['ID'];
+  sender: Scalars['Bytes'];
+  tx: Scalars['Bytes'];
+  executableAt: Scalars['BigInt'];
+};
+
+export type SubmitSlowModeTransactionEvent_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  sender?: InputMaybe<Scalars['Bytes']>;
+  sender_not?: InputMaybe<Scalars['Bytes']>;
+  sender_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_contains?: InputMaybe<Scalars['Bytes']>;
+  sender_not_contains?: InputMaybe<Scalars['Bytes']>;
+  tx?: InputMaybe<Scalars['Bytes']>;
+  tx_not?: InputMaybe<Scalars['Bytes']>;
+  tx_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  tx_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  tx_contains?: InputMaybe<Scalars['Bytes']>;
+  tx_not_contains?: InputMaybe<Scalars['Bytes']>;
+  executableAt?: InputMaybe<Scalars['BigInt']>;
+  executableAt_not?: InputMaybe<Scalars['BigInt']>;
+  executableAt_gt?: InputMaybe<Scalars['BigInt']>;
+  executableAt_lt?: InputMaybe<Scalars['BigInt']>;
+  executableAt_gte?: InputMaybe<Scalars['BigInt']>;
+  executableAt_lte?: InputMaybe<Scalars['BigInt']>;
+  executableAt_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  executableAt_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+};
+
+export type SubmitSlowModeTransactionEvent_orderBy =
+  | 'id'
+  | 'sender'
+  | 'tx'
+  | 'executableAt';
+
+export type SubmitTransactionsEvent = {
+  id: Scalars['ID'];
+  transactions: Array<Scalars['Bytes']>;
+};
+
+export type SubmitTransactionsEvent_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  transactions?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_not?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_not_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_not_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+};
+
+export type SubmitTransactionsEvent_orderBy =
+  | 'id'
+  | 'transactions';
+
 export type Subscription = {
   clearinghouse?: Maybe<Clearinghouse>;
   clearinghouses: Array<Clearinghouse>;
@@ -3041,6 +3167,10 @@ export type Subscription = {
   perpBalanceSummaries: Array<PerpBalanceSummary>;
   closedPerpBalance?: Maybe<ClosedPerpBalance>;
   closedPerpBalances: Array<ClosedPerpBalance>;
+  submitTransactionsEvent?: Maybe<SubmitTransactionsEvent>;
+  submitTransactionsEvents: Array<SubmitTransactionsEvent>;
+  submitSlowModeTransactionEvent?: Maybe<SubmitSlowModeTransactionEvent>;
+  submitSlowModeTransactionEvents: Array<SubmitSlowModeTransactionEvent>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -3442,6 +3572,42 @@ export type SubscriptionclosedPerpBalancesArgs = {
 };
 
 
+export type SubscriptionsubmitTransactionsEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionsubmitTransactionsEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<SubmitTransactionsEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<SubmitTransactionsEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionsubmitSlowModeTransactionEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionsubmitSlowModeTransactionEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<SubmitSlowModeTransactionEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<SubmitSlowModeTransactionEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type Subscription_metaArgs = {
   block?: InputMaybe<Block_height>;
 };
@@ -3659,6 +3825,14 @@ export type _SubgraphErrorPolicy_ =
   closedPerpBalance: InContextSdkMethod<Query['closedPerpBalance'], QueryclosedPerpBalanceArgs, MeshContext>,
   /** null **/
   closedPerpBalances: InContextSdkMethod<Query['closedPerpBalances'], QueryclosedPerpBalancesArgs, MeshContext>,
+  /** null **/
+  submitTransactionsEvent: InContextSdkMethod<Query['submitTransactionsEvent'], QuerysubmitTransactionsEventArgs, MeshContext>,
+  /** null **/
+  submitTransactionsEvents: InContextSdkMethod<Query['submitTransactionsEvents'], QuerysubmitTransactionsEventsArgs, MeshContext>,
+  /** null **/
+  submitSlowModeTransactionEvent: InContextSdkMethod<Query['submitSlowModeTransactionEvent'], QuerysubmitSlowModeTransactionEventArgs, MeshContext>,
+  /** null **/
+  submitSlowModeTransactionEvents: InContextSdkMethod<Query['submitSlowModeTransactionEvents'], QuerysubmitSlowModeTransactionEventsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   _meta: InContextSdkMethod<Query['_meta'], Query_metaArgs, MeshContext>
   };
@@ -3756,6 +3930,14 @@ export type _SubgraphErrorPolicy_ =
   closedPerpBalance: InContextSdkMethod<Subscription['closedPerpBalance'], SubscriptionclosedPerpBalanceArgs, MeshContext>,
   /** null **/
   closedPerpBalances: InContextSdkMethod<Subscription['closedPerpBalances'], SubscriptionclosedPerpBalancesArgs, MeshContext>,
+  /** null **/
+  submitTransactionsEvent: InContextSdkMethod<Subscription['submitTransactionsEvent'], SubscriptionsubmitTransactionsEventArgs, MeshContext>,
+  /** null **/
+  submitTransactionsEvents: InContextSdkMethod<Subscription['submitTransactionsEvents'], SubscriptionsubmitTransactionsEventsArgs, MeshContext>,
+  /** null **/
+  submitSlowModeTransactionEvent: InContextSdkMethod<Subscription['submitSlowModeTransactionEvent'], SubscriptionsubmitSlowModeTransactionEventArgs, MeshContext>,
+  /** null **/
+  submitSlowModeTransactionEvents: InContextSdkMethod<Subscription['submitSlowModeTransactionEvents'], SubscriptionsubmitSlowModeTransactionEventsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   _meta: InContextSdkMethod<Subscription['_meta'], Subscription_metaArgs, MeshContext>
   };

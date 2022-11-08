@@ -1,7 +1,6 @@
 query LatestOrderFillsQuery($marketEntityId: String!) {
-  # TODO: need to filter for taker only
   fillOrderEvents(
-    where: { market: $marketEntityId }
+    where: { market: $marketEntityId, isTaker: true }
     orderBy: blockTime
     orderDirection: desc
     first: 100

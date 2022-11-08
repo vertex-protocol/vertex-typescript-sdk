@@ -51,14 +51,14 @@ export declare namespace IProductEngine {
 export interface IProductEngineInterface extends utils.Interface {
   functions: {
     "applyDeltas((uint32,uint64,int256,int256)[])": FunctionFragment;
-    "burnLp(uint32,uint64,uint256)": FunctionFragment;
+    "burnLp(uint32,uint64,int256)": FunctionFragment;
     "decomposeLps(uint64,uint64)": FunctionFragment;
     "getClearinghouse()": FunctionFragment;
     "getEngineType()": FunctionFragment;
     "getOrderbook(uint32)": FunctionFragment;
     "getProductIds()": FunctionFragment;
     "initialize(address,address,address,address,address)": FunctionFragment;
-    "mintLp(uint32,uint64,uint256,uint256)": FunctionFragment;
+    "mintLp(uint32,uint64,int256,int256,int256)": FunctionFragment;
     "socializeSubaccount(uint64,int256)": FunctionFragment;
     "swapLp(uint32,uint64,int256,int256,int256,int256)": FunctionFragment;
   };
@@ -123,6 +123,7 @@ export interface IProductEngineInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "mintLp",
     values: [
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
@@ -284,7 +285,8 @@ export interface IProductEngine extends BaseContract {
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
       amountBaseX18: PromiseOrValue<BigNumberish>,
-      amountQuoteX18: PromiseOrValue<BigNumberish>,
+      quoteAmountLowX18: PromiseOrValue<BigNumberish>,
+      quoteAmountHighX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -347,7 +349,8 @@ export interface IProductEngine extends BaseContract {
     productId: PromiseOrValue<BigNumberish>,
     subaccountId: PromiseOrValue<BigNumberish>,
     amountBaseX18: PromiseOrValue<BigNumberish>,
-    amountQuoteX18: PromiseOrValue<BigNumberish>,
+    quoteAmountLowX18: PromiseOrValue<BigNumberish>,
+    quoteAmountHighX18: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -410,7 +413,8 @@ export interface IProductEngine extends BaseContract {
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
       amountBaseX18: PromiseOrValue<BigNumberish>,
-      amountQuoteX18: PromiseOrValue<BigNumberish>,
+      quoteAmountLowX18: PromiseOrValue<BigNumberish>,
+      quoteAmountHighX18: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -495,7 +499,8 @@ export interface IProductEngine extends BaseContract {
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
       amountBaseX18: PromiseOrValue<BigNumberish>,
-      amountQuoteX18: PromiseOrValue<BigNumberish>,
+      quoteAmountLowX18: PromiseOrValue<BigNumberish>,
+      quoteAmountHighX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -559,7 +564,8 @@ export interface IProductEngine extends BaseContract {
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
       amountBaseX18: PromiseOrValue<BigNumberish>,
-      amountQuoteX18: PromiseOrValue<BigNumberish>,
+      quoteAmountLowX18: PromiseOrValue<BigNumberish>,
+      quoteAmountHighX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

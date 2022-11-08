@@ -439,6 +439,7 @@ type FillOrderEvent {
   blockTime: BigInt!
   subaccount: Subaccount!
   order: Order!
+  isTaker: Boolean!
   feeQuoteX18: BigInt!
   amountDeltaX18: BigInt!
   quoteDeltaX18: BigInt!
@@ -532,6 +533,10 @@ input FillOrderEvent_filter {
   order_not_ends_with: String
   order_not_ends_with_nocase: String
   order_: Order_filter
+  isTaker: Boolean
+  isTaker_not: Boolean
+  isTaker_in: [Boolean!]
+  isTaker_not_in: [Boolean!]
   feeQuoteX18: BigInt
   feeQuoteX18_not: BigInt
   feeQuoteX18_gt: BigInt
@@ -567,6 +572,7 @@ enum FillOrderEvent_orderBy {
   blockTime
   subaccount
   order
+  isTaker
   feeQuoteX18
   amountDeltaX18
   quoteDeltaX18
@@ -1043,6 +1049,7 @@ type Order {
   type: OrderType!
   digest: Bytes!
   priceX18: BigInt!
+  isTaker: Boolean!
   expiration: BigInt!
   realExpiration: BigInt!
   subaccount: Subaccount!
@@ -1096,6 +1103,10 @@ input Order_filter {
   priceX18_lte: BigInt
   priceX18_in: [BigInt!]
   priceX18_not_in: [BigInt!]
+  isTaker: Boolean
+  isTaker_not: Boolean
+  isTaker_in: [Boolean!]
+  isTaker_not_in: [Boolean!]
   expiration: BigInt
   expiration_not: BigInt
   expiration_gt: BigInt
@@ -1211,6 +1222,7 @@ enum Order_orderBy {
   type
   digest
   priceX18
+  isTaker
   expiration
   realExpiration
   subaccount
@@ -2264,6 +2276,58 @@ type Query {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [ClosedPerpBalance!]!
+  submitTransactionsEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): SubmitTransactionsEvent
+  submitTransactionsEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: SubmitTransactionsEvent_orderBy
+    orderDirection: OrderDirection
+    where: SubmitTransactionsEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [SubmitTransactionsEvent!]!
+  submitSlowModeTransactionEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): SubmitSlowModeTransactionEvent
+  submitSlowModeTransactionEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: SubmitSlowModeTransactionEvent_orderBy
+    orderDirection: OrderDirection
+    where: SubmitSlowModeTransactionEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [SubmitSlowModeTransactionEvent!]!
   """Access to subgraph metadata"""
   _meta(block: Block_height): _Meta_
 }
@@ -2972,6 +3036,82 @@ enum Subaccount_orderBy {
   fillOrderEvents
 }
 
+type SubmitSlowModeTransactionEvent {
+  id: ID!
+  sender: Bytes!
+  tx: Bytes!
+  executableAt: BigInt!
+}
+
+input SubmitSlowModeTransactionEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+  tx: Bytes
+  tx_not: Bytes
+  tx_in: [Bytes!]
+  tx_not_in: [Bytes!]
+  tx_contains: Bytes
+  tx_not_contains: Bytes
+  executableAt: BigInt
+  executableAt_not: BigInt
+  executableAt_gt: BigInt
+  executableAt_lt: BigInt
+  executableAt_gte: BigInt
+  executableAt_lte: BigInt
+  executableAt_in: [BigInt!]
+  executableAt_not_in: [BigInt!]
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+}
+
+enum SubmitSlowModeTransactionEvent_orderBy {
+  id
+  sender
+  tx
+  executableAt
+}
+
+type SubmitTransactionsEvent {
+  id: ID!
+  transactions: [Bytes!]!
+}
+
+input SubmitTransactionsEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  transactions: [Bytes!]
+  transactions_not: [Bytes!]
+  transactions_contains: [Bytes!]
+  transactions_contains_nocase: [Bytes!]
+  transactions_not_contains: [Bytes!]
+  transactions_not_contains_nocase: [Bytes!]
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+}
+
+enum SubmitTransactionsEvent_orderBy {
+  id
+  transactions
+}
+
 type Subscription {
   clearinghouse(
     id: ID!
@@ -3545,6 +3685,58 @@ type Subscription {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [ClosedPerpBalance!]!
+  submitTransactionsEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): SubmitTransactionsEvent
+  submitTransactionsEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: SubmitTransactionsEvent_orderBy
+    orderDirection: OrderDirection
+    where: SubmitTransactionsEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [SubmitTransactionsEvent!]!
+  submitSlowModeTransactionEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): SubmitSlowModeTransactionEvent
+  submitSlowModeTransactionEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: SubmitSlowModeTransactionEvent_orderBy
+    orderDirection: OrderDirection
+    where: SubmitSlowModeTransactionEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [SubmitSlowModeTransactionEvent!]!
   """Access to subgraph metadata"""
   _meta(block: Block_height): _Meta_
 }

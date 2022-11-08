@@ -125,9 +125,9 @@ const _abi = [
         type: "uint64",
       },
       {
-        internalType: "uint256",
+        internalType: "int256",
         name: "amountLpX18",
-        type: "uint256",
+        type: "int256",
       },
     ],
     name: "burnLp",
@@ -255,6 +255,11 @@ const _abi = [
           {
             internalType: "int256",
             name: "supply",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "lastCumulativeFundingX18",
             type: "int256",
           },
           {
@@ -454,6 +459,11 @@ const _abi = [
           },
           {
             internalType: "int256",
+            name: "lastCumulativeFundingX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
             name: "cumulativeFundingPerLpX18",
             type: "int256",
           },
@@ -598,14 +608,19 @@ const _abi = [
         type: "uint64",
       },
       {
-        internalType: "uint256",
+        internalType: "int256",
         name: "amountBaseX18",
-        type: "uint256",
+        type: "int256",
       },
       {
-        internalType: "uint256",
-        name: "amountQuoteX18",
-        type: "uint256",
+        internalType: "int256",
+        name: "quoteAmountLowX18",
+        type: "int256",
+      },
+      {
+        internalType: "int256",
+        name: "quoteAmountHighX18",
+        type: "int256",
       },
     ],
     name: "mintLp",

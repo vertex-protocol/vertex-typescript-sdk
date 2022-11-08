@@ -66,20 +66,26 @@
       },
       {
         "indexed": true,
+        "internalType": "uint8",
+        "name": "mode",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
         "internalType": "uint32",
-        "name": "productId",
+        "name": "healthGroup",
         "type": "uint32"
       },
       {
         "indexed": false,
         "internalType": "int256",
-        "name": "liquidatorBaseDelta",
+        "name": "amount",
         "type": "int256"
       },
       {
         "indexed": false,
         "internalType": "int256",
-        "name": "liquidatorQuoteDelta",
+        "name": "amountQuote",
         "type": "int256"
       },
       {
@@ -163,6 +169,41 @@
             "internalType": "uint64",
             "name": "nonce",
             "type": "uint64"
+          }
+        ],
+        "internalType": "struct IEndpoint.BurnLp",
+        "name": "tx",
+        "type": "tuple"
+      }
+    ],
+    "name": "burnLp",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "subaccountName",
+            "type": "string"
+          },
+          {
+            "internalType": "uint32",
+            "name": "productId",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
           }
         ],
         "internalType": "struct IEndpoint.DepositCollateral",
@@ -518,6 +559,56 @@
       }
     ],
     "name": "liquidateSubaccount",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "subaccountName",
+            "type": "string"
+          },
+          {
+            "internalType": "uint32",
+            "name": "productId",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountBase",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "quoteAmountLow",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "quoteAmountHigh",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint64",
+            "name": "nonce",
+            "type": "uint64"
+          }
+        ],
+        "internalType": "struct IEndpoint.MintLp",
+        "name": "tx",
+        "type": "tuple"
+      }
+    ],
+    "name": "mintLp",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

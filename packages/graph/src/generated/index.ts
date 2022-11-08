@@ -470,6 +470,7 @@ export type FillOrderEvent = {
   blockTime: Scalars['BigInt'];
   subaccount: Subaccount;
   order: Order;
+  isTaker: Scalars['Boolean'];
   feeQuoteX18: Scalars['BigInt'];
   amountDeltaX18: Scalars['BigInt'];
   quoteDeltaX18: Scalars['BigInt'];
@@ -563,6 +564,10 @@ export type FillOrderEvent_filter = {
   order_not_ends_with?: InputMaybe<Scalars['String']>;
   order_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   order_?: InputMaybe<Order_filter>;
+  isTaker?: InputMaybe<Scalars['Boolean']>;
+  isTaker_not?: InputMaybe<Scalars['Boolean']>;
+  isTaker_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isTaker_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
   feeQuoteX18?: InputMaybe<Scalars['BigInt']>;
   feeQuoteX18_not?: InputMaybe<Scalars['BigInt']>;
   feeQuoteX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -598,6 +603,7 @@ export type FillOrderEvent_orderBy =
   | 'blockTime'
   | 'subaccount'
   | 'order'
+  | 'isTaker'
   | 'feeQuoteX18'
   | 'amountDeltaX18'
   | 'quoteDeltaX18';
@@ -1096,6 +1102,7 @@ export type Order = {
   type: OrderType;
   digest: Scalars['Bytes'];
   priceX18: Scalars['BigInt'];
+  isTaker: Scalars['Boolean'];
   expiration: Scalars['BigInt'];
   realExpiration: Scalars['BigInt'];
   subaccount: Subaccount;
@@ -1147,6 +1154,10 @@ export type Order_filter = {
   priceX18_lte?: InputMaybe<Scalars['BigInt']>;
   priceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   priceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  isTaker?: InputMaybe<Scalars['Boolean']>;
+  isTaker_not?: InputMaybe<Scalars['Boolean']>;
+  isTaker_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isTaker_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
   expiration?: InputMaybe<Scalars['BigInt']>;
   expiration_not?: InputMaybe<Scalars['BigInt']>;
   expiration_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1262,6 +1273,7 @@ export type Order_orderBy =
   | 'type'
   | 'digest'
   | 'priceX18'
+  | 'isTaker'
   | 'expiration'
   | 'realExpiration'
   | 'subaccount'
@@ -1809,6 +1821,10 @@ export type Query = {
   perpBalanceSummaries: Array<PerpBalanceSummary>;
   closedPerpBalance?: Maybe<ClosedPerpBalance>;
   closedPerpBalances: Array<ClosedPerpBalance>;
+  submitTransactionsEvent?: Maybe<SubmitTransactionsEvent>;
+  submitTransactionsEvents: Array<SubmitTransactionsEvent>;
+  submitSlowModeTransactionEvent?: Maybe<SubmitSlowModeTransactionEvent>;
+  submitSlowModeTransactionEvents: Array<SubmitSlowModeTransactionEvent>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -2205,6 +2221,42 @@ export type QueryclosedPerpBalancesArgs = {
   orderBy?: InputMaybe<ClosedPerpBalance_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<ClosedPerpBalance_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerysubmitTransactionsEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerysubmitTransactionsEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<SubmitTransactionsEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<SubmitTransactionsEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerysubmitSlowModeTransactionEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerysubmitSlowModeTransactionEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<SubmitSlowModeTransactionEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<SubmitSlowModeTransactionEvent_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -3019,6 +3071,80 @@ export type Subaccount_orderBy =
   | 'liquidatorEvents'
   | 'fillOrderEvents';
 
+export type SubmitSlowModeTransactionEvent = {
+  id: Scalars['ID'];
+  sender: Scalars['Bytes'];
+  tx: Scalars['Bytes'];
+  executableAt: Scalars['BigInt'];
+};
+
+export type SubmitSlowModeTransactionEvent_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  sender?: InputMaybe<Scalars['Bytes']>;
+  sender_not?: InputMaybe<Scalars['Bytes']>;
+  sender_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_contains?: InputMaybe<Scalars['Bytes']>;
+  sender_not_contains?: InputMaybe<Scalars['Bytes']>;
+  tx?: InputMaybe<Scalars['Bytes']>;
+  tx_not?: InputMaybe<Scalars['Bytes']>;
+  tx_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  tx_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  tx_contains?: InputMaybe<Scalars['Bytes']>;
+  tx_not_contains?: InputMaybe<Scalars['Bytes']>;
+  executableAt?: InputMaybe<Scalars['BigInt']>;
+  executableAt_not?: InputMaybe<Scalars['BigInt']>;
+  executableAt_gt?: InputMaybe<Scalars['BigInt']>;
+  executableAt_lt?: InputMaybe<Scalars['BigInt']>;
+  executableAt_gte?: InputMaybe<Scalars['BigInt']>;
+  executableAt_lte?: InputMaybe<Scalars['BigInt']>;
+  executableAt_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  executableAt_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+};
+
+export type SubmitSlowModeTransactionEvent_orderBy =
+  | 'id'
+  | 'sender'
+  | 'tx'
+  | 'executableAt';
+
+export type SubmitTransactionsEvent = {
+  id: Scalars['ID'];
+  transactions: Array<Scalars['Bytes']>;
+};
+
+export type SubmitTransactionsEvent_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  transactions?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_not?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_not_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_not_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+};
+
+export type SubmitTransactionsEvent_orderBy =
+  | 'id'
+  | 'transactions';
+
 export type Subscription = {
   clearinghouse?: Maybe<Clearinghouse>;
   clearinghouses: Array<Clearinghouse>;
@@ -3064,6 +3190,10 @@ export type Subscription = {
   perpBalanceSummaries: Array<PerpBalanceSummary>;
   closedPerpBalance?: Maybe<ClosedPerpBalance>;
   closedPerpBalances: Array<ClosedPerpBalance>;
+  submitTransactionsEvent?: Maybe<SubmitTransactionsEvent>;
+  submitTransactionsEvents: Array<SubmitTransactionsEvent>;
+  submitSlowModeTransactionEvent?: Maybe<SubmitSlowModeTransactionEvent>;
+  submitSlowModeTransactionEvents: Array<SubmitSlowModeTransactionEvent>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -3465,6 +3595,42 @@ export type SubscriptionclosedPerpBalancesArgs = {
 };
 
 
+export type SubscriptionsubmitTransactionsEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionsubmitTransactionsEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<SubmitTransactionsEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<SubmitTransactionsEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionsubmitSlowModeTransactionEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionsubmitSlowModeTransactionEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<SubmitSlowModeTransactionEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<SubmitSlowModeTransactionEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type Subscription_metaArgs = {
   block?: InputMaybe<Block_height>;
 };
@@ -3753,6 +3919,12 @@ export type ResolversTypes = ResolversObject<{
   Subaccount: ResolverTypeWrapper<Subaccount>;
   Subaccount_filter: Subaccount_filter;
   Subaccount_orderBy: Subaccount_orderBy;
+  SubmitSlowModeTransactionEvent: ResolverTypeWrapper<SubmitSlowModeTransactionEvent>;
+  SubmitSlowModeTransactionEvent_filter: SubmitSlowModeTransactionEvent_filter;
+  SubmitSlowModeTransactionEvent_orderBy: SubmitSlowModeTransactionEvent_orderBy;
+  SubmitTransactionsEvent: ResolverTypeWrapper<SubmitTransactionsEvent>;
+  SubmitTransactionsEvent_filter: SubmitTransactionsEvent_filter;
+  SubmitTransactionsEvent_orderBy: SubmitTransactionsEvent_orderBy;
   Subscription: ResolverTypeWrapper<{}>;
   TradeSummary: ResolverTypeWrapper<TradeSummary>;
   TradeSummary_filter: TradeSummary_filter;
@@ -3817,6 +3989,10 @@ export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String'];
   Subaccount: Subaccount;
   Subaccount_filter: Subaccount_filter;
+  SubmitSlowModeTransactionEvent: SubmitSlowModeTransactionEvent;
+  SubmitSlowModeTransactionEvent_filter: SubmitSlowModeTransactionEvent_filter;
+  SubmitTransactionsEvent: SubmitTransactionsEvent;
+  SubmitTransactionsEvent_filter: SubmitTransactionsEvent_filter;
   Subscription: {};
   TradeSummary: TradeSummary;
   TradeSummary_filter: TradeSummary_filter;
@@ -3907,6 +4083,7 @@ export type FillOrderEventResolvers<ContextType = MeshContext & { endpoint: stri
   blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
   order?: Resolver<ResolversTypes['Order'], ParentType, ContextType>;
+  isTaker?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   feeQuoteX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   amountDeltaX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   quoteDeltaX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -3972,6 +4149,7 @@ export type OrderResolvers<ContextType = MeshContext & { endpoint: string }, Par
   type?: Resolver<ResolversTypes['OrderType'], ParentType, ContextType>;
   digest?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   priceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  isTaker?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   expiration?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   realExpiration?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
@@ -4084,6 +4262,10 @@ export type QueryResolvers<ContextType = MeshContext & { endpoint: string }, Par
   perpBalanceSummaries?: Resolver<Array<ResolversTypes['PerpBalanceSummary']>, ParentType, ContextType, RequireFields<QueryperpBalanceSummariesArgs, 'skip' | 'first' | 'subgraphError'>>;
   closedPerpBalance?: Resolver<Maybe<ResolversTypes['ClosedPerpBalance']>, ParentType, ContextType, RequireFields<QueryclosedPerpBalanceArgs, 'id' | 'subgraphError'>>;
   closedPerpBalances?: Resolver<Array<ResolversTypes['ClosedPerpBalance']>, ParentType, ContextType, RequireFields<QueryclosedPerpBalancesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  submitTransactionsEvent?: Resolver<Maybe<ResolversTypes['SubmitTransactionsEvent']>, ParentType, ContextType, RequireFields<QuerysubmitTransactionsEventArgs, 'id' | 'subgraphError'>>;
+  submitTransactionsEvents?: Resolver<Array<ResolversTypes['SubmitTransactionsEvent']>, ParentType, ContextType, RequireFields<QuerysubmitTransactionsEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  submitSlowModeTransactionEvent?: Resolver<Maybe<ResolversTypes['SubmitSlowModeTransactionEvent']>, ParentType, ContextType, RequireFields<QuerysubmitSlowModeTransactionEventArgs, 'id' | 'subgraphError'>>;
+  submitSlowModeTransactionEvents?: Resolver<Array<ResolversTypes['SubmitSlowModeTransactionEvent']>, ParentType, ContextType, RequireFields<QuerysubmitSlowModeTransactionEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: Resolver<Maybe<ResolversTypes['_Meta_']>, ParentType, ContextType, Partial<Query_metaArgs>>;
 }>;
 
@@ -4176,6 +4358,20 @@ export type SubaccountResolvers<ContextType = MeshContext & { endpoint: string }
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type SubmitSlowModeTransactionEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SubmitSlowModeTransactionEvent'] = ResolversParentTypes['SubmitSlowModeTransactionEvent']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  sender?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  tx?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  executableAt?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type SubmitTransactionsEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SubmitTransactionsEvent'] = ResolversParentTypes['SubmitTransactionsEvent']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  transactions?: Resolver<Array<ResolversTypes['Bytes']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type SubscriptionResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
   clearinghouse?: SubscriptionResolver<Maybe<ResolversTypes['Clearinghouse']>, "clearinghouse", ParentType, ContextType, RequireFields<SubscriptionclearinghouseArgs, 'id' | 'subgraphError'>>;
   clearinghouses?: SubscriptionResolver<Array<ResolversTypes['Clearinghouse']>, "clearinghouses", ParentType, ContextType, RequireFields<SubscriptionclearinghousesArgs, 'skip' | 'first' | 'subgraphError'>>;
@@ -4221,6 +4417,10 @@ export type SubscriptionResolvers<ContextType = MeshContext & { endpoint: string
   perpBalanceSummaries?: SubscriptionResolver<Array<ResolversTypes['PerpBalanceSummary']>, "perpBalanceSummaries", ParentType, ContextType, RequireFields<SubscriptionperpBalanceSummariesArgs, 'skip' | 'first' | 'subgraphError'>>;
   closedPerpBalance?: SubscriptionResolver<Maybe<ResolversTypes['ClosedPerpBalance']>, "closedPerpBalance", ParentType, ContextType, RequireFields<SubscriptionclosedPerpBalanceArgs, 'id' | 'subgraphError'>>;
   closedPerpBalances?: SubscriptionResolver<Array<ResolversTypes['ClosedPerpBalance']>, "closedPerpBalances", ParentType, ContextType, RequireFields<SubscriptionclosedPerpBalancesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  submitTransactionsEvent?: SubscriptionResolver<Maybe<ResolversTypes['SubmitTransactionsEvent']>, "submitTransactionsEvent", ParentType, ContextType, RequireFields<SubscriptionsubmitTransactionsEventArgs, 'id' | 'subgraphError'>>;
+  submitTransactionsEvents?: SubscriptionResolver<Array<ResolversTypes['SubmitTransactionsEvent']>, "submitTransactionsEvents", ParentType, ContextType, RequireFields<SubscriptionsubmitTransactionsEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  submitSlowModeTransactionEvent?: SubscriptionResolver<Maybe<ResolversTypes['SubmitSlowModeTransactionEvent']>, "submitSlowModeTransactionEvent", ParentType, ContextType, RequireFields<SubscriptionsubmitSlowModeTransactionEventArgs, 'id' | 'subgraphError'>>;
+  submitSlowModeTransactionEvents?: SubscriptionResolver<Array<ResolversTypes['SubmitSlowModeTransactionEvent']>, "submitSlowModeTransactionEvents", ParentType, ContextType, RequireFields<SubscriptionsubmitSlowModeTransactionEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
 }>;
 
@@ -4275,6 +4475,8 @@ export type Resolvers<ContextType = MeshContext & { endpoint: string }> = Resolv
   SpotProduct?: SpotProductResolvers<ContextType>;
   SpotProductHourlySnapshot?: SpotProductHourlySnapshotResolvers<ContextType>;
   Subaccount?: SubaccountResolvers<ContextType>;
+  SubmitSlowModeTransactionEvent?: SubmitSlowModeTransactionEventResolvers<ContextType>;
+  SubmitTransactionsEvent?: SubmitTransactionsEventResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   TradeSummary?: TradeSummaryResolvers<ContextType>;
   _Block_?: _Block_Resolvers<ContextType>;
@@ -4711,7 +4913,7 @@ export const HourlyHistoricalProductDataQueryDocument = gql`
 export const LatestOrderFillsQueryDocument = gql`
     query LatestOrderFillsQuery($marketEntityId: String!) {
   fillOrderEvents(
-    where: {market: $marketEntityId}
+    where: {market: $marketEntityId, isTaker: true}
     orderBy: blockTime
     orderDirection: desc
     first: 100
