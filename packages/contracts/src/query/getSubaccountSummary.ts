@@ -44,7 +44,7 @@ export async function getSubaccountSummary({
   const balances: SubaccountSummaryResponse['balances'] = [];
 
   subaccountInfo.spotBalances.forEach((spotBalance) => {
-    const product = subaccountInfo.allProducts.spotProducts.find(
+    const product = subaccountInfo.spotProducts.find(
       (product) => product.productId === spotBalance.productId,
     );
     if (!product) {
@@ -60,7 +60,7 @@ export async function getSubaccountSummary({
   });
 
   subaccountInfo.perpBalances.forEach((perpBalance) => {
-    const product = subaccountInfo.allProducts.perpProducts.find(
+    const product = subaccountInfo.perpProducts.find(
       (product) => product.productId === perpBalance.productId,
     );
     if (!product) {

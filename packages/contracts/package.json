@@ -16,7 +16,7 @@
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "dev": "tsc -w",
-    "update-bindings": "env-cmd ./update-bindings.sh"
+    "generate-types": "typechain --target ethers-v5 --out-dir 'src/typechain-types' './abis/*.json'"
   },
   "files": [
     "dist",

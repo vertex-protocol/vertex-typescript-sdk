@@ -82,7 +82,7 @@ export async function createClientContext(
     querierAddress,
     chainSignerOrProvider,
   );
-  const clearinghouseAddress = (await querier.getConfig()).clearinghouse;
+  const clearinghouseAddress = await querier.getClearinghouse();
   const clearinghouse = await IClearinghouse__factory.connect(
     clearinghouseAddress,
     chainSignerOrProvider,

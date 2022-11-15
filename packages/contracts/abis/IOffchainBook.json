@@ -227,9 +227,9 @@
       {
         "components": [
           {
-            "internalType": "address",
-            "name": "book",
-            "type": "address"
+            "internalType": "uint32",
+            "name": "productId",
+            "type": "uint32"
           },
           {
             "components": [
@@ -296,9 +296,9 @@
       {
         "components": [
           {
-            "internalType": "address",
-            "name": "book",
-            "type": "address"
+            "internalType": "uint32",
+            "name": "productId",
+            "type": "uint32"
           },
           {
             "internalType": "bool",
@@ -429,9 +429,9 @@
             "type": "string"
           },
           {
-            "internalType": "address",
-            "name": "book",
-            "type": "address"
+            "internalType": "uint32",
+            "name": "productId",
+            "type": "uint32"
           },
           {
             "internalType": "int256",

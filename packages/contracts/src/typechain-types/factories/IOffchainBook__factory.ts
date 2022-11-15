@@ -235,9 +235,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
-            name: "book",
-            type: "address",
+            internalType: "uint32",
+            name: "productId",
+            type: "uint32",
           },
           {
             components: [
@@ -304,9 +304,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
-            name: "book",
-            type: "address",
+            internalType: "uint32",
+            name: "productId",
+            type: "uint32",
           },
           {
             internalType: "bool",
@@ -437,9 +437,9 @@ const _abi = [
             type: "string",
           },
           {
-            internalType: "address",
-            name: "book",
-            type: "address",
+            internalType: "uint32",
+            name: "productId",
+            type: "uint32",
           },
           {
             internalType: "int256",

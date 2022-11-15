@@ -169,26 +169,14 @@ export declare namespace IEndpoint {
 }
 
 export declare namespace IClearinghouseState {
-  export type RiskStruct = {
-    longWeightInitialX18: PromiseOrValue<BigNumberish>;
-    shortWeightInitialX18: PromiseOrValue<BigNumberish>;
-    longWeightMaintenanceX18: PromiseOrValue<BigNumberish>;
-    shortWeightMaintenanceX18: PromiseOrValue<BigNumberish>;
-    largePositionPenaltyX18: PromiseOrValue<BigNumberish>;
+  export type HealthGroupStruct = {
+    spotId: PromiseOrValue<BigNumberish>;
+    perpId: PromiseOrValue<BigNumberish>;
   };
 
-  export type RiskStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
-  ] & {
-    longWeightInitialX18: BigNumber;
-    shortWeightInitialX18: BigNumber;
-    longWeightMaintenanceX18: BigNumber;
-    shortWeightMaintenanceX18: BigNumber;
-    largePositionPenaltyX18: BigNumber;
+  export type HealthGroupStructOutput = [number, number] & {
+    spotId: number;
+    perpId: number;
   };
 
   export type RiskStoreStruct = {
@@ -214,6 +202,30 @@ export declare namespace IClearinghouseState {
   };
 }
 
+export declare namespace RiskHelper {
+  export type RiskStruct = {
+    longWeightInitialX18: PromiseOrValue<BigNumberish>;
+    shortWeightInitialX18: PromiseOrValue<BigNumberish>;
+    longWeightMaintenanceX18: PromiseOrValue<BigNumberish>;
+    shortWeightMaintenanceX18: PromiseOrValue<BigNumberish>;
+    largePositionPenaltyX18: PromiseOrValue<BigNumberish>;
+  };
+
+  export type RiskStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ] & {
+    longWeightInitialX18: BigNumber;
+    shortWeightInitialX18: BigNumber;
+    longWeightMaintenanceX18: BigNumber;
+    shortWeightMaintenanceX18: BigNumber;
+    largePositionPenaltyX18: BigNumber;
+  };
+}
+
 export interface IClearinghouseInterface extends utils.Interface {
   functions: {
     "addEngine(address,uint8)": FunctionFragment;
@@ -223,6 +235,7 @@ export interface IClearinghouseInterface extends utils.Interface {
     "getEndpoint()": FunctionFragment;
     "getEngineByProduct(uint32)": FunctionFragment;
     "getEngineByType(uint8)": FunctionFragment;
+    "getHealthGroups()": FunctionFragment;
     "getHealthX18(uint64,uint8)": FunctionFragment;
     "getInsurance()": FunctionFragment;
     "getNumProducts()": FunctionFragment;
@@ -236,7 +249,7 @@ export interface IClearinghouseInterface extends utils.Interface {
     "getSupportedEngines()": FunctionFragment;
     "liquidateSubaccount((address,string,uint64,uint8,uint32,int256,uint64))": FunctionFragment;
     "mintLp((address,string,uint32,uint256,uint256,uint256,uint64))": FunctionFragment;
-    "registerProductForId((int48,int48,int48,int48,int48),uint32)": FunctionFragment;
+    "registerProductForId(address,(int48,int48,int48,int48,int48),uint32)": FunctionFragment;
     "settlePnl((uint64[]))": FunctionFragment;
     "withdrawCollateral((address,string,uint32,uint256,uint64))": FunctionFragment;
   };
@@ -250,6 +263,7 @@ export interface IClearinghouseInterface extends utils.Interface {
       | "getEndpoint"
       | "getEngineByProduct"
       | "getEngineByType"
+      | "getHealthGroups"
       | "getHealthX18"
       | "getInsurance"
       | "getNumProducts"
@@ -295,6 +309,10 @@ export interface IClearinghouseInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getEngineByType",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getHealthGroups",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getHealthX18",
@@ -347,7 +365,11 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "registerProductForId",
-    values: [IClearinghouseState.RiskStoreStruct, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<string>,
+      IClearinghouseState.RiskStoreStruct,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "settlePnl",
@@ -378,6 +400,10 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getEngineByType",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getHealthGroups",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -436,7 +462,7 @@ export interface IClearinghouseInterface extends utils.Interface {
   events: {
     "ClearinghouseInitialized(address,address,address)": EventFragment;
     "CreateSubaccount(address,string,uint64)": EventFragment;
-    "Liquidation(uint64,uint64,uint8,uint32,int256,int256,int256)": EventFragment;
+    "Liquidation(uint64,uint64,uint8,uint32,int256,int256)": EventFragment;
     "ModifyCollateral(int256,uint64,uint32)": EventFragment;
   };
 
@@ -477,12 +503,11 @@ export interface LiquidationEventObject {
   liquidateeSubaccount: BigNumber;
   mode: number;
   healthGroup: number;
-  amount: BigNumber;
-  amountQuote: BigNumber;
-  insuranceCoverage: BigNumber;
+  amountX18: BigNumber;
+  amountQuoteX18: BigNumber;
 }
 export type LiquidationEvent = TypedEvent<
-  [BigNumber, BigNumber, number, number, BigNumber, BigNumber, BigNumber],
+  [BigNumber, BigNumber, number, number, BigNumber, BigNumber],
   LiquidationEventObject
 >;
 
@@ -563,6 +588,10 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    getHealthGroups(
+      overrides?: CallOverrides
+    ): Promise<[IClearinghouseState.HealthGroupStructOutput[]]>;
+
     getHealthX18(
       subaccountId: PromiseOrValue<BigNumberish>,
       healthType: PromiseOrValue<BigNumberish>,
@@ -590,7 +619,7 @@ export interface IClearinghouse extends BaseContract {
     getRisk(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[IClearinghouseState.RiskStructOutput]>;
+    ): Promise<[RiskHelper.RiskStructOutput]>;
 
     getSubaccountId(
       owner: PromiseOrValue<string>,
@@ -616,6 +645,7 @@ export interface IClearinghouse extends BaseContract {
     ): Promise<ContractTransaction>;
 
     registerProductForId(
+      book: PromiseOrValue<string>,
       riskStore: IClearinghouseState.RiskStoreStruct,
       healthGroup: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -665,6 +695,10 @@ export interface IClearinghouse extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  getHealthGroups(
+    overrides?: CallOverrides
+  ): Promise<IClearinghouseState.HealthGroupStructOutput[]>;
+
   getHealthX18(
     subaccountId: PromiseOrValue<BigNumberish>,
     healthType: PromiseOrValue<BigNumberish>,
@@ -692,7 +726,7 @@ export interface IClearinghouse extends BaseContract {
   getRisk(
     productId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<IClearinghouseState.RiskStructOutput>;
+  ): Promise<RiskHelper.RiskStructOutput>;
 
   getSubaccountId(
     owner: PromiseOrValue<string>,
@@ -718,6 +752,7 @@ export interface IClearinghouse extends BaseContract {
   ): Promise<ContractTransaction>;
 
   registerProductForId(
+    book: PromiseOrValue<string>,
     riskStore: IClearinghouseState.RiskStoreStruct,
     healthGroup: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -767,6 +802,10 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    getHealthGroups(
+      overrides?: CallOverrides
+    ): Promise<IClearinghouseState.HealthGroupStructOutput[]>;
+
     getHealthX18(
       subaccountId: PromiseOrValue<BigNumberish>,
       healthType: PromiseOrValue<BigNumberish>,
@@ -794,7 +833,7 @@ export interface IClearinghouse extends BaseContract {
     getRisk(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<IClearinghouseState.RiskStructOutput>;
+    ): Promise<RiskHelper.RiskStructOutput>;
 
     getSubaccountId(
       owner: PromiseOrValue<string>,
@@ -820,6 +859,7 @@ export interface IClearinghouse extends BaseContract {
     ): Promise<void>;
 
     registerProductForId(
+      book: PromiseOrValue<string>,
       riskStore: IClearinghouseState.RiskStoreStruct,
       healthGroup: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -859,23 +899,21 @@ export interface IClearinghouse extends BaseContract {
       subaccount?: null
     ): CreateSubaccountEventFilter;
 
-    "Liquidation(uint64,uint64,uint8,uint32,int256,int256,int256)"(
+    "Liquidation(uint64,uint64,uint8,uint32,int256,int256)"(
       liquidatorSubaccount?: PromiseOrValue<BigNumberish> | null,
       liquidateeSubaccount?: PromiseOrValue<BigNumberish> | null,
       mode?: PromiseOrValue<BigNumberish> | null,
       healthGroup?: null,
-      amount?: null,
-      amountQuote?: null,
-      insuranceCoverage?: null
+      amountX18?: null,
+      amountQuoteX18?: null
     ): LiquidationEventFilter;
     Liquidation(
       liquidatorSubaccount?: PromiseOrValue<BigNumberish> | null,
       liquidateeSubaccount?: PromiseOrValue<BigNumberish> | null,
       mode?: PromiseOrValue<BigNumberish> | null,
       healthGroup?: null,
-      amount?: null,
-      amountQuote?: null,
-      insuranceCoverage?: null
+      amountX18?: null,
+      amountQuoteX18?: null
     ): LiquidationEventFilter;
 
     "ModifyCollateral(int256,uint64,uint32)"(
@@ -923,6 +961,8 @@ export interface IClearinghouse extends BaseContract {
       engineType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getHealthGroups(overrides?: CallOverrides): Promise<BigNumber>;
 
     getHealthX18(
       subaccountId: PromiseOrValue<BigNumberish>,
@@ -977,6 +1017,7 @@ export interface IClearinghouse extends BaseContract {
     ): Promise<BigNumber>;
 
     registerProductForId(
+      book: PromiseOrValue<string>,
       riskStore: IClearinghouseState.RiskStoreStruct,
       healthGroup: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1026,6 +1067,8 @@ export interface IClearinghouse extends BaseContract {
       engineType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    getHealthGroups(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getHealthX18(
       subaccountId: PromiseOrValue<BigNumberish>,
@@ -1082,6 +1125,7 @@ export interface IClearinghouse extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     registerProductForId(
+      book: PromiseOrValue<string>,
       riskStore: IClearinghouseState.RiskStoreStruct,
       healthGroup: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }

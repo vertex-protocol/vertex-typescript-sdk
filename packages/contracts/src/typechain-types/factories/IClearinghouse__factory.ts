@@ -90,19 +90,13 @@ const _abi = [
       {
         indexed: false,
         internalType: "int256",
-        name: "amount",
+        name: "amountX18",
         type: "int256",
       },
       {
         indexed: false,
         internalType: "int256",
-        name: "amountQuote",
-        type: "int256",
-      },
-      {
-        indexed: false,
-        internalType: "int256",
-        name: "insuranceCoverage",
+        name: "amountQuoteX18",
         type: "int256",
       },
     ],
@@ -309,6 +303,31 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getHealthGroups",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint32",
+            name: "spotId",
+            type: "uint32",
+          },
+          {
+            internalType: "uint32",
+            name: "perpId",
+            type: "uint32",
+          },
+        ],
+        internalType: "struct IClearinghouseState.HealthGroup[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint64",
@@ -460,7 +479,7 @@ const _abi = [
             type: "int256",
           },
         ],
-        internalType: "struct IClearinghouseState.Risk",
+        internalType: "struct RiskHelper.Risk",
         name: "",
         type: "tuple",
       },
@@ -626,6 +645,11 @@ const _abi = [
   },
   {
     inputs: [
+      {
+        internalType: "address",
+        name: "book",
+        type: "address",
+      },
       {
         components: [
           {
