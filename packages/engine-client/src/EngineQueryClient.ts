@@ -44,7 +44,7 @@ export class EngineQueryClient extends EngineBaseClient {
     const balances: GetEngineSubaccountSummaryResponse['balances'] = [];
 
     baseResponse.spot_balances.forEach((spotBalance) => {
-      const product = baseResponse.all_products.spot_products.find(
+      const product = baseResponse.spot_products.find(
         (product) => product.product_id === spotBalance.product_id,
       );
       if (!product) {
@@ -53,17 +53,12 @@ export class EngineQueryClient extends EngineBaseClient {
 
       balances.push({
         amount: fromX18(spotBalance.amount_x18),
-        health: {
-          initial: fromX18(spotBalance.initial_x18),
-          maintenance: fromX18(spotBalance.maintenance_x18),
-          unweighted: fromX18(spotBalance.pnl_x18),
-        },
         ...mapEngineServerSpotProduct(product).product,
       });
     });
 
     baseResponse.perp_balances.forEach((perpBalance) => {
-      const product = baseResponse.all_products.perp_products.find(
+      const product = baseResponse.perp_products.find(
         (product) => product.product_id === perpBalance.product_id,
       );
       if (!product) {
@@ -73,11 +68,6 @@ export class EngineQueryClient extends EngineBaseClient {
       balances.push({
         amount: fromX18(perpBalance.amount_x18),
         vQuoteBalance: fromX18(perpBalance.v_quote_balance_x18),
-        health: {
-          initial: fromX18(perpBalance.initial_x18),
-          maintenance: fromX18(perpBalance.maintenance_x18),
-          unweighted: fromX18(perpBalance.pnl_x18),
-        },
         ...mapEngineServerPerpProduct(product).product,
       });
     });
@@ -85,9 +75,21 @@ export class EngineQueryClient extends EngineBaseClient {
     return {
       balances: balances,
       health: {
-        initial: fromX18(baseResponse.initial_health_x18),
-        maintenance: fromX18(baseResponse.maintenance_health_x18),
-        unweighted: fromX18(baseResponse.pnl_health_x18),
+        initial: {
+          health: fromX18(baseResponse.healths[0].health_x18),
+          assets: fromX18(baseResponse.healths[0].assets_x18),
+          liabilities: fromX18(baseResponse.healths[0].liabilities_x18),
+        },
+        maintenance: {
+          health: fromX18(baseResponse.healths[1].health_x18),
+          assets: fromX18(baseResponse.healths[1].assets_x18),
+          liabilities: fromX18(baseResponse.healths[1].liabilities_x18),
+        },
+        unweighted: {
+          health: fromX18(baseResponse.healths[2].health_x18),
+          assets: fromX18(baseResponse.healths[2].assets_x18),
+          liabilities: fromX18(baseResponse.healths[2].liabilities_x18),
+        },
       },
     };
   }

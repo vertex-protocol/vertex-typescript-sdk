@@ -58,12 +58,15 @@ export interface EngineServerQueryRequest {
 export interface EngineServerSubaccountInfoResponse {
   exists: boolean;
   subaccount_id: BigNumberish;
-  initial_health_x18: BigNumberish;
-  maintenance_health_x18: BigNumberish;
-  pnl_health_x18: BigNumberish;
+  healths: {
+    health_x18: BigNumberish;
+    assets_x18: BigNumberish;
+    liabilities_x18: BigNumberish;
+  }[];
   spot_balances: EngineServerSpotBalance[];
   perp_balances: EngineServerPerpBalance[];
-  all_products: EngineServerAllProductsResponse;
+  spot_products: EngineServerSpotProduct[];
+  perp_products: EngineServerPerpProduct[];
 }
 
 export interface EngineServerAllProductsResponse {

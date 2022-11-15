@@ -1,5 +1,9 @@
 import { BigNumberish } from 'ethers';
-import { BalanceWithProduct, HealthStatus, WithContract } from '../common';
+import {
+  BalanceWithProduct,
+  HealthStatusByType,
+  WithContract,
+} from '../common';
 import { fromX18 } from '@vertex-protocol/utils';
 import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
 
@@ -12,19 +16,8 @@ export interface GetSubaccountSummaryParams {
 }
 
 export interface SubaccountSummaryResponse {
-  balances: (BalanceWithProduct & {
-    health: HealthStatus;
-  })[];
-  health: HealthStatus;
-}
-
-// TODO: per balance health
-function healthInfoToStatus(healthInfo: any): HealthStatus {
-  return {
-    initial: fromX18(healthInfo.initialX18),
-    maintenance: fromX18(healthInfo.maintenanceX18),
-    unweighted: fromX18(healthInfo.pnlX18),
-  };
+  balances: BalanceWithProduct[];
+  health: HealthStatusByType;
 }
 
 /**
@@ -54,7 +47,6 @@ export async function getSubaccountSummary({
 
     balances.push({
       amount: fromX18(spotBalance.balance.amountX18),
-      health: healthInfoToStatus(spotBalance),
       ...mapEngineSpotProduct(product),
     });
   });
@@ -71,13 +63,28 @@ export async function getSubaccountSummary({
     balances.push({
       amount: fromX18(perpBalance.balance.amountX18),
       vQuoteBalance: fromX18(perpBalance.balance.vQuoteBalanceX18),
-      health: healthInfoToStatus(perpBalance),
       ...mapEnginePerpProduct(product),
     });
   });
 
   return {
-    health: healthInfoToStatus(subaccountInfo),
+    health: {
+      initial: {
+        health: fromX18(subaccountInfo.healths[0].healthX18),
+        assets: fromX18(subaccountInfo.healths[0].assetsX18),
+        liabilities: fromX18(subaccountInfo.healths[0].liabilitiesX18),
+      },
+      maintenance: {
+        health: fromX18(subaccountInfo.healths[1].healthX18),
+        assets: fromX18(subaccountInfo.healths[1].assetsX18),
+        liabilities: fromX18(subaccountInfo.healths[1].liabilitiesX18),
+      },
+      unweighted: {
+        health: fromX18(subaccountInfo.healths[2].healthX18),
+        assets: fromX18(subaccountInfo.healths[2].assetsX18),
+        liabilities: fromX18(subaccountInfo.healths[2].liabilitiesX18),
+      },
+    },
     balances,
   };
 }

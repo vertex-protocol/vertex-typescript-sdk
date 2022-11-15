@@ -96,40 +96,16 @@ export interface MarginUsageFractions {
 export function calcMarginUsageFractions(
   summary: SubaccountSummaryResponse,
 ): MarginUsageFractions {
-  const positiveHealths = {
-    maintenance: toBigDecimal(0),
-    initial: toBigDecimal(0),
-  };
-  const absNegativeHealths = {
-    maintenance: toBigDecimal(0),
-    initial: toBigDecimal(0),
-  };
-
-  summary.balances.forEach((balance) => {
-    // Initial & maintenance should have same signs
-    if (balance.health.initial.gt(0)) {
-      positiveHealths.initial = positiveHealths.initial.plus(
-        balance.health.initial,
-      );
-      positiveHealths.maintenance = positiveHealths.maintenance.plus(
-        balance.health.maintenance,
-      );
-    } else {
-      absNegativeHealths.initial = absNegativeHealths.initial.plus(
-        balance.health.initial.abs(),
-      );
-      absNegativeHealths.maintenance = absNegativeHealths.maintenance.plus(
-        balance.health.maintenance.abs(),
-      );
-    }
-  });
-
-  const initialMarginUsage = positiveHealths.initial.eq(0)
+  const initialMarginUsage = summary.health.initial.assets.eq(0)
     ? toBigDecimal(0)
-    : absNegativeHealths.initial.div(positiveHealths.initial);
-  const maintenanceMarginUsage = positiveHealths.maintenance.eq(0)
+    : summary.health.initial.liabilities
+        .abs()
+        .div(summary.health.initial.assets);
+  const maintenanceMarginUsage = summary.health.maintenance.assets.eq(0)
     ? toBigDecimal(0)
-    : absNegativeHealths.maintenance.div(positiveHealths.maintenance);
+    : summary.health.maintenance.liabilities
+        .abs()
+        .div(summary.health.maintenance.assets);
 
   return {
     initial: initialMarginUsage,
