@@ -1,21 +1,26 @@
 import { SubaccountSummaryResponse } from '../query';
-import { ProductEngineType } from '../common';
+import { ProductEngineType, QUOTE_PRODUCT_ID } from '../common';
 import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
 import {
+  calcLpBalanceValue,
   calcPerpBalanceNotionalValue,
   calcPerpBalanceValue,
   calcSpotBalanceValue,
 } from './balanceValue';
 
 export interface TotalPortfolioValues {
-  // Sum of spot and perpNotional
+  // spot + spotLp + perpNotional + perpLp
   totalNotional: BigDecimal;
-  // Sum of spot and perp
+  // spot + spotLp + perp + perpLp
   netTotal: BigDecimal;
   // Net spot value
   spot: BigDecimal;
+  // Spot LP value
+  spotLp: BigDecimal;
   // This is the notional value of the position
   perpNotional: BigDecimal;
+  // Perp LP value
+  perpLp: BigDecimal;
   // Indicates the value of the perp position, which is notional value of the position minus the entry cost and funding.
   // This is the same as PnL
   perp: BigDecimal;
@@ -34,30 +39,45 @@ export function calcTotalPortfolioValues(
 ): TotalPortfolioValues {
   const values: TotalPortfolioValues = {
     netTotal: toBigDecimal(0),
+    spot: toBigDecimal(0),
+    spotLp: toBigDecimal(0),
     perp: toBigDecimal(0),
     perpNotional: toBigDecimal(0),
-    spot: toBigDecimal(0),
+    perpLp: toBigDecimal(0),
     totalNotional: toBigDecimal(0),
   };
 
+  const quoteDecimals = productDecimalsByProductId[QUOTE_PRODUCT_ID] ?? 0;
   summary.balances.forEach((balance) => {
     const decimals = productDecimalsByProductId[balance.productId] ?? 0;
+
     if (balance.type === ProductEngineType.SPOT) {
       const value = calcSpotBalanceValue(balance, decimals);
 
-      values.totalNotional = values.totalNotional.plus(value);
-      values.netTotal = values.netTotal.plus(value);
       values.spot = values.spot.plus(value);
+      values.spotLp = values.spotLp.plus(
+        calcLpBalanceValue(balance, decimals, quoteDecimals),
+      );
     } else if (balance.type === ProductEngineType.PERP) {
       const notional = calcPerpBalanceNotionalValue(balance, decimals);
       const value = calcPerpBalanceValue(balance, decimals);
 
-      values.totalNotional = values.totalNotional.plus(notional);
       values.perpNotional = values.perpNotional.plus(notional);
-      values.netTotal = values.netTotal.plus(value);
       values.perp = values.perp.plus(value);
+      values.perpLp = values.perpLp.plus(
+        calcLpBalanceValue(balance, decimals, quoteDecimals),
+      );
     }
   });
+
+  values.netTotal = values.spot
+    .plus(values.spotLp)
+    .plus(values.perp)
+    .plus(values.perpLp);
+  values.totalNotional = values.spot
+    .plus(values.spotLp)
+    .plus(values.perpNotional)
+    .plus(values.perpLp);
 
   return values;
 }

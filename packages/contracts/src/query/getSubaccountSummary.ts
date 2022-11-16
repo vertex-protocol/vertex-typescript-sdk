@@ -47,6 +47,7 @@ export async function getSubaccountSummary({
 
     balances.push({
       amount: fromX18(spotBalance.balance.amountX18),
+      lpAmount: fromX18(spotBalance.lpBalance.amountX18),
       ...mapEngineSpotProduct(product),
     });
   });
@@ -62,6 +63,7 @@ export async function getSubaccountSummary({
 
     balances.push({
       amount: fromX18(perpBalance.balance.amountX18),
+      lpAmount: fromX18(perpBalance.lpBalance.amountX18),
       vQuoteBalance: fromX18(perpBalance.balance.vQuoteBalanceX18),
       ...mapEnginePerpProduct(product),
     });

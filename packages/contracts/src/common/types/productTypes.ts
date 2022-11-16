@@ -44,6 +44,10 @@ interface BaseProduct {
   shortWeightMaintenance: BigDecimal;
   // Health penalty term for large position sizes
   largePositionPenalty: BigDecimal;
+  // LP state
+  totalLpQuoteAmount: BigDecimal;
+  totalLpBaseAmount: BigDecimal;
+  totalLpSupply: BigDecimal;
 }
 
 /**
