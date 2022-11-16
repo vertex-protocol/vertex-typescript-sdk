@@ -3,7 +3,9 @@ import {
   SignableRequestTypeToParams,
 } from './signableRequestType';
 import {
+  BurnLpParams,
   LiquidateSubaccountParams,
+  MintLpParams,
   OrderParams,
   WithdrawCollateralParams,
 } from './signatureParamTypes';
@@ -23,6 +25,10 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
   switch (requestType) {
     case 'withdraw_collateral':
       return getWithdrawCollateralValues(params as WithdrawCollateralParams);
+    case 'mint_lp':
+      return getMintLpValues(params as MintLpParams);
+    case 'burn_lp':
+      return getBurnLpValues(params as BurnLpParams);
     case 'place_order':
       return getOrderValues(params as OrderParams);
     case 'cancel_order':
@@ -31,6 +37,28 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
       return getLiquidateSubaccountValues(params as LiquidateSubaccountParams);
   }
   throw Error(`Unknown request type: ${requestType}`);
+}
+
+function getMintLpValues(params: MintLpParams) {
+  return {
+    sender: params.sender,
+    subaccountName: params.subaccountName,
+    productId: params.productId,
+    amountBase: params.amountBase.toString(),
+    quoteAmountLow: params.quoteAmountLow.toString(),
+    quoteAmountHigh: params.quoteAmountHigh.toString(),
+    nonce: BigNumber.from(params.nonce).toNumber(),
+  };
+}
+
+function getBurnLpValues(params: BurnLpParams) {
+  return {
+    sender: params.sender,
+    subaccountName: params.subaccountName,
+    productId: params.productId,
+    amount: params.amount.toString(),
+    nonce: BigNumber.from(params.nonce).toNumber(),
+  };
 }
 
 function getWithdrawCollateralValues(params: WithdrawCollateralParams) {
@@ -59,7 +87,8 @@ function getLiquidateSubaccountValues(params: LiquidateSubaccountParams) {
     sender: params.sender,
     subaccountName: params.subaccountName,
     liquidateeId: params.liquidateeId.toString(),
-    productId: params.productId,
+    mode: params.mode,
+    healthGroup: params.healthGroup.toString(),
     amount: BigNumber.from(params.amount).toString(),
     nonce: BigNumber.from(params.nonce).toNumber(),
   };
