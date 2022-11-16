@@ -1520,6 +1520,36 @@
   {
     "inputs": [
       {
+        "internalType": "uint64",
+        "name": "subaccountId",
+        "type": "uint64"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "data",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct FQuerier.Txn[]",
+        "name": "txns",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "getSubaccountInfoWithStateChange",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_clearinghouse",
         "type": "address"

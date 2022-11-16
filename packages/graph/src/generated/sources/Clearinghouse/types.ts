@@ -591,10 +591,15 @@ export type LiquidationEvent = {
   blockTime: Scalars['BigInt'];
   liquidator: Subaccount;
   liquidatee: Subaccount;
-  productId: Scalars['BigInt'];
-  liquidatorBaseDelta: Scalars['BigInt'];
-  liquidatorQuoteDelta: Scalars['BigInt'];
-  insuranceCoverage: Scalars['BigInt'];
+  mode: Scalars['Int'];
+  healthGroup: Scalars['BigInt'];
+  liquidatorBaseDeltaX18: Scalars['BigInt'];
+  liquidationPaymentX18: Scalars['BigInt'];
+  insuranceCoverageX18: Scalars['BigInt'];
+  spotProductId: Scalars['BigInt'];
+  liquidateeSpotDeltaX18: Scalars['BigInt'];
+  perpProductId: Scalars['BigInt'];
+  liquidateePerpDeltaX18: Scalars['BigInt'];
 };
 
 export type LiquidationEvent_filter = {
@@ -664,38 +669,78 @@ export type LiquidationEvent_filter = {
   liquidatee_not_ends_with?: InputMaybe<Scalars['String']>;
   liquidatee_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   liquidatee_?: InputMaybe<Subaccount_filter>;
-  productId?: InputMaybe<Scalars['BigInt']>;
-  productId_not?: InputMaybe<Scalars['BigInt']>;
-  productId_gt?: InputMaybe<Scalars['BigInt']>;
-  productId_lt?: InputMaybe<Scalars['BigInt']>;
-  productId_gte?: InputMaybe<Scalars['BigInt']>;
-  productId_lte?: InputMaybe<Scalars['BigInt']>;
-  productId_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  productId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidatorBaseDelta?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDelta_not?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDelta_gt?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDelta_lt?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDelta_gte?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDelta_lte?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDelta_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidatorBaseDelta_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidatorQuoteDelta?: InputMaybe<Scalars['BigInt']>;
-  liquidatorQuoteDelta_not?: InputMaybe<Scalars['BigInt']>;
-  liquidatorQuoteDelta_gt?: InputMaybe<Scalars['BigInt']>;
-  liquidatorQuoteDelta_lt?: InputMaybe<Scalars['BigInt']>;
-  liquidatorQuoteDelta_gte?: InputMaybe<Scalars['BigInt']>;
-  liquidatorQuoteDelta_lte?: InputMaybe<Scalars['BigInt']>;
-  liquidatorQuoteDelta_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidatorQuoteDelta_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  insuranceCoverage?: InputMaybe<Scalars['BigInt']>;
-  insuranceCoverage_not?: InputMaybe<Scalars['BigInt']>;
-  insuranceCoverage_gt?: InputMaybe<Scalars['BigInt']>;
-  insuranceCoverage_lt?: InputMaybe<Scalars['BigInt']>;
-  insuranceCoverage_gte?: InputMaybe<Scalars['BigInt']>;
-  insuranceCoverage_lte?: InputMaybe<Scalars['BigInt']>;
-  insuranceCoverage_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  insuranceCoverage_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  mode?: InputMaybe<Scalars['Int']>;
+  mode_not?: InputMaybe<Scalars['Int']>;
+  mode_gt?: InputMaybe<Scalars['Int']>;
+  mode_lt?: InputMaybe<Scalars['Int']>;
+  mode_gte?: InputMaybe<Scalars['Int']>;
+  mode_lte?: InputMaybe<Scalars['Int']>;
+  mode_in?: InputMaybe<Array<Scalars['Int']>>;
+  mode_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  healthGroup?: InputMaybe<Scalars['BigInt']>;
+  healthGroup_not?: InputMaybe<Scalars['BigInt']>;
+  healthGroup_gt?: InputMaybe<Scalars['BigInt']>;
+  healthGroup_lt?: InputMaybe<Scalars['BigInt']>;
+  healthGroup_gte?: InputMaybe<Scalars['BigInt']>;
+  healthGroup_lte?: InputMaybe<Scalars['BigInt']>;
+  healthGroup_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  healthGroup_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidatorBaseDeltaX18?: InputMaybe<Scalars['BigInt']>;
+  liquidatorBaseDeltaX18_not?: InputMaybe<Scalars['BigInt']>;
+  liquidatorBaseDeltaX18_gt?: InputMaybe<Scalars['BigInt']>;
+  liquidatorBaseDeltaX18_lt?: InputMaybe<Scalars['BigInt']>;
+  liquidatorBaseDeltaX18_gte?: InputMaybe<Scalars['BigInt']>;
+  liquidatorBaseDeltaX18_lte?: InputMaybe<Scalars['BigInt']>;
+  liquidatorBaseDeltaX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidatorBaseDeltaX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationPaymentX18?: InputMaybe<Scalars['BigInt']>;
+  liquidationPaymentX18_not?: InputMaybe<Scalars['BigInt']>;
+  liquidationPaymentX18_gt?: InputMaybe<Scalars['BigInt']>;
+  liquidationPaymentX18_lt?: InputMaybe<Scalars['BigInt']>;
+  liquidationPaymentX18_gte?: InputMaybe<Scalars['BigInt']>;
+  liquidationPaymentX18_lte?: InputMaybe<Scalars['BigInt']>;
+  liquidationPaymentX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationPaymentX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  insuranceCoverageX18?: InputMaybe<Scalars['BigInt']>;
+  insuranceCoverageX18_not?: InputMaybe<Scalars['BigInt']>;
+  insuranceCoverageX18_gt?: InputMaybe<Scalars['BigInt']>;
+  insuranceCoverageX18_lt?: InputMaybe<Scalars['BigInt']>;
+  insuranceCoverageX18_gte?: InputMaybe<Scalars['BigInt']>;
+  insuranceCoverageX18_lte?: InputMaybe<Scalars['BigInt']>;
+  insuranceCoverageX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  insuranceCoverageX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  spotProductId?: InputMaybe<Scalars['BigInt']>;
+  spotProductId_not?: InputMaybe<Scalars['BigInt']>;
+  spotProductId_gt?: InputMaybe<Scalars['BigInt']>;
+  spotProductId_lt?: InputMaybe<Scalars['BigInt']>;
+  spotProductId_gte?: InputMaybe<Scalars['BigInt']>;
+  spotProductId_lte?: InputMaybe<Scalars['BigInt']>;
+  spotProductId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  spotProductId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidateeSpotDeltaX18?: InputMaybe<Scalars['BigInt']>;
+  liquidateeSpotDeltaX18_not?: InputMaybe<Scalars['BigInt']>;
+  liquidateeSpotDeltaX18_gt?: InputMaybe<Scalars['BigInt']>;
+  liquidateeSpotDeltaX18_lt?: InputMaybe<Scalars['BigInt']>;
+  liquidateeSpotDeltaX18_gte?: InputMaybe<Scalars['BigInt']>;
+  liquidateeSpotDeltaX18_lte?: InputMaybe<Scalars['BigInt']>;
+  liquidateeSpotDeltaX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidateeSpotDeltaX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpProductId?: InputMaybe<Scalars['BigInt']>;
+  perpProductId_not?: InputMaybe<Scalars['BigInt']>;
+  perpProductId_gt?: InputMaybe<Scalars['BigInt']>;
+  perpProductId_lt?: InputMaybe<Scalars['BigInt']>;
+  perpProductId_gte?: InputMaybe<Scalars['BigInt']>;
+  perpProductId_lte?: InputMaybe<Scalars['BigInt']>;
+  perpProductId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpProductId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidateePerpDeltaX18?: InputMaybe<Scalars['BigInt']>;
+  liquidateePerpDeltaX18_not?: InputMaybe<Scalars['BigInt']>;
+  liquidateePerpDeltaX18_gt?: InputMaybe<Scalars['BigInt']>;
+  liquidateePerpDeltaX18_lt?: InputMaybe<Scalars['BigInt']>;
+  liquidateePerpDeltaX18_gte?: InputMaybe<Scalars['BigInt']>;
+  liquidateePerpDeltaX18_lte?: InputMaybe<Scalars['BigInt']>;
+  liquidateePerpDeltaX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidateePerpDeltaX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -706,10 +751,15 @@ export type LiquidationEvent_orderBy =
   | 'blockTime'
   | 'liquidator'
   | 'liquidatee'
-  | 'productId'
-  | 'liquidatorBaseDelta'
-  | 'liquidatorQuoteDelta'
-  | 'insuranceCoverage';
+  | 'mode'
+  | 'healthGroup'
+  | 'liquidatorBaseDeltaX18'
+  | 'liquidationPaymentX18'
+  | 'insuranceCoverageX18'
+  | 'spotProductId'
+  | 'liquidateeSpotDeltaX18'
+  | 'perpProductId'
+  | 'liquidateePerpDeltaX18';
 
 export type Market = {
   id: Scalars['ID'];

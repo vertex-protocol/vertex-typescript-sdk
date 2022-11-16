@@ -584,10 +584,15 @@ type LiquidationEvent {
   blockTime: BigInt!
   liquidator: Subaccount!
   liquidatee: Subaccount!
-  productId: BigInt!
-  liquidatorBaseDelta: BigInt!
-  liquidatorQuoteDelta: BigInt!
-  insuranceCoverage: BigInt!
+  mode: Int!
+  healthGroup: BigInt!
+  liquidatorBaseDeltaX18: BigInt!
+  liquidationPaymentX18: BigInt!
+  insuranceCoverageX18: BigInt!
+  spotProductId: BigInt!
+  liquidateeSpotDeltaX18: BigInt!
+  perpProductId: BigInt!
+  liquidateePerpDeltaX18: BigInt!
 }
 
 input LiquidationEvent_filter {
@@ -657,38 +662,78 @@ input LiquidationEvent_filter {
   liquidatee_not_ends_with: String
   liquidatee_not_ends_with_nocase: String
   liquidatee_: Subaccount_filter
-  productId: BigInt
-  productId_not: BigInt
-  productId_gt: BigInt
-  productId_lt: BigInt
-  productId_gte: BigInt
-  productId_lte: BigInt
-  productId_in: [BigInt!]
-  productId_not_in: [BigInt!]
-  liquidatorBaseDelta: BigInt
-  liquidatorBaseDelta_not: BigInt
-  liquidatorBaseDelta_gt: BigInt
-  liquidatorBaseDelta_lt: BigInt
-  liquidatorBaseDelta_gte: BigInt
-  liquidatorBaseDelta_lte: BigInt
-  liquidatorBaseDelta_in: [BigInt!]
-  liquidatorBaseDelta_not_in: [BigInt!]
-  liquidatorQuoteDelta: BigInt
-  liquidatorQuoteDelta_not: BigInt
-  liquidatorQuoteDelta_gt: BigInt
-  liquidatorQuoteDelta_lt: BigInt
-  liquidatorQuoteDelta_gte: BigInt
-  liquidatorQuoteDelta_lte: BigInt
-  liquidatorQuoteDelta_in: [BigInt!]
-  liquidatorQuoteDelta_not_in: [BigInt!]
-  insuranceCoverage: BigInt
-  insuranceCoverage_not: BigInt
-  insuranceCoverage_gt: BigInt
-  insuranceCoverage_lt: BigInt
-  insuranceCoverage_gte: BigInt
-  insuranceCoverage_lte: BigInt
-  insuranceCoverage_in: [BigInt!]
-  insuranceCoverage_not_in: [BigInt!]
+  mode: Int
+  mode_not: Int
+  mode_gt: Int
+  mode_lt: Int
+  mode_gte: Int
+  mode_lte: Int
+  mode_in: [Int!]
+  mode_not_in: [Int!]
+  healthGroup: BigInt
+  healthGroup_not: BigInt
+  healthGroup_gt: BigInt
+  healthGroup_lt: BigInt
+  healthGroup_gte: BigInt
+  healthGroup_lte: BigInt
+  healthGroup_in: [BigInt!]
+  healthGroup_not_in: [BigInt!]
+  liquidatorBaseDeltaX18: BigInt
+  liquidatorBaseDeltaX18_not: BigInt
+  liquidatorBaseDeltaX18_gt: BigInt
+  liquidatorBaseDeltaX18_lt: BigInt
+  liquidatorBaseDeltaX18_gte: BigInt
+  liquidatorBaseDeltaX18_lte: BigInt
+  liquidatorBaseDeltaX18_in: [BigInt!]
+  liquidatorBaseDeltaX18_not_in: [BigInt!]
+  liquidationPaymentX18: BigInt
+  liquidationPaymentX18_not: BigInt
+  liquidationPaymentX18_gt: BigInt
+  liquidationPaymentX18_lt: BigInt
+  liquidationPaymentX18_gte: BigInt
+  liquidationPaymentX18_lte: BigInt
+  liquidationPaymentX18_in: [BigInt!]
+  liquidationPaymentX18_not_in: [BigInt!]
+  insuranceCoverageX18: BigInt
+  insuranceCoverageX18_not: BigInt
+  insuranceCoverageX18_gt: BigInt
+  insuranceCoverageX18_lt: BigInt
+  insuranceCoverageX18_gte: BigInt
+  insuranceCoverageX18_lte: BigInt
+  insuranceCoverageX18_in: [BigInt!]
+  insuranceCoverageX18_not_in: [BigInt!]
+  spotProductId: BigInt
+  spotProductId_not: BigInt
+  spotProductId_gt: BigInt
+  spotProductId_lt: BigInt
+  spotProductId_gte: BigInt
+  spotProductId_lte: BigInt
+  spotProductId_in: [BigInt!]
+  spotProductId_not_in: [BigInt!]
+  liquidateeSpotDeltaX18: BigInt
+  liquidateeSpotDeltaX18_not: BigInt
+  liquidateeSpotDeltaX18_gt: BigInt
+  liquidateeSpotDeltaX18_lt: BigInt
+  liquidateeSpotDeltaX18_gte: BigInt
+  liquidateeSpotDeltaX18_lte: BigInt
+  liquidateeSpotDeltaX18_in: [BigInt!]
+  liquidateeSpotDeltaX18_not_in: [BigInt!]
+  perpProductId: BigInt
+  perpProductId_not: BigInt
+  perpProductId_gt: BigInt
+  perpProductId_lt: BigInt
+  perpProductId_gte: BigInt
+  perpProductId_lte: BigInt
+  perpProductId_in: [BigInt!]
+  perpProductId_not_in: [BigInt!]
+  liquidateePerpDeltaX18: BigInt
+  liquidateePerpDeltaX18_not: BigInt
+  liquidateePerpDeltaX18_gt: BigInt
+  liquidateePerpDeltaX18_lt: BigInt
+  liquidateePerpDeltaX18_gte: BigInt
+  liquidateePerpDeltaX18_lte: BigInt
+  liquidateePerpDeltaX18_in: [BigInt!]
+  liquidateePerpDeltaX18_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
@@ -699,10 +744,15 @@ enum LiquidationEvent_orderBy {
   blockTime
   liquidator
   liquidatee
-  productId
-  liquidatorBaseDelta
-  liquidatorQuoteDelta
-  insuranceCoverage
+  mode
+  healthGroup
+  liquidatorBaseDeltaX18
+  liquidationPaymentX18
+  insuranceCoverageX18
+  spotProductId
+  liquidateeSpotDeltaX18
+  perpProductId
+  liquidateePerpDeltaX18
 }
 
 type Market {
