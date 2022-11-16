@@ -8,6 +8,32 @@ import {
 
 export interface EngineServerSubaccountInfoQueryParams {
   subaccount_id: number;
+  txns?: Array<
+    | {
+        mint_lp: {
+          product_id: number;
+          subaccount_id: number;
+          amount_base_x18: string;
+          quote_amount_low_x18: string;
+          quote_amount_high_x18: string;
+        };
+      }
+    | {
+        burn_lp: {
+          product_id: number;
+          subaccount_id: number;
+          amount_lp_x18: string;
+        };
+      }
+    | {
+        apply_delta: {
+          product_id: number;
+          subaccount_id: number;
+          amount_delta_x18: string;
+          v_quote_delta_x18: string;
+        };
+      }
+  >;
 }
 
 export interface EngineServerMarketPriceQueryParams {
@@ -38,7 +64,10 @@ export interface EngineServerMarketLiquidityQueryParams {
 
 export interface EngineServerQueryRequestByType {
   all_products: Record<string, never>;
-  subaccount_info: EngineServerSubaccountInfoQueryParams;
+  subaccount_info: Omit<EngineServerSubaccountInfoQueryParams, 'txns'> & {
+    // JSON serialized txns
+    txns?: string;
+  };
   market_price: EngineServerMarketPriceQueryParams;
   order: EngineServerGetOrderQueryParams;
   validate_order: EngineServerValidateOrderQueryParams;

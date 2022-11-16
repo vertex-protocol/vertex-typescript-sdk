@@ -4,9 +4,12 @@ import {
   MarketWithProduct,
 } from '@vertex-protocol/contracts';
 import { BigNumber } from 'ethers';
-import { fromX18 } from '@vertex-protocol/utils';
+import { fromX18, toX18 } from '@vertex-protocol/utils';
 import {
+  EngineServerSubaccountInfoQueryParams,
+  EngineServerSubaccountInfoResponse,
   GetEngineAllMarketsResponse,
+  GetEngineEstimatedSubaccountSummaryParams,
   GetEngineMarketLiquidityParams,
   GetEngineMarketLiquidityResponse,
   GetEngineMarketPriceParams,
@@ -41,57 +44,67 @@ export class EngineQueryClient extends EngineBaseClient {
     const baseResponse = await this.query('subaccount_info', {
       subaccount_id: BigNumber.from(params.subaccountId).toNumber(),
     });
-    const balances: GetEngineSubaccountSummaryResponse['balances'] = [];
 
-    baseResponse.spot_balances.forEach((spotBalance) => {
-      const product = baseResponse.spot_products.find(
-        (product) => product.product_id === spotBalance.product_id,
-      );
-      if (!product) {
-        throw Error(`Could not find product ${spotBalance.product_id}`);
-      }
+    return mapSubaccountSummary(baseResponse);
+  }
 
-      balances.push({
-        amount: fromX18(spotBalance.amount_x18),
-        ...mapEngineServerSpotProduct(product).product,
-      });
-    });
-
-    baseResponse.perp_balances.forEach((perpBalance) => {
-      const product = baseResponse.perp_products.find(
-        (product) => product.product_id === perpBalance.product_id,
-      );
-      if (!product) {
-        throw Error(`Could not find product ${perpBalance.product_id}`);
-      }
-
-      balances.push({
-        amount: fromX18(perpBalance.amount_x18),
-        vQuoteBalance: fromX18(perpBalance.v_quote_balance_x18),
-        ...mapEngineServerPerpProduct(product).product,
-      });
-    });
-
-    return {
-      balances: balances,
-      health: {
-        initial: {
-          health: fromX18(baseResponse.healths[0].health_x18),
-          assets: fromX18(baseResponse.healths[0].assets_x18),
-          liabilities: fromX18(baseResponse.healths[0].liabilities_x18),
+  /**
+   * Retrieves an estimated subaccount summary with the applied transactions
+   *
+   * @param params
+   */
+  async getEstimatedSubaccountSummary(
+    params: GetEngineEstimatedSubaccountSummaryParams,
+  ): Promise<GetEngineSubaccountSummaryResponse> {
+    const subaccountId = BigNumber.from(params.subaccountId).toNumber();
+    const queryParams: EngineServerSubaccountInfoQueryParams = {
+      subaccount_id: subaccountId,
+      txns: params.txs.map(
+        (
+          tx,
+        ): NonNullable<
+          EngineServerSubaccountInfoQueryParams['txns']
+        >[number] => {
+          switch (tx.type) {
+            case 'burn_lp':
+              return {
+                burn_lp: {
+                  product_id: tx.tx.productId,
+                  subaccount_id: subaccountId,
+                  amount_lp_x18: toX18(tx.tx.amountLp).toString(),
+                },
+              };
+            case 'apply_delta':
+              return {
+                apply_delta: {
+                  product_id: tx.tx.productId,
+                  subaccount_id: subaccountId,
+                  amount_delta_x18: toX18(tx.tx.amountDelta).toString(),
+                  v_quote_delta_x18: toX18(tx.tx.vQuoteDelta).toString(),
+                },
+              };
+            case 'mint_lp':
+              return {
+                mint_lp: {
+                  product_id: tx.tx.productId,
+                  subaccount_id: subaccountId,
+                  amount_base_x18: toX18(tx.tx.amountBase).toString(),
+                  quote_amount_low_x18: toX18(tx.tx.amountQuoteLow).toString(),
+                  quote_amount_high_x18: toX18(
+                    tx.tx.amountQuoteHigh,
+                  ).toString(),
+                },
+              };
+          }
         },
-        maintenance: {
-          health: fromX18(baseResponse.healths[1].health_x18),
-          assets: fromX18(baseResponse.healths[1].assets_x18),
-          liabilities: fromX18(baseResponse.healths[1].liabilities_x18),
-        },
-        unweighted: {
-          health: fromX18(baseResponse.healths[2].health_x18),
-          assets: fromX18(baseResponse.healths[2].assets_x18),
-          liabilities: fromX18(baseResponse.healths[2].liabilities_x18),
-        },
-      },
+      ),
     };
+    const baseResponse = await this.query('subaccount_info', {
+      subaccount_id: queryParams.subaccount_id,
+      txns: JSON.stringify(queryParams.txns),
+    });
+
+    return mapSubaccountSummary(baseResponse);
   }
 
   /**
@@ -222,4 +235,60 @@ export class EngineQueryClient extends EngineBaseClient {
       productId: baseResponse.product_id,
     };
   }
+}
+
+function mapSubaccountSummary(
+  baseResponse: EngineServerSubaccountInfoResponse,
+): GetEngineSubaccountSummaryResponse {
+  const balances: GetEngineSubaccountSummaryResponse['balances'] = [];
+
+  baseResponse.spot_balances.forEach((spotBalance) => {
+    const product = baseResponse.spot_products.find(
+      (product) => product.product_id === spotBalance.product_id,
+    );
+    if (!product) {
+      throw Error(`Could not find product ${spotBalance.product_id}`);
+    }
+
+    balances.push({
+      amount: fromX18(spotBalance.amount_x18),
+      ...mapEngineServerSpotProduct(product).product,
+    });
+  });
+
+  baseResponse.perp_balances.forEach((perpBalance) => {
+    const product = baseResponse.perp_products.find(
+      (product) => product.product_id === perpBalance.product_id,
+    );
+    if (!product) {
+      throw Error(`Could not find product ${perpBalance.product_id}`);
+    }
+
+    balances.push({
+      amount: fromX18(perpBalance.amount_x18),
+      vQuoteBalance: fromX18(perpBalance.v_quote_balance_x18),
+      ...mapEngineServerPerpProduct(product).product,
+    });
+  });
+
+  return {
+    balances: balances,
+    health: {
+      initial: {
+        health: fromX18(baseResponse.healths[0].health_x18),
+        assets: fromX18(baseResponse.healths[0].assets_x18),
+        liabilities: fromX18(baseResponse.healths[0].liabilities_x18),
+      },
+      maintenance: {
+        health: fromX18(baseResponse.healths[1].health_x18),
+        assets: fromX18(baseResponse.healths[1].assets_x18),
+        liabilities: fromX18(baseResponse.healths[1].liabilities_x18),
+      },
+      unweighted: {
+        health: fromX18(baseResponse.healths[2].health_x18),
+        assets: fromX18(baseResponse.healths[2].assets_x18),
+        liabilities: fromX18(baseResponse.healths[2].liabilities_x18),
+      },
+    },
+  };
 }

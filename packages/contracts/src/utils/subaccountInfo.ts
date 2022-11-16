@@ -1,11 +1,11 @@
-import { SubaccountSummaryResponse } from '../../query';
-import { ProductEngineType } from '../../common';
+import { SubaccountSummaryResponse } from '../query';
+import { ProductEngineType } from '../common';
 import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
 import {
   calcPerpBalanceNotionalValue,
   calcPerpBalanceValue,
   calcSpotBalanceValue,
-} from '../balanceValue';
+} from './balanceValue';
 
 export interface TotalPortfolioValues {
   // Sum of spot and perpNotional
