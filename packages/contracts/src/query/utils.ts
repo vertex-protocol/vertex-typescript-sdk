@@ -1,6 +1,6 @@
 import { FQuerier } from '../typechain-types';
 import { PerpProduct, ProductEngineType, SpotProduct } from '../common';
-import { fromX18 } from '@vertex-protocol/utils';
+import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import { calcTotalBorrowed, calcTotalDeposited } from '../utils';
 
 export function mapEngineSpotProduct(
@@ -28,6 +28,9 @@ export function mapEngineSpotProduct(
     longWeightMaintenance: fromX18(product.risk.longWeightMaintenanceX18),
     largePositionPenalty: fromX18(product.risk.largePositionPenaltyX18),
     oraclePrice: fromX18(product.oraclePriceX18),
+    totalLpBaseAmount: fromX18(product.lpState.base.amountX18),
+    totalLpQuoteAmount: fromX18(product.lpState.quote.amountX18),
+    totalLpSupply: toBigDecimal(product.lpState.supply),
   };
 }
 
@@ -45,5 +48,8 @@ export function mapEnginePerpProduct(
     oraclePrice: fromX18(product.oraclePriceX18),
     markPrice: fromX18(product.markPriceX18),
     openInterest: fromX18(product.state.openInterestX18),
+    totalLpBaseAmount: toBigDecimal(product.lpState.base),
+    totalLpQuoteAmount: toBigDecimal(product.lpState.quote),
+    totalLpSupply: toBigDecimal(product.lpState.supply),
   };
 }

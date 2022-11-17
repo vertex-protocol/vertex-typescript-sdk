@@ -13,7 +13,11 @@ import type {
   Signer,
   utils,
 } from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -28,8 +32,9 @@ export interface IEndpointInterface extends utils.Interface {
     "depositCollateral(string,uint32,uint256)": FunctionFragment;
     "getPriceX18(uint32)": FunctionFragment;
     "getTime()": FunctionFragment;
+    "setBook(uint32,address)": FunctionFragment;
     "submitSlowModeTransaction(bytes)": FunctionFragment;
-    "submitTransactions(bytes[])": FunctionFragment;
+    "submitTransactions(uint64,bytes[])": FunctionFragment;
   };
 
   getFunction(
@@ -37,6 +42,7 @@ export interface IEndpointInterface extends utils.Interface {
       | "depositCollateral"
       | "getPriceX18"
       | "getTime"
+      | "setBook"
       | "submitSlowModeTransaction"
       | "submitTransactions"
   ): FunctionFragment;
@@ -55,12 +61,16 @@ export interface IEndpointInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "getTime", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "setBook",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "submitSlowModeTransaction",
     values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "submitTransactions",
-    values: [PromiseOrValue<BytesLike>[]]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>[]]
   ): string;
 
   decodeFunctionResult(
@@ -72,6 +82,7 @@ export interface IEndpointInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getTime", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setBook", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "submitSlowModeTransaction",
     data: BytesLike
@@ -81,8 +92,38 @@ export interface IEndpointInterface extends utils.Interface {
     data: BytesLike
   ): Result;
 
-  events: {};
+  events: {
+    "SubmitSlowModeTransaction(uint64,address,bytes)": EventFragment;
+    "SubmitTransactions(bytes[])": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "SubmitSlowModeTransaction"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SubmitTransactions"): EventFragment;
 }
+
+export interface SubmitSlowModeTransactionEventObject {
+  executableAt: BigNumber;
+  sender: string;
+  tx: string;
+}
+export type SubmitSlowModeTransactionEvent = TypedEvent<
+  [BigNumber, string, string],
+  SubmitSlowModeTransactionEventObject
+>;
+
+export type SubmitSlowModeTransactionEventFilter =
+  TypedEventFilter<SubmitSlowModeTransactionEvent>;
+
+export interface SubmitTransactionsEventObject {
+  transactions: string[];
+}
+export type SubmitTransactionsEvent = TypedEvent<
+  [string[]],
+  SubmitTransactionsEventObject
+>;
+
+export type SubmitTransactionsEventFilter =
+  TypedEventFilter<SubmitTransactionsEvent>;
 
 export interface IEndpoint extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -125,12 +166,19 @@ export interface IEndpoint extends BaseContract {
 
     getTime(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    setBook(
+      productId: PromiseOrValue<BigNumberish>,
+      book: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     submitSlowModeTransaction(
       transaction: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     submitTransactions(
+      idx: PromiseOrValue<BigNumberish>,
       transactions: PromiseOrValue<BytesLike>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -150,12 +198,19 @@ export interface IEndpoint extends BaseContract {
 
   getTime(overrides?: CallOverrides): Promise<BigNumber>;
 
+  setBook(
+    productId: PromiseOrValue<BigNumberish>,
+    book: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   submitSlowModeTransaction(
     transaction: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   submitTransactions(
+    idx: PromiseOrValue<BigNumberish>,
     transactions: PromiseOrValue<BytesLike>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -175,18 +230,41 @@ export interface IEndpoint extends BaseContract {
 
     getTime(overrides?: CallOverrides): Promise<BigNumber>;
 
+    setBook(
+      productId: PromiseOrValue<BigNumberish>,
+      book: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     submitSlowModeTransaction(
       transaction: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     submitTransactions(
+      idx: PromiseOrValue<BigNumberish>,
       transactions: PromiseOrValue<BytesLike>[],
       overrides?: CallOverrides
     ): Promise<void>;
   };
 
-  filters: {};
+  filters: {
+    "SubmitSlowModeTransaction(uint64,address,bytes)"(
+      executableAt?: null,
+      sender?: null,
+      tx?: null
+    ): SubmitSlowModeTransactionEventFilter;
+    SubmitSlowModeTransaction(
+      executableAt?: null,
+      sender?: null,
+      tx?: null
+    ): SubmitSlowModeTransactionEventFilter;
+
+    "SubmitTransactions(bytes[])"(
+      transactions?: null
+    ): SubmitTransactionsEventFilter;
+    SubmitTransactions(transactions?: null): SubmitTransactionsEventFilter;
+  };
 
   estimateGas: {
     depositCollateral(
@@ -203,12 +281,19 @@ export interface IEndpoint extends BaseContract {
 
     getTime(overrides?: CallOverrides): Promise<BigNumber>;
 
+    setBook(
+      productId: PromiseOrValue<BigNumberish>,
+      book: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     submitSlowModeTransaction(
       transaction: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     submitTransactions(
+      idx: PromiseOrValue<BigNumberish>,
       transactions: PromiseOrValue<BytesLike>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -229,12 +314,19 @@ export interface IEndpoint extends BaseContract {
 
     getTime(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    setBook(
+      productId: PromiseOrValue<BigNumberish>,
+      book: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     submitSlowModeTransaction(
       transaction: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     submitTransactions(
+      idx: PromiseOrValue<BigNumberish>,
       transactions: PromiseOrValue<BytesLike>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;

@@ -64,29 +64,29 @@ export declare namespace IEndpoint {
   ] & { order: IEndpoint.OrderStructOutput; signature: string };
 
   export type MatchOrderAMMStruct = {
-    book: PromiseOrValue<string>;
+    productId: PromiseOrValue<BigNumberish>;
     taker: IEndpoint.SignedOrderStruct;
   };
 
   export type MatchOrderAMMStructOutput = [
-    string,
+    number,
     IEndpoint.SignedOrderStructOutput
-  ] & { book: string; taker: IEndpoint.SignedOrderStructOutput };
+  ] & { productId: number; taker: IEndpoint.SignedOrderStructOutput };
 
   export type MatchOrdersStruct = {
-    book: PromiseOrValue<string>;
+    productId: PromiseOrValue<BigNumberish>;
     amm: PromiseOrValue<boolean>;
     taker: IEndpoint.SignedOrderStruct;
     maker: IEndpoint.SignedOrderStruct;
   };
 
   export type MatchOrdersStructOutput = [
-    string,
+    number,
     boolean,
     IEndpoint.SignedOrderStructOutput,
     IEndpoint.SignedOrderStructOutput
   ] & {
-    book: string;
+    productId: number;
     amm: boolean;
     taker: IEndpoint.SignedOrderStructOutput;
     maker: IEndpoint.SignedOrderStructOutput;
@@ -95,7 +95,7 @@ export declare namespace IEndpoint {
   export type SwapAMMStruct = {
     sender: PromiseOrValue<string>;
     subaccountName: PromiseOrValue<string>;
-    book: PromiseOrValue<string>;
+    productId: PromiseOrValue<BigNumberish>;
     amount: PromiseOrValue<BigNumberish>;
     priceX18: PromiseOrValue<BigNumberish>;
   };
@@ -103,13 +103,13 @@ export declare namespace IEndpoint {
   export type SwapAMMStructOutput = [
     string,
     string,
-    string,
+    number,
     BigNumber,
     BigNumber
   ] & {
     sender: string;
     subaccountName: string;
-    book: string;
+    productId: number;
     amount: BigNumber;
     priceX18: BigNumber;
   };
@@ -145,9 +145,9 @@ export interface IOffchainBookInterface extends utils.Interface {
     "getDigest((address,string,int256,int256,uint64,uint64),bool)": FunctionFragment;
     "getMarket()": FunctionFragment;
     "initialize(address,address,address,address,address,uint32,int256,int256,int256)": FunctionFragment;
-    "matchOrderAMM((address,((address,string,int256,int256,uint64,uint64),bytes)))": FunctionFragment;
-    "matchOrders((address,bool,((address,string,int256,int256,uint64,uint64),bytes),((address,string,int256,int256,uint64,uint64),bytes)))": FunctionFragment;
-    "swapAMM((address,string,address,int256,int256))": FunctionFragment;
+    "matchOrderAMM((uint32,((address,string,int256,int256,uint64,uint64),bytes)))": FunctionFragment;
+    "matchOrders((uint32,bool,((address,string,int256,int256,uint64,uint64),bytes),((address,string,int256,int256,uint64,uint64),bytes)))": FunctionFragment;
+    "swapAMM((address,string,uint32,int256,int256))": FunctionFragment;
     "validateCancellation(((address,string,int256,int256,uint64,uint64),bytes))": FunctionFragment;
   };
 

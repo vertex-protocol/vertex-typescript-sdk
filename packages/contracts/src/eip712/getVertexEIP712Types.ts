@@ -20,6 +20,28 @@ export function getVertexEIP712Types(
           { name: 'nonce', type: 'uint64' },
         ],
       };
+    case 'mint_lp':
+      return {
+        Order: [
+          { name: 'sender', type: 'address' },
+          { name: 'subaccountName', type: 'string' },
+          { name: 'productId', type: 'uint32' },
+          { name: 'amountBase', type: 'int256' },
+          { name: 'quoteAmountLow', type: 'int256' },
+          { name: 'quoteAmountHigh', type: 'int256' },
+          { name: 'nonce', type: 'uint64' },
+        ],
+      };
+    case 'burn_lp':
+      return {
+        Order: [
+          { name: 'sender', type: 'address' },
+          { name: 'subaccountName', type: 'string' },
+          { name: 'productId', type: 'uint32' },
+          { name: 'amount', type: 'int256' },
+          { name: 'nonce', type: 'uint64' },
+        ],
+      };
     case 'place_order':
       return {
         Order: [
@@ -48,7 +70,8 @@ export function getVertexEIP712Types(
           { name: 'sender', type: 'address' },
           { name: 'subaccountName', type: 'string' },
           { name: 'liquidateeId', type: 'uint64' },
-          { name: 'productId', type: 'uint32' },
+          { name: 'mode', type: 'uint8' },
+          { name: 'healthGroup', type: 'uint32' },
           { name: 'amount', type: 'int256' },
           { name: 'nonce', type: 'uint64' },
         ],

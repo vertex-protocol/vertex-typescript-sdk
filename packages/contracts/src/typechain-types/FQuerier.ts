@@ -23,7 +23,7 @@ import type {
   PromiseOrValue,
 } from "./common";
 
-export declare namespace IClearinghouseState {
+export declare namespace RiskHelper {
   export type RiskStruct = {
     longWeightInitialX18: PromiseOrValue<BigNumberish>;
     shortWeightInitialX18: PromiseOrValue<BigNumberish>;
@@ -149,7 +149,7 @@ export declare namespace FQuerier {
   export type SpotProductStruct = {
     productId: PromiseOrValue<BigNumberish>;
     oraclePriceX18: PromiseOrValue<BigNumberish>;
-    risk: IClearinghouseState.RiskStruct;
+    risk: RiskHelper.RiskStruct;
     config: ISpotEngine.ConfigStruct;
     state: ISpotEngine.StateStruct;
     lpState: ISpotEngine.LpStateStruct;
@@ -159,7 +159,7 @@ export declare namespace FQuerier {
   export type SpotProductStructOutput = [
     number,
     BigNumber,
-    IClearinghouseState.RiskStructOutput,
+    RiskHelper.RiskStructOutput,
     ISpotEngine.ConfigStructOutput,
     ISpotEngine.StateStructOutput,
     ISpotEngine.LpStateStructOutput,
@@ -167,7 +167,7 @@ export declare namespace FQuerier {
   ] & {
     productId: number;
     oraclePriceX18: BigNumber;
-    risk: IClearinghouseState.RiskStructOutput;
+    risk: RiskHelper.RiskStructOutput;
     config: ISpotEngine.ConfigStructOutput;
     state: ISpotEngine.StateStructOutput;
     lpState: ISpotEngine.LpStateStructOutput;
@@ -178,7 +178,7 @@ export declare namespace FQuerier {
     productId: PromiseOrValue<BigNumberish>;
     oraclePriceX18: PromiseOrValue<BigNumberish>;
     markPriceX18: PromiseOrValue<BigNumberish>;
-    risk: IClearinghouseState.RiskStruct;
+    risk: RiskHelper.RiskStruct;
     state: IPerpEngine.StateStruct;
     lpState: IPerpEngine.LpStateStruct;
     bookInfo: FQuerier.BookInfoStruct;
@@ -188,7 +188,7 @@ export declare namespace FQuerier {
     number,
     BigNumber,
     BigNumber,
-    IClearinghouseState.RiskStructOutput,
+    RiskHelper.RiskStructOutput,
     IPerpEngine.StateStructOutput,
     IPerpEngine.LpStateStructOutput,
     FQuerier.BookInfoStructOutput
@@ -196,7 +196,7 @@ export declare namespace FQuerier {
     productId: number;
     oraclePriceX18: BigNumber;
     markPriceX18: BigNumber;
-    risk: IClearinghouseState.RiskStructOutput;
+    risk: RiskHelper.RiskStructOutput;
     state: IPerpEngine.StateStructOutput;
     lpState: IPerpEngine.LpStateStructOutput;
     bookInfo: FQuerier.BookInfoStructOutput;
@@ -247,35 +247,50 @@ export declare namespace FQuerier {
     balance: ISpotEngine.BalanceStructOutput;
   };
 
+  export type HealthInfoStruct = {
+    assetsX18: PromiseOrValue<BigNumberish>;
+    liabilitiesX18: PromiseOrValue<BigNumberish>;
+    healthX18: PromiseOrValue<BigNumberish>;
+  };
+
+  export type HealthInfoStructOutput = [BigNumber, BigNumber, BigNumber] & {
+    assetsX18: BigNumber;
+    liabilitiesX18: BigNumber;
+    healthX18: BigNumber;
+  };
+
   export type SubaccountInfoStruct = {
     subaccountId: PromiseOrValue<BigNumberish>;
     exists: PromiseOrValue<boolean>;
-    initialHealthX18: PromiseOrValue<BigNumberish>;
-    maintenanceHealthX18: PromiseOrValue<BigNumberish>;
-    pnlHealthX18: PromiseOrValue<BigNumberish>;
+    healths: FQuerier.HealthInfoStruct[];
+    spotCount: PromiseOrValue<BigNumberish>;
+    perpCount: PromiseOrValue<BigNumberish>;
     spotBalances: FQuerier.SpotBalanceStruct[];
     perpBalances: FQuerier.PerpBalanceStruct[];
-    allProducts: FQuerier.ProductInfoStruct;
+    spotProducts: FQuerier.SpotProductStruct[];
+    perpProducts: FQuerier.PerpProductStruct[];
   };
 
   export type SubaccountInfoStructOutput = [
     BigNumber,
     boolean,
-    BigNumber,
-    BigNumber,
-    BigNumber,
+    FQuerier.HealthInfoStructOutput[],
+    number,
+    number,
     FQuerier.SpotBalanceStructOutput[],
     FQuerier.PerpBalanceStructOutput[],
-    FQuerier.ProductInfoStructOutput
+    FQuerier.SpotProductStructOutput[],
+    FQuerier.PerpProductStructOutput[]
   ] & {
     subaccountId: BigNumber;
     exists: boolean;
-    initialHealthX18: BigNumber;
-    maintenanceHealthX18: BigNumber;
-    pnlHealthX18: BigNumber;
+    healths: FQuerier.HealthInfoStructOutput[];
+    spotCount: number;
+    perpCount: number;
     spotBalances: FQuerier.SpotBalanceStructOutput[];
     perpBalances: FQuerier.PerpBalanceStructOutput[];
-    allProducts: FQuerier.ProductInfoStructOutput;
+    spotProducts: FQuerier.SpotProductStructOutput[];
+    perpProducts: FQuerier.PerpProductStructOutput[];
   };
 }
 

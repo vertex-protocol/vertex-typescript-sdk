@@ -1,5 +1,7 @@
 import {
+  BurnLpParams,
   LiquidateSubaccountParams,
+  MintLpParams,
   OrderParams,
   SignedTx,
   WithdrawCollateralParams,
@@ -33,6 +35,8 @@ export interface EngineServerCancelOrderParams {
 export interface EngineServerExecuteRequestByType {
   liquidate_subaccount: SignedTx<LiquidateSubaccountParams>;
   withdraw_collateral: SignedTx<WithdrawCollateralParams>;
+  mint_lp: SignedTx<MintLpParams>;
+  burn_lp: SignedTx<BurnLpParams>;
   place_order: EngineServerPlaceOrderParams;
   cancel_order: EngineServerCancelOrderParams;
 }

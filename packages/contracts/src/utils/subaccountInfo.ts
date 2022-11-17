@@ -1,21 +1,26 @@
-import { SubaccountSummaryResponse } from '../../query';
-import { ProductEngineType } from '../../common';
+import { SubaccountSummaryResponse } from '../query';
+import { ProductEngineType, QUOTE_PRODUCT_ID } from '../common';
 import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
 import {
+  calcLpBalanceValue,
   calcPerpBalanceNotionalValue,
   calcPerpBalanceValue,
   calcSpotBalanceValue,
-} from '../balanceValue';
+} from './balanceValue';
 
 export interface TotalPortfolioValues {
-  // Sum of spot and perpNotional
+  // spot + spotLp + perpNotional + perpLp
   totalNotional: BigDecimal;
-  // Sum of spot and perp
+  // spot + spotLp + perp + perpLp
   netTotal: BigDecimal;
   // Net spot value
   spot: BigDecimal;
+  // Spot LP value
+  spotLp: BigDecimal;
   // This is the notional value of the position
   perpNotional: BigDecimal;
+  // Perp LP value
+  perpLp: BigDecimal;
   // Indicates the value of the perp position, which is notional value of the position minus the entry cost and funding.
   // This is the same as PnL
   perp: BigDecimal;
@@ -34,30 +39,45 @@ export function calcTotalPortfolioValues(
 ): TotalPortfolioValues {
   const values: TotalPortfolioValues = {
     netTotal: toBigDecimal(0),
+    spot: toBigDecimal(0),
+    spotLp: toBigDecimal(0),
     perp: toBigDecimal(0),
     perpNotional: toBigDecimal(0),
-    spot: toBigDecimal(0),
+    perpLp: toBigDecimal(0),
     totalNotional: toBigDecimal(0),
   };
 
+  const quoteDecimals = productDecimalsByProductId[QUOTE_PRODUCT_ID] ?? 0;
   summary.balances.forEach((balance) => {
     const decimals = productDecimalsByProductId[balance.productId] ?? 0;
+
     if (balance.type === ProductEngineType.SPOT) {
       const value = calcSpotBalanceValue(balance, decimals);
 
-      values.totalNotional = values.totalNotional.plus(value);
-      values.netTotal = values.netTotal.plus(value);
       values.spot = values.spot.plus(value);
+      values.spotLp = values.spotLp.plus(
+        calcLpBalanceValue(balance, decimals, quoteDecimals),
+      );
     } else if (balance.type === ProductEngineType.PERP) {
       const notional = calcPerpBalanceNotionalValue(balance, decimals);
       const value = calcPerpBalanceValue(balance, decimals);
 
-      values.totalNotional = values.totalNotional.plus(notional);
       values.perpNotional = values.perpNotional.plus(notional);
-      values.netTotal = values.netTotal.plus(value);
       values.perp = values.perp.plus(value);
+      values.perpLp = values.perpLp.plus(
+        calcLpBalanceValue(balance, decimals, quoteDecimals),
+      );
     }
   });
+
+  values.netTotal = values.spot
+    .plus(values.spotLp)
+    .plus(values.perp)
+    .plus(values.perpLp);
+  values.totalNotional = values.spot
+    .plus(values.spotLp)
+    .plus(values.perpNotional)
+    .plus(values.perpLp);
 
   return values;
 }
@@ -96,40 +116,16 @@ export interface MarginUsageFractions {
 export function calcMarginUsageFractions(
   summary: SubaccountSummaryResponse,
 ): MarginUsageFractions {
-  const positiveHealths = {
-    maintenance: toBigDecimal(0),
-    initial: toBigDecimal(0),
-  };
-  const absNegativeHealths = {
-    maintenance: toBigDecimal(0),
-    initial: toBigDecimal(0),
-  };
-
-  summary.balances.forEach((balance) => {
-    // Initial & maintenance should have same signs
-    if (balance.health.initial.gt(0)) {
-      positiveHealths.initial = positiveHealths.initial.plus(
-        balance.health.initial,
-      );
-      positiveHealths.maintenance = positiveHealths.maintenance.plus(
-        balance.health.maintenance,
-      );
-    } else {
-      absNegativeHealths.initial = absNegativeHealths.initial.plus(
-        balance.health.initial.abs(),
-      );
-      absNegativeHealths.maintenance = absNegativeHealths.maintenance.plus(
-        balance.health.maintenance.abs(),
-      );
-    }
-  });
-
-  const initialMarginUsage = positiveHealths.initial.eq(0)
+  const initialMarginUsage = summary.health.initial.assets.eq(0)
     ? toBigDecimal(0)
-    : absNegativeHealths.initial.div(positiveHealths.initial);
-  const maintenanceMarginUsage = positiveHealths.maintenance.eq(0)
+    : summary.health.initial.liabilities
+        .abs()
+        .div(summary.health.initial.assets);
+  const maintenanceMarginUsage = summary.health.maintenance.assets.eq(0)
     ? toBigDecimal(0)
-    : absNegativeHealths.maintenance.div(positiveHealths.maintenance);
+    : summary.health.maintenance.liabilities
+        .abs()
+        .div(summary.health.maintenance.assets);
 
   return {
     initial: initialMarginUsage,

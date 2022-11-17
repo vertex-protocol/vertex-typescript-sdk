@@ -5,6 +5,10 @@ import {
 } from '@vertex-protocol/contracts';
 import { GetSubaccountsParams } from '@vertex-protocol/graph';
 import { GetSubaccountIdParams } from './queryTypes';
+import {
+  GetEngineEstimatedSubaccountSummaryParams,
+  GetEngineSubaccountSummaryParams,
+} from '@vertex-protocol/engine-client';
 
 export class SubaccountQueryAPI extends BaseVertexAPI {
   /**
@@ -36,7 +40,17 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
    * Gets the subaccount state according to the offchain engine
    * @param params
    */
-  async getEngineSubaccountSummary(params: GetSubaccountSummaryParams) {
+  async getEngineSubaccountSummary(params: GetEngineSubaccountSummaryParams) {
     return this.context.engineClient.getSubaccountSummary(params);
+  }
+
+  /**
+   * Gets the estimated subaccount state from offchain engine after a series of proposed txs
+   * @param params
+   */
+  async getEngineEstimatedSubaccountSummary(
+    params: GetEngineEstimatedSubaccountSummaryParams,
+  ) {
+    return this.context.engineClient.getEstimatedSubaccountSummary(params);
   }
 }

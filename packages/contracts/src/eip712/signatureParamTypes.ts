@@ -19,13 +19,36 @@ export interface WithdrawCollateralParams {
   nonce: BigNumberish;
 }
 
+export interface MintLpParams {
+  // Address of sender
+  sender: string;
+  subaccountName: string;
+  productId: number;
+  amountBase: BigNumberish;
+  quoteAmountLow: BigNumberish;
+  quoteAmountHigh: BigNumberish;
+  nonce: BigNumberish;
+}
+
+export interface BurnLpParams {
+  // Address of sender
+  sender: string;
+  subaccountName: string;
+  productId: number;
+  amount: BigNumberish;
+  nonce: BigNumberish;
+}
+
 export interface LiquidateSubaccountParams {
   // Address of sender
   sender: string;
   subaccountName: string;
   // Subaccount ID being liquidated
   liquidateeId: BigNumberish;
-  productId: number;
+  // 0 = spread, 1 = long, 2 = short
+  mode: number;
+  // Spot & perp pair
+  healthGroup: BigNumberish;
   amount: BigNumberish;
   nonce: BigNumberish;
 }

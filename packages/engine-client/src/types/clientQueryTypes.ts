@@ -9,6 +9,43 @@ import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 
 export type GetEngineSubaccountSummaryParams = GetSubaccountSummaryParams;
 
+export type SubaccountTx =
+  | {
+      type: 'mint_lp';
+      tx: SubaccountMintLpTx;
+    }
+  | {
+      type: 'burn_lp';
+      tx: SubaccountBurnLpTx;
+    }
+  | {
+      type: 'apply_delta';
+      tx: SubaccountProductDeltaTx;
+    };
+
+export interface SubaccountMintLpTx {
+  productId: number;
+  amountBase: BigDecimal;
+  amountQuoteLow: BigDecimal;
+  amountQuoteHigh: BigDecimal;
+}
+
+export interface SubaccountBurnLpTx {
+  productId: number;
+  amountLp: BigDecimal;
+}
+
+export interface SubaccountProductDeltaTx {
+  productId: number;
+  amountDelta: BigDecimal;
+  vQuoteDelta: BigDecimal;
+}
+
+export type GetEngineEstimatedSubaccountSummaryParams =
+  GetSubaccountSummaryParams & {
+    txs: SubaccountTx[];
+  };
+
 export type GetEngineSubaccountSummaryResponse = SubaccountSummaryResponse;
 
 export type GetEngineAllMarketsResponse = GetAllMarketsResponse;
