@@ -251,7 +251,7 @@ function mapSubaccountSummary(
     }
 
     balances.push({
-      amount: fromX18(spotBalance.amount_x18),
+      amount: fromX18(spotBalance.balance.amount_x18),
       lpAmount: fromX18(spotBalance.lp_balance.amount_x18),
       ...mapEngineServerSpotProduct(product).product,
     });
@@ -266,9 +266,9 @@ function mapSubaccountSummary(
     }
 
     balances.push({
-      amount: fromX18(perpBalance.amount_x18),
+      amount: fromX18(perpBalance.balance.amount_x18),
       lpAmount: fromX18(perpBalance.lp_balance.amount_x18),
-      vQuoteBalance: fromX18(perpBalance.v_quote_balance_x18),
+      vQuoteBalance: fromX18(perpBalance.balance.v_quote_balance_x18),
       ...mapEngineServerPerpProduct(product).product,
     });
   });

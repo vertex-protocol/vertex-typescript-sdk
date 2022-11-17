@@ -10,19 +10,16 @@ import { DefaultLogger } from '@graphql-mesh/utils';
 import MeshCache from "@graphql-mesh/cache-localforage";
 import { fetch as fetchFn } from '@whatwg-node/fetch';
 
-import { MeshResolvedSource } from '@graphql-mesh/runtime';
-import { MeshTransform, MeshPlugin } from '@graphql-mesh/types';
 import GraphqlHandler from "@graphql-mesh/graphql"
 import AutoPaginationTransform from "@graphprotocol/client-auto-pagination";
 import BlockTrackingTransform from "@graphprotocol/client-block-tracking";
 import BareMerger from "@graphql-mesh/merger-bare";
 import { printWithCache } from '@graphql-mesh/utils';
-import { createMeshHTTPHandler, MeshHTTPHandler } from '@graphql-mesh/http';
+import { createMeshHTTPHandler } from '@graphql-mesh/http';
 import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext, MeshInstance } from '@graphql-mesh/runtime';
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
-import { ImportFn } from '@graphql-mesh/types';
-import type { ClearinghouseTypes } from './sources/Clearinghouse/types';
+import type { ClearinghouseContext } from './sources/Clearinghouse/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -616,13 +613,13 @@ export type LiquidationEvent = {
   liquidatee: Subaccount;
   mode: Scalars['Int'];
   healthGroup: Scalars['BigInt'];
-  liquidatorBaseDeltaX18: Scalars['BigInt'];
+  liquidationAmountX18: Scalars['BigInt'];
   liquidationPaymentX18: Scalars['BigInt'];
   insuranceCoverageX18: Scalars['BigInt'];
   spotProductId: Scalars['BigInt'];
-  liquidateeSpotDeltaX18: Scalars['BigInt'];
+  spotAmountX18: Scalars['BigInt'];
   perpProductId: Scalars['BigInt'];
-  liquidateePerpDeltaX18: Scalars['BigInt'];
+  perpAmountX18: Scalars['BigInt'];
 };
 
 export type LiquidationEvent_filter = {
@@ -708,14 +705,14 @@ export type LiquidationEvent_filter = {
   healthGroup_lte?: InputMaybe<Scalars['BigInt']>;
   healthGroup_in?: InputMaybe<Array<Scalars['BigInt']>>;
   healthGroup_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidatorBaseDeltaX18?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDeltaX18_not?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDeltaX18_gt?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDeltaX18_lt?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDeltaX18_gte?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDeltaX18_lte?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDeltaX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidatorBaseDeltaX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationAmountX18?: InputMaybe<Scalars['BigInt']>;
+  liquidationAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  liquidationAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  liquidationAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  liquidationAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  liquidationAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  liquidationAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   liquidationPaymentX18?: InputMaybe<Scalars['BigInt']>;
   liquidationPaymentX18_not?: InputMaybe<Scalars['BigInt']>;
   liquidationPaymentX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -740,14 +737,14 @@ export type LiquidationEvent_filter = {
   spotProductId_lte?: InputMaybe<Scalars['BigInt']>;
   spotProductId_in?: InputMaybe<Array<Scalars['BigInt']>>;
   spotProductId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidateeSpotDeltaX18?: InputMaybe<Scalars['BigInt']>;
-  liquidateeSpotDeltaX18_not?: InputMaybe<Scalars['BigInt']>;
-  liquidateeSpotDeltaX18_gt?: InputMaybe<Scalars['BigInt']>;
-  liquidateeSpotDeltaX18_lt?: InputMaybe<Scalars['BigInt']>;
-  liquidateeSpotDeltaX18_gte?: InputMaybe<Scalars['BigInt']>;
-  liquidateeSpotDeltaX18_lte?: InputMaybe<Scalars['BigInt']>;
-  liquidateeSpotDeltaX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidateeSpotDeltaX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  spotAmountX18?: InputMaybe<Scalars['BigInt']>;
+  spotAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  spotAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  spotAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  spotAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  spotAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  spotAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  spotAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   perpProductId?: InputMaybe<Scalars['BigInt']>;
   perpProductId_not?: InputMaybe<Scalars['BigInt']>;
   perpProductId_gt?: InputMaybe<Scalars['BigInt']>;
@@ -756,14 +753,14 @@ export type LiquidationEvent_filter = {
   perpProductId_lte?: InputMaybe<Scalars['BigInt']>;
   perpProductId_in?: InputMaybe<Array<Scalars['BigInt']>>;
   perpProductId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidateePerpDeltaX18?: InputMaybe<Scalars['BigInt']>;
-  liquidateePerpDeltaX18_not?: InputMaybe<Scalars['BigInt']>;
-  liquidateePerpDeltaX18_gt?: InputMaybe<Scalars['BigInt']>;
-  liquidateePerpDeltaX18_lt?: InputMaybe<Scalars['BigInt']>;
-  liquidateePerpDeltaX18_gte?: InputMaybe<Scalars['BigInt']>;
-  liquidateePerpDeltaX18_lte?: InputMaybe<Scalars['BigInt']>;
-  liquidateePerpDeltaX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidateePerpDeltaX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpAmountX18?: InputMaybe<Scalars['BigInt']>;
+  perpAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  perpAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  perpAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  perpAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  perpAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  perpAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -776,13 +773,13 @@ export type LiquidationEvent_orderBy =
   | 'liquidatee'
   | 'mode'
   | 'healthGroup'
-  | 'liquidatorBaseDeltaX18'
+  | 'liquidationAmountX18'
   | 'liquidationPaymentX18'
   | 'insuranceCoverageX18'
   | 'spotProductId'
-  | 'liquidateeSpotDeltaX18'
+  | 'spotAmountX18'
   | 'perpProductId'
-  | 'liquidateePerpDeltaX18';
+  | 'perpAmountX18';
 
 export type Market = {
   id: Scalars['ID'];
@@ -4148,13 +4145,13 @@ export type LiquidationEventResolvers<ContextType = MeshContext & { endpoint: st
   liquidatee?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
   mode?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   healthGroup?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  liquidatorBaseDeltaX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  liquidationAmountX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   liquidationPaymentX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   insuranceCoverageX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   spotProductId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  liquidateeSpotDeltaX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  spotAmountX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   perpProductId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  liquidateePerpDeltaX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  perpAmountX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4544,16 +4541,16 @@ export type DirectiveResolvers<ContextType = MeshContext & { endpoint: string }>
   derivedFrom?: derivedFromDirectiveResolver<any, any, ContextType>;
 }>;
 
-export type MeshContext = ClearinghouseTypes.Context & BaseMeshContext;
+export type MeshContext = ClearinghouseContext & BaseMeshContext;
 
 
 const baseDir = pathModule.join(typeof __dirname === 'string' ? __dirname : '/', '..');
 
-const importFn: ImportFn = <T>(moduleId: string) => {
+const importFn = (moduleId: string) => {
   const relativeModuleId = (pathModule.isAbsolute(moduleId) ? pathModule.relative(baseDir, moduleId) : moduleId).split('\\').join('/').replace(baseDir + '/', '');
   switch(relativeModuleId) {
     case ".graphclient/sources/Clearinghouse/introspectionSchema":
-      return import("./sources/Clearinghouse/introspectionSchema") as T;
+      return import("./sources/Clearinghouse/introspectionSchema");
     
     default:
       return Promise.reject(new Error(`Cannot find module '${relativeModuleId}'.`));
@@ -4582,14 +4579,14 @@ const cache = new (MeshCache as any)({
       logger,
     } as any)
 
-const sources: MeshResolvedSource[] = [];
-const transforms: MeshTransform[] = [];
-const additionalEnvelopPlugins: MeshPlugin<any>[] = [];
+const sources = [];
+const transforms = [];
+const additionalEnvelopPlugins = [];
 const clearinghouseTransforms = [];
 const additionalTypeDefs = [] as any[];
 const clearinghouseHandler = new GraphqlHandler({
               name: "Clearinghouse",
-              config: {"endpoint":"{context.endpoint:http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph}"},
+              config: {"endpoint":"{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}"},
               baseDir,
               cache,
               pubsub,
@@ -4723,8 +4720,8 @@ const merger = new(BareMerger as any)({
   };
 }
 
-export function createBuiltMeshHTTPHandler(): MeshHTTPHandler<MeshContext> {
-  return createMeshHTTPHandler<MeshContext>({
+export function createBuiltMeshHTTPHandler() {
+  return createMeshHTTPHandler({
     baseDir,
     getBuiltMesh: getBuiltGraphClient,
     rawServeConfig: undefined,
@@ -4732,14 +4729,14 @@ export function createBuiltMeshHTTPHandler(): MeshHTTPHandler<MeshContext> {
 }
 
 
-let meshInstance$: Promise<MeshInstance> | undefined;
+let meshInstance$: Promise<MeshInstance<MeshContext>>;
 
-export function getBuiltGraphClient(): Promise<MeshInstance> {
+export function getBuiltGraphClient(): Promise<MeshInstance<MeshContext>> {
   if (meshInstance$ == null) {
-    meshInstance$ = getMeshOptions().then(meshOptions => getMesh(meshOptions)).then(mesh => {
-      const id = mesh.pubsub.subscribe('destroy', () => {
+    meshInstance$ = getMeshOptions().then(meshOptions => getMesh<MeshContext>(meshOptions)).then(mesh => {
+      const id$ = mesh.pubsub.subscribe('destroy', () => {
         meshInstance$ = undefined;
-        mesh.pubsub.unsubscribe(id);
+        id$.then(id => mesh.pubsub.unsubscribe(id)).catch(err => console.error(err));
       });
       return mesh;
     });
@@ -4752,7 +4749,7 @@ export const execute: ExecuteMeshFn = (...args) => getBuiltGraphClient().then(({
 export const subscribe: SubscribeMeshFn = (...args) => getBuiltGraphClient().then(({ subscribe }) => subscribe(...args));
 export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(globalContext?: TGlobalContext) {
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
-  return getSdk<TOperationContext, TGlobalContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
+  return getSdk<TOperationContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
 export type CandlesticksQueryQueryVariables = Exact<{
   marketEntityId: Scalars['String'];
@@ -4864,7 +4861,7 @@ export type SubaccountLiquidationEventHistoryQueryQueryVariables = Exact<{
 }>;
 
 
-export type SubaccountLiquidationEventHistoryQueryQuery = { liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'spotProductId' | 'perpProductId' | 'liquidateePerpDeltaX18' | 'liquidateeSpotDeltaX18' | 'liquidationPaymentX18' | 'insuranceCoverageX18'>> };
+export type SubaccountLiquidationEventHistoryQueryQuery = { liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'spotProductId' | 'perpProductId' | 'perpAmountX18' | 'spotAmountX18' | 'liquidationPaymentX18' | 'insuranceCoverageX18'>> };
 
 export type SubaccountSettlementEventHistoryQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
@@ -5057,8 +5054,8 @@ export const SubaccountLiquidationEventHistoryQueryDocument = gql`
     blockTime
     spotProductId
     perpProductId
-    liquidateePerpDeltaX18
-    liquidateeSpotDeltaX18
+    perpAmountX18
+    spotAmountX18
     liquidationPaymentX18
     insuranceCoverageX18
   }

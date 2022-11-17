@@ -1,4 +1,4 @@
-import { BigDecimal } from '@vertex-protocol/utils';
+import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
 import {
   BalanceWithProduct,
   PerpBalanceWithProduct,
@@ -65,6 +65,9 @@ export function calcLpBalanceValue(
   quoteDecimals = 0,
 ): BigDecimal {
   const lpBalance = balanceWithProduct.lpAmount;
+  if (lpBalance.isZero()) {
+    return toBigDecimal(0);
+  }
 
   const impliedBaseBalance = balanceWithProduct.totalLpBaseAmount
     .div(balanceWithProduct.totalLpSupply)

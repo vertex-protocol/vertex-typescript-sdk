@@ -48,8 +48,8 @@ query SubaccountLiquidationEventHistoryQuery(
     spotProductId
     perpProductId
 
-    liquidateePerpDeltaX18
-    liquidateeSpotDeltaX18
+    perpAmountX18
+    spotAmountX18
     liquidationPaymentX18
     insuranceCoverageX18
   }

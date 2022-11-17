@@ -8490,7 +8490,7 @@ const schemaAST = {
           "kind": "FieldDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidatorBaseDeltaX18"
+            "value": "liquidationAmountX18"
           },
           "arguments": [],
           "type": {
@@ -8566,7 +8566,7 @@ const schemaAST = {
           "kind": "FieldDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateeSpotDeltaX18"
+            "value": "spotAmountX18"
           },
           "arguments": [],
           "type": {
@@ -8604,7 +8604,7 @@ const schemaAST = {
           "kind": "FieldDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateePerpDeltaX18"
+            "value": "perpAmountX18"
           },
           "arguments": [],
           "type": {
@@ -9948,7 +9948,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidatorBaseDeltaX18"
+            "value": "liquidationAmountX18"
           },
           "type": {
             "kind": "NamedType",
@@ -9963,7 +9963,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidatorBaseDeltaX18_not"
+            "value": "liquidationAmountX18_not"
           },
           "type": {
             "kind": "NamedType",
@@ -9978,7 +9978,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidatorBaseDeltaX18_gt"
+            "value": "liquidationAmountX18_gt"
           },
           "type": {
             "kind": "NamedType",
@@ -9993,7 +9993,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidatorBaseDeltaX18_lt"
+            "value": "liquidationAmountX18_lt"
           },
           "type": {
             "kind": "NamedType",
@@ -10008,7 +10008,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidatorBaseDeltaX18_gte"
+            "value": "liquidationAmountX18_gte"
           },
           "type": {
             "kind": "NamedType",
@@ -10023,7 +10023,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidatorBaseDeltaX18_lte"
+            "value": "liquidationAmountX18_lte"
           },
           "type": {
             "kind": "NamedType",
@@ -10038,7 +10038,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidatorBaseDeltaX18_in"
+            "value": "liquidationAmountX18_in"
           },
           "type": {
             "kind": "ListType",
@@ -10059,7 +10059,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidatorBaseDeltaX18_not_in"
+            "value": "liquidationAmountX18_not_in"
           },
           "type": {
             "kind": "ListType",
@@ -10476,7 +10476,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateeSpotDeltaX18"
+            "value": "spotAmountX18"
           },
           "type": {
             "kind": "NamedType",
@@ -10491,7 +10491,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateeSpotDeltaX18_not"
+            "value": "spotAmountX18_not"
           },
           "type": {
             "kind": "NamedType",
@@ -10506,7 +10506,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateeSpotDeltaX18_gt"
+            "value": "spotAmountX18_gt"
           },
           "type": {
             "kind": "NamedType",
@@ -10521,7 +10521,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateeSpotDeltaX18_lt"
+            "value": "spotAmountX18_lt"
           },
           "type": {
             "kind": "NamedType",
@@ -10536,7 +10536,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateeSpotDeltaX18_gte"
+            "value": "spotAmountX18_gte"
           },
           "type": {
             "kind": "NamedType",
@@ -10551,7 +10551,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateeSpotDeltaX18_lte"
+            "value": "spotAmountX18_lte"
           },
           "type": {
             "kind": "NamedType",
@@ -10566,7 +10566,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateeSpotDeltaX18_in"
+            "value": "spotAmountX18_in"
           },
           "type": {
             "kind": "ListType",
@@ -10587,7 +10587,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateeSpotDeltaX18_not_in"
+            "value": "spotAmountX18_not_in"
           },
           "type": {
             "kind": "ListType",
@@ -10740,7 +10740,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateePerpDeltaX18"
+            "value": "perpAmountX18"
           },
           "type": {
             "kind": "NamedType",
@@ -10755,7 +10755,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateePerpDeltaX18_not"
+            "value": "perpAmountX18_not"
           },
           "type": {
             "kind": "NamedType",
@@ -10770,7 +10770,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateePerpDeltaX18_gt"
+            "value": "perpAmountX18_gt"
           },
           "type": {
             "kind": "NamedType",
@@ -10785,7 +10785,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateePerpDeltaX18_lt"
+            "value": "perpAmountX18_lt"
           },
           "type": {
             "kind": "NamedType",
@@ -10800,7 +10800,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateePerpDeltaX18_gte"
+            "value": "perpAmountX18_gte"
           },
           "type": {
             "kind": "NamedType",
@@ -10815,7 +10815,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateePerpDeltaX18_lte"
+            "value": "perpAmountX18_lte"
           },
           "type": {
             "kind": "NamedType",
@@ -10830,7 +10830,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateePerpDeltaX18_in"
+            "value": "perpAmountX18_in"
           },
           "type": {
             "kind": "ListType",
@@ -10851,7 +10851,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateePerpDeltaX18_not_in"
+            "value": "perpAmountX18_not_in"
           },
           "type": {
             "kind": "ListType",
@@ -10958,7 +10958,7 @@ const schemaAST = {
           "kind": "EnumValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidatorBaseDeltaX18"
+            "value": "liquidationAmountX18"
           },
           "directives": []
         },
@@ -10990,7 +10990,7 @@ const schemaAST = {
           "kind": "EnumValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateeSpotDeltaX18"
+            "value": "spotAmountX18"
           },
           "directives": []
         },
@@ -11006,7 +11006,7 @@ const schemaAST = {
           "kind": "EnumValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "liquidateePerpDeltaX18"
+            "value": "perpAmountX18"
           },
           "directives": []
         }

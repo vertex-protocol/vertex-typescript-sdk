@@ -586,13 +586,13 @@ type LiquidationEvent {
   liquidatee: Subaccount!
   mode: Int!
   healthGroup: BigInt!
-  liquidatorBaseDeltaX18: BigInt!
+  liquidationAmountX18: BigInt!
   liquidationPaymentX18: BigInt!
   insuranceCoverageX18: BigInt!
   spotProductId: BigInt!
-  liquidateeSpotDeltaX18: BigInt!
+  spotAmountX18: BigInt!
   perpProductId: BigInt!
-  liquidateePerpDeltaX18: BigInt!
+  perpAmountX18: BigInt!
 }
 
 input LiquidationEvent_filter {
@@ -678,14 +678,14 @@ input LiquidationEvent_filter {
   healthGroup_lte: BigInt
   healthGroup_in: [BigInt!]
   healthGroup_not_in: [BigInt!]
-  liquidatorBaseDeltaX18: BigInt
-  liquidatorBaseDeltaX18_not: BigInt
-  liquidatorBaseDeltaX18_gt: BigInt
-  liquidatorBaseDeltaX18_lt: BigInt
-  liquidatorBaseDeltaX18_gte: BigInt
-  liquidatorBaseDeltaX18_lte: BigInt
-  liquidatorBaseDeltaX18_in: [BigInt!]
-  liquidatorBaseDeltaX18_not_in: [BigInt!]
+  liquidationAmountX18: BigInt
+  liquidationAmountX18_not: BigInt
+  liquidationAmountX18_gt: BigInt
+  liquidationAmountX18_lt: BigInt
+  liquidationAmountX18_gte: BigInt
+  liquidationAmountX18_lte: BigInt
+  liquidationAmountX18_in: [BigInt!]
+  liquidationAmountX18_not_in: [BigInt!]
   liquidationPaymentX18: BigInt
   liquidationPaymentX18_not: BigInt
   liquidationPaymentX18_gt: BigInt
@@ -710,14 +710,14 @@ input LiquidationEvent_filter {
   spotProductId_lte: BigInt
   spotProductId_in: [BigInt!]
   spotProductId_not_in: [BigInt!]
-  liquidateeSpotDeltaX18: BigInt
-  liquidateeSpotDeltaX18_not: BigInt
-  liquidateeSpotDeltaX18_gt: BigInt
-  liquidateeSpotDeltaX18_lt: BigInt
-  liquidateeSpotDeltaX18_gte: BigInt
-  liquidateeSpotDeltaX18_lte: BigInt
-  liquidateeSpotDeltaX18_in: [BigInt!]
-  liquidateeSpotDeltaX18_not_in: [BigInt!]
+  spotAmountX18: BigInt
+  spotAmountX18_not: BigInt
+  spotAmountX18_gt: BigInt
+  spotAmountX18_lt: BigInt
+  spotAmountX18_gte: BigInt
+  spotAmountX18_lte: BigInt
+  spotAmountX18_in: [BigInt!]
+  spotAmountX18_not_in: [BigInt!]
   perpProductId: BigInt
   perpProductId_not: BigInt
   perpProductId_gt: BigInt
@@ -726,14 +726,14 @@ input LiquidationEvent_filter {
   perpProductId_lte: BigInt
   perpProductId_in: [BigInt!]
   perpProductId_not_in: [BigInt!]
-  liquidateePerpDeltaX18: BigInt
-  liquidateePerpDeltaX18_not: BigInt
-  liquidateePerpDeltaX18_gt: BigInt
-  liquidateePerpDeltaX18_lt: BigInt
-  liquidateePerpDeltaX18_gte: BigInt
-  liquidateePerpDeltaX18_lte: BigInt
-  liquidateePerpDeltaX18_in: [BigInt!]
-  liquidateePerpDeltaX18_not_in: [BigInt!]
+  perpAmountX18: BigInt
+  perpAmountX18_not: BigInt
+  perpAmountX18_gt: BigInt
+  perpAmountX18_lt: BigInt
+  perpAmountX18_gte: BigInt
+  perpAmountX18_lte: BigInt
+  perpAmountX18_in: [BigInt!]
+  perpAmountX18_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
@@ -746,13 +746,13 @@ enum LiquidationEvent_orderBy {
   liquidatee
   mode
   healthGroup
-  liquidatorBaseDeltaX18
+  liquidationAmountX18
   liquidationPaymentX18
   insuranceCoverageX18
   spotProductId
-  liquidateeSpotDeltaX18
+  spotAmountX18
   perpProductId
-  liquidateePerpDeltaX18
+  perpAmountX18
 }
 
 type Market {

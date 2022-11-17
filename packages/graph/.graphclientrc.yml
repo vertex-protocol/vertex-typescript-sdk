@@ -3,9 +3,9 @@ sources:
     handler:
       graphql:
         # Default to hosted version
-        #        endpoint: '{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}'
+        endpoint: '{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}'
         # For local schema updates
-        endpoint: '{context.endpoint:http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph}'
+    #        endpoint: '{context.endpoint:http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph}'
     transforms:
       # https://github.com/graphprotocol/graph-client
       - autoPagination:

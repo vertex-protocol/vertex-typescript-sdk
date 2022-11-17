@@ -1,21 +1,21 @@
 import { BigNumberish } from 'ethers';
 
-export interface EngineServerSpotBalance {
+export interface EngineServerSpotBalanceData {
   amount_x18: BigNumberish;
   last_cumulative_multiplier_x18: BigNumberish;
 }
 
-export interface EngineServerSpotLpBalance {
+export interface EngineServerSpotLpBalanceData {
   amount_x18: BigNumberish;
 }
 
-export interface EngineServerPerpBalance {
+export interface EngineServerPerpBalanceData {
   amount_x18: BigNumberish;
   v_quote_balance_x18: BigNumberish;
   last_cumulative_funding_x18: BigNumberish;
 }
 
-export interface EngineServerPerpLpBalance {
+export interface EngineServerPerpLpBalanceData {
   amount_x18: BigNumberish;
   last_cumulative_funding_x18: BigNumberish;
 }
@@ -53,8 +53,8 @@ export interface EngineServerSpotState {
 
 export interface EngineServerSpotLpState {
   supply: BigNumberish;
-  quote: EngineServerSpotBalance;
-  base: EngineServerSpotBalance;
+  quote: EngineServerSpotBalanceData;
+  base: EngineServerSpotBalanceData;
   last_update_time: BigNumberish;
 }
 
@@ -87,8 +87,8 @@ export interface EngineServerSpotProduct {
 
 export interface EngineServerSpotBalance {
   product_id: number;
-  balance: EngineServerSpotBalance;
-  lp_balance: EngineServerSpotLpBalance;
+  balance: EngineServerSpotBalanceData;
+  lp_balance: EngineServerSpotLpBalanceData;
   initial_x18: BigNumberish;
   maintenance_x18: BigNumberish;
   pnl_x18: BigNumberish;
@@ -106,8 +106,8 @@ export interface EngineServerPerpProduct {
 
 export interface EngineServerPerpBalance {
   product_id: number;
-  balance: EngineServerPerpBalance;
-  lp_balance: EngineServerPerpLpBalance;
+  balance: EngineServerPerpBalanceData;
+  lp_balance: EngineServerPerpLpBalanceData;
   initial_x18: BigNumberish;
   maintenance_x18: BigNumberish;
   pnl_x18: BigNumberish;
