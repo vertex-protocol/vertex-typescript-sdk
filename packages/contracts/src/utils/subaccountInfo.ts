@@ -84,7 +84,7 @@ export function calcSubaccountLeverage(summary: SubaccountSummaryResponse) {
     return toBigDecimal(0);
   }
   const denom = initialHealth.assets.minus(initialHealth.liabilities);
-  if (denom.isZero()) {
+  if (denom.isLessThanOrEqualTo(0)) {
     return toBigDecimal('Infinity');
   }
   return numerator.dividedBy(denom);
