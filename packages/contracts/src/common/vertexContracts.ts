@@ -1,16 +1,16 @@
 import {
+  FQuerier,
   IClearinghouse,
   IEndpoint,
   IPerpEngine,
   ISpotEngine,
-  IVertexQuerier,
 } from '../typechain-types';
 
 /**
  * Encapsulates the set of Vertex contracts required for querying and executing
  */
 export interface VertexContracts {
-  querier: IVertexQuerier;
+  querier: FQuerier;
   endpoint: IEndpoint;
   clearinghouse: IClearinghouse;
   spotEngine: ISpotEngine;

@@ -1,7 +1,9 @@
 import {
+  BurnLpParams,
   getOrderDigest,
   getVertexEIP712Values,
   LiquidateSubaccountParams,
+  MintLpParams,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import {
@@ -45,6 +47,25 @@ export class EngineExecuteClient extends EngineBaseClient {
       signature,
       tx: getVertexEIP712Values(
         'withdraw_collateral',
+        params,
+      ) as unknown as WithdrawCollateralParams,
+    });
+  }
+
+  async mintLp(params: WithEndpointAddr<MintLpParams>) {
+    const signature = await this.sign('mint_lp', params.endpointAddr, params);
+    return this.execute('mint_lp', {
+      signature,
+      tx: getVertexEIP712Values('mint_lp', params) as unknown as MintLpParams,
+    });
+  }
+
+  async burnLp(params: WithEndpointAddr<BurnLpParams>) {
+    const signature = await this.sign('burn_lp', params.endpointAddr, params);
+    return this.execute('burn_lp', {
+      signature,
+      tx: getVertexEIP712Values(
+        'burn_lp',
         params,
       ) as unknown as WithdrawCollateralParams,
     });

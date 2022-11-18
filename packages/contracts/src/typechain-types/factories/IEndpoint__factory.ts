@@ -8,6 +8,44 @@ import type { IEndpoint, IEndpointInterface } from "../IEndpoint";
 
 const _abi = [
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint64",
+        name: "executableAt",
+        type: "uint64",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bytes",
+        name: "tx",
+        type: "bytes",
+      },
+    ],
+    name: "SubmitSlowModeTransaction",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "bytes[]",
+        name: "transactions",
+        type: "bytes[]",
+      },
+    ],
+    name: "SubmitTransactions",
+    type: "event",
+  },
+  {
     inputs: [
       {
         internalType: "string",
@@ -65,6 +103,24 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "address",
+        name: "book",
+        type: "address",
+      },
+    ],
+    name: "setBook",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes",
         name: "transaction",
         type: "bytes",
@@ -77,6 +133,11 @@ const _abi = [
   },
   {
     inputs: [
+      {
+        internalType: "uint64",
+        name: "idx",
+        type: "uint64",
+      },
       {
         internalType: "bytes[]",
         name: "transactions",

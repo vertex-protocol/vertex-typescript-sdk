@@ -31,7 +31,7 @@ export class MarketQueryClient extends BaseVertexGraphClient {
     return data.marketHourlySnapshots.map((snapshot) => {
       return {
         approximateSnapshotTime: fromHourIndex(snapshot.hour),
-        cumulativeVolumeQuote: toBigDecimal(snapshot.volumeQuote),
+        cumulativeVolumeQuote: fromX18(snapshot.volumeQuoteX18),
         cumulativeNumOrders: toBigDecimal(snapshot.volumeNumOrders),
         lastFilledPrice: fromX18(snapshot.lastFillPriceX18),
       };
@@ -61,7 +61,7 @@ export class MarketQueryClient extends BaseVertexGraphClient {
         low: fromX18(snapshot.lowX18).toNumber(),
         open: fromX18(snapshot.openX18).toNumber(),
         time: toBigDecimal(snapshot.time).toNumber(),
-        volume: toBigDecimal(snapshot.volumeQuote).toNumber(),
+        volume: fromX18(snapshot.volumeQuoteX18).toNumber(),
       };
     });
   }

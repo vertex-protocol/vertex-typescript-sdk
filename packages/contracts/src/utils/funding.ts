@@ -10,8 +10,8 @@ const MAX_FUNDING_PRICE_DIFF_FRAC = 0.1;
  * @param product given by PerpEngine
  */
 export function calcApproximate24hrFundingRate(product: PerpProduct) {
-  const { emaPrice, oraclePrice } = product;
-  const priceDiff = emaPrice.minus(oraclePrice);
+  const { markPrice, oraclePrice } = product;
+  const priceDiff = markPrice.minus(oraclePrice);
   // Clamp and preserve sign
   const clampedPriceDiff = clampBigDecimal(priceDiff.abs(), {
     max: oraclePrice.multipliedBy(MAX_FUNDING_PRICE_DIFF_FRAC),

@@ -45,10 +45,13 @@ query SubaccountLiquidationEventHistoryQuery(
     id
     blockTime
 
-    productId
-    liquidatorBaseDelta
-    liquidatorQuoteDelta
-    insuranceCoverage
+    spotProductId
+    perpProductId
+
+    perpAmountX18
+    spotAmountX18
+    liquidationPaymentX18
+    insuranceCoverageX18
   }
 }
 

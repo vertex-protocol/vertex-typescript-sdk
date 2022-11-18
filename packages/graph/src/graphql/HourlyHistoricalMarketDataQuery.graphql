@@ -15,7 +15,7 @@ query HourlyHistoricalMarketDataQuery(
     id
     hour
     volumeNumOrders
-    volumeQuote
+    volumeQuoteX18
     lastFillPriceX18
   }
 }

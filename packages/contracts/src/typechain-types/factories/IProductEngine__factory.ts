@@ -48,13 +48,7 @@ const _abi = [
       {
         indexed: false,
         internalType: "int256",
-        name: "socializedQuote",
-        type: "int256",
-      },
-      {
-        indexed: false,
-        internalType: "int256",
-        name: "socializedBase",
+        name: "amountSocializedX18",
         type: "int256",
       },
     ],
@@ -108,84 +102,33 @@ const _abi = [
         name: "subaccountId",
         type: "uint64",
       },
-    ],
-    name: "getBalanceAmountX18",
-    outputs: [
       {
         internalType: "int256",
-        name: "",
+        name: "amountLpX18",
         type: "int256",
       },
     ],
-    stateMutability: "view",
+    name: "burnLp",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint64",
-        name: "subaccountId",
+        name: "liquidateeId",
         type: "uint64",
       },
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        internalType: "enum IProductEngine.HealthType",
-        name: "healthType",
-        type: "uint8",
-      },
-      {
-        internalType: "int256",
-        name: "amountDeltaX18",
-        type: "int256",
-      },
-      {
-        internalType: "int256",
-        name: "vQuoteDeltaX18",
-        type: "int256",
-      },
-    ],
-    name: "getBalanceHealthWithDeltaX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
       {
         internalType: "uint64",
-        name: "subaccountId",
+        name: "liquidatorId",
         type: "uint64",
       },
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        internalType: "enum IProductEngine.HealthType",
-        name: "healthType",
-        type: "uint8",
-      },
     ],
-    name: "getBalanceHealthX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
+    name: "decomposeLps",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -217,129 +160,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-      {
-        internalType: "enum IProductEngine.HealthType",
-        name: "healthType",
-        type: "uint8",
-      },
-      {
-        components: [
-          {
-            internalType: "uint32",
-            name: "productId",
-            type: "uint32",
-          },
-          {
-            internalType: "int256",
-            name: "amountDeltaX18",
-            type: "int256",
-          },
-          {
-            internalType: "int256",
-            name: "vQuoteDeltaX18",
-            type: "int256",
-          },
-        ],
-        internalType: "struct IProductEngine.HealthDelta[]",
-        name: "healthDeltas",
-        type: "tuple[]",
-      },
-    ],
-    name: "getHealthWithDeltasX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-      {
-        internalType: "enum IProductEngine.HealthType",
-        name: "healthType",
-        type: "uint8",
-      },
-    ],
-    name: "getHealthX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        internalType: "int256",
-        name: "amountX18",
-        type: "int256",
-      },
-    ],
-    name: "getLiqPriceX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        internalType: "int256",
-        name: "healthAmountX18",
-        type: "int256",
-      },
-    ],
-    name: "getMaximumLiquidatableX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint32",
         name: "productId",
         type: "uint32",
@@ -364,25 +184,6 @@ const _abi = [
         internalType: "uint32[]",
         name: "",
         type: "uint32[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-    ],
-    name: "hasAssets",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
       },
     ],
     stateMutability: "view",
@@ -429,18 +230,101 @@ const _abi = [
         type: "uint32",
       },
       {
+        internalType: "uint64",
+        name: "subaccountId",
+        type: "uint64",
+      },
+      {
         internalType: "int256",
-        name: "vQuoteX18",
+        name: "amountBaseX18",
         type: "int256",
       },
       {
-        internalType: "bool",
-        name: "isLong",
-        type: "bool",
+        internalType: "int256",
+        name: "quoteAmountLowX18",
+        type: "int256",
+      },
+      {
+        internalType: "int256",
+        name: "quoteAmountHighX18",
+        type: "int256",
       },
     ],
-    name: "socializeProduct",
+    name: "mintLp",
     outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint64",
+        name: "subaccountId",
+        type: "uint64",
+      },
+      {
+        internalType: "int256",
+        name: "insuranceX18",
+        type: "int256",
+      },
+    ],
+    name: "socializeSubaccount",
+    outputs: [
+      {
+        internalType: "int256",
+        name: "",
+        type: "int256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "uint64",
+        name: "subaccountId",
+        type: "uint64",
+      },
+      {
+        internalType: "int256",
+        name: "amount",
+        type: "int256",
+      },
+      {
+        internalType: "int256",
+        name: "priceX18",
+        type: "int256",
+      },
+      {
+        internalType: "int256",
+        name: "sizeIncrement",
+        type: "int256",
+      },
+      {
+        internalType: "int256",
+        name: "lpSpreadX18",
+        type: "int256",
+      },
+    ],
+    name: "swapLp",
+    outputs: [
+      {
+        internalType: "int256",
+        name: "",
+        type: "int256",
+      },
+      {
+        internalType: "int256",
+        name: "",
+        type: "int256",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "function",
   },

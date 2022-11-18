@@ -11,65 +11,9 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "bytes32",
-        name: "orderDigest",
-        type: "bytes32",
-      },
-      {
-        indexed: false,
-        internalType: "enum IOffchainBook.ValidationResult",
-        name: "reason",
-        type: "uint8",
-      },
-    ],
-    name: "CancelOrder",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: true,
         internalType: "bytes32",
-        name: "takerDigest",
-        type: "bytes32",
-      },
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "makerDigest",
-        type: "bytes32",
-      },
-      {
-        indexed: false,
-        internalType: "int256",
-        name: "takerAmountDelta",
-        type: "int256",
-      },
-      {
-        indexed: false,
-        internalType: "int256",
-        name: "takerFee",
-        type: "int256",
-      },
-      {
-        indexed: false,
-        internalType: "int256",
-        name: "makerFee",
-        type: "int256",
-      },
-    ],
-    name: "FillOrder",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "orderDigest",
+        name: "digest",
         type: "bytes32",
       },
       {
@@ -77,12 +21,6 @@ const _abi = [
         internalType: "uint64",
         name: "subaccount",
         type: "uint64",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "sender",
-        type: "address",
       },
       {
         indexed: false,
@@ -108,8 +46,32 @@ const _abi = [
         name: "nonce",
         type: "uint64",
       },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "isTaker",
+        type: "bool",
+      },
+      {
+        indexed: false,
+        internalType: "int256",
+        name: "feeAmountX18",
+        type: "int256",
+      },
+      {
+        indexed: false,
+        internalType: "int256",
+        name: "baseDeltaX18",
+        type: "int256",
+      },
+      {
+        indexed: false,
+        internalType: "int256",
+        name: "quoteDeltaX18",
+        type: "int256",
+      },
     ],
-    name: "ReportOrder",
+    name: "FillOrder",
     type: "event",
   },
   {
@@ -177,19 +139,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "getMarkPriceX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "getMarket",
     outputs: [
       {
@@ -201,12 +150,17 @@ const _abi = [
           },
           {
             internalType: "int256",
-            name: "sizeIncrementX18",
+            name: "sizeIncrement",
             type: "int256",
           },
           {
             internalType: "int256",
             name: "priceIncrementX18",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "lpSpreadX18",
             type: "int256",
           },
           {
@@ -257,12 +211,17 @@ const _abi = [
       },
       {
         internalType: "int256",
-        name: "_sizeIncrementX18",
+        name: "_sizeIncrement",
         type: "int256",
       },
       {
         internalType: "int256",
         name: "_priceIncrementX18",
+        type: "int256",
+      },
+      {
+        internalType: "int256",
+        name: "_lpSpreadX18",
         type: "int256",
       },
     ],
@@ -276,9 +235,83 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
-            name: "book",
-            type: "address",
+            internalType: "uint32",
+            name: "productId",
+            type: "uint32",
+          },
+          {
+            components: [
+              {
+                components: [
+                  {
+                    internalType: "address",
+                    name: "sender",
+                    type: "address",
+                  },
+                  {
+                    internalType: "string",
+                    name: "subaccountName",
+                    type: "string",
+                  },
+                  {
+                    internalType: "int256",
+                    name: "priceX18",
+                    type: "int256",
+                  },
+                  {
+                    internalType: "int256",
+                    name: "amount",
+                    type: "int256",
+                  },
+                  {
+                    internalType: "uint64",
+                    name: "expiration",
+                    type: "uint64",
+                  },
+                  {
+                    internalType: "uint64",
+                    name: "nonce",
+                    type: "uint64",
+                  },
+                ],
+                internalType: "struct IEndpoint.Order",
+                name: "order",
+                type: "tuple",
+              },
+              {
+                internalType: "bytes",
+                name: "signature",
+                type: "bytes",
+              },
+            ],
+            internalType: "struct IEndpoint.SignedOrder",
+            name: "taker",
+            type: "tuple",
+          },
+        ],
+        internalType: "struct IEndpoint.MatchOrderAMM",
+        name: "tx",
+        type: "tuple",
+      },
+    ],
+    name: "matchOrderAMM",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint32",
+            name: "productId",
+            type: "uint32",
+          },
+          {
+            internalType: "bool",
+            name: "amm",
+            type: "bool",
           },
           {
             components: [
@@ -385,18 +418,47 @@ const _abi = [
       },
     ],
     name: "matchOrders",
-    outputs: [
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
       {
-        internalType: "enum IOffchainBook.ValidationResult",
-        name: "",
-        type: "uint8",
-      },
-      {
-        internalType: "enum IOffchainBook.ValidationResult",
-        name: "",
-        type: "uint8",
+        components: [
+          {
+            internalType: "address",
+            name: "sender",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "subaccountName",
+            type: "string",
+          },
+          {
+            internalType: "uint32",
+            name: "productId",
+            type: "uint32",
+          },
+          {
+            internalType: "int256",
+            name: "amount",
+            type: "int256",
+          },
+          {
+            internalType: "int256",
+            name: "priceX18",
+            type: "int256",
+          },
+        ],
+        internalType: "struct IEndpoint.SwapAMM",
+        name: "tx",
+        type: "tuple",
       },
     ],
+    name: "swapAMM",
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -455,72 +517,9 @@ const _abi = [
     name: "validateCancellation",
     outputs: [
       {
-        internalType: "enum IOffchainBook.ValidationResult",
+        internalType: "bool",
         name: "",
-        type: "uint8",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        components: [
-          {
-            components: [
-              {
-                internalType: "address",
-                name: "sender",
-                type: "address",
-              },
-              {
-                internalType: "string",
-                name: "subaccountName",
-                type: "string",
-              },
-              {
-                internalType: "int256",
-                name: "priceX18",
-                type: "int256",
-              },
-              {
-                internalType: "int256",
-                name: "amount",
-                type: "int256",
-              },
-              {
-                internalType: "uint64",
-                name: "expiration",
-                type: "uint64",
-              },
-              {
-                internalType: "uint64",
-                name: "nonce",
-                type: "uint64",
-              },
-            ],
-            internalType: "struct IEndpoint.Order",
-            name: "order",
-            type: "tuple",
-          },
-          {
-            internalType: "bytes",
-            name: "signature",
-            type: "bytes",
-          },
-        ],
-        internalType: "struct IEndpoint.SignedOrder",
-        name: "order",
-        type: "tuple",
-      },
-    ],
-    name: "validateOrder",
-    outputs: [
-      {
-        internalType: "enum IOffchainBook.ValidationResult",
-        name: "",
-        type: "uint8",
+        type: "bool",
       },
     ],
     stateMutability: "view",

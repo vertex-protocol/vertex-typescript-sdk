@@ -10,8 +10,6 @@ import { DefaultLogger } from '@graphql-mesh/utils';
 import MeshCache from "@graphql-mesh/cache-localforage";
 import { fetch as fetchFn } from '@whatwg-node/fetch';
 
-import { MeshResolvedSource } from '@graphql-mesh/runtime';
-import { MeshTransform, MeshPlugin } from '@graphql-mesh/types';
 import GraphqlHandler from "@graphql-mesh/graphql"
 import AutoPaginationTransform from "@graphprotocol/client-auto-pagination";
 import BlockTrackingTransform from "@graphprotocol/client-block-tracking";
@@ -21,8 +19,7 @@ import { createMeshHTTPHandler } from '@graphql-mesh/http';
 import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext, MeshInstance } from '@graphql-mesh/runtime';
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
-import { ImportFn } from '@graphql-mesh/types';
-import type { ClearinghouseTypes } from './sources/Clearinghouse/types';
+import type { ClearinghouseContext } from './sources/Clearinghouse/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -54,98 +51,6 @@ export type Block_height = {
   number_gte?: InputMaybe<Scalars['Int']>;
 };
 
-export type CancelOrderEvent = {
-  id: Scalars['ID'];
-  block: Scalars['BigInt'];
-  blockTime: Scalars['BigInt'];
-  reason: OrderValidationResult;
-  order: Order;
-  subaccount: Subaccount;
-};
-
-export type CancelOrderEvent_filter = {
-  id?: InputMaybe<Scalars['ID']>;
-  id_not?: InputMaybe<Scalars['ID']>;
-  id_gt?: InputMaybe<Scalars['ID']>;
-  id_lt?: InputMaybe<Scalars['ID']>;
-  id_gte?: InputMaybe<Scalars['ID']>;
-  id_lte?: InputMaybe<Scalars['ID']>;
-  id_in?: InputMaybe<Array<Scalars['ID']>>;
-  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
-  block?: InputMaybe<Scalars['BigInt']>;
-  block_not?: InputMaybe<Scalars['BigInt']>;
-  block_gt?: InputMaybe<Scalars['BigInt']>;
-  block_lt?: InputMaybe<Scalars['BigInt']>;
-  block_gte?: InputMaybe<Scalars['BigInt']>;
-  block_lte?: InputMaybe<Scalars['BigInt']>;
-  block_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  block_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  blockTime?: InputMaybe<Scalars['BigInt']>;
-  blockTime_not?: InputMaybe<Scalars['BigInt']>;
-  blockTime_gt?: InputMaybe<Scalars['BigInt']>;
-  blockTime_lt?: InputMaybe<Scalars['BigInt']>;
-  blockTime_gte?: InputMaybe<Scalars['BigInt']>;
-  blockTime_lte?: InputMaybe<Scalars['BigInt']>;
-  blockTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  blockTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  reason?: InputMaybe<OrderValidationResult>;
-  reason_not?: InputMaybe<OrderValidationResult>;
-  reason_in?: InputMaybe<Array<OrderValidationResult>>;
-  reason_not_in?: InputMaybe<Array<OrderValidationResult>>;
-  order?: InputMaybe<Scalars['String']>;
-  order_not?: InputMaybe<Scalars['String']>;
-  order_gt?: InputMaybe<Scalars['String']>;
-  order_lt?: InputMaybe<Scalars['String']>;
-  order_gte?: InputMaybe<Scalars['String']>;
-  order_lte?: InputMaybe<Scalars['String']>;
-  order_in?: InputMaybe<Array<Scalars['String']>>;
-  order_not_in?: InputMaybe<Array<Scalars['String']>>;
-  order_contains?: InputMaybe<Scalars['String']>;
-  order_contains_nocase?: InputMaybe<Scalars['String']>;
-  order_not_contains?: InputMaybe<Scalars['String']>;
-  order_not_contains_nocase?: InputMaybe<Scalars['String']>;
-  order_starts_with?: InputMaybe<Scalars['String']>;
-  order_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  order_not_starts_with?: InputMaybe<Scalars['String']>;
-  order_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  order_ends_with?: InputMaybe<Scalars['String']>;
-  order_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  order_not_ends_with?: InputMaybe<Scalars['String']>;
-  order_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  order_?: InputMaybe<Order_filter>;
-  subaccount?: InputMaybe<Scalars['String']>;
-  subaccount_not?: InputMaybe<Scalars['String']>;
-  subaccount_gt?: InputMaybe<Scalars['String']>;
-  subaccount_lt?: InputMaybe<Scalars['String']>;
-  subaccount_gte?: InputMaybe<Scalars['String']>;
-  subaccount_lte?: InputMaybe<Scalars['String']>;
-  subaccount_in?: InputMaybe<Array<Scalars['String']>>;
-  subaccount_not_in?: InputMaybe<Array<Scalars['String']>>;
-  subaccount_contains?: InputMaybe<Scalars['String']>;
-  subaccount_contains_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_not_contains?: InputMaybe<Scalars['String']>;
-  subaccount_not_contains_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_starts_with?: InputMaybe<Scalars['String']>;
-  subaccount_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_not_starts_with?: InputMaybe<Scalars['String']>;
-  subaccount_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_ends_with?: InputMaybe<Scalars['String']>;
-  subaccount_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_not_ends_with?: InputMaybe<Scalars['String']>;
-  subaccount_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_?: InputMaybe<Subaccount_filter>;
-  /** Filter for the block changed event. */
-  _change_block?: InputMaybe<BlockChangedFilter>;
-};
-
-export type CancelOrderEvent_orderBy =
-  | 'id'
-  | 'block'
-  | 'blockTime'
-  | 'reason'
-  | 'order'
-  | 'subaccount';
-
 export type Candlestick = {
   id: Scalars['ID'];
   market: Market;
@@ -155,8 +60,8 @@ export type Candlestick = {
   closeX18: Scalars['BigInt'];
   lowX18: Scalars['BigInt'];
   highX18: Scalars['BigInt'];
-  volumeBase: Scalars['BigInt'];
-  volumeQuote: Scalars['BigInt'];
+  volumeBaseX18: Scalars['BigInt'];
+  volumeQuoteX18: Scalars['BigInt'];
 };
 
 export type Candlestick_filter = {
@@ -237,22 +142,22 @@ export type Candlestick_filter = {
   highX18_lte?: InputMaybe<Scalars['BigInt']>;
   highX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   highX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeBase?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_not?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_gt?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_lt?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_gte?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_lte?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeBase_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeQuote?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_not?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_gt?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_lt?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_gte?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_lte?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeQuote_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeBaseX18?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_not?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_gt?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_lt?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_gte?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_lte?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeBaseX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeQuoteX18?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_not?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_gt?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_lt?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_gte?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_lte?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeQuoteX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -266,11 +171,12 @@ export type Candlestick_orderBy =
   | 'closeX18'
   | 'lowX18'
   | 'highX18'
-  | 'volumeBase'
-  | 'volumeQuote';
+  | 'volumeBaseX18'
+  | 'volumeQuoteX18';
 
 export type Clearinghouse = {
   id: Scalars['ID'];
+  endpoint: Scalars['Bytes'];
   quoteProduct: Scalars['Bytes'];
   spotEngine: SpotEngine;
   perpEngine: PerpEngine;
@@ -297,6 +203,12 @@ export type Clearinghouse_filter = {
   id_lte?: InputMaybe<Scalars['ID']>;
   id_in?: InputMaybe<Array<Scalars['ID']>>;
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  endpoint?: InputMaybe<Scalars['Bytes']>;
+  endpoint_not?: InputMaybe<Scalars['Bytes']>;
+  endpoint_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  endpoint_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  endpoint_contains?: InputMaybe<Scalars['Bytes']>;
+  endpoint_not_contains?: InputMaybe<Scalars['Bytes']>;
   quoteProduct?: InputMaybe<Scalars['Bytes']>;
   quoteProduct_not?: InputMaybe<Scalars['Bytes']>;
   quoteProduct_in?: InputMaybe<Array<Scalars['Bytes']>>;
@@ -328,6 +240,7 @@ export type Clearinghouse_filter = {
 
 export type Clearinghouse_orderBy =
   | 'id'
+  | 'endpoint'
   | 'quoteProduct'
   | 'spotEngine'
   | 'perpEngine'
@@ -552,13 +465,12 @@ export type FillOrderEvent = {
   market: Market;
   block: Scalars['BigInt'];
   blockTime: Scalars['BigInt'];
-  maker: Subaccount;
-  makerOrder: Order;
-  taker: Subaccount;
-  takerOrder: Order;
-  takerAmountDelta: Scalars['BigInt'];
-  takerFee: Scalars['BigInt'];
-  makerFee: Scalars['BigInt'];
+  subaccount: Subaccount;
+  order: Order;
+  isTaker: Scalars['Boolean'];
+  feeQuoteX18: Scalars['BigInt'];
+  amountDeltaX18: Scalars['BigInt'];
+  quoteDeltaX18: Scalars['BigInt'];
 };
 
 export type FillOrderEvent_filter = {
@@ -607,114 +519,76 @@ export type FillOrderEvent_filter = {
   blockTime_lte?: InputMaybe<Scalars['BigInt']>;
   blockTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
   blockTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  maker?: InputMaybe<Scalars['String']>;
-  maker_not?: InputMaybe<Scalars['String']>;
-  maker_gt?: InputMaybe<Scalars['String']>;
-  maker_lt?: InputMaybe<Scalars['String']>;
-  maker_gte?: InputMaybe<Scalars['String']>;
-  maker_lte?: InputMaybe<Scalars['String']>;
-  maker_in?: InputMaybe<Array<Scalars['String']>>;
-  maker_not_in?: InputMaybe<Array<Scalars['String']>>;
-  maker_contains?: InputMaybe<Scalars['String']>;
-  maker_contains_nocase?: InputMaybe<Scalars['String']>;
-  maker_not_contains?: InputMaybe<Scalars['String']>;
-  maker_not_contains_nocase?: InputMaybe<Scalars['String']>;
-  maker_starts_with?: InputMaybe<Scalars['String']>;
-  maker_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  maker_not_starts_with?: InputMaybe<Scalars['String']>;
-  maker_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  maker_ends_with?: InputMaybe<Scalars['String']>;
-  maker_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  maker_not_ends_with?: InputMaybe<Scalars['String']>;
-  maker_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  maker_?: InputMaybe<Subaccount_filter>;
-  makerOrder?: InputMaybe<Scalars['String']>;
-  makerOrder_not?: InputMaybe<Scalars['String']>;
-  makerOrder_gt?: InputMaybe<Scalars['String']>;
-  makerOrder_lt?: InputMaybe<Scalars['String']>;
-  makerOrder_gte?: InputMaybe<Scalars['String']>;
-  makerOrder_lte?: InputMaybe<Scalars['String']>;
-  makerOrder_in?: InputMaybe<Array<Scalars['String']>>;
-  makerOrder_not_in?: InputMaybe<Array<Scalars['String']>>;
-  makerOrder_contains?: InputMaybe<Scalars['String']>;
-  makerOrder_contains_nocase?: InputMaybe<Scalars['String']>;
-  makerOrder_not_contains?: InputMaybe<Scalars['String']>;
-  makerOrder_not_contains_nocase?: InputMaybe<Scalars['String']>;
-  makerOrder_starts_with?: InputMaybe<Scalars['String']>;
-  makerOrder_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  makerOrder_not_starts_with?: InputMaybe<Scalars['String']>;
-  makerOrder_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  makerOrder_ends_with?: InputMaybe<Scalars['String']>;
-  makerOrder_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  makerOrder_not_ends_with?: InputMaybe<Scalars['String']>;
-  makerOrder_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  makerOrder_?: InputMaybe<Order_filter>;
-  taker?: InputMaybe<Scalars['String']>;
-  taker_not?: InputMaybe<Scalars['String']>;
-  taker_gt?: InputMaybe<Scalars['String']>;
-  taker_lt?: InputMaybe<Scalars['String']>;
-  taker_gte?: InputMaybe<Scalars['String']>;
-  taker_lte?: InputMaybe<Scalars['String']>;
-  taker_in?: InputMaybe<Array<Scalars['String']>>;
-  taker_not_in?: InputMaybe<Array<Scalars['String']>>;
-  taker_contains?: InputMaybe<Scalars['String']>;
-  taker_contains_nocase?: InputMaybe<Scalars['String']>;
-  taker_not_contains?: InputMaybe<Scalars['String']>;
-  taker_not_contains_nocase?: InputMaybe<Scalars['String']>;
-  taker_starts_with?: InputMaybe<Scalars['String']>;
-  taker_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  taker_not_starts_with?: InputMaybe<Scalars['String']>;
-  taker_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  taker_ends_with?: InputMaybe<Scalars['String']>;
-  taker_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  taker_not_ends_with?: InputMaybe<Scalars['String']>;
-  taker_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  taker_?: InputMaybe<Subaccount_filter>;
-  takerOrder?: InputMaybe<Scalars['String']>;
-  takerOrder_not?: InputMaybe<Scalars['String']>;
-  takerOrder_gt?: InputMaybe<Scalars['String']>;
-  takerOrder_lt?: InputMaybe<Scalars['String']>;
-  takerOrder_gte?: InputMaybe<Scalars['String']>;
-  takerOrder_lte?: InputMaybe<Scalars['String']>;
-  takerOrder_in?: InputMaybe<Array<Scalars['String']>>;
-  takerOrder_not_in?: InputMaybe<Array<Scalars['String']>>;
-  takerOrder_contains?: InputMaybe<Scalars['String']>;
-  takerOrder_contains_nocase?: InputMaybe<Scalars['String']>;
-  takerOrder_not_contains?: InputMaybe<Scalars['String']>;
-  takerOrder_not_contains_nocase?: InputMaybe<Scalars['String']>;
-  takerOrder_starts_with?: InputMaybe<Scalars['String']>;
-  takerOrder_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  takerOrder_not_starts_with?: InputMaybe<Scalars['String']>;
-  takerOrder_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  takerOrder_ends_with?: InputMaybe<Scalars['String']>;
-  takerOrder_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  takerOrder_not_ends_with?: InputMaybe<Scalars['String']>;
-  takerOrder_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  takerOrder_?: InputMaybe<Order_filter>;
-  takerAmountDelta?: InputMaybe<Scalars['BigInt']>;
-  takerAmountDelta_not?: InputMaybe<Scalars['BigInt']>;
-  takerAmountDelta_gt?: InputMaybe<Scalars['BigInt']>;
-  takerAmountDelta_lt?: InputMaybe<Scalars['BigInt']>;
-  takerAmountDelta_gte?: InputMaybe<Scalars['BigInt']>;
-  takerAmountDelta_lte?: InputMaybe<Scalars['BigInt']>;
-  takerAmountDelta_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  takerAmountDelta_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  takerFee?: InputMaybe<Scalars['BigInt']>;
-  takerFee_not?: InputMaybe<Scalars['BigInt']>;
-  takerFee_gt?: InputMaybe<Scalars['BigInt']>;
-  takerFee_lt?: InputMaybe<Scalars['BigInt']>;
-  takerFee_gte?: InputMaybe<Scalars['BigInt']>;
-  takerFee_lte?: InputMaybe<Scalars['BigInt']>;
-  takerFee_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  takerFee_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  makerFee?: InputMaybe<Scalars['BigInt']>;
-  makerFee_not?: InputMaybe<Scalars['BigInt']>;
-  makerFee_gt?: InputMaybe<Scalars['BigInt']>;
-  makerFee_lt?: InputMaybe<Scalars['BigInt']>;
-  makerFee_gte?: InputMaybe<Scalars['BigInt']>;
-  makerFee_lte?: InputMaybe<Scalars['BigInt']>;
-  makerFee_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  makerFee_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  subaccount?: InputMaybe<Scalars['String']>;
+  subaccount_not?: InputMaybe<Scalars['String']>;
+  subaccount_gt?: InputMaybe<Scalars['String']>;
+  subaccount_lt?: InputMaybe<Scalars['String']>;
+  subaccount_gte?: InputMaybe<Scalars['String']>;
+  subaccount_lte?: InputMaybe<Scalars['String']>;
+  subaccount_in?: InputMaybe<Array<Scalars['String']>>;
+  subaccount_not_in?: InputMaybe<Array<Scalars['String']>>;
+  subaccount_contains?: InputMaybe<Scalars['String']>;
+  subaccount_contains_nocase?: InputMaybe<Scalars['String']>;
+  subaccount_not_contains?: InputMaybe<Scalars['String']>;
+  subaccount_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  subaccount_starts_with?: InputMaybe<Scalars['String']>;
+  subaccount_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  subaccount_not_starts_with?: InputMaybe<Scalars['String']>;
+  subaccount_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  subaccount_ends_with?: InputMaybe<Scalars['String']>;
+  subaccount_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  subaccount_not_ends_with?: InputMaybe<Scalars['String']>;
+  subaccount_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  subaccount_?: InputMaybe<Subaccount_filter>;
+  order?: InputMaybe<Scalars['String']>;
+  order_not?: InputMaybe<Scalars['String']>;
+  order_gt?: InputMaybe<Scalars['String']>;
+  order_lt?: InputMaybe<Scalars['String']>;
+  order_gte?: InputMaybe<Scalars['String']>;
+  order_lte?: InputMaybe<Scalars['String']>;
+  order_in?: InputMaybe<Array<Scalars['String']>>;
+  order_not_in?: InputMaybe<Array<Scalars['String']>>;
+  order_contains?: InputMaybe<Scalars['String']>;
+  order_contains_nocase?: InputMaybe<Scalars['String']>;
+  order_not_contains?: InputMaybe<Scalars['String']>;
+  order_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  order_starts_with?: InputMaybe<Scalars['String']>;
+  order_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  order_not_starts_with?: InputMaybe<Scalars['String']>;
+  order_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  order_ends_with?: InputMaybe<Scalars['String']>;
+  order_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  order_not_ends_with?: InputMaybe<Scalars['String']>;
+  order_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  order_?: InputMaybe<Order_filter>;
+  isTaker?: InputMaybe<Scalars['Boolean']>;
+  isTaker_not?: InputMaybe<Scalars['Boolean']>;
+  isTaker_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isTaker_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  feeQuoteX18?: InputMaybe<Scalars['BigInt']>;
+  feeQuoteX18_not?: InputMaybe<Scalars['BigInt']>;
+  feeQuoteX18_gt?: InputMaybe<Scalars['BigInt']>;
+  feeQuoteX18_lt?: InputMaybe<Scalars['BigInt']>;
+  feeQuoteX18_gte?: InputMaybe<Scalars['BigInt']>;
+  feeQuoteX18_lte?: InputMaybe<Scalars['BigInt']>;
+  feeQuoteX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  feeQuoteX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amountDeltaX18?: InputMaybe<Scalars['BigInt']>;
+  amountDeltaX18_not?: InputMaybe<Scalars['BigInt']>;
+  amountDeltaX18_gt?: InputMaybe<Scalars['BigInt']>;
+  amountDeltaX18_lt?: InputMaybe<Scalars['BigInt']>;
+  amountDeltaX18_gte?: InputMaybe<Scalars['BigInt']>;
+  amountDeltaX18_lte?: InputMaybe<Scalars['BigInt']>;
+  amountDeltaX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amountDeltaX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  quoteDeltaX18?: InputMaybe<Scalars['BigInt']>;
+  quoteDeltaX18_not?: InputMaybe<Scalars['BigInt']>;
+  quoteDeltaX18_gt?: InputMaybe<Scalars['BigInt']>;
+  quoteDeltaX18_lt?: InputMaybe<Scalars['BigInt']>;
+  quoteDeltaX18_gte?: InputMaybe<Scalars['BigInt']>;
+  quoteDeltaX18_lte?: InputMaybe<Scalars['BigInt']>;
+  quoteDeltaX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  quoteDeltaX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -724,13 +598,12 @@ export type FillOrderEvent_orderBy =
   | 'market'
   | 'block'
   | 'blockTime'
-  | 'maker'
-  | 'makerOrder'
-  | 'taker'
-  | 'takerOrder'
-  | 'takerAmountDelta'
-  | 'takerFee'
-  | 'makerFee';
+  | 'subaccount'
+  | 'order'
+  | 'isTaker'
+  | 'feeQuoteX18'
+  | 'amountDeltaX18'
+  | 'quoteDeltaX18';
 
 export type LiquidationEvent = {
   id: Scalars['ID'];
@@ -738,10 +611,15 @@ export type LiquidationEvent = {
   blockTime: Scalars['BigInt'];
   liquidator: Subaccount;
   liquidatee: Subaccount;
-  productId: Scalars['BigInt'];
-  liquidatorBaseDelta: Scalars['BigInt'];
-  liquidatorQuoteDelta: Scalars['BigInt'];
-  insuranceCoverage: Scalars['BigInt'];
+  mode: Scalars['Int'];
+  healthGroup: Scalars['BigInt'];
+  liquidationAmountX18: Scalars['BigInt'];
+  liquidationPaymentX18: Scalars['BigInt'];
+  insuranceCoverageX18: Scalars['BigInt'];
+  spotProductId: Scalars['BigInt'];
+  spotAmountX18: Scalars['BigInt'];
+  perpProductId: Scalars['BigInt'];
+  perpAmountX18: Scalars['BigInt'];
 };
 
 export type LiquidationEvent_filter = {
@@ -811,38 +689,78 @@ export type LiquidationEvent_filter = {
   liquidatee_not_ends_with?: InputMaybe<Scalars['String']>;
   liquidatee_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   liquidatee_?: InputMaybe<Subaccount_filter>;
-  productId?: InputMaybe<Scalars['BigInt']>;
-  productId_not?: InputMaybe<Scalars['BigInt']>;
-  productId_gt?: InputMaybe<Scalars['BigInt']>;
-  productId_lt?: InputMaybe<Scalars['BigInt']>;
-  productId_gte?: InputMaybe<Scalars['BigInt']>;
-  productId_lte?: InputMaybe<Scalars['BigInt']>;
-  productId_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  productId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidatorBaseDelta?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDelta_not?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDelta_gt?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDelta_lt?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDelta_gte?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDelta_lte?: InputMaybe<Scalars['BigInt']>;
-  liquidatorBaseDelta_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidatorBaseDelta_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidatorQuoteDelta?: InputMaybe<Scalars['BigInt']>;
-  liquidatorQuoteDelta_not?: InputMaybe<Scalars['BigInt']>;
-  liquidatorQuoteDelta_gt?: InputMaybe<Scalars['BigInt']>;
-  liquidatorQuoteDelta_lt?: InputMaybe<Scalars['BigInt']>;
-  liquidatorQuoteDelta_gte?: InputMaybe<Scalars['BigInt']>;
-  liquidatorQuoteDelta_lte?: InputMaybe<Scalars['BigInt']>;
-  liquidatorQuoteDelta_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  liquidatorQuoteDelta_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  insuranceCoverage?: InputMaybe<Scalars['BigInt']>;
-  insuranceCoverage_not?: InputMaybe<Scalars['BigInt']>;
-  insuranceCoverage_gt?: InputMaybe<Scalars['BigInt']>;
-  insuranceCoverage_lt?: InputMaybe<Scalars['BigInt']>;
-  insuranceCoverage_gte?: InputMaybe<Scalars['BigInt']>;
-  insuranceCoverage_lte?: InputMaybe<Scalars['BigInt']>;
-  insuranceCoverage_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  insuranceCoverage_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  mode?: InputMaybe<Scalars['Int']>;
+  mode_not?: InputMaybe<Scalars['Int']>;
+  mode_gt?: InputMaybe<Scalars['Int']>;
+  mode_lt?: InputMaybe<Scalars['Int']>;
+  mode_gte?: InputMaybe<Scalars['Int']>;
+  mode_lte?: InputMaybe<Scalars['Int']>;
+  mode_in?: InputMaybe<Array<Scalars['Int']>>;
+  mode_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  healthGroup?: InputMaybe<Scalars['BigInt']>;
+  healthGroup_not?: InputMaybe<Scalars['BigInt']>;
+  healthGroup_gt?: InputMaybe<Scalars['BigInt']>;
+  healthGroup_lt?: InputMaybe<Scalars['BigInt']>;
+  healthGroup_gte?: InputMaybe<Scalars['BigInt']>;
+  healthGroup_lte?: InputMaybe<Scalars['BigInt']>;
+  healthGroup_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  healthGroup_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationAmountX18?: InputMaybe<Scalars['BigInt']>;
+  liquidationAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  liquidationAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  liquidationAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  liquidationAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  liquidationAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  liquidationAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationPaymentX18?: InputMaybe<Scalars['BigInt']>;
+  liquidationPaymentX18_not?: InputMaybe<Scalars['BigInt']>;
+  liquidationPaymentX18_gt?: InputMaybe<Scalars['BigInt']>;
+  liquidationPaymentX18_lt?: InputMaybe<Scalars['BigInt']>;
+  liquidationPaymentX18_gte?: InputMaybe<Scalars['BigInt']>;
+  liquidationPaymentX18_lte?: InputMaybe<Scalars['BigInt']>;
+  liquidationPaymentX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationPaymentX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  insuranceCoverageX18?: InputMaybe<Scalars['BigInt']>;
+  insuranceCoverageX18_not?: InputMaybe<Scalars['BigInt']>;
+  insuranceCoverageX18_gt?: InputMaybe<Scalars['BigInt']>;
+  insuranceCoverageX18_lt?: InputMaybe<Scalars['BigInt']>;
+  insuranceCoverageX18_gte?: InputMaybe<Scalars['BigInt']>;
+  insuranceCoverageX18_lte?: InputMaybe<Scalars['BigInt']>;
+  insuranceCoverageX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  insuranceCoverageX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  spotProductId?: InputMaybe<Scalars['BigInt']>;
+  spotProductId_not?: InputMaybe<Scalars['BigInt']>;
+  spotProductId_gt?: InputMaybe<Scalars['BigInt']>;
+  spotProductId_lt?: InputMaybe<Scalars['BigInt']>;
+  spotProductId_gte?: InputMaybe<Scalars['BigInt']>;
+  spotProductId_lte?: InputMaybe<Scalars['BigInt']>;
+  spotProductId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  spotProductId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  spotAmountX18?: InputMaybe<Scalars['BigInt']>;
+  spotAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  spotAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  spotAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  spotAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  spotAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  spotAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  spotAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpProductId?: InputMaybe<Scalars['BigInt']>;
+  perpProductId_not?: InputMaybe<Scalars['BigInt']>;
+  perpProductId_gt?: InputMaybe<Scalars['BigInt']>;
+  perpProductId_lt?: InputMaybe<Scalars['BigInt']>;
+  perpProductId_gte?: InputMaybe<Scalars['BigInt']>;
+  perpProductId_lte?: InputMaybe<Scalars['BigInt']>;
+  perpProductId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpProductId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpAmountX18?: InputMaybe<Scalars['BigInt']>;
+  perpAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  perpAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  perpAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  perpAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  perpAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  perpAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -853,24 +771,28 @@ export type LiquidationEvent_orderBy =
   | 'blockTime'
   | 'liquidator'
   | 'liquidatee'
-  | 'productId'
-  | 'liquidatorBaseDelta'
-  | 'liquidatorQuoteDelta'
-  | 'insuranceCoverage';
+  | 'mode'
+  | 'healthGroup'
+  | 'liquidationAmountX18'
+  | 'liquidationPaymentX18'
+  | 'insuranceCoverageX18'
+  | 'spotProductId'
+  | 'spotAmountX18'
+  | 'perpProductId'
+  | 'perpAmountX18';
 
 export type Market = {
   id: Scalars['ID'];
   clearinghouse: Clearinghouse;
   productId: Scalars['BigInt'];
   orderbook: Scalars['Bytes'];
-  sizeIncrementX18: Scalars['BigInt'];
+  sizeIncrement: Scalars['BigInt'];
   priceIncrementX18: Scalars['BigInt'];
   createdAt: Scalars['BigInt'];
   createdAtBlock: Scalars['BigInt'];
-  markPriceX18: Scalars['BigInt'];
   lastFillPriceX18: Scalars['BigInt'];
-  volumeBase: Scalars['BigInt'];
-  volumeQuote: Scalars['BigInt'];
+  volumeBaseX18: Scalars['BigInt'];
+  volumeQuoteX18: Scalars['BigInt'];
   volumeNumOrders: Scalars['BigInt'];
   candlesticks: Array<Candlestick>;
   orders: Array<Order>;
@@ -908,10 +830,9 @@ export type MarketHourlySnapshot = {
   id: Scalars['ID'];
   hour: Scalars['BigInt'];
   market: Market;
-  markPriceX18: Scalars['BigInt'];
   lastFillPriceX18: Scalars['BigInt'];
-  volumeBase: Scalars['BigInt'];
-  volumeQuote: Scalars['BigInt'];
+  volumeBaseX18: Scalars['BigInt'];
+  volumeQuoteX18: Scalars['BigInt'];
   volumeNumOrders: Scalars['BigInt'];
 };
 
@@ -953,14 +874,6 @@ export type MarketHourlySnapshot_filter = {
   market_not_ends_with?: InputMaybe<Scalars['String']>;
   market_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   market_?: InputMaybe<Market_filter>;
-  markPriceX18?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_not?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  markPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   lastFillPriceX18?: InputMaybe<Scalars['BigInt']>;
   lastFillPriceX18_not?: InputMaybe<Scalars['BigInt']>;
   lastFillPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -969,22 +882,22 @@ export type MarketHourlySnapshot_filter = {
   lastFillPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
   lastFillPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   lastFillPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeBase?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_not?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_gt?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_lt?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_gte?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_lte?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeBase_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeQuote?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_not?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_gt?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_lt?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_gte?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_lte?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeQuote_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeBaseX18?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_not?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_gt?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_lt?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_gte?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_lte?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeBaseX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeQuoteX18?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_not?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_gt?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_lt?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_gte?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_lte?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeQuoteX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   volumeNumOrders?: InputMaybe<Scalars['BigInt']>;
   volumeNumOrders_not?: InputMaybe<Scalars['BigInt']>;
   volumeNumOrders_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1001,10 +914,9 @@ export type MarketHourlySnapshot_orderBy =
   | 'id'
   | 'hour'
   | 'market'
-  | 'markPriceX18'
   | 'lastFillPriceX18'
-  | 'volumeBase'
-  | 'volumeQuote'
+  | 'volumeBaseX18'
+  | 'volumeQuoteX18'
   | 'volumeNumOrders';
 
 export type Market_filter = {
@@ -1051,14 +963,14 @@ export type Market_filter = {
   orderbook_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   orderbook_contains?: InputMaybe<Scalars['Bytes']>;
   orderbook_not_contains?: InputMaybe<Scalars['Bytes']>;
-  sizeIncrementX18?: InputMaybe<Scalars['BigInt']>;
-  sizeIncrementX18_not?: InputMaybe<Scalars['BigInt']>;
-  sizeIncrementX18_gt?: InputMaybe<Scalars['BigInt']>;
-  sizeIncrementX18_lt?: InputMaybe<Scalars['BigInt']>;
-  sizeIncrementX18_gte?: InputMaybe<Scalars['BigInt']>;
-  sizeIncrementX18_lte?: InputMaybe<Scalars['BigInt']>;
-  sizeIncrementX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  sizeIncrementX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  sizeIncrement?: InputMaybe<Scalars['BigInt']>;
+  sizeIncrement_not?: InputMaybe<Scalars['BigInt']>;
+  sizeIncrement_gt?: InputMaybe<Scalars['BigInt']>;
+  sizeIncrement_lt?: InputMaybe<Scalars['BigInt']>;
+  sizeIncrement_gte?: InputMaybe<Scalars['BigInt']>;
+  sizeIncrement_lte?: InputMaybe<Scalars['BigInt']>;
+  sizeIncrement_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  sizeIncrement_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   priceIncrementX18?: InputMaybe<Scalars['BigInt']>;
   priceIncrementX18_not?: InputMaybe<Scalars['BigInt']>;
   priceIncrementX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1083,14 +995,6 @@ export type Market_filter = {
   createdAtBlock_lte?: InputMaybe<Scalars['BigInt']>;
   createdAtBlock_in?: InputMaybe<Array<Scalars['BigInt']>>;
   createdAtBlock_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  markPriceX18?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_not?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  markPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   lastFillPriceX18?: InputMaybe<Scalars['BigInt']>;
   lastFillPriceX18_not?: InputMaybe<Scalars['BigInt']>;
   lastFillPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1099,22 +1003,22 @@ export type Market_filter = {
   lastFillPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
   lastFillPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   lastFillPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeBase?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_not?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_gt?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_lt?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_gte?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_lte?: InputMaybe<Scalars['BigInt']>;
-  volumeBase_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeBase_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeQuote?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_not?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_gt?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_lt?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_gte?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_lte?: InputMaybe<Scalars['BigInt']>;
-  volumeQuote_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeQuote_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeBaseX18?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_not?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_gt?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_lt?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_gte?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_lte?: InputMaybe<Scalars['BigInt']>;
+  volumeBaseX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeBaseX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeQuoteX18?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_not?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_gt?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_lt?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_gte?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_lte?: InputMaybe<Scalars['BigInt']>;
+  volumeQuoteX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeQuoteX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   volumeNumOrders?: InputMaybe<Scalars['BigInt']>;
   volumeNumOrders_not?: InputMaybe<Scalars['BigInt']>;
   volumeNumOrders_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1135,14 +1039,13 @@ export type Market_orderBy =
   | 'clearinghouse'
   | 'productId'
   | 'orderbook'
-  | 'sizeIncrementX18'
+  | 'sizeIncrement'
   | 'priceIncrementX18'
   | 'createdAt'
   | 'createdAtBlock'
-  | 'markPriceX18'
   | 'lastFillPriceX18'
-  | 'volumeBase'
-  | 'volumeQuote'
+  | 'volumeBaseX18'
+  | 'volumeQuoteX18'
   | 'volumeNumOrders'
   | 'candlesticks'
   | 'orders'
@@ -1244,21 +1147,19 @@ export type ModifyCollateralEvent_orderBy =
 export type Order = {
   id: Scalars['ID'];
   type: OrderType;
-  sender: Scalars['Bytes'];
   digest: Scalars['Bytes'];
-  validationResult: OrderValidationResult;
   priceX18: Scalars['BigInt'];
+  isTaker: Scalars['Boolean'];
+  expiration: Scalars['BigInt'];
+  realExpiration: Scalars['BigInt'];
   subaccount: Subaccount;
   market: Market;
   reportedAt: Scalars['BigInt'];
   reportedAtBlock: Scalars['BigInt'];
   totalAmount: Scalars['BigInt'];
-  filledAmount: Scalars['BigInt'];
-  quoteAmount: Scalars['BigInt'];
-  collectedFee: Scalars['BigInt'];
-  expiration: Scalars['BigInt'];
-  realExpiration: Scalars['BigInt'];
-  nonce: Scalars['BigInt'];
+  filledAmountX18: Scalars['BigInt'];
+  quoteAmountX18: Scalars['BigInt'];
+  collectedFeeX18: Scalars['BigInt'];
 };
 
 /** Defines the order direction, either ascending or descending */
@@ -1273,18 +1174,6 @@ export type OrderType =
   | 'POST_ONLY'
   | 'UNKNOWN';
 
-export type OrderValidationResult =
-  | 'PENDING'
-  | 'VALID'
-  | 'PRE_VALID'
-  | 'INVALID_PRICE'
-  | 'INVALID_SIZE'
-  | 'INVALID_SIGNATURE'
-  | 'RISK_CHECK_FAILED'
-  | 'EXPIRED'
-  | 'CANCELLED'
-  | 'FILLED';
-
 export type Order_filter = {
   id?: InputMaybe<Scalars['ID']>;
   id_not?: InputMaybe<Scalars['ID']>;
@@ -1298,22 +1187,12 @@ export type Order_filter = {
   type_not?: InputMaybe<OrderType>;
   type_in?: InputMaybe<Array<OrderType>>;
   type_not_in?: InputMaybe<Array<OrderType>>;
-  sender?: InputMaybe<Scalars['Bytes']>;
-  sender_not?: InputMaybe<Scalars['Bytes']>;
-  sender_in?: InputMaybe<Array<Scalars['Bytes']>>;
-  sender_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
-  sender_contains?: InputMaybe<Scalars['Bytes']>;
-  sender_not_contains?: InputMaybe<Scalars['Bytes']>;
   digest?: InputMaybe<Scalars['Bytes']>;
   digest_not?: InputMaybe<Scalars['Bytes']>;
   digest_in?: InputMaybe<Array<Scalars['Bytes']>>;
   digest_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   digest_contains?: InputMaybe<Scalars['Bytes']>;
   digest_not_contains?: InputMaybe<Scalars['Bytes']>;
-  validationResult?: InputMaybe<OrderValidationResult>;
-  validationResult_not?: InputMaybe<OrderValidationResult>;
-  validationResult_in?: InputMaybe<Array<OrderValidationResult>>;
-  validationResult_not_in?: InputMaybe<Array<OrderValidationResult>>;
   priceX18?: InputMaybe<Scalars['BigInt']>;
   priceX18_not?: InputMaybe<Scalars['BigInt']>;
   priceX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1322,6 +1201,26 @@ export type Order_filter = {
   priceX18_lte?: InputMaybe<Scalars['BigInt']>;
   priceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   priceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  isTaker?: InputMaybe<Scalars['Boolean']>;
+  isTaker_not?: InputMaybe<Scalars['Boolean']>;
+  isTaker_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isTaker_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  expiration?: InputMaybe<Scalars['BigInt']>;
+  expiration_not?: InputMaybe<Scalars['BigInt']>;
+  expiration_gt?: InputMaybe<Scalars['BigInt']>;
+  expiration_lt?: InputMaybe<Scalars['BigInt']>;
+  expiration_gte?: InputMaybe<Scalars['BigInt']>;
+  expiration_lte?: InputMaybe<Scalars['BigInt']>;
+  expiration_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  expiration_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  realExpiration?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_not?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_gt?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_lt?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_gte?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_lte?: InputMaybe<Scalars['BigInt']>;
+  realExpiration_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  realExpiration_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   subaccount?: InputMaybe<Scalars['String']>;
   subaccount_not?: InputMaybe<Scalars['String']>;
   subaccount_gt?: InputMaybe<Scalars['String']>;
@@ -1388,54 +1287,30 @@ export type Order_filter = {
   totalAmount_lte?: InputMaybe<Scalars['BigInt']>;
   totalAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  filledAmount?: InputMaybe<Scalars['BigInt']>;
-  filledAmount_not?: InputMaybe<Scalars['BigInt']>;
-  filledAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  filledAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  filledAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  filledAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  filledAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  filledAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  quoteAmount?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_not?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  quoteAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  collectedFee?: InputMaybe<Scalars['BigInt']>;
-  collectedFee_not?: InputMaybe<Scalars['BigInt']>;
-  collectedFee_gt?: InputMaybe<Scalars['BigInt']>;
-  collectedFee_lt?: InputMaybe<Scalars['BigInt']>;
-  collectedFee_gte?: InputMaybe<Scalars['BigInt']>;
-  collectedFee_lte?: InputMaybe<Scalars['BigInt']>;
-  collectedFee_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  collectedFee_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  expiration?: InputMaybe<Scalars['BigInt']>;
-  expiration_not?: InputMaybe<Scalars['BigInt']>;
-  expiration_gt?: InputMaybe<Scalars['BigInt']>;
-  expiration_lt?: InputMaybe<Scalars['BigInt']>;
-  expiration_gte?: InputMaybe<Scalars['BigInt']>;
-  expiration_lte?: InputMaybe<Scalars['BigInt']>;
-  expiration_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  expiration_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  realExpiration?: InputMaybe<Scalars['BigInt']>;
-  realExpiration_not?: InputMaybe<Scalars['BigInt']>;
-  realExpiration_gt?: InputMaybe<Scalars['BigInt']>;
-  realExpiration_lt?: InputMaybe<Scalars['BigInt']>;
-  realExpiration_gte?: InputMaybe<Scalars['BigInt']>;
-  realExpiration_lte?: InputMaybe<Scalars['BigInt']>;
-  realExpiration_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  realExpiration_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  nonce?: InputMaybe<Scalars['BigInt']>;
-  nonce_not?: InputMaybe<Scalars['BigInt']>;
-  nonce_gt?: InputMaybe<Scalars['BigInt']>;
-  nonce_lt?: InputMaybe<Scalars['BigInt']>;
-  nonce_gte?: InputMaybe<Scalars['BigInt']>;
-  nonce_lte?: InputMaybe<Scalars['BigInt']>;
-  nonce_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  nonce_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  filledAmountX18?: InputMaybe<Scalars['BigInt']>;
+  filledAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  filledAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  filledAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  filledAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  filledAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  filledAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  filledAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  quoteAmountX18?: InputMaybe<Scalars['BigInt']>;
+  quoteAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  quoteAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  quoteAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  quoteAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  quoteAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  quoteAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  quoteAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  collectedFeeX18?: InputMaybe<Scalars['BigInt']>;
+  collectedFeeX18_not?: InputMaybe<Scalars['BigInt']>;
+  collectedFeeX18_gt?: InputMaybe<Scalars['BigInt']>;
+  collectedFeeX18_lt?: InputMaybe<Scalars['BigInt']>;
+  collectedFeeX18_gte?: InputMaybe<Scalars['BigInt']>;
+  collectedFeeX18_lte?: InputMaybe<Scalars['BigInt']>;
+  collectedFeeX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  collectedFeeX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -1443,21 +1318,19 @@ export type Order_filter = {
 export type Order_orderBy =
   | 'id'
   | 'type'
-  | 'sender'
   | 'digest'
-  | 'validationResult'
   | 'priceX18'
+  | 'isTaker'
+  | 'expiration'
+  | 'realExpiration'
   | 'subaccount'
   | 'market'
   | 'reportedAt'
   | 'reportedAtBlock'
   | 'totalAmount'
-  | 'filledAmount'
-  | 'quoteAmount'
-  | 'collectedFee'
-  | 'expiration'
-  | 'realExpiration'
-  | 'nonce';
+  | 'filledAmountX18'
+  | 'quoteAmountX18'
+  | 'collectedFeeX18';
 
 export type PerpBalanceSummary = {
   id: Scalars['ID'];
@@ -1615,11 +1488,15 @@ export type PerpProduct = {
   market: Market;
   engine: PerpEngine;
   priceX18: Scalars['BigInt'];
-  emaPriceX18: Scalars['BigInt'];
+  markPriceX18: Scalars['BigInt'];
   cumulativeFundingLongX18: Scalars['BigInt'];
   cumulativeFundingShortX18: Scalars['BigInt'];
   openInterestX18: Scalars['BigInt'];
   availableSettleX18: Scalars['BigInt'];
+  lpSupply: Scalars['BigInt'];
+  lpQuoteAmount: Scalars['BigInt'];
+  lpBaseAmount: Scalars['BigInt'];
+  lpCumulativeFundingPerLpX18: Scalars['BigInt'];
   snapshots: Array<PerpProductHourlySnapshot>;
 };
 
@@ -1637,11 +1514,15 @@ export type PerpProductHourlySnapshot = {
   hour: Scalars['BigInt'];
   product: PerpProduct;
   priceX18: Scalars['BigInt'];
-  emaPriceX18: Scalars['BigInt'];
+  markPriceX18: Scalars['BigInt'];
   cumulativeFundingLongX18: Scalars['BigInt'];
   cumulativeFundingShortX18: Scalars['BigInt'];
   openInterestX18: Scalars['BigInt'];
   availableSettleX18: Scalars['BigInt'];
+  lpSupply: Scalars['BigInt'];
+  lpQuoteAmount: Scalars['BigInt'];
+  lpBaseAmount: Scalars['BigInt'];
+  lpCumulativeFundingPerLpX18: Scalars['BigInt'];
 };
 
 export type PerpProductHourlySnapshot_filter = {
@@ -1690,14 +1571,14 @@ export type PerpProductHourlySnapshot_filter = {
   priceX18_lte?: InputMaybe<Scalars['BigInt']>;
   priceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   priceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  emaPriceX18?: InputMaybe<Scalars['BigInt']>;
-  emaPriceX18_not?: InputMaybe<Scalars['BigInt']>;
-  emaPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  emaPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  emaPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  emaPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  emaPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  emaPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  markPriceX18?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  markPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   cumulativeFundingLongX18?: InputMaybe<Scalars['BigInt']>;
   cumulativeFundingLongX18_not?: InputMaybe<Scalars['BigInt']>;
   cumulativeFundingLongX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1730,6 +1611,38 @@ export type PerpProductHourlySnapshot_filter = {
   availableSettleX18_lte?: InputMaybe<Scalars['BigInt']>;
   availableSettleX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   availableSettleX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpSupply?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_not?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_gt?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_lt?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_gte?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_lte?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpSupply_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpQuoteAmount?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmount_not?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpQuoteAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpBaseAmount?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmount_not?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpBaseAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpCumulativeFundingPerLpX18?: InputMaybe<Scalars['BigInt']>;
+  lpCumulativeFundingPerLpX18_not?: InputMaybe<Scalars['BigInt']>;
+  lpCumulativeFundingPerLpX18_gt?: InputMaybe<Scalars['BigInt']>;
+  lpCumulativeFundingPerLpX18_lt?: InputMaybe<Scalars['BigInt']>;
+  lpCumulativeFundingPerLpX18_gte?: InputMaybe<Scalars['BigInt']>;
+  lpCumulativeFundingPerLpX18_lte?: InputMaybe<Scalars['BigInt']>;
+  lpCumulativeFundingPerLpX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpCumulativeFundingPerLpX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -1739,11 +1652,15 @@ export type PerpProductHourlySnapshot_orderBy =
   | 'hour'
   | 'product'
   | 'priceX18'
-  | 'emaPriceX18'
+  | 'markPriceX18'
   | 'cumulativeFundingLongX18'
   | 'cumulativeFundingShortX18'
   | 'openInterestX18'
-  | 'availableSettleX18';
+  | 'availableSettleX18'
+  | 'lpSupply'
+  | 'lpQuoteAmount'
+  | 'lpBaseAmount'
+  | 'lpCumulativeFundingPerLpX18';
 
 export type PerpProduct_filter = {
   id?: InputMaybe<Scalars['ID']>;
@@ -1812,14 +1729,14 @@ export type PerpProduct_filter = {
   priceX18_lte?: InputMaybe<Scalars['BigInt']>;
   priceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   priceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  emaPriceX18?: InputMaybe<Scalars['BigInt']>;
-  emaPriceX18_not?: InputMaybe<Scalars['BigInt']>;
-  emaPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  emaPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  emaPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  emaPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  emaPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  emaPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  markPriceX18?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  markPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   cumulativeFundingLongX18?: InputMaybe<Scalars['BigInt']>;
   cumulativeFundingLongX18_not?: InputMaybe<Scalars['BigInt']>;
   cumulativeFundingLongX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1852,6 +1769,38 @@ export type PerpProduct_filter = {
   availableSettleX18_lte?: InputMaybe<Scalars['BigInt']>;
   availableSettleX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   availableSettleX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpSupply?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_not?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_gt?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_lt?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_gte?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_lte?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpSupply_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpQuoteAmount?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmount_not?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpQuoteAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpBaseAmount?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmount_not?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpBaseAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpCumulativeFundingPerLpX18?: InputMaybe<Scalars['BigInt']>;
+  lpCumulativeFundingPerLpX18_not?: InputMaybe<Scalars['BigInt']>;
+  lpCumulativeFundingPerLpX18_gt?: InputMaybe<Scalars['BigInt']>;
+  lpCumulativeFundingPerLpX18_lt?: InputMaybe<Scalars['BigInt']>;
+  lpCumulativeFundingPerLpX18_gte?: InputMaybe<Scalars['BigInt']>;
+  lpCumulativeFundingPerLpX18_lte?: InputMaybe<Scalars['BigInt']>;
+  lpCumulativeFundingPerLpX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpCumulativeFundingPerLpX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   snapshots_?: InputMaybe<PerpProductHourlySnapshot_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
@@ -1863,11 +1812,15 @@ export type PerpProduct_orderBy =
   | 'market'
   | 'engine'
   | 'priceX18'
-  | 'emaPriceX18'
+  | 'markPriceX18'
   | 'cumulativeFundingLongX18'
   | 'cumulativeFundingShortX18'
   | 'openInterestX18'
   | 'availableSettleX18'
+  | 'lpSupply'
+  | 'lpQuoteAmount'
+  | 'lpBaseAmount'
+  | 'lpCumulativeFundingPerLpX18'
   | 'snapshots';
 
 export type Query = {
@@ -1901,12 +1854,8 @@ export type Query = {
   liquidationEvents: Array<LiquidationEvent>;
   socializeProductEvent?: Maybe<SocializeProductEvent>;
   socializeProductEvents: Array<SocializeProductEvent>;
-  reportOrderEvent?: Maybe<ReportOrderEvent>;
-  reportOrderEvents: Array<ReportOrderEvent>;
   fillOrderEvent?: Maybe<FillOrderEvent>;
   fillOrderEvents: Array<FillOrderEvent>;
-  cancelOrderEvent?: Maybe<CancelOrderEvent>;
-  cancelOrderEvents: Array<CancelOrderEvent>;
   subaccount?: Maybe<Subaccount>;
   subaccounts: Array<Subaccount>;
   tradeSummary?: Maybe<TradeSummary>;
@@ -1919,6 +1868,10 @@ export type Query = {
   perpBalanceSummaries: Array<PerpBalanceSummary>;
   closedPerpBalance?: Maybe<ClosedPerpBalance>;
   closedPerpBalances: Array<ClosedPerpBalance>;
+  submitTransactionsEvent?: Maybe<SubmitTransactionsEvent>;
+  submitTransactionsEvents: Array<SubmitTransactionsEvent>;
+  submitSlowModeTransactionEvent?: Maybe<SubmitSlowModeTransactionEvent>;
+  submitSlowModeTransactionEvents: Array<SubmitSlowModeTransactionEvent>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -2194,24 +2147,6 @@ export type QuerysocializeProductEventsArgs = {
 };
 
 
-export type QueryreportOrderEventArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryreportOrderEventsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<ReportOrderEvent_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<ReportOrderEvent_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
 export type QueryfillOrderEventArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
@@ -2225,24 +2160,6 @@ export type QueryfillOrderEventsArgs = {
   orderBy?: InputMaybe<FillOrderEvent_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<FillOrderEvent_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerycancelOrderEventArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerycancelOrderEventsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<CancelOrderEvent_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<CancelOrderEvent_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2356,115 +2273,45 @@ export type QueryclosedPerpBalancesArgs = {
 };
 
 
+export type QuerysubmitTransactionsEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerysubmitTransactionsEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<SubmitTransactionsEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<SubmitTransactionsEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerysubmitSlowModeTransactionEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerysubmitSlowModeTransactionEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<SubmitSlowModeTransactionEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<SubmitSlowModeTransactionEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type Query_metaArgs = {
   block?: InputMaybe<Block_height>;
 };
-
-export type ReportOrderEvent = {
-  id: Scalars['ID'];
-  block: Scalars['BigInt'];
-  blockTime: Scalars['BigInt'];
-  amount: Scalars['BigInt'];
-  priceX18: Scalars['BigInt'];
-  order: Order;
-  subaccount: Subaccount;
-};
-
-export type ReportOrderEvent_filter = {
-  id?: InputMaybe<Scalars['ID']>;
-  id_not?: InputMaybe<Scalars['ID']>;
-  id_gt?: InputMaybe<Scalars['ID']>;
-  id_lt?: InputMaybe<Scalars['ID']>;
-  id_gte?: InputMaybe<Scalars['ID']>;
-  id_lte?: InputMaybe<Scalars['ID']>;
-  id_in?: InputMaybe<Array<Scalars['ID']>>;
-  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
-  block?: InputMaybe<Scalars['BigInt']>;
-  block_not?: InputMaybe<Scalars['BigInt']>;
-  block_gt?: InputMaybe<Scalars['BigInt']>;
-  block_lt?: InputMaybe<Scalars['BigInt']>;
-  block_gte?: InputMaybe<Scalars['BigInt']>;
-  block_lte?: InputMaybe<Scalars['BigInt']>;
-  block_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  block_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  blockTime?: InputMaybe<Scalars['BigInt']>;
-  blockTime_not?: InputMaybe<Scalars['BigInt']>;
-  blockTime_gt?: InputMaybe<Scalars['BigInt']>;
-  blockTime_lt?: InputMaybe<Scalars['BigInt']>;
-  blockTime_gte?: InputMaybe<Scalars['BigInt']>;
-  blockTime_lte?: InputMaybe<Scalars['BigInt']>;
-  blockTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  blockTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  amount?: InputMaybe<Scalars['BigInt']>;
-  amount_not?: InputMaybe<Scalars['BigInt']>;
-  amount_gt?: InputMaybe<Scalars['BigInt']>;
-  amount_lt?: InputMaybe<Scalars['BigInt']>;
-  amount_gte?: InputMaybe<Scalars['BigInt']>;
-  amount_lte?: InputMaybe<Scalars['BigInt']>;
-  amount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  amount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  priceX18?: InputMaybe<Scalars['BigInt']>;
-  priceX18_not?: InputMaybe<Scalars['BigInt']>;
-  priceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  priceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  priceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  priceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  priceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  priceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  order?: InputMaybe<Scalars['String']>;
-  order_not?: InputMaybe<Scalars['String']>;
-  order_gt?: InputMaybe<Scalars['String']>;
-  order_lt?: InputMaybe<Scalars['String']>;
-  order_gte?: InputMaybe<Scalars['String']>;
-  order_lte?: InputMaybe<Scalars['String']>;
-  order_in?: InputMaybe<Array<Scalars['String']>>;
-  order_not_in?: InputMaybe<Array<Scalars['String']>>;
-  order_contains?: InputMaybe<Scalars['String']>;
-  order_contains_nocase?: InputMaybe<Scalars['String']>;
-  order_not_contains?: InputMaybe<Scalars['String']>;
-  order_not_contains_nocase?: InputMaybe<Scalars['String']>;
-  order_starts_with?: InputMaybe<Scalars['String']>;
-  order_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  order_not_starts_with?: InputMaybe<Scalars['String']>;
-  order_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  order_ends_with?: InputMaybe<Scalars['String']>;
-  order_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  order_not_ends_with?: InputMaybe<Scalars['String']>;
-  order_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  order_?: InputMaybe<Order_filter>;
-  subaccount?: InputMaybe<Scalars['String']>;
-  subaccount_not?: InputMaybe<Scalars['String']>;
-  subaccount_gt?: InputMaybe<Scalars['String']>;
-  subaccount_lt?: InputMaybe<Scalars['String']>;
-  subaccount_gte?: InputMaybe<Scalars['String']>;
-  subaccount_lte?: InputMaybe<Scalars['String']>;
-  subaccount_in?: InputMaybe<Array<Scalars['String']>>;
-  subaccount_not_in?: InputMaybe<Array<Scalars['String']>>;
-  subaccount_contains?: InputMaybe<Scalars['String']>;
-  subaccount_contains_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_not_contains?: InputMaybe<Scalars['String']>;
-  subaccount_not_contains_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_starts_with?: InputMaybe<Scalars['String']>;
-  subaccount_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_not_starts_with?: InputMaybe<Scalars['String']>;
-  subaccount_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_ends_with?: InputMaybe<Scalars['String']>;
-  subaccount_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_not_ends_with?: InputMaybe<Scalars['String']>;
-  subaccount_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_?: InputMaybe<Subaccount_filter>;
-  /** Filter for the block changed event. */
-  _change_block?: InputMaybe<BlockChangedFilter>;
-};
-
-export type ReportOrderEvent_orderBy =
-  | 'id'
-  | 'block'
-  | 'blockTime'
-  | 'amount'
-  | 'priceX18'
-  | 'order'
-  | 'subaccount';
 
 export type SettlePnlEvent = {
   id: Scalars['ID'];
@@ -2554,8 +2401,7 @@ export type SocializeProductEvent = {
   block: Scalars['BigInt'];
   blockTime: Scalars['BigInt'];
   productId: Scalars['BigInt'];
-  socializedQuote: Scalars['BigInt'];
-  socializedBase: Scalars['BigInt'];
+  amountSocialized: Scalars['BigInt'];
 };
 
 export type SocializeProductEvent_filter = {
@@ -2591,22 +2437,14 @@ export type SocializeProductEvent_filter = {
   productId_lte?: InputMaybe<Scalars['BigInt']>;
   productId_in?: InputMaybe<Array<Scalars['BigInt']>>;
   productId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  socializedQuote?: InputMaybe<Scalars['BigInt']>;
-  socializedQuote_not?: InputMaybe<Scalars['BigInt']>;
-  socializedQuote_gt?: InputMaybe<Scalars['BigInt']>;
-  socializedQuote_lt?: InputMaybe<Scalars['BigInt']>;
-  socializedQuote_gte?: InputMaybe<Scalars['BigInt']>;
-  socializedQuote_lte?: InputMaybe<Scalars['BigInt']>;
-  socializedQuote_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  socializedQuote_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  socializedBase?: InputMaybe<Scalars['BigInt']>;
-  socializedBase_not?: InputMaybe<Scalars['BigInt']>;
-  socializedBase_gt?: InputMaybe<Scalars['BigInt']>;
-  socializedBase_lt?: InputMaybe<Scalars['BigInt']>;
-  socializedBase_gte?: InputMaybe<Scalars['BigInt']>;
-  socializedBase_lte?: InputMaybe<Scalars['BigInt']>;
-  socializedBase_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  socializedBase_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amountSocialized?: InputMaybe<Scalars['BigInt']>;
+  amountSocialized_not?: InputMaybe<Scalars['BigInt']>;
+  amountSocialized_gt?: InputMaybe<Scalars['BigInt']>;
+  amountSocialized_lt?: InputMaybe<Scalars['BigInt']>;
+  amountSocialized_gte?: InputMaybe<Scalars['BigInt']>;
+  amountSocialized_lte?: InputMaybe<Scalars['BigInt']>;
+  amountSocialized_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amountSocialized_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -2616,8 +2454,7 @@ export type SocializeProductEvent_orderBy =
   | 'block'
   | 'blockTime'
   | 'productId'
-  | 'socializedQuote'
-  | 'socializedBase';
+  | 'amountSocialized';
 
 export type SpotBalanceSummary = {
   id: Scalars['ID'];
@@ -2779,6 +2616,9 @@ export type SpotProduct = {
   cumulativeBorrowsMultiplierX18: Scalars['BigInt'];
   totalDepositsNormalizedX18: Scalars['BigInt'];
   totalBorrowsNormalizedX18: Scalars['BigInt'];
+  lpSupply: Scalars['BigInt'];
+  lpQuoteAmountX18: Scalars['BigInt'];
+  lpBaseAmountX18: Scalars['BigInt'];
   snapshots: Array<SpotProductHourlySnapshot>;
 };
 
@@ -2800,6 +2640,9 @@ export type SpotProductHourlySnapshot = {
   cumulativeBorrowsMultiplierX18: Scalars['BigInt'];
   totalDepositsNormalizedX18: Scalars['BigInt'];
   totalBorrowsNormalizedX18: Scalars['BigInt'];
+  lpSupply: Scalars['BigInt'];
+  lpQuoteAmountX18: Scalars['BigInt'];
+  lpBaseAmountX18: Scalars['BigInt'];
 };
 
 export type SpotProductHourlySnapshot_filter = {
@@ -2880,6 +2723,30 @@ export type SpotProductHourlySnapshot_filter = {
   totalBorrowsNormalizedX18_lte?: InputMaybe<Scalars['BigInt']>;
   totalBorrowsNormalizedX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalBorrowsNormalizedX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpSupply?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_not?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_gt?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_lt?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_gte?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_lte?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpSupply_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpQuoteAmountX18?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpQuoteAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpBaseAmountX18?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpBaseAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -2892,7 +2759,10 @@ export type SpotProductHourlySnapshot_orderBy =
   | 'cumulativeDepositsMultiplierX18'
   | 'cumulativeBorrowsMultiplierX18'
   | 'totalDepositsNormalizedX18'
-  | 'totalBorrowsNormalizedX18';
+  | 'totalBorrowsNormalizedX18'
+  | 'lpSupply'
+  | 'lpQuoteAmountX18'
+  | 'lpBaseAmountX18';
 
 export type SpotProduct_filter = {
   id?: InputMaybe<Scalars['ID']>;
@@ -2993,6 +2863,30 @@ export type SpotProduct_filter = {
   totalBorrowsNormalizedX18_lte?: InputMaybe<Scalars['BigInt']>;
   totalBorrowsNormalizedX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalBorrowsNormalizedX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpSupply?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_not?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_gt?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_lt?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_gte?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_lte?: InputMaybe<Scalars['BigInt']>;
+  lpSupply_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpSupply_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpQuoteAmountX18?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  lpQuoteAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpQuoteAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpBaseAmountX18?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  lpBaseAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpBaseAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   snapshots_?: InputMaybe<SpotProductHourlySnapshot_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
@@ -3008,6 +2902,9 @@ export type SpotProduct_orderBy =
   | 'cumulativeBorrowsMultiplierX18'
   | 'totalDepositsNormalizedX18'
   | 'totalBorrowsNormalizedX18'
+  | 'lpSupply'
+  | 'lpQuoteAmountX18'
+  | 'lpBaseAmountX18'
   | 'snapshots';
 
 export type Subaccount = {
@@ -3026,10 +2923,7 @@ export type Subaccount = {
   settlePnlEvents: Array<SettlePnlEvent>;
   liquidateeEvents: Array<LiquidationEvent>;
   liquidatorEvents: Array<LiquidationEvent>;
-  reportOrderEvents: Array<ReportOrderEvent>;
-  takerFillOrderEvents: Array<FillOrderEvent>;
-  makerFillOrderEvents: Array<FillOrderEvent>;
-  cancelOrderEvents: Array<CancelOrderEvent>;
+  fillOrderEvents: Array<FillOrderEvent>;
 };
 
 
@@ -3105,39 +2999,12 @@ export type SubaccountliquidatorEventsArgs = {
 };
 
 
-export type SubaccountreportOrderEventsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<ReportOrderEvent_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<ReportOrderEvent_filter>;
-};
-
-
-export type SubaccounttakerFillOrderEventsArgs = {
+export type SubaccountfillOrderEventsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<FillOrderEvent_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<FillOrderEvent_filter>;
-};
-
-
-export type SubaccountmakerFillOrderEventsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<FillOrderEvent_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<FillOrderEvent_filter>;
-};
-
-
-export type SubaccountcancelOrderEventsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<CancelOrderEvent_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<CancelOrderEvent_filter>;
 };
 
 export type Subaccount_filter = {
@@ -3228,10 +3095,7 @@ export type Subaccount_filter = {
   settlePnlEvents_?: InputMaybe<SettlePnlEvent_filter>;
   liquidateeEvents_?: InputMaybe<LiquidationEvent_filter>;
   liquidatorEvents_?: InputMaybe<LiquidationEvent_filter>;
-  reportOrderEvents_?: InputMaybe<ReportOrderEvent_filter>;
-  takerFillOrderEvents_?: InputMaybe<FillOrderEvent_filter>;
-  makerFillOrderEvents_?: InputMaybe<FillOrderEvent_filter>;
-  cancelOrderEvents_?: InputMaybe<CancelOrderEvent_filter>;
+  fillOrderEvents_?: InputMaybe<FillOrderEvent_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -3252,10 +3116,81 @@ export type Subaccount_orderBy =
   | 'settlePnlEvents'
   | 'liquidateeEvents'
   | 'liquidatorEvents'
-  | 'reportOrderEvents'
-  | 'takerFillOrderEvents'
-  | 'makerFillOrderEvents'
-  | 'cancelOrderEvents';
+  | 'fillOrderEvents';
+
+export type SubmitSlowModeTransactionEvent = {
+  id: Scalars['ID'];
+  sender: Scalars['Bytes'];
+  tx: Scalars['Bytes'];
+  executableAt: Scalars['BigInt'];
+};
+
+export type SubmitSlowModeTransactionEvent_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  sender?: InputMaybe<Scalars['Bytes']>;
+  sender_not?: InputMaybe<Scalars['Bytes']>;
+  sender_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_contains?: InputMaybe<Scalars['Bytes']>;
+  sender_not_contains?: InputMaybe<Scalars['Bytes']>;
+  tx?: InputMaybe<Scalars['Bytes']>;
+  tx_not?: InputMaybe<Scalars['Bytes']>;
+  tx_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  tx_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  tx_contains?: InputMaybe<Scalars['Bytes']>;
+  tx_not_contains?: InputMaybe<Scalars['Bytes']>;
+  executableAt?: InputMaybe<Scalars['BigInt']>;
+  executableAt_not?: InputMaybe<Scalars['BigInt']>;
+  executableAt_gt?: InputMaybe<Scalars['BigInt']>;
+  executableAt_lt?: InputMaybe<Scalars['BigInt']>;
+  executableAt_gte?: InputMaybe<Scalars['BigInt']>;
+  executableAt_lte?: InputMaybe<Scalars['BigInt']>;
+  executableAt_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  executableAt_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+};
+
+export type SubmitSlowModeTransactionEvent_orderBy =
+  | 'id'
+  | 'sender'
+  | 'tx'
+  | 'executableAt';
+
+export type SubmitTransactionsEvent = {
+  id: Scalars['ID'];
+  transactions: Array<Scalars['Bytes']>;
+};
+
+export type SubmitTransactionsEvent_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  transactions?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_not?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_not_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactions_not_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+};
+
+export type SubmitTransactionsEvent_orderBy =
+  | 'id'
+  | 'transactions';
 
 export type Subscription = {
   clearinghouse?: Maybe<Clearinghouse>;
@@ -3288,12 +3223,8 @@ export type Subscription = {
   liquidationEvents: Array<LiquidationEvent>;
   socializeProductEvent?: Maybe<SocializeProductEvent>;
   socializeProductEvents: Array<SocializeProductEvent>;
-  reportOrderEvent?: Maybe<ReportOrderEvent>;
-  reportOrderEvents: Array<ReportOrderEvent>;
   fillOrderEvent?: Maybe<FillOrderEvent>;
   fillOrderEvents: Array<FillOrderEvent>;
-  cancelOrderEvent?: Maybe<CancelOrderEvent>;
-  cancelOrderEvents: Array<CancelOrderEvent>;
   subaccount?: Maybe<Subaccount>;
   subaccounts: Array<Subaccount>;
   tradeSummary?: Maybe<TradeSummary>;
@@ -3306,6 +3237,10 @@ export type Subscription = {
   perpBalanceSummaries: Array<PerpBalanceSummary>;
   closedPerpBalance?: Maybe<ClosedPerpBalance>;
   closedPerpBalances: Array<ClosedPerpBalance>;
+  submitTransactionsEvent?: Maybe<SubmitTransactionsEvent>;
+  submitTransactionsEvents: Array<SubmitTransactionsEvent>;
+  submitSlowModeTransactionEvent?: Maybe<SubmitSlowModeTransactionEvent>;
+  submitSlowModeTransactionEvents: Array<SubmitSlowModeTransactionEvent>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -3581,24 +3516,6 @@ export type SubscriptionsocializeProductEventsArgs = {
 };
 
 
-export type SubscriptionreportOrderEventArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionreportOrderEventsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<ReportOrderEvent_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<ReportOrderEvent_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
 export type SubscriptionfillOrderEventArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
@@ -3612,24 +3529,6 @@ export type SubscriptionfillOrderEventsArgs = {
   orderBy?: InputMaybe<FillOrderEvent_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<FillOrderEvent_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptioncancelOrderEventArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptioncancelOrderEventsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<CancelOrderEvent_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<CancelOrderEvent_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -3738,6 +3637,42 @@ export type SubscriptionclosedPerpBalancesArgs = {
   orderBy?: InputMaybe<ClosedPerpBalance_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<ClosedPerpBalance_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionsubmitTransactionsEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionsubmitTransactionsEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<SubmitTransactionsEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<SubmitTransactionsEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionsubmitSlowModeTransactionEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionsubmitSlowModeTransactionEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<SubmitSlowModeTransactionEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<SubmitSlowModeTransactionEvent_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -3961,9 +3896,6 @@ export type ResolversTypes = ResolversObject<{
   Block_height: Block_height;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Bytes: ResolverTypeWrapper<Scalars['Bytes']>;
-  CancelOrderEvent: ResolverTypeWrapper<CancelOrderEvent>;
-  CancelOrderEvent_filter: CancelOrderEvent_filter;
-  CancelOrderEvent_orderBy: CancelOrderEvent_orderBy;
   Candlestick: ResolverTypeWrapper<Candlestick>;
   Candlestick_filter: Candlestick_filter;
   Candlestick_orderBy: Candlestick_orderBy;
@@ -3997,7 +3929,6 @@ export type ResolversTypes = ResolversObject<{
   Order: ResolverTypeWrapper<Order>;
   OrderDirection: OrderDirection;
   OrderType: OrderType;
-  OrderValidationResult: OrderValidationResult;
   Order_filter: Order_filter;
   Order_orderBy: Order_orderBy;
   PerpBalanceSummary: ResolverTypeWrapper<PerpBalanceSummary>;
@@ -4013,9 +3944,6 @@ export type ResolversTypes = ResolversObject<{
   PerpProduct_filter: PerpProduct_filter;
   PerpProduct_orderBy: PerpProduct_orderBy;
   Query: ResolverTypeWrapper<{}>;
-  ReportOrderEvent: ResolverTypeWrapper<ReportOrderEvent>;
-  ReportOrderEvent_filter: ReportOrderEvent_filter;
-  ReportOrderEvent_orderBy: ReportOrderEvent_orderBy;
   SettlePnlEvent: ResolverTypeWrapper<SettlePnlEvent>;
   SettlePnlEvent_filter: SettlePnlEvent_filter;
   SettlePnlEvent_orderBy: SettlePnlEvent_orderBy;
@@ -4038,6 +3966,12 @@ export type ResolversTypes = ResolversObject<{
   Subaccount: ResolverTypeWrapper<Subaccount>;
   Subaccount_filter: Subaccount_filter;
   Subaccount_orderBy: Subaccount_orderBy;
+  SubmitSlowModeTransactionEvent: ResolverTypeWrapper<SubmitSlowModeTransactionEvent>;
+  SubmitSlowModeTransactionEvent_filter: SubmitSlowModeTransactionEvent_filter;
+  SubmitSlowModeTransactionEvent_orderBy: SubmitSlowModeTransactionEvent_orderBy;
+  SubmitTransactionsEvent: ResolverTypeWrapper<SubmitTransactionsEvent>;
+  SubmitTransactionsEvent_filter: SubmitTransactionsEvent_filter;
+  SubmitTransactionsEvent_orderBy: SubmitTransactionsEvent_orderBy;
   Subscription: ResolverTypeWrapper<{}>;
   TradeSummary: ResolverTypeWrapper<TradeSummary>;
   TradeSummary_filter: TradeSummary_filter;
@@ -4055,8 +3989,6 @@ export type ResolversParentTypes = ResolversObject<{
   Block_height: Block_height;
   Boolean: Scalars['Boolean'];
   Bytes: Scalars['Bytes'];
-  CancelOrderEvent: CancelOrderEvent;
-  CancelOrderEvent_filter: CancelOrderEvent_filter;
   Candlestick: Candlestick;
   Candlestick_filter: Candlestick_filter;
   Clearinghouse: Clearinghouse;
@@ -4089,8 +4021,6 @@ export type ResolversParentTypes = ResolversObject<{
   PerpProductHourlySnapshot_filter: PerpProductHourlySnapshot_filter;
   PerpProduct_filter: PerpProduct_filter;
   Query: {};
-  ReportOrderEvent: ReportOrderEvent;
-  ReportOrderEvent_filter: ReportOrderEvent_filter;
   SettlePnlEvent: SettlePnlEvent;
   SettlePnlEvent_filter: SettlePnlEvent_filter;
   SocializeProductEvent: SocializeProductEvent;
@@ -4106,6 +4036,10 @@ export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String'];
   Subaccount: Subaccount;
   Subaccount_filter: Subaccount_filter;
+  SubmitSlowModeTransactionEvent: SubmitSlowModeTransactionEvent;
+  SubmitSlowModeTransactionEvent_filter: SubmitSlowModeTransactionEvent_filter;
+  SubmitTransactionsEvent: SubmitTransactionsEvent;
+  SubmitTransactionsEvent_filter: SubmitTransactionsEvent_filter;
   Subscription: {};
   TradeSummary: TradeSummary;
   TradeSummary_filter: TradeSummary_filter;
@@ -4141,16 +4075,6 @@ export interface BytesScalarConfig extends GraphQLScalarTypeConfig<ResolversType
   name: 'Bytes';
 }
 
-export type CancelOrderEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['CancelOrderEvent'] = ResolversParentTypes['CancelOrderEvent']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  reason?: Resolver<ResolversTypes['OrderValidationResult'], ParentType, ContextType>;
-  order?: Resolver<ResolversTypes['Order'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type CandlestickResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Candlestick'] = ResolversParentTypes['Candlestick']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
@@ -4160,13 +4084,14 @@ export type CandlestickResolvers<ContextType = MeshContext & { endpoint: string 
   closeX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   lowX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   highX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeBase?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeQuote?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  volumeBaseX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  volumeQuoteX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type ClearinghouseResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Clearinghouse'] = ResolversParentTypes['Clearinghouse']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  endpoint?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   quoteProduct?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   spotEngine?: Resolver<ResolversTypes['SpotEngine'], ParentType, ContextType>;
   perpEngine?: Resolver<ResolversTypes['PerpEngine'], ParentType, ContextType>;
@@ -4203,13 +4128,12 @@ export type FillOrderEventResolvers<ContextType = MeshContext & { endpoint: stri
   market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
   block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  maker?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  makerOrder?: Resolver<ResolversTypes['Order'], ParentType, ContextType>;
-  taker?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  takerOrder?: Resolver<ResolversTypes['Order'], ParentType, ContextType>;
-  takerAmountDelta?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  takerFee?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  makerFee?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
+  order?: Resolver<ResolversTypes['Order'], ParentType, ContextType>;
+  isTaker?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  feeQuoteX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  amountDeltaX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  quoteDeltaX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4219,10 +4143,15 @@ export type LiquidationEventResolvers<ContextType = MeshContext & { endpoint: st
   blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   liquidator?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
   liquidatee?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  liquidatorBaseDelta?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  liquidatorQuoteDelta?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  insuranceCoverage?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  mode?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  healthGroup?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  liquidationAmountX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  liquidationPaymentX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  insuranceCoverageX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  spotProductId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  spotAmountX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  perpProductId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  perpAmountX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4231,14 +4160,13 @@ export type MarketResolvers<ContextType = MeshContext & { endpoint: string }, Pa
   clearinghouse?: Resolver<ResolversTypes['Clearinghouse'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   orderbook?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
-  sizeIncrementX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  sizeIncrement?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   priceIncrementX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   createdAtBlock?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  markPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   lastFillPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeBase?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeQuote?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  volumeBaseX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  volumeQuoteX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   volumeNumOrders?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   candlesticks?: Resolver<Array<ResolversTypes['Candlestick']>, ParentType, ContextType, RequireFields<MarketcandlesticksArgs, 'skip' | 'first'>>;
   orders?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType, RequireFields<MarketordersArgs, 'skip' | 'first'>>;
@@ -4250,10 +4178,9 @@ export type MarketHourlySnapshotResolvers<ContextType = MeshContext & { endpoint
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   hour?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
-  markPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   lastFillPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeBase?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  volumeQuote?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  volumeBaseX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  volumeQuoteX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   volumeNumOrders?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -4272,21 +4199,19 @@ export type ModifyCollateralEventResolvers<ContextType = MeshContext & { endpoin
 export type OrderResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['OrderType'], ParentType, ContextType>;
-  sender?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   digest?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
-  validationResult?: Resolver<ResolversTypes['OrderValidationResult'], ParentType, ContextType>;
   priceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  isTaker?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  expiration?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  realExpiration?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
   market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
   reportedAt?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   reportedAtBlock?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   totalAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  filledAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  quoteAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  collectedFee?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  expiration?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  realExpiration?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  nonce?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  filledAmountX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  quoteAmountX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  collectedFeeX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4314,11 +4239,15 @@ export type PerpProductResolvers<ContextType = MeshContext & { endpoint: string 
   market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
   engine?: Resolver<ResolversTypes['PerpEngine'], ParentType, ContextType>;
   priceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  emaPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  markPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   cumulativeFundingLongX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   cumulativeFundingShortX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   openInterestX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   availableSettleX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpSupply?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpQuoteAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpBaseAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpCumulativeFundingPerLpX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   snapshots?: Resolver<Array<ResolversTypes['PerpProductHourlySnapshot']>, ParentType, ContextType, RequireFields<PerpProductsnapshotsArgs, 'skip' | 'first'>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -4328,11 +4257,15 @@ export type PerpProductHourlySnapshotResolvers<ContextType = MeshContext & { end
   hour?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   product?: Resolver<ResolversTypes['PerpProduct'], ParentType, ContextType>;
   priceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  emaPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  markPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   cumulativeFundingLongX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   cumulativeFundingShortX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   openInterestX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   availableSettleX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpSupply?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpQuoteAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpBaseAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpCumulativeFundingPerLpX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4367,12 +4300,8 @@ export type QueryResolvers<ContextType = MeshContext & { endpoint: string }, Par
   liquidationEvents?: Resolver<Array<ResolversTypes['LiquidationEvent']>, ParentType, ContextType, RequireFields<QueryliquidationEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   socializeProductEvent?: Resolver<Maybe<ResolversTypes['SocializeProductEvent']>, ParentType, ContextType, RequireFields<QuerysocializeProductEventArgs, 'id' | 'subgraphError'>>;
   socializeProductEvents?: Resolver<Array<ResolversTypes['SocializeProductEvent']>, ParentType, ContextType, RequireFields<QuerysocializeProductEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  reportOrderEvent?: Resolver<Maybe<ResolversTypes['ReportOrderEvent']>, ParentType, ContextType, RequireFields<QueryreportOrderEventArgs, 'id' | 'subgraphError'>>;
-  reportOrderEvents?: Resolver<Array<ResolversTypes['ReportOrderEvent']>, ParentType, ContextType, RequireFields<QueryreportOrderEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   fillOrderEvent?: Resolver<Maybe<ResolversTypes['FillOrderEvent']>, ParentType, ContextType, RequireFields<QueryfillOrderEventArgs, 'id' | 'subgraphError'>>;
   fillOrderEvents?: Resolver<Array<ResolversTypes['FillOrderEvent']>, ParentType, ContextType, RequireFields<QueryfillOrderEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  cancelOrderEvent?: Resolver<Maybe<ResolversTypes['CancelOrderEvent']>, ParentType, ContextType, RequireFields<QuerycancelOrderEventArgs, 'id' | 'subgraphError'>>;
-  cancelOrderEvents?: Resolver<Array<ResolversTypes['CancelOrderEvent']>, ParentType, ContextType, RequireFields<QuerycancelOrderEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   subaccount?: Resolver<Maybe<ResolversTypes['Subaccount']>, ParentType, ContextType, RequireFields<QuerysubaccountArgs, 'id' | 'subgraphError'>>;
   subaccounts?: Resolver<Array<ResolversTypes['Subaccount']>, ParentType, ContextType, RequireFields<QuerysubaccountsArgs, 'skip' | 'first' | 'subgraphError'>>;
   tradeSummary?: Resolver<Maybe<ResolversTypes['TradeSummary']>, ParentType, ContextType, RequireFields<QuerytradeSummaryArgs, 'id' | 'subgraphError'>>;
@@ -4385,18 +4314,11 @@ export type QueryResolvers<ContextType = MeshContext & { endpoint: string }, Par
   perpBalanceSummaries?: Resolver<Array<ResolversTypes['PerpBalanceSummary']>, ParentType, ContextType, RequireFields<QueryperpBalanceSummariesArgs, 'skip' | 'first' | 'subgraphError'>>;
   closedPerpBalance?: Resolver<Maybe<ResolversTypes['ClosedPerpBalance']>, ParentType, ContextType, RequireFields<QueryclosedPerpBalanceArgs, 'id' | 'subgraphError'>>;
   closedPerpBalances?: Resolver<Array<ResolversTypes['ClosedPerpBalance']>, ParentType, ContextType, RequireFields<QueryclosedPerpBalancesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  submitTransactionsEvent?: Resolver<Maybe<ResolversTypes['SubmitTransactionsEvent']>, ParentType, ContextType, RequireFields<QuerysubmitTransactionsEventArgs, 'id' | 'subgraphError'>>;
+  submitTransactionsEvents?: Resolver<Array<ResolversTypes['SubmitTransactionsEvent']>, ParentType, ContextType, RequireFields<QuerysubmitTransactionsEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  submitSlowModeTransactionEvent?: Resolver<Maybe<ResolversTypes['SubmitSlowModeTransactionEvent']>, ParentType, ContextType, RequireFields<QuerysubmitSlowModeTransactionEventArgs, 'id' | 'subgraphError'>>;
+  submitSlowModeTransactionEvents?: Resolver<Array<ResolversTypes['SubmitSlowModeTransactionEvent']>, ParentType, ContextType, RequireFields<QuerysubmitSlowModeTransactionEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: Resolver<Maybe<ResolversTypes['_Meta_']>, ParentType, ContextType, Partial<Query_metaArgs>>;
-}>;
-
-export type ReportOrderEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['ReportOrderEvent'] = ResolversParentTypes['ReportOrderEvent']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  amount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  priceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  order?: Resolver<ResolversTypes['Order'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type SettlePnlEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SettlePnlEvent'] = ResolversParentTypes['SettlePnlEvent']> = ResolversObject<{
@@ -4414,8 +4336,7 @@ export type SocializeProductEventResolvers<ContextType = MeshContext & { endpoin
   block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  socializedQuote?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  socializedBase?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  amountSocialized?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4447,6 +4368,9 @@ export type SpotProductResolvers<ContextType = MeshContext & { endpoint: string 
   cumulativeBorrowsMultiplierX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   totalDepositsNormalizedX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   totalBorrowsNormalizedX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpSupply?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpQuoteAmountX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpBaseAmountX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   snapshots?: Resolver<Array<ResolversTypes['SpotProductHourlySnapshot']>, ParentType, ContextType, RequireFields<SpotProductsnapshotsArgs, 'skip' | 'first'>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -4460,6 +4384,9 @@ export type SpotProductHourlySnapshotResolvers<ContextType = MeshContext & { end
   cumulativeBorrowsMultiplierX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   totalDepositsNormalizedX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   totalBorrowsNormalizedX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpSupply?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpQuoteAmountX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpBaseAmountX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4479,10 +4406,21 @@ export type SubaccountResolvers<ContextType = MeshContext & { endpoint: string }
   settlePnlEvents?: Resolver<Array<ResolversTypes['SettlePnlEvent']>, ParentType, ContextType, RequireFields<SubaccountsettlePnlEventsArgs, 'skip' | 'first'>>;
   liquidateeEvents?: Resolver<Array<ResolversTypes['LiquidationEvent']>, ParentType, ContextType, RequireFields<SubaccountliquidateeEventsArgs, 'skip' | 'first'>>;
   liquidatorEvents?: Resolver<Array<ResolversTypes['LiquidationEvent']>, ParentType, ContextType, RequireFields<SubaccountliquidatorEventsArgs, 'skip' | 'first'>>;
-  reportOrderEvents?: Resolver<Array<ResolversTypes['ReportOrderEvent']>, ParentType, ContextType, RequireFields<SubaccountreportOrderEventsArgs, 'skip' | 'first'>>;
-  takerFillOrderEvents?: Resolver<Array<ResolversTypes['FillOrderEvent']>, ParentType, ContextType, RequireFields<SubaccounttakerFillOrderEventsArgs, 'skip' | 'first'>>;
-  makerFillOrderEvents?: Resolver<Array<ResolversTypes['FillOrderEvent']>, ParentType, ContextType, RequireFields<SubaccountmakerFillOrderEventsArgs, 'skip' | 'first'>>;
-  cancelOrderEvents?: Resolver<Array<ResolversTypes['CancelOrderEvent']>, ParentType, ContextType, RequireFields<SubaccountcancelOrderEventsArgs, 'skip' | 'first'>>;
+  fillOrderEvents?: Resolver<Array<ResolversTypes['FillOrderEvent']>, ParentType, ContextType, RequireFields<SubaccountfillOrderEventsArgs, 'skip' | 'first'>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type SubmitSlowModeTransactionEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SubmitSlowModeTransactionEvent'] = ResolversParentTypes['SubmitSlowModeTransactionEvent']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  sender?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  tx?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  executableAt?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type SubmitTransactionsEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SubmitTransactionsEvent'] = ResolversParentTypes['SubmitTransactionsEvent']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  transactions?: Resolver<Array<ResolversTypes['Bytes']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4517,12 +4455,8 @@ export type SubscriptionResolvers<ContextType = MeshContext & { endpoint: string
   liquidationEvents?: SubscriptionResolver<Array<ResolversTypes['LiquidationEvent']>, "liquidationEvents", ParentType, ContextType, RequireFields<SubscriptionliquidationEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   socializeProductEvent?: SubscriptionResolver<Maybe<ResolversTypes['SocializeProductEvent']>, "socializeProductEvent", ParentType, ContextType, RequireFields<SubscriptionsocializeProductEventArgs, 'id' | 'subgraphError'>>;
   socializeProductEvents?: SubscriptionResolver<Array<ResolversTypes['SocializeProductEvent']>, "socializeProductEvents", ParentType, ContextType, RequireFields<SubscriptionsocializeProductEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  reportOrderEvent?: SubscriptionResolver<Maybe<ResolversTypes['ReportOrderEvent']>, "reportOrderEvent", ParentType, ContextType, RequireFields<SubscriptionreportOrderEventArgs, 'id' | 'subgraphError'>>;
-  reportOrderEvents?: SubscriptionResolver<Array<ResolversTypes['ReportOrderEvent']>, "reportOrderEvents", ParentType, ContextType, RequireFields<SubscriptionreportOrderEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   fillOrderEvent?: SubscriptionResolver<Maybe<ResolversTypes['FillOrderEvent']>, "fillOrderEvent", ParentType, ContextType, RequireFields<SubscriptionfillOrderEventArgs, 'id' | 'subgraphError'>>;
   fillOrderEvents?: SubscriptionResolver<Array<ResolversTypes['FillOrderEvent']>, "fillOrderEvents", ParentType, ContextType, RequireFields<SubscriptionfillOrderEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  cancelOrderEvent?: SubscriptionResolver<Maybe<ResolversTypes['CancelOrderEvent']>, "cancelOrderEvent", ParentType, ContextType, RequireFields<SubscriptioncancelOrderEventArgs, 'id' | 'subgraphError'>>;
-  cancelOrderEvents?: SubscriptionResolver<Array<ResolversTypes['CancelOrderEvent']>, "cancelOrderEvents", ParentType, ContextType, RequireFields<SubscriptioncancelOrderEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   subaccount?: SubscriptionResolver<Maybe<ResolversTypes['Subaccount']>, "subaccount", ParentType, ContextType, RequireFields<SubscriptionsubaccountArgs, 'id' | 'subgraphError'>>;
   subaccounts?: SubscriptionResolver<Array<ResolversTypes['Subaccount']>, "subaccounts", ParentType, ContextType, RequireFields<SubscriptionsubaccountsArgs, 'skip' | 'first' | 'subgraphError'>>;
   tradeSummary?: SubscriptionResolver<Maybe<ResolversTypes['TradeSummary']>, "tradeSummary", ParentType, ContextType, RequireFields<SubscriptiontradeSummaryArgs, 'id' | 'subgraphError'>>;
@@ -4535,6 +4469,10 @@ export type SubscriptionResolvers<ContextType = MeshContext & { endpoint: string
   perpBalanceSummaries?: SubscriptionResolver<Array<ResolversTypes['PerpBalanceSummary']>, "perpBalanceSummaries", ParentType, ContextType, RequireFields<SubscriptionperpBalanceSummariesArgs, 'skip' | 'first' | 'subgraphError'>>;
   closedPerpBalance?: SubscriptionResolver<Maybe<ResolversTypes['ClosedPerpBalance']>, "closedPerpBalance", ParentType, ContextType, RequireFields<SubscriptionclosedPerpBalanceArgs, 'id' | 'subgraphError'>>;
   closedPerpBalances?: SubscriptionResolver<Array<ResolversTypes['ClosedPerpBalance']>, "closedPerpBalances", ParentType, ContextType, RequireFields<SubscriptionclosedPerpBalancesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  submitTransactionsEvent?: SubscriptionResolver<Maybe<ResolversTypes['SubmitTransactionsEvent']>, "submitTransactionsEvent", ParentType, ContextType, RequireFields<SubscriptionsubmitTransactionsEventArgs, 'id' | 'subgraphError'>>;
+  submitTransactionsEvents?: SubscriptionResolver<Array<ResolversTypes['SubmitTransactionsEvent']>, "submitTransactionsEvents", ParentType, ContextType, RequireFields<SubscriptionsubmitTransactionsEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  submitSlowModeTransactionEvent?: SubscriptionResolver<Maybe<ResolversTypes['SubmitSlowModeTransactionEvent']>, "submitSlowModeTransactionEvent", ParentType, ContextType, RequireFields<SubscriptionsubmitSlowModeTransactionEventArgs, 'id' | 'subgraphError'>>;
+  submitSlowModeTransactionEvents?: SubscriptionResolver<Array<ResolversTypes['SubmitSlowModeTransactionEvent']>, "submitSlowModeTransactionEvents", ParentType, ContextType, RequireFields<SubscriptionsubmitSlowModeTransactionEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
 }>;
 
@@ -4567,7 +4505,6 @@ export type Resolvers<ContextType = MeshContext & { endpoint: string }> = Resolv
   BigDecimal?: GraphQLScalarType;
   BigInt?: GraphQLScalarType;
   Bytes?: GraphQLScalarType;
-  CancelOrderEvent?: CancelOrderEventResolvers<ContextType>;
   Candlestick?: CandlestickResolvers<ContextType>;
   Clearinghouse?: ClearinghouseResolvers<ContextType>;
   ClosedPerpBalance?: ClosedPerpBalanceResolvers<ContextType>;
@@ -4583,7 +4520,6 @@ export type Resolvers<ContextType = MeshContext & { endpoint: string }> = Resolv
   PerpProduct?: PerpProductResolvers<ContextType>;
   PerpProductHourlySnapshot?: PerpProductHourlySnapshotResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  ReportOrderEvent?: ReportOrderEventResolvers<ContextType>;
   SettlePnlEvent?: SettlePnlEventResolvers<ContextType>;
   SocializeProductEvent?: SocializeProductEventResolvers<ContextType>;
   SpotBalanceSummary?: SpotBalanceSummaryResolvers<ContextType>;
@@ -4591,6 +4527,8 @@ export type Resolvers<ContextType = MeshContext & { endpoint: string }> = Resolv
   SpotProduct?: SpotProductResolvers<ContextType>;
   SpotProductHourlySnapshot?: SpotProductHourlySnapshotResolvers<ContextType>;
   Subaccount?: SubaccountResolvers<ContextType>;
+  SubmitSlowModeTransactionEvent?: SubmitSlowModeTransactionEventResolvers<ContextType>;
+  SubmitTransactionsEvent?: SubmitTransactionsEventResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   TradeSummary?: TradeSummaryResolvers<ContextType>;
   _Block_?: _Block_Resolvers<ContextType>;
@@ -4603,16 +4541,16 @@ export type DirectiveResolvers<ContextType = MeshContext & { endpoint: string }>
   derivedFrom?: derivedFromDirectiveResolver<any, any, ContextType>;
 }>;
 
-export type MeshContext = ClearinghouseTypes.Context & BaseMeshContext;
+export type MeshContext = ClearinghouseContext & BaseMeshContext;
 
 
 const baseDir = pathModule.join(typeof __dirname === 'string' ? __dirname : '/', '..');
 
-const importFn: ImportFn = <T>(moduleId: string) => {
+const importFn = (moduleId: string) => {
   const relativeModuleId = (pathModule.isAbsolute(moduleId) ? pathModule.relative(baseDir, moduleId) : moduleId).split('\\').join('/').replace(baseDir + '/', '');
   switch(relativeModuleId) {
     case ".graphclient/sources/Clearinghouse/introspectionSchema":
-      return import("./sources/Clearinghouse/introspectionSchema") as T;
+      return import("./sources/Clearinghouse/introspectionSchema");
     
     default:
       return Promise.reject(new Error(`Cannot find module '${relativeModuleId}'.`));
@@ -4641,9 +4579,9 @@ const cache = new (MeshCache as any)({
       logger,
     } as any)
 
-const sources: MeshResolvedSource[] = [];
-const transforms: MeshTransform[] = [];
-const additionalEnvelopPlugins: MeshPlugin<any>[] = [];
+const sources = [];
+const transforms = [];
+const additionalEnvelopPlugins = [];
 const clearinghouseTransforms = [];
 const additionalTypeDefs = [] as any[];
 const clearinghouseHandler = new GraphqlHandler({
@@ -4791,14 +4729,14 @@ export function createBuiltMeshHTTPHandler() {
 }
 
 
-let meshInstance$: Promise<MeshInstance> | undefined;
+let meshInstance$: Promise<MeshInstance<MeshContext>>;
 
-export function getBuiltGraphClient(): Promise<MeshInstance> {
+export function getBuiltGraphClient(): Promise<MeshInstance<MeshContext>> {
   if (meshInstance$ == null) {
-    meshInstance$ = getMeshOptions().then(meshOptions => getMesh(meshOptions)).then(mesh => {
-      const id = mesh.pubsub.subscribe('destroy', () => {
+    meshInstance$ = getMeshOptions().then(meshOptions => getMesh<MeshContext>(meshOptions)).then(mesh => {
+      const id$ = mesh.pubsub.subscribe('destroy', () => {
         meshInstance$ = undefined;
-        mesh.pubsub.unsubscribe(id);
+        id$.then(id => mesh.pubsub.unsubscribe(id)).catch(err => console.error(err));
       });
       return mesh;
     });
@@ -4811,7 +4749,7 @@ export const execute: ExecuteMeshFn = (...args) => getBuiltGraphClient().then(({
 export const subscribe: SubscribeMeshFn = (...args) => getBuiltGraphClient().then(({ subscribe }) => subscribe(...args));
 export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(globalContext?: TGlobalContext) {
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
-  return getSdk<TOperationContext, TGlobalContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
+  return getSdk<TOperationContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
 export type CandlesticksQueryQueryVariables = Exact<{
   marketEntityId: Scalars['String'];
@@ -4820,7 +4758,7 @@ export type CandlesticksQueryQueryVariables = Exact<{
 }>;
 
 
-export type CandlesticksQueryQuery = { candlesticks: Array<Pick<Candlestick, 'id' | 'time' | 'openX18' | 'closeX18' | 'highX18' | 'lowX18' | 'volumeQuote'>> };
+export type CandlesticksQueryQuery = { candlesticks: Array<Pick<Candlestick, 'id' | 'time' | 'openX18' | 'closeX18' | 'highX18' | 'lowX18' | 'volumeQuoteX18'>> };
 
 export type HourlyHistoricalMarketDataQueryQueryVariables = Exact<{
   marketEntityId: Scalars['String'];
@@ -4829,7 +4767,7 @@ export type HourlyHistoricalMarketDataQueryQueryVariables = Exact<{
 }>;
 
 
-export type HourlyHistoricalMarketDataQueryQuery = { marketHourlySnapshots: Array<Pick<MarketHourlySnapshot, 'id' | 'hour' | 'volumeNumOrders' | 'volumeQuote' | 'lastFillPriceX18'>> };
+export type HourlyHistoricalMarketDataQueryQuery = { marketHourlySnapshots: Array<Pick<MarketHourlySnapshot, 'id' | 'hour' | 'volumeNumOrders' | 'volumeQuoteX18' | 'lastFillPriceX18'>> };
 
 export type HourlyHistoricalProductDataQueryQueryVariables = Exact<{
   productEntityId: Scalars['String'];
@@ -4846,8 +4784,8 @@ export type LatestOrderFillsQueryQueryVariables = Exact<{
 
 
 export type LatestOrderFillsQueryQuery = { fillOrderEvents: Array<(
-    Pick<FillOrderEvent, 'blockTime' | 'takerAmountDelta'>
-    & { makerOrder: Pick<Order, 'priceX18'> }
+    Pick<FillOrderEvent, 'blockTime' | 'quoteDeltaX18' | 'amountDeltaX18'>
+    & { order: Pick<Order, 'priceX18'> }
   )> };
 
 export type PaginatedAllMarketOrdersQueryQueryVariables = Exact<{
@@ -4858,7 +4796,7 @@ export type PaginatedAllMarketOrdersQueryQueryVariables = Exact<{
 
 
 export type PaginatedAllMarketOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
     & { subaccount: Pick<Subaccount, 'subaccountId'>, market: Pick<Market, 'productId'> }
   )> };
 
@@ -4870,7 +4808,7 @@ export type PaginatedSubaccountOrdersQueryQueryVariables = Exact<{
 
 
 export type PaginatedSubaccountOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
     & { subaccount: Pick<Subaccount, 'subaccountId'>, market: Pick<Market, 'productId'> }
   )> };
 
@@ -4883,7 +4821,7 @@ export type PaginatedSubaccountOrdersForProductsQueryQueryVariables = Exact<{
 
 
 export type PaginatedSubaccountOrdersForProductsQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
     & { subaccount: Pick<Subaccount, 'subaccountId'>, market: Pick<Market, 'productId'> }
   )> };
 
@@ -4894,12 +4832,12 @@ export type OrderByDigestQueryQueryVariables = Exact<{
 
 
 export type OrderByDigestQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
     & { subaccount: Pick<Subaccount, 'subaccountId'>, market: Pick<Market, 'productId'> }
   )> };
 
 export type OrderEntityFieldsFragmentFragment = (
-  Pick<Order, 'id' | 'digest' | 'validationResult' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
+  Pick<Order, 'id' | 'digest' | 'priceX18' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
   & { subaccount: Pick<Subaccount, 'subaccountId'>, market: Pick<Market, 'productId'> }
 );
 
@@ -4923,7 +4861,7 @@ export type SubaccountLiquidationEventHistoryQueryQueryVariables = Exact<{
 }>;
 
 
-export type SubaccountLiquidationEventHistoryQueryQuery = { liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'productId' | 'liquidatorBaseDelta' | 'liquidatorQuoteDelta' | 'insuranceCoverage'>> };
+export type SubaccountLiquidationEventHistoryQueryQuery = { liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'spotProductId' | 'perpProductId' | 'perpAmountX18' | 'spotAmountX18' | 'liquidationPaymentX18' | 'insuranceCoverageX18'>> };
 
 export type SubaccountSettlementEventHistoryQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
@@ -4957,7 +4895,6 @@ export const OrderEntityFieldsFragmentFragmentDoc = gql`
     fragment OrderEntityFieldsFragment on Order {
   id
   digest
-  validationResult
   priceX18
   subaccount {
     subaccountId
@@ -4967,10 +4904,10 @@ export const OrderEntityFieldsFragmentFragmentDoc = gql`
   }
   reportedAt
   reportedAtBlock
-  filledAmount
+  filledAmountX18
   totalAmount
-  quoteAmount
-  collectedFee
+  quoteAmountX18
+  collectedFeeX18
 }
     ` as unknown as DocumentNode<OrderEntityFieldsFragmentFragment, unknown>;
 export const CandlesticksQueryDocument = gql`
@@ -4987,7 +4924,7 @@ export const CandlesticksQueryDocument = gql`
     closeX18
     highX18
     lowX18
-    volumeQuote
+    volumeQuoteX18
   }
 }
     ` as unknown as DocumentNode<CandlesticksQueryQuery, CandlesticksQueryQueryVariables>;
@@ -5001,7 +4938,7 @@ export const HourlyHistoricalMarketDataQueryDocument = gql`
     id
     hour
     volumeNumOrders
-    volumeQuote
+    volumeQuoteX18
     lastFillPriceX18
   }
 }
@@ -5028,14 +4965,15 @@ export const HourlyHistoricalProductDataQueryDocument = gql`
 export const LatestOrderFillsQueryDocument = gql`
     query LatestOrderFillsQuery($marketEntityId: String!) {
   fillOrderEvents(
-    where: {market: $marketEntityId}
+    where: {market: $marketEntityId, isTaker: true}
     orderBy: blockTime
     orderDirection: desc
     first: 100
   ) {
     blockTime
-    takerAmountDelta
-    makerOrder {
+    quoteDeltaX18
+    amountDeltaX18
+    order {
       priceX18
     }
   }
@@ -5114,10 +5052,12 @@ export const SubaccountLiquidationEventHistoryQueryDocument = gql`
   ) {
     id
     blockTime
-    productId
-    liquidatorBaseDelta
-    liquidatorQuoteDelta
-    insuranceCoverage
+    spotProductId
+    perpProductId
+    perpAmountX18
+    spotAmountX18
+    liquidationPaymentX18
+    insuranceCoverageX18
   }
 }
     ` as unknown as DocumentNode<SubaccountLiquidationEventHistoryQueryQuery, SubaccountLiquidationEventHistoryQueryQueryVariables>;

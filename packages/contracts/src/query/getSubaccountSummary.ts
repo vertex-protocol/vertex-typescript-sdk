@@ -1,7 +1,10 @@
 import { BigNumberish } from 'ethers';
-import { BalanceWithProduct, HealthStatus, WithContract } from '../common';
+import {
+  BalanceWithProduct,
+  HealthStatusByType,
+  WithContract,
+} from '../common';
 import { fromX18 } from '@vertex-protocol/utils';
-import { IVertexQuerier } from '../typechain-types';
 import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
 
 /**
@@ -13,20 +16,8 @@ export interface GetSubaccountSummaryParams {
 }
 
 export interface SubaccountSummaryResponse {
-  balances: (BalanceWithProduct & {
-    health: HealthStatus;
-  })[];
-  health: HealthStatus;
-}
-
-function healthInfoToStatus(
-  healthInfo: IVertexQuerier.HealthInfoStructOutput,
-): HealthStatus {
-  return {
-    initial: fromX18(healthInfo.initialX18),
-    maintenance: fromX18(healthInfo.maintenanceX18),
-    unweighted: fromX18(healthInfo.pnlX18),
-  };
+  balances: BalanceWithProduct[];
+  health: HealthStatusByType;
 }
 
 /**
@@ -41,36 +32,61 @@ export async function getSubaccountSummary({
   'querier',
   GetSubaccountSummaryParams
 >): Promise<SubaccountSummaryResponse> {
-  const healthInfo = await querier.getHealthInfo(subaccountId);
-  const allBalances = await querier.getAllBalances(subaccountId);
+  const subaccountInfo = await querier.getSubaccountInfo(subaccountId);
 
   const balances: SubaccountSummaryResponse['balances'] = [];
 
-  allBalances.spotBalances.forEach((spotBalance) => {
+  subaccountInfo.spotBalances.forEach((spotBalance) => {
+    const product = subaccountInfo.spotProducts.find(
+      (product) => product.productId === spotBalance.productId,
+    );
+    if (!product) {
+      console.warn('Spot product not found for balance', spotBalance.productId);
+      return;
+    }
+
     balances.push({
       amount: fromX18(spotBalance.balance.amountX18),
-      health: healthInfoToStatus(spotBalance.healthInfo),
-      ...mapEngineSpotProduct(
-        spotBalance.product.productId,
-        spotBalance.product.product,
-      ),
+      lpAmount: fromX18(spotBalance.lpBalance.amountX18),
+      ...mapEngineSpotProduct(product),
     });
   });
 
-  allBalances.perpBalances.forEach((perpBalance) => {
+  subaccountInfo.perpBalances.forEach((perpBalance) => {
+    const product = subaccountInfo.perpProducts.find(
+      (product) => product.productId === perpBalance.productId,
+    );
+    if (!product) {
+      console.warn('Perp product not found for balance', perpBalance.productId);
+      return;
+    }
+
     balances.push({
       amount: fromX18(perpBalance.balance.amountX18),
+      lpAmount: fromX18(perpBalance.lpBalance.amountX18),
       vQuoteBalance: fromX18(perpBalance.balance.vQuoteBalanceX18),
-      health: healthInfoToStatus(perpBalance.healthInfo),
-      ...mapEnginePerpProduct(
-        perpBalance.product.productId,
-        perpBalance.product.product,
-      ),
+      ...mapEnginePerpProduct(product),
     });
   });
 
   return {
-    health: healthInfoToStatus(healthInfo),
+    health: {
+      initial: {
+        health: fromX18(subaccountInfo.healths[0].healthX18),
+        assets: fromX18(subaccountInfo.healths[0].assetsX18),
+        liabilities: fromX18(subaccountInfo.healths[0].liabilitiesX18),
+      },
+      maintenance: {
+        health: fromX18(subaccountInfo.healths[1].healthX18),
+        assets: fromX18(subaccountInfo.healths[1].assetsX18),
+        liabilities: fromX18(subaccountInfo.healths[1].liabilitiesX18),
+      },
+      unweighted: {
+        health: fromX18(subaccountInfo.healths[2].healthX18),
+        assets: fromX18(subaccountInfo.healths[2].assetsX18),
+        liabilities: fromX18(subaccountInfo.healths[2].liabilitiesX18),
+      },
+    },
     balances,
   };
 }

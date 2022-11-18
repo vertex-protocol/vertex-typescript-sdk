@@ -1,20 +1,13 @@
-import { IPerpEngine, ISpotEngine, IVertexQuerier } from '../typechain-types';
-import {
-  Market,
-  PerpProduct,
-  ProductEngineType,
-  SpotProduct,
-  toProductEngineType,
-} from '../common';
-import { fromX18 } from '@vertex-protocol/utils';
+import { FQuerier } from '../typechain-types';
+import { PerpProduct, ProductEngineType, SpotProduct } from '../common';
+import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import { calcTotalBorrowed, calcTotalDeposited } from '../utils';
 
 export function mapEngineSpotProduct(
-  productId: number,
-  product: ISpotEngine.ProductStructOutput,
+  product: FQuerier.SpotProductStructOutput,
 ): SpotProduct {
   return {
-    productId,
+    productId: product.productId,
     type: ProductEngineType.SPOT,
     tokenAddr: product.config.token,
     interestSmallCap: fromX18(product.config.interestSmallCapX18),
@@ -29,41 +22,34 @@ export function mapEngineSpotProduct(
       product.state.totalDepositsNormalizedX18,
       product.state.cumulativeDepositsMultiplierX18,
     ),
-    shortWeightInitial: fromX18(product.config.shortWeightInitialX18),
-    shortWeightMaintenance: fromX18(product.config.shortWeightMaintenanceX18),
-    longWeightInitial: fromX18(product.config.longWeightInitialX18),
-    longWeightMaintenance: fromX18(product.config.longWeightMaintenanceX18),
-    largePositionPenalty: fromX18(product.config.largePositionPenaltyX18),
-    oraclePrice: fromX18(product.state.priceX18),
+    shortWeightInitial: fromX18(product.risk.shortWeightInitialX18),
+    shortWeightMaintenance: fromX18(product.risk.shortWeightMaintenanceX18),
+    longWeightInitial: fromX18(product.risk.longWeightInitialX18),
+    longWeightMaintenance: fromX18(product.risk.longWeightMaintenanceX18),
+    largePositionPenalty: fromX18(product.risk.largePositionPenaltyX18),
+    oraclePrice: fromX18(product.oraclePriceX18),
+    totalLpBaseAmount: fromX18(product.lpState.base.amountX18),
+    totalLpQuoteAmount: fromX18(product.lpState.quote.amountX18),
+    totalLpSupply: toBigDecimal(product.lpState.supply),
   };
 }
 
 export function mapEnginePerpProduct(
-  productId: number,
-  product: IPerpEngine.ProductStructOutput,
+  product: FQuerier.PerpProductStructOutput,
 ): PerpProduct {
   return {
-    productId,
+    productId: product.productId,
     type: ProductEngineType.PERP,
-    shortWeightInitial: fromX18(product.config.shortWeightInitialX18),
-    shortWeightMaintenance: fromX18(product.config.shortWeightMaintenanceX18),
-    longWeightInitial: fromX18(product.config.longWeightInitialX18),
-    longWeightMaintenance: fromX18(product.config.longWeightMaintenanceX18),
-    largePositionPenalty: fromX18(product.config.largePositionPenaltyX18),
-    oraclePrice: fromX18(product.state.priceX18),
-    emaPrice: fromX18(product.state.emaPriceX18),
+    shortWeightInitial: fromX18(product.risk.shortWeightInitialX18),
+    shortWeightMaintenance: fromX18(product.risk.shortWeightMaintenanceX18),
+    longWeightInitial: fromX18(product.risk.longWeightInitialX18),
+    longWeightMaintenance: fromX18(product.risk.longWeightMaintenanceX18),
+    largePositionPenalty: fromX18(product.risk.largePositionPenaltyX18),
+    oraclePrice: fromX18(product.oraclePriceX18),
+    markPrice: fromX18(product.markPriceX18),
     openInterest: fromX18(product.state.openInterestX18),
-  };
-}
-
-export function mapQuerierMarket(
-  market: IVertexQuerier.MarketInfoStructOutput,
-): Omit<Market, 'product'> {
-  return {
-    productId: market.productId,
-    markPrice: fromX18(market.markPriceX18),
-    priceIncrement: fromX18(market.priceIncrementX18),
-    sizeIncrement: fromX18(market.sizeIncrementX18),
-    type: toProductEngineType(market.productType),
+    totalLpBaseAmount: toBigDecimal(product.lpState.base),
+    totalLpQuoteAmount: toBigDecimal(product.lpState.quote),
+    totalLpSupply: toBigDecimal(product.lpState.supply),
   };
 }

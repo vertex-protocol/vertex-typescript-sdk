@@ -44,6 +44,10 @@ interface BaseProduct {
   shortWeightMaintenance: BigDecimal;
   // Health penalty term for large position sizes
   largePositionPenalty: BigDecimal;
+  // LP state
+  totalLpQuoteAmount: BigDecimal;
+  totalLpBaseAmount: BigDecimal;
+  totalLpSupply: BigDecimal;
 }
 
 /**
@@ -51,7 +55,7 @@ interface BaseProduct {
  */
 export interface PerpProduct extends BaseProduct {
   type: ProductEngineType.PERP;
-  emaPrice: BigDecimal;
+  markPrice: BigDecimal;
   // Current open interest
   openInterest: BigDecimal;
 }

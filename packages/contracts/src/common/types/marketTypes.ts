@@ -13,8 +13,6 @@ export interface Market {
   productId: number;
   type: ProductEngineType;
   product: Product;
-  // Latest orderbook mark price
-  markPrice: BigDecimal;
   // Price increment for the orderbook, order prices must be placed at multiples of this increment
   priceIncrement: BigDecimal;
   // Size increment for the orderbook, order sizes must be placed at multiples of this increment

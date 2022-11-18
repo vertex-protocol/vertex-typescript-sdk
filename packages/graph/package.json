@@ -23,7 +23,7 @@
     "src"
   ],
   "devDependencies": {
-    "@graphprotocol/client-cli": "^2.2.15"
+    "@graphprotocol/client-cli": "2.2.15"
   },
   "dependencies": {
     "@ethersproject/constants": "^5.7.0",
@@ -33,7 +33,7 @@
     "ts-mixer": "^6.0.1"
   },
   "peerDependencies": {
-    "@graphprotocol/client-cli": "^2.2.10"
+    "@graphprotocol/client-cli": "^2.2.8"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
