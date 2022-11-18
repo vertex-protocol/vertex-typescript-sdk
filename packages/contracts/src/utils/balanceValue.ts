@@ -6,54 +6,44 @@ import {
 } from '../common';
 
 /**
- * Calculates the quote value of a spot balance
+ * Calculates the quote value of a spot balance, in terms of quote units
  *
  * @param balanceWithProduct
- * @param decimals If given, adjusts for token decimals by dividing 10^decimals
  */
 export function calcSpotBalanceValue(
   balanceWithProduct: SpotBalanceWithProduct,
-  decimals = 0,
 ): BigDecimal {
-  return balanceWithProduct.amount
-    .multipliedBy(balanceWithProduct.oraclePrice)
-    .div(10 ** decimals);
+  return balanceWithProduct.amount.multipliedBy(balanceWithProduct.oraclePrice);
 }
 
 /**
- * Calculates the notional value of a perp balance
+ * Calculates the notional value of a perp balance, in terms of quote units
  *
  * @param balanceWithProduct
- * @param decimals If given, adjusts for token decimals by dividing 10^decimals
  */
 export function calcPerpBalanceNotionalValue(
   balanceWithProduct: PerpBalanceWithProduct,
-  decimals = 0,
 ): BigDecimal {
   return balanceWithProduct.amount
     .multipliedBy(balanceWithProduct.oraclePrice)
-    .abs()
-    .div(10 ** decimals);
+    .abs();
 }
 
 /**
- * Calculates the true quote value of a perp balance, which is the same as its pnl
+ * Calculates the true quote value of a perp balance, which is the same as its pnl, in terms of quote units
  *
  * @param balanceWithProduct
- * @param decimals If given, adjusts for token decimals by dividing 10^decimals
  */
 export function calcPerpBalanceValue(
   balanceWithProduct: PerpBalanceWithProduct,
-  decimals = 0,
 ): BigDecimal {
   return balanceWithProduct.amount
     .multipliedBy(balanceWithProduct.oraclePrice)
-    .plus(balanceWithProduct.vQuoteBalance)
-    .div(10 ** decimals);
+    .plus(balanceWithProduct.vQuoteBalance);
 }
 
 /**
- * Calculates the implied value of an LP balance
+ * Calculates the implied value of an LP balance, in terms of quote units
  *
  * @param balanceWithProduct
  * @param decimals
@@ -61,8 +51,6 @@ export function calcPerpBalanceValue(
  */
 export function calcLpBalanceValue(
   balanceWithProduct: BalanceWithProduct,
-  decimals = 0,
-  quoteDecimals = 0,
 ): BigDecimal {
   const lpBalance = balanceWithProduct.lpAmount;
   if (lpBalance.isZero()) {
@@ -72,14 +60,13 @@ export function calcLpBalanceValue(
   const impliedBaseBalance = balanceWithProduct.totalLpBaseAmount
     .div(balanceWithProduct.totalLpSupply)
     .multipliedBy(lpBalance);
-  const impliedBaseValue = impliedBaseBalance
-    .multipliedBy(balanceWithProduct.oraclePrice)
-    .div(10 ** decimals);
+  const impliedBaseValue = impliedBaseBalance.multipliedBy(
+    balanceWithProduct.oraclePrice,
+  );
 
   const impliedQuoteBalance = balanceWithProduct.totalLpQuoteAmount
     .div(balanceWithProduct.totalLpSupply)
     .multipliedBy(lpBalance);
-  const impliedQuoteValue = impliedQuoteBalance.div(10 ** quoteDecimals);
 
-  return impliedBaseValue.plus(impliedQuoteValue);
+  return impliedBaseValue.plus(impliedQuoteBalance);
 }

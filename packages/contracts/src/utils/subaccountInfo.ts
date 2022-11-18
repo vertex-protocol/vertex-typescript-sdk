@@ -1,5 +1,5 @@
 import { SubaccountSummaryResponse } from '../query';
-import { ProductEngineType, QUOTE_PRODUCT_ID } from '../common';
+import { ProductEngineType } from '../common';
 import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
 import {
   calcLpBalanceValue,
@@ -30,12 +30,9 @@ export interface TotalPortfolioValues {
  * Return total portfolio values in terms of quote
  *
  * @param summary
- * @param productDecimalsByProductId Token decimals by product ID, if given for a product, will divide the
- *  absolute amount by the decimals given, defaults to 0
  */
 export function calcTotalPortfolioValues(
   summary: SubaccountSummaryResponse,
-  productDecimalsByProductId: Record<number, number> = {},
 ): TotalPortfolioValues {
   const values: TotalPortfolioValues = {
     netTotal: toBigDecimal(0),
@@ -47,26 +44,19 @@ export function calcTotalPortfolioValues(
     totalNotional: toBigDecimal(0),
   };
 
-  const quoteDecimals = productDecimalsByProductId[QUOTE_PRODUCT_ID] ?? 0;
   summary.balances.forEach((balance) => {
-    const decimals = productDecimalsByProductId[balance.productId] ?? 0;
-
     if (balance.type === ProductEngineType.SPOT) {
-      const value = calcSpotBalanceValue(balance, decimals);
+      const value = calcSpotBalanceValue(balance);
 
       values.spot = values.spot.plus(value);
-      values.spotLp = values.spotLp.plus(
-        calcLpBalanceValue(balance, decimals, quoteDecimals),
-      );
+      values.spotLp = values.spotLp.plus(calcLpBalanceValue(balance));
     } else if (balance.type === ProductEngineType.PERP) {
-      const notional = calcPerpBalanceNotionalValue(balance, decimals);
-      const value = calcPerpBalanceValue(balance, decimals);
+      const notional = calcPerpBalanceNotionalValue(balance);
+      const value = calcPerpBalanceValue(balance);
 
       values.perpNotional = values.perpNotional.plus(notional);
       values.perp = values.perp.plus(value);
-      values.perpLp = values.perpLp.plus(
-        calcLpBalanceValue(balance, decimals, quoteDecimals),
-      );
+      values.perpLp = values.perpLp.plus(calcLpBalanceValue(balance));
     }
   });
 
@@ -86,16 +76,9 @@ export function calcTotalPortfolioValues(
  * Leverage calculated as totalNotional / netTotal
  *
  * @param summary
- * @param productDecimalsByProductId
  */
-export function calcSubaccountLeverage(
-  summary: SubaccountSummaryResponse,
-  productDecimalsByProductId: Record<number, number> = {},
-) {
-  const { totalNotional, netTotal } = calcTotalPortfolioValues(
-    summary,
-    productDecimalsByProductId,
-  );
+export function calcSubaccountLeverage(summary: SubaccountSummaryResponse) {
+  const { totalNotional, netTotal } = calcTotalPortfolioValues(summary);
   if (netTotal.eq(0)) {
     return toBigDecimal(0);
   }
