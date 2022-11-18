@@ -73,16 +73,21 @@ export function calcTotalPortfolioValues(
 }
 
 /**
- * Leverage calculated as totalNotional / netTotal
+ * Leverage calculated as (assets + liabilities) / (assets - liabilities), using initial health
  *
  * @param summary
  */
 export function calcSubaccountLeverage(summary: SubaccountSummaryResponse) {
-  const { totalNotional, netTotal } = calcTotalPortfolioValues(summary);
-  if (netTotal.eq(0)) {
+  const initialHealth = summary.health.initial;
+  const numerator = initialHealth.assets.plus(initialHealth.liabilities);
+  if (numerator.isZero()) {
     return toBigDecimal(0);
   }
-  return totalNotional.dividedBy(netTotal);
+  const denom = initialHealth.assets.minus(initialHealth.liabilities);
+  if (denom.isZero()) {
+    return toBigDecimal('Infinity');
+  }
+  return numerator.dividedBy(denom);
 }
 
 export interface MarginUsageFractions {
