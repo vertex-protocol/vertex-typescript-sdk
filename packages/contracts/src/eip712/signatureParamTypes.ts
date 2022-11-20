@@ -53,7 +53,6 @@ export interface LiquidateSubaccountParams {
   nonce: BigNumberish;
 }
 
-// Used for placement and cancellations
 export interface OrderParams {
   /**
    * IOC/FOK not currently supported
@@ -69,5 +68,14 @@ export interface OrderParams {
   // Positive for buy, negative for sell
   amount: BigNumberish;
   // A unique nonce to identify the order
+  nonce: BigNumberish;
+}
+
+export interface OrderCancellationParams {
+  // Address of sender
+  sender: string;
+  subaccountName: string;
+  productIds: number[];
+  digests: string[];
   nonce: BigNumberish;
 }

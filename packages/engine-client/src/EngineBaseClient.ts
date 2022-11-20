@@ -6,6 +6,8 @@ import {
   EngineServerQueryRequestType,
   EngineServerQueryResponse,
   EngineServerQueryResponseByType,
+  GetEngineNoncesParams,
+  GetEngineNoncesResponse,
 } from './types';
 import {
   getSignedTransactionRequest,
@@ -42,6 +44,26 @@ export class EngineBaseClient {
 
   constructor(opts: EngineClientOpts) {
     this.opts = opts;
+  }
+
+  async getNoncesForCurrentSigner(): Promise<GetEngineNoncesResponse> {
+    if (this.opts.signer == null) {
+      throw Error('No current signer in opts');
+    }
+    return this.getNonces({
+      address: await this.opts.signer.getAddress(),
+    });
+  }
+
+  async getNonces(
+    params: GetEngineNoncesParams,
+  ): Promise<GetEngineNoncesResponse> {
+    const baseResp = await this.query('nonces', params);
+
+    return {
+      orderNonce: baseResp.order_nonce,
+      txNonce: baseResp.tx_nonce,
+    };
   }
 
   /**

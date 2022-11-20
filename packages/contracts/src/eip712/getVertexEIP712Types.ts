@@ -22,7 +22,7 @@ export function getVertexEIP712Types(
       };
     case 'mint_lp':
       return {
-        Order: [
+        MintLp: [
           { name: 'sender', type: 'address' },
           { name: 'subaccountName', type: 'string' },
           { name: 'productId', type: 'uint32' },
@@ -34,7 +34,7 @@ export function getVertexEIP712Types(
       };
     case 'burn_lp':
       return {
-        Order: [
+        BurnLp: [
           { name: 'sender', type: 'address' },
           { name: 'subaccountName', type: 'string' },
           { name: 'productId', type: 'uint32' },
@@ -58,9 +58,8 @@ export function getVertexEIP712Types(
         Cancellation: [
           { name: 'sender', type: 'address' },
           { name: 'subaccountName', type: 'string' },
-          { name: 'priceX18', type: 'int256' },
-          { name: 'amount', type: 'int256' },
-          { name: 'expiration', type: 'uint64' },
+          { name: 'productIds', type: 'uint32[]' },
+          { name: 'digests', type: 'bytes32[]' },
           { name: 'nonce', type: 'uint64' },
         ],
       };

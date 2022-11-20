@@ -6,8 +6,9 @@ import {
   MockERC20__factory,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
-import { BaseSpotAPI } from './BaseSpotAPI';
+import { BaseSpotAPI, WithoutSender } from './BaseSpotAPI';
 import { ApproveAllowanceParams } from './types';
+import { WithoutNonce } from '@vertex-protocol/engine-client';
 
 export class SpotExecuteAPI extends BaseSpotAPI {
   async deposit(params: ExecuteDepositCollateralParams) {
@@ -19,7 +20,9 @@ export class SpotExecuteAPI extends BaseSpotAPI {
     });
   }
 
-  async withdraw(params: Omit<WithdrawCollateralParams, 'sender'>) {
+  async withdraw(
+    params: WithoutSender<WithoutNonce<WithdrawCollateralParams>>,
+  ) {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
     return this.context.engineClient.withdrawCollateral({

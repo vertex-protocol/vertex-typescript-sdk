@@ -1,9 +1,11 @@
-import { PlaceOrderParams } from '@vertex-protocol/engine-client';
-import { OrderParams } from '@vertex-protocol/contracts';
+import {
+  OrderParamsWithoutNonce,
+  PlaceOrderParams,
+} from '@vertex-protocol/engine-client';
 
 export type OrderActionParams = Omit<
   PlaceOrderParams,
   'orderbookAddr' | 'order'
 > & {
-  order: Omit<OrderParams, 'sender'>;
+  order: Omit<OrderParamsWithoutNonce, 'sender'>;
 };

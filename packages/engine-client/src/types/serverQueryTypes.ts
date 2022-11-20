@@ -6,6 +6,10 @@ import {
   EngineServerSpotProduct,
 } from './serverQueryModelTypes';
 
+export interface EngineServerNoncesParams {
+  address: string;
+}
+
 export interface EngineServerSubaccountInfoQueryParams {
   subaccount_id: number;
   txns?: Array<
@@ -63,6 +67,7 @@ export interface EngineServerMarketLiquidityQueryParams {
 }
 
 export interface EngineServerQueryRequestByType {
+  nonces: EngineServerNoncesParams;
   all_products: Record<string, never>;
   subaccount_info: Omit<EngineServerSubaccountInfoQueryParams, 'txns'> & {
     // JSON serialized txns
@@ -77,11 +82,9 @@ export interface EngineServerQueryRequestByType {
 
 export type EngineServerQueryRequestType = keyof EngineServerQueryRequestByType;
 
-export interface EngineServerQueryRequest {
-  // EngineServer output key to where responses are sent
-  result_key: string;
-  // Request, keyed by ONE type, value of request params, this isn't the best typing here, resolve later
-  request: Partial<EngineServerQueryRequestByType>;
+export interface EngineServerNoncesResponse {
+  order_nonce: number;
+  tx_nonce: number;
 }
 
 export interface EngineServerSubaccountInfoResponse {
@@ -147,6 +150,7 @@ export interface EngineServerValidateOrderResponse {
 }
 
 export interface EngineServerQueryResponseByType {
+  nonces: EngineServerNoncesResponse;
   subaccount_info: EngineServerSubaccountInfoResponse;
   all_products: EngineServerAllProductsResponse;
   order: EngineServerGetOrderResponse;

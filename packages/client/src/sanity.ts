@@ -51,7 +51,6 @@ async function main() {
     // Limit price
     price: 1,
     amount: 1,
-    nonce: getNonce(),
   };
 
   const { digest } = await vertexClient.market.placeOrder({
@@ -61,8 +60,9 @@ async function main() {
   });
 
   await vertexClient.market.cancelOrder({
-    order: orderParams,
-    productId: 1,
+    digests: [digest],
+    productIds: [1],
+    subaccountName: 'default',
   });
 
   // Fetches state from offchain sequencer
@@ -96,7 +96,6 @@ async function main() {
     subaccountName: 'default',
     productId: 0,
     amount: 10,
-    nonce: getNonce(),
   });
 }
 

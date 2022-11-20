@@ -6,6 +6,7 @@ import {
   BurnLpParams,
   LiquidateSubaccountParams,
   MintLpParams,
+  OrderCancellationParams,
   OrderParams,
   WithdrawCollateralParams,
 } from './signatureParamTypes';
@@ -32,7 +33,7 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
     case 'place_order':
       return getOrderValues(params as OrderParams);
     case 'cancel_order':
-      return getOrderValues(params as OrderParams);
+      return getOrderCancellationValues(params as OrderCancellationParams);
     case 'liquidate_subaccount':
       return getLiquidateSubaccountValues(params as LiquidateSubaccountParams);
   }
@@ -78,6 +79,16 @@ function getOrderValues(params: OrderParams) {
     priceX18: toX18(params.price).toString(),
     amount: BigNumber.from(params.amount).toString(),
     expiration: BigNumber.from(params.expiration).toString(),
+    nonce: BigNumber.from(params.nonce).toNumber(),
+  };
+}
+
+function getOrderCancellationValues(params: OrderCancellationParams) {
+  return {
+    sender: params.sender,
+    subaccountName: params.subaccountName,
+    productIds: params.productIds,
+    digests: params.digests,
     nonce: BigNumber.from(params.nonce).toNumber(),
   };
 }

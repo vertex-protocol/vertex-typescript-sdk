@@ -3,15 +3,10 @@ import {
   depositCollateral,
   IClearinghouse__factory,
   IEndpoint__factory,
-  OrderParams,
-  WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import { nowInSeconds } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
-
-function getNonce() {
-  return Date.now().toFixed(0) + (Math.random() * 1000).toFixed(0);
-}
+import { OrderParamsWithoutNonce } from './types';
 
 function getExpiration() {
   return nowInSeconds() + 1000;
@@ -70,12 +65,11 @@ async function main() {
   console.log('Placing order');
   const productId = 1;
   const orderbookAddr = await clearinghouse.getOrderbook(productId);
-  const order: OrderParams = {
+  const order: OrderParamsWithoutNonce = {
     sender: signer.address,
     subaccountName: 'default',
     amount: -1,
     expiration: getExpiration(),
-    nonce: getNonce(),
     price: 10,
   };
   const placeResult = await client.placeOrder({
@@ -108,9 +102,11 @@ async function main() {
 
   console.log('Cancelling order');
   const cancelResult = await client.cancelOrder({
-    orderbookAddr,
-    productId,
-    order,
+    subaccountName: 'default',
+    sender: signer.address,
+    productIds: [productId],
+    digests: [placeResult.digest],
+    endpointAddr,
   });
   console.log('Done cancelling order', cancelResult);
 
@@ -124,17 +120,11 @@ async function main() {
     JSON.stringify(subaccountOrdersAfterCancel),
   );
 
-  // Withdraw collateral
-  const withdrawParams: WithdrawCollateralParams = {
+  const withdrawResult = await client.withdrawCollateral({
     sender: signer.address,
     subaccountName: 'default',
     productId: 0,
     amount: 100,
-    nonce: getNonce(),
-  };
-
-  const withdrawResult = await client.withdrawCollateral({
-    ...withdrawParams,
     endpointAddr,
   });
 

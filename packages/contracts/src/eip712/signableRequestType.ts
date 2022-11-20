@@ -2,6 +2,7 @@ import {
   BurnLpParams,
   LiquidateSubaccountParams,
   MintLpParams,
+  OrderCancellationParams,
   OrderParams,
   WithdrawCollateralParams,
 } from './signatureParamTypes';
@@ -14,7 +15,7 @@ export interface SignableRequestTypeToParams {
   mint_lp: MintLpParams;
   burn_lp: BurnLpParams;
   place_order: OrderParams;
-  cancel_order: OrderParams;
+  cancel_order: OrderCancellationParams;
   liquidate_subaccount: LiquidateSubaccountParams;
 }
 

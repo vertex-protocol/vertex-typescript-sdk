@@ -6,6 +6,7 @@ import {
   SubaccountSummaryResponse,
 } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
+import { EngineServerNoncesParams } from './serverQueryTypes';
 
 export type GetEngineSubaccountSummaryParams = GetSubaccountSummaryParams;
 
@@ -45,6 +46,13 @@ export type GetEngineEstimatedSubaccountSummaryParams =
   GetSubaccountSummaryParams & {
     txs: SubaccountTx[];
   };
+
+export type GetEngineNoncesParams = EngineServerNoncesParams;
+
+export interface GetEngineNoncesResponse {
+  orderNonce: number;
+  txNonce: number;
+}
 
 export type GetEngineSubaccountSummaryResponse = SubaccountSummaryResponse;
 

@@ -1,13 +1,19 @@
 import { BaseVertexAPI } from '../base';
 import { OrderActionParams } from './executeTypes';
-import { BurnLpParams, MintLpParams } from '@vertex-protocol/contracts';
+import {
+  BurnLpParams,
+  MintLpParams,
+  OrderCancellationParams,
+} from '@vertex-protocol/contracts';
+import { WithoutNonce } from '@vertex-protocol/engine-client';
+import { WithoutSender } from '../spot/BaseSpotAPI';
 
 export class MarketExecuteAPI extends BaseVertexAPI {
   /**
    * Mint LP tokens through engine
    * @param params
    */
-  async mintLp(params: Omit<MintLpParams, 'sender'>) {
+  async mintLp(params: WithoutSender<WithoutNonce<MintLpParams>>) {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
     return this.context.engineClient.mintLp({
@@ -21,7 +27,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Burn LP tokens through engine
    * @param params
    */
-  async burnLp(params: Omit<BurnLpParams, 'sender'>) {
+  async burnLp(params: WithoutSender<WithoutNonce<BurnLpParams>>) {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
     return this.context.engineClient.burnLp({
@@ -52,16 +58,15 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Cancels an order through the engine
    * @param params
    */
-  async cancelOrder(params: OrderActionParams) {
-    const { productId, order } = params;
-    const orderbookAddr = await this.getOrderbookAddress(productId);
+  async cancelOrder(
+    params: WithoutSender<WithoutNonce<OrderCancellationParams>>,
+  ) {
+    const sender = (await this.context.engineSigner?.getAddress()) ?? '';
+
     return this.context.engineClient.cancelOrder({
-      order: {
-        ...order,
-        sender: (await this.context.engineSigner?.getAddress()) ?? '',
-      },
-      orderbookAddr,
-      productId,
+      sender,
+      endpointAddr: this.context.contracts.endpoint.address,
+      ...params,
     });
   }
 
