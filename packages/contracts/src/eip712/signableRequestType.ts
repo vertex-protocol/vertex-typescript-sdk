@@ -15,7 +15,7 @@ export interface SignableRequestTypeToParams {
   mint_lp: MintLpParams;
   burn_lp: BurnLpParams;
   place_order: OrderParams;
-  cancel_order: OrderCancellationParams;
+  cancel_orders: OrderCancellationParams;
   liquidate_subaccount: LiquidateSubaccountParams;
 }
 

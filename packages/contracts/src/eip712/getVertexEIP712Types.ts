@@ -53,7 +53,7 @@ export function getVertexEIP712Types(
           { name: 'nonce', type: 'uint64' },
         ],
       };
-    case 'cancel_order':
+    case 'cancel_orders':
       return {
         Cancellation: [
           { name: 'sender', type: 'address' },

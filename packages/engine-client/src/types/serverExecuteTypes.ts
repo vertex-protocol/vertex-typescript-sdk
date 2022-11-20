@@ -32,7 +32,7 @@ export interface EngineServerExecuteRequestByType {
   mint_lp: SignedTx<MintLpParams>;
   burn_lp: SignedTx<BurnLpParams>;
   place_order: EngineServerPlaceOrderParams;
-  cancel_order: SignedTx<OrderCancellationParams>;
+  cancel_orders: SignedTx<OrderCancellationParams>;
 }
 
 export type EngineServerExecuteRequestType =

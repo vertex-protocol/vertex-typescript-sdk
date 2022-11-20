@@ -32,7 +32,7 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
       return getBurnLpValues(params as BurnLpParams);
     case 'place_order':
       return getOrderValues(params as OrderParams);
-    case 'cancel_order':
+    case 'cancel_orders':
       return getOrderCancellationValues(params as OrderCancellationParams);
     case 'liquidate_subaccount':
       return getLiquidateSubaccountValues(params as LiquidateSubaccountParams);

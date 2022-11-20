@@ -137,12 +137,12 @@ export class EngineExecuteClient extends EngineBaseClient {
     const paramsWithNonce = { ...params, nonce: orderNonce };
 
     const tx = getVertexEIP712Values(
-      'cancel_order',
+      'cancel_orders',
       paramsWithNonce,
     ) as unknown as OrderCancellationParams;
-    const signature = await this.sign('cancel_order', params.endpointAddr, tx);
+    const signature = await this.sign('cancel_orders', params.endpointAddr, tx);
 
-    return this.execute('cancel_order', {
+    return this.execute('cancel_orders', {
       tx,
       signature,
     });
