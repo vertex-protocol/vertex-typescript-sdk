@@ -260,11 +260,6 @@
             "internalType": "int256",
             "name": "totalBorrowsNormalizedX18",
             "type": "int256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "lastUpdateTime",
-            "type": "uint256"
           }
         ],
         "internalType": "struct ISpotEngine.State",
@@ -347,11 +342,6 @@
             "internalType": "struct ISpotEngine.Balance",
             "name": "base",
             "type": "tuple"
-          },
-          {
-            "internalType": "uint256",
-            "name": "lastUpdateTime",
-            "type": "uint256"
           }
         ],
         "internalType": "struct ISpotEngine.LpState",
@@ -391,11 +381,6 @@
             "internalType": "int256",
             "name": "totalBorrowsNormalizedX18",
             "type": "int256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "lastUpdateTime",
-            "type": "uint256"
           }
         ],
         "internalType": "struct ISpotEngine.State",
@@ -559,6 +544,19 @@
         "type": "int256"
       }
     ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "dt",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateStates",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   }

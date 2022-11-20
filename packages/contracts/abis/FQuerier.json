@@ -210,11 +210,6 @@
                     "internalType": "int256",
                     "name": "totalBorrowsNormalizedX18",
                     "type": "int256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "lastUpdateTime",
-                    "type": "uint256"
                   }
                 ],
                 "internalType": "struct ISpotEngine.State",
@@ -261,11 +256,6 @@
                     "internalType": "struct ISpotEngine.Balance",
                     "name": "base",
                     "type": "tuple"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "lastUpdateTime",
-                    "type": "uint256"
                   }
                 ],
                 "internalType": "struct ISpotEngine.LpState",
@@ -374,11 +364,6 @@
                     "internalType": "int256",
                     "name": "openInterestX18",
                     "type": "int256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "lastUpdateTime",
-                    "type": "uint256"
                   }
                 ],
                 "internalType": "struct IPerpEngine.State",
@@ -411,11 +396,6 @@
                     "internalType": "int256",
                     "name": "quote",
                     "type": "int256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "lastUpdateTime",
-                    "type": "uint256"
                   }
                 ],
                 "internalType": "struct IPerpEngine.LpState",
@@ -672,11 +652,6 @@
                 "internalType": "int256",
                 "name": "openInterestX18",
                 "type": "int256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "lastUpdateTime",
-                "type": "uint256"
               }
             ],
             "internalType": "struct IPerpEngine.State",
@@ -709,11 +684,6 @@
                 "internalType": "int256",
                 "name": "quote",
                 "type": "int256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "lastUpdateTime",
-                "type": "uint256"
               }
             ],
             "internalType": "struct IPerpEngine.LpState",
@@ -923,11 +893,6 @@
                 "internalType": "int256",
                 "name": "totalBorrowsNormalizedX18",
                 "type": "int256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "lastUpdateTime",
-                "type": "uint256"
               }
             ],
             "internalType": "struct ISpotEngine.State",
@@ -974,11 +939,6 @@
                 "internalType": "struct ISpotEngine.Balance",
                 "name": "base",
                 "type": "tuple"
-              },
-              {
-                "internalType": "uint256",
-                "name": "lastUpdateTime",
-                "type": "uint256"
               }
             ],
             "internalType": "struct ISpotEngine.LpState",
@@ -1264,11 +1224,6 @@
                     "internalType": "int256",
                     "name": "totalBorrowsNormalizedX18",
                     "type": "int256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "lastUpdateTime",
-                    "type": "uint256"
                   }
                 ],
                 "internalType": "struct ISpotEngine.State",
@@ -1315,11 +1270,6 @@
                     "internalType": "struct ISpotEngine.Balance",
                     "name": "base",
                     "type": "tuple"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "lastUpdateTime",
-                    "type": "uint256"
                   }
                 ],
                 "internalType": "struct ISpotEngine.LpState",
@@ -1428,11 +1378,6 @@
                     "internalType": "int256",
                     "name": "openInterestX18",
                     "type": "int256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "lastUpdateTime",
-                    "type": "uint256"
                   }
                 ],
                 "internalType": "struct IPerpEngine.State",
@@ -1465,11 +1410,6 @@
                     "internalType": "int256",
                     "name": "quote",
                     "type": "int256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "lastUpdateTime",
-                    "type": "uint256"
                   }
                 ],
                 "internalType": "struct IPerpEngine.LpState",
