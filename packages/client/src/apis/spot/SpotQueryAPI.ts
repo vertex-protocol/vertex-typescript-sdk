@@ -3,7 +3,7 @@ import {
   isSpotProduct,
   SpotProduct,
 } from '@vertex-protocol/contracts';
-import { BigNumber, Signer } from 'ethers';
+import { BigNumber } from 'ethers';
 import { BaseSpotAPI } from './BaseSpotAPI';
 import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
 
@@ -21,9 +21,7 @@ export class SpotQueryAPI extends BaseSpotAPI {
    */
   async getTokenWalletBalance(productId: number): Promise<BigNumber> {
     const token = await this.getTokenContractForProduct(productId);
-    // Force cast here
-    const signer = this.context.chainSignerOrProvider as Signer;
-    return token.balanceOf(signer.getAddress());
+    return token.balanceOf(this.getChainSignerAddress());
   }
 
   /**
@@ -31,13 +29,18 @@ export class SpotQueryAPI extends BaseSpotAPI {
    */
   async getTokenAllowance(productId: number): Promise<BigDecimal> {
     const token = await this.getTokenContractForProduct(productId);
-    // Force cast here
-    const signer = this.context.chainSignerOrProvider as Signer;
     return toBigDecimal(
       await token.allowance(
-        signer.getAddress(),
+        this.getChainSignerAddress(),
         this.context.contracts.endpoint.address,
       ),
     );
+  }
+
+  private async getChainSignerAddress() {
+    if ('getAddress' in this.context.chainSignerOrProvider) {
+      return this.context.chainSignerOrProvider.getAddress();
+    }
+    throw Error('No `signer.getAddress()` for current context');
   }
 }

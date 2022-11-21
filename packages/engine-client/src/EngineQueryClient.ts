@@ -4,7 +4,7 @@ import {
   MarketWithProduct,
 } from '@vertex-protocol/contracts';
 import { BigNumber } from 'ethers';
-import { fromX18, toX18 } from '@vertex-protocol/utils';
+import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
 import {
   EngineServerSubaccountInfoQueryParams,
   EngineServerSubaccountInfoResponse,
@@ -14,6 +14,8 @@ import {
   GetEngineMarketLiquidityResponse,
   GetEngineMarketPriceParams,
   GetEngineMarketPriceResponse,
+  GetEngineMaxOrderSizeParams,
+  GetEngineMaxOrderSizeResponse,
   GetEngineOrderParams,
   GetEngineOrderResponse,
   GetEngineSubaccountOrdersParams,
@@ -234,6 +236,20 @@ export class EngineQueryClient extends EngineBaseClient {
       bid: fromX18(baseResponse.bid_x18),
       productId: baseResponse.product_id,
     };
+  }
+
+  async getMaxOrderSize(
+    params: GetEngineMaxOrderSizeParams,
+  ): Promise<GetEngineMaxOrderSizeResponse> {
+    const baseResponse = await this.query('max_order_size', {
+      direction: params.side,
+      price_x18: toX18(params.price.toFixed(0)).toString(),
+      product_id: params.productId,
+      sender: params.sender,
+      subaccount_name: params.subaccountName,
+    });
+
+    return toBigDecimal(baseResponse.max_order_size);
   }
 }
 

@@ -66,6 +66,14 @@ export interface EngineServerMarketLiquidityQueryParams {
   depth: number;
 }
 
+export interface EngineServerMaxOrderSizeQueryParams {
+  sender: string;
+  subaccount_name: string;
+  product_id: number;
+  price_x18: string;
+  direction: 'long' | 'short';
+}
+
 export interface EngineServerQueryRequestByType {
   nonces: EngineServerNoncesParams;
   all_products: Record<string, never>;
@@ -78,6 +86,7 @@ export interface EngineServerQueryRequestByType {
   validate_order: EngineServerValidateOrderQueryParams;
   subaccount_orders: EngineServerSubaccountOrdersQueryParams;
   market_liquidity: EngineServerMarketLiquidityQueryParams;
+  max_order_size: EngineServerMaxOrderSizeQueryParams;
 }
 
 export type EngineServerQueryRequestType = keyof EngineServerQueryRequestByType;
@@ -149,6 +158,10 @@ export interface EngineServerValidateOrderResponse {
   valid: boolean;
 }
 
+export interface EngineServerMaxOrderSizeResponse {
+  max_order_size: BigNumberish;
+}
+
 export interface EngineServerQueryResponseByType {
   nonces: EngineServerNoncesResponse;
   subaccount_info: EngineServerSubaccountInfoResponse;
@@ -158,6 +171,7 @@ export interface EngineServerQueryResponseByType {
   subaccount_orders: EngineServerSubaccountOrdersResponse;
   market_liquidity: EngineServerMarketLiquidityResponse;
   market_price: EngineServerMarketPriceResponse;
+  max_order_size: EngineServerMaxOrderSizeResponse;
 }
 
 export interface EngineServerQueryResponse<

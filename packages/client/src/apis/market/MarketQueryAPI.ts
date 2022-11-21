@@ -49,7 +49,6 @@ export class MarketQueryAPI extends BaseVertexAPI {
   async getOrderByDigest(
     params: GetOrderByDigestParams,
   ): Promise<GetOrderByDigestResponse> {
-    // TODO: may need a try/catch here
     const engineResponse = await this.context.engineClient.getOrder(params);
     const graphResponse = await this.context.graph.getOrderByDigest(params);
 

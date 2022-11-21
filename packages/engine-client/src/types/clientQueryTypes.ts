@@ -1,4 +1,5 @@
 import {
+  BalanceSide,
   GetAllMarketsResponse,
   GetSubaccountSummaryParams,
   OrderParams,
@@ -136,3 +137,13 @@ export interface GetEngineMarketPriceResponse {
   bid: BigDecimal;
   ask: BigDecimal;
 }
+
+export interface GetEngineMaxOrderSizeParams {
+  sender: string;
+  price: BigDecimal;
+  subaccountName: string;
+  productId: number;
+  side: BalanceSide;
+}
+
+export type GetEngineMaxOrderSizeResponse = BigDecimal;
