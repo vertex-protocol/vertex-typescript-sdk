@@ -2,12 +2,12 @@
   "nodeUrl": "https://goerli-rollup.arbitrum.io/rpc",
   "explorerUrl": "https://goerli-rollup-explorer.arbitrum.io",
   "clearinghouseGraphUrl": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli",
-  "startBlock": 1435712,
+  "startBlock": 1488921,
   "deployer": "0x3c06e307BA6Ab81E8Ff6661c1559ce8027744AE5",
   "quote": "0x179522635726710Dd7D2035a81d856de4Aa7836c",
-  "querier": "0xCDb238Ddd1B106664f0dFCf6F3cfD32878aaf9ff",
-  "clearinghouse": "0xDbC87d70943D2CD34223D26716b3A8D412b852c4",
-  "endpoint": "0x20DC12a6Ca18c94c0704b2640690495017b38881",
-  "spotEngine": "0x6AAfe31748c6d043Afab323323BBe66f0eF19fcF",
-  "perpEngine": "0xB68a1C1F8Ffa91DAb753921527E2624D6085023a"
+  "querier": "0x803af006aa7D694A87211EeB3d01082b8EAFAE48",
+  "clearinghouse": "0x157eF744877C5F5a34e898Ec9dD5c9229403D483",
+  "endpoint": "0xb4932F37bCE07170693c1678F19c447c03Cd4887",
+  "spotEngine": "0xc1036cA2b36f1A1666663095D8807831a48A0A4B",
+  "perpEngine": "0x618fe38966294F56617392D338fAEC2041aA1ADa"
 }
