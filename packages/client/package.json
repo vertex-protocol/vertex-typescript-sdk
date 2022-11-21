@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/client",
-  "version": "0.1.0-alpha.45",
+  "version": "0.1.0-alpha.46",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -23,10 +23,10 @@
     "src"
   ],
   "dependencies": {
-    "@vertex-protocol/contracts": "^0.1.0-alpha.45",
-    "@vertex-protocol/engine-client": "^0.1.0-alpha.45",
-    "@vertex-protocol/graph": "^0.1.0-alpha.45",
-    "@vertex-protocol/utils": "^0.1.0-alpha.45",
+    "@vertex-protocol/contracts": "^0.1.0-alpha.46",
+    "@vertex-protocol/engine-client": "^0.1.0-alpha.46",
+    "@vertex-protocol/graph": "^0.1.0-alpha.46",
+    "@vertex-protocol/utils": "^0.1.0-alpha.46",
     "ethers": "^5.7.1",
     "ts-mixer": "^6.0.1"
   },
@@ -35,5 +35,5 @@
     "readmeFile": "./README.md",
     "displayName": "Vertex Client"
   },
-  "gitHead": "fc087878a2d14bfecc9c600a0e53485b3286536f"
+  "gitHead": "212cfb4523821c093e5f816e45b3ba73c774e4b0"
 }
