@@ -76,11 +76,9 @@ export declare namespace ISpotEngine {
     cumulativeBorrowsMultiplierX18: PromiseOrValue<BigNumberish>;
     totalDepositsNormalizedX18: PromiseOrValue<BigNumberish>;
     totalBorrowsNormalizedX18: PromiseOrValue<BigNumberish>;
-    lastUpdateTime: PromiseOrValue<BigNumberish>;
   };
 
   export type StateStructOutput = [
-    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -90,7 +88,6 @@ export declare namespace ISpotEngine {
     cumulativeBorrowsMultiplierX18: BigNumber;
     totalDepositsNormalizedX18: BigNumber;
     totalBorrowsNormalizedX18: BigNumber;
-    lastUpdateTime: BigNumber;
   };
 
   export type BalanceStruct = {
@@ -107,19 +104,16 @@ export declare namespace ISpotEngine {
     supply: PromiseOrValue<BigNumberish>;
     quote: ISpotEngine.BalanceStruct;
     base: ISpotEngine.BalanceStruct;
-    lastUpdateTime: PromiseOrValue<BigNumberish>;
   };
 
   export type LpStateStructOutput = [
     BigNumber,
     ISpotEngine.BalanceStructOutput,
-    ISpotEngine.BalanceStructOutput,
-    BigNumber
+    ISpotEngine.BalanceStructOutput
   ] & {
     supply: BigNumber;
     quote: ISpotEngine.BalanceStructOutput;
     base: ISpotEngine.BalanceStructOutput;
-    lastUpdateTime: BigNumber;
   };
 
   export type LpBalanceStruct = { amountX18: PromiseOrValue<BigNumberish> };
@@ -143,6 +137,7 @@ export interface ISpotEngineInterface extends utils.Interface {
     "mintLp(uint32,uint64,int256,int256,int256)": FunctionFragment;
     "socializeSubaccount(uint64,int256)": FunctionFragment;
     "swapLp(uint32,uint64,int256,int256,int256,int256)": FunctionFragment;
+    "updateStates(uint256)": FunctionFragment;
   };
 
   getFunction(
@@ -161,6 +156,7 @@ export interface ISpotEngineInterface extends utils.Interface {
       | "mintLp"
       | "socializeSubaccount"
       | "swapLp"
+      | "updateStates"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -242,6 +238,10 @@ export interface ISpotEngineInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "updateStates",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "applyDeltas",
@@ -284,6 +284,10 @@ export interface ISpotEngineInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "swapLp", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "updateStates",
+    data: BytesLike
+  ): Result;
 
   events: {
     "AddProduct(uint32)": EventFragment;
@@ -437,6 +441,11 @@ export interface ISpotEngine extends BaseContract {
       lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    updateStates(
+      dt: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   applyDeltas(
@@ -523,6 +532,11 @@ export interface ISpotEngine extends BaseContract {
     priceX18: PromiseOrValue<BigNumberish>,
     sizeIncrement: PromiseOrValue<BigNumberish>,
     lpSpreadX18: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  updateStates(
+    dt: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -615,6 +629,11 @@ export interface ISpotEngine extends BaseContract {
       lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber]>;
+
+    updateStates(
+      dt: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -718,6 +737,11 @@ export interface ISpotEngine extends BaseContract {
       lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    updateStates(
+      dt: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -798,6 +822,11 @@ export interface ISpotEngine extends BaseContract {
       priceX18: PromiseOrValue<BigNumberish>,
       sizeIncrement: PromiseOrValue<BigNumberish>,
       lpSpreadX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateStates(
+      dt: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

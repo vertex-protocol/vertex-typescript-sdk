@@ -55,11 +55,9 @@ export declare namespace IPerpEngine {
     cumulativeFundingPerLpX18: PromiseOrValue<BigNumberish>;
     base: PromiseOrValue<BigNumberish>;
     quote: PromiseOrValue<BigNumberish>;
-    lastUpdateTime: PromiseOrValue<BigNumberish>;
   };
 
   export type LpStateStructOutput = [
-    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -71,7 +69,6 @@ export declare namespace IPerpEngine {
     cumulativeFundingPerLpX18: BigNumber;
     base: BigNumber;
     quote: BigNumber;
-    lastUpdateTime: BigNumber;
   };
 
   export type LpBalanceStruct = {
@@ -89,11 +86,9 @@ export declare namespace IPerpEngine {
     cumulativeFundingShortX18: PromiseOrValue<BigNumberish>;
     availableSettleX18: PromiseOrValue<BigNumberish>;
     openInterestX18: PromiseOrValue<BigNumberish>;
-    lastUpdateTime: PromiseOrValue<BigNumberish>;
   };
 
   export type StateStructOutput = [
-    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -103,7 +98,6 @@ export declare namespace IPerpEngine {
     cumulativeFundingShortX18: BigNumber;
     availableSettleX18: BigNumber;
     openInterestX18: BigNumber;
-    lastUpdateTime: BigNumber;
   };
 
   export type BalanceStruct = {
@@ -137,6 +131,7 @@ export interface IPerpEngineInterface extends utils.Interface {
     "settlePnl(uint64)": FunctionFragment;
     "socializeSubaccount(uint64,int256)": FunctionFragment;
     "swapLp(uint32,uint64,int256,int256,int256,int256)": FunctionFragment;
+    "updateStates(uint256)": FunctionFragment;
   };
 
   getFunction(
@@ -157,6 +152,7 @@ export interface IPerpEngineInterface extends utils.Interface {
       | "settlePnl"
       | "socializeSubaccount"
       | "swapLp"
+      | "updateStates"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -246,6 +242,10 @@ export interface IPerpEngineInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "updateStates",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "applyDeltas",
@@ -296,6 +296,10 @@ export interface IPerpEngineInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "swapLp", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "updateStates",
+    data: BytesLike
+  ): Result;
 
   events: {
     "AddProduct(uint32)": EventFragment;
@@ -488,6 +492,11 @@ export interface IPerpEngine extends BaseContract {
       lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    updateStates(
+      dt: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   applyDeltas(
@@ -599,6 +608,11 @@ export interface IPerpEngine extends BaseContract {
     priceX18: PromiseOrValue<BigNumberish>,
     sizeIncrement: PromiseOrValue<BigNumberish>,
     lpSpreadX18: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  updateStates(
+    dt: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -716,6 +730,11 @@ export interface IPerpEngine extends BaseContract {
       lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber]>;
+
+    updateStates(
+      dt: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -841,6 +860,11 @@ export interface IPerpEngine extends BaseContract {
       lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    updateStates(
+      dt: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -932,6 +956,11 @@ export interface IPerpEngine extends BaseContract {
       priceX18: PromiseOrValue<BigNumberish>,
       sizeIncrement: PromiseOrValue<BigNumberish>,
       lpSpreadX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateStates(
+      dt: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

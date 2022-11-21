@@ -148,7 +148,6 @@ export interface IOffchainBookInterface extends utils.Interface {
     "matchOrderAMM((uint32,((address,string,int256,int256,uint64,uint64),bytes)))": FunctionFragment;
     "matchOrders((uint32,bool,((address,string,int256,int256,uint64,uint64),bytes),((address,string,int256,int256,uint64,uint64),bytes)))": FunctionFragment;
     "swapAMM((address,string,uint32,int256,int256))": FunctionFragment;
-    "validateCancellation(((address,string,int256,int256,uint64,uint64),bytes))": FunctionFragment;
   };
 
   getFunction(
@@ -160,7 +159,6 @@ export interface IOffchainBookInterface extends utils.Interface {
       | "matchOrderAMM"
       | "matchOrders"
       | "swapAMM"
-      | "validateCancellation"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "dumpFees", values?: undefined): string;
@@ -195,10 +193,6 @@ export interface IOffchainBookInterface extends utils.Interface {
     functionFragment: "swapAMM",
     values: [IEndpoint.SwapAMMStruct]
   ): string;
-  encodeFunctionData(
-    functionFragment: "validateCancellation",
-    values: [IEndpoint.SignedOrderStruct]
-  ): string;
 
   decodeFunctionResult(functionFragment: "dumpFees", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getDigest", data: BytesLike): Result;
@@ -213,10 +207,6 @@ export interface IOffchainBookInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "swapAMM", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "validateCancellation",
-    data: BytesLike
-  ): Result;
 
   events: {
     "FillOrder(bytes32,uint64,int256,int256,uint64,uint64,bool,int256,int256,int256)": EventFragment;
@@ -323,11 +313,6 @@ export interface IOffchainBook extends BaseContract {
       tx: IEndpoint.SwapAMMStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    validateCancellation(
-      order: IEndpoint.SignedOrderStruct,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
   };
 
   dumpFees(
@@ -372,11 +357,6 @@ export interface IOffchainBook extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  validateCancellation(
-    order: IEndpoint.SignedOrderStruct,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
   callStatic: {
     dumpFees(overrides?: CallOverrides): Promise<void>;
 
@@ -417,11 +397,6 @@ export interface IOffchainBook extends BaseContract {
       tx: IEndpoint.SwapAMMStruct,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    validateCancellation(
-      order: IEndpoint.SignedOrderStruct,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
   };
 
   filters: {
@@ -491,11 +466,6 @@ export interface IOffchainBook extends BaseContract {
       tx: IEndpoint.SwapAMMStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
-
-    validateCancellation(
-      order: IEndpoint.SignedOrderStruct,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -537,11 +507,6 @@ export interface IOffchainBook extends BaseContract {
     swapAMM(
       tx: IEndpoint.SwapAMMStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    validateCancellation(
-      order: IEndpoint.SignedOrderStruct,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

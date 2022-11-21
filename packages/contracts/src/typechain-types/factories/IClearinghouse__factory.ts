@@ -99,6 +99,12 @@ const _abi = [
         name: "amountQuoteX18",
         type: "int256",
       },
+      {
+        indexed: false,
+        internalType: "int256",
+        name: "insuranceCoverX18",
+        type: "int256",
+      },
     ],
     name: "Liquidation",
     type: "event",

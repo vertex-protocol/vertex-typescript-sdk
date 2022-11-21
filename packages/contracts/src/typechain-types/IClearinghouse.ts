@@ -462,7 +462,7 @@ export interface IClearinghouseInterface extends utils.Interface {
   events: {
     "ClearinghouseInitialized(address,address,address)": EventFragment;
     "CreateSubaccount(address,string,uint64)": EventFragment;
-    "Liquidation(uint64,uint64,uint8,uint32,int256,int256)": EventFragment;
+    "Liquidation(uint64,uint64,uint8,uint32,int256,int256,int256)": EventFragment;
     "ModifyCollateral(int256,uint64,uint32)": EventFragment;
   };
 
@@ -505,9 +505,10 @@ export interface LiquidationEventObject {
   healthGroup: number;
   amountX18: BigNumber;
   amountQuoteX18: BigNumber;
+  insuranceCoverX18: BigNumber;
 }
 export type LiquidationEvent = TypedEvent<
-  [BigNumber, BigNumber, number, number, BigNumber, BigNumber],
+  [BigNumber, BigNumber, number, number, BigNumber, BigNumber, BigNumber],
   LiquidationEventObject
 >;
 
@@ -899,13 +900,14 @@ export interface IClearinghouse extends BaseContract {
       subaccount?: null
     ): CreateSubaccountEventFilter;
 
-    "Liquidation(uint64,uint64,uint8,uint32,int256,int256)"(
+    "Liquidation(uint64,uint64,uint8,uint32,int256,int256,int256)"(
       liquidatorSubaccount?: PromiseOrValue<BigNumberish> | null,
       liquidateeSubaccount?: PromiseOrValue<BigNumberish> | null,
       mode?: PromiseOrValue<BigNumberish> | null,
       healthGroup?: null,
       amountX18?: null,
-      amountQuoteX18?: null
+      amountQuoteX18?: null,
+      insuranceCoverX18?: null
     ): LiquidationEventFilter;
     Liquidation(
       liquidatorSubaccount?: PromiseOrValue<BigNumberish> | null,
@@ -913,7 +915,8 @@ export interface IClearinghouse extends BaseContract {
       mode?: PromiseOrValue<BigNumberish> | null,
       healthGroup?: null,
       amountX18?: null,
-      amountQuoteX18?: null
+      amountQuoteX18?: null,
+      insuranceCoverX18?: null
     ): LiquidationEventFilter;
 
     "ModifyCollateral(int256,uint64,uint32)"(
