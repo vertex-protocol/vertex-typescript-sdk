@@ -11,7 +11,7 @@ import {
   SubaccountOrdersResponse,
 } from './types';
 import { getMarketEntityId, getSubaccountEntityId } from '../../utils';
-import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
+import { fromX18 } from '@vertex-protocol/utils';
 
 export class OrdersQueryClient extends BaseVertexGraphClient {
   async getLatestOrderFills(params: LatestOrderFillsParams) {
@@ -21,7 +21,7 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
     return data.fillOrderEvents.map((event) => {
       return {
         time: event.blockTime,
-        takerAmountDelta: toBigDecimal(event.amountDeltaX18),
+        takerAmountDelta: fromX18(event.amountDeltaX18),
         price: fromX18(event.order.priceX18),
       };
     });
