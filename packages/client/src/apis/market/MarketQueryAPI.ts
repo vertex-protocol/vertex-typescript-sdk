@@ -7,6 +7,7 @@ import { GetCandlesticksParams } from '@vertex-protocol/graph';
 import {
   GetEngineMarketLiquidityParams,
   GetEngineMarketPriceParams,
+  GetEngineMaxOrderSizeParams,
   GetEngineSubaccountOrdersParams,
   ValidateEngineOrderParams,
 } from '@vertex-protocol/engine-client';
@@ -56,6 +57,14 @@ export class MarketQueryAPI extends BaseVertexAPI {
       engine: engineResponse,
       graph: graphResponse,
     };
+  }
+
+  /**
+   * Queries engine to determine maximum order size
+   * @param params
+   */
+  async getMaxOrderSize(params: GetEngineMaxOrderSizeParams) {
+    return this.context.engineClient.getMaxOrderSize(params);
   }
 
   /**

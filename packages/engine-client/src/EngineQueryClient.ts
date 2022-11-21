@@ -238,6 +238,10 @@ export class EngineQueryClient extends EngineBaseClient {
     };
   }
 
+  /**
+   * Retrieves the estimated max order size
+   * @param params
+   */
   async getMaxOrderSize(
     params: GetEngineMaxOrderSizeParams,
   ): Promise<GetEngineMaxOrderSizeResponse> {
