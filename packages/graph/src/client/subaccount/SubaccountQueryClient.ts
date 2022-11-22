@@ -39,7 +39,12 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
       subaccountEntityId: getSubaccountEntityId(params.subaccountId),
     });
     if (data.subaccount == null) {
-      return;
+      return {
+        name: '',
+        perpBalanceSummaries: [],
+        spotBalanceSummaries: [],
+        tradeSummaries: [],
+      };
     }
 
     return {

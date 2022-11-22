@@ -30,7 +30,7 @@ export function mapEngineServerOrder(
   return {
     digest: order.digest,
     expiration: toBigDecimal(order.expiration),
-    nonce: toBigDecimal(order.nonce),
+    nonce: order.nonce,
     price: fromX18(order.price_x18),
     productId: order.product_id,
     sender: order.sender,
@@ -42,7 +42,7 @@ export function mapEngineServerOrder(
     orderParams: {
       amount: toBigDecimal(order.amount).toFixed(),
       expiration: toBigDecimal(order.expiration).toFixed(),
-      nonce: toBigDecimal(order.nonce).toFixed(),
+      nonce: order.nonce,
       price: fromX18(order.price_x18).toFixed(),
       sender: order.sender,
       subaccountName: order.subaccount_name,

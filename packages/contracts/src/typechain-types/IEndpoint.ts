@@ -30,6 +30,7 @@ import type {
 export interface IEndpointInterface extends utils.Interface {
   functions: {
     "depositCollateral(string,uint32,uint256)": FunctionFragment;
+    "getNonce(address)": FunctionFragment;
     "getPriceX18(uint32)": FunctionFragment;
     "getTime()": FunctionFragment;
     "setBook(uint32,address)": FunctionFragment;
@@ -40,6 +41,7 @@ export interface IEndpointInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "depositCollateral"
+      | "getNonce"
       | "getPriceX18"
       | "getTime"
       | "setBook"
@@ -54,6 +56,10 @@ export interface IEndpointInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getNonce",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "getPriceX18",
@@ -77,6 +83,7 @@ export interface IEndpointInterface extends utils.Interface {
     functionFragment: "depositCollateral",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getPriceX18",
     data: BytesLike
@@ -159,6 +166,11 @@ export interface IEndpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    getNonce(
+      sender: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -191,6 +203,11 @@ export interface IEndpoint extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  getNonce(
+    sender: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   getPriceX18(
     productId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -222,6 +239,11 @@ export interface IEndpoint extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    getNonce(
+      sender: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
@@ -274,6 +296,11 @@ export interface IEndpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    getNonce(
+      sender: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -305,6 +332,11 @@ export interface IEndpoint extends BaseContract {
       productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getNonce(
+      sender: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getPriceX18(

@@ -1,6 +1,7 @@
 query LatestOrderFillsQuery($marketEntityId: String!) {
   fillOrderEvents(
-    where: { market: $marketEntityId, isTaker: true }
+    # We want to show maker order prices
+    where: { market: $marketEntityId, isTaker: false }
     orderBy: blockTime
     orderDirection: desc
     first: 100

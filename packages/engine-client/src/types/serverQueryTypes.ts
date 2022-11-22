@@ -146,7 +146,7 @@ export interface EngineServerGetOrderResponse {
   price_x18: BigNumberish;
   amount: BigNumberish;
   expiration: BigNumberish;
-  nonce: BigNumberish;
+  nonce: number;
   unfilled_amount: BigNumberish;
   digest: string;
   placed_at: number;

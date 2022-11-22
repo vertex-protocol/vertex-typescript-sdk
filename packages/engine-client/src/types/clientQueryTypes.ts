@@ -74,7 +74,7 @@ export interface EngineOrder {
   // Amount still unfilled
   unfilledAmount: BigDecimal;
   expiration: BigDecimal;
-  nonce: BigDecimal;
+  nonce: number;
   digest: string;
   // Raw order params for cancellation
   orderParams: OrderParams;

@@ -16,7 +16,7 @@ export interface WithdrawCollateralParams {
   subaccountName: string;
   productId: number;
   amount: BigNumberish;
-  nonce: BigNumberish;
+  nonce: number;
 }
 
 export interface MintLpParams {
@@ -27,7 +27,7 @@ export interface MintLpParams {
   amountBase: BigNumberish;
   quoteAmountLow: BigNumberish;
   quoteAmountHigh: BigNumberish;
-  nonce: BigNumberish;
+  nonce: number;
 }
 
 export interface BurnLpParams {
@@ -36,7 +36,7 @@ export interface BurnLpParams {
   subaccountName: string;
   productId: number;
   amount: BigNumberish;
-  nonce: BigNumberish;
+  nonce: number;
 }
 
 export interface LiquidateSubaccountParams {
@@ -50,7 +50,7 @@ export interface LiquidateSubaccountParams {
   // Spot & perp pair
   healthGroup: BigNumberish;
   amount: BigNumberish;
-  nonce: BigNumberish;
+  nonce: number;
 }
 
 export interface OrderParams {
@@ -68,7 +68,7 @@ export interface OrderParams {
   // Positive for buy, negative for sell
   amount: BigNumberish;
   // A unique nonce to identify the order
-  nonce: BigNumberish;
+  nonce: number;
 }
 
 export interface OrderCancellationParams {
@@ -77,5 +77,5 @@ export interface OrderCancellationParams {
   subaccountName: string;
   productIds: number[];
   digests: string[];
-  nonce: BigNumberish;
+  nonce: number;
 }
