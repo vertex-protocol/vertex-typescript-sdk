@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/contracts",
-  "version": "0.1.0-alpha.46",
+  "version": "0.1.0-alpha.47",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -28,7 +28,7 @@
     "@ethersproject/bytes": "^5.7.0",
     "@ethersproject/constants": "^5.7.0",
     "@ethersproject/providers": "^5.7.1",
-    "@vertex-protocol/utils": "^0.1.0-alpha.46",
+    "@vertex-protocol/utils": "^0.1.0-alpha.47",
     "ethers": "^5.7.1"
   },
   "devDependencies": {
@@ -41,5 +41,5 @@
     "readmeFile": "./README.md",
     "displayName": "Vertex Contracts"
   },
-  "gitHead": "212cfb4523821c093e5f816e45b3ba73c774e4b0"
+  "gitHead": "a3ce626ac2e798566be7c78e2c3e250f91891605"
 }
