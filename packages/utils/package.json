@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/utils",
-  "version": "0.1.0-alpha.49",
+  "version": "0.1.0-alpha.50",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -39,5 +39,5 @@
     "readmeFile": "./README.md",
     "displayName": "Vertex Utils"
   },
-  "gitHead": "17994c6ffa89320496e3fcd994a361a7eb485aab"
+  "gitHead": "3a48ef1e9c87a5e4f0c393b227faee0e3d875f46"
 }
