@@ -9,7 +9,7 @@ function getNonce() {
 
 async function main() {
   const signer = new Wallet(
-    'c3812c056d7959b4f9ef653c51023ece1b238a5fb96d95bb1518f967394fe7d5',
+    '3f997b7e83f26d888c38cd184d440bf3142745b6afeb707dbe4a885c2799f2e4',
     new ethers.providers.StaticJsonRpcProvider(
       'https://goerli-rollup.arbitrum.io/rpc',
       {
@@ -26,14 +26,14 @@ async function main() {
   });
 
   const tx1 = await vertexClient.spot._mintMockERC20({
-    // 10 tokens
-    amount: 1000000000,
+    // 1k tokens
+    amount: '99000000000000000000',
     productId: 1,
   });
   await tx1.wait();
 
   const tx2 = await vertexClient.spot.approveAllowance({
-    amount: 1000000000,
+    amount: '99000000000000000000',
     productId: 1,
   });
   await tx2.wait();
@@ -41,7 +41,7 @@ async function main() {
   const depositTx = await vertexClient.spot.deposit({
     subaccountName: 'default',
     productId: 1,
-    amount: 1000000000,
+    amount: '99000000000000000000',
   });
   await depositTx.wait();
 
