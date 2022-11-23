@@ -6,6 +6,7 @@ import {
 import { BigNumber } from 'ethers';
 import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
 import {
+  EngineServerStatusResponse,
   EngineServerSubaccountInfoQueryParams,
   EngineServerSubaccountInfoResponse,
   GetEngineAllMarketsResponse,
@@ -16,8 +17,12 @@ import {
   GetEngineMarketPriceResponse,
   GetEngineMaxOrderSizeParams,
   GetEngineMaxOrderSizeResponse,
+  GetEngineMaxWithdrawableParams,
+  GetEngineMaxWithdrawableResponse,
   GetEngineOrderParams,
   GetEngineOrderResponse,
+  GetEngineSubaccountIdParams,
+  GetEngineSubaccountIdResponse,
   GetEngineSubaccountOrdersParams,
   GetEngineSubaccountOrdersResponse,
   GetEngineSubaccountSummaryParams,
@@ -34,6 +39,28 @@ import {
 } from './queryDataMappers';
 
 export class EngineQueryClient extends EngineBaseClient {
+  /**
+   * Retrieves current engine status
+   */
+  async getStatus(): Promise<EngineServerStatusResponse> {
+    return this.query('status', {});
+  }
+
+  /**
+   * Retrieves the subaccount ID reflective of the offchain engine
+   * @param params
+   */
+  async getSubaccountId(
+    params: GetEngineSubaccountIdParams,
+  ): Promise<GetEngineSubaccountIdResponse> {
+    const baseResponse = await this.query('subaccount_id', {
+      address: params.address,
+      subaccount_name: params.subaccountName,
+    });
+
+    return baseResponse.subaccount_id;
+  }
+
   /**
    * Retrieves a subaccount summary reflective of the state within the offchain engine. This adheres to the
    * same return interface as the contract version
@@ -239,7 +266,7 @@ export class EngineQueryClient extends EngineBaseClient {
   }
 
   /**
-   * Retrieves the estimated max order size
+   * Retrieves the estimated max order size for a product
    * @param params
    */
   async getMaxOrderSize(
@@ -254,6 +281,22 @@ export class EngineQueryClient extends EngineBaseClient {
     });
 
     return toBigDecimal(baseResponse.max_order_size);
+  }
+
+  /**
+   * Retrieves the estimated max withdrawal size for a product
+   * @param params
+   */
+  async getMaxWithdrawable(
+    params: GetEngineMaxWithdrawableParams,
+  ): Promise<GetEngineMaxWithdrawableResponse> {
+    const baseResponse = await this.query('max_withdrawable', {
+      product_id: params.productId,
+      sender: params.sender,
+      subaccount_name: params.subaccountName,
+    });
+
+    return toBigDecimal(baseResponse.max_withdrawable);
   }
 }
 

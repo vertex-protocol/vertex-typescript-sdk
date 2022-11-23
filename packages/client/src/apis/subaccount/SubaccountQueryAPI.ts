@@ -23,6 +23,16 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
   }
 
   /**
+   * Calls engine to get a subaccount ID
+   */
+  async getEngineSubaccountId(params: GetSubaccountIdParams) {
+    return this.context.engineClient.getSubaccountId({
+      address: params.address,
+      subaccountName: params.name,
+    });
+  }
+
+  /**
    * {@link (VertexGraphClient.getSubaccountsForAddress)}
    */
   async getSubaccountsForAddress(params: GetSubaccountsParams) {

@@ -9,6 +9,13 @@ import {
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import { EngineServerNoncesParams } from './serverQueryTypes';
 
+export interface GetEngineSubaccountIdParams {
+  address: string;
+  subaccountName: string;
+}
+
+export type GetEngineSubaccountIdResponse = number;
+
 export type GetEngineSubaccountSummaryParams = GetSubaccountSummaryParams;
 
 export type SubaccountTx =
@@ -147,3 +154,11 @@ export interface GetEngineMaxOrderSizeParams {
 }
 
 export type GetEngineMaxOrderSizeResponse = BigDecimal;
+
+export interface GetEngineMaxWithdrawableParams {
+  sender: string;
+  subaccountName: string;
+  productId: number;
+}
+
+export type GetEngineMaxWithdrawableResponse = BigDecimal;

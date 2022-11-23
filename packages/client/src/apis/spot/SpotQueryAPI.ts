@@ -6,6 +6,7 @@ import {
 import { BigNumber } from 'ethers';
 import { BaseSpotAPI } from './BaseSpotAPI';
 import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
+import { GetEngineMaxWithdrawableParams } from '@vertex-protocol/engine-client';
 
 export class SpotQueryAPI extends BaseSpotAPI {
   /**
@@ -14,6 +15,14 @@ export class SpotQueryAPI extends BaseSpotAPI {
   async getAllSpotProducts(): Promise<SpotProduct[]> {
     const allProducts = await getAllProducts(this.context.contracts);
     return allProducts.filter(isSpotProduct);
+  }
+
+  /**
+   * Gets the estimated max withdrawable amount for a product
+   * @param params
+   */
+  async getMaxWithdrawable(params: GetEngineMaxWithdrawableParams) {
+    return this.context.engineClient.getMaxWithdrawable(params);
   }
 
   /**
