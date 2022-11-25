@@ -41,6 +41,7 @@ interface VertexClientContextOpts {
   // Address of the Vertex querier
   querierAddress: string;
   graphEndpoint: string;
+  graphSlimEndpoint: string;
   offchainEngineEndpoint: string;
 }
 
@@ -65,11 +66,17 @@ export async function createClientContext(
   opts: CreateVertexClientContextOpts,
   signerOpts: CreateVertexClientContextSignerOpts,
 ): Promise<VertexClientContext> {
-  const { querierAddress, graphEndpoint, offchainEngineEndpoint } = (() => {
+  const {
+    querierAddress,
+    graphEndpoint,
+    graphSlimEndpoint,
+    offchainEngineEndpoint,
+  } = (() => {
     if (opts === 'testnet') {
       return {
         querierAddress: VERTEX_DEPLOYMENTS.testnet.querier,
         graphEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet,
+        graphSlimEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet_slim,
         offchainEngineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
       };
     } else {
@@ -124,7 +131,10 @@ export async function createClientContext(
         chainSignerOrProvider,
       ),
     },
-    graph: new VertexGraphClient({ endpoint: graphEndpoint }),
+    graph: new VertexGraphClient({
+      endpoint: graphEndpoint,
+      slimEndpoint: graphSlimEndpoint,
+    }),
     engineClient: new EngineClient({
       url: offchainEngineEndpoint,
       signer: engineSigner,

@@ -2,11 +2,25 @@ sources:
   - name: Clearinghouse
     handler:
       graphql:
-        # Default to hosted version
-        endpoint: '{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}'
         # For local schema updates
-    #        endpoint: '{context.endpoint:http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph}'
+        #        endpoint: '{context.endpoint:http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph}'
+        # Default to hosted versions
+        strategy: highestValue
+        strategyConfig:
+          selectionSet: |
+            {
+              _meta {
+                block {
+                  number
+                }
+              }
+            }
+          value: '_meta.block.number'
+        sources:
+          - endpoint: '{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}'
+          - endpoint: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-slim'
     transforms:
+      #      - autoTypeMerging: true
       # https://github.com/graphprotocol/graph-client
       - autoPagination:
           validateSchema: true
@@ -16,6 +30,12 @@ sources:
           ignoreFieldNames: []
           # Exclude the operation with the following names
           ignoreOperationNames: []
+#  - name: ClearinghouseSlim
+#    handler:
+#      graphql:
+#        endpoint: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-slim'
+#    transforms:
+#      - autoTypeMerging: true
 documents:
   - ./src/graphql/**/*.graphql
 

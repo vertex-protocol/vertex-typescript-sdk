@@ -4586,7 +4586,7 @@ const clearinghouseTransforms = [];
 const additionalTypeDefs = [] as any[];
 const clearinghouseHandler = new GraphqlHandler({
               name: "Clearinghouse",
-              config: {"endpoint":"{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}"},
+              config: {"strategy":"highestValue","strategyConfig":{"selectionSet":"{\n  _meta {\n    block {\n      number\n    }\n  }\n}\n","value":"_meta.block.number"},"sources":[{"endpoint":"{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}"},{"endpoint":"https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-slim"}]},
               baseDir,
               cache,
               pubsub,
@@ -4965,7 +4965,7 @@ export const HourlyHistoricalProductDataQueryDocument = gql`
 export const LatestOrderFillsQueryDocument = gql`
     query LatestOrderFillsQuery($marketEntityId: String!) {
   fillOrderEvents(
-    where: {market: $marketEntityId, isTaker: true}
+    where: {market: $marketEntityId, isTaker: false}
     orderBy: blockTime
     orderDirection: desc
     first: 100
