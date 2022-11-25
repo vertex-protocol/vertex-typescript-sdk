@@ -4586,7 +4586,7 @@ const clearinghouseTransforms = [];
 const additionalTypeDefs = [] as any[];
 const clearinghouseHandler = new GraphqlHandler({
               name: "Clearinghouse",
-              config: {"strategy":"highestValue","strategyConfig":{"selectionSet":"{\n  _meta {\n    block {\n      number\n    }\n  }\n}\n","value":"_meta.block.number"},"sources":[{"endpoint":"{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}"},{"endpoint":"https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-slim"}]},
+              config: {"strategy":"highestValue","strategyConfig":{"selectionSet":"{\n  _meta {\n    block {\n      number\n    }\n  }\n}\n","value":"_meta.block.number"},"sources":[{"endpoint":"{context.slimEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-slim}"},{"endpoint":"{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}"}]},
               baseDir,
               cache,
               pubsub,

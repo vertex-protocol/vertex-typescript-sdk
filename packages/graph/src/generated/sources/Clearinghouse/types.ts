@@ -3994,5 +3994,6 @@ export type SubscriptionClearinghouseSdk = {
 };
 export type ClearinghouseContext = {
       ["Clearinghouse"]: { Query: QueryClearinghouseSdk, Mutation: MutationClearinghouseSdk, Subscription: SubscriptionClearinghouseSdk },
-      ["endpoint"]: Scalars['ID']
+      ["slimEndpoint"]: Scalars['ID'],
+["endpoint"]: Scalars['ID']
     };
