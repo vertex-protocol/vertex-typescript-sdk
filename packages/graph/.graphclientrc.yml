@@ -1,26 +1,12 @@
 sources:
-  - name: Clearinghouse
+  - name: VertexCore
     handler:
       graphql:
         # For local schema updates
         #        endpoint: '{context.endpoint:http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph}'
-        # Default to hosted versions
-        strategy: highestValue
-        strategyConfig:
-          selectionSet: |
-            {
-              _meta {
-                block {
-                  number
-                }
-              }
-            }
-          value: '_meta.block.number'
-        sources:
-          - endpoint: '{context.slimEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-slim}'
-          - endpoint: '{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}'
+        # Default to hosted version
+        endpoint: '{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}'
     transforms:
-      #      - autoTypeMerging: true
       # https://github.com/graphprotocol/graph-client
       - autoPagination:
           validateSchema: true
@@ -30,12 +16,19 @@ sources:
           ignoreFieldNames: []
           # Exclude the operation with the following names
           ignoreOperationNames: []
-#  - name: ClearinghouseSlim
-#    handler:
-#      graphql:
-#        endpoint: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-slim'
-#    transforms:
-#      - autoTypeMerging: true
+      - autoTypeMerging: true
+  - name: VertexCandlesticks
+    handler:
+      graphql:
+        endpoint: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-candlesticks'
+    transforms:
+      - autoTypeMerging: true
+  - name: VertexMarkets
+    handler:
+      graphql:
+        endpoint: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets'
+    transforms:
+      - autoTypeMerging: true
 documents:
   - ./src/graphql/**/*.graphql
 

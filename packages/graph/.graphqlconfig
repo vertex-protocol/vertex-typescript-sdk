@@ -7,8 +7,22 @@
         "url": "http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph",
         "introspect": false
       },
-      "Arbitrum Goerli": {
+      "Arbitrum Goerli: Core": {
         "url": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": false
+      },
+      "Arbitrum Goerli: Candlesticks": {
+        "url": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-candlesticks",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": false
+      },
+      "Arbitrum Goerli: Markets": {
+        "url": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets",
         "headers": {
           "user-agent": "JS GraphQL"
         },

@@ -4,26 +4,28 @@ query HourlyHistoricalProductDataQuery(
   $minHourInclusive: BigInt!
   $maxHourExclusive: BigInt!
 ) {
-  spotProductHourlySnapshots(
+  spotProductSnapshots(
     where: {
       product: $productEntityId
-      hour_gte: $minHourInclusive
-      hour_lt: $maxHourExclusive
+      periodIndex_gte: $minHourInclusive
+      periodIndex_lt: $maxHourExclusive
+      period: 3600
     }
   ) {
     id
-    hour
+    periodIndex
     priceX18
   }
-  perpProductHourlySnapshots(
+  perpProductSnapshots(
     where: {
       product: $productEntityId
-      hour_gte: $minHourInclusive
-      hour_lt: $maxHourExclusive
+      periodIndex_gte: $minHourInclusive
+      periodIndex_lt: $maxHourExclusive
+      period: 3600
     }
   ) {
     id
-    hour
+    periodIndex
     priceX18
     openInterestX18
   }

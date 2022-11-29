@@ -3,18 +3,18 @@ query HourlyHistoricalMarketDataQuery(
   $maxHourExclusive: BigInt!
   $minHourInclusive: BigInt!
 ) {
-  marketHourlySnapshots(
+  marketSnapshots(
     where: {
       market: $marketEntityId
-      hour_gte: $minHourInclusive
-      hour_lt: $maxHourExclusive
+      periodIndex_gte: $minHourInclusive
+      periodIndex_lt: $maxHourExclusive
+      period: 3600
     }
-    orderBy: hour
+    orderBy: periodIndex
     orderDirection: desc
   ) {
     id
-    hour
-    volumeNumOrders
+    periodIndex
     volumeQuoteX18
     lastFillPriceX18
   }

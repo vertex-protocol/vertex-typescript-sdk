@@ -21,18 +21,18 @@ export class ProductQueryClient extends BaseVertexGraphClient {
     });
 
     return {
-      spotProductSnapshots: baseResponse.spotProductHourlySnapshots.map(
+      spotProductSnapshots: baseResponse.spotProductSnapshots.map(
         (snapshot) => {
           return {
-            approximateSnapshotTime: fromHourIndex(snapshot.hour),
+            approximateSnapshotTime: fromHourIndex(snapshot.periodIndex),
             oraclePrice: fromX18(snapshot.priceX18),
           };
         },
       ),
-      perpProductSnapshots: baseResponse.perpProductHourlySnapshots.map(
+      perpProductSnapshots: baseResponse.perpProductSnapshots.map(
         (snapshot) => {
           return {
-            approximateSnapshotTime: fromHourIndex(snapshot.hour),
+            approximateSnapshotTime: fromHourIndex(snapshot.periodIndex),
             oraclePrice: fromX18(snapshot.priceX18),
             openInterest: fromX18(snapshot.openInterestX18),
           };
