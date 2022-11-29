@@ -4014,5 +4014,5 @@ export type SubscriptionVertexCoreSdk = {
 };
 export type VertexCoreContext = {
       ["VertexCore"]: { Query: QueryVertexCoreSdk, Mutation: MutationVertexCoreSdk, Subscription: SubscriptionVertexCoreSdk },
-      ["endpoint"]: Scalars['ID']
+      ["coreEndpoint"]: Scalars['ID']
     };

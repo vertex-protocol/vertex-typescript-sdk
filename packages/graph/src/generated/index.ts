@@ -4759,7 +4759,7 @@ export type ResolversParentTypes = ResolversObject<{
   TradeSummary_filter: TradeSummary_filter;
 }>;
 
-export type QueryResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+export type QueryResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   marketCandlestick?: Resolver<Maybe<ResolversTypes['MarketCandlestick']>, ParentType, ContextType, RequireFields<QuerymarketCandlestickArgs, 'id' | 'subgraphError'>>;
   marketCandlesticks?: Resolver<Array<ResolversTypes['MarketCandlestick']>, ParentType, ContextType, RequireFields<QuerymarketCandlesticksArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: Resolver<Maybe<ResolversTypes['_Meta_']>, ParentType, ContextType, Partial<Query_metaArgs>>;
@@ -4819,7 +4819,7 @@ export type QueryResolvers<ContextType = MeshContext & { endpoint: string }, Par
   submitSlowModeTransactionEvents?: Resolver<Array<ResolversTypes['SubmitSlowModeTransactionEvent']>, ParentType, ContextType, RequireFields<QuerysubmitSlowModeTransactionEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
 }>;
 
-export type SubscriptionResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
+export type SubscriptionResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
   marketCandlestick?: SubscriptionResolver<Maybe<ResolversTypes['MarketCandlestick']>, "marketCandlestick", ParentType, ContextType, RequireFields<SubscriptionmarketCandlestickArgs, 'id' | 'subgraphError'>>;
   marketCandlesticks?: SubscriptionResolver<Array<ResolversTypes['MarketCandlestick']>, "marketCandlesticks", ParentType, ContextType, RequireFields<SubscriptionmarketCandlesticksArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
@@ -4891,7 +4891,7 @@ export interface BytesScalarConfig extends GraphQLScalarTypeConfig<ResolversType
   name: 'Bytes';
 }
 
-export type MarketCandlestickResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['MarketCandlestick'] = ResolversParentTypes['MarketCandlestick']> = ResolversObject<{
+export type MarketCandlestickResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['MarketCandlestick'] = ResolversParentTypes['MarketCandlestick']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   time?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -4905,21 +4905,21 @@ export type MarketCandlestickResolvers<ContextType = MeshContext & { endpoint: s
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type _Block_Resolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['_Block_'] = ResolversParentTypes['_Block_']> = ResolversObject<{
+export type _Block_Resolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['_Block_'] = ResolversParentTypes['_Block_']> = ResolversObject<{
   hash?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
   number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   timestamp?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type _Meta_Resolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['_Meta_'] = ResolversParentTypes['_Meta_']> = ResolversObject<{
+export type _Meta_Resolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['_Meta_'] = ResolversParentTypes['_Meta_']> = ResolversObject<{
   block?: Resolver<ResolversTypes['_Block_'], ParentType, ContextType>;
   deployment?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   hasIndexingErrors?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type MarketResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Market'] = ResolversParentTypes['Market']> = ResolversObject<{
+export type MarketResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['Market'] = ResolversParentTypes['Market']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   clearinghouse?: Resolver<ResolversTypes['Clearinghouse'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -4938,7 +4938,7 @@ export type MarketResolvers<ContextType = MeshContext & { endpoint: string }, Pa
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type MarketSnapshotResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['MarketSnapshot'] = ResolversParentTypes['MarketSnapshot']> = ResolversObject<{
+export type MarketSnapshotResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['MarketSnapshot'] = ResolversParentTypes['MarketSnapshot']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   period?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   periodIndex?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -4949,14 +4949,14 @@ export type MarketSnapshotResolvers<ContextType = MeshContext & { endpoint: stri
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type PerpEngineResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['PerpEngine'] = ResolversParentTypes['PerpEngine']> = ResolversObject<{
+export type PerpEngineResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['PerpEngine'] = ResolversParentTypes['PerpEngine']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   clearinghouse?: Resolver<ResolversTypes['Clearinghouse'], ParentType, ContextType>;
   products?: Resolver<Array<ResolversTypes['PerpProduct']>, ParentType, ContextType, RequireFields<PerpEngineproductsArgs, 'skip' | 'first'>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type PerpProductResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['PerpProduct'] = ResolversParentTypes['PerpProduct']> = ResolversObject<{
+export type PerpProductResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['PerpProduct'] = ResolversParentTypes['PerpProduct']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
@@ -4975,7 +4975,7 @@ export type PerpProductResolvers<ContextType = MeshContext & { endpoint: string 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type PerpProductSnapshotResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['PerpProductSnapshot'] = ResolversParentTypes['PerpProductSnapshot']> = ResolversObject<{
+export type PerpProductSnapshotResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['PerpProductSnapshot'] = ResolversParentTypes['PerpProductSnapshot']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   period?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   periodIndex?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -4993,7 +4993,7 @@ export type PerpProductSnapshotResolvers<ContextType = MeshContext & { endpoint:
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type SocializeProductEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SocializeProductEvent'] = ResolversParentTypes['SocializeProductEvent']> = ResolversObject<{
+export type SocializeProductEventResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['SocializeProductEvent'] = ResolversParentTypes['SocializeProductEvent']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -5002,14 +5002,14 @@ export type SocializeProductEventResolvers<ContextType = MeshContext & { endpoin
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type SpotEngineResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SpotEngine'] = ResolversParentTypes['SpotEngine']> = ResolversObject<{
+export type SpotEngineResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['SpotEngine'] = ResolversParentTypes['SpotEngine']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   clearinghouse?: Resolver<ResolversTypes['Clearinghouse'], ParentType, ContextType>;
   products?: Resolver<Array<ResolversTypes['SpotProduct']>, ParentType, ContextType, RequireFields<SpotEngineproductsArgs, 'skip' | 'first'>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type SpotProductResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SpotProduct'] = ResolversParentTypes['SpotProduct']> = ResolversObject<{
+export type SpotProductResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['SpotProduct'] = ResolversParentTypes['SpotProduct']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
@@ -5026,7 +5026,7 @@ export type SpotProductResolvers<ContextType = MeshContext & { endpoint: string 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type SpotProductSnapshotResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SpotProductSnapshot'] = ResolversParentTypes['SpotProductSnapshot']> = ResolversObject<{
+export type SpotProductSnapshotResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['SpotProductSnapshot'] = ResolversParentTypes['SpotProductSnapshot']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   period?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   periodIndex?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -5042,7 +5042,7 @@ export type SpotProductSnapshotResolvers<ContextType = MeshContext & { endpoint:
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type CandlestickResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Candlestick'] = ResolversParentTypes['Candlestick']> = ResolversObject<{
+export type CandlestickResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['Candlestick'] = ResolversParentTypes['Candlestick']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
   time?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -5056,7 +5056,7 @@ export type CandlestickResolvers<ContextType = MeshContext & { endpoint: string 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type ClearinghouseResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Clearinghouse'] = ResolversParentTypes['Clearinghouse']> = ResolversObject<{
+export type ClearinghouseResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['Clearinghouse'] = ResolversParentTypes['Clearinghouse']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   endpoint?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   quoteProduct?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
@@ -5068,7 +5068,7 @@ export type ClearinghouseResolvers<ContextType = MeshContext & { endpoint: strin
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type ClosedPerpBalanceResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['ClosedPerpBalance'] = ResolversParentTypes['ClosedPerpBalance']> = ResolversObject<{
+export type ClosedPerpBalanceResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['ClosedPerpBalance'] = ResolversParentTypes['ClosedPerpBalance']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
@@ -5079,7 +5079,7 @@ export type ClosedPerpBalanceResolvers<ContextType = MeshContext & { endpoint: s
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type ClosedSpotBalanceResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['ClosedSpotBalance'] = ResolversParentTypes['ClosedSpotBalance']> = ResolversObject<{
+export type ClosedSpotBalanceResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['ClosedSpotBalance'] = ResolversParentTypes['ClosedSpotBalance']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
@@ -5090,7 +5090,7 @@ export type ClosedSpotBalanceResolvers<ContextType = MeshContext & { endpoint: s
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type FillOrderEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['FillOrderEvent'] = ResolversParentTypes['FillOrderEvent']> = ResolversObject<{
+export type FillOrderEventResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['FillOrderEvent'] = ResolversParentTypes['FillOrderEvent']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
   block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -5104,7 +5104,7 @@ export type FillOrderEventResolvers<ContextType = MeshContext & { endpoint: stri
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type LiquidationEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['LiquidationEvent'] = ResolversParentTypes['LiquidationEvent']> = ResolversObject<{
+export type LiquidationEventResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['LiquidationEvent'] = ResolversParentTypes['LiquidationEvent']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -5122,7 +5122,7 @@ export type LiquidationEventResolvers<ContextType = MeshContext & { endpoint: st
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type MarketHourlySnapshotResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['MarketHourlySnapshot'] = ResolversParentTypes['MarketHourlySnapshot']> = ResolversObject<{
+export type MarketHourlySnapshotResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['MarketHourlySnapshot'] = ResolversParentTypes['MarketHourlySnapshot']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   hour?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
@@ -5133,7 +5133,7 @@ export type MarketHourlySnapshotResolvers<ContextType = MeshContext & { endpoint
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type ModifyCollateralEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['ModifyCollateralEvent'] = ResolversParentTypes['ModifyCollateralEvent']> = ResolversObject<{
+export type ModifyCollateralEventResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['ModifyCollateralEvent'] = ResolversParentTypes['ModifyCollateralEvent']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -5144,7 +5144,7 @@ export type ModifyCollateralEventResolvers<ContextType = MeshContext & { endpoin
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type OrderResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = ResolversObject<{
+export type OrderResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['OrderType'], ParentType, ContextType>;
   digest?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
@@ -5163,7 +5163,7 @@ export type OrderResolvers<ContextType = MeshContext & { endpoint: string }, Par
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type PerpBalanceSummaryResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['PerpBalanceSummary'] = ResolversParentTypes['PerpBalanceSummary']> = ResolversObject<{
+export type PerpBalanceSummaryResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['PerpBalanceSummary'] = ResolversParentTypes['PerpBalanceSummary']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
@@ -5174,7 +5174,7 @@ export type PerpBalanceSummaryResolvers<ContextType = MeshContext & { endpoint: 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type PerpProductHourlySnapshotResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['PerpProductHourlySnapshot'] = ResolversParentTypes['PerpProductHourlySnapshot']> = ResolversObject<{
+export type PerpProductHourlySnapshotResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['PerpProductHourlySnapshot'] = ResolversParentTypes['PerpProductHourlySnapshot']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   hour?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   product?: Resolver<ResolversTypes['PerpProduct'], ParentType, ContextType>;
@@ -5191,7 +5191,7 @@ export type PerpProductHourlySnapshotResolvers<ContextType = MeshContext & { end
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type SettlePnlEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SettlePnlEvent'] = ResolversParentTypes['SettlePnlEvent']> = ResolversObject<{
+export type SettlePnlEventResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['SettlePnlEvent'] = ResolversParentTypes['SettlePnlEvent']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -5201,7 +5201,7 @@ export type SettlePnlEventResolvers<ContextType = MeshContext & { endpoint: stri
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type SpotBalanceSummaryResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SpotBalanceSummary'] = ResolversParentTypes['SpotBalanceSummary']> = ResolversObject<{
+export type SpotBalanceSummaryResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['SpotBalanceSummary'] = ResolversParentTypes['SpotBalanceSummary']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
@@ -5212,7 +5212,7 @@ export type SpotBalanceSummaryResolvers<ContextType = MeshContext & { endpoint: 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type SpotProductHourlySnapshotResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SpotProductHourlySnapshot'] = ResolversParentTypes['SpotProductHourlySnapshot']> = ResolversObject<{
+export type SpotProductHourlySnapshotResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['SpotProductHourlySnapshot'] = ResolversParentTypes['SpotProductHourlySnapshot']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   hour?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   product?: Resolver<ResolversTypes['SpotProduct'], ParentType, ContextType>;
@@ -5227,7 +5227,7 @@ export type SpotProductHourlySnapshotResolvers<ContextType = MeshContext & { end
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type SubaccountResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['Subaccount'] = ResolversParentTypes['Subaccount']> = ResolversObject<{
+export type SubaccountResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['Subaccount'] = ResolversParentTypes['Subaccount']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   clearinghouse?: Resolver<ResolversTypes['Clearinghouse'], ParentType, ContextType>;
   subaccountId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -5247,7 +5247,7 @@ export type SubaccountResolvers<ContextType = MeshContext & { endpoint: string }
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type SubmitSlowModeTransactionEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SubmitSlowModeTransactionEvent'] = ResolversParentTypes['SubmitSlowModeTransactionEvent']> = ResolversObject<{
+export type SubmitSlowModeTransactionEventResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['SubmitSlowModeTransactionEvent'] = ResolversParentTypes['SubmitSlowModeTransactionEvent']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   sender?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   tx?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
@@ -5256,14 +5256,14 @@ export type SubmitSlowModeTransactionEventResolvers<ContextType = MeshContext & 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type SubmitTransactionsEventResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['SubmitTransactionsEvent'] = ResolversParentTypes['SubmitTransactionsEvent']> = ResolversObject<{
+export type SubmitTransactionsEventResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['SubmitTransactionsEvent'] = ResolversParentTypes['SubmitTransactionsEvent']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   transactions?: Resolver<Array<ResolversTypes['Bytes']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type TradeSummaryResolvers<ContextType = MeshContext & { endpoint: string }, ParentType extends ResolversParentTypes['TradeSummary'] = ResolversParentTypes['TradeSummary']> = ResolversObject<{
+export type TradeSummaryResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['TradeSummary'] = ResolversParentTypes['TradeSummary']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
@@ -5274,7 +5274,7 @@ export type TradeSummaryResolvers<ContextType = MeshContext & { endpoint: string
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type Resolvers<ContextType = MeshContext & { endpoint: string }> = ResolversObject<{
+export type Resolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   BigDecimal?: GraphQLScalarType;
@@ -5361,12 +5361,12 @@ const sources = [];
 const transforms = [];
 const additionalEnvelopPlugins = [];
 const vertexCoreTransforms = [];
-const vertexCandlesticksTransforms = [];
 const vertexMarketsTransforms = [];
+const vertexCandlesticksTransforms = [];
 const additionalTypeDefs = [] as any[];
 const vertexCoreHandler = new GraphqlHandler({
               name: "VertexCore",
-              config: {"endpoint":"{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}"},
+              config: {"endpoint":"{context.coreEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}"},
               baseDir,
               cache,
               pubsub,
@@ -5374,24 +5374,24 @@ const vertexCoreHandler = new GraphqlHandler({
               logger: logger.child("VertexCore"),
               importFn,
             });
-const vertexCandlesticksHandler = new GraphqlHandler({
-              name: "VertexCandlesticks",
-              config: {"endpoint":"https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-candlesticks"},
-              baseDir,
-              cache,
-              pubsub,
-              store: sourcesStore.child("VertexCandlesticks"),
-              logger: logger.child("VertexCandlesticks"),
-              importFn,
-            });
 const vertexMarketsHandler = new GraphqlHandler({
               name: "VertexMarkets",
-              config: {"endpoint":"https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets"},
+              config: {"endpoint":"{context.marketsEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets}"},
               baseDir,
               cache,
               pubsub,
               store: sourcesStore.child("VertexMarkets"),
               logger: logger.child("VertexMarkets"),
+              importFn,
+            });
+const vertexCandlesticksHandler = new GraphqlHandler({
+              name: "VertexCandlesticks",
+              config: {"endpoint":"{context.candlesticksEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-candlesticks}"},
+              baseDir,
+              cache,
+              pubsub,
+              store: sourcesStore.child("VertexCandlesticks"),
+              logger: logger.child("VertexCandlesticks"),
               importFn,
             });
 vertexCoreTransforms[0] = new AutoPaginationTransform({
@@ -5418,16 +5418,48 @@ vertexCoreTransforms[2] = new AutoTypeMergingTransform({
                   pubsub,
                   importFn
                 });
-vertexCandlesticksTransforms[0] = new AutoTypeMergingTransform({
-                  apiName: "VertexCandlesticks",
+vertexMarketsTransforms[0] = new AutoPaginationTransform({
+                  apiName: "VertexMarkets",
+                  config: {"validateSchema":true},
+                  baseDir,
+                  cache,
+                  pubsub,
+                  importFn
+                });
+vertexMarketsTransforms[1] = new BlockTrackingTransform({
+                  apiName: "VertexMarkets",
+                  config: {"validateSchema":true,"ignoreFieldNames":[],"ignoreOperationNames":[]},
+                  baseDir,
+                  cache,
+                  pubsub,
+                  importFn
+                });
+vertexMarketsTransforms[2] = new AutoTypeMergingTransform({
+                  apiName: "VertexMarkets",
                   config: true,
                   baseDir,
                   cache,
                   pubsub,
                   importFn
                 });
-vertexMarketsTransforms[0] = new AutoTypeMergingTransform({
-                  apiName: "VertexMarkets",
+vertexCandlesticksTransforms[0] = new AutoPaginationTransform({
+                  apiName: "VertexCandlesticks",
+                  config: {"validateSchema":true},
+                  baseDir,
+                  cache,
+                  pubsub,
+                  importFn
+                });
+vertexCandlesticksTransforms[1] = new BlockTrackingTransform({
+                  apiName: "VertexCandlesticks",
+                  config: {"validateSchema":true,"ignoreFieldNames":[],"ignoreOperationNames":[]},
+                  baseDir,
+                  cache,
+                  pubsub,
+                  importFn
+                });
+vertexCandlesticksTransforms[2] = new AutoTypeMergingTransform({
+                  apiName: "VertexCandlesticks",
                   config: true,
                   baseDir,
                   cache,
@@ -5440,14 +5472,14 @@ sources[0] = {
           transforms: vertexCoreTransforms
         }
 sources[1] = {
-          name: 'VertexCandlesticks',
-          handler: vertexCandlesticksHandler,
-          transforms: vertexCandlesticksTransforms
-        }
-sources[2] = {
           name: 'VertexMarkets',
           handler: vertexMarketsHandler,
           transforms: vertexMarketsTransforms
+        }
+sources[2] = {
+          name: 'VertexCandlesticks',
+          handler: vertexCandlesticksHandler,
+          transforms: vertexCandlesticksTransforms
         }
 const additionalResolvers = [] as any[]
 const merger = new(StitchingMerger as any)({

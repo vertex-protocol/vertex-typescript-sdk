@@ -3,11 +3,24 @@ sources:
     handler:
       graphql:
         # For local schema updates
-        #        endpoint: '{context.endpoint:http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph}'
+        #        endpoint: '{context.coreEndpoint:http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph}'
         # Default to hosted version
-        endpoint: '{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}'
+        endpoint: '{context.coreEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}'
     transforms:
-      # https://github.com/graphprotocol/graph-client
+      - autoPagination:
+          validateSchema: true
+      - blockTracking:
+          validateSchema: true
+          # Ignore the fields that you don't want to be tracked
+          ignoreFieldNames: []
+          # Exclude the operation with the following names
+          ignoreOperationNames: []
+      - autoTypeMerging: true
+  - name: VertexMarkets
+    handler:
+      graphql:
+        endpoint: '{context.marketsEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets}'
+    transforms:
       - autoPagination:
           validateSchema: true
       - blockTracking:
@@ -20,17 +33,20 @@ sources:
   - name: VertexCandlesticks
     handler:
       graphql:
-        endpoint: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-candlesticks'
+        endpoint: '{context.candlesticksEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-candlesticks}'
     transforms:
+      - autoPagination:
+          validateSchema: true
+      - blockTracking:
+          validateSchema: true
+          # Ignore the fields that you don't want to be tracked
+          ignoreFieldNames: []
+          # Exclude the operation with the following names
+          ignoreOperationNames: []
       - autoTypeMerging: true
-  - name: VertexMarkets
-    handler:
-      graphql:
-        endpoint: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets'
-    transforms:
-      - autoTypeMerging: true
+
 documents:
   - ./src/graphql/**/*.graphql
 
 codegen:
-  contextType: 'MeshContext & { endpoint: string }'
+  contextType: 'MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }'

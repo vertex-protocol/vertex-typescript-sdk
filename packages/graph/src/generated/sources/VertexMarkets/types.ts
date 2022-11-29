@@ -1,6 +1,7 @@
 
 import { InContextSdkMethod } from '@graphql-mesh/types';
 import { MeshContext } from '@graphql-mesh/runtime';
+import { Scalars } from '../..';
 
 export namespace VertexMarketsTypes {
   export type Maybe<T> = T | null;
@@ -1557,5 +1558,5 @@ export type SubscriptionVertexMarketsSdk = {
 };
 export type VertexMarketsContext = {
       ["VertexMarkets"]: { Query: QueryVertexMarketsSdk, Mutation: MutationVertexMarketsSdk, Subscription: SubscriptionVertexMarketsSdk },
-      
+      ["marketsEndpoint"]: Scalars['ID']
     };

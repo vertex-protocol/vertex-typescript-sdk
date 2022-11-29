@@ -1,6 +1,7 @@
 
 import { InContextSdkMethod } from '@graphql-mesh/types';
 import { MeshContext } from '@graphql-mesh/runtime';
+import { Scalars } from '../..';
 
 export namespace VertexCandlesticksTypes {
   export type Maybe<T> = T | null;
@@ -260,5 +261,5 @@ export type SubscriptionVertexCandlesticksSdk = {
 };
 export type VertexCandlesticksContext = {
       ["VertexCandlesticks"]: { Query: QueryVertexCandlesticksSdk, Mutation: MutationVertexCandlesticksSdk, Subscription: SubscriptionVertexCandlesticksSdk },
-      
+      ["candlesticksEndpoint"]: Scalars['ID']
     };

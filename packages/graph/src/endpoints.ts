@@ -1,8 +1,16 @@
 // Known Subgraph endpoints
 export const GRAPH_CLIENT_ENDPOINTS = {
-  local: 'http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph',
-  testnet:
-    'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli',
-  testnet_slim:
-    'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-slim',
+  local: {
+    core: 'http://localhost:8000/subgraphs/name/vertex-subgraphs-core',
+    markets: 'http://localhost:8000/subgraphs/name/vertex-subgraphs-markets',
+    candlesticks:
+      'http://localhost:8000/subgraphs/name/vertex-subgraphs-candlesticks',
+  },
+  testnet: {
+    core: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli',
+    markets:
+      'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets',
+    candlesticks:
+      'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-candlesticks',
+  },
 };

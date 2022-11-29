@@ -12,6 +12,7 @@ import { Signer } from 'ethers';
 import { Provider } from '@ethersproject/providers';
 import {
   GRAPH_CLIENT_ENDPOINTS,
+  GraphClientOpts,
   VertexGraphClient,
 } from '@vertex-protocol/graph';
 import { TypedDataSigner } from '@ethersproject/abstract-signer';
@@ -40,8 +41,7 @@ export interface VertexClientContext {
 interface VertexClientContextOpts {
   // Address of the Vertex querier
   querierAddress: string;
-  graphEndpoint: string;
-  graphSlimEndpoint: string;
+  graph: GraphClientOpts;
   offchainEngineEndpoint: string;
 }
 
@@ -66,23 +66,22 @@ export async function createClientContext(
   opts: CreateVertexClientContextOpts,
   signerOpts: CreateVertexClientContextSignerOpts,
 ): Promise<VertexClientContext> {
-  const {
-    querierAddress,
-    graphEndpoint,
-    graphSlimEndpoint,
-    offchainEngineEndpoint,
-  } = (() => {
-    if (opts === 'testnet') {
-      return {
-        querierAddress: VERTEX_DEPLOYMENTS.testnet.querier,
-        graphEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet,
-        graphSlimEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet_slim,
-        offchainEngineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
-      };
-    } else {
-      return opts;
-    }
-  })();
+  const { querierAddress, graph, offchainEngineEndpoint } =
+    ((): VertexClientContextOpts => {
+      if (opts === 'testnet') {
+        return {
+          querierAddress: VERTEX_DEPLOYMENTS.testnet.querier,
+          graph: {
+            coreEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.core,
+            marketsEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.markets,
+            candlesticksEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.candlesticks,
+          },
+          offchainEngineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
+        };
+      } else {
+        return opts;
+      }
+    })();
   const { chainSignerOrProvider, engineSigner: engineSignerParam } = signerOpts;
 
   const querier = FQuerier__factory.connect(
@@ -131,10 +130,7 @@ export async function createClientContext(
         chainSignerOrProvider,
       ),
     },
-    graph: new VertexGraphClient({
-      endpoint: graphEndpoint,
-      slimEndpoint: graphSlimEndpoint,
-    }),
+    graph: new VertexGraphClient(graph),
     engineClient: new EngineClient({
       url: offchainEngineEndpoint,
       signer: engineSigner,
