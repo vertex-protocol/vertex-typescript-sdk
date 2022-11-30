@@ -26,14 +26,7 @@
   },
   {
     "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "bytes[]",
-        "name": "transactions",
-        "type": "bytes[]"
-      }
-    ],
+    "inputs": [],
     "name": "SubmitTransactions",
     "type": "event"
   },
