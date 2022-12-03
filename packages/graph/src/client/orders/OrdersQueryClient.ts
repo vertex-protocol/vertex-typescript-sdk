@@ -10,13 +10,13 @@ import {
   SubaccountOrdersParams,
   SubaccountOrdersResponse,
 } from './types';
-import { getMarketEntityId, getSubaccountEntityId } from '../../utils';
+import { getSubaccountEntityId } from '../../utils';
 import { fromX18 } from '@vertex-protocol/utils';
 
 export class OrdersQueryClient extends BaseVertexGraphClient {
   async getLatestOrderFills(params: LatestOrderFillsParams) {
     const data = await this.graph.LatestOrderFillsQuery({
-      marketEntityId: getMarketEntityId(params.productId),
+      productId: params.productId,
     });
     return data.fillOrderEvents.map((event) => {
       return {
@@ -36,7 +36,7 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
     params: AllMarketOrdersParams,
   ): Promise<AllMarketOrdersResponse> {
     const data = await this.graph.PaginatedAllMarketOrdersQuery({
-      marketEntityId: getMarketEntityId(params.productId),
+      productId: params.productId,
       first: params.first,
       skip: params.skip,
     });
@@ -69,7 +69,7 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
   ): Promise<SubaccountOrdersForProductsResponse> {
     const data = await this.graph.PaginatedSubaccountOrdersForProductsQuery({
       subaccountEntityId: getSubaccountEntityId(params.subaccountId),
-      allowedMarkets: params.productIds.map(getMarketEntityId),
+      allowedProductIds: params.productIds,
       first: params.first,
       skip: params.skip,
     });
@@ -86,7 +86,7 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
   ): Promise<OrderByDigestResponse | undefined> {
     const data = await this.graph.OrderByDigestQuery({
       digest: params.digest,
-      marketEntityId: getMarketEntityId(params.productId),
+      productId: params.productId,
     });
     return data.orders[0];
   }

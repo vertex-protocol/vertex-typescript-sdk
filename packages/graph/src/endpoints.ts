@@ -7,7 +7,7 @@ export const GRAPH_CLIENT_ENDPOINTS = {
       'http://localhost:8000/subgraphs/name/vertex-subgraphs-candlesticks',
   },
   testnet: {
-    core: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli',
+    core: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-core',
     markets:
       'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets',
     candlesticks:

@@ -5,7 +5,7 @@ sources:
         # For local schema updates
         #        endpoint: '{context.coreEndpoint:http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph}'
         # Default to hosted version
-        endpoint: '{context.coreEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}'
+        endpoint: '{context.coreEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-core}'
     transforms:
       - autoPagination:
           validateSchema: true

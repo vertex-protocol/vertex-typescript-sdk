@@ -8,7 +8,7 @@
         "introspect": false
       },
       "Arbitrum Goerli: Core": {
-        "url": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli",
+        "url": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-core",
         "headers": {
           "user-agent": "JS GraphQL"
         },
