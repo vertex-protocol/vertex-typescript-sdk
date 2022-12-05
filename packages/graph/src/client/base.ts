@@ -5,10 +5,11 @@ type GraphSDK = Sdk;
 /**
  * Configuration options for Vertex graph client
  */
-interface GraphClientOpts {
+export interface GraphClientOpts {
   // GraphQL endpoints
-  endpoint: string;
-  slimEndpoint: string;
+  coreEndpoint: string;
+  marketsEndpoint: string;
+  candlesticksEndpoint: string;
 }
 
 export class BaseVertexGraphClient {
@@ -16,8 +17,9 @@ export class BaseVertexGraphClient {
 
   constructor(opts: GraphClientOpts) {
     this.graph = getBuiltGraphSDK({
-      endpoint: opts.endpoint,
-      slimEndpoint: opts.slimEndpoint,
+      coreEndpoint: opts.coreEndpoint,
+      marketsEndpoint: opts.marketsEndpoint,
+      candlesticksEndpoint: opts.candlesticksEndpoint,
     });
   }
 }

@@ -1,7 +1,7 @@
-query LatestOrderFillsQuery($marketEntityId: String!) {
+query LatestOrderFillsQuery($productId: BigInt!) {
   fillOrderEvents(
     # We want to show maker order prices
-    where: { market: $marketEntityId, isTaker: false }
+    where: { productId: $productId, isTaker: false }
     orderBy: blockTime
     orderDirection: desc
     first: 100

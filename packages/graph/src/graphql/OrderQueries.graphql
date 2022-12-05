@@ -1,10 +1,10 @@
 query PaginatedAllMarketOrdersQuery(
-  $marketEntityId: String!
+  $productId: BigInt!
   $first: Int
   $skip: Int
 ) {
   orders(
-    where: { market: $marketEntityId }
+    where: { productId: $productId }
     first: $first
     skip: $skip
     orderDirection: desc
@@ -32,12 +32,12 @@ query PaginatedSubaccountOrdersQuery(
 
 query PaginatedSubaccountOrdersForProductsQuery(
   $subaccountEntityId: String!
-  $allowedMarkets: [String!]!
+  $allowedProductIds: [BigInt!]!
   $first: Int
   $skip: Int
 ) {
   orders(
-    where: { subaccount: $subaccountEntityId, market_in: $allowedMarkets }
+    where: { subaccount: $subaccountEntityId, productId_in: $allowedProductIds }
     first: $first
     skip: $skip
     orderDirection: desc
@@ -47,8 +47,8 @@ query PaginatedSubaccountOrdersForProductsQuery(
   }
 }
 
-query OrderByDigestQuery($digest: Bytes!, $marketEntityId: String!) {
-  orders(where: { digest: $digest, market: $marketEntityId }) {
+query OrderByDigestQuery($digest: Bytes!, $productId: BigInt!) {
+  orders(where: { digest: $digest, productId: $productId }) {
     ...OrderEntityFieldsFragment
   }
 }
@@ -58,11 +58,9 @@ fragment OrderEntityFieldsFragment on Order {
   id
   digest
   priceX18
+  productId
   subaccount {
     subaccountId
-  }
-  market {
-    productId
   }
   reportedAt
   reportedAtBlock

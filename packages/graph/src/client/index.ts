@@ -9,6 +9,7 @@ export * from './subaccount';
 export * from './orders';
 export * from './market';
 export * from './product';
+export { GraphClientOpts } from './base';
 
 /**
  * Client for common Clearinghouse Subgraph queries

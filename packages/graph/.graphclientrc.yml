@@ -1,27 +1,12 @@
 sources:
-  - name: Clearinghouse
+  - name: VertexCore
     handler:
       graphql:
         # For local schema updates
-        #        endpoint: '{context.endpoint:http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph}'
-        # Default to hosted versions
-        strategy: highestValue
-        strategyConfig:
-          selectionSet: |
-            {
-              _meta {
-                block {
-                  number
-                }
-              }
-            }
-          value: '_meta.block.number'
-        sources:
-          - endpoint: '{context.slimEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-slim}'
-          - endpoint: '{context.endpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli}'
+        #        endpoint: '{context.coreEndpoint:http://localhost:8000/subgraphs/name/vertex-clearinghouse-subgraph}'
+        # Default to hosted version
+        endpoint: '{context.coreEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-core}'
     transforms:
-      #      - autoTypeMerging: true
-      # https://github.com/graphprotocol/graph-client
       - autoPagination:
           validateSchema: true
       - blockTracking:
@@ -30,14 +15,38 @@ sources:
           ignoreFieldNames: []
           # Exclude the operation with the following names
           ignoreOperationNames: []
-#  - name: ClearinghouseSlim
-#    handler:
-#      graphql:
-#        endpoint: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-slim'
-#    transforms:
-#      - autoTypeMerging: true
+      - autoTypeMerging: true
+  - name: VertexMarkets
+    handler:
+      graphql:
+        endpoint: '{context.marketsEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets}'
+    transforms:
+      - autoPagination:
+          validateSchema: true
+      - blockTracking:
+          validateSchema: true
+          # Ignore the fields that you don't want to be tracked
+          ignoreFieldNames: []
+          # Exclude the operation with the following names
+          ignoreOperationNames: []
+      - autoTypeMerging: true
+  - name: VertexCandlesticks
+    handler:
+      graphql:
+        endpoint: '{context.candlesticksEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-candlesticks}'
+    transforms:
+      - autoPagination:
+          validateSchema: true
+      - blockTracking:
+          validateSchema: true
+          # Ignore the fields that you don't want to be tracked
+          ignoreFieldNames: []
+          # Exclude the operation with the following names
+          ignoreOperationNames: []
+      - autoTypeMerging: true
+
 documents:
   - ./src/graphql/**/*.graphql
 
 codegen:
-  contextType: 'MeshContext & { endpoint: string }'
+  contextType: 'MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }'

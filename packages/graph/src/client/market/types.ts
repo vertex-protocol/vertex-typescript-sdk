@@ -13,7 +13,6 @@ export interface MarketHourlySnapshot {
   // UNIX seconds
   approximateSnapshotTime: number;
   // From beginning of time, to get changes between 2 snapshots, subtract
-  cumulativeNumOrders: BigDecimal;
   cumulativeVolumeQuote: BigDecimal;
   lastFilledPrice: BigDecimal;
 }

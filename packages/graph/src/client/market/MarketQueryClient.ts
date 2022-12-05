@@ -28,11 +28,10 @@ export class MarketQueryClient extends BaseVertexGraphClient {
         : 0,
     });
 
-    return data.marketHourlySnapshots.map((snapshot) => {
+    return data.marketSnapshots.map((snapshot) => {
       return {
-        approximateSnapshotTime: fromHourIndex(snapshot.hour),
+        approximateSnapshotTime: fromHourIndex(snapshot.periodIndex),
         cumulativeVolumeQuote: fromX18(snapshot.volumeQuoteX18),
-        cumulativeNumOrders: toBigDecimal(snapshot.volumeNumOrders),
         lastFilledPrice: fromX18(snapshot.lastFillPriceX18),
       };
     });
@@ -48,12 +47,12 @@ export class MarketQueryClient extends BaseVertexGraphClient {
   ): Promise<GetCandlesticksResponse> {
     const data = await this.graph.CandlesticksQuery({
       limit: params.limit ?? 100,
-      marketEntityId: getMarketEntityId(params.productId),
+      productId: params.productId,
       maxTimeExclusive: Math.floor(params.beforeTime ?? nowInSeconds()),
     });
 
     // Reverse the array as we want data in reverse chronological order
-    const reverseChronologicalCandlesticks = data.candlesticks.reverse();
+    const reverseChronologicalCandlesticks = data.marketCandlesticks.reverse();
     return reverseChronologicalCandlesticks.map((snapshot): Candlestick => {
       return {
         close: fromX18(snapshot.closeX18).toNumber(),
