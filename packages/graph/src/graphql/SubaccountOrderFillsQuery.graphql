@@ -1,0 +1,24 @@
+query SubaccountOrderFillsQuery(
+  $subaccountEntityId: String!
+  $first: Int
+  $skip: Int
+) {
+  fillOrderEvents(
+    where: { subaccount: $subaccountEntityId }
+    orderBy: blockTime
+    orderDirection: desc
+    first: $first
+    skip: $skip
+  ) {
+    blockTime
+    quoteDeltaX18
+    amountDeltaX18
+    order {
+      productId
+      priceX18
+      totalAmount
+      quoteAmountX18
+      filledAmountX18
+    }
+  }
+}

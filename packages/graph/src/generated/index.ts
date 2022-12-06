@@ -4693,6 +4693,12 @@ const merger = new(StitchingMerger as any)({
         },
         location: 'SubaccountSettlementEventHistoryQueryDocument.graphql'
       },{
+        document: SubaccountOrderFillsQueryDocument,
+        get rawSDL() {
+          return printWithCache(SubaccountOrderFillsQueryDocument);
+        },
+        location: 'SubaccountOrderFillsQueryDocument.graphql'
+      },{
         document: SubaccountStateQueryDocument,
         get rawSDL() {
           return printWithCache(SubaccountStateQueryDocument);
@@ -4864,6 +4870,18 @@ export type SubaccountSettlementEventHistoryQueryQueryVariables = Exact<{
 
 
 export type SubaccountSettlementEventHistoryQueryQuery = { settlePnlEvents: Array<Pick<SettlePnlEvent, 'id' | 'blockTime' | 'productId' | 'amount'>> };
+
+export type SubaccountOrderFillsQueryQueryVariables = Exact<{
+  subaccountEntityId: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SubaccountOrderFillsQueryQuery = { fillOrderEvents: Array<(
+    Pick<FillOrderEvent, 'blockTime' | 'quoteDeltaX18' | 'amountDeltaX18'>
+    & { order: Pick<Order, 'productId' | 'priceX18' | 'totalAmount' | 'quoteAmountX18' | 'filledAmountX18'> }
+  )> };
 
 export type SubaccountStateQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['ID'];
@@ -5065,6 +5083,28 @@ export const SubaccountSettlementEventHistoryQueryDocument = gql`
   }
 }
     ` as unknown as DocumentNode<SubaccountSettlementEventHistoryQueryQuery, SubaccountSettlementEventHistoryQueryQueryVariables>;
+export const SubaccountOrderFillsQueryDocument = gql`
+    query SubaccountOrderFillsQuery($subaccountEntityId: String!, $first: Int, $skip: Int) {
+  fillOrderEvents(
+    where: {subaccount: $subaccountEntityId}
+    orderBy: blockTime
+    orderDirection: desc
+    first: $first
+    skip: $skip
+  ) {
+    blockTime
+    quoteDeltaX18
+    amountDeltaX18
+    order {
+      productId
+      priceX18
+      totalAmount
+      quoteAmountX18
+      filledAmountX18
+    }
+  }
+}
+    ` as unknown as DocumentNode<SubaccountOrderFillsQueryQuery, SubaccountOrderFillsQueryQueryVariables>;
 export const SubaccountStateQueryDocument = gql`
     query SubaccountStateQuery($subaccountEntityId: ID!) {
   subaccount(id: $subaccountEntityId) {
@@ -5122,6 +5162,7 @@ export const SubaccountsForAddressDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -5157,6 +5198,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     SubaccountSettlementEventHistoryQuery(variables: SubaccountSettlementEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountSettlementEventHistoryQueryQuery> {
       return requester<SubaccountSettlementEventHistoryQueryQuery, SubaccountSettlementEventHistoryQueryQueryVariables>(SubaccountSettlementEventHistoryQueryDocument, variables, options) as Promise<SubaccountSettlementEventHistoryQueryQuery>;
+    },
+    SubaccountOrderFillsQuery(variables: SubaccountOrderFillsQueryQueryVariables, options?: C): Promise<SubaccountOrderFillsQueryQuery> {
+      return requester<SubaccountOrderFillsQueryQuery, SubaccountOrderFillsQueryQueryVariables>(SubaccountOrderFillsQueryDocument, variables, options) as Promise<SubaccountOrderFillsQueryQuery>;
     },
     SubaccountStateQuery(variables: SubaccountStateQueryQueryVariables, options?: C): Promise<SubaccountStateQueryQuery> {
       return requester<SubaccountStateQueryQuery, SubaccountStateQueryQueryVariables>(SubaccountStateQueryDocument, variables, options) as Promise<SubaccountStateQueryQuery>;

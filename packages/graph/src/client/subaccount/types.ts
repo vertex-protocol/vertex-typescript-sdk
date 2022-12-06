@@ -1,6 +1,7 @@
 import {
   SubaccountLiquidationEventHistoryQueryQuery,
   SubaccountModifyCollateralEventHistoryQueryQuery,
+  SubaccountOrderFillsQueryQuery,
   SubaccountSettlementEventHistoryQueryQuery,
   SubaccountsForAddressQuery,
 } from '../../generated';
@@ -56,3 +57,10 @@ export type GetPaginatedSubaccountLiquidationEventsResponse =
 
 export type GetPaginatedSubaccountSettlementEventsResponse =
   SubaccountSettlementEventHistoryQueryQuery['settlePnlEvents'];
+
+export interface PaginatedSubaccountOrderFillsParams extends PaginationParams {
+  subaccountId: number;
+}
+
+export type PaginatedSubaccountOrderFillsResponse =
+  SubaccountOrderFillsQueryQuery['fillOrderEvents'];

@@ -8,6 +8,8 @@ import {
   GetSubaccountStateParams,
   GetSubaccountStateResponse,
   PaginatedSubaccountEventsParams,
+  PaginatedSubaccountOrderFillsParams,
+  PaginatedSubaccountOrderFillsResponse,
 } from './types';
 import { getSubaccountEntityId } from '../../utils';
 import { nowInSeconds, toBigDecimal } from '@vertex-protocol/utils';
@@ -141,5 +143,21 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
       },
     );
     return baseResponse.settlePnlEvents;
+  }
+
+  /**
+   * Retrieves on-chain order fills for a given subaccount
+   *
+   * @param params
+   */
+  async getPaginatedSubaccountOrderFillEvents(
+    params: PaginatedSubaccountOrderFillsParams,
+  ): Promise<PaginatedSubaccountOrderFillsResponse> {
+    const baseResponse = await this.graph.SubaccountOrderFillsQuery({
+      subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+      skip: params.skip,
+      first: params.first,
+    });
+    return baseResponse.fillOrderEvents;
   }
 }
