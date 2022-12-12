@@ -76,8 +76,8 @@ export function calcBorrowRatePerSecond(product: SpotProduct) {
   let annualRate: BigDecimal;
   if (pastInflection) {
     const utilizationTerm = interestLargeCap.times(
-      toBigDecimal(1)
-        .minus(utilization)
+      toBigDecimal(utilization)
+        .minus(interestInflectionUtil)
         .div(toBigDecimal(1).minus(interestInflectionUtil)),
     );
     annualRate = interestFloor.plus(interestSmallCap).plus(utilizationTerm);

@@ -3,6 +3,7 @@ import { MarketAPI } from './apis/market';
 import { SubaccountAPI } from './apis/subaccount';
 import { SpotAPI } from './apis/spot';
 import { PerpAPI } from './apis/perp';
+import { isSigner } from './utils';
 
 /**
  * Client for querying and executing against Vertex Clearinghouse.
@@ -22,5 +23,12 @@ export class VertexClient {
     this.subaccount = new SubaccountAPI(context);
     this.spot = new SpotAPI(context);
     this.perp = new PerpAPI(context);
+  }
+
+  /**
+   * Whether the current Vertex client is initialized with an on-chain signer
+   */
+  hasChainSigner() {
+    return isSigner(this.context.chainSignerOrProvider);
   }
 }

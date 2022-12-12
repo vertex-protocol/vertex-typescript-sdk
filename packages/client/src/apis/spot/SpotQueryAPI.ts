@@ -45,11 +45,4 @@ export class SpotQueryAPI extends BaseSpotAPI {
       ),
     );
   }
-
-  private async getChainSignerAddress() {
-    if ('getAddress' in this.context.chainSignerOrProvider) {
-      return this.context.chainSignerOrProvider.getAddress();
-    }
-    throw Error('No `signer.getAddress()` for current context');
-  }
 }
