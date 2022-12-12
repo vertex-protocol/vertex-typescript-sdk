@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/graph",
-  "version": "0.1.0-alpha.53",
+  "version": "0.1.0-alpha.54",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -27,8 +27,8 @@
   },
   "dependencies": {
     "@ethersproject/constants": "^5.7.0",
-    "@vertex-protocol/contracts": "^0.1.0-alpha.53",
-    "@vertex-protocol/utils": "^0.1.0-alpha.53",
+    "@vertex-protocol/contracts": "^0.1.0-alpha.54",
+    "@vertex-protocol/utils": "^0.1.0-alpha.54",
     "graphql": "^16.6.0",
     "ts-mixer": "^6.0.1"
   },
@@ -40,5 +40,5 @@
     "readmeFile": "./README.md",
     "displayName": "Vertex Subgraph Client"
   },
-  "gitHead": "a7324e97d282f1cb3a34c1615028163ed64802cb"
+  "gitHead": "7bda221397afcd46db099a1876170224603a6c5c"
 }
