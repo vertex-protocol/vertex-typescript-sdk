@@ -21,6 +21,8 @@ import {
   GetEngineMaxWithdrawableResponse,
   GetEngineOrderParams,
   GetEngineOrderResponse,
+  GetEngineSubaccountFeeRatesParams,
+  GetEngineSubaccountFeeRatesResponse,
   GetEngineSubaccountIdParams,
   GetEngineSubaccountIdResponse,
   GetEngineSubaccountOrdersParams,
@@ -228,6 +230,25 @@ export class EngineQueryClient extends EngineBaseClient {
       productId: params.productId,
       sender: baseResponse.sender,
       subaccountName: baseResponse.subaccount_name,
+    };
+  }
+
+  /**
+   * Gets maker & taker fee rates for order fees
+   * @params params
+   */
+  async getSubaccountFeeRates(
+    params: GetEngineSubaccountFeeRatesParams,
+  ): Promise<GetEngineSubaccountFeeRatesResponse> {
+    const baseResponse = await this.query('subaccount_fee_rates', {
+      product_id: params.productId,
+      sender: params.sender,
+      subaccount_name: params.subaccountName,
+    });
+
+    return {
+      makerRate: fromX18(baseResponse.maker_fee_rate_x18),
+      takerRate: fromX18(baseResponse.taker_fee_rate_x18),
     };
   }
 

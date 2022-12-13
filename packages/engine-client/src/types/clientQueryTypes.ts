@@ -119,6 +119,17 @@ export interface GetEngineSubaccountOrdersResponse {
   orders: EngineOrder[];
 }
 
+export interface GetEngineSubaccountFeeRatesParams {
+  sender: string;
+  subaccountName: string;
+  productId: number;
+}
+
+export interface GetEngineSubaccountFeeRatesResponse {
+  takerRate: BigDecimal;
+  makerRate: BigDecimal;
+}
+
 export interface EnginePriceTickLiquidity {
   price: BigDecimal;
   liquidity: BigDecimal;
