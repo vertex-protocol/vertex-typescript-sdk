@@ -229,11 +229,6 @@
             "internalType": "uint256",
             "name": "amount",
             "type": "uint256"
-          },
-          {
-            "internalType": "uint64",
-            "name": "nonce",
-            "type": "uint64"
           }
         ],
         "internalType": "struct IEndpoint.DepositInsurance",
@@ -348,7 +343,7 @@
   },
   {
     "inputs": [],
-    "name": "getInsurance",
+    "name": "getInsuranceX18",
     "outputs": [
       {
         "internalType": "int256",
