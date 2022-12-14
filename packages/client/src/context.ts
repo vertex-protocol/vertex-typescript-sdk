@@ -39,8 +39,15 @@ export interface VertexClientContext {
  * Args for creating a context
  */
 interface VertexClientContextOpts {
-  // Address of the Vertex querier
-  querierAddress: string;
+  // Contract addresses
+  contracts: {
+    // Only the querier is required, but you can specify all the contracts to minimize RPC calls
+    querierAddress: string;
+    spotEngineAddress?: string;
+    perpEngineAddress?: string;
+    clearinghouseAddress?: string;
+    endpointAddress?: string;
+  };
   graph: GraphClientOpts;
   offchainEngineEndpoint: string;
 }
@@ -66,11 +73,17 @@ export async function createClientContext(
   opts: CreateVertexClientContextOpts,
   signerOpts: CreateVertexClientContextSignerOpts,
 ): Promise<VertexClientContext> {
-  const { querierAddress, graph, offchainEngineEndpoint } =
+  const { contracts, graph, offchainEngineEndpoint } =
     ((): VertexClientContextOpts => {
       if (opts === 'testnet') {
         return {
-          querierAddress: VERTEX_DEPLOYMENTS.testnet.querier,
+          contracts: {
+            querierAddress: VERTEX_DEPLOYMENTS.testnet.querier,
+            spotEngineAddress: VERTEX_DEPLOYMENTS.testnet.spotEngine,
+            perpEngineAddress: VERTEX_DEPLOYMENTS.testnet.perpEngine,
+            clearinghouseAddress: VERTEX_DEPLOYMENTS.testnet.clearinghouse,
+            endpointAddress: VERTEX_DEPLOYMENTS.testnet.endpoint,
+          },
           graph: {
             coreEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.core,
             marketsEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.markets,
@@ -85,27 +98,29 @@ export async function createClientContext(
   const { chainSignerOrProvider, engineSigner: engineSignerParam } = signerOpts;
 
   const querier = FQuerier__factory.connect(
-    querierAddress,
+    contracts.querierAddress,
     chainSignerOrProvider,
   );
-  const clearinghouseAddress = await querier.getClearinghouse();
+  const clearinghouseAddress =
+    contracts.clearinghouseAddress ?? (await querier.getClearinghouse());
   const clearinghouse = await IClearinghouse__factory.connect(
     clearinghouseAddress,
     chainSignerOrProvider,
   );
 
-  const endpointContractAddress = await clearinghouse.getEndpoint();
+  const endpointContractAddress =
+    contracts.endpointAddress ?? (await clearinghouse.getEndpoint());
   const endpoint = await IEndpoint__factory.connect(
     endpointContractAddress,
     chainSignerOrProvider,
   );
 
-  const spotAddress = await clearinghouse.getEngineByType(
-    ProductEngineType.SPOT,
-  );
-  const perpAddress = await clearinghouse.getEngineByType(
-    ProductEngineType.PERP,
-  );
+  const spotAddress =
+    contracts.spotEngineAddress ??
+    (await clearinghouse.getEngineByType(ProductEngineType.SPOT));
+  const perpAddress =
+    contracts.perpEngineAddress ??
+    (await clearinghouse.getEngineByType(ProductEngineType.PERP));
 
   // TODO: hack - better checking here
   const chainTypedDataSigner =

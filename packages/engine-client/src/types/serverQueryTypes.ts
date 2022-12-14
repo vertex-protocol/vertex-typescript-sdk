@@ -66,6 +66,12 @@ export interface EngineServerSubaccountOrdersQueryParams {
   product_id: number;
 }
 
+export interface EngineServerSubaccountFeeRatesParams {
+  sender: string;
+  subaccount_name: string;
+  product_id: number;
+}
+
 export interface EngineServerMarketLiquidityQueryParams {
   product_id: number;
   depth: number;
@@ -97,6 +103,7 @@ export interface EngineServerQueryRequestByType {
   market_price: EngineServerMarketPriceQueryParams;
   order: EngineServerGetOrderQueryParams;
   validate_order: EngineServerValidateOrderQueryParams;
+  subaccount_fee_rates: EngineServerSubaccountFeeRatesParams;
   subaccount_orders: EngineServerSubaccountOrdersQueryParams;
   market_liquidity: EngineServerMarketLiquidityQueryParams;
   max_order_size: EngineServerMaxOrderSizeQueryParams;
@@ -158,6 +165,11 @@ export interface EngineServerSubaccountOrdersResponse {
   orders: EngineServerGetOrderResponse[];
 }
 
+export interface EngineServerSubaccountFeeRatesResponse {
+  taker_fee_rate_x18: BigNumberish;
+  maker_fee_rate_x18: BigNumberish;
+}
+
 export interface EngineServerMarketPriceResponse {
   product_id: number;
   bid_x18: BigNumberish;
@@ -200,6 +212,7 @@ export interface EngineServerQueryResponseByType {
   order: EngineServerGetOrderResponse;
   validate_order: EngineServerValidateOrderResponse;
   subaccount_orders: EngineServerSubaccountOrdersResponse;
+  subaccount_fee_rates: EngineServerSubaccountFeeRatesResponse;
   market_liquidity: EngineServerMarketLiquidityResponse;
   market_price: EngineServerMarketPriceResponse;
   max_order_size: EngineServerMaxOrderSizeResponse;
