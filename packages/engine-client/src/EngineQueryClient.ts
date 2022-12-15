@@ -295,7 +295,7 @@ export class EngineQueryClient extends EngineBaseClient {
   ): Promise<GetEngineMaxOrderSizeResponse> {
     const baseResponse = await this.query('max_order_size', {
       direction: params.side,
-      price_x18: toX18(params.price.toFixed(0)).toString(),
+      price_x18: toX18(params.price).toString(),
       product_id: params.productId,
       sender: params.sender,
       subaccount_name: params.subaccountName,
