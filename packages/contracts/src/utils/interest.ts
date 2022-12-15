@@ -71,7 +71,7 @@ export function calcBorrowRatePerSecond(product: SpotProduct) {
   if (utilization.eq(0)) {
     return toBigDecimal(0);
   }
-  const pastInflection = utilization.lt(interestInflectionUtil);
+  const pastInflection = utilization.gt(interestInflectionUtil);
 
   let annualRate: BigDecimal;
   if (pastInflection) {
