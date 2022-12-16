@@ -20,9 +20,9 @@ import { createMeshHTTPHandler } from '@graphql-mesh/http';
 import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext, MeshInstance } from '@graphql-mesh/runtime';
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
+import type { VertexMarketsContext } from './sources/VertexMarkets/types';
 import type { VertexCoreContext } from './sources/VertexCore/types';
 import type { VertexCandlesticksContext } from './sources/VertexCandlesticks/types';
-import type { VertexMarketsContext } from './sources/VertexMarkets/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -4879,7 +4879,7 @@ export type SubaccountOrderFillsQueryQueryVariables = Exact<{
 
 
 export type SubaccountOrderFillsQueryQuery = { fillOrderEvents: Array<(
-    Pick<FillOrderEvent, 'blockTime' | 'quoteDeltaX18' | 'amountDeltaX18'>
+    Pick<FillOrderEvent, 'id' | 'blockTime' | 'quoteDeltaX18' | 'amountDeltaX18'>
     & { order: Pick<Order, 'type' | 'productId' | 'priceX18' | 'totalAmount' | 'quoteAmountX18' | 'filledAmountX18'> }
   )> };
 
@@ -5092,6 +5092,7 @@ export const SubaccountOrderFillsQueryDocument = gql`
     first: $first
     skip: $skip
   ) {
+    id
     blockTime
     quoteDeltaX18
     amountDeltaX18
