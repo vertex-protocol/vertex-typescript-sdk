@@ -10,11 +10,7 @@ query LatestOrderFillsQuery($productId: BigInt!) {
     quoteDeltaX18
     amountDeltaX18
     order {
-      type
       priceX18
-      filledAmountX18
-      quoteAmountX18
-      totalAmount
     }
   }
 }
