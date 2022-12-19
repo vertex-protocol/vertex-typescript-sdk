@@ -322,6 +322,7 @@ export type FillOrderEvent = {
   feeQuoteX18: Scalars['BigInt'];
   amountDeltaX18: Scalars['BigInt'];
   quoteDeltaX18: Scalars['BigInt'];
+  newOrderFilledAmountX18: Scalars['BigInt'];
 };
 
 export type FillOrderEvent_filter = {
@@ -427,6 +428,14 @@ export type FillOrderEvent_filter = {
   quoteDeltaX18_lte?: InputMaybe<Scalars['BigInt']>;
   quoteDeltaX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   quoteDeltaX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  newOrderFilledAmountX18?: InputMaybe<Scalars['BigInt']>;
+  newOrderFilledAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  newOrderFilledAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  newOrderFilledAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  newOrderFilledAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  newOrderFilledAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  newOrderFilledAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  newOrderFilledAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -441,7 +450,8 @@ export type FillOrderEvent_orderBy =
   | 'isTaker'
   | 'feeQuoteX18'
   | 'amountDeltaX18'
-  | 'quoteDeltaX18';
+  | 'quoteDeltaX18'
+  | 'newOrderFilledAmountX18';
 
 export type LiquidationEvent = {
   id: Scalars['ID'];

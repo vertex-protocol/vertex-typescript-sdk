@@ -21,8 +21,8 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import type { VertexMarketsContext } from './sources/VertexMarkets/types';
-import type { VertexCoreContext } from './sources/VertexCore/types';
 import type { VertexCandlesticksContext } from './sources/VertexCandlesticks/types';
+import type { VertexCoreContext } from './sources/VertexCore/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -2494,6 +2494,7 @@ export type FillOrderEvent = {
   feeQuoteX18: Scalars['BigInt'];
   amountDeltaX18: Scalars['BigInt'];
   quoteDeltaX18: Scalars['BigInt'];
+  newOrderFilledAmountX18: Scalars['BigInt'];
 };
 
 export type FillOrderEvent_filter = {
@@ -2599,6 +2600,14 @@ export type FillOrderEvent_filter = {
   quoteDeltaX18_lte?: InputMaybe<Scalars['BigInt']>;
   quoteDeltaX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   quoteDeltaX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  newOrderFilledAmountX18?: InputMaybe<Scalars['BigInt']>;
+  newOrderFilledAmountX18_not?: InputMaybe<Scalars['BigInt']>;
+  newOrderFilledAmountX18_gt?: InputMaybe<Scalars['BigInt']>;
+  newOrderFilledAmountX18_lt?: InputMaybe<Scalars['BigInt']>;
+  newOrderFilledAmountX18_gte?: InputMaybe<Scalars['BigInt']>;
+  newOrderFilledAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
+  newOrderFilledAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  newOrderFilledAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -2613,7 +2622,8 @@ export type FillOrderEvent_orderBy =
   | 'isTaker'
   | 'feeQuoteX18'
   | 'amountDeltaX18'
-  | 'quoteDeltaX18';
+  | 'quoteDeltaX18'
+  | 'newOrderFilledAmountX18';
 
 export type LiquidationEvent = {
   id: Scalars['ID'];
@@ -4273,6 +4283,7 @@ export type FillOrderEventResolvers<ContextType = MeshContext & { coreEndpoint: 
   feeQuoteX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   amountDeltaX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   quoteDeltaX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  newOrderFilledAmountX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4491,7 +4502,7 @@ const vertexCandlesticksTransforms = [];
 const additionalTypeDefs = [] as any[];
 const vertexCoreHandler = new GraphqlHandler({
               name: "VertexCore",
-              config: {"endpoint":"{context.coreEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-core}"},
+              config: {"endpoint":"{context.coreEndpoint:https://api.thegraph.com/subgraphs/id/QmadBSbAR7ZaQSnQmw9gRnpmUYQESdSBTtifca1erAmjN2}"},
               baseDir,
               cache,
               pubsub,
@@ -4879,7 +4890,7 @@ export type SubaccountOrderFillsQueryQueryVariables = Exact<{
 
 
 export type SubaccountOrderFillsQueryQuery = { fillOrderEvents: Array<(
-    Pick<FillOrderEvent, 'id' | 'blockTime' | 'quoteDeltaX18' | 'amountDeltaX18'>
+    Pick<FillOrderEvent, 'id' | 'blockTime' | 'quoteDeltaX18' | 'amountDeltaX18' | 'newOrderFilledAmountX18'>
     & { order: Pick<Order, 'type' | 'productId' | 'priceX18' | 'totalAmount' | 'quoteAmountX18' | 'filledAmountX18'> }
   )> };
 
@@ -5096,6 +5107,7 @@ export const SubaccountOrderFillsQueryDocument = gql`
     blockTime
     quoteDeltaX18
     amountDeltaX18
+    newOrderFilledAmountX18
     order {
       type
       productId

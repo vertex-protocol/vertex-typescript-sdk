@@ -313,6 +313,7 @@ type FillOrderEvent {
   feeQuoteX18: BigInt!
   amountDeltaX18: BigInt!
   quoteDeltaX18: BigInt!
+  newOrderFilledAmountX18: BigInt!
 }
 
 input FillOrderEvent_filter {
@@ -418,6 +419,14 @@ input FillOrderEvent_filter {
   quoteDeltaX18_lte: BigInt
   quoteDeltaX18_in: [BigInt!]
   quoteDeltaX18_not_in: [BigInt!]
+  newOrderFilledAmountX18: BigInt
+  newOrderFilledAmountX18_not: BigInt
+  newOrderFilledAmountX18_gt: BigInt
+  newOrderFilledAmountX18_lt: BigInt
+  newOrderFilledAmountX18_gte: BigInt
+  newOrderFilledAmountX18_lte: BigInt
+  newOrderFilledAmountX18_in: [BigInt!]
+  newOrderFilledAmountX18_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
@@ -433,6 +442,7 @@ enum FillOrderEvent_orderBy {
   feeQuoteX18
   amountDeltaX18
   quoteDeltaX18
+  newOrderFilledAmountX18
 }
 
 type LiquidationEvent {
