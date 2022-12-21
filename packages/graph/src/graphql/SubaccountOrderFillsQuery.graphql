@@ -16,6 +16,7 @@ query SubaccountOrderFillsQuery(
     amountDeltaX18
     newOrderFilledAmountX18
     order {
+      digest
       type
       productId
       priceX18
