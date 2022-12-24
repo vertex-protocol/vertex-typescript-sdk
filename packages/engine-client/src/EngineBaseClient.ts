@@ -78,9 +78,16 @@ export class EngineBaseClient {
     params: EngineServerQueryRequestByType[TRequestType],
   ): Promise<EngineServerQueryResponseByType[TRequestType]> {
     const queryParams: Record<string, string | number> = {
-      ...params,
       type: requestType,
     };
+    Object.keys(params).forEach((key) => {
+      const value = params[key as keyof typeof params];
+      // Remove null values and stringify
+      if (value != null) {
+        queryParams[key] = String(value);
+      }
+    });
+
     const queryString = Object.keys(queryParams)
       .map((key) => `${key}=${queryParams[key]}`)
       .join('&');

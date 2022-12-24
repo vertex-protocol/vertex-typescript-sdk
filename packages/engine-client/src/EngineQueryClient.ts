@@ -299,6 +299,7 @@ export class EngineQueryClient extends EngineBaseClient {
       product_id: params.productId,
       sender: params.sender,
       subaccount_name: params.subaccountName,
+      spot_leverage: params.spotLeverage ?? null,
     });
 
     return toBigDecimal(baseResponse.max_order_size);
@@ -315,6 +316,7 @@ export class EngineQueryClient extends EngineBaseClient {
       product_id: params.productId,
       sender: params.sender,
       subaccount_name: params.subaccountName,
+      spot_leverage: params.spotLeverage ?? null,
     });
 
     return toBigDecimal(baseResponse.max_withdrawable);

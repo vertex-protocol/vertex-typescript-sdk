@@ -89,7 +89,7 @@ function getOrderCancellationValues(params: OrderCancellationParams) {
     subaccountName: params.subaccountName,
     productIds: params.productIds,
     digests: params.digests,
-    nonce: BigNumber.from(params.nonce).toNumber(),
+    nonce: params.nonce,
   };
 }
 
