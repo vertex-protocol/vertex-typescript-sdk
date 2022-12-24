@@ -120,10 +120,13 @@ export class EngineExecuteClient extends EngineBaseClient {
 
     const executeResult = await this.execute('place_order', {
       product_id: params.productId,
-      order: getVertexEIP712Values(
-        'place_order',
-        orderWithNonce,
-      ) as EngineServerOrderParams,
+      order: {
+        ...(getVertexEIP712Values(
+          'place_order',
+          orderWithNonce,
+        ) as EngineServerOrderParams),
+        nonce: orderNonce,
+      },
       signature: await this.sign(
         'place_order',
         params.orderbookAddr,
