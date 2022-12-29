@@ -20,9 +20,9 @@ import { createMeshHTTPHandler } from '@graphql-mesh/http';
 import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext, MeshInstance } from '@graphql-mesh/runtime';
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
-import type { VertexCandlesticksContext } from './sources/VertexCandlesticks/types';
-import type { VertexMarketsContext } from './sources/VertexMarkets/types';
 import type { VertexCoreContext } from './sources/VertexCore/types';
+import type { VertexMarketsContext } from './sources/VertexMarkets/types';
+import type { VertexCandlesticksContext } from './sources/VertexCandlesticks/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -4762,6 +4762,7 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
 export type CandlesticksQueryQueryVariables = Exact<{
   productId: Scalars['BigInt'];
   maxTimeExclusive: Scalars['BigInt'];
+  period: Scalars['Int'];
   limit: Scalars['Int'];
 }>;
 
@@ -4929,9 +4930,9 @@ export const OrderEntityFieldsFragmentFragmentDoc = gql`
 }
     ` as unknown as DocumentNode<OrderEntityFieldsFragmentFragment, unknown>;
 export const CandlesticksQueryDocument = gql`
-    query CandlesticksQuery($productId: BigInt!, $maxTimeExclusive: BigInt!, $limit: Int!) {
+    query CandlesticksQuery($productId: BigInt!, $maxTimeExclusive: BigInt!, $period: Int!, $limit: Int!) {
   marketCandlesticks(
-    where: {productId: $productId, time_lt: $maxTimeExclusive}
+    where: {productId: $productId, time_lt: $maxTimeExclusive, period: $period}
     orderBy: time
     orderDirection: desc
     first: $limit

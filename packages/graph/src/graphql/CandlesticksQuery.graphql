@@ -1,10 +1,15 @@
 query CandlesticksQuery(
   $productId: BigInt!
   $maxTimeExclusive: BigInt!
+  $period: Int!
   $limit: Int!
 ) {
   marketCandlesticks(
-    where: { productId: $productId, time_lt: $maxTimeExclusive }
+    where: {
+      productId: $productId
+      time_lt: $maxTimeExclusive
+      period: $period
+    }
     orderBy: time
     orderDirection: desc
     first: $limit
