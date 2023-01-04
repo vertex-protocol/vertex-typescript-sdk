@@ -240,7 +240,7 @@ export class EngineQueryClient extends EngineBaseClient {
   async getSubaccountFeeRates(
     params: GetEngineSubaccountFeeRatesParams,
   ): Promise<GetEngineSubaccountFeeRatesResponse> {
-    const baseResponse = await this.query('subaccount_fee_rates', {
+    const baseResponse = await this.query('fee_rates', {
       product_id: params.productId,
       sender: params.sender,
       subaccount_name: params.subaccountName,
