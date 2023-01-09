@@ -466,8 +466,10 @@ export type LiquidationEvent = {
   insuranceCoverageX18: Scalars['BigInt'];
   spotProductId: Scalars['BigInt'];
   spotAmountX18: Scalars['BigInt'];
+  spotOraclePriceX18: Scalars['BigInt'];
   perpProductId: Scalars['BigInt'];
   perpAmountX18: Scalars['BigInt'];
+  perpMarkPriceX18: Scalars['BigInt'];
 };
 
 export type LiquidationEvent_filter = {
@@ -593,6 +595,14 @@ export type LiquidationEvent_filter = {
   spotAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
   spotAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   spotAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  spotOraclePriceX18?: InputMaybe<Scalars['BigInt']>;
+  spotOraclePriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  spotOraclePriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  spotOraclePriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  spotOraclePriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  spotOraclePriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  spotOraclePriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  spotOraclePriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   perpProductId?: InputMaybe<Scalars['BigInt']>;
   perpProductId_not?: InputMaybe<Scalars['BigInt']>;
   perpProductId_gt?: InputMaybe<Scalars['BigInt']>;
@@ -609,6 +619,14 @@ export type LiquidationEvent_filter = {
   perpAmountX18_lte?: InputMaybe<Scalars['BigInt']>;
   perpAmountX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   perpAmountX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpMarkPriceX18?: InputMaybe<Scalars['BigInt']>;
+  perpMarkPriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  perpMarkPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  perpMarkPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  perpMarkPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  perpMarkPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  perpMarkPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpMarkPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -626,8 +644,10 @@ export type LiquidationEvent_orderBy =
   | 'insuranceCoverageX18'
   | 'spotProductId'
   | 'spotAmountX18'
+  | 'spotOraclePriceX18'
   | 'perpProductId'
-  | 'perpAmountX18';
+  | 'perpAmountX18'
+  | 'perpMarkPriceX18';
 
 export type ModifyCollateralEvent = {
   id: Scalars['ID'];
