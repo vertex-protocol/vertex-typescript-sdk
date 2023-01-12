@@ -15,11 +15,11 @@ export function mapEngineSpotProduct(
     interestFloor: fromX18(product.config.interestFloorX18),
     interestInflectionUtil: fromX18(product.config.interestInflectionUtilX18),
     totalBorrowed: calcTotalBorrowed(
-      product.state.totalBorrowsNormalizedX18,
+      product.state.totalBorrowsNormalized,
       product.state.cumulativeBorrowsMultiplierX18,
     ),
     totalDeposited: calcTotalDeposited(
-      product.state.totalDepositsNormalizedX18,
+      product.state.totalDepositsNormalized,
       product.state.cumulativeDepositsMultiplierX18,
     ),
     shortWeightInitial: fromX18(product.risk.shortWeightInitialX18),
@@ -28,8 +28,8 @@ export function mapEngineSpotProduct(
     longWeightMaintenance: fromX18(product.risk.longWeightMaintenanceX18),
     largePositionPenalty: fromX18(product.risk.largePositionPenaltyX18),
     oraclePrice: fromX18(product.oraclePriceX18),
-    totalLpBaseAmount: fromX18(product.lpState.base.amountX18),
-    totalLpQuoteAmount: fromX18(product.lpState.quote.amountX18),
+    totalLpBaseAmount: fromX18(product.lpState.base.amount),
+    totalLpQuoteAmount: fromX18(product.lpState.quote.amount),
     totalLpSupply: toBigDecimal(product.lpState.supply),
   };
 }
@@ -47,7 +47,7 @@ export function mapEnginePerpProduct(
     largePositionPenalty: fromX18(product.risk.largePositionPenaltyX18),
     oraclePrice: fromX18(product.oraclePriceX18),
     markPrice: fromX18(product.markPriceX18),
-    openInterest: fromX18(product.state.openInterestX18),
+    openInterest: fromX18(product.state.openInterest),
     totalLpBaseAmount: toBigDecimal(product.lpState.base),
     totalLpQuoteAmount: toBigDecimal(product.lpState.quote),
     totalLpSupply: toBigDecimal(product.lpState.supply),

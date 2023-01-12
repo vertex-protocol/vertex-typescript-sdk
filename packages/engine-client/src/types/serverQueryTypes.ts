@@ -22,24 +22,24 @@ export interface EngineServerSubaccountInfoQueryParams {
         mint_lp: {
           product_id: number;
           subaccount_id: number;
-          amount_base_x18: string;
-          quote_amount_low_x18: string;
-          quote_amount_high_x18: string;
+          amount_base: string;
+          quote_amount_low: string;
+          quote_amount_high: string;
         };
       }
     | {
         burn_lp: {
           product_id: number;
           subaccount_id: number;
-          amount_lp_x18: string;
+          amount_lp: string;
         };
       }
     | {
         apply_delta: {
           product_id: number;
           subaccount_id: number;
-          amount_delta_x18: string;
-          v_quote_delta_x18: string;
+          amount_delta: string;
+          v_quote_delta: string;
         };
       }
   >;
