@@ -132,9 +132,9 @@ export interface EngineServerSubaccountInfoResponse {
   exists: boolean;
   subaccount_id: BigNumberish;
   healths: {
-    health_x18: BigNumberish;
-    assets_x18: BigNumberish;
-    liabilities_x18: BigNumberish;
+    health: BigNumberish;
+    assets: BigNumberish;
+    liabilities: BigNumberish;
   }[];
   spot_balances: EngineServerSpotBalance[];
   perp_balances: EngineServerPerpBalance[];

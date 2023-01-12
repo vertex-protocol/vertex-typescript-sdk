@@ -333,8 +333,8 @@ function mapSubaccountSummary(
     }
 
     balances.push({
-      amount: fromX18(spotBalance.balance.amount_x18),
-      lpAmount: fromX18(spotBalance.lp_balance.amount_x18),
+      amount: fromX18(spotBalance.balance.amount),
+      lpAmount: fromX18(spotBalance.lp_balance.amount),
       ...mapEngineServerSpotProduct(product).product,
     });
   });
@@ -348,9 +348,9 @@ function mapSubaccountSummary(
     }
 
     balances.push({
-      amount: fromX18(perpBalance.balance.amount_x18),
-      lpAmount: fromX18(perpBalance.lp_balance.amount_x18),
-      vQuoteBalance: fromX18(perpBalance.balance.v_quote_balance_x18),
+      amount: fromX18(perpBalance.balance.amount),
+      lpAmount: fromX18(perpBalance.lp_balance.amount),
+      vQuoteBalance: fromX18(perpBalance.balance.v_quote_balance),
       ...mapEngineServerPerpProduct(product).product,
     });
   });
@@ -359,19 +359,19 @@ function mapSubaccountSummary(
     balances: balances,
     health: {
       initial: {
-        health: fromX18(baseResponse.healths[0].health_x18),
-        assets: fromX18(baseResponse.healths[0].assets_x18),
-        liabilities: fromX18(baseResponse.healths[0].liabilities_x18),
+        health: fromX18(baseResponse.healths[0].health),
+        assets: fromX18(baseResponse.healths[0].assets),
+        liabilities: fromX18(baseResponse.healths[0].liabilities),
       },
       maintenance: {
-        health: fromX18(baseResponse.healths[1].health_x18),
-        assets: fromX18(baseResponse.healths[1].assets_x18),
-        liabilities: fromX18(baseResponse.healths[1].liabilities_x18),
+        health: fromX18(baseResponse.healths[1].health),
+        assets: fromX18(baseResponse.healths[1].assets),
+        liabilities: fromX18(baseResponse.healths[1].liabilities),
       },
       unweighted: {
-        health: fromX18(baseResponse.healths[2].health_x18),
-        assets: fromX18(baseResponse.healths[2].assets_x18),
-        liabilities: fromX18(baseResponse.healths[2].liabilities_x18),
+        health: fromX18(baseResponse.healths[2].health),
+        assets: fromX18(baseResponse.healths[2].assets),
+        liabilities: fromX18(baseResponse.healths[2].liabilities),
       },
     },
   };
