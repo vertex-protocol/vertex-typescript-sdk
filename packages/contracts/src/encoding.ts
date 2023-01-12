@@ -11,7 +11,7 @@ export function encodeSignedWithdrawCollateralTx(
 ) {
   return defaultAbiCoder.encode(
     [
-      'tuple(tuple(address sender, string subaccountName, uint32 productId, int256 amount, uint64 nonce), bytes signature)',
+      'tuple(tuple(address sender, string subaccountName, uint32 productId, uint128 amount, uint64 nonce), bytes signature)',
     ],
     [
       [
@@ -31,7 +31,7 @@ export function encodeSignedWithdrawCollateralTx(
 export function encodeSignedOrder(signed: SignedOrderParams) {
   return defaultAbiCoder.encode(
     [
-      'tuple(tuple(address sender, string subaccountName, int256 priceX18, int256 amount, uint64 expiration, uint64 nonce) order, bytes signature)',
+      'tuple(tuple(address sender, string subaccountName, int128 priceX18, int128 amount, uint64 expiration, uint64 nonce) order, bytes signature)',
     ],
     [
       [
