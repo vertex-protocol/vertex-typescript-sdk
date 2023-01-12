@@ -34,14 +34,7 @@ const _abi = [
   },
   {
     anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "bytes[]",
-        name: "transactions",
-        type: "bytes[]",
-      },
-    ],
+    inputs: [],
     name: "SubmitTransactions",
     type: "event",
   },
@@ -58,12 +51,25 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "uint256",
+        internalType: "uint128",
         name: "amount",
-        type: "uint256",
+        type: "uint128",
       },
     ],
     name: "depositCollateral",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint128",
+        name: "amount",
+        type: "uint128",
+      },
+    ],
+    name: "depositInsurance",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -95,12 +101,31 @@ const _abi = [
         type: "uint32",
       },
     ],
+    name: "getPerpIndexPriceX18",
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+    ],
     name: "getPriceX18",
     outputs: [
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "",
-        type: "int256",
+        type: "int128",
       },
     ],
     stateMutability: "view",
@@ -111,9 +136,9 @@ const _abi = [
     name: "getTime",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "uint128",
         name: "",
-        type: "uint256",
+        type: "uint128",
       },
     ],
     stateMutability: "view",

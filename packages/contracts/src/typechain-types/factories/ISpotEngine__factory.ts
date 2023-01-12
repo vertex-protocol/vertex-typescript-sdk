@@ -44,9 +44,9 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "int256",
-        name: "amountSocializedX18",
-        type: "int256",
+        internalType: "int128",
+        name: "amountSocialized",
+        type: "int128",
       },
     ],
     name: "SocializeProduct",
@@ -67,14 +67,14 @@ const _abi = [
             type: "uint64",
           },
           {
-            internalType: "int256",
-            name: "amountDeltaX18",
-            type: "int256",
+            internalType: "int128",
+            name: "amountDelta",
+            type: "int128",
           },
           {
-            internalType: "int256",
-            name: "vQuoteDeltaX18",
-            type: "int256",
+            internalType: "int128",
+            name: "vQuoteDelta",
+            type: "int128",
           },
         ],
         internalType: "struct IProductEngine.ProductDelta[]",
@@ -100,9 +100,9 @@ const _abi = [
         type: "uint64",
       },
       {
-        internalType: "int256",
-        name: "amountLpX18",
-        type: "int256",
+        internalType: "int128",
+        name: "amountLp",
+        type: "int128",
       },
     ],
     name: "burnLp",
@@ -159,24 +159,24 @@ const _abi = [
             type: "address",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "interestInflectionUtilX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "interestFloorX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "interestSmallCapX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "interestLargeCapX18",
-            type: "int256",
+            type: "int128",
           },
         ],
         internalType: "struct ISpotEngine.Config",
@@ -250,24 +250,24 @@ const _abi = [
       {
         components: [
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "cumulativeDepositsMultiplierX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "cumulativeBorrowsMultiplierX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
-            name: "totalDepositsNormalizedX18",
-            type: "int256",
+            internalType: "int128",
+            name: "totalDepositsNormalized",
+            type: "int128",
           },
           {
-            internalType: "int256",
-            name: "totalBorrowsNormalizedX18",
-            type: "int256",
+            internalType: "int128",
+            name: "totalBorrowsNormalized",
+            type: "int128",
           },
         ],
         internalType: "struct ISpotEngine.State",
@@ -277,14 +277,14 @@ const _abi = [
       {
         components: [
           {
-            internalType: "int256",
-            name: "amountX18",
-            type: "int256",
+            internalType: "int128",
+            name: "amount",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "lastCumulativeMultiplierX18",
-            type: "int256",
+            type: "int128",
           },
         ],
         internalType: "struct ISpotEngine.Balance",
@@ -313,21 +313,21 @@ const _abi = [
       {
         components: [
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "supply",
-            type: "int256",
+            type: "int128",
           },
           {
             components: [
               {
-                internalType: "int256",
-                name: "amountX18",
-                type: "int256",
+                internalType: "int128",
+                name: "amount",
+                type: "int128",
               },
               {
-                internalType: "int256",
+                internalType: "int128",
                 name: "lastCumulativeMultiplierX18",
-                type: "int256",
+                type: "int128",
               },
             ],
             internalType: "struct ISpotEngine.Balance",
@@ -337,14 +337,14 @@ const _abi = [
           {
             components: [
               {
-                internalType: "int256",
-                name: "amountX18",
-                type: "int256",
+                internalType: "int128",
+                name: "amount",
+                type: "int128",
               },
               {
-                internalType: "int256",
+                internalType: "int128",
                 name: "lastCumulativeMultiplierX18",
-                type: "int256",
+                type: "int128",
               },
             ],
             internalType: "struct ISpotEngine.Balance",
@@ -359,9 +359,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "int256",
-            name: "amountX18",
-            type: "int256",
+            internalType: "int128",
+            name: "amount",
+            type: "int128",
           },
         ],
         internalType: "struct ISpotEngine.LpBalance",
@@ -371,24 +371,24 @@ const _abi = [
       {
         components: [
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "cumulativeDepositsMultiplierX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "cumulativeBorrowsMultiplierX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
-            name: "totalDepositsNormalizedX18",
-            type: "int256",
+            internalType: "int128",
+            name: "totalDepositsNormalized",
+            type: "int128",
           },
           {
-            internalType: "int256",
-            name: "totalBorrowsNormalizedX18",
-            type: "int256",
+            internalType: "int128",
+            name: "totalBorrowsNormalized",
+            type: "int128",
           },
         ],
         internalType: "struct ISpotEngine.State",
@@ -398,19 +398,67 @@ const _abi = [
       {
         components: [
           {
-            internalType: "int256",
-            name: "amountX18",
-            type: "int256",
+            internalType: "int128",
+            name: "amount",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "lastCumulativeMultiplierX18",
-            type: "int256",
+            type: "int128",
           },
         ],
         internalType: "struct ISpotEngine.Balance",
         name: "",
         type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "uint128",
+        name: "amount",
+        type: "uint128",
+      },
+    ],
+    name: "getWithdrawTransferAmount",
+    outputs: [
+      {
+        internalType: "uint128",
+        name: "",
+        type: "uint128",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "uint64",
+        name: "subaccountId",
+        type: "uint64",
+      },
+    ],
+    name: "hasBalance",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
       },
     ],
     stateMutability: "view",
@@ -462,19 +510,19 @@ const _abi = [
         type: "uint64",
       },
       {
-        internalType: "int256",
-        name: "amountBaseX18",
-        type: "int256",
+        internalType: "int128",
+        name: "amountBase",
+        type: "int128",
       },
       {
-        internalType: "int256",
-        name: "quoteAmountLowX18",
-        type: "int256",
+        internalType: "int128",
+        name: "quoteAmountLow",
+        type: "int128",
       },
       {
-        internalType: "int256",
-        name: "quoteAmountHighX18",
-        type: "int256",
+        internalType: "int128",
+        name: "quoteAmountHigh",
+        type: "int128",
       },
     ],
     name: "mintLp",
@@ -490,17 +538,17 @@ const _abi = [
         type: "uint64",
       },
       {
-        internalType: "int256",
-        name: "insuranceX18",
-        type: "int256",
+        internalType: "int128",
+        name: "insurance",
+        type: "int128",
       },
     ],
     name: "socializeSubaccount",
     outputs: [
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "",
-        type: "int256",
+        type: "int128",
       },
     ],
     stateMutability: "nonpayable",
@@ -519,37 +567,37 @@ const _abi = [
         type: "uint64",
       },
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "amount",
-        type: "int256",
+        type: "int128",
       },
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "priceX18",
-        type: "int256",
+        type: "int128",
       },
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "sizeIncrement",
-        type: "int256",
+        type: "int128",
       },
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "lpSpreadX18",
-        type: "int256",
+        type: "int128",
       },
     ],
     name: "swapLp",
     outputs: [
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "",
-        type: "int256",
+        type: "int128",
       },
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "",
-        type: "int256",
+        type: "int128",
       },
     ],
     stateMutability: "nonpayable",
@@ -558,9 +606,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
+        internalType: "uint128",
         name: "dt",
-        type: "uint256",
+        type: "uint128",
       },
     ],
     name: "updateStates",

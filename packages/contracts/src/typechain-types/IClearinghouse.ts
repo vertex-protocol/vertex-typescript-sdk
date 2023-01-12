@@ -72,13 +72,11 @@ export declare namespace IEndpoint {
   export type DepositInsuranceStruct = {
     sender: PromiseOrValue<string>;
     amount: PromiseOrValue<BigNumberish>;
-    nonce: PromiseOrValue<BigNumberish>;
   };
 
-  export type DepositInsuranceStructOutput = [string, BigNumber, BigNumber] & {
+  export type DepositInsuranceStructOutput = [string, BigNumber] & {
     sender: string;
     amount: BigNumber;
-    nonce: BigNumber;
   };
 
   export type LiquidateSubaccountStruct = {
@@ -229,14 +227,14 @@ export declare namespace RiskHelper {
 export interface IClearinghouseInterface extends utils.Interface {
   functions: {
     "addEngine(address,uint8)": FunctionFragment;
-    "burnLp((address,string,uint32,uint256,uint64))": FunctionFragment;
-    "depositCollateral((address,string,uint32,uint256))": FunctionFragment;
-    "depositInsurance((address,uint256,uint64))": FunctionFragment;
+    "burnLp((address,string,uint32,uint128,uint64))": FunctionFragment;
+    "depositCollateral((address,string,uint32,uint128))": FunctionFragment;
+    "depositInsurance((address,uint128))": FunctionFragment;
     "getEndpoint()": FunctionFragment;
     "getEngineByProduct(uint32)": FunctionFragment;
     "getEngineByType(uint8)": FunctionFragment;
+    "getHealth(uint64,uint8)": FunctionFragment;
     "getHealthGroups()": FunctionFragment;
-    "getHealthX18(uint64,uint8)": FunctionFragment;
     "getInsurance()": FunctionFragment;
     "getNumProducts()": FunctionFragment;
     "getNumSubaccounts()": FunctionFragment;
@@ -247,11 +245,11 @@ export interface IClearinghouseInterface extends utils.Interface {
     "getSubaccountId(address,string)": FunctionFragment;
     "getSubaccountOwner(uint64)": FunctionFragment;
     "getSupportedEngines()": FunctionFragment;
-    "liquidateSubaccount((address,string,uint64,uint8,uint32,int256,uint64))": FunctionFragment;
-    "mintLp((address,string,uint32,uint256,uint256,uint256,uint64))": FunctionFragment;
-    "registerProductForId(address,(int48,int48,int48,int48,int48),uint32)": FunctionFragment;
+    "liquidateSubaccount((address,string,uint64,uint8,uint32,int128,uint64))": FunctionFragment;
+    "mintLp((address,string,uint32,uint128,uint128,uint128,uint64))": FunctionFragment;
+    "registerProductForId(address,(int32,int32,int32,int32,int32),uint32)": FunctionFragment;
     "settlePnl((uint64[]))": FunctionFragment;
-    "withdrawCollateral((address,string,uint32,uint256,uint64))": FunctionFragment;
+    "withdrawCollateral((address,string,uint32,uint128,uint64))": FunctionFragment;
   };
 
   getFunction(
@@ -263,8 +261,8 @@ export interface IClearinghouseInterface extends utils.Interface {
       | "getEndpoint"
       | "getEngineByProduct"
       | "getEngineByType"
+      | "getHealth"
       | "getHealthGroups"
-      | "getHealthX18"
       | "getInsurance"
       | "getNumProducts"
       | "getNumSubaccounts"
@@ -311,12 +309,12 @@ export interface IClearinghouseInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getHealthGroups",
-    values?: undefined
+    functionFragment: "getHealth",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getHealthX18",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    functionFragment: "getHealthGroups",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getInsurance",
@@ -402,12 +400,9 @@ export interface IClearinghouseInterface extends utils.Interface {
     functionFragment: "getEngineByType",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getHealth", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getHealthGroups",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getHealthX18",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -462,8 +457,8 @@ export interface IClearinghouseInterface extends utils.Interface {
   events: {
     "ClearinghouseInitialized(address,address,address)": EventFragment;
     "CreateSubaccount(address,string,uint64)": EventFragment;
-    "Liquidation(uint64,uint64,uint8,uint32,int256,int256,int256)": EventFragment;
-    "ModifyCollateral(int256,uint64,uint32)": EventFragment;
+    "Liquidation(uint64,uint64,uint8,uint32,int128,int128,int128)": EventFragment;
+    "ModifyCollateral(int128,uint64,uint32)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "ClearinghouseInitialized"): EventFragment;
@@ -503,9 +498,9 @@ export interface LiquidationEventObject {
   liquidateeSubaccount: BigNumber;
   mode: number;
   healthGroup: number;
-  amountX18: BigNumber;
-  amountQuoteX18: BigNumber;
-  insuranceCoverX18: BigNumber;
+  amount: BigNumber;
+  amountQuote: BigNumber;
+  insuranceCover: BigNumber;
 }
 export type LiquidationEvent = TypedEvent<
   [BigNumber, BigNumber, number, number, BigNumber, BigNumber, BigNumber],
@@ -589,15 +584,15 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    getHealthGroups(
-      overrides?: CallOverrides
-    ): Promise<[IClearinghouseState.HealthGroupStructOutput[]]>;
-
-    getHealthX18(
+    getHealth(
       subaccountId: PromiseOrValue<BigNumberish>,
       healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    getHealthGroups(
+      overrides?: CallOverrides
+    ): Promise<[IClearinghouseState.HealthGroupStructOutput[]]>;
 
     getInsurance(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -696,15 +691,15 @@ export interface IClearinghouse extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  getHealthGroups(
-    overrides?: CallOverrides
-  ): Promise<IClearinghouseState.HealthGroupStructOutput[]>;
-
-  getHealthX18(
+  getHealth(
     subaccountId: PromiseOrValue<BigNumberish>,
     healthType: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  getHealthGroups(
+    overrides?: CallOverrides
+  ): Promise<IClearinghouseState.HealthGroupStructOutput[]>;
 
   getInsurance(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -803,15 +798,15 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    getHealthGroups(
-      overrides?: CallOverrides
-    ): Promise<IClearinghouseState.HealthGroupStructOutput[]>;
-
-    getHealthX18(
+    getHealth(
       subaccountId: PromiseOrValue<BigNumberish>,
       healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getHealthGroups(
+      overrides?: CallOverrides
+    ): Promise<IClearinghouseState.HealthGroupStructOutput[]>;
 
     getInsurance(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -900,26 +895,26 @@ export interface IClearinghouse extends BaseContract {
       subaccount?: null
     ): CreateSubaccountEventFilter;
 
-    "Liquidation(uint64,uint64,uint8,uint32,int256,int256,int256)"(
+    "Liquidation(uint64,uint64,uint8,uint32,int128,int128,int128)"(
       liquidatorSubaccount?: PromiseOrValue<BigNumberish> | null,
       liquidateeSubaccount?: PromiseOrValue<BigNumberish> | null,
       mode?: PromiseOrValue<BigNumberish> | null,
       healthGroup?: null,
-      amountX18?: null,
-      amountQuoteX18?: null,
-      insuranceCoverX18?: null
+      amount?: null,
+      amountQuote?: null,
+      insuranceCover?: null
     ): LiquidationEventFilter;
     Liquidation(
       liquidatorSubaccount?: PromiseOrValue<BigNumberish> | null,
       liquidateeSubaccount?: PromiseOrValue<BigNumberish> | null,
       mode?: PromiseOrValue<BigNumberish> | null,
       healthGroup?: null,
-      amountX18?: null,
-      amountQuoteX18?: null,
-      insuranceCoverX18?: null
+      amount?: null,
+      amountQuote?: null,
+      insuranceCover?: null
     ): LiquidationEventFilter;
 
-    "ModifyCollateral(int256,uint64,uint32)"(
+    "ModifyCollateral(int128,uint64,uint32)"(
       amount?: null,
       subaccount?: PromiseOrValue<BigNumberish> | null,
       productId?: null
@@ -965,13 +960,13 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getHealthGroups(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getHealthX18(
+    getHealth(
       subaccountId: PromiseOrValue<BigNumberish>,
       healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getHealthGroups(overrides?: CallOverrides): Promise<BigNumber>;
 
     getInsurance(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1071,13 +1066,13 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getHealthGroups(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getHealthX18(
+    getHealth(
       subaccountId: PromiseOrValue<BigNumberish>,
       healthType: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    getHealthGroups(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getInsurance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

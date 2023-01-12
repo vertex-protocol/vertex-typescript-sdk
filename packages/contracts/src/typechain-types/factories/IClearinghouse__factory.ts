@@ -89,21 +89,21 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "int256",
-        name: "amountX18",
-        type: "int256",
+        internalType: "int128",
+        name: "amount",
+        type: "int128",
       },
       {
         indexed: false,
-        internalType: "int256",
-        name: "amountQuoteX18",
-        type: "int256",
+        internalType: "int128",
+        name: "amountQuote",
+        type: "int128",
       },
       {
         indexed: false,
-        internalType: "int256",
-        name: "insuranceCoverX18",
-        type: "int256",
+        internalType: "int128",
+        name: "insuranceCover",
+        type: "int128",
       },
     ],
     name: "Liquidation",
@@ -114,9 +114,9 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: "int256",
+        internalType: "int128",
         name: "amount",
-        type: "int256",
+        type: "int128",
       },
       {
         indexed: true,
@@ -172,9 +172,9 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "amount",
-            type: "uint256",
+            type: "uint128",
           },
           {
             internalType: "uint64",
@@ -212,9 +212,9 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "amount",
-            type: "uint256",
+            type: "uint128",
           },
         ],
         internalType: "struct IEndpoint.DepositCollateral",
@@ -237,14 +237,9 @@ const _abi = [
             type: "address",
           },
           {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "amount",
-            type: "uint256",
-          },
-          {
-            internalType: "uint64",
-            name: "nonce",
-            type: "uint64",
+            type: "uint128",
           },
         ],
         internalType: "struct IEndpoint.DepositInsurance",
@@ -309,6 +304,30 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "uint64",
+        name: "subaccountId",
+        type: "uint64",
+      },
+      {
+        internalType: "enum IProductEngine.HealthType",
+        name: "healthType",
+        type: "uint8",
+      },
+    ],
+    name: "getHealth",
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "getHealthGroups",
     outputs: [
@@ -334,37 +353,13 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-      {
-        internalType: "enum IProductEngine.HealthType",
-        name: "healthType",
-        type: "uint8",
-      },
-    ],
-    name: "getHealthX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "getInsurance",
     outputs: [
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "",
-        type: "int256",
+        type: "int128",
       },
     ],
     stateMutability: "view",
@@ -407,9 +402,9 @@ const _abi = [
     name: "getOraclePriceX18",
     outputs: [
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "",
-        type: "int256",
+        type: "int128",
       },
     ],
     stateMutability: "view",
@@ -460,29 +455,29 @@ const _abi = [
       {
         components: [
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "longWeightInitialX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "shortWeightInitialX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "longWeightMaintenanceX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "shortWeightMaintenanceX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "largePositionPenaltyX18",
-            type: "int256",
+            type: "int128",
           },
         ],
         internalType: "struct RiskHelper.Risk",
@@ -579,9 +574,9 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "amount",
-            type: "int256",
+            type: "int128",
           },
           {
             internalType: "uint64",
@@ -619,19 +614,19 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "amountBase",
-            type: "uint256",
+            type: "uint128",
           },
           {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "quoteAmountLow",
-            type: "uint256",
+            type: "uint128",
           },
           {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "quoteAmountHigh",
-            type: "uint256",
+            type: "uint128",
           },
           {
             internalType: "uint64",
@@ -659,29 +654,29 @@ const _abi = [
       {
         components: [
           {
-            internalType: "int48",
+            internalType: "int32",
             name: "longWeightInitial",
-            type: "int48",
+            type: "int32",
           },
           {
-            internalType: "int48",
+            internalType: "int32",
             name: "shortWeightInitial",
-            type: "int48",
+            type: "int32",
           },
           {
-            internalType: "int48",
+            internalType: "int32",
             name: "longWeightMaintenance",
-            type: "int48",
+            type: "int32",
           },
           {
-            internalType: "int48",
+            internalType: "int32",
             name: "shortWeightMaintenance",
-            type: "int48",
+            type: "int32",
           },
           {
-            internalType: "int48",
+            internalType: "int32",
             name: "largePositionPenalty",
-            type: "int48",
+            type: "int32",
           },
         ],
         internalType: "struct IClearinghouseState.RiskStore",
@@ -745,9 +740,9 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "amount",
-            type: "uint256",
+            type: "uint128",
           },
           {
             internalType: "uint64",

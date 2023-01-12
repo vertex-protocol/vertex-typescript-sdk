@@ -29,8 +29,10 @@ import type {
 
 export interface IEndpointInterface extends utils.Interface {
   functions: {
-    "depositCollateral(string,uint32,uint256)": FunctionFragment;
+    "depositCollateral(string,uint32,uint128)": FunctionFragment;
+    "depositInsurance(uint128)": FunctionFragment;
     "getNonce(address)": FunctionFragment;
+    "getPerpIndexPriceX18(uint32)": FunctionFragment;
     "getPriceX18(uint32)": FunctionFragment;
     "getTime()": FunctionFragment;
     "setBook(uint32,address)": FunctionFragment;
@@ -41,7 +43,9 @@ export interface IEndpointInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "depositCollateral"
+      | "depositInsurance"
       | "getNonce"
+      | "getPerpIndexPriceX18"
       | "getPriceX18"
       | "getTime"
       | "setBook"
@@ -58,8 +62,16 @@ export interface IEndpointInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "depositInsurance",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getNonce",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPerpIndexPriceX18",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getPriceX18",
@@ -83,7 +95,15 @@ export interface IEndpointInterface extends utils.Interface {
     functionFragment: "depositCollateral",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositInsurance",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getPerpIndexPriceX18",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getPriceX18",
     data: BytesLike
@@ -101,7 +121,7 @@ export interface IEndpointInterface extends utils.Interface {
 
   events: {
     "SubmitSlowModeTransaction(uint64,address,bytes)": EventFragment;
-    "SubmitTransactions(bytes[])": EventFragment;
+    "SubmitTransactions()": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "SubmitSlowModeTransaction"): EventFragment;
@@ -121,11 +141,9 @@ export type SubmitSlowModeTransactionEvent = TypedEvent<
 export type SubmitSlowModeTransactionEventFilter =
   TypedEventFilter<SubmitSlowModeTransactionEvent>;
 
-export interface SubmitTransactionsEventObject {
-  transactions: string[];
-}
+export interface SubmitTransactionsEventObject {}
 export type SubmitTransactionsEvent = TypedEvent<
-  [string[]],
+  [],
   SubmitTransactionsEventObject
 >;
 
@@ -166,8 +184,18 @@ export interface IEndpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    depositInsurance(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     getNonce(
       sender: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getPerpIndexPriceX18(
+      productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -203,8 +231,18 @@ export interface IEndpoint extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  depositInsurance(
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   getNonce(
     sender: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getPerpIndexPriceX18(
+    productId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -240,8 +278,18 @@ export interface IEndpoint extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    depositInsurance(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     getNonce(
       sender: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getPerpIndexPriceX18(
+      productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -282,10 +330,8 @@ export interface IEndpoint extends BaseContract {
       tx?: null
     ): SubmitSlowModeTransactionEventFilter;
 
-    "SubmitTransactions(bytes[])"(
-      transactions?: null
-    ): SubmitTransactionsEventFilter;
-    SubmitTransactions(transactions?: null): SubmitTransactionsEventFilter;
+    "SubmitTransactions()"(): SubmitTransactionsEventFilter;
+    SubmitTransactions(): SubmitTransactionsEventFilter;
   };
 
   estimateGas: {
@@ -296,8 +342,18 @@ export interface IEndpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    depositInsurance(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     getNonce(
       sender: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getPerpIndexPriceX18(
+      productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -334,8 +390,18 @@ export interface IEndpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    depositInsurance(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     getNonce(
       sender: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getPerpIndexPriceX18(
+      productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
