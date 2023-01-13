@@ -37,12 +37,12 @@ async function main() {
   const endpointAddr = await clearinghouse.getEndpoint();
   const endpoint = await IEndpoint__factory.connect(endpointAddr, signer);
 
-  await (await quote.mint(signer.address, toFixedPoint(99))).wait();
-  await (await quote.approve(endpointAddr, toFixedPoint(99))).wait();
+  await (await quote.mint(signer.address, toFixedPoint(99, 6))).wait();
+  await (await quote.approve(endpointAddr, toFixedPoint(99, 6))).wait();
 
   // Deposit collateral
   const depositTx = await depositCollateral({
-    amount: 99,
+    amount: toFixedPoint(99, 6),
     endpoint,
     productId: 0,
     subaccountName: 'default',
@@ -51,7 +51,7 @@ async function main() {
   console.log('Done depositing collateral');
 
   // Wait for slow mode
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  await new Promise((resolve) => setTimeout(resolve, 10000));
 
   const subaccountId = await clearinghouse.getSubaccountId(
     signer.address,
@@ -131,7 +131,7 @@ async function main() {
     sender: signer.address,
     subaccountName: 'default',
     productId: 0,
-    amount: 99,
+    amount: toFixedPoint(99, 6),
     endpointAddr,
   });
 
