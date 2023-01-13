@@ -81,6 +81,8 @@ export interface EngineServerMaxWithdrawableQueryParams {
   sender: string;
   subaccount_name: string;
   product_id: number;
+  // If not given, engine defaults to true (leverage/borrow enabled)
+  spot_leverage: boolean | null;
 }
 
 export interface EngineServerMaxOrderSizeQueryParams {
@@ -89,6 +91,8 @@ export interface EngineServerMaxOrderSizeQueryParams {
   product_id: number;
   price_x18: string;
   direction: 'long' | 'short';
+  // If not given, engine defaults to true (leverage/borrow enabled)
+  spot_leverage: boolean | null;
 }
 
 export interface EngineServerQueryRequestByType {
@@ -103,7 +107,7 @@ export interface EngineServerQueryRequestByType {
   market_price: EngineServerMarketPriceQueryParams;
   order: EngineServerGetOrderQueryParams;
   validate_order: EngineServerValidateOrderQueryParams;
-  subaccount_fee_rates: EngineServerSubaccountFeeRatesParams;
+  fee_rates: EngineServerSubaccountFeeRatesParams;
   subaccount_orders: EngineServerSubaccountOrdersQueryParams;
   market_liquidity: EngineServerMarketLiquidityQueryParams;
   max_order_size: EngineServerMaxOrderSizeQueryParams;
@@ -212,7 +216,7 @@ export interface EngineServerQueryResponseByType {
   order: EngineServerGetOrderResponse;
   validate_order: EngineServerValidateOrderResponse;
   subaccount_orders: EngineServerSubaccountOrdersResponse;
-  subaccount_fee_rates: EngineServerSubaccountFeeRatesResponse;
+  fee_rates: EngineServerSubaccountFeeRatesResponse;
   market_liquidity: EngineServerMarketLiquidityResponse;
   market_price: EngineServerMarketPriceResponse;
   max_order_size: EngineServerMaxOrderSizeResponse;

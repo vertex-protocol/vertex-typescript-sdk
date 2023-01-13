@@ -79,7 +79,7 @@ function getOrderValues(params: OrderParams) {
     priceX18: toX18(params.price).toString(),
     amount: BigNumber.from(params.amount).toString(),
     expiration: BigNumber.from(params.expiration).toString(),
-    nonce: BigNumber.from(params.nonce).toNumber(),
+    nonce: BigNumber.from(params.nonce).toString(),
   };
 }
 
@@ -89,7 +89,7 @@ function getOrderCancellationValues(params: OrderCancellationParams) {
     subaccountName: params.subaccountName,
     productIds: params.productIds,
     digests: params.digests,
-    nonce: BigNumber.from(params.nonce).toNumber(),
+    nonce: BigNumber.from(params.nonce).toString(),
   };
 }
 

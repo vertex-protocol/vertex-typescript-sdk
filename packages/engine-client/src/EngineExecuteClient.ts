@@ -8,7 +8,9 @@ import {
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import {
+  EngineMintLpParams,
   EngineServerOrderParams,
+  EngineWithdrawCollateralParams,
   OrderActionResult,
   PlaceOrderParamsWithoutNonce,
   WithoutNonce,
@@ -44,7 +46,7 @@ export class EngineExecuteClient extends EngineBaseClient {
   }
 
   async withdrawCollateral(
-    params: WithoutNonce<WithEndpointAddr<WithdrawCollateralParams>>,
+    params: WithoutNonce<WithEndpointAddr<EngineWithdrawCollateralParams>>,
   ) {
     const { txNonce } = await this.getNoncesForCurrentSigner();
     const paramsWithNonce = { ...params, nonce: txNonce };
@@ -65,10 +67,11 @@ export class EngineExecuteClient extends EngineBaseClient {
         'withdraw_collateral',
         tx,
       ) as unknown as WithdrawCollateralParams,
+      spot_leverage: params.spotLeverage ?? null,
     });
   }
 
-  async mintLp(params: WithoutNonce<WithEndpointAddr<MintLpParams>>) {
+  async mintLp(params: WithoutNonce<WithEndpointAddr<EngineMintLpParams>>) {
     const { txNonce } = await this.getNoncesForCurrentSigner();
     const paramsWithNonce = { ...params, nonce: txNonce };
 
@@ -81,6 +84,7 @@ export class EngineExecuteClient extends EngineBaseClient {
     return this.execute('mint_lp', {
       signature,
       tx,
+      spot_leverage: params.spotLeverage ?? null,
     });
   }
 
@@ -116,15 +120,19 @@ export class EngineExecuteClient extends EngineBaseClient {
 
     const executeResult = await this.execute('place_order', {
       product_id: params.productId,
-      order: getVertexEIP712Values(
-        'place_order',
-        orderWithNonce,
-      ) as EngineServerOrderParams,
+      order: {
+        ...(getVertexEIP712Values(
+          'place_order',
+          orderWithNonce,
+        ) as EngineServerOrderParams),
+        nonce: orderNonce,
+      },
       signature: await this.sign(
         'place_order',
         params.orderbookAddr,
         orderWithNonce,
       ),
+      spot_leverage: params.spotLeverage ?? null,
     });
 
     return { digest, ...executeResult };

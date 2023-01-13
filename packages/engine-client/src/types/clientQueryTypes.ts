@@ -162,6 +162,8 @@ export interface GetEngineMaxOrderSizeParams {
   subaccountName: string;
   productId: number;
   side: BalanceSide;
+  // If not given, engine defaults to true (leverage/borrow enabled)
+  spotLeverage?: boolean;
 }
 
 export type GetEngineMaxOrderSizeResponse = BigDecimal;
@@ -170,6 +172,8 @@ export interface GetEngineMaxWithdrawableParams {
   sender: string;
   subaccountName: string;
   productId: number;
+  // If not given, engine defaults to true (leverage/borrow enabled)
+  spotLeverage?: boolean;
 }
 
 export type GetEngineMaxWithdrawableResponse = BigDecimal;

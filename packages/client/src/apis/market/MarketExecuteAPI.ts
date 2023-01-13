@@ -2,10 +2,12 @@ import { BaseVertexAPI } from '../base';
 import { OrderActionParams } from './executeTypes';
 import {
   BurnLpParams,
-  MintLpParams,
   OrderCancellationParams,
 } from '@vertex-protocol/contracts';
-import { WithoutNonce } from '@vertex-protocol/engine-client';
+import {
+  EngineMintLpParams,
+  WithoutNonce,
+} from '@vertex-protocol/engine-client';
 import { WithoutSender } from '../spot/BaseSpotAPI';
 
 export class MarketExecuteAPI extends BaseVertexAPI {
@@ -13,7 +15,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Mint LP tokens through engine
    * @param params
    */
-  async mintLp(params: WithoutSender<WithoutNonce<MintLpParams>>) {
+  async mintLp(params: WithoutSender<WithoutNonce<EngineMintLpParams>>) {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
     return this.context.engineClient.mintLp({

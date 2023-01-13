@@ -48,6 +48,7 @@ export class MarketQueryClient extends BaseVertexGraphClient {
     const data = await this.graph.CandlesticksQuery({
       limit: params.limit ?? 100,
       productId: params.productId,
+      period: params.period,
       maxTimeExclusive: Math.floor(params.beforeTime ?? nowInSeconds()),
     });
 

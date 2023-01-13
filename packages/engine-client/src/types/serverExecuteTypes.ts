@@ -24,12 +24,18 @@ export interface EngineServerPlaceOrderParams {
   order: EngineServerOrderParams;
   // Bytes
   signature: string;
+  // Engine defaults this to true
+  spot_leverage: boolean | null;
 }
+
+type WithSpotLeverage<T> = T & {
+  spot_leverage: boolean | null;
+};
 
 export interface EngineServerExecuteRequestByType {
   liquidate_subaccount: SignedTx<LiquidateSubaccountParams>;
-  withdraw_collateral: SignedTx<WithdrawCollateralParams>;
-  mint_lp: SignedTx<MintLpParams>;
+  withdraw_collateral: WithSpotLeverage<SignedTx<WithdrawCollateralParams>>;
+  mint_lp: WithSpotLeverage<SignedTx<MintLpParams>>;
   burn_lp: SignedTx<BurnLpParams>;
   place_order: EngineServerPlaceOrderParams;
   cancel_orders: SignedTx<OrderCancellationParams>;

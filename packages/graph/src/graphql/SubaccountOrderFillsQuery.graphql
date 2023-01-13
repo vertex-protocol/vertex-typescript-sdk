@@ -10,10 +10,14 @@ query SubaccountOrderFillsQuery(
     first: $first
     skip: $skip
   ) {
+    id
     blockTime
     quoteDeltaX18
     amountDeltaX18
+    newOrderFilledAmountX18
     order {
+      digest
+      type
       productId
       priceX18
       totalAmount
