@@ -61,8 +61,8 @@ export interface EngineServerSpotLpState {
 export interface EngineServerPerpState {
   cumulative_funding_long_x18: BigNumberish;
   cumulative_funding_short_x18: BigNumberish;
-  open_interest_x18: BigNumberish;
-  available_settle_x18: BigNumberish;
+  open_interest: BigNumberish;
+  available_settle: BigNumberish;
   last_update_time: BigNumberish;
 }
 
