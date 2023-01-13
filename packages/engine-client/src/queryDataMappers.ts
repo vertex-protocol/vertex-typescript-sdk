@@ -87,7 +87,7 @@ export function mapEngineServerSpotProduct(
       tokenAddr: product.config.token,
       totalLpBaseAmount: fromX18(product.lp_state.base.amount),
       totalLpQuoteAmount: fromX18(product.lp_state.quote.amount),
-      totalLpSupply: toBigDecimal(product.lp_state.supply),
+      totalLpSupply: fromX18(product.lp_state.supply),
     },
   };
 }
@@ -113,9 +113,9 @@ export function mapEngineServerPerpProduct(
         product.risk.short_weight_maintenance_x18,
       ),
       openInterest: fromX18(product.state.open_interest),
-      totalLpBaseAmount: toBigDecimal(product.lp_state.base),
-      totalLpQuoteAmount: toBigDecimal(product.lp_state.quote),
-      totalLpSupply: toBigDecimal(product.lp_state.supply),
+      totalLpBaseAmount: fromX18(product.lp_state.base),
+      totalLpQuoteAmount: fromX18(product.lp_state.quote),
+      totalLpSupply: fromX18(product.lp_state.supply),
     },
   };
 }

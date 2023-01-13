@@ -37,12 +37,12 @@ async function main() {
   const endpointAddr = await clearinghouse.getEndpoint();
   const endpoint = await IEndpoint__factory.connect(endpointAddr, signer);
 
-  await (await quote.mint(signer.address, toFixedPoint(99, 6))).wait();
-  await (await quote.approve(endpointAddr, toFixedPoint(99, 6))).wait();
+  await (await quote.mint(signer.address, toFixedPoint(5000, 6))).wait();
+  await (await quote.approve(endpointAddr, toFixedPoint(5000, 6))).wait();
 
   // Deposit collateral
   const depositTx = await depositCollateral({
-    amount: toFixedPoint(99, 6),
+    amount: toFixedPoint(5000, 6),
     endpoint,
     productId: 0,
     subaccountName: 'default',
@@ -51,12 +51,19 @@ async function main() {
   console.log('Done depositing collateral');
 
   // Wait for slow mode
-  await new Promise((resolve) => setTimeout(resolve, 10000));
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  const subaccountId = await clearinghouse.getSubaccountId(
-    signer.address,
-    'default',
-  );
+  let subaccountId;
+  while (true) {
+    subaccountId = (await clearinghouse.getSubaccountId(
+      signer.address,
+      'default',
+    )) as unknown as number;
+    if (subaccountId != 0) {
+      break;
+    }
+  }
+
   console.log('Subaccount ID', subaccountId.toString());
 
   console.log('Querying subaccount');
@@ -127,11 +134,61 @@ async function main() {
     JSON.stringify(subaccountOrdersAfterCancel),
   );
 
+  const mintSpotLpResult = await client.mintLp({
+    sender: signer.address,
+    subaccountName: 'default',
+    productId: 3,
+    amountBase: toFixedPoint(1, 18),
+    quoteAmountLow: toFixedPoint(1000, 18),
+    quoteAmountHigh: toFixedPoint(2000, 18),
+    endpointAddr,
+  });
+  console.log('Done minting spot lp', mintSpotLpResult);
+
+  const mintPerpLpResult = await client.mintLp({
+    sender: signer.address,
+    subaccountName: 'default',
+    productId: 4,
+    amountBase: toFixedPoint(1, 18),
+    quoteAmountLow: toFixedPoint(1000, 18),
+    quoteAmountHigh: toFixedPoint(2000, 18),
+    endpointAddr,
+  });
+  console.log('Done minting perp lp', mintPerpLpResult);
+
+  const subaccountInfoAfterMintingLp = await client.getSubaccountSummary({
+    subaccountId,
+  });
+  console.log(
+    'Subaccount info after LP mint',
+    JSON.stringify(subaccountInfoAfterMintingLp, null, 2),
+  );
+
+  const burnSpotLpResult = await client.burnLp({
+    sender: signer.address,
+    subaccountName: 'default',
+    productId: 3,
+    amount: toFixedPoint(1, 18),
+    endpointAddr,
+  });
+
+  console.log('Done burning spot lp', burnSpotLpResult);
+
+  const burnPerpLpResult = await client.burnLp({
+    sender: signer.address,
+    subaccountName: 'default',
+    productId: 4,
+    amount: toFixedPoint(1, 6),
+    endpointAddr,
+  });
+
+  console.log('Done burning perp lp', burnPerpLpResult);
+
   const withdrawResult = await client.withdrawCollateral({
     sender: signer.address,
     subaccountName: 'default',
     productId: 0,
-    amount: toFixedPoint(99, 6),
+    amount: toFixedPoint(5000, 6),
     endpointAddr,
   });
 

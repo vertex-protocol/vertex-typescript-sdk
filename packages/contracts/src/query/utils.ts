@@ -30,7 +30,7 @@ export function mapEngineSpotProduct(
     oraclePrice: fromX18(product.oraclePriceX18),
     totalLpBaseAmount: fromX18(product.lpState.base.amount),
     totalLpQuoteAmount: fromX18(product.lpState.quote.amount),
-    totalLpSupply: toBigDecimal(product.lpState.supply),
+    totalLpSupply: fromX18(product.lpState.supply),
   };
 }
 
@@ -48,8 +48,8 @@ export function mapEnginePerpProduct(
     oraclePrice: fromX18(product.oraclePriceX18),
     markPrice: fromX18(product.markPriceX18),
     openInterest: fromX18(product.state.openInterest),
-    totalLpBaseAmount: toBigDecimal(product.lpState.base),
-    totalLpQuoteAmount: toBigDecimal(product.lpState.quote),
-    totalLpSupply: toBigDecimal(product.lpState.supply),
+    totalLpBaseAmount: fromX18(product.lpState.base),
+    totalLpQuoteAmount: fromX18(product.lpState.quote),
+    totalLpSupply: fromX18(product.lpState.supply),
   };
 }
