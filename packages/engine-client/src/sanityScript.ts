@@ -16,7 +16,7 @@ function getExpiration() {
 async function main() {
   // Hardhat deployers
   const signer = new Wallet(
-    'a0dff2b40838cef1ae86ddd11b8c2a34aa52d2d6f4355e3eb9abbaaf8eccee91',
+    '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
     new ethers.providers.JsonRpcProvider(),
   );
 
@@ -131,7 +131,7 @@ async function main() {
     sender: signer.address,
     subaccountName: 'default',
     productId: 0,
-    amount: 100,
+    amount: 99,
     endpointAddr,
   });
 
@@ -143,4 +143,4 @@ async function main() {
   console.log('Subaccount info', JSON.stringify(subaccountInfoAtEnd, null, 2));
 }
 
-main();
+main().catch((e) => console.log(e));

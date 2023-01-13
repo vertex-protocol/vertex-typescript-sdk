@@ -14,7 +14,6 @@ import {
 
 export class SpotExecuteAPI extends BaseSpotAPI {
   async deposit(params: ExecuteDepositCollateralParams) {
-    console.log(`endpoint: ${this.context.contracts.endpoint.address}`);
     return depositCollateral({
       endpoint: this.context.contracts.endpoint,
       subaccountName: params.subaccountName,
