@@ -4,7 +4,7 @@ import {
   HealthStatusByType,
   WithContract,
 } from '../common';
-import { fromX18 } from '@vertex-protocol/utils';
+import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
 import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
 
 /**
@@ -46,8 +46,8 @@ export async function getSubaccountSummary({
     }
 
     balances.push({
-      amount: fromX18(spotBalance.balance.amount),
-      lpAmount: fromX18(spotBalance.lpBalance.amount),
+      amount: toBigDecimal(spotBalance.balance.amount),
+      lpAmount: toBigDecimal(spotBalance.lpBalance.amount),
       ...mapEngineSpotProduct(product),
     });
   });
@@ -62,9 +62,9 @@ export async function getSubaccountSummary({
     }
 
     balances.push({
-      amount: fromX18(perpBalance.balance.amount),
-      lpAmount: fromX18(perpBalance.lpBalance.amount),
-      vQuoteBalance: fromX18(perpBalance.balance.vQuoteBalance),
+      amount: toBigDecimal(perpBalance.balance.amount),
+      lpAmount: toBigDecimal(perpBalance.lpBalance.amount),
+      vQuoteBalance: toBigDecimal(perpBalance.balance.vQuoteBalance),
       ...mapEnginePerpProduct(product),
     });
   });
@@ -72,19 +72,19 @@ export async function getSubaccountSummary({
   return {
     health: {
       initial: {
-        health: fromX18(subaccountInfo.healths[0].health),
-        assets: fromX18(subaccountInfo.healths[0].assets),
-        liabilities: fromX18(subaccountInfo.healths[0].liabilities),
+        health: toBigDecimal(subaccountInfo.healths[0].health),
+        assets: toBigDecimal(subaccountInfo.healths[0].assets),
+        liabilities: toBigDecimal(subaccountInfo.healths[0].liabilities),
       },
       maintenance: {
-        health: fromX18(subaccountInfo.healths[1].health),
-        assets: fromX18(subaccountInfo.healths[1].assets),
-        liabilities: fromX18(subaccountInfo.healths[1].liabilities),
+        health: toBigDecimal(subaccountInfo.healths[1].health),
+        assets: toBigDecimal(subaccountInfo.healths[1].assets),
+        liabilities: toBigDecimal(subaccountInfo.healths[1].liabilities),
       },
       unweighted: {
-        health: fromX18(subaccountInfo.healths[2].health),
-        assets: fromX18(subaccountInfo.healths[2].assets),
-        liabilities: fromX18(subaccountInfo.healths[2].liabilities),
+        health: toBigDecimal(subaccountInfo.healths[2].health),
+        assets: toBigDecimal(subaccountInfo.healths[2].assets),
+        liabilities: toBigDecimal(subaccountInfo.healths[2].liabilities),
       },
     },
     balances,

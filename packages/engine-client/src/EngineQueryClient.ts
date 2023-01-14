@@ -102,7 +102,7 @@ export class EngineQueryClient extends EngineBaseClient {
                 burn_lp: {
                   product_id: tx.tx.productId,
                   subaccount_id: subaccountId,
-                  amount_lp: toX18(tx.tx.amountLp).toString(),
+                  amount_lp: tx.tx.amountLp.toString(),
                 },
               };
             case 'apply_delta':
@@ -110,8 +110,8 @@ export class EngineQueryClient extends EngineBaseClient {
                 apply_delta: {
                   product_id: tx.tx.productId,
                   subaccount_id: subaccountId,
-                  amount_delta: toX18(tx.tx.amountDelta).toString(),
-                  v_quote_delta: toX18(tx.tx.vQuoteDelta).toString(),
+                  amount_delta: tx.tx.amountDelta.toString(),
+                  v_quote_delta: tx.tx.vQuoteDelta.toString(),
                 },
               };
             case 'mint_lp':
@@ -119,9 +119,9 @@ export class EngineQueryClient extends EngineBaseClient {
                 mint_lp: {
                   product_id: tx.tx.productId,
                   subaccount_id: subaccountId,
-                  amount_base: toX18(tx.tx.amountBase).toString(),
-                  quote_amount_low: toX18(tx.tx.amountQuoteLow).toString(),
-                  quote_amount_high: toX18(tx.tx.amountQuoteHigh).toString(),
+                  amount_base: tx.tx.amountBase.toString(),
+                  quote_amount_low: tx.tx.amountQuoteLow.toString(),
+                  quote_amount_high: tx.tx.amountQuoteHigh.toString(),
                 },
               };
           }

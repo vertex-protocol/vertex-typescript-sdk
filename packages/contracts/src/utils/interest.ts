@@ -12,10 +12,10 @@ import { BigNumberish } from 'ethers';
  * Calculate amount total borrowed for a product
  */
 export function calcTotalBorrowed(
-  totalBorrowsNormalizedX18: BigNumberish,
+  totalBorrowsNormalized: BigNumberish,
   cumulativeBorrowsMultiplierX18: BigNumberish,
 ): BigDecimal {
-  return fromX18(totalBorrowsNormalizedX18).multipliedBy(
+  return toBigDecimal(totalBorrowsNormalized).multipliedBy(
     fromX18(cumulativeBorrowsMultiplierX18),
   );
 }
@@ -24,10 +24,10 @@ export function calcTotalBorrowed(
  * Calculate amount total deposited for a product.
  */
 export function calcTotalDeposited(
-  totalDepositsNormalizedX18: BigNumberish,
+  totalDepositsNormalized: BigNumberish,
   cumulativeDepositsMultiplierX18: BigNumberish,
 ): BigDecimal {
-  return fromX18(totalDepositsNormalizedX18).multipliedBy(
+  return toBigDecimal(totalDepositsNormalized).multipliedBy(
     fromX18(cumulativeDepositsMultiplierX18),
   );
 }
