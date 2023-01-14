@@ -188,7 +188,7 @@ async function main() {
     sender: signer.address,
     subaccountName: 'default',
     productId: 0,
-    amount: toFixedPoint(5000, 6),
+    amount: toFixedPoint(4999, 6),
     endpointAddr,
   });
 
