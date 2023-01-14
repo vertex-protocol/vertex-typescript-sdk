@@ -38,8 +38,8 @@ type Market {
   createdAt: BigInt!
   createdAtBlock: BigInt!
   lastFillPriceX18: BigInt!
-  volumeBaseX18: BigInt!
-  volumeQuoteX18: BigInt!
+  volumeBase: BigInt!
+  volumeQuote: BigInt!
   snapshots(skip: Int = 0, first: Int = 100, orderBy: MarketSnapshot_orderBy, orderDirection: OrderDirection, where: MarketSnapshot_filter): [MarketSnapshot!]!
 }
 
@@ -49,8 +49,8 @@ type MarketSnapshot {
   periodIndex: BigInt!
   market: Market!
   lastFillPriceX18: BigInt!
-  volumeBaseX18: BigInt!
-  volumeQuoteX18: BigInt!
+  volumeBase: BigInt!
+  volumeQuote: BigInt!
 }
 
 input MarketSnapshot_filter {
@@ -107,22 +107,22 @@ input MarketSnapshot_filter {
   lastFillPriceX18_lte: BigInt
   lastFillPriceX18_in: [BigInt!]
   lastFillPriceX18_not_in: [BigInt!]
-  volumeBaseX18: BigInt
-  volumeBaseX18_not: BigInt
-  volumeBaseX18_gt: BigInt
-  volumeBaseX18_lt: BigInt
-  volumeBaseX18_gte: BigInt
-  volumeBaseX18_lte: BigInt
-  volumeBaseX18_in: [BigInt!]
-  volumeBaseX18_not_in: [BigInt!]
-  volumeQuoteX18: BigInt
-  volumeQuoteX18_not: BigInt
-  volumeQuoteX18_gt: BigInt
-  volumeQuoteX18_lt: BigInt
-  volumeQuoteX18_gte: BigInt
-  volumeQuoteX18_lte: BigInt
-  volumeQuoteX18_in: [BigInt!]
-  volumeQuoteX18_not_in: [BigInt!]
+  volumeBase: BigInt
+  volumeBase_not: BigInt
+  volumeBase_gt: BigInt
+  volumeBase_lt: BigInt
+  volumeBase_gte: BigInt
+  volumeBase_lte: BigInt
+  volumeBase_in: [BigInt!]
+  volumeBase_not_in: [BigInt!]
+  volumeQuote: BigInt
+  volumeQuote_not: BigInt
+  volumeQuote_gt: BigInt
+  volumeQuote_lt: BigInt
+  volumeQuote_gte: BigInt
+  volumeQuote_lte: BigInt
+  volumeQuote_in: [BigInt!]
+  volumeQuote_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
@@ -133,8 +133,8 @@ enum MarketSnapshot_orderBy {
   periodIndex
   market
   lastFillPriceX18
-  volumeBaseX18
-  volumeQuoteX18
+  volumeBase
+  volumeQuote
 }
 
 input Market_filter {
@@ -206,22 +206,22 @@ input Market_filter {
   lastFillPriceX18_lte: BigInt
   lastFillPriceX18_in: [BigInt!]
   lastFillPriceX18_not_in: [BigInt!]
-  volumeBaseX18: BigInt
-  volumeBaseX18_not: BigInt
-  volumeBaseX18_gt: BigInt
-  volumeBaseX18_lt: BigInt
-  volumeBaseX18_gte: BigInt
-  volumeBaseX18_lte: BigInt
-  volumeBaseX18_in: [BigInt!]
-  volumeBaseX18_not_in: [BigInt!]
-  volumeQuoteX18: BigInt
-  volumeQuoteX18_not: BigInt
-  volumeQuoteX18_gt: BigInt
-  volumeQuoteX18_lt: BigInt
-  volumeQuoteX18_gte: BigInt
-  volumeQuoteX18_lte: BigInt
-  volumeQuoteX18_in: [BigInt!]
-  volumeQuoteX18_not_in: [BigInt!]
+  volumeBase: BigInt
+  volumeBase_not: BigInt
+  volumeBase_gt: BigInt
+  volumeBase_lt: BigInt
+  volumeBase_gte: BigInt
+  volumeBase_lte: BigInt
+  volumeBase_in: [BigInt!]
+  volumeBase_not_in: [BigInt!]
+  volumeQuote: BigInt
+  volumeQuote_not: BigInt
+  volumeQuote_gt: BigInt
+  volumeQuote_lt: BigInt
+  volumeQuote_gte: BigInt
+  volumeQuote_lte: BigInt
+  volumeQuote_in: [BigInt!]
+  volumeQuote_not_in: [BigInt!]
   snapshots_: MarketSnapshot_filter
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
@@ -237,8 +237,8 @@ enum Market_orderBy {
   createdAt
   createdAtBlock
   lastFillPriceX18
-  volumeBaseX18
-  volumeQuoteX18
+  volumeBase
+  volumeQuote
   snapshots
 }
 
@@ -289,8 +289,8 @@ type PerpProduct {
   markPriceX18: BigInt!
   cumulativeFundingLongX18: BigInt!
   cumulativeFundingShortX18: BigInt!
-  openInterestX18: BigInt!
-  availableSettleX18: BigInt!
+  openInterest: BigInt!
+  availableSettle: BigInt!
   lpSupply: BigInt!
   lpQuoteAmount: BigInt!
   lpBaseAmount: BigInt!
@@ -307,8 +307,8 @@ type PerpProductSnapshot {
   markPriceX18: BigInt!
   cumulativeFundingLongX18: BigInt!
   cumulativeFundingShortX18: BigInt!
-  openInterestX18: BigInt!
-  availableSettleX18: BigInt!
+  openInterest: BigInt!
+  availableSettle: BigInt!
   lpSupply: BigInt!
   lpQuoteAmount: BigInt!
   lpBaseAmount: BigInt!
@@ -393,22 +393,22 @@ input PerpProductSnapshot_filter {
   cumulativeFundingShortX18_lte: BigInt
   cumulativeFundingShortX18_in: [BigInt!]
   cumulativeFundingShortX18_not_in: [BigInt!]
-  openInterestX18: BigInt
-  openInterestX18_not: BigInt
-  openInterestX18_gt: BigInt
-  openInterestX18_lt: BigInt
-  openInterestX18_gte: BigInt
-  openInterestX18_lte: BigInt
-  openInterestX18_in: [BigInt!]
-  openInterestX18_not_in: [BigInt!]
-  availableSettleX18: BigInt
-  availableSettleX18_not: BigInt
-  availableSettleX18_gt: BigInt
-  availableSettleX18_lt: BigInt
-  availableSettleX18_gte: BigInt
-  availableSettleX18_lte: BigInt
-  availableSettleX18_in: [BigInt!]
-  availableSettleX18_not_in: [BigInt!]
+  openInterest: BigInt
+  openInterest_not: BigInt
+  openInterest_gt: BigInt
+  openInterest_lt: BigInt
+  openInterest_gte: BigInt
+  openInterest_lte: BigInt
+  openInterest_in: [BigInt!]
+  openInterest_not_in: [BigInt!]
+  availableSettle: BigInt
+  availableSettle_not: BigInt
+  availableSettle_gt: BigInt
+  availableSettle_lt: BigInt
+  availableSettle_gte: BigInt
+  availableSettle_lte: BigInt
+  availableSettle_in: [BigInt!]
+  availableSettle_not_in: [BigInt!]
   lpSupply: BigInt
   lpSupply_not: BigInt
   lpSupply_gt: BigInt
@@ -454,8 +454,8 @@ enum PerpProductSnapshot_orderBy {
   markPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18
-  openInterestX18
-  availableSettleX18
+  openInterest
+  availableSettle
   lpSupply
   lpQuoteAmount
   lpBaseAmount
@@ -553,22 +553,22 @@ input PerpProduct_filter {
   cumulativeFundingShortX18_lte: BigInt
   cumulativeFundingShortX18_in: [BigInt!]
   cumulativeFundingShortX18_not_in: [BigInt!]
-  openInterestX18: BigInt
-  openInterestX18_not: BigInt
-  openInterestX18_gt: BigInt
-  openInterestX18_lt: BigInt
-  openInterestX18_gte: BigInt
-  openInterestX18_lte: BigInt
-  openInterestX18_in: [BigInt!]
-  openInterestX18_not_in: [BigInt!]
-  availableSettleX18: BigInt
-  availableSettleX18_not: BigInt
-  availableSettleX18_gt: BigInt
-  availableSettleX18_lt: BigInt
-  availableSettleX18_gte: BigInt
-  availableSettleX18_lte: BigInt
-  availableSettleX18_in: [BigInt!]
-  availableSettleX18_not_in: [BigInt!]
+  openInterest: BigInt
+  openInterest_not: BigInt
+  openInterest_gt: BigInt
+  openInterest_lt: BigInt
+  openInterest_gte: BigInt
+  openInterest_lte: BigInt
+  openInterest_in: [BigInt!]
+  openInterest_not_in: [BigInt!]
+  availableSettle: BigInt
+  availableSettle_not: BigInt
+  availableSettle_gt: BigInt
+  availableSettle_lt: BigInt
+  availableSettle_gte: BigInt
+  availableSettle_lte: BigInt
+  availableSettle_in: [BigInt!]
+  availableSettle_not_in: [BigInt!]
   lpSupply: BigInt
   lpSupply_not: BigInt
   lpSupply_gt: BigInt
@@ -615,8 +615,8 @@ enum PerpProduct_orderBy {
   markPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18
-  openInterestX18
-  availableSettleX18
+  openInterest
+  availableSettle
   lpSupply
   lpQuoteAmount
   lpBaseAmount
@@ -964,11 +964,11 @@ type SpotProduct {
   priceX18: BigInt!
   cumulativeDepositsMultiplierX18: BigInt!
   cumulativeBorrowsMultiplierX18: BigInt!
-  totalDepositsNormalizedX18: BigInt!
-  totalBorrowsNormalizedX18: BigInt!
+  totalDepositsNormalized: BigInt!
+  totalBorrowsNormalized: BigInt!
   lpSupply: BigInt!
-  lpQuoteAmountX18: BigInt!
-  lpBaseAmountX18: BigInt!
+  lpQuoteAmount: BigInt!
+  lpBaseAmount: BigInt!
   snapshots(skip: Int = 0, first: Int = 100, orderBy: SpotProductSnapshot_orderBy, orderDirection: OrderDirection, where: SpotProductSnapshot_filter): [SpotProductSnapshot!]!
 }
 
@@ -980,11 +980,11 @@ type SpotProductSnapshot {
   priceX18: BigInt!
   cumulativeDepositsMultiplierX18: BigInt!
   cumulativeBorrowsMultiplierX18: BigInt!
-  totalDepositsNormalizedX18: BigInt!
-  totalBorrowsNormalizedX18: BigInt!
+  totalDepositsNormalized: BigInt!
+  totalBorrowsNormalized: BigInt!
   lpSupply: BigInt!
-  lpQuoteAmountX18: BigInt!
-  lpBaseAmountX18: BigInt!
+  lpQuoteAmount: BigInt!
+  lpBaseAmount: BigInt!
 }
 
 input SpotProductSnapshot_filter {
@@ -1057,22 +1057,22 @@ input SpotProductSnapshot_filter {
   cumulativeBorrowsMultiplierX18_lte: BigInt
   cumulativeBorrowsMultiplierX18_in: [BigInt!]
   cumulativeBorrowsMultiplierX18_not_in: [BigInt!]
-  totalDepositsNormalizedX18: BigInt
-  totalDepositsNormalizedX18_not: BigInt
-  totalDepositsNormalizedX18_gt: BigInt
-  totalDepositsNormalizedX18_lt: BigInt
-  totalDepositsNormalizedX18_gte: BigInt
-  totalDepositsNormalizedX18_lte: BigInt
-  totalDepositsNormalizedX18_in: [BigInt!]
-  totalDepositsNormalizedX18_not_in: [BigInt!]
-  totalBorrowsNormalizedX18: BigInt
-  totalBorrowsNormalizedX18_not: BigInt
-  totalBorrowsNormalizedX18_gt: BigInt
-  totalBorrowsNormalizedX18_lt: BigInt
-  totalBorrowsNormalizedX18_gte: BigInt
-  totalBorrowsNormalizedX18_lte: BigInt
-  totalBorrowsNormalizedX18_in: [BigInt!]
-  totalBorrowsNormalizedX18_not_in: [BigInt!]
+  totalDepositsNormalized: BigInt
+  totalDepositsNormalized_not: BigInt
+  totalDepositsNormalized_gt: BigInt
+  totalDepositsNormalized_lt: BigInt
+  totalDepositsNormalized_gte: BigInt
+  totalDepositsNormalized_lte: BigInt
+  totalDepositsNormalized_in: [BigInt!]
+  totalDepositsNormalized_not_in: [BigInt!]
+  totalBorrowsNormalized: BigInt
+  totalBorrowsNormalized_not: BigInt
+  totalBorrowsNormalized_gt: BigInt
+  totalBorrowsNormalized_lt: BigInt
+  totalBorrowsNormalized_gte: BigInt
+  totalBorrowsNormalized_lte: BigInt
+  totalBorrowsNormalized_in: [BigInt!]
+  totalBorrowsNormalized_not_in: [BigInt!]
   lpSupply: BigInt
   lpSupply_not: BigInt
   lpSupply_gt: BigInt
@@ -1081,22 +1081,22 @@ input SpotProductSnapshot_filter {
   lpSupply_lte: BigInt
   lpSupply_in: [BigInt!]
   lpSupply_not_in: [BigInt!]
-  lpQuoteAmountX18: BigInt
-  lpQuoteAmountX18_not: BigInt
-  lpQuoteAmountX18_gt: BigInt
-  lpQuoteAmountX18_lt: BigInt
-  lpQuoteAmountX18_gte: BigInt
-  lpQuoteAmountX18_lte: BigInt
-  lpQuoteAmountX18_in: [BigInt!]
-  lpQuoteAmountX18_not_in: [BigInt!]
-  lpBaseAmountX18: BigInt
-  lpBaseAmountX18_not: BigInt
-  lpBaseAmountX18_gt: BigInt
-  lpBaseAmountX18_lt: BigInt
-  lpBaseAmountX18_gte: BigInt
-  lpBaseAmountX18_lte: BigInt
-  lpBaseAmountX18_in: [BigInt!]
-  lpBaseAmountX18_not_in: [BigInt!]
+  lpQuoteAmount: BigInt
+  lpQuoteAmount_not: BigInt
+  lpQuoteAmount_gt: BigInt
+  lpQuoteAmount_lt: BigInt
+  lpQuoteAmount_gte: BigInt
+  lpQuoteAmount_lte: BigInt
+  lpQuoteAmount_in: [BigInt!]
+  lpQuoteAmount_not_in: [BigInt!]
+  lpBaseAmount: BigInt
+  lpBaseAmount_not: BigInt
+  lpBaseAmount_gt: BigInt
+  lpBaseAmount_lt: BigInt
+  lpBaseAmount_gte: BigInt
+  lpBaseAmount_lte: BigInt
+  lpBaseAmount_in: [BigInt!]
+  lpBaseAmount_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
@@ -1109,11 +1109,11 @@ enum SpotProductSnapshot_orderBy {
   priceX18
   cumulativeDepositsMultiplierX18
   cumulativeBorrowsMultiplierX18
-  totalDepositsNormalizedX18
-  totalBorrowsNormalizedX18
+  totalDepositsNormalized
+  totalBorrowsNormalized
   lpSupply
-  lpQuoteAmountX18
-  lpBaseAmountX18
+  lpQuoteAmount
+  lpBaseAmount
 }
 
 input SpotProduct_filter {
@@ -1199,22 +1199,22 @@ input SpotProduct_filter {
   cumulativeBorrowsMultiplierX18_lte: BigInt
   cumulativeBorrowsMultiplierX18_in: [BigInt!]
   cumulativeBorrowsMultiplierX18_not_in: [BigInt!]
-  totalDepositsNormalizedX18: BigInt
-  totalDepositsNormalizedX18_not: BigInt
-  totalDepositsNormalizedX18_gt: BigInt
-  totalDepositsNormalizedX18_lt: BigInt
-  totalDepositsNormalizedX18_gte: BigInt
-  totalDepositsNormalizedX18_lte: BigInt
-  totalDepositsNormalizedX18_in: [BigInt!]
-  totalDepositsNormalizedX18_not_in: [BigInt!]
-  totalBorrowsNormalizedX18: BigInt
-  totalBorrowsNormalizedX18_not: BigInt
-  totalBorrowsNormalizedX18_gt: BigInt
-  totalBorrowsNormalizedX18_lt: BigInt
-  totalBorrowsNormalizedX18_gte: BigInt
-  totalBorrowsNormalizedX18_lte: BigInt
-  totalBorrowsNormalizedX18_in: [BigInt!]
-  totalBorrowsNormalizedX18_not_in: [BigInt!]
+  totalDepositsNormalized: BigInt
+  totalDepositsNormalized_not: BigInt
+  totalDepositsNormalized_gt: BigInt
+  totalDepositsNormalized_lt: BigInt
+  totalDepositsNormalized_gte: BigInt
+  totalDepositsNormalized_lte: BigInt
+  totalDepositsNormalized_in: [BigInt!]
+  totalDepositsNormalized_not_in: [BigInt!]
+  totalBorrowsNormalized: BigInt
+  totalBorrowsNormalized_not: BigInt
+  totalBorrowsNormalized_gt: BigInt
+  totalBorrowsNormalized_lt: BigInt
+  totalBorrowsNormalized_gte: BigInt
+  totalBorrowsNormalized_lte: BigInt
+  totalBorrowsNormalized_in: [BigInt!]
+  totalBorrowsNormalized_not_in: [BigInt!]
   lpSupply: BigInt
   lpSupply_not: BigInt
   lpSupply_gt: BigInt
@@ -1223,22 +1223,22 @@ input SpotProduct_filter {
   lpSupply_lte: BigInt
   lpSupply_in: [BigInt!]
   lpSupply_not_in: [BigInt!]
-  lpQuoteAmountX18: BigInt
-  lpQuoteAmountX18_not: BigInt
-  lpQuoteAmountX18_gt: BigInt
-  lpQuoteAmountX18_lt: BigInt
-  lpQuoteAmountX18_gte: BigInt
-  lpQuoteAmountX18_lte: BigInt
-  lpQuoteAmountX18_in: [BigInt!]
-  lpQuoteAmountX18_not_in: [BigInt!]
-  lpBaseAmountX18: BigInt
-  lpBaseAmountX18_not: BigInt
-  lpBaseAmountX18_gt: BigInt
-  lpBaseAmountX18_lt: BigInt
-  lpBaseAmountX18_gte: BigInt
-  lpBaseAmountX18_lte: BigInt
-  lpBaseAmountX18_in: [BigInt!]
-  lpBaseAmountX18_not_in: [BigInt!]
+  lpQuoteAmount: BigInt
+  lpQuoteAmount_not: BigInt
+  lpQuoteAmount_gt: BigInt
+  lpQuoteAmount_lt: BigInt
+  lpQuoteAmount_gte: BigInt
+  lpQuoteAmount_lte: BigInt
+  lpQuoteAmount_in: [BigInt!]
+  lpQuoteAmount_not_in: [BigInt!]
+  lpBaseAmount: BigInt
+  lpBaseAmount_not: BigInt
+  lpBaseAmount_gt: BigInt
+  lpBaseAmount_lt: BigInt
+  lpBaseAmount_gte: BigInt
+  lpBaseAmount_lte: BigInt
+  lpBaseAmount_in: [BigInt!]
+  lpBaseAmount_not_in: [BigInt!]
   snapshots_: SpotProductSnapshot_filter
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
@@ -1252,11 +1252,11 @@ enum SpotProduct_orderBy {
   priceX18
   cumulativeDepositsMultiplierX18
   cumulativeBorrowsMultiplierX18
-  totalDepositsNormalizedX18
-  totalBorrowsNormalizedX18
+  totalDepositsNormalized
+  totalBorrowsNormalized
   lpSupply
-  lpQuoteAmountX18
-  lpBaseAmountX18
+  lpQuoteAmount
+  lpBaseAmount
   snapshots
 }
 

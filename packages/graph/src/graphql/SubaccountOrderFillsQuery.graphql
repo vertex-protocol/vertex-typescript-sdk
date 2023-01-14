@@ -12,17 +12,17 @@ query SubaccountOrderFillsQuery(
   ) {
     id
     blockTime
-    quoteDeltaX18
-    amountDeltaX18
-    newOrderFilledAmountX18
+    quoteDelta
+    amountDelta
+    # newOrderFilledAmountX18
     order {
       digest
       type
       productId
       priceX18
       totalAmount
-      quoteAmountX18
-      filledAmountX18
+      quoteAmount
+      filledAmount
     }
   }
 }
