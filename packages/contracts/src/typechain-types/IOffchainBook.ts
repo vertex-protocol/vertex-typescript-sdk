@@ -121,7 +121,7 @@ export declare namespace IOffchainBook {
     sizeIncrement: PromiseOrValue<BigNumberish>;
     priceIncrementX18: PromiseOrValue<BigNumberish>;
     lpSpreadX18: PromiseOrValue<BigNumberish>;
-    collectedFeesX18: PromiseOrValue<BigNumberish>;
+    collectedFees: PromiseOrValue<BigNumberish>;
   };
 
   export type MarketStructOutput = [
@@ -135,19 +135,19 @@ export declare namespace IOffchainBook {
     sizeIncrement: BigNumber;
     priceIncrementX18: BigNumber;
     lpSpreadX18: BigNumber;
-    collectedFeesX18: BigNumber;
+    collectedFees: BigNumber;
   };
 }
 
 export interface IOffchainBookInterface extends utils.Interface {
   functions: {
     "dumpFees()": FunctionFragment;
-    "getDigest((address,string,int256,int256,uint64,uint64),bool)": FunctionFragment;
+    "getDigest((address,string,int128,int128,uint64,uint64))": FunctionFragment;
     "getMarket()": FunctionFragment;
-    "initialize(address,address,address,address,address,uint32,int256,int256,int256)": FunctionFragment;
-    "matchOrderAMM((uint32,((address,string,int256,int256,uint64,uint64),bytes)))": FunctionFragment;
-    "matchOrders((uint32,bool,((address,string,int256,int256,uint64,uint64),bytes),((address,string,int256,int256,uint64,uint64),bytes)))": FunctionFragment;
-    "swapAMM((address,string,uint32,int256,int256))": FunctionFragment;
+    "initialize(address,address,address,address,address,uint32,int128,int128,int128)": FunctionFragment;
+    "matchOrderAMM((uint32,((address,string,int128,int128,uint64,uint64),bytes)))": FunctionFragment;
+    "matchOrders((uint32,bool,((address,string,int128,int128,uint64,uint64),bytes),((address,string,int128,int128,uint64,uint64),bytes)))": FunctionFragment;
+    "swapAMM((address,string,uint32,int128,int128))": FunctionFragment;
   };
 
   getFunction(
@@ -164,7 +164,7 @@ export interface IOffchainBookInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "dumpFees", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getDigest",
-    values: [IEndpoint.OrderStruct, PromiseOrValue<boolean>]
+    values: [IEndpoint.OrderStruct]
   ): string;
   encodeFunctionData(functionFragment: "getMarket", values?: undefined): string;
   encodeFunctionData(
@@ -209,7 +209,7 @@ export interface IOffchainBookInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "swapAMM", data: BytesLike): Result;
 
   events: {
-    "FillOrder(bytes32,uint64,int256,int256,uint64,uint64,bool,int256,int256,int256)": EventFragment;
+    "FillOrder(bytes32,uint64,int128,int128,uint64,uint64,bool,int128,int128,int128)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "FillOrder"): EventFragment;
@@ -223,9 +223,9 @@ export interface FillOrderEventObject {
   expiration: BigNumber;
   nonce: BigNumber;
   isTaker: boolean;
-  feeAmountX18: BigNumber;
-  baseDeltaX18: BigNumber;
-  quoteDeltaX18: BigNumber;
+  feeAmount: BigNumber;
+  baseDelta: BigNumber;
+  quoteDelta: BigNumber;
 }
 export type FillOrderEvent = TypedEvent<
   [
@@ -278,7 +278,6 @@ export interface IOffchainBook extends BaseContract {
 
     getDigest(
       order: IEndpoint.OrderStruct,
-      isCancellation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
@@ -321,7 +320,6 @@ export interface IOffchainBook extends BaseContract {
 
   getDigest(
     order: IEndpoint.OrderStruct,
-    isCancellation: PromiseOrValue<boolean>,
     overrides?: CallOverrides
   ): Promise<string>;
 
@@ -362,7 +360,6 @@ export interface IOffchainBook extends BaseContract {
 
     getDigest(
       order: IEndpoint.OrderStruct,
-      isCancellation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<string>;
 
@@ -400,7 +397,7 @@ export interface IOffchainBook extends BaseContract {
   };
 
   filters: {
-    "FillOrder(bytes32,uint64,int256,int256,uint64,uint64,bool,int256,int256,int256)"(
+    "FillOrder(bytes32,uint64,int128,int128,uint64,uint64,bool,int128,int128,int128)"(
       digest?: PromiseOrValue<BytesLike> | null,
       subaccount?: PromiseOrValue<BigNumberish> | null,
       priceX18?: null,
@@ -408,9 +405,9 @@ export interface IOffchainBook extends BaseContract {
       expiration?: null,
       nonce?: null,
       isTaker?: null,
-      feeAmountX18?: null,
-      baseDeltaX18?: null,
-      quoteDeltaX18?: null
+      feeAmount?: null,
+      baseDelta?: null,
+      quoteDelta?: null
     ): FillOrderEventFilter;
     FillOrder(
       digest?: PromiseOrValue<BytesLike> | null,
@@ -420,9 +417,9 @@ export interface IOffchainBook extends BaseContract {
       expiration?: null,
       nonce?: null,
       isTaker?: null,
-      feeAmountX18?: null,
-      baseDeltaX18?: null,
-      quoteDeltaX18?: null
+      feeAmount?: null,
+      baseDelta?: null,
+      quoteDelta?: null
     ): FillOrderEventFilter;
   };
 
@@ -433,7 +430,6 @@ export interface IOffchainBook extends BaseContract {
 
     getDigest(
       order: IEndpoint.OrderStruct,
-      isCancellation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -475,7 +471,6 @@ export interface IOffchainBook extends BaseContract {
 
     getDigest(
       order: IEndpoint.OrderStruct,
-      isCancellation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

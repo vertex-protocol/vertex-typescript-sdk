@@ -3,8 +3,9 @@ import {
   depositCollateral,
   IClearinghouse__factory,
   IEndpoint__factory,
+  MockERC20__factory,
 } from '@vertex-protocol/contracts';
-import { nowInSeconds } from '@vertex-protocol/utils';
+import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
 import { OrderParamsWithoutNonce } from './types';
 
@@ -24,7 +25,10 @@ async function main() {
     signer,
   });
 
-  const clearinghouseAddr = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
+  const clearinghouseAddr = '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707';
+  const quoteAddr = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+
+  const quote = await MockERC20__factory.connect(quoteAddr, signer);
 
   const clearinghouse = await IClearinghouse__factory.connect(
     clearinghouseAddr,
@@ -33,9 +37,12 @@ async function main() {
   const endpointAddr = await clearinghouse.getEndpoint();
   const endpoint = await IEndpoint__factory.connect(endpointAddr, signer);
 
+  await (await quote.mint(signer.address, toFixedPoint(5000, 6))).wait();
+  await (await quote.approve(endpointAddr, toFixedPoint(5000, 6))).wait();
+
   // Deposit collateral
   const depositTx = await depositCollateral({
-    amount: 100,
+    amount: toFixedPoint(5000, 6),
     endpoint,
     productId: 0,
     subaccountName: 'default',
@@ -46,10 +53,17 @@ async function main() {
   // Wait for slow mode
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  const subaccountId = await clearinghouse.getSubaccountId(
-    signer.address,
-    'default',
-  );
+  let subaccountId;
+  while (true) {
+    subaccountId = (await clearinghouse.getSubaccountId(
+      signer.address,
+      'default',
+    )) as unknown as number;
+    if (subaccountId != 0) {
+      break;
+    }
+  }
+
   console.log('Subaccount ID', subaccountId.toString());
 
   console.log('Querying subaccount');
@@ -120,11 +134,61 @@ async function main() {
     JSON.stringify(subaccountOrdersAfterCancel),
   );
 
+  const mintSpotLpResult = await client.mintLp({
+    sender: signer.address,
+    subaccountName: 'default',
+    productId: 3,
+    amountBase: toFixedPoint(1, 18),
+    quoteAmountLow: toFixedPoint(1000, 18),
+    quoteAmountHigh: toFixedPoint(2000, 18),
+    endpointAddr,
+  });
+  console.log('Done minting spot lp', mintSpotLpResult);
+
+  const mintPerpLpResult = await client.mintLp({
+    sender: signer.address,
+    subaccountName: 'default',
+    productId: 4,
+    amountBase: toFixedPoint(1, 18),
+    quoteAmountLow: toFixedPoint(1000, 18),
+    quoteAmountHigh: toFixedPoint(2000, 18),
+    endpointAddr,
+  });
+  console.log('Done minting perp lp', mintPerpLpResult);
+
+  const subaccountInfoAfterMintingLp = await client.getSubaccountSummary({
+    subaccountId,
+  });
+  console.log(
+    'Subaccount info after LP mint',
+    JSON.stringify(subaccountInfoAfterMintingLp, null, 2),
+  );
+
+  const burnSpotLpResult = await client.burnLp({
+    sender: signer.address,
+    subaccountName: 'default',
+    productId: 3,
+    amount: toFixedPoint(1, 18),
+    endpointAddr,
+  });
+
+  console.log('Done burning spot lp', burnSpotLpResult);
+
+  const burnPerpLpResult = await client.burnLp({
+    sender: signer.address,
+    subaccountName: 'default',
+    productId: 4,
+    amount: toFixedPoint(1, 6),
+    endpointAddr,
+  });
+
+  console.log('Done burning perp lp', burnPerpLpResult);
+
   const withdrawResult = await client.withdrawCollateral({
     sender: signer.address,
     subaccountName: 'default',
     productId: 0,
-    amount: 100,
+    amount: toFixedPoint(4999, 6),
     endpointAddr,
   });
 
@@ -136,4 +200,4 @@ async function main() {
   console.log('Subaccount info', JSON.stringify(subaccountInfoAtEnd, null, 2));
 }
 
-main();
+main().catch((e) => console.log(e));

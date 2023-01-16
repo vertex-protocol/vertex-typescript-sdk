@@ -1,5 +1,5 @@
 import { BaseVertexGraphClient } from '../base';
-import { fromX18, nowInSeconds } from '@vertex-protocol/utils';
+import { fromX18, nowInSeconds, toBigDecimal } from '@vertex-protocol/utils';
 import { fromHourIndex, getProductEntityId, toHourIndex } from '../../utils';
 import {
   HourlyHistoricalProductDataParams,
@@ -34,7 +34,7 @@ export class ProductQueryClient extends BaseVertexGraphClient {
           return {
             approximateSnapshotTime: fromHourIndex(snapshot.periodIndex),
             oraclePrice: fromX18(snapshot.priceX18),
-            openInterest: fromX18(snapshot.openInterestX18),
+            openInterest: toBigDecimal(snapshot.openInterest),
           };
         },
       ),

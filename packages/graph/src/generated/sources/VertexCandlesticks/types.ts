@@ -40,8 +40,8 @@ export type MarketCandlestick = {
   closeX18: Scalars['BigInt'];
   lowX18: Scalars['BigInt'];
   highX18: Scalars['BigInt'];
-  volumeBaseX18: Scalars['BigInt'];
-  volumeQuoteX18: Scalars['BigInt'];
+  volumeBase: Scalars['BigInt'];
+  volumeQuote: Scalars['BigInt'];
 };
 
 export type MarketCandlestick_filter = {
@@ -109,22 +109,22 @@ export type MarketCandlestick_filter = {
   highX18_lte?: InputMaybe<Scalars['BigInt']>;
   highX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   highX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeBaseX18?: InputMaybe<Scalars['BigInt']>;
-  volumeBaseX18_not?: InputMaybe<Scalars['BigInt']>;
-  volumeBaseX18_gt?: InputMaybe<Scalars['BigInt']>;
-  volumeBaseX18_lt?: InputMaybe<Scalars['BigInt']>;
-  volumeBaseX18_gte?: InputMaybe<Scalars['BigInt']>;
-  volumeBaseX18_lte?: InputMaybe<Scalars['BigInt']>;
-  volumeBaseX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeBaseX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeQuoteX18?: InputMaybe<Scalars['BigInt']>;
-  volumeQuoteX18_not?: InputMaybe<Scalars['BigInt']>;
-  volumeQuoteX18_gt?: InputMaybe<Scalars['BigInt']>;
-  volumeQuoteX18_lt?: InputMaybe<Scalars['BigInt']>;
-  volumeQuoteX18_gte?: InputMaybe<Scalars['BigInt']>;
-  volumeQuoteX18_lte?: InputMaybe<Scalars['BigInt']>;
-  volumeQuoteX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  volumeQuoteX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeBase?: InputMaybe<Scalars['BigInt']>;
+  volumeBase_not?: InputMaybe<Scalars['BigInt']>;
+  volumeBase_gt?: InputMaybe<Scalars['BigInt']>;
+  volumeBase_lt?: InputMaybe<Scalars['BigInt']>;
+  volumeBase_gte?: InputMaybe<Scalars['BigInt']>;
+  volumeBase_lte?: InputMaybe<Scalars['BigInt']>;
+  volumeBase_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeBase_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeQuote?: InputMaybe<Scalars['BigInt']>;
+  volumeQuote_not?: InputMaybe<Scalars['BigInt']>;
+  volumeQuote_gt?: InputMaybe<Scalars['BigInt']>;
+  volumeQuote_lt?: InputMaybe<Scalars['BigInt']>;
+  volumeQuote_gte?: InputMaybe<Scalars['BigInt']>;
+  volumeQuote_lte?: InputMaybe<Scalars['BigInt']>;
+  volumeQuote_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  volumeQuote_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -138,8 +138,8 @@ export type MarketCandlestick_orderBy =
   | 'closeX18'
   | 'lowX18'
   | 'highX18'
-  | 'volumeBaseX18'
-  | 'volumeQuoteX18';
+  | 'volumeBase'
+  | 'volumeQuote';
 
 /** Defines the order direction, either ascending or descending */
 export type OrderDirection =

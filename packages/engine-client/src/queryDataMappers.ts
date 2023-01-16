@@ -63,11 +63,11 @@ export function mapEngineServerSpotProduct(
       productId: product.product_id,
       type: ProductEngineType.SPOT,
       totalBorrowed: calcTotalBorrowed(
-        toEthersBN(product.state.total_borrows_normalized_x18),
+        toEthersBN(product.state.total_borrows_normalized),
         toEthersBN(product.state.cumulative_borrows_multiplier_x18),
       ),
       totalDeposited: calcTotalDeposited(
-        toEthersBN(product.state.total_deposits_normalized_x18),
+        toEthersBN(product.state.total_deposits_normalized),
         toEthersBN(product.state.cumulative_deposits_multiplier_x18),
       ),
       oraclePrice: fromX18(product.oracle_price_x18),
@@ -85,8 +85,8 @@ export function mapEngineServerSpotProduct(
         product.risk.short_weight_maintenance_x18,
       ),
       tokenAddr: product.config.token,
-      totalLpBaseAmount: fromX18(product.lp_state.base.amount_x18),
-      totalLpQuoteAmount: fromX18(product.lp_state.quote.amount_x18),
+      totalLpBaseAmount: toBigDecimal(product.lp_state.base.amount),
+      totalLpQuoteAmount: toBigDecimal(product.lp_state.quote.amount),
       totalLpSupply: toBigDecimal(product.lp_state.supply),
     },
   };
@@ -99,7 +99,7 @@ export function mapEngineServerPerpProduct(
     type: ProductEngineType.PERP,
     productId: product.product_id,
     priceIncrement: fromX18(product.book_info.price_increment_x18),
-    sizeIncrement: fromX18(product.book_info.size_increment),
+    sizeIncrement: toBigDecimal(product.book_info.size_increment),
     product: {
       productId: product.product_id,
       type: ProductEngineType.PERP,
@@ -112,7 +112,7 @@ export function mapEngineServerPerpProduct(
       shortWeightMaintenance: fromX18(
         product.risk.short_weight_maintenance_x18,
       ),
-      openInterest: fromX18(product.state.open_interest_x18),
+      openInterest: toBigDecimal(product.state.open_interest),
       totalLpBaseAmount: toBigDecimal(product.lp_state.base),
       totalLpQuoteAmount: toBigDecimal(product.lp_state.quote),
       totalLpSupply: toBigDecimal(product.lp_state.supply),

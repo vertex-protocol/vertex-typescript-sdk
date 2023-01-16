@@ -4,6 +4,34 @@ schema {
 }
 
 type Query {
+  marketCandlestick(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): MarketCandlestick
+  marketCandlesticks(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: MarketCandlestick_orderBy
+    orderDirection: OrderDirection
+    where: MarketCandlestick_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [MarketCandlestick!]! @merge(keyField: "id", keyArg: "where.id_in")
+  """Access to subgraph metadata"""
+  _meta(block: Block_height): _Meta_
   spotEngine(
     id: ID!
     """
@@ -238,34 +266,6 @@ type Query {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [SocializeProductEvent!]! @merge(keyField: "id", keyArg: "where.id_in")
-  """Access to subgraph metadata"""
-  _meta(block: Block_height): _Meta_
-  marketCandlestick(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-    """
-    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
-    """
-    subgraphError: _SubgraphErrorPolicy_! = deny
-  ): MarketCandlestick
-  marketCandlesticks(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: MarketCandlestick_orderBy
-    orderDirection: OrderDirection
-    where: MarketCandlestick_filter
-    """
-    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-    """
-    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
-    """
-    subgraphError: _SubgraphErrorPolicy_! = deny
-  ): [MarketCandlestick!]! @merge(keyField: "id", keyArg: "where.id_in")
   clearinghouse(
     id: ID!
     """
@@ -633,6 +633,34 @@ type Query {
 }
 
 type Subscription {
+  marketCandlestick(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): MarketCandlestick
+  marketCandlesticks(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: MarketCandlestick_orderBy
+    orderDirection: OrderDirection
+    where: MarketCandlestick_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [MarketCandlestick!]!
+  """Access to subgraph metadata"""
+  _meta(block: Block_height): _Meta_
   spotEngine(
     id: ID!
     """
@@ -867,34 +895,6 @@ type Subscription {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [SocializeProductEvent!]!
-  """Access to subgraph metadata"""
-  _meta(block: Block_height): _Meta_
-  marketCandlestick(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-    """
-    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
-    """
-    subgraphError: _SubgraphErrorPolicy_! = deny
-  ): MarketCandlestick
-  marketCandlesticks(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: MarketCandlestick_orderBy
-    orderDirection: OrderDirection
-    where: MarketCandlestick_filter
-    """
-    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-    """
-    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
-    """
-    subgraphError: _SubgraphErrorPolicy_! = deny
-  ): [MarketCandlestick!]!
   clearinghouse(
     id: ID!
     """
@@ -1277,6 +1277,157 @@ input Block_height {
 
 scalar Bytes
 
+type MarketCandlestick {
+  id: ID!
+  productId: BigInt!
+  time: BigInt!
+  period: Int!
+  openX18: BigInt!
+  closeX18: BigInt!
+  lowX18: BigInt!
+  highX18: BigInt!
+  volumeBase: BigInt!
+  volumeQuote: BigInt!
+}
+
+input MarketCandlestick_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  productId: BigInt
+  productId_not: BigInt
+  productId_gt: BigInt
+  productId_lt: BigInt
+  productId_gte: BigInt
+  productId_lte: BigInt
+  productId_in: [BigInt!]
+  productId_not_in: [BigInt!]
+  time: BigInt
+  time_not: BigInt
+  time_gt: BigInt
+  time_lt: BigInt
+  time_gte: BigInt
+  time_lte: BigInt
+  time_in: [BigInt!]
+  time_not_in: [BigInt!]
+  period: Int
+  period_not: Int
+  period_gt: Int
+  period_lt: Int
+  period_gte: Int
+  period_lte: Int
+  period_in: [Int!]
+  period_not_in: [Int!]
+  openX18: BigInt
+  openX18_not: BigInt
+  openX18_gt: BigInt
+  openX18_lt: BigInt
+  openX18_gte: BigInt
+  openX18_lte: BigInt
+  openX18_in: [BigInt!]
+  openX18_not_in: [BigInt!]
+  closeX18: BigInt
+  closeX18_not: BigInt
+  closeX18_gt: BigInt
+  closeX18_lt: BigInt
+  closeX18_gte: BigInt
+  closeX18_lte: BigInt
+  closeX18_in: [BigInt!]
+  closeX18_not_in: [BigInt!]
+  lowX18: BigInt
+  lowX18_not: BigInt
+  lowX18_gt: BigInt
+  lowX18_lt: BigInt
+  lowX18_gte: BigInt
+  lowX18_lte: BigInt
+  lowX18_in: [BigInt!]
+  lowX18_not_in: [BigInt!]
+  highX18: BigInt
+  highX18_not: BigInt
+  highX18_gt: BigInt
+  highX18_lt: BigInt
+  highX18_gte: BigInt
+  highX18_lte: BigInt
+  highX18_in: [BigInt!]
+  highX18_not_in: [BigInt!]
+  volumeBase: BigInt
+  volumeBase_not: BigInt
+  volumeBase_gt: BigInt
+  volumeBase_lt: BigInt
+  volumeBase_gte: BigInt
+  volumeBase_lte: BigInt
+  volumeBase_in: [BigInt!]
+  volumeBase_not_in: [BigInt!]
+  volumeQuote: BigInt
+  volumeQuote_not: BigInt
+  volumeQuote_gt: BigInt
+  volumeQuote_lt: BigInt
+  volumeQuote_gte: BigInt
+  volumeQuote_lte: BigInt
+  volumeQuote_in: [BigInt!]
+  volumeQuote_not_in: [BigInt!]
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+}
+
+enum MarketCandlestick_orderBy {
+  id
+  productId
+  time
+  period
+  openX18
+  closeX18
+  lowX18
+  highX18
+  volumeBase
+  volumeQuote
+}
+
+"""Defines the order direction, either ascending or descending"""
+enum OrderDirection {
+  asc
+  desc
+}
+
+type _Block_ {
+  """The hash of the block"""
+  hash: Bytes
+  """The block number"""
+  number: Int!
+  """Integer representation of the timestamp stored in blocks for the chain"""
+  timestamp: Int
+}
+
+"""The type for the top-level _meta field"""
+type _Meta_ {
+  """
+  Information about a specific subgraph block. The hash of the block
+  will be null if the _meta field has a block constraint that asks for
+  a block number. It will be filled if the _meta field has no block constraint
+  and therefore asks for the latest  block
+  
+  """
+  block: _Block_!
+  """The deployment ID"""
+  deployment: String!
+  """If `true`, the subgraph encountered indexing errors at some past block"""
+  hasIndexingErrors: Boolean!
+}
+
+enum _SubgraphErrorPolicy_ {
+  """Data will be returned even if the subgraph has indexing errors"""
+  allow
+  """
+  If the subgraph has indexing errors, data will be omitted. The default.
+  """
+  deny
+}
+
 type Market {
   id: ID!
   clearinghouse: Bytes!
@@ -1287,8 +1438,8 @@ type Market {
   createdAt: BigInt!
   createdAtBlock: BigInt!
   lastFillPriceX18: BigInt!
-  volumeBaseX18: BigInt!
-  volumeQuoteX18: BigInt!
+  volumeBase: BigInt!
+  volumeQuote: BigInt!
   snapshots(skip: Int = 0, first: Int = 100, orderBy: MarketSnapshot_orderBy, orderDirection: OrderDirection, where: MarketSnapshot_filter): [MarketSnapshot!]!
 }
 
@@ -1298,8 +1449,8 @@ type MarketSnapshot {
   periodIndex: BigInt!
   market: Market!
   lastFillPriceX18: BigInt!
-  volumeBaseX18: BigInt!
-  volumeQuoteX18: BigInt!
+  volumeBase: BigInt!
+  volumeQuote: BigInt!
 }
 
 input MarketSnapshot_filter {
@@ -1356,22 +1507,22 @@ input MarketSnapshot_filter {
   lastFillPriceX18_lte: BigInt
   lastFillPriceX18_in: [BigInt!]
   lastFillPriceX18_not_in: [BigInt!]
-  volumeBaseX18: BigInt
-  volumeBaseX18_not: BigInt
-  volumeBaseX18_gt: BigInt
-  volumeBaseX18_lt: BigInt
-  volumeBaseX18_gte: BigInt
-  volumeBaseX18_lte: BigInt
-  volumeBaseX18_in: [BigInt!]
-  volumeBaseX18_not_in: [BigInt!]
-  volumeQuoteX18: BigInt
-  volumeQuoteX18_not: BigInt
-  volumeQuoteX18_gt: BigInt
-  volumeQuoteX18_lt: BigInt
-  volumeQuoteX18_gte: BigInt
-  volumeQuoteX18_lte: BigInt
-  volumeQuoteX18_in: [BigInt!]
-  volumeQuoteX18_not_in: [BigInt!]
+  volumeBase: BigInt
+  volumeBase_not: BigInt
+  volumeBase_gt: BigInt
+  volumeBase_lt: BigInt
+  volumeBase_gte: BigInt
+  volumeBase_lte: BigInt
+  volumeBase_in: [BigInt!]
+  volumeBase_not_in: [BigInt!]
+  volumeQuote: BigInt
+  volumeQuote_not: BigInt
+  volumeQuote_gt: BigInt
+  volumeQuote_lt: BigInt
+  volumeQuote_gte: BigInt
+  volumeQuote_lte: BigInt
+  volumeQuote_in: [BigInt!]
+  volumeQuote_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
@@ -1382,8 +1533,8 @@ enum MarketSnapshot_orderBy {
   periodIndex
   market
   lastFillPriceX18
-  volumeBaseX18
-  volumeQuoteX18
+  volumeBase
+  volumeQuote
 }
 
 input Market_filter {
@@ -1455,22 +1606,22 @@ input Market_filter {
   lastFillPriceX18_lte: BigInt
   lastFillPriceX18_in: [BigInt!]
   lastFillPriceX18_not_in: [BigInt!]
-  volumeBaseX18: BigInt
-  volumeBaseX18_not: BigInt
-  volumeBaseX18_gt: BigInt
-  volumeBaseX18_lt: BigInt
-  volumeBaseX18_gte: BigInt
-  volumeBaseX18_lte: BigInt
-  volumeBaseX18_in: [BigInt!]
-  volumeBaseX18_not_in: [BigInt!]
-  volumeQuoteX18: BigInt
-  volumeQuoteX18_not: BigInt
-  volumeQuoteX18_gt: BigInt
-  volumeQuoteX18_lt: BigInt
-  volumeQuoteX18_gte: BigInt
-  volumeQuoteX18_lte: BigInt
-  volumeQuoteX18_in: [BigInt!]
-  volumeQuoteX18_not_in: [BigInt!]
+  volumeBase: BigInt
+  volumeBase_not: BigInt
+  volumeBase_gt: BigInt
+  volumeBase_lt: BigInt
+  volumeBase_gte: BigInt
+  volumeBase_lte: BigInt
+  volumeBase_in: [BigInt!]
+  volumeBase_not_in: [BigInt!]
+  volumeQuote: BigInt
+  volumeQuote_not: BigInt
+  volumeQuote_gt: BigInt
+  volumeQuote_lt: BigInt
+  volumeQuote_gte: BigInt
+  volumeQuote_lte: BigInt
+  volumeQuote_in: [BigInt!]
+  volumeQuote_not_in: [BigInt!]
   snapshots_: MarketSnapshot_filter
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
@@ -1486,15 +1637,9 @@ enum Market_orderBy {
   createdAt
   createdAtBlock
   lastFillPriceX18
-  volumeBaseX18
-  volumeQuoteX18
+  volumeBase
+  volumeQuote
   snapshots
-}
-
-"""Defines the order direction, either ascending or descending"""
-enum OrderDirection {
-  asc
-  desc
 }
 
 type PerpEngine {
@@ -1538,8 +1683,8 @@ type PerpProduct {
   markPriceX18: BigInt!
   cumulativeFundingLongX18: BigInt!
   cumulativeFundingShortX18: BigInt!
-  openInterestX18: BigInt!
-  availableSettleX18: BigInt!
+  openInterest: BigInt!
+  availableSettle: BigInt!
   lpSupply: BigInt!
   lpQuoteAmount: BigInt!
   lpBaseAmount: BigInt!
@@ -1556,8 +1701,8 @@ type PerpProductSnapshot {
   markPriceX18: BigInt!
   cumulativeFundingLongX18: BigInt!
   cumulativeFundingShortX18: BigInt!
-  openInterestX18: BigInt!
-  availableSettleX18: BigInt!
+  openInterest: BigInt!
+  availableSettle: BigInt!
   lpSupply: BigInt!
   lpQuoteAmount: BigInt!
   lpBaseAmount: BigInt!
@@ -1642,22 +1787,22 @@ input PerpProductSnapshot_filter {
   cumulativeFundingShortX18_lte: BigInt
   cumulativeFundingShortX18_in: [BigInt!]
   cumulativeFundingShortX18_not_in: [BigInt!]
-  openInterestX18: BigInt
-  openInterestX18_not: BigInt
-  openInterestX18_gt: BigInt
-  openInterestX18_lt: BigInt
-  openInterestX18_gte: BigInt
-  openInterestX18_lte: BigInt
-  openInterestX18_in: [BigInt!]
-  openInterestX18_not_in: [BigInt!]
-  availableSettleX18: BigInt
-  availableSettleX18_not: BigInt
-  availableSettleX18_gt: BigInt
-  availableSettleX18_lt: BigInt
-  availableSettleX18_gte: BigInt
-  availableSettleX18_lte: BigInt
-  availableSettleX18_in: [BigInt!]
-  availableSettleX18_not_in: [BigInt!]
+  openInterest: BigInt
+  openInterest_not: BigInt
+  openInterest_gt: BigInt
+  openInterest_lt: BigInt
+  openInterest_gte: BigInt
+  openInterest_lte: BigInt
+  openInterest_in: [BigInt!]
+  openInterest_not_in: [BigInt!]
+  availableSettle: BigInt
+  availableSettle_not: BigInt
+  availableSettle_gt: BigInt
+  availableSettle_lt: BigInt
+  availableSettle_gte: BigInt
+  availableSettle_lte: BigInt
+  availableSettle_in: [BigInt!]
+  availableSettle_not_in: [BigInt!]
   lpSupply: BigInt
   lpSupply_not: BigInt
   lpSupply_gt: BigInt
@@ -1703,8 +1848,8 @@ enum PerpProductSnapshot_orderBy {
   markPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18
-  openInterestX18
-  availableSettleX18
+  openInterest
+  availableSettle
   lpSupply
   lpQuoteAmount
   lpBaseAmount
@@ -1802,22 +1947,22 @@ input PerpProduct_filter {
   cumulativeFundingShortX18_lte: BigInt
   cumulativeFundingShortX18_in: [BigInt!]
   cumulativeFundingShortX18_not_in: [BigInt!]
-  openInterestX18: BigInt
-  openInterestX18_not: BigInt
-  openInterestX18_gt: BigInt
-  openInterestX18_lt: BigInt
-  openInterestX18_gte: BigInt
-  openInterestX18_lte: BigInt
-  openInterestX18_in: [BigInt!]
-  openInterestX18_not_in: [BigInt!]
-  availableSettleX18: BigInt
-  availableSettleX18_not: BigInt
-  availableSettleX18_gt: BigInt
-  availableSettleX18_lt: BigInt
-  availableSettleX18_gte: BigInt
-  availableSettleX18_lte: BigInt
-  availableSettleX18_in: [BigInt!]
-  availableSettleX18_not_in: [BigInt!]
+  openInterest: BigInt
+  openInterest_not: BigInt
+  openInterest_gt: BigInt
+  openInterest_lt: BigInt
+  openInterest_gte: BigInt
+  openInterest_lte: BigInt
+  openInterest_in: [BigInt!]
+  openInterest_not_in: [BigInt!]
+  availableSettle: BigInt
+  availableSettle_not: BigInt
+  availableSettle_gt: BigInt
+  availableSettle_lt: BigInt
+  availableSettle_gte: BigInt
+  availableSettle_lte: BigInt
+  availableSettle_in: [BigInt!]
+  availableSettle_not_in: [BigInt!]
   lpSupply: BigInt
   lpSupply_not: BigInt
   lpSupply_gt: BigInt
@@ -1864,8 +2009,8 @@ enum PerpProduct_orderBy {
   markPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18
-  openInterestX18
-  availableSettleX18
+  openInterest
+  availableSettle
   lpSupply
   lpQuoteAmount
   lpBaseAmount
@@ -1974,11 +2119,11 @@ type SpotProduct {
   priceX18: BigInt!
   cumulativeDepositsMultiplierX18: BigInt!
   cumulativeBorrowsMultiplierX18: BigInt!
-  totalDepositsNormalizedX18: BigInt!
-  totalBorrowsNormalizedX18: BigInt!
+  totalDepositsNormalized: BigInt!
+  totalBorrowsNormalized: BigInt!
   lpSupply: BigInt!
-  lpQuoteAmountX18: BigInt!
-  lpBaseAmountX18: BigInt!
+  lpQuoteAmount: BigInt!
+  lpBaseAmount: BigInt!
   snapshots(skip: Int = 0, first: Int = 100, orderBy: SpotProductSnapshot_orderBy, orderDirection: OrderDirection, where: SpotProductSnapshot_filter): [SpotProductSnapshot!]!
 }
 
@@ -1990,11 +2135,11 @@ type SpotProductSnapshot {
   priceX18: BigInt!
   cumulativeDepositsMultiplierX18: BigInt!
   cumulativeBorrowsMultiplierX18: BigInt!
-  totalDepositsNormalizedX18: BigInt!
-  totalBorrowsNormalizedX18: BigInt!
+  totalDepositsNormalized: BigInt!
+  totalBorrowsNormalized: BigInt!
   lpSupply: BigInt!
-  lpQuoteAmountX18: BigInt!
-  lpBaseAmountX18: BigInt!
+  lpQuoteAmount: BigInt!
+  lpBaseAmount: BigInt!
 }
 
 input SpotProductSnapshot_filter {
@@ -2067,22 +2212,22 @@ input SpotProductSnapshot_filter {
   cumulativeBorrowsMultiplierX18_lte: BigInt
   cumulativeBorrowsMultiplierX18_in: [BigInt!]
   cumulativeBorrowsMultiplierX18_not_in: [BigInt!]
-  totalDepositsNormalizedX18: BigInt
-  totalDepositsNormalizedX18_not: BigInt
-  totalDepositsNormalizedX18_gt: BigInt
-  totalDepositsNormalizedX18_lt: BigInt
-  totalDepositsNormalizedX18_gte: BigInt
-  totalDepositsNormalizedX18_lte: BigInt
-  totalDepositsNormalizedX18_in: [BigInt!]
-  totalDepositsNormalizedX18_not_in: [BigInt!]
-  totalBorrowsNormalizedX18: BigInt
-  totalBorrowsNormalizedX18_not: BigInt
-  totalBorrowsNormalizedX18_gt: BigInt
-  totalBorrowsNormalizedX18_lt: BigInt
-  totalBorrowsNormalizedX18_gte: BigInt
-  totalBorrowsNormalizedX18_lte: BigInt
-  totalBorrowsNormalizedX18_in: [BigInt!]
-  totalBorrowsNormalizedX18_not_in: [BigInt!]
+  totalDepositsNormalized: BigInt
+  totalDepositsNormalized_not: BigInt
+  totalDepositsNormalized_gt: BigInt
+  totalDepositsNormalized_lt: BigInt
+  totalDepositsNormalized_gte: BigInt
+  totalDepositsNormalized_lte: BigInt
+  totalDepositsNormalized_in: [BigInt!]
+  totalDepositsNormalized_not_in: [BigInt!]
+  totalBorrowsNormalized: BigInt
+  totalBorrowsNormalized_not: BigInt
+  totalBorrowsNormalized_gt: BigInt
+  totalBorrowsNormalized_lt: BigInt
+  totalBorrowsNormalized_gte: BigInt
+  totalBorrowsNormalized_lte: BigInt
+  totalBorrowsNormalized_in: [BigInt!]
+  totalBorrowsNormalized_not_in: [BigInt!]
   lpSupply: BigInt
   lpSupply_not: BigInt
   lpSupply_gt: BigInt
@@ -2091,22 +2236,22 @@ input SpotProductSnapshot_filter {
   lpSupply_lte: BigInt
   lpSupply_in: [BigInt!]
   lpSupply_not_in: [BigInt!]
-  lpQuoteAmountX18: BigInt
-  lpQuoteAmountX18_not: BigInt
-  lpQuoteAmountX18_gt: BigInt
-  lpQuoteAmountX18_lt: BigInt
-  lpQuoteAmountX18_gte: BigInt
-  lpQuoteAmountX18_lte: BigInt
-  lpQuoteAmountX18_in: [BigInt!]
-  lpQuoteAmountX18_not_in: [BigInt!]
-  lpBaseAmountX18: BigInt
-  lpBaseAmountX18_not: BigInt
-  lpBaseAmountX18_gt: BigInt
-  lpBaseAmountX18_lt: BigInt
-  lpBaseAmountX18_gte: BigInt
-  lpBaseAmountX18_lte: BigInt
-  lpBaseAmountX18_in: [BigInt!]
-  lpBaseAmountX18_not_in: [BigInt!]
+  lpQuoteAmount: BigInt
+  lpQuoteAmount_not: BigInt
+  lpQuoteAmount_gt: BigInt
+  lpQuoteAmount_lt: BigInt
+  lpQuoteAmount_gte: BigInt
+  lpQuoteAmount_lte: BigInt
+  lpQuoteAmount_in: [BigInt!]
+  lpQuoteAmount_not_in: [BigInt!]
+  lpBaseAmount: BigInt
+  lpBaseAmount_not: BigInt
+  lpBaseAmount_gt: BigInt
+  lpBaseAmount_lt: BigInt
+  lpBaseAmount_gte: BigInt
+  lpBaseAmount_lte: BigInt
+  lpBaseAmount_in: [BigInt!]
+  lpBaseAmount_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
@@ -2119,11 +2264,11 @@ enum SpotProductSnapshot_orderBy {
   priceX18
   cumulativeDepositsMultiplierX18
   cumulativeBorrowsMultiplierX18
-  totalDepositsNormalizedX18
-  totalBorrowsNormalizedX18
+  totalDepositsNormalized
+  totalBorrowsNormalized
   lpSupply
-  lpQuoteAmountX18
-  lpBaseAmountX18
+  lpQuoteAmount
+  lpBaseAmount
 }
 
 input SpotProduct_filter {
@@ -2209,22 +2354,22 @@ input SpotProduct_filter {
   cumulativeBorrowsMultiplierX18_lte: BigInt
   cumulativeBorrowsMultiplierX18_in: [BigInt!]
   cumulativeBorrowsMultiplierX18_not_in: [BigInt!]
-  totalDepositsNormalizedX18: BigInt
-  totalDepositsNormalizedX18_not: BigInt
-  totalDepositsNormalizedX18_gt: BigInt
-  totalDepositsNormalizedX18_lt: BigInt
-  totalDepositsNormalizedX18_gte: BigInt
-  totalDepositsNormalizedX18_lte: BigInt
-  totalDepositsNormalizedX18_in: [BigInt!]
-  totalDepositsNormalizedX18_not_in: [BigInt!]
-  totalBorrowsNormalizedX18: BigInt
-  totalBorrowsNormalizedX18_not: BigInt
-  totalBorrowsNormalizedX18_gt: BigInt
-  totalBorrowsNormalizedX18_lt: BigInt
-  totalBorrowsNormalizedX18_gte: BigInt
-  totalBorrowsNormalizedX18_lte: BigInt
-  totalBorrowsNormalizedX18_in: [BigInt!]
-  totalBorrowsNormalizedX18_not_in: [BigInt!]
+  totalDepositsNormalized: BigInt
+  totalDepositsNormalized_not: BigInt
+  totalDepositsNormalized_gt: BigInt
+  totalDepositsNormalized_lt: BigInt
+  totalDepositsNormalized_gte: BigInt
+  totalDepositsNormalized_lte: BigInt
+  totalDepositsNormalized_in: [BigInt!]
+  totalDepositsNormalized_not_in: [BigInt!]
+  totalBorrowsNormalized: BigInt
+  totalBorrowsNormalized_not: BigInt
+  totalBorrowsNormalized_gt: BigInt
+  totalBorrowsNormalized_lt: BigInt
+  totalBorrowsNormalized_gte: BigInt
+  totalBorrowsNormalized_lte: BigInt
+  totalBorrowsNormalized_in: [BigInt!]
+  totalBorrowsNormalized_not_in: [BigInt!]
   lpSupply: BigInt
   lpSupply_not: BigInt
   lpSupply_gt: BigInt
@@ -2233,22 +2378,22 @@ input SpotProduct_filter {
   lpSupply_lte: BigInt
   lpSupply_in: [BigInt!]
   lpSupply_not_in: [BigInt!]
-  lpQuoteAmountX18: BigInt
-  lpQuoteAmountX18_not: BigInt
-  lpQuoteAmountX18_gt: BigInt
-  lpQuoteAmountX18_lt: BigInt
-  lpQuoteAmountX18_gte: BigInt
-  lpQuoteAmountX18_lte: BigInt
-  lpQuoteAmountX18_in: [BigInt!]
-  lpQuoteAmountX18_not_in: [BigInt!]
-  lpBaseAmountX18: BigInt
-  lpBaseAmountX18_not: BigInt
-  lpBaseAmountX18_gt: BigInt
-  lpBaseAmountX18_lt: BigInt
-  lpBaseAmountX18_gte: BigInt
-  lpBaseAmountX18_lte: BigInt
-  lpBaseAmountX18_in: [BigInt!]
-  lpBaseAmountX18_not_in: [BigInt!]
+  lpQuoteAmount: BigInt
+  lpQuoteAmount_not: BigInt
+  lpQuoteAmount_gt: BigInt
+  lpQuoteAmount_lt: BigInt
+  lpQuoteAmount_gte: BigInt
+  lpQuoteAmount_lte: BigInt
+  lpQuoteAmount_in: [BigInt!]
+  lpQuoteAmount_not_in: [BigInt!]
+  lpBaseAmount: BigInt
+  lpBaseAmount_not: BigInt
+  lpBaseAmount_gt: BigInt
+  lpBaseAmount_lt: BigInt
+  lpBaseAmount_gte: BigInt
+  lpBaseAmount_lte: BigInt
+  lpBaseAmount_in: [BigInt!]
+  lpBaseAmount_not_in: [BigInt!]
   snapshots_: SpotProductSnapshot_filter
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
@@ -2262,157 +2407,12 @@ enum SpotProduct_orderBy {
   priceX18
   cumulativeDepositsMultiplierX18
   cumulativeBorrowsMultiplierX18
-  totalDepositsNormalizedX18
-  totalBorrowsNormalizedX18
+  totalDepositsNormalized
+  totalBorrowsNormalized
   lpSupply
-  lpQuoteAmountX18
-  lpBaseAmountX18
+  lpQuoteAmount
+  lpBaseAmount
   snapshots
-}
-
-type _Block_ {
-  """The hash of the block"""
-  hash: Bytes
-  """The block number"""
-  number: Int!
-  """Integer representation of the timestamp stored in blocks for the chain"""
-  timestamp: Int
-}
-
-"""The type for the top-level _meta field"""
-type _Meta_ {
-  """
-  Information about a specific subgraph block. The hash of the block
-  will be null if the _meta field has a block constraint that asks for
-  a block number. It will be filled if the _meta field has no block constraint
-  and therefore asks for the latest  block
-  
-  """
-  block: _Block_!
-  """The deployment ID"""
-  deployment: String!
-  """If `true`, the subgraph encountered indexing errors at some past block"""
-  hasIndexingErrors: Boolean!
-}
-
-enum _SubgraphErrorPolicy_ {
-  """Data will be returned even if the subgraph has indexing errors"""
-  allow
-  """
-  If the subgraph has indexing errors, data will be omitted. The default.
-  """
-  deny
-}
-
-type MarketCandlestick {
-  id: ID!
-  productId: BigInt!
-  time: BigInt!
-  period: Int!
-  openX18: BigInt!
-  closeX18: BigInt!
-  lowX18: BigInt!
-  highX18: BigInt!
-  volumeBaseX18: BigInt!
-  volumeQuoteX18: BigInt!
-}
-
-input MarketCandlestick_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  productId: BigInt
-  productId_not: BigInt
-  productId_gt: BigInt
-  productId_lt: BigInt
-  productId_gte: BigInt
-  productId_lte: BigInt
-  productId_in: [BigInt!]
-  productId_not_in: [BigInt!]
-  time: BigInt
-  time_not: BigInt
-  time_gt: BigInt
-  time_lt: BigInt
-  time_gte: BigInt
-  time_lte: BigInt
-  time_in: [BigInt!]
-  time_not_in: [BigInt!]
-  period: Int
-  period_not: Int
-  period_gt: Int
-  period_lt: Int
-  period_gte: Int
-  period_lte: Int
-  period_in: [Int!]
-  period_not_in: [Int!]
-  openX18: BigInt
-  openX18_not: BigInt
-  openX18_gt: BigInt
-  openX18_lt: BigInt
-  openX18_gte: BigInt
-  openX18_lte: BigInt
-  openX18_in: [BigInt!]
-  openX18_not_in: [BigInt!]
-  closeX18: BigInt
-  closeX18_not: BigInt
-  closeX18_gt: BigInt
-  closeX18_lt: BigInt
-  closeX18_gte: BigInt
-  closeX18_lte: BigInt
-  closeX18_in: [BigInt!]
-  closeX18_not_in: [BigInt!]
-  lowX18: BigInt
-  lowX18_not: BigInt
-  lowX18_gt: BigInt
-  lowX18_lt: BigInt
-  lowX18_gte: BigInt
-  lowX18_lte: BigInt
-  lowX18_in: [BigInt!]
-  lowX18_not_in: [BigInt!]
-  highX18: BigInt
-  highX18_not: BigInt
-  highX18_gt: BigInt
-  highX18_lt: BigInt
-  highX18_gte: BigInt
-  highX18_lte: BigInt
-  highX18_in: [BigInt!]
-  highX18_not_in: [BigInt!]
-  volumeBaseX18: BigInt
-  volumeBaseX18_not: BigInt
-  volumeBaseX18_gt: BigInt
-  volumeBaseX18_lt: BigInt
-  volumeBaseX18_gte: BigInt
-  volumeBaseX18_lte: BigInt
-  volumeBaseX18_in: [BigInt!]
-  volumeBaseX18_not_in: [BigInt!]
-  volumeQuoteX18: BigInt
-  volumeQuoteX18_not: BigInt
-  volumeQuoteX18_gt: BigInt
-  volumeQuoteX18_lt: BigInt
-  volumeQuoteX18_gte: BigInt
-  volumeQuoteX18_lte: BigInt
-  volumeQuoteX18_in: [BigInt!]
-  volumeQuoteX18_not_in: [BigInt!]
-  """Filter for the block changed event."""
-  _change_block: BlockChangedFilter
-}
-
-enum MarketCandlestick_orderBy {
-  id
-  productId
-  time
-  period
-  openX18
-  closeX18
-  lowX18
-  highX18
-  volumeBaseX18
-  volumeQuoteX18
 }
 
 type Clearinghouse {
@@ -2697,10 +2697,10 @@ type FillOrderEvent {
   subaccount: Subaccount!
   order: Order!
   isTaker: Boolean!
-  feeQuoteX18: BigInt!
-  amountDeltaX18: BigInt!
-  quoteDeltaX18: BigInt!
-  newOrderFilledAmountX18: BigInt!
+  feeQuote: BigInt!
+  amountDelta: BigInt!
+  quoteDelta: BigInt!
+  newOrderFilledAmount: BigInt!
 }
 
 input FillOrderEvent_filter {
@@ -2782,38 +2782,38 @@ input FillOrderEvent_filter {
   isTaker_not: Boolean
   isTaker_in: [Boolean!]
   isTaker_not_in: [Boolean!]
-  feeQuoteX18: BigInt
-  feeQuoteX18_not: BigInt
-  feeQuoteX18_gt: BigInt
-  feeQuoteX18_lt: BigInt
-  feeQuoteX18_gte: BigInt
-  feeQuoteX18_lte: BigInt
-  feeQuoteX18_in: [BigInt!]
-  feeQuoteX18_not_in: [BigInt!]
-  amountDeltaX18: BigInt
-  amountDeltaX18_not: BigInt
-  amountDeltaX18_gt: BigInt
-  amountDeltaX18_lt: BigInt
-  amountDeltaX18_gte: BigInt
-  amountDeltaX18_lte: BigInt
-  amountDeltaX18_in: [BigInt!]
-  amountDeltaX18_not_in: [BigInt!]
-  quoteDeltaX18: BigInt
-  quoteDeltaX18_not: BigInt
-  quoteDeltaX18_gt: BigInt
-  quoteDeltaX18_lt: BigInt
-  quoteDeltaX18_gte: BigInt
-  quoteDeltaX18_lte: BigInt
-  quoteDeltaX18_in: [BigInt!]
-  quoteDeltaX18_not_in: [BigInt!]
-  newOrderFilledAmountX18: BigInt
-  newOrderFilledAmountX18_not: BigInt
-  newOrderFilledAmountX18_gt: BigInt
-  newOrderFilledAmountX18_lt: BigInt
-  newOrderFilledAmountX18_gte: BigInt
-  newOrderFilledAmountX18_lte: BigInt
-  newOrderFilledAmountX18_in: [BigInt!]
-  newOrderFilledAmountX18_not_in: [BigInt!]
+  feeQuote: BigInt
+  feeQuote_not: BigInt
+  feeQuote_gt: BigInt
+  feeQuote_lt: BigInt
+  feeQuote_gte: BigInt
+  feeQuote_lte: BigInt
+  feeQuote_in: [BigInt!]
+  feeQuote_not_in: [BigInt!]
+  amountDelta: BigInt
+  amountDelta_not: BigInt
+  amountDelta_gt: BigInt
+  amountDelta_lt: BigInt
+  amountDelta_gte: BigInt
+  amountDelta_lte: BigInt
+  amountDelta_in: [BigInt!]
+  amountDelta_not_in: [BigInt!]
+  quoteDelta: BigInt
+  quoteDelta_not: BigInt
+  quoteDelta_gt: BigInt
+  quoteDelta_lt: BigInt
+  quoteDelta_gte: BigInt
+  quoteDelta_lte: BigInt
+  quoteDelta_in: [BigInt!]
+  quoteDelta_not_in: [BigInt!]
+  newOrderFilledAmount: BigInt
+  newOrderFilledAmount_not: BigInt
+  newOrderFilledAmount_gt: BigInt
+  newOrderFilledAmount_lt: BigInt
+  newOrderFilledAmount_gte: BigInt
+  newOrderFilledAmount_lte: BigInt
+  newOrderFilledAmount_in: [BigInt!]
+  newOrderFilledAmount_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
@@ -2826,10 +2826,10 @@ enum FillOrderEvent_orderBy {
   subaccount
   order
   isTaker
-  feeQuoteX18
-  amountDeltaX18
-  quoteDeltaX18
-  newOrderFilledAmountX18
+  feeQuote
+  amountDelta
+  quoteDelta
+  newOrderFilledAmount
 }
 
 type LiquidationEvent {
@@ -2840,14 +2840,14 @@ type LiquidationEvent {
   liquidatee: Subaccount!
   mode: Int!
   healthGroup: BigInt!
-  liquidationAmountX18: BigInt!
-  liquidationPaymentX18: BigInt!
-  insuranceCoverageX18: BigInt!
+  liquidationAmount: BigInt!
+  liquidationPayment: BigInt!
+  insuranceCoverage: BigInt!
   spotProductId: BigInt!
-  spotAmountX18: BigInt!
-  spotOraclePriceX18: BigInt!
+  spotAmount: BigInt!
   perpProductId: BigInt!
-  perpAmountX18: BigInt!
+  perpAmount: BigInt!
+  spotOraclePriceX18: BigInt!
   perpMarkPriceX18: BigInt!
 }
 
@@ -2934,30 +2934,30 @@ input LiquidationEvent_filter {
   healthGroup_lte: BigInt
   healthGroup_in: [BigInt!]
   healthGroup_not_in: [BigInt!]
-  liquidationAmountX18: BigInt
-  liquidationAmountX18_not: BigInt
-  liquidationAmountX18_gt: BigInt
-  liquidationAmountX18_lt: BigInt
-  liquidationAmountX18_gte: BigInt
-  liquidationAmountX18_lte: BigInt
-  liquidationAmountX18_in: [BigInt!]
-  liquidationAmountX18_not_in: [BigInt!]
-  liquidationPaymentX18: BigInt
-  liquidationPaymentX18_not: BigInt
-  liquidationPaymentX18_gt: BigInt
-  liquidationPaymentX18_lt: BigInt
-  liquidationPaymentX18_gte: BigInt
-  liquidationPaymentX18_lte: BigInt
-  liquidationPaymentX18_in: [BigInt!]
-  liquidationPaymentX18_not_in: [BigInt!]
-  insuranceCoverageX18: BigInt
-  insuranceCoverageX18_not: BigInt
-  insuranceCoverageX18_gt: BigInt
-  insuranceCoverageX18_lt: BigInt
-  insuranceCoverageX18_gte: BigInt
-  insuranceCoverageX18_lte: BigInt
-  insuranceCoverageX18_in: [BigInt!]
-  insuranceCoverageX18_not_in: [BigInt!]
+  liquidationAmount: BigInt
+  liquidationAmount_not: BigInt
+  liquidationAmount_gt: BigInt
+  liquidationAmount_lt: BigInt
+  liquidationAmount_gte: BigInt
+  liquidationAmount_lte: BigInt
+  liquidationAmount_in: [BigInt!]
+  liquidationAmount_not_in: [BigInt!]
+  liquidationPayment: BigInt
+  liquidationPayment_not: BigInt
+  liquidationPayment_gt: BigInt
+  liquidationPayment_lt: BigInt
+  liquidationPayment_gte: BigInt
+  liquidationPayment_lte: BigInt
+  liquidationPayment_in: [BigInt!]
+  liquidationPayment_not_in: [BigInt!]
+  insuranceCoverage: BigInt
+  insuranceCoverage_not: BigInt
+  insuranceCoverage_gt: BigInt
+  insuranceCoverage_lt: BigInt
+  insuranceCoverage_gte: BigInt
+  insuranceCoverage_lte: BigInt
+  insuranceCoverage_in: [BigInt!]
+  insuranceCoverage_not_in: [BigInt!]
   spotProductId: BigInt
   spotProductId_not: BigInt
   spotProductId_gt: BigInt
@@ -2966,22 +2966,14 @@ input LiquidationEvent_filter {
   spotProductId_lte: BigInt
   spotProductId_in: [BigInt!]
   spotProductId_not_in: [BigInt!]
-  spotAmountX18: BigInt
-  spotAmountX18_not: BigInt
-  spotAmountX18_gt: BigInt
-  spotAmountX18_lt: BigInt
-  spotAmountX18_gte: BigInt
-  spotAmountX18_lte: BigInt
-  spotAmountX18_in: [BigInt!]
-  spotAmountX18_not_in: [BigInt!]
-  spotOraclePriceX18: BigInt
-  spotOraclePriceX18_not: BigInt
-  spotOraclePriceX18_gt: BigInt
-  spotOraclePriceX18_lt: BigInt
-  spotOraclePriceX18_gte: BigInt
-  spotOraclePriceX18_lte: BigInt
-  spotOraclePriceX18_in: [BigInt!]
-  spotOraclePriceX18_not_in: [BigInt!]
+  spotAmount: BigInt
+  spotAmount_not: BigInt
+  spotAmount_gt: BigInt
+  spotAmount_lt: BigInt
+  spotAmount_gte: BigInt
+  spotAmount_lte: BigInt
+  spotAmount_in: [BigInt!]
+  spotAmount_not_in: [BigInt!]
   perpProductId: BigInt
   perpProductId_not: BigInt
   perpProductId_gt: BigInt
@@ -2990,14 +2982,22 @@ input LiquidationEvent_filter {
   perpProductId_lte: BigInt
   perpProductId_in: [BigInt!]
   perpProductId_not_in: [BigInt!]
-  perpAmountX18: BigInt
-  perpAmountX18_not: BigInt
-  perpAmountX18_gt: BigInt
-  perpAmountX18_lt: BigInt
-  perpAmountX18_gte: BigInt
-  perpAmountX18_lte: BigInt
-  perpAmountX18_in: [BigInt!]
-  perpAmountX18_not_in: [BigInt!]
+  perpAmount: BigInt
+  perpAmount_not: BigInt
+  perpAmount_gt: BigInt
+  perpAmount_lt: BigInt
+  perpAmount_gte: BigInt
+  perpAmount_lte: BigInt
+  perpAmount_in: [BigInt!]
+  perpAmount_not_in: [BigInt!]
+  spotOraclePriceX18: BigInt
+  spotOraclePriceX18_not: BigInt
+  spotOraclePriceX18_gt: BigInt
+  spotOraclePriceX18_lt: BigInt
+  spotOraclePriceX18_gte: BigInt
+  spotOraclePriceX18_lte: BigInt
+  spotOraclePriceX18_in: [BigInt!]
+  spotOraclePriceX18_not_in: [BigInt!]
   perpMarkPriceX18: BigInt
   perpMarkPriceX18_not: BigInt
   perpMarkPriceX18_gt: BigInt
@@ -3018,14 +3018,14 @@ enum LiquidationEvent_orderBy {
   liquidatee
   mode
   healthGroup
-  liquidationAmountX18
-  liquidationPaymentX18
-  insuranceCoverageX18
+  liquidationAmount
+  liquidationPayment
+  insuranceCoverage
   spotProductId
-  spotAmountX18
-  spotOraclePriceX18
+  spotAmount
   perpProductId
-  perpAmountX18
+  perpAmount
+  spotOraclePriceX18
   perpMarkPriceX18
 }
 
@@ -3136,9 +3136,9 @@ type Order {
   reportedAt: BigInt!
   reportedAtBlock: BigInt!
   totalAmount: BigInt!
-  filledAmountX18: BigInt!
-  quoteAmountX18: BigInt!
-  collectedFeeX18: BigInt!
+  filledAmount: BigInt!
+  quoteAmount: BigInt!
+  collectedFee: BigInt!
 }
 
 enum OrderType {
@@ -3249,30 +3249,30 @@ input Order_filter {
   totalAmount_lte: BigInt
   totalAmount_in: [BigInt!]
   totalAmount_not_in: [BigInt!]
-  filledAmountX18: BigInt
-  filledAmountX18_not: BigInt
-  filledAmountX18_gt: BigInt
-  filledAmountX18_lt: BigInt
-  filledAmountX18_gte: BigInt
-  filledAmountX18_lte: BigInt
-  filledAmountX18_in: [BigInt!]
-  filledAmountX18_not_in: [BigInt!]
-  quoteAmountX18: BigInt
-  quoteAmountX18_not: BigInt
-  quoteAmountX18_gt: BigInt
-  quoteAmountX18_lt: BigInt
-  quoteAmountX18_gte: BigInt
-  quoteAmountX18_lte: BigInt
-  quoteAmountX18_in: [BigInt!]
-  quoteAmountX18_not_in: [BigInt!]
-  collectedFeeX18: BigInt
-  collectedFeeX18_not: BigInt
-  collectedFeeX18_gt: BigInt
-  collectedFeeX18_lt: BigInt
-  collectedFeeX18_gte: BigInt
-  collectedFeeX18_lte: BigInt
-  collectedFeeX18_in: [BigInt!]
-  collectedFeeX18_not_in: [BigInt!]
+  filledAmount: BigInt
+  filledAmount_not: BigInt
+  filledAmount_gt: BigInt
+  filledAmount_lt: BigInt
+  filledAmount_gte: BigInt
+  filledAmount_lte: BigInt
+  filledAmount_in: [BigInt!]
+  filledAmount_not_in: [BigInt!]
+  quoteAmount: BigInt
+  quoteAmount_not: BigInt
+  quoteAmount_gt: BigInt
+  quoteAmount_lt: BigInt
+  quoteAmount_gte: BigInt
+  quoteAmount_lte: BigInt
+  quoteAmount_in: [BigInt!]
+  quoteAmount_not_in: [BigInt!]
+  collectedFee: BigInt
+  collectedFee_not: BigInt
+  collectedFee_gt: BigInt
+  collectedFee_lt: BigInt
+  collectedFee_gte: BigInt
+  collectedFee_lte: BigInt
+  collectedFee_in: [BigInt!]
+  collectedFee_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
@@ -3290,9 +3290,9 @@ enum Order_orderBy {
   reportedAt
   reportedAtBlock
   totalAmount
-  filledAmountX18
-  quoteAmountX18
-  collectedFeeX18
+  filledAmount
+  quoteAmount
+  collectedFee
 }
 
 type PerpBalanceSummary {

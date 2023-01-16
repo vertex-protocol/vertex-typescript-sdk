@@ -1,22 +1,22 @@
 import { BigNumberish } from 'ethers';
 
 export interface EngineServerSpotBalanceData {
-  amount_x18: BigNumberish;
+  amount: BigNumberish;
   last_cumulative_multiplier_x18: BigNumberish;
 }
 
 export interface EngineServerSpotLpBalanceData {
-  amount_x18: BigNumberish;
+  amount: BigNumberish;
 }
 
 export interface EngineServerPerpBalanceData {
-  amount_x18: BigNumberish;
-  v_quote_balance_x18: BigNumberish;
+  amount: BigNumberish;
+  v_quote_balance: BigNumberish;
   last_cumulative_funding_x18: BigNumberish;
 }
 
 export interface EngineServerPerpLpBalanceData {
-  amount_x18: BigNumberish;
+  amount: BigNumberish;
   last_cumulative_funding_x18: BigNumberish;
 }
 
@@ -31,7 +31,7 @@ export interface EngineServerRisk {
 export interface EngineServerBookInfo {
   size_increment: BigNumberish;
   price_increment_x18: BigNumberish;
-  collected_fees_x18: BigNumberish;
+  collected_fees: BigNumberish;
   lp_spread_x18: BigNumberish;
 }
 
@@ -46,8 +46,8 @@ export interface EngineServerSpotConfig {
 export interface EngineServerSpotState {
   cumulative_deposits_multiplier_x18: BigNumberish;
   cumulative_borrows_multiplier_x18: BigNumberish;
-  total_deposits_normalized_x18: BigNumberish;
-  total_borrows_normalized_x18: BigNumberish;
+  total_deposits_normalized: BigNumberish;
+  total_borrows_normalized: BigNumberish;
   last_update_time: BigNumberish;
 }
 
@@ -61,8 +61,8 @@ export interface EngineServerSpotLpState {
 export interface EngineServerPerpState {
   cumulative_funding_long_x18: BigNumberish;
   cumulative_funding_short_x18: BigNumberish;
-  open_interest_x18: BigNumberish;
-  available_settle_x18: BigNumberish;
+  open_interest: BigNumberish;
+  available_settle: BigNumberish;
   last_update_time: BigNumberish;
 }
 

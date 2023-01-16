@@ -16,7 +16,7 @@ export function getVertexEIP712Types(
           { name: 'sender', type: 'address' },
           { name: 'subaccountName', type: 'string' },
           { name: 'productId', type: 'uint32' },
-          { name: 'amount', type: 'uint256' },
+          { name: 'amount', type: 'uint128' },
           { name: 'nonce', type: 'uint64' },
         ],
       };
@@ -26,9 +26,9 @@ export function getVertexEIP712Types(
           { name: 'sender', type: 'address' },
           { name: 'subaccountName', type: 'string' },
           { name: 'productId', type: 'uint32' },
-          { name: 'amountBase', type: 'int256' },
-          { name: 'quoteAmountLow', type: 'int256' },
-          { name: 'quoteAmountHigh', type: 'int256' },
+          { name: 'amountBase', type: 'uint128' },
+          { name: 'quoteAmountLow', type: 'uint128' },
+          { name: 'quoteAmountHigh', type: 'uint128' },
           { name: 'nonce', type: 'uint64' },
         ],
       };
@@ -38,7 +38,7 @@ export function getVertexEIP712Types(
           { name: 'sender', type: 'address' },
           { name: 'subaccountName', type: 'string' },
           { name: 'productId', type: 'uint32' },
-          { name: 'amount', type: 'int256' },
+          { name: 'amount', type: 'uint128' },
           { name: 'nonce', type: 'uint64' },
         ],
       };
@@ -47,8 +47,8 @@ export function getVertexEIP712Types(
         Order: [
           { name: 'sender', type: 'address' },
           { name: 'subaccountName', type: 'string' },
-          { name: 'priceX18', type: 'int256' },
-          { name: 'amount', type: 'int256' },
+          { name: 'priceX18', type: 'int128' },
+          { name: 'amount', type: 'int128' },
           { name: 'expiration', type: 'uint64' },
           { name: 'nonce', type: 'uint64' },
         ],
@@ -71,7 +71,7 @@ export function getVertexEIP712Types(
           { name: 'liquidateeId', type: 'uint64' },
           { name: 'mode', type: 'uint8' },
           { name: 'healthGroup', type: 'uint32' },
-          { name: 'amount', type: 'int256' },
+          { name: 'amount', type: 'int128' },
           { name: 'nonce', type: 'uint64' },
         ],
       };

@@ -31,8 +31,8 @@ export declare namespace IProductEngine {
   export type ProductDeltaStruct = {
     productId: PromiseOrValue<BigNumberish>;
     subaccountId: PromiseOrValue<BigNumberish>;
-    amountDeltaX18: PromiseOrValue<BigNumberish>;
-    vQuoteDeltaX18: PromiseOrValue<BigNumberish>;
+    amountDelta: PromiseOrValue<BigNumberish>;
+    vQuoteDelta: PromiseOrValue<BigNumberish>;
   };
 
   export type ProductDeltaStructOutput = [
@@ -43,25 +43,25 @@ export declare namespace IProductEngine {
   ] & {
     productId: number;
     subaccountId: BigNumber;
-    amountDeltaX18: BigNumber;
-    vQuoteDeltaX18: BigNumber;
+    amountDelta: BigNumber;
+    vQuoteDelta: BigNumber;
   };
 }
 
 export interface IProductEngineInterface extends utils.Interface {
   functions: {
-    "applyDeltas((uint32,uint64,int256,int256)[])": FunctionFragment;
-    "burnLp(uint32,uint64,int256)": FunctionFragment;
+    "applyDeltas((uint32,uint64,int128,int128)[])": FunctionFragment;
+    "burnLp(uint32,uint64,int128)": FunctionFragment;
     "decomposeLps(uint64,uint64)": FunctionFragment;
     "getClearinghouse()": FunctionFragment;
     "getEngineType()": FunctionFragment;
     "getOrderbook(uint32)": FunctionFragment;
     "getProductIds()": FunctionFragment;
     "initialize(address,address,address,address,address)": FunctionFragment;
-    "mintLp(uint32,uint64,int256,int256,int256)": FunctionFragment;
-    "socializeSubaccount(uint64,int256)": FunctionFragment;
-    "swapLp(uint32,uint64,int256,int256,int256,int256)": FunctionFragment;
-    "updateStates(uint256)": FunctionFragment;
+    "mintLp(uint32,uint64,int128,int128,int128)": FunctionFragment;
+    "socializeSubaccount(uint64,int128)": FunctionFragment;
+    "swapLp(uint32,uint64,int128,int128,int128,int128)": FunctionFragment;
+    "updateStates(uint128)": FunctionFragment;
   };
 
   getFunction(
@@ -192,7 +192,7 @@ export interface IProductEngineInterface extends utils.Interface {
   events: {
     "AddProduct(uint32)": EventFragment;
     "ProductUpdate(uint32)": EventFragment;
-    "SocializeProduct(uint32,int256)": EventFragment;
+    "SocializeProduct(uint32,int128)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AddProduct"): EventFragment;
@@ -216,7 +216,7 @@ export type ProductUpdateEventFilter = TypedEventFilter<ProductUpdateEvent>;
 
 export interface SocializeProductEventObject {
   productId: number;
-  amountSocializedX18: BigNumber;
+  amountSocialized: BigNumber;
 }
 export type SocializeProductEvent = TypedEvent<
   [number, BigNumber],
@@ -261,7 +261,7 @@ export interface IProductEngine extends BaseContract {
     burnLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
-      amountLpX18: PromiseOrValue<BigNumberish>,
+      amountLp: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -294,15 +294,15 @@ export interface IProductEngine extends BaseContract {
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
-      amountBaseX18: PromiseOrValue<BigNumberish>,
-      quoteAmountLowX18: PromiseOrValue<BigNumberish>,
-      quoteAmountHighX18: PromiseOrValue<BigNumberish>,
+      amountBase: PromiseOrValue<BigNumberish>,
+      quoteAmountLow: PromiseOrValue<BigNumberish>,
+      quoteAmountHigh: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     socializeSubaccount(
       subaccountId: PromiseOrValue<BigNumberish>,
-      insuranceX18: PromiseOrValue<BigNumberish>,
+      insurance: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -330,7 +330,7 @@ export interface IProductEngine extends BaseContract {
   burnLp(
     productId: PromiseOrValue<BigNumberish>,
     subaccountId: PromiseOrValue<BigNumberish>,
-    amountLpX18: PromiseOrValue<BigNumberish>,
+    amountLp: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -363,15 +363,15 @@ export interface IProductEngine extends BaseContract {
   mintLp(
     productId: PromiseOrValue<BigNumberish>,
     subaccountId: PromiseOrValue<BigNumberish>,
-    amountBaseX18: PromiseOrValue<BigNumberish>,
-    quoteAmountLowX18: PromiseOrValue<BigNumberish>,
-    quoteAmountHighX18: PromiseOrValue<BigNumberish>,
+    amountBase: PromiseOrValue<BigNumberish>,
+    quoteAmountLow: PromiseOrValue<BigNumberish>,
+    quoteAmountHigh: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   socializeSubaccount(
     subaccountId: PromiseOrValue<BigNumberish>,
-    insuranceX18: PromiseOrValue<BigNumberish>,
+    insurance: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -399,7 +399,7 @@ export interface IProductEngine extends BaseContract {
     burnLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
-      amountLpX18: PromiseOrValue<BigNumberish>,
+      amountLp: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -432,15 +432,15 @@ export interface IProductEngine extends BaseContract {
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
-      amountBaseX18: PromiseOrValue<BigNumberish>,
-      quoteAmountLowX18: PromiseOrValue<BigNumberish>,
-      quoteAmountHighX18: PromiseOrValue<BigNumberish>,
+      amountBase: PromiseOrValue<BigNumberish>,
+      quoteAmountLow: PromiseOrValue<BigNumberish>,
+      quoteAmountHigh: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     socializeSubaccount(
       subaccountId: PromiseOrValue<BigNumberish>,
-      insuranceX18: PromiseOrValue<BigNumberish>,
+      insurance: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -471,13 +471,13 @@ export interface IProductEngine extends BaseContract {
       productId?: PromiseOrValue<BigNumberish> | null
     ): ProductUpdateEventFilter;
 
-    "SocializeProduct(uint32,int256)"(
+    "SocializeProduct(uint32,int128)"(
       productId?: PromiseOrValue<BigNumberish> | null,
-      amountSocializedX18?: null
+      amountSocialized?: null
     ): SocializeProductEventFilter;
     SocializeProduct(
       productId?: PromiseOrValue<BigNumberish> | null,
-      amountSocializedX18?: null
+      amountSocialized?: null
     ): SocializeProductEventFilter;
   };
 
@@ -490,7 +490,7 @@ export interface IProductEngine extends BaseContract {
     burnLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
-      amountLpX18: PromiseOrValue<BigNumberish>,
+      amountLp: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -523,15 +523,15 @@ export interface IProductEngine extends BaseContract {
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
-      amountBaseX18: PromiseOrValue<BigNumberish>,
-      quoteAmountLowX18: PromiseOrValue<BigNumberish>,
-      quoteAmountHighX18: PromiseOrValue<BigNumberish>,
+      amountBase: PromiseOrValue<BigNumberish>,
+      quoteAmountLow: PromiseOrValue<BigNumberish>,
+      quoteAmountHigh: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     socializeSubaccount(
       subaccountId: PromiseOrValue<BigNumberish>,
-      insuranceX18: PromiseOrValue<BigNumberish>,
+      insurance: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -560,7 +560,7 @@ export interface IProductEngine extends BaseContract {
     burnLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
-      amountLpX18: PromiseOrValue<BigNumberish>,
+      amountLp: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -593,15 +593,15 @@ export interface IProductEngine extends BaseContract {
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccountId: PromiseOrValue<BigNumberish>,
-      amountBaseX18: PromiseOrValue<BigNumberish>,
-      quoteAmountLowX18: PromiseOrValue<BigNumberish>,
-      quoteAmountHighX18: PromiseOrValue<BigNumberish>,
+      amountBase: PromiseOrValue<BigNumberish>,
+      quoteAmountLow: PromiseOrValue<BigNumberish>,
+      quoteAmountHigh: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     socializeSubaccount(
       subaccountId: PromiseOrValue<BigNumberish>,
-      insuranceX18: PromiseOrValue<BigNumberish>,
+      insurance: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

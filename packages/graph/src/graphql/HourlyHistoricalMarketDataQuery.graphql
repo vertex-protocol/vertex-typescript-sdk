@@ -15,7 +15,7 @@ query HourlyHistoricalMarketDataQuery(
   ) {
     id
     periodIndex
-    volumeQuoteX18
+    volumeQuote
     lastFillPriceX18
   }
 }

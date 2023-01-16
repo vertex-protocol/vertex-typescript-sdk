@@ -16,15 +16,15 @@
       },
       {
         "indexed": false,
-        "internalType": "int256",
+        "internalType": "int128",
         "name": "priceX18",
-        "type": "int256"
+        "type": "int128"
       },
       {
         "indexed": false,
-        "internalType": "int256",
+        "internalType": "int128",
         "name": "amount",
-        "type": "int256"
+        "type": "int128"
       },
       {
         "indexed": false,
@@ -46,21 +46,21 @@
       },
       {
         "indexed": false,
-        "internalType": "int256",
-        "name": "feeAmountX18",
-        "type": "int256"
+        "internalType": "int128",
+        "name": "feeAmount",
+        "type": "int128"
       },
       {
         "indexed": false,
-        "internalType": "int256",
-        "name": "baseDeltaX18",
-        "type": "int256"
+        "internalType": "int128",
+        "name": "baseDelta",
+        "type": "int128"
       },
       {
         "indexed": false,
-        "internalType": "int256",
-        "name": "quoteDeltaX18",
-        "type": "int256"
+        "internalType": "int128",
+        "name": "quoteDelta",
+        "type": "int128"
       }
     ],
     "name": "FillOrder",
@@ -88,14 +88,14 @@
             "type": "string"
           },
           {
-            "internalType": "int256",
+            "internalType": "int128",
             "name": "priceX18",
-            "type": "int256"
+            "type": "int128"
           },
           {
-            "internalType": "int256",
+            "internalType": "int128",
             "name": "amount",
-            "type": "int256"
+            "type": "int128"
           },
           {
             "internalType": "uint64",
@@ -111,11 +111,6 @@
         "internalType": "struct IEndpoint.Order",
         "name": "order",
         "type": "tuple"
-      },
-      {
-        "internalType": "bool",
-        "name": "isCancellation",
-        "type": "bool"
       }
     ],
     "name": "getDigest",
@@ -141,24 +136,24 @@
             "type": "uint32"
           },
           {
-            "internalType": "int256",
+            "internalType": "int128",
             "name": "sizeIncrement",
-            "type": "int256"
+            "type": "int128"
           },
           {
-            "internalType": "int256",
+            "internalType": "int128",
             "name": "priceIncrementX18",
-            "type": "int256"
+            "type": "int128"
           },
           {
-            "internalType": "int256",
+            "internalType": "int128",
             "name": "lpSpreadX18",
-            "type": "int256"
+            "type": "int128"
           },
           {
-            "internalType": "int256",
-            "name": "collectedFeesX18",
-            "type": "int256"
+            "internalType": "int128",
+            "name": "collectedFees",
+            "type": "int128"
           }
         ],
         "internalType": "struct IOffchainBook.Market",
@@ -202,19 +197,19 @@
         "type": "uint32"
       },
       {
-        "internalType": "int256",
+        "internalType": "int128",
         "name": "_sizeIncrement",
-        "type": "int256"
+        "type": "int128"
       },
       {
-        "internalType": "int256",
+        "internalType": "int128",
         "name": "_priceIncrementX18",
-        "type": "int256"
+        "type": "int128"
       },
       {
-        "internalType": "int256",
+        "internalType": "int128",
         "name": "_lpSpreadX18",
-        "type": "int256"
+        "type": "int128"
       }
     ],
     "name": "initialize",
@@ -246,14 +241,14 @@
                     "type": "string"
                   },
                   {
-                    "internalType": "int256",
+                    "internalType": "int128",
                     "name": "priceX18",
-                    "type": "int256"
+                    "type": "int128"
                   },
                   {
-                    "internalType": "int256",
+                    "internalType": "int128",
                     "name": "amount",
-                    "type": "int256"
+                    "type": "int128"
                   },
                   {
                     "internalType": "uint64",
@@ -320,14 +315,14 @@
                     "type": "string"
                   },
                   {
-                    "internalType": "int256",
+                    "internalType": "int128",
                     "name": "priceX18",
-                    "type": "int256"
+                    "type": "int128"
                   },
                   {
-                    "internalType": "int256",
+                    "internalType": "int128",
                     "name": "amount",
-                    "type": "int256"
+                    "type": "int128"
                   },
                   {
                     "internalType": "uint64",
@@ -369,14 +364,14 @@
                     "type": "string"
                   },
                   {
-                    "internalType": "int256",
+                    "internalType": "int128",
                     "name": "priceX18",
-                    "type": "int256"
+                    "type": "int128"
                   },
                   {
-                    "internalType": "int256",
+                    "internalType": "int128",
                     "name": "amount",
-                    "type": "int256"
+                    "type": "int128"
                   },
                   {
                     "internalType": "uint64",
@@ -434,14 +429,14 @@
             "type": "uint32"
           },
           {
-            "internalType": "int256",
+            "internalType": "int128",
             "name": "amount",
-            "type": "int256"
+            "type": "int128"
           },
           {
-            "internalType": "int256",
+            "internalType": "int128",
             "name": "priceX18",
-            "type": "int256"
+            "type": "int128"
           }
         ],
         "internalType": "struct IEndpoint.SwapAMM",

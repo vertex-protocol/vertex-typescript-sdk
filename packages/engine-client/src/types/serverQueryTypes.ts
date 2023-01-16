@@ -22,24 +22,24 @@ export interface EngineServerSubaccountInfoQueryParams {
         mint_lp: {
           product_id: number;
           subaccount_id: number;
-          amount_base_x18: string;
-          quote_amount_low_x18: string;
-          quote_amount_high_x18: string;
+          amount_base: string;
+          quote_amount_low: string;
+          quote_amount_high: string;
         };
       }
     | {
         burn_lp: {
           product_id: number;
           subaccount_id: number;
-          amount_lp_x18: string;
+          amount_lp: string;
         };
       }
     | {
         apply_delta: {
           product_id: number;
           subaccount_id: number;
-          amount_delta_x18: string;
-          v_quote_delta_x18: string;
+          amount_delta: string;
+          v_quote_delta: string;
         };
       }
   >;
@@ -136,9 +136,9 @@ export interface EngineServerSubaccountInfoResponse {
   exists: boolean;
   subaccount_id: BigNumberish;
   healths: {
-    health_x18: BigNumberish;
-    assets_x18: BigNumberish;
-    liabilities_x18: BigNumberish;
+    health: BigNumberish;
+    assets: BigNumberish;
+    liabilities: BigNumberish;
   }[];
   spot_balances: EngineServerSpotBalance[];
   perp_balances: EngineServerPerpBalance[];

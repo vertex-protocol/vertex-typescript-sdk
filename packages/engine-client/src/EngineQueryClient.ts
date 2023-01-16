@@ -102,7 +102,7 @@ export class EngineQueryClient extends EngineBaseClient {
                 burn_lp: {
                   product_id: tx.tx.productId,
                   subaccount_id: subaccountId,
-                  amount_lp_x18: toX18(tx.tx.amountLp).toString(),
+                  amount_lp: tx.tx.amountLp.toString(),
                 },
               };
             case 'apply_delta':
@@ -110,8 +110,8 @@ export class EngineQueryClient extends EngineBaseClient {
                 apply_delta: {
                   product_id: tx.tx.productId,
                   subaccount_id: subaccountId,
-                  amount_delta_x18: toX18(tx.tx.amountDelta).toString(),
-                  v_quote_delta_x18: toX18(tx.tx.vQuoteDelta).toString(),
+                  amount_delta: tx.tx.amountDelta.toString(),
+                  v_quote_delta: tx.tx.vQuoteDelta.toString(),
                 },
               };
             case 'mint_lp':
@@ -119,11 +119,9 @@ export class EngineQueryClient extends EngineBaseClient {
                 mint_lp: {
                   product_id: tx.tx.productId,
                   subaccount_id: subaccountId,
-                  amount_base_x18: toX18(tx.tx.amountBase).toString(),
-                  quote_amount_low_x18: toX18(tx.tx.amountQuoteLow).toString(),
-                  quote_amount_high_x18: toX18(
-                    tx.tx.amountQuoteHigh,
-                  ).toString(),
+                  amount_base: tx.tx.amountBase.toString(),
+                  quote_amount_low: tx.tx.amountQuoteLow.toString(),
+                  quote_amount_high: tx.tx.amountQuoteHigh.toString(),
                 },
               };
           }
@@ -337,8 +335,8 @@ function mapSubaccountSummary(
     }
 
     balances.push({
-      amount: fromX18(spotBalance.balance.amount_x18),
-      lpAmount: fromX18(spotBalance.lp_balance.amount_x18),
+      amount: toBigDecimal(spotBalance.balance.amount),
+      lpAmount: toBigDecimal(spotBalance.lp_balance.amount),
       ...mapEngineServerSpotProduct(product).product,
     });
   });
@@ -352,9 +350,9 @@ function mapSubaccountSummary(
     }
 
     balances.push({
-      amount: fromX18(perpBalance.balance.amount_x18),
-      lpAmount: fromX18(perpBalance.lp_balance.amount_x18),
-      vQuoteBalance: fromX18(perpBalance.balance.v_quote_balance_x18),
+      amount: toBigDecimal(perpBalance.balance.amount),
+      lpAmount: toBigDecimal(perpBalance.lp_balance.amount),
+      vQuoteBalance: toBigDecimal(perpBalance.balance.v_quote_balance),
       ...mapEngineServerPerpProduct(product).product,
     });
   });
@@ -363,19 +361,19 @@ function mapSubaccountSummary(
     balances: balances,
     health: {
       initial: {
-        health: fromX18(baseResponse.healths[0].health_x18),
-        assets: fromX18(baseResponse.healths[0].assets_x18),
-        liabilities: fromX18(baseResponse.healths[0].liabilities_x18),
+        health: toBigDecimal(baseResponse.healths[0].health),
+        assets: toBigDecimal(baseResponse.healths[0].assets),
+        liabilities: toBigDecimal(baseResponse.healths[0].liabilities),
       },
       maintenance: {
-        health: fromX18(baseResponse.healths[1].health_x18),
-        assets: fromX18(baseResponse.healths[1].assets_x18),
-        liabilities: fromX18(baseResponse.healths[1].liabilities_x18),
+        health: toBigDecimal(baseResponse.healths[1].health),
+        assets: toBigDecimal(baseResponse.healths[1].assets),
+        liabilities: toBigDecimal(baseResponse.healths[1].liabilities),
       },
       unweighted: {
-        health: fromX18(baseResponse.healths[2].health_x18),
-        assets: fromX18(baseResponse.healths[2].assets_x18),
-        liabilities: fromX18(baseResponse.healths[2].liabilities_x18),
+        health: toBigDecimal(baseResponse.healths[2].health),
+        assets: toBigDecimal(baseResponse.healths[2].assets),
+        liabilities: toBigDecimal(baseResponse.healths[2].liabilities),
       },
     },
   };

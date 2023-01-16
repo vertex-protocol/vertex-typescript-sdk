@@ -73,8 +73,8 @@ export declare namespace ISpotEngine {
   export type StateStruct = {
     cumulativeDepositsMultiplierX18: PromiseOrValue<BigNumberish>;
     cumulativeBorrowsMultiplierX18: PromiseOrValue<BigNumberish>;
-    totalDepositsNormalizedX18: PromiseOrValue<BigNumberish>;
-    totalBorrowsNormalizedX18: PromiseOrValue<BigNumberish>;
+    totalDepositsNormalized: PromiseOrValue<BigNumberish>;
+    totalBorrowsNormalized: PromiseOrValue<BigNumberish>;
   };
 
   export type StateStructOutput = [
@@ -85,17 +85,17 @@ export declare namespace ISpotEngine {
   ] & {
     cumulativeDepositsMultiplierX18: BigNumber;
     cumulativeBorrowsMultiplierX18: BigNumber;
-    totalDepositsNormalizedX18: BigNumber;
-    totalBorrowsNormalizedX18: BigNumber;
+    totalDepositsNormalized: BigNumber;
+    totalBorrowsNormalized: BigNumber;
   };
 
   export type BalanceStruct = {
-    amountX18: PromiseOrValue<BigNumberish>;
+    amount: PromiseOrValue<BigNumberish>;
     lastCumulativeMultiplierX18: PromiseOrValue<BigNumberish>;
   };
 
   export type BalanceStructOutput = [BigNumber, BigNumber] & {
-    amountX18: BigNumber;
+    amount: BigNumber;
     lastCumulativeMultiplierX18: BigNumber;
   };
 
@@ -115,16 +115,16 @@ export declare namespace ISpotEngine {
     base: ISpotEngine.BalanceStructOutput;
   };
 
-  export type LpBalanceStruct = { amountX18: PromiseOrValue<BigNumberish> };
+  export type LpBalanceStruct = { amount: PromiseOrValue<BigNumberish> };
 
-  export type LpBalanceStructOutput = [BigNumber] & { amountX18: BigNumber };
+  export type LpBalanceStructOutput = [BigNumber] & { amount: BigNumber };
 }
 
 export declare namespace FQuerier {
   export type BookInfoStruct = {
     sizeIncrement: PromiseOrValue<BigNumberish>;
     priceIncrementX18: PromiseOrValue<BigNumberish>;
-    collectedFeesX18: PromiseOrValue<BigNumberish>;
+    collectedFees: PromiseOrValue<BigNumberish>;
     lpSpreadX18: PromiseOrValue<BigNumberish>;
   };
 
@@ -136,7 +136,7 @@ export declare namespace FQuerier {
   ] & {
     sizeIncrement: BigNumber;
     priceIncrementX18: BigNumber;
-    collectedFeesX18: BigNumber;
+    collectedFees: BigNumber;
     lpSpreadX18: BigNumber;
   };
 
@@ -171,6 +171,7 @@ export declare namespace FQuerier {
   export type PerpProductStruct = {
     productId: PromiseOrValue<BigNumberish>;
     oraclePriceX18: PromiseOrValue<BigNumberish>;
+    indexPriceX18: PromiseOrValue<BigNumberish>;
     markPriceX18: PromiseOrValue<BigNumberish>;
     risk: RiskHelper.RiskStruct;
     state: IPerpEngine.StateStruct;
@@ -182,6 +183,7 @@ export declare namespace FQuerier {
     number,
     BigNumber,
     BigNumber,
+    BigNumber,
     RiskHelper.RiskStructOutput,
     IPerpEngine.StateStructOutput,
     IPerpEngine.LpStateStructOutput,
@@ -189,6 +191,7 @@ export declare namespace FQuerier {
   ] & {
     productId: number;
     oraclePriceX18: BigNumber;
+    indexPriceX18: BigNumber;
     markPriceX18: BigNumber;
     risk: RiskHelper.RiskStructOutput;
     state: IPerpEngine.StateStructOutput;
@@ -242,15 +245,15 @@ export declare namespace FQuerier {
   };
 
   export type HealthInfoStruct = {
-    assetsX18: PromiseOrValue<BigNumberish>;
-    liabilitiesX18: PromiseOrValue<BigNumberish>;
-    healthX18: PromiseOrValue<BigNumberish>;
+    assets: PromiseOrValue<BigNumberish>;
+    liabilities: PromiseOrValue<BigNumberish>;
+    health: PromiseOrValue<BigNumberish>;
   };
 
   export type HealthInfoStructOutput = [BigNumber, BigNumber, BigNumber] & {
-    assetsX18: BigNumber;
-    liabilitiesX18: BigNumber;
-    healthX18: BigNumber;
+    assets: BigNumber;
+    liabilities: BigNumber;
+    health: BigNumber;
   };
 
   export type SubaccountInfoStruct = {
@@ -299,8 +302,8 @@ export declare namespace IPerpEngine {
   export type StateStruct = {
     cumulativeFundingLongX18: PromiseOrValue<BigNumberish>;
     cumulativeFundingShortX18: PromiseOrValue<BigNumberish>;
-    availableSettleX18: PromiseOrValue<BigNumberish>;
-    openInterestX18: PromiseOrValue<BigNumberish>;
+    availableSettle: PromiseOrValue<BigNumberish>;
+    openInterest: PromiseOrValue<BigNumberish>;
   };
 
   export type StateStructOutput = [
@@ -311,8 +314,8 @@ export declare namespace IPerpEngine {
   ] & {
     cumulativeFundingLongX18: BigNumber;
     cumulativeFundingShortX18: BigNumber;
-    availableSettleX18: BigNumber;
-    openInterestX18: BigNumber;
+    availableSettle: BigNumber;
+    openInterest: BigNumber;
   };
 
   export type LpStateStruct = {
@@ -338,24 +341,24 @@ export declare namespace IPerpEngine {
   };
 
   export type LpBalanceStruct = {
-    amountX18: PromiseOrValue<BigNumberish>;
+    amount: PromiseOrValue<BigNumberish>;
     lastCumulativeFundingX18: PromiseOrValue<BigNumberish>;
   };
 
   export type LpBalanceStructOutput = [BigNumber, BigNumber] & {
-    amountX18: BigNumber;
+    amount: BigNumber;
     lastCumulativeFundingX18: BigNumber;
   };
 
   export type BalanceStruct = {
-    amountX18: PromiseOrValue<BigNumberish>;
-    vQuoteBalanceX18: PromiseOrValue<BigNumberish>;
+    amount: PromiseOrValue<BigNumberish>;
+    vQuoteBalance: PromiseOrValue<BigNumberish>;
     lastCumulativeFundingX18: PromiseOrValue<BigNumberish>;
   };
 
   export type BalanceStructOutput = [BigNumber, BigNumber, BigNumber] & {
-    amountX18: BigNumber;
-    vQuoteBalanceX18: BigNumber;
+    amount: BigNumber;
+    vQuoteBalance: BigNumber;
     lastCumulativeFundingX18: BigNumber;
   };
 }
@@ -662,7 +665,7 @@ export interface FQuerier extends BaseContract {
       subaccountId: PromiseOrValue<BigNumberish>,
       txns: FQuerier.TxnStruct[],
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<FQuerier.SubaccountInfoStructOutput>;
 
     initialize(
       _clearinghouse: PromiseOrValue<string>,
