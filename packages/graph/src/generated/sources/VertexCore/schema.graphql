@@ -313,6 +313,7 @@ type FillOrderEvent {
   feeQuote: BigInt!
   amountDelta: BigInt!
   quoteDelta: BigInt!
+  newOrderFilledAmount: BigInt!
 }
 
 input FillOrderEvent_filter {
@@ -418,6 +419,14 @@ input FillOrderEvent_filter {
   quoteDelta_lte: BigInt
   quoteDelta_in: [BigInt!]
   quoteDelta_not_in: [BigInt!]
+  newOrderFilledAmount: BigInt
+  newOrderFilledAmount_not: BigInt
+  newOrderFilledAmount_gt: BigInt
+  newOrderFilledAmount_lt: BigInt
+  newOrderFilledAmount_gte: BigInt
+  newOrderFilledAmount_lte: BigInt
+  newOrderFilledAmount_in: [BigInt!]
+  newOrderFilledAmount_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
@@ -433,6 +442,7 @@ enum FillOrderEvent_orderBy {
   feeQuote
   amountDelta
   quoteDelta
+  newOrderFilledAmount
 }
 
 type LiquidationEvent {
@@ -450,6 +460,8 @@ type LiquidationEvent {
   spotAmount: BigInt!
   perpProductId: BigInt!
   perpAmount: BigInt!
+  spotOraclePriceX18: BigInt!
+  perpMarkPriceX18: BigInt!
 }
 
 input LiquidationEvent_filter {
@@ -591,6 +603,22 @@ input LiquidationEvent_filter {
   perpAmount_lte: BigInt
   perpAmount_in: [BigInt!]
   perpAmount_not_in: [BigInt!]
+  spotOraclePriceX18: BigInt
+  spotOraclePriceX18_not: BigInt
+  spotOraclePriceX18_gt: BigInt
+  spotOraclePriceX18_lt: BigInt
+  spotOraclePriceX18_gte: BigInt
+  spotOraclePriceX18_lte: BigInt
+  spotOraclePriceX18_in: [BigInt!]
+  spotOraclePriceX18_not_in: [BigInt!]
+  perpMarkPriceX18: BigInt
+  perpMarkPriceX18_not: BigInt
+  perpMarkPriceX18_gt: BigInt
+  perpMarkPriceX18_lt: BigInt
+  perpMarkPriceX18_gte: BigInt
+  perpMarkPriceX18_lte: BigInt
+  perpMarkPriceX18_in: [BigInt!]
+  perpMarkPriceX18_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
@@ -610,6 +638,8 @@ enum LiquidationEvent_orderBy {
   spotAmount
   perpProductId
   perpAmount
+  spotOraclePriceX18
+  perpMarkPriceX18
 }
 
 type ModifyCollateralEvent {

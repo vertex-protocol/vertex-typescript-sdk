@@ -335,8 +335,8 @@ function mapSubaccountSummary(
     }
 
     balances.push({
-      amount: fromX18(spotBalance.balance.amount),
-      lpAmount: fromX18(spotBalance.lp_balance.amount),
+      amount: toBigDecimal(spotBalance.balance.amount),
+      lpAmount: toBigDecimal(spotBalance.lp_balance.amount),
       ...mapEngineServerSpotProduct(product).product,
     });
   });
@@ -350,9 +350,9 @@ function mapSubaccountSummary(
     }
 
     balances.push({
-      amount: fromX18(perpBalance.balance.amount),
-      lpAmount: fromX18(perpBalance.lp_balance.amount),
-      vQuoteBalance: fromX18(perpBalance.balance.v_quote_balance),
+      amount: toBigDecimal(perpBalance.balance.amount),
+      lpAmount: toBigDecimal(perpBalance.lp_balance.amount),
+      vQuoteBalance: toBigDecimal(perpBalance.balance.v_quote_balance),
       ...mapEngineServerPerpProduct(product).product,
     });
   });
@@ -361,19 +361,19 @@ function mapSubaccountSummary(
     balances: balances,
     health: {
       initial: {
-        health: fromX18(baseResponse.healths[0].health),
-        assets: fromX18(baseResponse.healths[0].assets),
-        liabilities: fromX18(baseResponse.healths[0].liabilities),
+        health: toBigDecimal(baseResponse.healths[0].health),
+        assets: toBigDecimal(baseResponse.healths[0].assets),
+        liabilities: toBigDecimal(baseResponse.healths[0].liabilities),
       },
       maintenance: {
-        health: fromX18(baseResponse.healths[1].health),
-        assets: fromX18(baseResponse.healths[1].assets),
-        liabilities: fromX18(baseResponse.healths[1].liabilities),
+        health: toBigDecimal(baseResponse.healths[1].health),
+        assets: toBigDecimal(baseResponse.healths[1].assets),
+        liabilities: toBigDecimal(baseResponse.healths[1].liabilities),
       },
       unweighted: {
-        health: fromX18(baseResponse.healths[2].health),
-        assets: fromX18(baseResponse.healths[2].assets),
-        liabilities: fromX18(baseResponse.healths[2].liabilities),
+        health: toBigDecimal(baseResponse.healths[2].health),
+        assets: toBigDecimal(baseResponse.healths[2].assets),
+        liabilities: toBigDecimal(baseResponse.healths[2].liabilities),
       },
     },
   };

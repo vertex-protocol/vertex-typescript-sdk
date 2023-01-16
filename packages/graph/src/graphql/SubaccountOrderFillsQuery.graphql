@@ -14,7 +14,7 @@ query SubaccountOrderFillsQuery(
     blockTime
     quoteDelta
     amountDelta
-    # newOrderFilledAmountX18
+    newOrderFilledAmount
     order {
       digest
       type

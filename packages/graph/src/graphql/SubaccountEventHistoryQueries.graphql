@@ -54,8 +54,8 @@ query SubaccountLiquidationEventHistoryQuery(
     insuranceCoverage
 
     # Prices at time of liquidation
-    # spotOraclePriceX18
-    # perpMarkPriceX18
+    spotOraclePriceX18
+    perpMarkPriceX18
   }
 }
 
