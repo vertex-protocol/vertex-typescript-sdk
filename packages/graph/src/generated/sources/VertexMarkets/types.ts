@@ -159,6 +159,10 @@ export type Market_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   clearinghouse?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_not?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_gt?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_lt?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_gte?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_lte?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_contains?: InputMaybe<Scalars['Bytes']>;
@@ -173,6 +177,10 @@ export type Market_filter = {
   productId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   orderbook?: InputMaybe<Scalars['Bytes']>;
   orderbook_not?: InputMaybe<Scalars['Bytes']>;
+  orderbook_gt?: InputMaybe<Scalars['Bytes']>;
+  orderbook_lt?: InputMaybe<Scalars['Bytes']>;
+  orderbook_gte?: InputMaybe<Scalars['Bytes']>;
+  orderbook_lte?: InputMaybe<Scalars['Bytes']>;
   orderbook_in?: InputMaybe<Array<Scalars['Bytes']>>;
   orderbook_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   orderbook_contains?: InputMaybe<Scalars['Bytes']>;
@@ -283,6 +291,10 @@ export type PerpEngine_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   clearinghouse?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_not?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_gt?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_lt?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_gte?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_lte?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_contains?: InputMaybe<Scalars['Bytes']>;
@@ -924,6 +936,10 @@ export type SpotEngine_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   clearinghouse?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_not?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_gt?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_lt?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_gte?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_lte?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_contains?: InputMaybe<Scalars['Bytes']>;
