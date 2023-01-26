@@ -4878,7 +4878,7 @@ export type PaginatedAllMarketOrdersQueryQueryVariables = Exact<{
 
 
 export type PaginatedAllMarketOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
+    Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'type' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
 
@@ -4890,7 +4890,7 @@ export type PaginatedSubaccountOrdersQueryQueryVariables = Exact<{
 
 
 export type PaginatedSubaccountOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
+    Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'type' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
 
@@ -4903,7 +4903,7 @@ export type PaginatedSubaccountOrdersForProductsQueryQueryVariables = Exact<{
 
 
 export type PaginatedSubaccountOrdersForProductsQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
+    Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'type' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
 
@@ -4914,12 +4914,12 @@ export type OrderByDigestQueryQueryVariables = Exact<{
 
 
 export type OrderByDigestQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
+    Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'type' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
 
 export type OrderEntityFieldsFragmentFragment = (
-  Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
+  Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'type' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
   & { subaccount: Pick<Subaccount, 'subaccountId'> }
 );
 
@@ -4991,6 +4991,7 @@ export const OrderEntityFieldsFragmentFragmentDoc = gql`
   digest
   priceX18
   productId
+  type
   subaccount {
     subaccountId
   }

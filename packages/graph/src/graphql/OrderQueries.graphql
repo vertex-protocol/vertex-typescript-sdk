@@ -59,6 +59,7 @@ fragment OrderEntityFieldsFragment on Order {
   digest
   priceX18
   productId
+  type
   subaccount {
     subaccountId
   }
