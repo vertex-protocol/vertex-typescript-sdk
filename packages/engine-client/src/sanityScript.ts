@@ -63,7 +63,7 @@ async function main() {
     subaccountId = BigNumber.from(
       await clearinghouse.getSubaccountId(signer.address, 'default'),
     );
-    if (subaccountId !== BigNumber.from(0)) {
+    if (!subaccountId.isZero()) {
       break;
     }
   }
