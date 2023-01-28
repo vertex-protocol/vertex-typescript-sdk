@@ -135,13 +135,9 @@ export declare namespace IEndpoint {
     nonce: BigNumber;
   };
 
-  export type SettlePnlStruct = {
-    subaccountIds: PromiseOrValue<BigNumberish>[];
-  };
+  export type SettlePnlStruct = { requests: PromiseOrValue<BigNumberish>[] };
 
-  export type SettlePnlStructOutput = [BigNumber[]] & {
-    subaccountIds: BigNumber[];
-  };
+  export type SettlePnlStructOutput = [BigNumber[]] & { requests: BigNumber[] };
 
   export type WithdrawCollateralStruct = {
     sender: PromiseOrValue<string>;
@@ -248,7 +244,7 @@ export interface IClearinghouseInterface extends utils.Interface {
     "liquidateSubaccount((address,string,uint64,uint8,uint32,int128,uint64))": FunctionFragment;
     "mintLp((address,string,uint32,uint128,uint128,uint128,uint64))": FunctionFragment;
     "registerProductForId(address,(int32,int32,int32,int32,int32),uint32)": FunctionFragment;
-    "settlePnl((uint64[]))": FunctionFragment;
+    "settlePnl((uint256[]))": FunctionFragment;
     "withdrawCollateral((address,string,uint32,uint128,uint64))": FunctionFragment;
   };
 

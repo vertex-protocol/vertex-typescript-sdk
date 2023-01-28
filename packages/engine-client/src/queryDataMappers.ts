@@ -103,7 +103,6 @@ export function mapEngineServerPerpProduct(
     product: {
       productId: product.product_id,
       type: ProductEngineType.PERP,
-      markPrice: fromX18(product.mark_price_x18),
       oraclePrice: fromX18(product.oracle_price_x18),
       largePositionPenalty: fromX18(product.risk.large_position_penalty_x18),
       longWeightInitial: fromX18(product.risk.long_weight_initial_x18),

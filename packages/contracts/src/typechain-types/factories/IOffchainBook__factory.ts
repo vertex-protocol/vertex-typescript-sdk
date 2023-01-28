@@ -76,6 +76,19 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "claimSequencerFee",
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "dumpFees",
     outputs: [],
     stateMutability: "nonpayable",
@@ -161,6 +174,11 @@ const _abi = [
           {
             internalType: "int128",
             name: "collectedFees",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "sequencerFees",
             type: "int128",
           },
         ],

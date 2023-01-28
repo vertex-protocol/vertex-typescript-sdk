@@ -122,10 +122,12 @@ export declare namespace IOffchainBook {
     priceIncrementX18: PromiseOrValue<BigNumberish>;
     lpSpreadX18: PromiseOrValue<BigNumberish>;
     collectedFees: PromiseOrValue<BigNumberish>;
+    sequencerFees: PromiseOrValue<BigNumberish>;
   };
 
   export type MarketStructOutput = [
     number,
+    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -136,11 +138,13 @@ export declare namespace IOffchainBook {
     priceIncrementX18: BigNumber;
     lpSpreadX18: BigNumber;
     collectedFees: BigNumber;
+    sequencerFees: BigNumber;
   };
 }
 
 export interface IOffchainBookInterface extends utils.Interface {
   functions: {
+    "claimSequencerFee()": FunctionFragment;
     "dumpFees()": FunctionFragment;
     "getDigest((address,string,int128,int128,uint64,uint64))": FunctionFragment;
     "getMarket()": FunctionFragment;
@@ -152,6 +156,7 @@ export interface IOffchainBookInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "claimSequencerFee"
       | "dumpFees"
       | "getDigest"
       | "getMarket"
@@ -161,6 +166,10 @@ export interface IOffchainBookInterface extends utils.Interface {
       | "swapAMM"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "claimSequencerFee",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "dumpFees", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getDigest",
@@ -194,6 +203,10 @@ export interface IOffchainBookInterface extends utils.Interface {
     values: [IEndpoint.SwapAMMStruct]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "claimSequencerFee",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "dumpFees", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getDigest", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getMarket", data: BytesLike): Result;
@@ -272,6 +285,10 @@ export interface IOffchainBook extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    claimSequencerFee(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     dumpFees(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -313,6 +330,10 @@ export interface IOffchainBook extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
+
+  claimSequencerFee(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   dumpFees(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -356,6 +377,8 @@ export interface IOffchainBook extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    claimSequencerFee(overrides?: CallOverrides): Promise<BigNumber>;
+
     dumpFees(overrides?: CallOverrides): Promise<void>;
 
     getDigest(
@@ -424,6 +447,10 @@ export interface IOffchainBook extends BaseContract {
   };
 
   estimateGas: {
+    claimSequencerFee(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     dumpFees(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -465,6 +492,10 @@ export interface IOffchainBook extends BaseContract {
   };
 
   populateTransaction: {
+    claimSequencerFee(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     dumpFees(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;

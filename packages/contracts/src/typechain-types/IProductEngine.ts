@@ -61,7 +61,6 @@ export interface IProductEngineInterface extends utils.Interface {
     "mintLp(uint32,uint64,int128,int128,int128)": FunctionFragment;
     "socializeSubaccount(uint64,int128)": FunctionFragment;
     "swapLp(uint32,uint64,int128,int128,int128,int128)": FunctionFragment;
-    "updateStates(uint128)": FunctionFragment;
   };
 
   getFunction(
@@ -77,7 +76,6 @@ export interface IProductEngineInterface extends utils.Interface {
       | "mintLp"
       | "socializeSubaccount"
       | "swapLp"
-      | "updateStates"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -147,10 +145,6 @@ export interface IProductEngineInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>
     ]
   ): string;
-  encodeFunctionData(
-    functionFragment: "updateStates",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
 
   decodeFunctionResult(
     functionFragment: "applyDeltas",
@@ -184,10 +178,6 @@ export interface IProductEngineInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "swapLp", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "updateStates",
-    data: BytesLike
-  ): Result;
 
   events: {
     "AddProduct(uint32)": EventFragment;
@@ -315,11 +305,6 @@ export interface IProductEngine extends BaseContract {
       lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    updateStates(
-      dt: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
   };
 
   applyDeltas(
@@ -382,11 +367,6 @@ export interface IProductEngine extends BaseContract {
     priceX18: PromiseOrValue<BigNumberish>,
     sizeIncrement: PromiseOrValue<BigNumberish>,
     lpSpreadX18: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  updateStates(
-    dt: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -453,11 +433,6 @@ export interface IProductEngine extends BaseContract {
       lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber]>;
-
-    updateStates(
-      dt: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
   };
 
   filters: {
@@ -544,11 +519,6 @@ export interface IProductEngine extends BaseContract {
       lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
-
-    updateStates(
-      dt: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -612,11 +582,6 @@ export interface IProductEngine extends BaseContract {
       priceX18: PromiseOrValue<BigNumberish>,
       sizeIncrement: PromiseOrValue<BigNumberish>,
       lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    updateStates(
-      dt: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

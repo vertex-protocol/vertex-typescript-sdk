@@ -21,8 +21,8 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import type { VertexCoreContext } from './sources/VertexCore/types';
-import type { VertexCandlesticksContext } from './sources/VertexCandlesticks/types';
 import type { VertexMarketsContext } from './sources/VertexMarkets/types';
+import type { VertexCandlesticksContext } from './sources/VertexCandlesticks/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -4892,7 +4892,7 @@ export type SubaccountLiquidationEventHistoryQueryQueryVariables = Exact<{
 }>;
 
 
-export type SubaccountLiquidationEventHistoryQueryQuery = { liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'spotProductId' | 'perpProductId' | 'perpAmount' | 'spotAmount' | 'liquidationPayment' | 'insuranceCoverage'>> };
+export type SubaccountLiquidationEventHistoryQueryQuery = { liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'spotProductId' | 'perpProductId' | 'perpAmount' | 'spotAmount' | 'liquidationPayment' | 'insuranceCoverage' | 'spotOraclePriceX18' | 'perpMarkPriceX18'>> };
 
 export type SubaccountSettlementEventHistoryQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
@@ -4913,7 +4913,7 @@ export type SubaccountOrderFillsQueryQueryVariables = Exact<{
 
 
 export type SubaccountOrderFillsQueryQuery = { fillOrderEvents: Array<(
-    Pick<FillOrderEvent, 'id' | 'blockTime' | 'quoteDelta' | 'amountDelta'>
+    Pick<FillOrderEvent, 'id' | 'blockTime' | 'quoteDelta' | 'amountDelta' | 'newOrderFilledAmount'>
     & { order: Pick<Order, 'digest' | 'type' | 'productId' | 'priceX18' | 'totalAmount' | 'quoteAmount' | 'filledAmount'> }
   )> };
 
@@ -5098,6 +5098,8 @@ export const SubaccountLiquidationEventHistoryQueryDocument = gql`
     spotAmount
     liquidationPayment
     insuranceCoverage
+    spotOraclePriceX18
+    perpMarkPriceX18
   }
 }
     ` as unknown as DocumentNode<SubaccountLiquidationEventHistoryQueryQuery, SubaccountLiquidationEventHistoryQueryQueryVariables>;
@@ -5130,6 +5132,7 @@ export const SubaccountOrderFillsQueryDocument = gql`
     blockTime
     quoteDelta
     amountDelta
+    newOrderFilledAmount
     order {
       digest
       type
