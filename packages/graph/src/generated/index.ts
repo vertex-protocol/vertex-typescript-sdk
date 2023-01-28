@@ -20,9 +20,9 @@ import { createMeshHTTPHandler } from '@graphql-mesh/http';
 import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext, MeshInstance } from '@graphql-mesh/runtime';
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
-import type { VertexCoreContext } from './sources/VertexCore/types';
-import type { VertexMarketsContext } from './sources/VertexMarkets/types';
 import type { VertexCandlesticksContext } from './sources/VertexCandlesticks/types';
+import type { VertexMarketsContext } from './sources/VertexMarkets/types';
+import type { VertexCoreContext } from './sources/VertexCore/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -1308,6 +1308,10 @@ export type Market_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   clearinghouse?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_not?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_gt?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_lt?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_gte?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_lte?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_contains?: InputMaybe<Scalars['Bytes']>;
@@ -1322,6 +1326,10 @@ export type Market_filter = {
   productId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   orderbook?: InputMaybe<Scalars['Bytes']>;
   orderbook_not?: InputMaybe<Scalars['Bytes']>;
+  orderbook_gt?: InputMaybe<Scalars['Bytes']>;
+  orderbook_lt?: InputMaybe<Scalars['Bytes']>;
+  orderbook_gte?: InputMaybe<Scalars['Bytes']>;
+  orderbook_lte?: InputMaybe<Scalars['Bytes']>;
   orderbook_in?: InputMaybe<Array<Scalars['Bytes']>>;
   orderbook_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   orderbook_contains?: InputMaybe<Scalars['Bytes']>;
@@ -1427,6 +1435,10 @@ export type PerpEngine_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   clearinghouse?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_not?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_gt?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_lt?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_gte?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_lte?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_contains?: InputMaybe<Scalars['Bytes']>;
@@ -1878,6 +1890,10 @@ export type SpotEngine_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   clearinghouse?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_not?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_gt?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_lt?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_gte?: InputMaybe<Scalars['Bytes']>;
+  clearinghouse_lte?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_contains?: InputMaybe<Scalars['Bytes']>;
@@ -2232,12 +2248,20 @@ export type Clearinghouse_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   endpoint?: InputMaybe<Scalars['Bytes']>;
   endpoint_not?: InputMaybe<Scalars['Bytes']>;
+  endpoint_gt?: InputMaybe<Scalars['Bytes']>;
+  endpoint_lt?: InputMaybe<Scalars['Bytes']>;
+  endpoint_gte?: InputMaybe<Scalars['Bytes']>;
+  endpoint_lte?: InputMaybe<Scalars['Bytes']>;
   endpoint_in?: InputMaybe<Array<Scalars['Bytes']>>;
   endpoint_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   endpoint_contains?: InputMaybe<Scalars['Bytes']>;
   endpoint_not_contains?: InputMaybe<Scalars['Bytes']>;
   quoteProduct?: InputMaybe<Scalars['Bytes']>;
   quoteProduct_not?: InputMaybe<Scalars['Bytes']>;
+  quoteProduct_gt?: InputMaybe<Scalars['Bytes']>;
+  quoteProduct_lt?: InputMaybe<Scalars['Bytes']>;
+  quoteProduct_gte?: InputMaybe<Scalars['Bytes']>;
+  quoteProduct_lte?: InputMaybe<Scalars['Bytes']>;
   quoteProduct_in?: InputMaybe<Array<Scalars['Bytes']>>;
   quoteProduct_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   quoteProduct_contains?: InputMaybe<Scalars['Bytes']>;
@@ -2962,6 +2986,10 @@ export type Order_filter = {
   type_not_in?: InputMaybe<Array<OrderType>>;
   digest?: InputMaybe<Scalars['Bytes']>;
   digest_not?: InputMaybe<Scalars['Bytes']>;
+  digest_gt?: InputMaybe<Scalars['Bytes']>;
+  digest_lt?: InputMaybe<Scalars['Bytes']>;
+  digest_gte?: InputMaybe<Scalars['Bytes']>;
+  digest_lte?: InputMaybe<Scalars['Bytes']>;
   digest_in?: InputMaybe<Array<Scalars['Bytes']>>;
   digest_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   digest_contains?: InputMaybe<Scalars['Bytes']>;
@@ -3186,6 +3214,7 @@ export type SettlePnlEvent = {
   subaccount: Subaccount;
   productId: Scalars['BigInt'];
   amount: Scalars['BigInt'];
+  positionAmount: Scalars['BigInt'];
 };
 
 export type SettlePnlEvent_filter = {
@@ -3250,6 +3279,14 @@ export type SettlePnlEvent_filter = {
   amount_lte?: InputMaybe<Scalars['BigInt']>;
   amount_in?: InputMaybe<Array<Scalars['BigInt']>>;
   amount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  positionAmount?: InputMaybe<Scalars['BigInt']>;
+  positionAmount_not?: InputMaybe<Scalars['BigInt']>;
+  positionAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  positionAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  positionAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  positionAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  positionAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  positionAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -3260,7 +3297,8 @@ export type SettlePnlEvent_orderBy =
   | 'blockTime'
   | 'subaccount'
   | 'productId'
-  | 'amount';
+  | 'amount'
+  | 'positionAmount';
 
 export type SpotBalanceSummary = {
   id: Scalars['ID'];
@@ -3497,6 +3535,10 @@ export type Subaccount_filter = {
   subaccountId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   owner?: InputMaybe<Scalars['Bytes']>;
   owner_not?: InputMaybe<Scalars['Bytes']>;
+  owner_gt?: InputMaybe<Scalars['Bytes']>;
+  owner_lt?: InputMaybe<Scalars['Bytes']>;
+  owner_gte?: InputMaybe<Scalars['Bytes']>;
+  owner_lte?: InputMaybe<Scalars['Bytes']>;
   owner_in?: InputMaybe<Array<Scalars['Bytes']>>;
   owner_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   owner_contains?: InputMaybe<Scalars['Bytes']>;
@@ -3587,12 +3629,20 @@ export type SubmitSlowModeTransactionEvent_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   sender?: InputMaybe<Scalars['Bytes']>;
   sender_not?: InputMaybe<Scalars['Bytes']>;
+  sender_gt?: InputMaybe<Scalars['Bytes']>;
+  sender_lt?: InputMaybe<Scalars['Bytes']>;
+  sender_gte?: InputMaybe<Scalars['Bytes']>;
+  sender_lte?: InputMaybe<Scalars['Bytes']>;
   sender_in?: InputMaybe<Array<Scalars['Bytes']>>;
   sender_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   sender_contains?: InputMaybe<Scalars['Bytes']>;
   sender_not_contains?: InputMaybe<Scalars['Bytes']>;
   tx?: InputMaybe<Scalars['Bytes']>;
   tx_not?: InputMaybe<Scalars['Bytes']>;
+  tx_gt?: InputMaybe<Scalars['Bytes']>;
+  tx_lt?: InputMaybe<Scalars['Bytes']>;
+  tx_gte?: InputMaybe<Scalars['Bytes']>;
+  tx_lte?: InputMaybe<Scalars['Bytes']>;
   tx_in?: InputMaybe<Array<Scalars['Bytes']>>;
   tx_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   tx_contains?: InputMaybe<Scalars['Bytes']>;
@@ -4375,6 +4425,7 @@ export type SettlePnlEventResolvers<ContextType = MeshContext & { coreEndpoint: 
   subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   amount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  positionAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4903,7 +4954,7 @@ export type SubaccountSettlementEventHistoryQueryQueryVariables = Exact<{
 }>;
 
 
-export type SubaccountSettlementEventHistoryQueryQuery = { settlePnlEvents: Array<Pick<SettlePnlEvent, 'id' | 'blockTime' | 'productId' | 'amount'>> };
+export type SubaccountSettlementEventHistoryQueryQuery = { settlePnlEvents: Array<Pick<SettlePnlEvent, 'id' | 'blockTime' | 'productId' | 'amount' | 'positionAmount'>> };
 
 export type SubaccountOrderFillsQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
@@ -5116,6 +5167,7 @@ export const SubaccountSettlementEventHistoryQueryDocument = gql`
     blockTime
     productId
     amount
+    positionAmount
   }
 }
     ` as unknown as DocumentNode<SubaccountSettlementEventHistoryQueryQuery, SubaccountSettlementEventHistoryQueryQueryVariables>;
