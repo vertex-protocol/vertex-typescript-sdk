@@ -1,4 +1,4 @@
-import { clampBigDecimal } from '@vertex-protocol/utils';
+import { BigDecimal, clampBigDecimal } from '@vertex-protocol/utils';
 import { PerpProduct } from '../common';
 
 const MAX_FUNDING_PRICE_DIFF_FRAC = 0.1;
@@ -11,7 +11,7 @@ const MAX_FUNDING_PRICE_DIFF_FRAC = 0.1;
  */
 export function calcApproximate24hrFundingRate(product: PerpProduct) {
   // TODO: update once backend adds funding rate query
-  return 0;
+  return BigDecimal(0);
   // const { markPrice, oraclePrice } = product;
   // const priceDiff = markPrice.minus(oraclePrice);
   // // Clamp and preserve sign
