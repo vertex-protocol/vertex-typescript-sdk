@@ -1,11 +1,16 @@
-import { ethers, Wallet } from 'ethers';
+import { BigNumber, ethers, Wallet } from 'ethers';
 import {
   depositCollateral,
   IClearinghouse__factory,
   IEndpoint__factory,
   MockERC20__factory,
 } from '@vertex-protocol/contracts';
-import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
+import {
+  BigDecimal,
+  nowInSeconds,
+  toBigDecimal,
+  toFixedPoint,
+} from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
 import { OrderParamsWithoutNonce } from './types';
 
@@ -55,11 +60,10 @@ async function main() {
 
   let subaccountId;
   while (true) {
-    subaccountId = (await clearinghouse.getSubaccountId(
-      signer.address,
-      'default',
-    )) as unknown as number;
-    if (subaccountId != 0) {
+    subaccountId = BigNumber.from(
+      await clearinghouse.getSubaccountId(signer.address, 'default'),
+    );
+    if (subaccountId !== BigNumber.from(0)) {
       break;
     }
   }
