@@ -328,19 +328,6 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-  {
-    inputs: [
-      {
-        internalType: "uint128",
-        name: "dt",
-        type: "uint128",
-      },
-    ],
-    name: "updateStates",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
 ];
 
 export class IProductEngine__factory {

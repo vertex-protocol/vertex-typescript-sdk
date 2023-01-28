@@ -705,9 +705,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "uint64[]",
-            name: "subaccountIds",
-            type: "uint64[]",
+            internalType: "uint256[]",
+            name: "requests",
+            type: "uint256[]",
           },
         ],
         internalType: "struct IEndpoint.SettlePnl",

@@ -120,7 +120,6 @@ export interface IPerpEngineInterface extends utils.Interface {
     "decomposeLps(uint64,uint64)": FunctionFragment;
     "getClearinghouse()": FunctionFragment;
     "getEngineType()": FunctionFragment;
-    "getMarkPriceX18(uint32)": FunctionFragment;
     "getOrderbook(uint32)": FunctionFragment;
     "getProductIds()": FunctionFragment;
     "getSettlementState(uint32,uint64)": FunctionFragment;
@@ -129,10 +128,10 @@ export interface IPerpEngineInterface extends utils.Interface {
     "hasBalance(uint32,uint64)": FunctionFragment;
     "initialize(address,address,address,address,address)": FunctionFragment;
     "mintLp(uint32,uint64,int128,int128,int128)": FunctionFragment;
-    "settlePnl(uint64)": FunctionFragment;
+    "settlePnl(uint256)": FunctionFragment;
     "socializeSubaccount(uint64,int128)": FunctionFragment;
     "swapLp(uint32,uint64,int128,int128,int128,int128)": FunctionFragment;
-    "updateStates(uint128)": FunctionFragment;
+    "updateStates(uint128,int128[])": FunctionFragment;
   };
 
   getFunction(
@@ -142,7 +141,6 @@ export interface IPerpEngineInterface extends utils.Interface {
       | "decomposeLps"
       | "getClearinghouse"
       | "getEngineType"
-      | "getMarkPriceX18"
       | "getOrderbook"
       | "getProductIds"
       | "getSettlementState"
@@ -180,10 +178,6 @@ export interface IPerpEngineInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getEngineType",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getMarkPriceX18",
-    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getOrderbook",
@@ -250,7 +244,7 @@ export interface IPerpEngineInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "updateStates",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>[]]
   ): string;
 
   decodeFunctionResult(
@@ -268,10 +262,6 @@ export interface IPerpEngineInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getEngineType",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getMarkPriceX18",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -408,11 +398,6 @@ export interface IPerpEngine extends BaseContract {
 
     getEngineType(overrides?: CallOverrides): Promise<[number]>;
 
-    getMarkPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -486,7 +471,7 @@ export interface IPerpEngine extends BaseContract {
     ): Promise<ContractTransaction>;
 
     settlePnl(
-      subaccountId: PromiseOrValue<BigNumberish>,
+      request: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -508,6 +493,7 @@ export interface IPerpEngine extends BaseContract {
 
     updateStates(
       dt: PromiseOrValue<BigNumberish>,
+      avgPriceDiffs: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -533,11 +519,6 @@ export interface IPerpEngine extends BaseContract {
   getClearinghouse(overrides?: CallOverrides): Promise<string>;
 
   getEngineType(overrides?: CallOverrides): Promise<number>;
-
-  getMarkPriceX18(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
 
   getOrderbook(
     productId: PromiseOrValue<BigNumberish>,
@@ -610,7 +591,7 @@ export interface IPerpEngine extends BaseContract {
   ): Promise<ContractTransaction>;
 
   settlePnl(
-    subaccountId: PromiseOrValue<BigNumberish>,
+    request: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -632,6 +613,7 @@ export interface IPerpEngine extends BaseContract {
 
   updateStates(
     dt: PromiseOrValue<BigNumberish>,
+    avgPriceDiffs: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -657,11 +639,6 @@ export interface IPerpEngine extends BaseContract {
     getClearinghouse(overrides?: CallOverrides): Promise<string>;
 
     getEngineType(overrides?: CallOverrides): Promise<number>;
-
-    getMarkPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
@@ -736,7 +713,7 @@ export interface IPerpEngine extends BaseContract {
     ): Promise<void>;
 
     settlePnl(
-      subaccountId: PromiseOrValue<BigNumberish>,
+      request: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -758,6 +735,7 @@ export interface IPerpEngine extends BaseContract {
 
     updateStates(
       dt: PromiseOrValue<BigNumberish>,
+      avgPriceDiffs: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -817,11 +795,6 @@ export interface IPerpEngine extends BaseContract {
 
     getEngineType(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getMarkPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -872,7 +845,7 @@ export interface IPerpEngine extends BaseContract {
     ): Promise<BigNumber>;
 
     settlePnl(
-      subaccountId: PromiseOrValue<BigNumberish>,
+      request: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -894,6 +867,7 @@ export interface IPerpEngine extends BaseContract {
 
     updateStates(
       dt: PromiseOrValue<BigNumberish>,
+      avgPriceDiffs: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -920,11 +894,6 @@ export interface IPerpEngine extends BaseContract {
     getClearinghouse(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getEngineType(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getMarkPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
@@ -976,7 +945,7 @@ export interface IPerpEngine extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     settlePnl(
-      subaccountId: PromiseOrValue<BigNumberish>,
+      request: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -998,6 +967,7 @@ export interface IPerpEngine extends BaseContract {
 
     updateStates(
       dt: PromiseOrValue<BigNumberish>,
+      avgPriceDiffs: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

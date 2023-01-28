@@ -187,25 +187,6 @@ const _abi = [
         type: "uint32",
       },
     ],
-    name: "getMarkPriceX18",
-    outputs: [
-      {
-        internalType: "int128",
-        name: "",
-        type: "int128",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-    ],
     name: "getOrderbook",
     outputs: [
       {
@@ -630,9 +611,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "uint256",
+        name: "request",
+        type: "uint256",
       },
     ],
     name: "settlePnl",
@@ -725,6 +706,11 @@ const _abi = [
         internalType: "uint128",
         name: "dt",
         type: "uint128",
+      },
+      {
+        internalType: "int128[]",
+        name: "avgPriceDiffs",
+        type: "int128[]",
       },
     ],
     name: "updateStates",

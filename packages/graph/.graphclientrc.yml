@@ -3,9 +3,9 @@ sources:
     handler:
       graphql:
         # For local schema updates
-        # endpoint: '{context.coreEndpoint:http://localhost:8000/subgraphs/name/vertex-subgraphs-core}'
+        endpoint: '{context.coreEndpoint:http://localhost:8000/subgraphs/name/vertex-subgraphs-core}'
         # Default to hosted version
-        endpoint: '{context.coreEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-core}'
+        # endpoint: '{context.coreEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-core}'
     transforms:
       - autoPagination:
           validateSchema: true
@@ -19,8 +19,8 @@ sources:
   - name: VertexMarkets
     handler:
       graphql:
-        # endpoint: '{context.marketsEndpoint:http://localhost:8000/subgraphs/name/vertex-subgraphs-markets}'
-        endpoint: '{context.marketsEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets}'
+        endpoint: '{context.marketsEndpoint:http://localhost:8000/subgraphs/name/vertex-subgraphs-markets}'
+        # endpoint: '{context.marketsEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets}'
     transforms:
       - autoPagination:
           validateSchema: true
@@ -34,8 +34,8 @@ sources:
   - name: VertexCandlesticks
     handler:
       graphql:
-        # endpoint: '{context.candlesticksEndpoint:http://localhost:8000/subgraphs/name/vertex-subgraphs-candlesticks}'
-        endpoint: '{context.candlesticksEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-candlesticks}'
+        endpoint: '{context.candlesticksEndpoint:http://localhost:8000/subgraphs/name/vertex-subgraphs-candlesticks}'
+        # endpoint: '{context.candlesticksEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-candlesticks}'
     transforms:
       - autoPagination:
           validateSchema: true

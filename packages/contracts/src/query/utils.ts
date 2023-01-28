@@ -46,7 +46,6 @@ export function mapEnginePerpProduct(
     longWeightMaintenance: fromX18(product.risk.longWeightMaintenanceX18),
     largePositionPenalty: fromX18(product.risk.largePositionPenaltyX18),
     oraclePrice: fromX18(product.oraclePriceX18),
-    markPrice: fromX18(product.markPriceX18),
     openInterest: toBigDecimal(product.state.openInterest),
     totalLpBaseAmount: toBigDecimal(product.lpState.base),
     totalLpQuoteAmount: toBigDecimal(product.lpState.quote),
