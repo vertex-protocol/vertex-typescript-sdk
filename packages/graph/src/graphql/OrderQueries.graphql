@@ -57,6 +57,7 @@ query OrderByDigestQuery($digest: Bytes!, $productId: BigInt!) {
 fragment OrderEntityFieldsFragment on Order {
   id
   digest
+  type
   priceX18
   productId
   subaccount {

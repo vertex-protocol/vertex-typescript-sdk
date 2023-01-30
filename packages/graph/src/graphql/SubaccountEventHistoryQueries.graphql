@@ -83,5 +83,6 @@ query SubaccountSettlementEventHistoryQuery(
     productId
     amount
     positionAmount
+    markPriceX18
   }
 }

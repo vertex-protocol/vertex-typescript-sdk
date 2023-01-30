@@ -1390,6 +1390,7 @@ type SettlePnlEvent {
   productId: BigInt!
   amount: BigInt!
   positionAmount: BigInt!
+  markPriceX18: BigInt!
 }
 
 input SettlePnlEvent_filter {
@@ -1462,6 +1463,14 @@ input SettlePnlEvent_filter {
   positionAmount_lte: BigInt
   positionAmount_in: [BigInt!]
   positionAmount_not_in: [BigInt!]
+  markPriceX18: BigInt
+  markPriceX18_not: BigInt
+  markPriceX18_gt: BigInt
+  markPriceX18_lt: BigInt
+  markPriceX18_gte: BigInt
+  markPriceX18_lte: BigInt
+  markPriceX18_in: [BigInt!]
+  markPriceX18_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
 }
@@ -1474,6 +1483,7 @@ enum SettlePnlEvent_orderBy {
   productId
   amount
   positionAmount
+  markPriceX18
 }
 
 type SpotBalanceSummary {

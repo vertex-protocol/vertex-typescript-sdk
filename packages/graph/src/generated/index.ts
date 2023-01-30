@@ -10,19 +10,22 @@ import { DefaultLogger } from '@graphql-mesh/utils';
 import MeshCache from "@graphql-mesh/cache-localforage";
 import { fetch as fetchFn } from '@whatwg-node/fetch';
 
+import { MeshResolvedSource } from '@graphql-mesh/runtime';
+import { MeshTransform, MeshPlugin } from '@graphql-mesh/types';
 import GraphqlHandler from "@graphql-mesh/graphql"
 import AutoPaginationTransform from "@graphprotocol/client-auto-pagination";
 import BlockTrackingTransform from "@graphprotocol/client-block-tracking";
 import AutoTypeMergingTransform from "@graphprotocol/client-auto-type-merging";
 import StitchingMerger from "@graphql-mesh/merger-stitching";
 import { printWithCache } from '@graphql-mesh/utils';
-import { createMeshHTTPHandler } from '@graphql-mesh/http';
+import { createMeshHTTPHandler, MeshHTTPHandler } from '@graphql-mesh/http';
 import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext, MeshInstance } from '@graphql-mesh/runtime';
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
-import type { VertexCandlesticksContext } from './sources/VertexCandlesticks/types';
-import type { VertexMarketsContext } from './sources/VertexMarkets/types';
-import type { VertexCoreContext } from './sources/VertexCore/types';
+import { ImportFn } from '@graphql-mesh/types';
+import type { VertexCandlesticksTypes } from './sources/VertexCandlesticks/types';
+import type { VertexMarketsTypes } from './sources/VertexMarkets/types';
+import type { VertexCoreTypes } from './sources/VertexCore/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -3215,6 +3218,7 @@ export type SettlePnlEvent = {
   productId: Scalars['BigInt'];
   amount: Scalars['BigInt'];
   positionAmount: Scalars['BigInt'];
+  markPriceX18: Scalars['BigInt'];
 };
 
 export type SettlePnlEvent_filter = {
@@ -3287,6 +3291,14 @@ export type SettlePnlEvent_filter = {
   positionAmount_lte?: InputMaybe<Scalars['BigInt']>;
   positionAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
   positionAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  markPriceX18?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  markPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  markPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -3298,7 +3310,8 @@ export type SettlePnlEvent_orderBy =
   | 'subaccount'
   | 'productId'
   | 'amount'
-  | 'positionAmount';
+  | 'positionAmount'
+  | 'markPriceX18';
 
 export type SpotBalanceSummary = {
   id: Scalars['ID'];
@@ -4426,6 +4439,7 @@ export type SettlePnlEventResolvers<ContextType = MeshContext & { coreEndpoint: 
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   amount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   positionAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  markPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4522,22 +4536,22 @@ export type Resolvers<ContextType = MeshContext & { coreEndpoint: string; market
 }>;
 
 
-export type MeshContext = VertexCandlesticksContext & VertexMarketsContext & VertexCoreContext & BaseMeshContext;
+export type MeshContext = VertexCandlesticksTypes.Context & VertexMarketsTypes.Context & VertexCoreTypes.Context & BaseMeshContext;
 
 
 const baseDir = pathModule.join(typeof __dirname === 'string' ? __dirname : '/', '..');
 
-const importFn = (moduleId: string) => {
+const importFn: ImportFn = <T>(moduleId: string) => {
   const relativeModuleId = (pathModule.isAbsolute(moduleId) ? pathModule.relative(baseDir, moduleId) : moduleId).split('\\').join('/').replace(baseDir + '/', '');
   switch(relativeModuleId) {
     case ".graphclient/sources/VertexCandlesticks/introspectionSchema":
-      return import("./sources/VertexCandlesticks/introspectionSchema");
+      return import("./sources/VertexCandlesticks/introspectionSchema") as T;
     
     case ".graphclient/sources/VertexMarkets/introspectionSchema":
-      return import("./sources/VertexMarkets/introspectionSchema");
+      return import("./sources/VertexMarkets/introspectionSchema") as T;
     
     case ".graphclient/sources/VertexCore/introspectionSchema":
-      return import("./sources/VertexCore/introspectionSchema");
+      return import("./sources/VertexCore/introspectionSchema") as T;
     
     default:
       return Promise.reject(new Error(`Cannot find module '${relativeModuleId}'.`));
@@ -4566,9 +4580,9 @@ const cache = new (MeshCache as any)({
       logger,
     } as any)
 
-const sources = [];
-const transforms = [];
-const additionalEnvelopPlugins = [];
+const sources: MeshResolvedSource[] = [];
+const transforms: MeshTransform[] = [];
+const additionalEnvelopPlugins: MeshPlugin<any>[] = [];
 const vertexCoreTransforms = [];
 const vertexMarketsTransforms = [];
 const vertexCandlesticksTransforms = [];
@@ -4801,8 +4815,8 @@ const merger = new(StitchingMerger as any)({
   };
 }
 
-export function createBuiltMeshHTTPHandler() {
-  return createMeshHTTPHandler({
+export function createBuiltMeshHTTPHandler(): MeshHTTPHandler<MeshContext> {
+  return createMeshHTTPHandler<MeshContext>({
     baseDir,
     getBuiltMesh: getBuiltGraphClient,
     rawServeConfig: undefined,
@@ -4810,14 +4824,14 @@ export function createBuiltMeshHTTPHandler() {
 }
 
 
-let meshInstance$: Promise<MeshInstance<MeshContext>>;
+let meshInstance$: Promise<MeshInstance> | undefined;
 
-export function getBuiltGraphClient(): Promise<MeshInstance<MeshContext>> {
+export function getBuiltGraphClient(): Promise<MeshInstance> {
   if (meshInstance$ == null) {
-    meshInstance$ = getMeshOptions().then(meshOptions => getMesh<MeshContext>(meshOptions)).then(mesh => {
-      const id$ = mesh.pubsub.subscribe('destroy', () => {
+    meshInstance$ = getMeshOptions().then(meshOptions => getMesh(meshOptions)).then(mesh => {
+      const id = mesh.pubsub.subscribe('destroy', () => {
         meshInstance$ = undefined;
-        id$.then(id => mesh.pubsub.unsubscribe(id)).catch(err => console.error(err));
+        mesh.pubsub.unsubscribe(id);
       });
       return mesh;
     });
@@ -4830,7 +4844,7 @@ export const execute: ExecuteMeshFn = (...args) => getBuiltGraphClient().then(({
 export const subscribe: SubscribeMeshFn = (...args) => getBuiltGraphClient().then(({ subscribe }) => subscribe(...args));
 export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(globalContext?: TGlobalContext) {
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
-  return getSdk<TOperationContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
+  return getSdk<TOperationContext, TGlobalContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
 export type CandlesticksQueryQueryVariables = Exact<{
   productId: Scalars['BigInt'];
@@ -4878,7 +4892,7 @@ export type PaginatedAllMarketOrdersQueryQueryVariables = Exact<{
 
 
 export type PaginatedAllMarketOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
+    Pick<Order, 'id' | 'digest' | 'type' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
 
@@ -4890,7 +4904,7 @@ export type PaginatedSubaccountOrdersQueryQueryVariables = Exact<{
 
 
 export type PaginatedSubaccountOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
+    Pick<Order, 'id' | 'digest' | 'type' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
 
@@ -4903,7 +4917,7 @@ export type PaginatedSubaccountOrdersForProductsQueryQueryVariables = Exact<{
 
 
 export type PaginatedSubaccountOrdersForProductsQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
+    Pick<Order, 'id' | 'digest' | 'type' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
 
@@ -4914,12 +4928,12 @@ export type OrderByDigestQueryQueryVariables = Exact<{
 
 
 export type OrderByDigestQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
+    Pick<Order, 'id' | 'digest' | 'type' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
     & { subaccount: Pick<Subaccount, 'subaccountId'> }
   )> };
 
 export type OrderEntityFieldsFragmentFragment = (
-  Pick<Order, 'id' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
+  Pick<Order, 'id' | 'digest' | 'type' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmountX18' | 'totalAmount' | 'quoteAmountX18' | 'collectedFeeX18'>
   & { subaccount: Pick<Subaccount, 'subaccountId'> }
 );
 
@@ -4954,7 +4968,7 @@ export type SubaccountSettlementEventHistoryQueryQueryVariables = Exact<{
 }>;
 
 
-export type SubaccountSettlementEventHistoryQueryQuery = { settlePnlEvents: Array<Pick<SettlePnlEvent, 'id' | 'blockTime' | 'productId' | 'amount' | 'positionAmount'>> };
+export type SubaccountSettlementEventHistoryQueryQuery = { settlePnlEvents: Array<Pick<SettlePnlEvent, 'id' | 'blockTime' | 'productId' | 'amount' | 'positionAmount' | 'markPriceX18'>> };
 
 export type SubaccountOrderFillsQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
@@ -4989,6 +5003,7 @@ export const OrderEntityFieldsFragmentFragmentDoc = gql`
     fragment OrderEntityFieldsFragment on Order {
   id
   digest
+  type
   priceX18
   productId
   subaccount {
@@ -5168,6 +5183,7 @@ export const SubaccountSettlementEventHistoryQueryDocument = gql`
     productId
     amount
     positionAmount
+    markPriceX18
   }
 }
     ` as unknown as DocumentNode<SubaccountSettlementEventHistoryQueryQuery, SubaccountSettlementEventHistoryQueryQueryVariables>;
