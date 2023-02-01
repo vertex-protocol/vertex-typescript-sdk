@@ -30,9 +30,9 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint64",
+        "internalType": "bytes32",
         "name": "subaccount",
-        "type": "uint64"
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -79,9 +79,9 @@
             "type": "uint32"
           },
           {
-            "internalType": "uint64",
-            "name": "subaccountId",
-            "type": "uint64"
+            "internalType": "bytes32",
+            "name": "subaccount",
+            "type": "bytes32"
           },
           {
             "internalType": "int128",
@@ -112,9 +112,9 @@
         "type": "uint32"
       },
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       },
       {
         "internalType": "int128",
@@ -130,19 +130,118 @@
   {
     "inputs": [
       {
-        "internalType": "uint64",
-        "name": "liquidateeId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "liquidatee",
+        "type": "bytes32"
       },
       {
-        "internalType": "uint64",
-        "name": "liquidatorId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "liquidator",
+        "type": "bytes32"
       }
     ],
     "name": "decomposeLps",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getBalance",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "int128",
+            "name": "amount",
+            "type": "int128"
+          },
+          {
+            "internalType": "int128",
+            "name": "vQuoteBalance",
+            "type": "int128"
+          },
+          {
+            "internalType": "int128",
+            "name": "lastCumulativeFundingX18",
+            "type": "int128"
+          }
+        ],
+        "internalType": "struct IPerpEngine.Balance",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getBalances",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "int128",
+            "name": "amount",
+            "type": "int128"
+          },
+          {
+            "internalType": "int128",
+            "name": "lastCumulativeFundingX18",
+            "type": "int128"
+          }
+        ],
+        "internalType": "struct IPerpEngine.LpBalance",
+        "name": "",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "int128",
+            "name": "amount",
+            "type": "int128"
+          },
+          {
+            "internalType": "int128",
+            "name": "vQuoteBalance",
+            "type": "int128"
+          },
+          {
+            "internalType": "int128",
+            "name": "lastCumulativeFundingX18",
+            "type": "int128"
+          }
+        ],
+        "internalType": "struct IPerpEngine.Balance",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -169,6 +268,52 @@
       }
     ],
     "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      }
+    ],
+    "name": "getLpState",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "int128",
+            "name": "supply",
+            "type": "int128"
+          },
+          {
+            "internalType": "int128",
+            "name": "lastCumulativeFundingX18",
+            "type": "int128"
+          },
+          {
+            "internalType": "int128",
+            "name": "cumulativeFundingPerLpX18",
+            "type": "int128"
+          },
+          {
+            "internalType": "int128",
+            "name": "base",
+            "type": "int128"
+          },
+          {
+            "internalType": "int128",
+            "name": "quote",
+            "type": "int128"
+          }
+        ],
+        "internalType": "struct IPerpEngine.LpState",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -211,9 +356,9 @@
         "type": "uint32"
       },
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       }
     ],
     "name": "getSettlementState",
@@ -333,9 +478,9 @@
         "type": "uint32"
       },
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       }
     ],
     "name": "getStateAndBalance",
@@ -401,9 +546,9 @@
         "type": "uint32"
       },
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       }
     ],
     "name": "getStatesAndBalances",
@@ -518,9 +663,9 @@
         "type": "uint32"
       },
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       }
     ],
     "name": "hasBalance",
@@ -575,9 +720,9 @@
         "type": "uint32"
       },
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       },
       {
         "internalType": "int128",
@@ -603,8 +748,13 @@
   {
     "inputs": [
       {
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
+      },
+      {
         "internalType": "uint256",
-        "name": "request",
+        "name": "productIds",
         "type": "uint256"
       }
     ],
@@ -622,9 +772,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       },
       {
         "internalType": "int128",
@@ -651,9 +801,9 @@
         "type": "uint32"
       },
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       },
       {
         "internalType": "int128",

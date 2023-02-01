@@ -419,9 +419,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       },
       {
         "internalType": "uint32[]",
@@ -643,9 +643,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       },
       {
         "internalType": "uint32[]",
@@ -898,9 +898,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       }
     ],
     "name": "getSubaccountInfo",
@@ -908,9 +908,9 @@
       {
         "components": [
           {
-            "internalType": "uint64",
-            "name": "subaccountId",
-            "type": "uint64"
+            "internalType": "bytes32",
+            "name": "subaccount",
+            "type": "bytes32"
           },
           {
             "internalType": "bool",
@@ -1374,9 +1374,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       },
       {
         "components": [
@@ -1401,9 +1401,9 @@
       {
         "components": [
           {
-            "internalType": "uint64",
-            "name": "subaccountId",
-            "type": "uint64"
+            "internalType": "bytes32",
+            "name": "subaccount",
+            "type": "bytes32"
           },
           {
             "internalType": "bool",
