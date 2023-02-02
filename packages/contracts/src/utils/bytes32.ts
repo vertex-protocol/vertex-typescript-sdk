@@ -15,10 +15,10 @@ export function toBytes32(owner: string, subaccountName: string): Bytes {
   }
 
   const bytes32 = new Uint8Array(32);
-  for (const i = 0; i < address.length; i++) {
+  for (let i = 0; i < address.length; i++) {
     bytes32[i] = address[i];
   }
-  for (const i = 0; i < name.length; i++) {
+  for (let i = 0; i < name.length; i++) {
     bytes32[i] = name[i];
   }
 
@@ -41,7 +41,7 @@ export function fromBytes32(bytes: Bytes): {
   const address = new Uint8Array(20);
   const name = new Uint8Array();
 
-  for (const i = 0; i < bytes.length; i++) {
+  for (let i = 0; i < bytes.length; i++) {
     if (i < 20) {
       address[i] = bytes[i];
     } else {
