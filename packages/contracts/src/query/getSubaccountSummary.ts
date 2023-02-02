@@ -5,7 +5,7 @@ import {
 } from '../common';
 import { toBigDecimal } from '@vertex-protocol/utils';
 import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
-import { toBytes32 } from '../utils/bytes32';
+import { subAccountToBytes32 } from '../utils/bytes32';
 
 /**
  * Encapsulates health for an account or an account balance
@@ -34,7 +34,7 @@ export async function getSubaccountSummary({
   'querier',
   GetSubaccountSummaryParams
 >): Promise<SubaccountSummaryResponse> {
-  const subaccount = toBytes32(sender, subaccountName);
+  const subaccount = subAccountToBytes32(sender, subaccountName);
   const subaccountInfo = await querier.getSubaccountInfo(subaccount);
 
   const balances: SubaccountSummaryResponse['balances'] = [];

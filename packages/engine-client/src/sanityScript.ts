@@ -4,7 +4,7 @@ import {
   IClearinghouse__factory,
   IEndpoint__factory,
   MockERC20__factory,
-  toBytes32,
+  subAccountToBytes32,
 } from '@vertex-protocol/contracts';
 import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
@@ -54,7 +54,7 @@ async function main() {
   // Wait for slow mode
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  const subaccount = toBytes32(signer.address, 'default');
+  const subaccount = subAccountToBytes32(signer.address, 'default');
   let subaccountId;
   while (true) {
     subaccountId = BigNumber.from(await endpoint.getSubaccountId(subaccount));

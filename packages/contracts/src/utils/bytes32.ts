@@ -6,7 +6,10 @@ import { Bytes, toUtf8Bytes, toUtf8String } from 'ethers/lib/utils';
  * @param subaccountName subaccount name
  * @returns 32 bytes representation of a subaccount
  */
-export function toBytes32(owner: string, subaccountName: string): Bytes {
+export function subAccountToBytes32(
+  owner: string,
+  subaccountName: string,
+): Bytes {
   const address = toUtf8Bytes(owner);
   const name = toUtf8Bytes(subaccountName);
 
@@ -30,7 +33,7 @@ export function toBytes32(owner: string, subaccountName: string): Bytes {
  * @param bytes 32 bytes representaion of a subaccount where bytes[0:20]=owner & bytes[20:32]=subaccountName
  * @returns subaccount owner + name
  */
-export function fromBytes32(bytes: Bytes): {
+export function subaccountFromBytes32(bytes: Bytes): {
   owner: string;
   subaccountName: string;
 } {

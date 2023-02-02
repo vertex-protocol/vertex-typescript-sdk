@@ -2,9 +2,8 @@ import { EngineBaseClient } from './EngineBaseClient';
 import {
   encodeSignedOrder,
   MarketWithProduct,
-  toBytes32,
+  subAccountToBytes32,
 } from '@vertex-protocol/contracts';
-import { BigNumber } from 'ethers';
 import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
 import {
   EngineServerStatusResponse,
@@ -58,7 +57,10 @@ export class EngineQueryClient extends EngineBaseClient {
   async getSubaccountSummary(
     params: GetEngineSubaccountSummaryParams,
   ): Promise<GetEngineSubaccountSummaryResponse> {
-    const subaccount = toBytes32(params.sender, params.subaccountName);
+    const subaccount = subAccountToBytes32(
+      params.sender,
+      params.subaccountName,
+    );
     const baseResponse = await this.query('subaccount_info', {
       subaccount,
     });
@@ -74,7 +76,10 @@ export class EngineQueryClient extends EngineBaseClient {
   async getEstimatedSubaccountSummary(
     params: GetEngineEstimatedSubaccountSummaryParams,
   ): Promise<GetEngineSubaccountSummaryResponse> {
-    const subaccount = toBytes32(params.sender, params.subaccountName);
+    const subaccount = subAccountToBytes32(
+      params.sender,
+      params.subaccountName,
+    );
     const queryParams: EngineServerSubaccountInfoQueryParams = {
       subaccount,
       txns: params.txs.map(
