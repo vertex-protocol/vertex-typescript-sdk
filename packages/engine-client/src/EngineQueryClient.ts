@@ -2,6 +2,7 @@ import { EngineBaseClient } from './EngineBaseClient';
 import {
   encodeSignedOrder,
   MarketWithProduct,
+  toBytes32,
 } from '@vertex-protocol/contracts';
 import { BigNumber } from 'ethers';
 import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
@@ -49,21 +50,6 @@ export class EngineQueryClient extends EngineBaseClient {
   }
 
   /**
-   * Retrieves the subaccount ID reflective of the offchain engine
-   * @param params
-   */
-  async getSubaccountId(
-    params: GetEngineSubaccountIdParams,
-  ): Promise<GetEngineSubaccountIdResponse> {
-    const baseResponse = await this.query('subaccount_id', {
-      address: params.address,
-      subaccount_name: params.subaccountName,
-    });
-
-    return baseResponse.subaccount_id;
-  }
-
-  /**
    * Retrieves a subaccount summary reflective of the state within the offchain engine. This adheres to the
    * same return interface as the contract version
    *
@@ -72,8 +58,9 @@ export class EngineQueryClient extends EngineBaseClient {
   async getSubaccountSummary(
     params: GetEngineSubaccountSummaryParams,
   ): Promise<GetEngineSubaccountSummaryResponse> {
+    const subaccount = toBytes32(params.sender, params.subaccountName);
     const baseResponse = await this.query('subaccount_info', {
-      subaccount_id: BigNumber.from(params.subaccountId).toNumber(),
+      subaccount,
     });
 
     return mapSubaccountSummary(baseResponse);
@@ -87,9 +74,9 @@ export class EngineQueryClient extends EngineBaseClient {
   async getEstimatedSubaccountSummary(
     params: GetEngineEstimatedSubaccountSummaryParams,
   ): Promise<GetEngineSubaccountSummaryResponse> {
-    const subaccountId = BigNumber.from(params.subaccountId).toNumber();
+    const subaccount = toBytes32(params.sender, params.subaccountName);
     const queryParams: EngineServerSubaccountInfoQueryParams = {
-      subaccount_id: subaccountId,
+      subaccount,
       txns: params.txs.map(
         (
           tx,
@@ -101,7 +88,7 @@ export class EngineQueryClient extends EngineBaseClient {
               return {
                 burn_lp: {
                   product_id: tx.tx.productId,
-                  subaccount_id: subaccountId,
+                  subaccount,
                   amount_lp: tx.tx.amountLp.toString(),
                 },
               };
@@ -109,7 +96,7 @@ export class EngineQueryClient extends EngineBaseClient {
               return {
                 apply_delta: {
                   product_id: tx.tx.productId,
-                  subaccount_id: subaccountId,
+                  subaccount,
                   amount_delta: tx.tx.amountDelta.toString(),
                   v_quote_delta: tx.tx.vQuoteDelta.toString(),
                 },
@@ -118,7 +105,7 @@ export class EngineQueryClient extends EngineBaseClient {
               return {
                 mint_lp: {
                   product_id: tx.tx.productId,
-                  subaccount_id: subaccountId,
+                  subaccount,
                   amount_base: tx.tx.amountBase.toString(),
                   quote_amount_low: tx.tx.amountQuoteLow.toString(),
                   quote_amount_high: tx.tx.amountQuoteHigh.toString(),
@@ -129,7 +116,7 @@ export class EngineQueryClient extends EngineBaseClient {
       ),
     };
     const baseResponse = await this.query('subaccount_info', {
-      subaccount_id: queryParams.subaccount_id,
+      subaccount: queryParams.subaccount,
       txns: JSON.stringify(queryParams.txns),
     });
 

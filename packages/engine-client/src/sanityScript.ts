@@ -4,13 +4,9 @@ import {
   IClearinghouse__factory,
   IEndpoint__factory,
   MockERC20__factory,
+  toBytes32,
 } from '@vertex-protocol/contracts';
-import {
-  BigDecimal,
-  nowInSeconds,
-  toBigDecimal,
-  toFixedPoint,
-} from '@vertex-protocol/utils';
+import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
 import { OrderParamsWithoutNonce } from './types';
 
@@ -58,11 +54,10 @@ async function main() {
   // Wait for slow mode
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
+  const subaccount = toBytes32(signer.address, 'default');
   let subaccountId;
   while (true) {
-    subaccountId = BigNumber.from(
-      await clearinghouse.getSubaccountId(signer.address, 'default'),
-    );
+    subaccountId = BigNumber.from(await endpoint.getSubaccountId(subaccount));
     if (!subaccountId.isZero()) {
       break;
     }
@@ -73,7 +68,8 @@ async function main() {
   console.log('Querying subaccount');
 
   const subaccountInfo = await client.getSubaccountSummary({
-    subaccountId,
+    sender: signer.address,
+    subaccountName: 'default',
   });
   console.log('Subaccount info', JSON.stringify(subaccountInfo, null, 2));
 
@@ -161,7 +157,8 @@ async function main() {
   console.log('Done minting perp lp', mintPerpLpResult);
 
   const subaccountInfoAfterMintingLp = await client.getSubaccountSummary({
-    subaccountId,
+    sender: signer.address,
+    subaccountName: 'default',
   });
   console.log(
     'Subaccount info after LP mint',
@@ -199,7 +196,8 @@ async function main() {
   console.log('Done withdrawing collateral, result', withdrawResult);
 
   const subaccountInfoAtEnd = await client.getSubaccountSummary({
-    subaccountId,
+    sender: signer.address,
+    subaccountName: 'default',
   });
   console.log('Subaccount info', JSON.stringify(subaccountInfoAtEnd, null, 2));
 }

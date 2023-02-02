@@ -1,4 +1,4 @@
-import { BigNumberish } from 'ethers';
+import { BigNumberish, Bytes } from 'ethers';
 import {
   EngineServerPerpBalance,
   EngineServerPerpProduct,
@@ -16,12 +16,12 @@ export interface EngineServerSubaccountIdParams {
 }
 
 export interface EngineServerSubaccountInfoQueryParams {
-  subaccount_id: number;
+  subaccount: Bytes;
   txns?: Array<
     | {
         mint_lp: {
           product_id: number;
-          subaccount_id: number;
+          subaccount: Bytes;
           amount_base: string;
           quote_amount_low: string;
           quote_amount_high: string;
@@ -30,14 +30,14 @@ export interface EngineServerSubaccountInfoQueryParams {
     | {
         burn_lp: {
           product_id: number;
-          subaccount_id: number;
+          subaccount: Bytes;
           amount_lp: string;
         };
       }
     | {
         apply_delta: {
           product_id: number;
-          subaccount_id: number;
+          subaccount: Bytes;
           amount_delta: string;
           v_quote_delta: string;
         };

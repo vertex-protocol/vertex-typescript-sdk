@@ -7,7 +7,6 @@ import {
   calcPerpBalanceValue,
   calcSpotBalanceValue,
 } from './balanceValue';
-import { BytesLike } from 'ethers';
 
 export interface TotalPortfolioValues {
   // spot + spotLp + perpNotional + perpLp
