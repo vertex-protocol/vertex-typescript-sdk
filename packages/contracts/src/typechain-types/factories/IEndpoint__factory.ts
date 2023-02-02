@@ -41,9 +41,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "string",
+        internalType: "bytes12",
         name: "subaccountName",
-        type: "string",
+        type: "bytes12",
       },
       {
         internalType: "uint32",
@@ -94,6 +94,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getNumSubaccounts",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint32",
@@ -126,6 +139,75 @@ const _abi = [
         internalType: "int128",
         name: "",
         type: "int128",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "healthGroup",
+        type: "uint32",
+      },
+    ],
+    name: "getPricesX18",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "int128",
+            name: "spotPriceX18",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "perpPriceX18",
+            type: "int128",
+          },
+        ],
+        internalType: "struct IEndpoint.Prices",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint64",
+        name: "subaccountId",
+        type: "uint64",
+      },
+    ],
+    name: "getSubaccountById",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
+      },
+    ],
+    name: "getSubaccountId",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "",
+        type: "uint64",
       },
     ],
     stateMutability: "view",
@@ -188,7 +270,7 @@ const _abi = [
         type: "bytes[]",
       },
     ],
-    name: "submitTransactions",
+    name: "submitTransactionsChecked",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -18,9 +18,9 @@ const _abi = [
       },
       {
         indexed: true,
-        internalType: "uint64",
+        internalType: "bytes32",
         name: "subaccount",
-        type: "uint64",
+        type: "bytes32",
       },
       {
         indexed: false,
@@ -99,14 +99,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
+            type: "bytes32",
           },
           {
             internalType: "int128",
@@ -257,14 +252,9 @@ const _abi = [
               {
                 components: [
                   {
-                    internalType: "address",
+                    internalType: "bytes32",
                     name: "sender",
-                    type: "address",
-                  },
-                  {
-                    internalType: "string",
-                    name: "subaccountName",
-                    type: "string",
+                    type: "bytes32",
                   },
                   {
                     internalType: "int128",
@@ -331,14 +321,9 @@ const _abi = [
               {
                 components: [
                   {
-                    internalType: "address",
+                    internalType: "bytes32",
                     name: "sender",
-                    type: "address",
-                  },
-                  {
-                    internalType: "string",
-                    name: "subaccountName",
-                    type: "string",
+                    type: "bytes32",
                   },
                   {
                     internalType: "int128",
@@ -380,14 +365,9 @@ const _abi = [
               {
                 components: [
                   {
-                    internalType: "address",
+                    internalType: "bytes32",
                     name: "sender",
-                    type: "address",
-                  },
-                  {
-                    internalType: "string",
-                    name: "subaccountName",
-                    type: "string",
+                    type: "bytes32",
                   },
                   {
                     internalType: "int128",
@@ -440,14 +420,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
+            type: "bytes32",
           },
           {
             internalType: "uint32",

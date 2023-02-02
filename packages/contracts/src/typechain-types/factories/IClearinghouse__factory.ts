@@ -39,41 +39,16 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "name",
-        type: "string",
-      },
-      {
-        indexed: false,
-        internalType: "uint64",
-        name: "subaccount",
-        type: "uint64",
-      },
-    ],
-    name: "CreateSubaccount",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: true,
-        internalType: "uint64",
+        internalType: "bytes32",
         name: "liquidatorSubaccount",
-        type: "uint64",
+        type: "bytes32",
       },
       {
         indexed: true,
-        internalType: "uint64",
+        internalType: "bytes32",
         name: "liquidateeSubaccount",
-        type: "uint64",
+        type: "bytes32",
       },
       {
         indexed: true,
@@ -120,9 +95,9 @@ const _abi = [
       },
       {
         indexed: true,
-        internalType: "uint64",
+        internalType: "bytes32",
         name: "subaccount",
-        type: "uint64",
+        type: "bytes32",
       },
       {
         indexed: false,
@@ -157,14 +132,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
+            type: "bytes32",
           },
           {
             internalType: "uint32",
@@ -197,14 +167,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
+            type: "bytes32",
           },
           {
             internalType: "uint32",
@@ -231,11 +196,6 @@ const _abi = [
     inputs: [
       {
         components: [
-          {
-            internalType: "address",
-            name: "sender",
-            type: "address",
-          },
           {
             internalType: "uint128",
             name: "amount",
@@ -306,9 +266,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
       {
         internalType: "enum IProductEngine.HealthType",
@@ -379,19 +339,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "getNumSubaccounts",
-    outputs: [
-      {
-        internalType: "uint64",
-        name: "",
-        type: "uint64",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "uint32",
@@ -405,6 +352,37 @@ const _abi = [
         internalType: "int128",
         name: "",
         type: "int128",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "healthGroup",
+        type: "uint32",
+      },
+    ],
+    name: "getOraclePricesX18",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "int128",
+            name: "spotPriceX18",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "perpPriceX18",
+            type: "int128",
+          },
+        ],
+        internalType: "struct IEndpoint.Prices",
+        name: "",
+        type: "tuple",
       },
     ],
     stateMutability: "view",
@@ -489,49 +467,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        internalType: "string",
-        name: "subaccountName",
-        type: "string",
-      },
-    ],
-    name: "getSubaccountId",
-    outputs: [
-      {
-        internalType: "uint64",
-        name: "",
-        type: "uint64",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-    ],
-    name: "getSubaccountOwner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "getSupportedEngines",
     outputs: [
@@ -549,19 +484,14 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
+            type: "bytes32",
           },
           {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
-          },
-          {
-            internalType: "uint64",
-            name: "liquidateeId",
-            type: "uint64",
+            internalType: "bytes32",
+            name: "liquidatee",
+            type: "bytes32",
           },
           {
             internalType: "uint8",
@@ -599,14 +529,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
+            type: "bytes32",
           },
           {
             internalType: "uint32",
@@ -705,8 +630,13 @@ const _abi = [
       {
         components: [
           {
+            internalType: "bytes32[]",
+            name: "subaccounts",
+            type: "bytes32[]",
+          },
+          {
             internalType: "uint256[]",
-            name: "requests",
+            name: "productIds",
             type: "uint256[]",
           },
         ],
@@ -725,14 +655,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
+            type: "bytes32",
           },
           {
             internalType: "uint32",

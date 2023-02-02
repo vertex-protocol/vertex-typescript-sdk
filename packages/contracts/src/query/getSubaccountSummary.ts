@@ -1,18 +1,19 @@
-import { BigNumberish } from 'ethers';
 import {
   BalanceWithProduct,
   HealthStatusByType,
   WithContract,
 } from '../common';
-import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
+import { toBigDecimal } from '@vertex-protocol/utils';
 import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
+import { toBytes32 } from '../utils/bytes32';
 
 /**
  * Encapsulates health for an account or an account balance
  */
 
 export interface GetSubaccountSummaryParams {
-  subaccountId: BigNumberish;
+  sender: string;
+  subaccountName: string;
 }
 
 export interface SubaccountSummaryResponse {
@@ -26,13 +27,15 @@ export interface SubaccountSummaryResponse {
  * {@label CONTRACTS}
  */
 export async function getSubaccountSummary({
-  subaccountId,
+  sender,
+  subaccountName,
   querier,
 }: WithContract<
   'querier',
   GetSubaccountSummaryParams
 >): Promise<SubaccountSummaryResponse> {
-  const subaccountInfo = await querier.getSubaccountInfo(subaccountId);
+  const subaccount = toBytes32(sender, subaccountName);
+  const subaccountInfo = await querier.getSubaccountInfo(subaccount);
 
   const balances: SubaccountSummaryResponse['balances'] = [];
 

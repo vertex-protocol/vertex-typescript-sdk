@@ -43,8 +43,9 @@ export interface LiquidateSubaccountParams {
   // Address of sender
   sender: string;
   subaccountName: string;
-  // Subaccount ID being liquidated
-  liquidateeId: BigNumberish;
+  // Subaccount being liquidated
+  liquidateeOwner: string;
+  liquidateeName: string;
   // 0 = spread, 1 = long, 2 = short
   mode: number;
   // Spot & perp pair

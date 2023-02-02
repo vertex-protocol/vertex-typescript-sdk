@@ -65,9 +65,9 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "uint64",
-            name: "subaccountId",
-            type: "uint64",
+            internalType: "bytes32",
+            name: "subaccount",
+            type: "bytes32",
           },
           {
             internalType: "int128",
@@ -98,9 +98,9 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
       {
         internalType: "int128",
@@ -116,14 +116,14 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "liquidateeId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "liquidatee",
+        type: "bytes32",
       },
       {
-        internalType: "uint64",
-        name: "liquidatorId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "liquidator",
+        type: "bytes32",
       },
     ],
     name: "decomposeLps",
@@ -230,9 +230,9 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
       {
         internalType: "int128",
@@ -258,9 +258,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
       {
         internalType: "int128",
@@ -287,9 +287,9 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
       {
         internalType: "int128",
