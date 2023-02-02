@@ -38,7 +38,10 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
     params: GetSubaccountStateParams,
   ): Promise<GetSubaccountStateResponse | undefined> {
     const data = await this.graph.SubaccountStateQuery({
-      subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+      subaccountEntityId: getSubaccountEntityId(
+        params.subaccountOwner,
+        params.subaccountName,
+      ),
     });
     if (data.subaccount == null) {
       return {
@@ -97,7 +100,10 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
   ): Promise<GetPaginatedSubaccountModifyCollateralEventsResponse> {
     const baseResponse =
       await this.graph.SubaccountModifyCollateralEventHistoryQuery({
-        subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+        subaccountEntityId: getSubaccountEntityId(
+          params.subaccountOwner,
+          params.subaccountName,
+        ),
         maxTimeExclusive: params.maxTimeExclusive ?? nowInSeconds(),
         minTimeInclusive: params.minTimeInclusive ?? 0,
         skip: params.skip,
@@ -116,7 +122,10 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
   ): Promise<GetPaginatedSubaccountLiquidationEventsResponse> {
     const baseResponse =
       await this.graph.SubaccountLiquidationEventHistoryQuery({
-        subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+        subaccountEntityId: getSubaccountEntityId(
+          params.subaccountOwner,
+          params.subaccountName,
+        ),
         maxTimeExclusive: params.maxTimeExclusive ?? nowInSeconds(),
         minTimeInclusive: params.minTimeInclusive ?? 0,
         skip: params.skip,
@@ -135,7 +144,10 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
   ): Promise<GetPaginatedSubaccountSettlementEventsResponse> {
     const baseResponse = await this.graph.SubaccountSettlementEventHistoryQuery(
       {
-        subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+        subaccountEntityId: getSubaccountEntityId(
+          params.subaccountOwner,
+          params.subaccountName,
+        ),
         maxTimeExclusive: params.maxTimeExclusive ?? nowInSeconds(),
         minTimeInclusive: params.minTimeInclusive ?? 0,
         skip: params.skip,
@@ -154,7 +166,10 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
     params: PaginatedSubaccountOrderFillsParams,
   ): Promise<PaginatedSubaccountOrderFillsResponse> {
     const baseResponse = await this.graph.SubaccountOrderFillsQuery({
-      subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+      subaccountEntityId: getSubaccountEntityId(
+        params.subaccountOwner,
+        params.subaccountName,
+      ),
       skip: params.skip,
       first: params.first,
     });

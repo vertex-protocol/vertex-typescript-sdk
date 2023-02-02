@@ -2,6 +2,7 @@ import { createVertexClient } from './createVertexClient';
 import { ethers, Wallet } from 'ethers';
 import { nowInSeconds } from '@vertex-protocol/utils';
 import { OrderActionParams } from './apis/market';
+import { subAccountToBytes32 } from '@vertex-protocol/contracts';
 
 function getNonce() {
   return Date.now();
@@ -76,21 +77,28 @@ async function main() {
     depth: 100,
   });
 
-  const subaccountId = await vertexClient.subaccount.getSubaccountId({
-    address: await signer.getAddress(),
-    name: 'default',
-  });
+  const subaccount = subAccountToBytes32(await signer.getAddress(), 'default');
+
   // State from engine
-  await vertexClient.subaccount.getEngineSubaccountSummary({ subaccountId });
+  await vertexClient.subaccount.getEngineSubaccountSummary({
+    sender: await signer.getAddress(),
+    subaccountName: 'default',
+  });
   // State from Arbitrum
-  await vertexClient.subaccount.getSubaccountSummary({ subaccountId });
+  await vertexClient.subaccount.getSubaccountSummary({
+    sender: await signer.getAddress(),
+    subaccountName: 'default',
+  });
   await vertexClient.market.getOpenSubaccountOrders({
     sender: await signer.getAddress(),
     subaccountName: 'default',
     productId: 1,
   });
 
-  await vertexClient.context.graph.getSubaccountOrders({ subaccountId });
+  await vertexClient.context.graph.getSubaccountOrders({
+    subaccountOwner: await signer.getAddress(),
+    subaccountName: 'default',
+  });
 
   await vertexClient.spot.withdraw({
     subaccountName: 'default',

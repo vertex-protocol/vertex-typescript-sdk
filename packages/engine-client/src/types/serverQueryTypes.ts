@@ -10,11 +10,6 @@ export interface EngineServerNoncesParams {
   address: string;
 }
 
-export interface EngineServerSubaccountIdParams {
-  address: string;
-  subaccount_name: string;
-}
-
 export interface EngineServerSubaccountInfoQueryParams {
   subaccount: Bytes;
   txns?: Array<
@@ -99,7 +94,6 @@ export interface EngineServerQueryRequestByType {
   status: Record<string, never>;
   nonces: EngineServerNoncesParams;
   all_products: Record<string, never>;
-  subaccount_id: EngineServerSubaccountIdParams;
   subaccount_info: Omit<EngineServerSubaccountInfoQueryParams, 'txns'> & {
     // JSON serialized txns
     txns?: string;
@@ -128,13 +122,9 @@ export interface EngineServerNoncesResponse {
   tx_nonce: number;
 }
 
-export interface EngineServerSubaccountIdResponse {
-  subaccount_id: number;
-}
-
 export interface EngineServerSubaccountInfoResponse {
   exists: boolean;
-  subaccount_id: BigNumberish;
+  subaccount: Bytes;
   healths: {
     health: BigNumberish;
     assets: BigNumberish;
@@ -210,7 +200,6 @@ export interface EngineServerMaxWithdrawableResponse {
 export interface EngineServerQueryResponseByType {
   status: EngineServerStatusResponse;
   nonces: EngineServerNoncesResponse;
-  subaccount_id: EngineServerSubaccountIdResponse;
   subaccount_info: EngineServerSubaccountInfoResponse;
   all_products: EngineServerAllProductsResponse;
   order: EngineServerGetOrderResponse;

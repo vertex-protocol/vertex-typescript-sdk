@@ -23,8 +23,6 @@ import {
   GetEngineOrderResponse,
   GetEngineSubaccountFeeRatesParams,
   GetEngineSubaccountFeeRatesResponse,
-  GetEngineSubaccountIdParams,
-  GetEngineSubaccountIdResponse,
   GetEngineSubaccountOrdersParams,
   GetEngineSubaccountOrdersResponse,
   GetEngineSubaccountSummaryParams,

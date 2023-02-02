@@ -3,8 +3,8 @@
  * @packageDocumentation
  */
 
-export function getSubaccountEntityId(subaccountId: number) {
-  return `subaccount-${subaccountId}`;
+export function getSubaccountEntityId(owner: string, name: string) {
+  return `subaccount-${owner}-${name}`;
 }
 
 export function getProductEntityId(productId: number) {

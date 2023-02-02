@@ -28,14 +28,16 @@ export type AllMarketOrdersResponse =
   PaginatedAllMarketOrdersQueryQuery['orders'];
 
 export interface SubaccountOrdersParams extends PaginationParams {
-  subaccountId: number;
+  subaccountOwner: string;
+  subaccountName: string;
 }
 
 export type SubaccountOrdersResponse =
   PaginatedSubaccountOrdersQueryQuery['orders'];
 
 export interface SubaccountOrdersForProductsParams extends PaginationParams {
-  subaccountId: number;
+  subaccountOwner: string;
+  subaccountName: string;
   productIds: number[];
 }
 

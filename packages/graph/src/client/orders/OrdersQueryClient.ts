@@ -52,7 +52,10 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
     params: SubaccountOrdersParams,
   ): Promise<SubaccountOrdersResponse> {
     const data = await this.graph.PaginatedSubaccountOrdersQuery({
-      subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+      subaccountEntityId: getSubaccountEntityId(
+        params.subaccountOwner,
+        params.subaccountName,
+      ),
       first: params.first,
       skip: params.skip,
     });
@@ -68,7 +71,10 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
     params: SubaccountOrdersForProductsParams,
   ): Promise<SubaccountOrdersForProductsResponse> {
     const data = await this.graph.PaginatedSubaccountOrdersForProductsQuery({
-      subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+      subaccountEntityId: getSubaccountEntityId(
+        params.subaccountOwner,
+        params.subaccountName,
+      ),
       allowedProductIds: params.productIds,
       first: params.first,
       skip: params.skip,

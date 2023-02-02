@@ -148,10 +148,6 @@ input Market_filter {
   id_not_in: [ID!]
   clearinghouse: Bytes
   clearinghouse_not: Bytes
-  clearinghouse_gt: Bytes
-  clearinghouse_lt: Bytes
-  clearinghouse_gte: Bytes
-  clearinghouse_lte: Bytes
   clearinghouse_in: [Bytes!]
   clearinghouse_not_in: [Bytes!]
   clearinghouse_contains: Bytes
@@ -166,10 +162,6 @@ input Market_filter {
   productId_not_in: [BigInt!]
   orderbook: Bytes
   orderbook_not: Bytes
-  orderbook_gt: Bytes
-  orderbook_lt: Bytes
-  orderbook_gte: Bytes
-  orderbook_lte: Bytes
   orderbook_in: [Bytes!]
   orderbook_not_in: [Bytes!]
   orderbook_contains: Bytes
@@ -273,10 +265,6 @@ input PerpEngine_filter {
   id_not_in: [ID!]
   clearinghouse: Bytes
   clearinghouse_not: Bytes
-  clearinghouse_gt: Bytes
-  clearinghouse_lt: Bytes
-  clearinghouse_gte: Bytes
-  clearinghouse_lte: Bytes
   clearinghouse_in: [Bytes!]
   clearinghouse_not_in: [Bytes!]
   clearinghouse_contains: Bytes
@@ -953,10 +941,6 @@ input SpotEngine_filter {
   id_not_in: [ID!]
   clearinghouse: Bytes
   clearinghouse_not: Bytes
-  clearinghouse_gt: Bytes
-  clearinghouse_lt: Bytes
-  clearinghouse_gte: Bytes
-  clearinghouse_lte: Bytes
   clearinghouse_in: [Bytes!]
   clearinghouse_not_in: [Bytes!]
   clearinghouse_contains: Bytes
