@@ -1,9 +1,9 @@
 {
   "nodeUrl": "https://goerli-rollup.arbitrum.io/rpc",
   "explorerUrl": "https://goerli-rollup-explorer.arbitrum.io",
-  "subgraphCoreUrl": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-dev-core",
-  "subgraphMarketsUrl": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-dev-markets",
-  "subgraphCandleSticksUrl": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-dev-candlesticks",
+  "subgraphCoreUrl": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-core",
+  "subgraphMarketsUrl": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets",
+  "subgraphCandleSticksUrl": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-candlesticks",
   "startBlock": 6399166,
   "deployer": "0x3c06e307BA6Ab81E8Ff6661c1559ce8027744AE5",
   "quote": "0x179522635726710Dd7D2035a81d856de4Aa7836c",
