@@ -61,7 +61,10 @@ export interface CreateVertexClientContextSignerOpts
   engineSigningChainId?: number;
 }
 
-export type CreateVertexClientContextOpts = VertexClientContextOpts | 'testnet';
+export type CreateVertexClientContextOpts =
+  | VertexClientContextOpts
+  | 'dev'
+  | 'testnet';
 
 /**
  * Utility function to create client context from options
@@ -90,6 +93,22 @@ export async function createClientContext(
             candlesticksEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.candlesticks,
           },
           offchainEngineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
+        };
+      } else if (opts === 'dev') {
+        return {
+          contracts: {
+            querierAddress: VERTEX_DEPLOYMENTS.dev.querier,
+            spotEngineAddress: VERTEX_DEPLOYMENTS.dev.spotEngine,
+            perpEngineAddress: VERTEX_DEPLOYMENTS.dev.perpEngine,
+            clearinghouseAddress: VERTEX_DEPLOYMENTS.dev.clearinghouse,
+            endpointAddress: VERTEX_DEPLOYMENTS.dev.endpoint,
+          },
+          graph: {
+            coreEndpoint: GRAPH_CLIENT_ENDPOINTS.dev.core,
+            marketsEndpoint: GRAPH_CLIENT_ENDPOINTS.dev.markets,
+            candlesticksEndpoint: GRAPH_CLIENT_ENDPOINTS.dev.candlesticks,
+          },
+          offchainEngineEndpoint: ENGINE_CLIENT_ENDPOINTS.dev,
         };
       } else {
         return opts;
