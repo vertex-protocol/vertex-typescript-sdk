@@ -63,10 +63,7 @@ export class EngineExecuteClient extends EngineBaseClient {
 
     return this.execute('withdraw_collateral', {
       signature,
-      tx: getVertexEIP712Values(
-        'withdraw_collateral',
-        tx,
-      ) as unknown as WithdrawCollateralParams,
+      tx,
       spot_leverage: params.spotLeverage ?? null,
     });
   }

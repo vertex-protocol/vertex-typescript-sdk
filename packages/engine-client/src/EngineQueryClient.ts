@@ -2,6 +2,7 @@ import { EngineBaseClient } from './EngineBaseClient';
 import {
   encodeSignedOrder,
   MarketWithProduct,
+  subaccountFromBytes32,
   subaccountToBytes32,
 } from '@vertex-protocol/contracts';
 import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
@@ -212,11 +213,13 @@ export class EngineQueryClient extends EngineBaseClient {
       product_id: params.productId,
     });
 
+    const subaccount = subaccountFromBytes32(baseResponse.sender);
+
     return {
       orders: baseResponse.orders.map(mapEngineServerOrder),
       productId: params.productId,
-      sender: baseResponse.sender,
-      subaccountName: baseResponse.subaccount_name,
+      sender: subaccount.owner,
+      subaccountName: subaccount.name,
     };
   }
 

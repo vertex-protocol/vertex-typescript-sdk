@@ -35,7 +35,7 @@ export function subaccountToBytes32(
  */
 export function subaccountFromBytes32(bytes: Bytes): {
   owner: string;
-  subaccountName: string;
+  name: string;
 } {
   if (bytes.length != 32) {
     throw new Error('input must be 32 bytes');
@@ -54,6 +54,6 @@ export function subaccountFromBytes32(bytes: Bytes): {
 
   return {
     owner: toUtf8String(address),
-    subaccountName: toUtf8String(name),
+    name: toUtf8String(name),
   };
 }

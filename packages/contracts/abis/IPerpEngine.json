@@ -756,6 +756,11 @@
         "internalType": "uint256",
         "name": "productIds",
         "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "inLiquidation",
+        "type": "bool"
       }
     ],
     "name": "settlePnl",
