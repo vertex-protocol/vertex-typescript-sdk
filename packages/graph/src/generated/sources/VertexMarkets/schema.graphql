@@ -285,7 +285,7 @@ type PerpProduct {
   productId: BigInt!
   market: Market!
   engine: PerpEngine!
-  priceX18: BigInt!
+  liquidationPriceX18: BigInt!
   markPriceX18: BigInt!
   cumulativeFundingLongX18: BigInt!
   cumulativeFundingShortX18: BigInt!
@@ -303,7 +303,7 @@ type PerpProductSnapshot {
   period: BigInt!
   periodIndex: BigInt!
   product: PerpProduct!
-  priceX18: BigInt!
+  liquidationPriceX18: BigInt!
   markPriceX18: BigInt!
   cumulativeFundingLongX18: BigInt!
   cumulativeFundingShortX18: BigInt!
@@ -361,14 +361,14 @@ input PerpProductSnapshot_filter {
   product_not_ends_with: String
   product_not_ends_with_nocase: String
   product_: PerpProduct_filter
-  priceX18: BigInt
-  priceX18_not: BigInt
-  priceX18_gt: BigInt
-  priceX18_lt: BigInt
-  priceX18_gte: BigInt
-  priceX18_lte: BigInt
-  priceX18_in: [BigInt!]
-  priceX18_not_in: [BigInt!]
+  liquidationPriceX18: BigInt
+  liquidationPriceX18_not: BigInt
+  liquidationPriceX18_gt: BigInt
+  liquidationPriceX18_lt: BigInt
+  liquidationPriceX18_gte: BigInt
+  liquidationPriceX18_lte: BigInt
+  liquidationPriceX18_in: [BigInt!]
+  liquidationPriceX18_not_in: [BigInt!]
   markPriceX18: BigInt
   markPriceX18_not: BigInt
   markPriceX18_gt: BigInt
@@ -450,7 +450,7 @@ enum PerpProductSnapshot_orderBy {
   period
   periodIndex
   product
-  priceX18
+  liquidationPriceX18
   markPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18
@@ -521,14 +521,14 @@ input PerpProduct_filter {
   engine_not_ends_with: String
   engine_not_ends_with_nocase: String
   engine_: PerpEngine_filter
-  priceX18: BigInt
-  priceX18_not: BigInt
-  priceX18_gt: BigInt
-  priceX18_lt: BigInt
-  priceX18_gte: BigInt
-  priceX18_lte: BigInt
-  priceX18_in: [BigInt!]
-  priceX18_not_in: [BigInt!]
+  liquidationPriceX18: BigInt
+  liquidationPriceX18_not: BigInt
+  liquidationPriceX18_gt: BigInt
+  liquidationPriceX18_lt: BigInt
+  liquidationPriceX18_gte: BigInt
+  liquidationPriceX18_lte: BigInt
+  liquidationPriceX18_in: [BigInt!]
+  liquidationPriceX18_not_in: [BigInt!]
   markPriceX18: BigInt
   markPriceX18_not: BigInt
   markPriceX18_gt: BigInt
@@ -611,7 +611,7 @@ enum PerpProduct_orderBy {
   productId
   market
   engine
-  priceX18
+  liquidationPriceX18
   markPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18

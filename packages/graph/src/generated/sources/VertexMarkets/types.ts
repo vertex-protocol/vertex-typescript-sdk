@@ -302,7 +302,7 @@ export type PerpProduct = {
   productId: Scalars['BigInt'];
   market: Market;
   engine: PerpEngine;
-  priceX18: Scalars['BigInt'];
+  liquidationPriceX18: Scalars['BigInt'];
   markPriceX18: Scalars['BigInt'];
   cumulativeFundingLongX18: Scalars['BigInt'];
   cumulativeFundingShortX18: Scalars['BigInt'];
@@ -329,7 +329,7 @@ export type PerpProductSnapshot = {
   period: Scalars['BigInt'];
   periodIndex: Scalars['BigInt'];
   product: PerpProduct;
-  priceX18: Scalars['BigInt'];
+  liquidationPriceX18: Scalars['BigInt'];
   markPriceX18: Scalars['BigInt'];
   cumulativeFundingLongX18: Scalars['BigInt'];
   cumulativeFundingShortX18: Scalars['BigInt'];
@@ -387,14 +387,14 @@ export type PerpProductSnapshot_filter = {
   product_not_ends_with?: InputMaybe<Scalars['String']>;
   product_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   product_?: InputMaybe<PerpProduct_filter>;
-  priceX18?: InputMaybe<Scalars['BigInt']>;
-  priceX18_not?: InputMaybe<Scalars['BigInt']>;
-  priceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  priceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  priceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  priceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  priceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  priceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationPriceX18?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   markPriceX18?: InputMaybe<Scalars['BigInt']>;
   markPriceX18_not?: InputMaybe<Scalars['BigInt']>;
   markPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -476,7 +476,7 @@ export type PerpProductSnapshot_orderBy =
   | 'period'
   | 'periodIndex'
   | 'product'
-  | 'priceX18'
+  | 'liquidationPriceX18'
   | 'markPriceX18'
   | 'cumulativeFundingLongX18'
   | 'cumulativeFundingShortX18'
@@ -546,14 +546,14 @@ export type PerpProduct_filter = {
   engine_not_ends_with?: InputMaybe<Scalars['String']>;
   engine_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   engine_?: InputMaybe<PerpEngine_filter>;
-  priceX18?: InputMaybe<Scalars['BigInt']>;
-  priceX18_not?: InputMaybe<Scalars['BigInt']>;
-  priceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  priceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  priceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  priceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  priceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  priceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationPriceX18?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   markPriceX18?: InputMaybe<Scalars['BigInt']>;
   markPriceX18_not?: InputMaybe<Scalars['BigInt']>;
   markPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -636,7 +636,7 @@ export type PerpProduct_orderBy =
   | 'productId'
   | 'market'
   | 'engine'
-  | 'priceX18'
+  | 'liquidationPriceX18'
   | 'markPriceX18'
   | 'cumulativeFundingLongX18'
   | 'cumulativeFundingShortX18'

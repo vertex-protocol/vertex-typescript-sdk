@@ -1446,7 +1446,7 @@ export type PerpProduct = {
   productId: Scalars['BigInt'];
   market: Market;
   engine: PerpEngine;
-  priceX18: Scalars['BigInt'];
+  liquidationPriceX18: Scalars['BigInt'];
   markPriceX18: Scalars['BigInt'];
   cumulativeFundingLongX18: Scalars['BigInt'];
   cumulativeFundingShortX18: Scalars['BigInt'];
@@ -1473,7 +1473,7 @@ export type PerpProductSnapshot = {
   period: Scalars['BigInt'];
   periodIndex: Scalars['BigInt'];
   product: PerpProduct;
-  priceX18: Scalars['BigInt'];
+  liquidationPriceX18: Scalars['BigInt'];
   markPriceX18: Scalars['BigInt'];
   cumulativeFundingLongX18: Scalars['BigInt'];
   cumulativeFundingShortX18: Scalars['BigInt'];
@@ -1531,14 +1531,14 @@ export type PerpProductSnapshot_filter = {
   product_not_ends_with?: InputMaybe<Scalars['String']>;
   product_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   product_?: InputMaybe<PerpProduct_filter>;
-  priceX18?: InputMaybe<Scalars['BigInt']>;
-  priceX18_not?: InputMaybe<Scalars['BigInt']>;
-  priceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  priceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  priceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  priceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  priceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  priceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationPriceX18?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   markPriceX18?: InputMaybe<Scalars['BigInt']>;
   markPriceX18_not?: InputMaybe<Scalars['BigInt']>;
   markPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1620,7 +1620,7 @@ export type PerpProductSnapshot_orderBy =
   | 'period'
   | 'periodIndex'
   | 'product'
-  | 'priceX18'
+  | 'liquidationPriceX18'
   | 'markPriceX18'
   | 'cumulativeFundingLongX18'
   | 'cumulativeFundingShortX18'
@@ -1690,14 +1690,14 @@ export type PerpProduct_filter = {
   engine_not_ends_with?: InputMaybe<Scalars['String']>;
   engine_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   engine_?: InputMaybe<PerpEngine_filter>;
-  priceX18?: InputMaybe<Scalars['BigInt']>;
-  priceX18_not?: InputMaybe<Scalars['BigInt']>;
-  priceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  priceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  priceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  priceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  priceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  priceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationPriceX18?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  liquidationPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  liquidationPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   markPriceX18?: InputMaybe<Scalars['BigInt']>;
   markPriceX18_not?: InputMaybe<Scalars['BigInt']>;
   markPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1780,7 +1780,7 @@ export type PerpProduct_orderBy =
   | 'productId'
   | 'market'
   | 'engine'
-  | 'priceX18'
+  | 'liquidationPriceX18'
   | 'markPriceX18'
   | 'cumulativeFundingLongX18'
   | 'cumulativeFundingShortX18'
@@ -2641,6 +2641,7 @@ export type LiquidationEvent = {
   perpProductId: Scalars['BigInt'];
   perpAmount: Scalars['BigInt'];
   spotOraclePriceX18: Scalars['BigInt'];
+  perpLiquidationPriceX18: Scalars['BigInt'];
   perpMarkPriceX18: Scalars['BigInt'];
 };
 
@@ -2791,6 +2792,14 @@ export type LiquidationEvent_filter = {
   spotOraclePriceX18_lte?: InputMaybe<Scalars['BigInt']>;
   spotOraclePriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   spotOraclePriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpLiquidationPriceX18?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpLiquidationPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   perpMarkPriceX18?: InputMaybe<Scalars['BigInt']>;
   perpMarkPriceX18_not?: InputMaybe<Scalars['BigInt']>;
   perpMarkPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -2819,6 +2828,7 @@ export type LiquidationEvent_orderBy =
   | 'perpProductId'
   | 'perpAmount'
   | 'spotOraclePriceX18'
+  | 'perpLiquidationPriceX18'
   | 'perpMarkPriceX18';
 
 export type ModifyCollateralEvent = {
@@ -4199,7 +4209,7 @@ export type PerpProductResolvers<ContextType = MeshContext & { coreEndpoint: str
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   market?: Resolver<ResolversTypes['Market'], ParentType, ContextType>;
   engine?: Resolver<ResolversTypes['PerpEngine'], ParentType, ContextType>;
-  priceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  liquidationPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   markPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   cumulativeFundingLongX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   cumulativeFundingShortX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -4218,7 +4228,7 @@ export type PerpProductSnapshotResolvers<ContextType = MeshContext & { coreEndpo
   period?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   periodIndex?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   product?: Resolver<ResolversTypes['PerpProduct'], ParentType, ContextType>;
-  priceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  liquidationPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   markPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   cumulativeFundingLongX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   cumulativeFundingShortX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -4343,6 +4353,7 @@ export type LiquidationEventResolvers<ContextType = MeshContext & { coreEndpoint
   perpProductId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   perpAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   spotOraclePriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  perpLiquidationPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   perpMarkPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -4829,7 +4840,7 @@ export type HourlyHistoricalProductDataQueryQueryVariables = Exact<{
 }>;
 
 
-export type HourlyHistoricalProductDataQueryQuery = { spotProductSnapshots: Array<Pick<SpotProductSnapshot, 'id' | 'periodIndex' | 'priceX18'>>, perpProductSnapshots: Array<Pick<PerpProductSnapshot, 'id' | 'periodIndex' | 'priceX18' | 'openInterest'>> };
+export type HourlyHistoricalProductDataQueryQuery = { spotProductSnapshots: Array<Pick<SpotProductSnapshot, 'id' | 'periodIndex' | 'priceX18'>>, perpProductSnapshots: Array<Pick<PerpProductSnapshot, 'id' | 'periodIndex' | 'markPriceX18' | 'liquidationPriceX18' | 'openInterest'>> };
 
 export type LatestOrderFillsQueryQueryVariables = Exact<{
   productId: Scalars['BigInt'];
@@ -4914,7 +4925,7 @@ export type SubaccountLiquidationEventHistoryQueryQueryVariables = Exact<{
 }>;
 
 
-export type SubaccountLiquidationEventHistoryQueryQuery = { liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'spotProductId' | 'perpProductId' | 'perpAmount' | 'spotAmount' | 'liquidationPayment' | 'insuranceCoverage' | 'spotOraclePriceX18' | 'perpMarkPriceX18'>> };
+export type SubaccountLiquidationEventHistoryQueryQuery = { liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'spotProductId' | 'perpProductId' | 'perpAmount' | 'spotAmount' | 'liquidationPayment' | 'insuranceCoverage' | 'spotOraclePriceX18' | 'perpLiquidationPriceX18' | 'perpMarkPriceX18'>> };
 
 export type SubaccountSettlementEventHistoryQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
@@ -5020,7 +5031,8 @@ export const HourlyHistoricalProductDataQueryDocument = gql`
   ) {
     id
     periodIndex
-    priceX18
+    markPriceX18
+    liquidationPriceX18
     openInterest
   }
 }
@@ -5122,6 +5134,7 @@ export const SubaccountLiquidationEventHistoryQueryDocument = gql`
     liquidationPayment
     insuranceCoverage
     spotOraclePriceX18
+    perpLiquidationPriceX18
     perpMarkPriceX18
   }
 }

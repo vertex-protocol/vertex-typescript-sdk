@@ -469,6 +469,7 @@ export type LiquidationEvent = {
   perpProductId: Scalars['BigInt'];
   perpAmount: Scalars['BigInt'];
   spotOraclePriceX18: Scalars['BigInt'];
+  perpLiquidationPriceX18: Scalars['BigInt'];
   perpMarkPriceX18: Scalars['BigInt'];
 };
 
@@ -619,6 +620,14 @@ export type LiquidationEvent_filter = {
   spotOraclePriceX18_lte?: InputMaybe<Scalars['BigInt']>;
   spotOraclePriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   spotOraclePriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpLiquidationPriceX18?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpLiquidationPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   perpMarkPriceX18?: InputMaybe<Scalars['BigInt']>;
   perpMarkPriceX18_not?: InputMaybe<Scalars['BigInt']>;
   perpMarkPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -647,6 +656,7 @@ export type LiquidationEvent_orderBy =
   | 'perpProductId'
   | 'perpAmount'
   | 'spotOraclePriceX18'
+  | 'perpLiquidationPriceX18'
   | 'perpMarkPriceX18';
 
 export type ModifyCollateralEvent = {

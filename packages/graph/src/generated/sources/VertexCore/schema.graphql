@@ -461,6 +461,7 @@ type LiquidationEvent {
   perpProductId: BigInt!
   perpAmount: BigInt!
   spotOraclePriceX18: BigInt!
+  perpLiquidationPriceX18: BigInt!
   perpMarkPriceX18: BigInt!
 }
 
@@ -611,6 +612,14 @@ input LiquidationEvent_filter {
   spotOraclePriceX18_lte: BigInt
   spotOraclePriceX18_in: [BigInt!]
   spotOraclePriceX18_not_in: [BigInt!]
+  perpLiquidationPriceX18: BigInt
+  perpLiquidationPriceX18_not: BigInt
+  perpLiquidationPriceX18_gt: BigInt
+  perpLiquidationPriceX18_lt: BigInt
+  perpLiquidationPriceX18_gte: BigInt
+  perpLiquidationPriceX18_lte: BigInt
+  perpLiquidationPriceX18_in: [BigInt!]
+  perpLiquidationPriceX18_not_in: [BigInt!]
   perpMarkPriceX18: BigInt
   perpMarkPriceX18_not: BigInt
   perpMarkPriceX18_gt: BigInt
@@ -639,6 +648,7 @@ enum LiquidationEvent_orderBy {
   perpProductId
   perpAmount
   spotOraclePriceX18
+  perpLiquidationPriceX18
   perpMarkPriceX18
 }
 

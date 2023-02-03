@@ -33,7 +33,7 @@ export class ProductQueryClient extends BaseVertexGraphClient {
         (snapshot) => {
           return {
             approximateSnapshotTime: fromHourIndex(snapshot.periodIndex),
-            oraclePrice: fromX18(snapshot.priceX18),
+            oraclePrice: fromX18(snapshot.liquidationPriceX18),
             openInterest: toBigDecimal(snapshot.openInterest),
           };
         },
