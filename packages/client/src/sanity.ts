@@ -2,7 +2,7 @@ import { createVertexClient } from './createVertexClient';
 import { ethers, Wallet } from 'ethers';
 import { nowInSeconds } from '@vertex-protocol/utils';
 import { OrderActionParams } from './apis/market';
-import { subAccountToBytes32 } from '@vertex-protocol/contracts';
+import { subaccountToBytes32 } from '@vertex-protocol/contracts';
 
 function getNonce() {
   return Date.now();
@@ -77,7 +77,7 @@ async function main() {
     depth: 100,
   });
 
-  const subaccount = subAccountToBytes32(await signer.getAddress(), 'default');
+  const subaccount = subaccountToBytes32(await signer.getAddress(), 'default');
 
   // State from engine
   await vertexClient.subaccount.getEngineSubaccountSummary({

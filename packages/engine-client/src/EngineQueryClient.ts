@@ -2,7 +2,7 @@ import { EngineBaseClient } from './EngineBaseClient';
 import {
   encodeSignedOrder,
   MarketWithProduct,
-  subAccountToBytes32,
+  subaccountToBytes32,
 } from '@vertex-protocol/contracts';
 import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
 import {
@@ -55,7 +55,7 @@ export class EngineQueryClient extends EngineBaseClient {
   async getSubaccountSummary(
     params: GetEngineSubaccountSummaryParams,
   ): Promise<GetEngineSubaccountSummaryResponse> {
-    const subaccount = subAccountToBytes32(
+    const subaccount = subaccountToBytes32(
       params.sender,
       params.subaccountName,
     );
@@ -74,7 +74,7 @@ export class EngineQueryClient extends EngineBaseClient {
   async getEstimatedSubaccountSummary(
     params: GetEngineEstimatedSubaccountSummaryParams,
   ): Promise<GetEngineSubaccountSummaryResponse> {
-    const subaccount = subAccountToBytes32(
+    const subaccount = subaccountToBytes32(
       params.sender,
       params.subaccountName,
     );
@@ -208,9 +208,8 @@ export class EngineQueryClient extends EngineBaseClient {
     params: GetEngineSubaccountOrdersParams,
   ): Promise<GetEngineSubaccountOrdersResponse> {
     const baseResponse = await this.query('subaccount_orders', {
+      sender: subaccountToBytes32(params.sender, params.subaccountName),
       product_id: params.productId,
-      sender: params.sender,
-      subaccount_name: params.subaccountName,
     });
 
     return {
@@ -230,8 +229,7 @@ export class EngineQueryClient extends EngineBaseClient {
   ): Promise<GetEngineSubaccountFeeRatesResponse> {
     const baseResponse = await this.query('fee_rates', {
       product_id: params.productId,
-      sender: params.sender,
-      subaccount_name: params.subaccountName,
+      sender: subaccountToBytes32(params.sender, params.subaccountName),
     });
 
     return {
@@ -285,8 +283,7 @@ export class EngineQueryClient extends EngineBaseClient {
       direction: params.side,
       price_x18: toX18(params.price).toString(),
       product_id: params.productId,
-      sender: params.sender,
-      subaccount_name: params.subaccountName,
+      sender: subaccountToBytes32(params.sender, params.subaccountName),
       spot_leverage: params.spotLeverage ?? null,
     });
 
@@ -302,8 +299,7 @@ export class EngineQueryClient extends EngineBaseClient {
   ): Promise<GetEngineMaxWithdrawableResponse> {
     const baseResponse = await this.query('max_withdrawable', {
       product_id: params.productId,
-      sender: params.sender,
-      subaccount_name: params.subaccountName,
+      sender: subaccountToBytes32(params.sender, params.subaccountName),
       spot_leverage: params.spotLeverage ?? null,
     });
 

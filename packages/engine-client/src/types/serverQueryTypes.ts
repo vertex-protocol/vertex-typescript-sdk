@@ -48,7 +48,6 @@ export interface EngineServerGetOrderQueryParams {
   product_id: number;
   digest: string;
 }
-
 export interface EngineServerValidateOrderQueryParams {
   product_id: number;
   // Bytes for order, does not need to be signed
@@ -56,14 +55,12 @@ export interface EngineServerValidateOrderQueryParams {
 }
 
 export interface EngineServerSubaccountOrdersQueryParams {
-  sender: string;
-  subaccount_name: string;
+  sender: Bytes;
   product_id: number;
 }
 
 export interface EngineServerSubaccountFeeRatesParams {
-  sender: string;
-  subaccount_name: string;
+  sender: Bytes;
   product_id: number;
 }
 
@@ -73,16 +70,14 @@ export interface EngineServerMarketLiquidityQueryParams {
 }
 
 export interface EngineServerMaxWithdrawableQueryParams {
-  sender: string;
-  subaccount_name: string;
+  sender: Bytes;
   product_id: number;
   // If not given, engine defaults to true (leverage/borrow enabled)
   spot_leverage: boolean | null;
 }
 
 export interface EngineServerMaxOrderSizeQueryParams {
-  sender: string;
-  subaccount_name: string;
+  sender: Bytes;
   product_id: number;
   price_x18: string;
   direction: 'long' | 'short';
@@ -114,7 +109,9 @@ export type EngineServerQueryRequestType = keyof EngineServerQueryRequestByType;
 export type EngineServerStatusResponse =
   | 'started'
   | 'active'
+  | 'stopping'
   | 'syncing'
+  | 'live_syncing'
   | 'failed';
 
 export interface EngineServerNoncesResponse {
@@ -130,6 +127,8 @@ export interface EngineServerSubaccountInfoResponse {
     assets: BigNumberish;
     liabilities: BigNumberish;
   }[];
+  spot_count: number;
+  perp_count: number;
   spot_balances: EngineServerSpotBalance[];
   perp_balances: EngineServerPerpBalance[];
   spot_products: EngineServerSpotProduct[];
@@ -153,8 +152,7 @@ export interface EngineServerMarketLiquidityResponse {
 }
 
 export interface EngineServerSubaccountOrdersResponse {
-  sender: string;
-  subaccount_name: string;
+  sender: Bytes;
   product_id: number;
   orders: EngineServerGetOrderResponse[];
 }
@@ -172,8 +170,7 @@ export interface EngineServerMarketPriceResponse {
 
 export interface EngineServerGetOrderResponse {
   product_id: number;
-  sender: string;
-  subaccount_name: string;
+  sender: Bytes;
   price_x18: BigNumberish;
   amount: BigNumberish;
   expiration: BigNumberish;

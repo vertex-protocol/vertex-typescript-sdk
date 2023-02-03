@@ -6,7 +6,7 @@ import { Bytes, toUtf8Bytes, toUtf8String } from 'ethers/lib/utils';
  * @param subaccountName subaccount name
  * @returns 32 bytes representation of a subaccount
  */
-export function subAccountToBytes32(
+export function subaccountToBytes32(
   owner: string,
   subaccountName: string,
 ): Bytes {
@@ -21,7 +21,7 @@ export function subAccountToBytes32(
   for (let i = 0; i < address.length; i++) {
     bytes32[i] = address[i];
   }
-  for (let i = 0; i < name.length; i++) {
+  for (let i = 20; i < name.length; i++) {
     bytes32[i] = name[i];
   }
 
@@ -42,13 +42,13 @@ export function subaccountFromBytes32(bytes: Bytes): {
   }
 
   const address = new Uint8Array(20);
-  const name = new Uint8Array();
+  const name = new Uint8Array(12);
 
   for (let i = 0; i < bytes.length; i++) {
     if (i < 20) {
       address[i] = bytes[i];
     } else {
-      name[i] = bytes[i];
+      name[i - 20] = bytes[i];
     }
   }
 
