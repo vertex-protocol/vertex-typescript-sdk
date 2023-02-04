@@ -80,9 +80,9 @@ query SubaccountSettlementEventHistoryQuery(
   ) {
     id
     blockTime
-
     productId
     amount
     positionAmount
+    markPriceX18
   }
 }
