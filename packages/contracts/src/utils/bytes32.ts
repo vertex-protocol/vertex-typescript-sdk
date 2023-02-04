@@ -72,3 +72,14 @@ export function subaccountNameToBytes12(name: string): Bytes {
   }
   return buffer;
 }
+
+export function subaccountToHex(owner: string, subaccountName: string): string {
+  return hexlify(subaccountToBytes32(owner, subaccountName));
+}
+
+export function subaccountFromHex(subaccount: string): {
+  owner: string;
+  name: string;
+} {
+  return subaccountFromBytes32(arrayify(subaccount));
+}

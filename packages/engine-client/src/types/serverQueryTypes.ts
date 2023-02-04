@@ -11,7 +11,7 @@ export interface EngineServerNoncesParams {
 }
 
 export interface EngineServerSubaccountInfoQueryParams {
-  subaccount: Bytes;
+  subaccount: string;
   txns?: Array<
     | {
         mint_lp: {
@@ -55,12 +55,12 @@ export interface EngineServerValidateOrderQueryParams {
 }
 
 export interface EngineServerSubaccountOrdersQueryParams {
-  sender: Bytes;
+  sender: string;
   product_id: number;
 }
 
 export interface EngineServerSubaccountFeeRatesParams {
-  sender: Bytes;
+  sender: string;
   product_id: number;
 }
 
@@ -70,14 +70,14 @@ export interface EngineServerMarketLiquidityQueryParams {
 }
 
 export interface EngineServerMaxWithdrawableQueryParams {
-  sender: Bytes;
+  sender: string;
   product_id: number;
   // If not given, engine defaults to true (leverage/borrow enabled)
   spot_leverage: boolean | null;
 }
 
 export interface EngineServerMaxOrderSizeQueryParams {
-  sender: Bytes;
+  sender: string;
   product_id: number;
   price_x18: string;
   direction: 'long' | 'short';
@@ -121,7 +121,7 @@ export interface EngineServerNoncesResponse {
 
 export interface EngineServerSubaccountInfoResponse {
   exists: boolean;
-  subaccount: Bytes;
+  subaccount: string;
   healths: {
     health: BigNumberish;
     assets: BigNumberish;
@@ -152,7 +152,7 @@ export interface EngineServerMarketLiquidityResponse {
 }
 
 export interface EngineServerSubaccountOrdersResponse {
-  sender: Bytes;
+  sender: string;
   product_id: number;
   orders: EngineServerGetOrderResponse[];
 }
@@ -170,7 +170,7 @@ export interface EngineServerMarketPriceResponse {
 
 export interface EngineServerGetOrderResponse {
   product_id: number;
-  sender: Bytes;
+  sender: string;
   price_x18: BigNumberish;
   amount: BigNumberish;
   expiration: BigNumberish;

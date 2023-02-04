@@ -1,7 +1,6 @@
 import { WithContract } from '../common';
-import { BigNumberish, Bytes } from 'ethers';
+import { BigNumberish } from 'ethers';
 import { subaccountNameToBytes12 } from '../utils';
-import { toUtf8String } from 'ethers/lib/utils';
 
 export interface ExecuteDepositCollateralParams {
   subaccountName: string;
