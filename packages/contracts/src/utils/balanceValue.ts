@@ -30,7 +30,7 @@ export function calcPerpBalanceNotionalValue(
 }
 
 /**
- * Calculates the true quote value of a perp balance, which is the same as its pnl, in terms of quote units
+ * Calculates the true quote value of a perp balance, which is the same as its unrealized pnl / unsettled quote, in terms of quote units
  *
  * @param balanceWithProduct
  */
