@@ -19,42 +19,31 @@ import { subaccountToBytes32, subaccountToHex } from '../utils';
  *
  * @param requestType
  * @param params
- * @param isSignature whether values will be used to create EIP712 signature
  */
 export function getVertexEIP712Values<TReqType extends SignableRequestType>(
   requestType: TReqType,
   params: SignableRequestTypeToParams[TReqType],
-  isSignature = false,
 ): Record<string, unknown> {
   switch (requestType) {
     case 'withdraw_collateral':
-      return getWithdrawCollateralValues(
-        params as WithdrawCollateralParams,
-        isSignature,
-      );
+      return getWithdrawCollateralValues(params as WithdrawCollateralParams);
     case 'mint_lp':
-      return getMintLpValues(params as MintLpParams, isSignature);
+      return getMintLpValues(params as MintLpParams);
     case 'burn_lp':
-      return getBurnLpValues(params as BurnLpParams, isSignature);
+      return getBurnLpValues(params as BurnLpParams);
     case 'place_order':
-      return getOrderValues(params as OrderParams, isSignature);
+      return getOrderValues(params as OrderParams);
     case 'cancel_orders':
-      return getOrderCancellationValues(
-        params as OrderCancellationParams,
-        isSignature,
-      );
+      return getOrderCancellationValues(params as OrderCancellationParams);
     case 'liquidate_subaccount':
-      return getLiquidateSubaccountValues(
-        params as LiquidateSubaccountParams,
-        isSignature,
-      );
+      return getLiquidateSubaccountValues(params as LiquidateSubaccountParams);
   }
   throw Error(`Unknown request type: ${requestType}`);
 }
 
-function getMintLpValues(params: MintLpParams, isSignature: boolean) {
+function getMintLpValues(params: MintLpParams) {
   return {
-    sender: getSender(params.sender, params.subaccountName, isSignature),
+    sender: subaccountToBytes32(params.sender, params.subaccountName),
     productId: params.productId,
     amountBase: params.amountBase.toString(),
     quoteAmountLow: params.quoteAmountLow.toString(),
@@ -63,30 +52,27 @@ function getMintLpValues(params: MintLpParams, isSignature: boolean) {
   };
 }
 
-function getBurnLpValues(params: BurnLpParams, isSignature: boolean) {
+function getBurnLpValues(params: BurnLpParams) {
   return {
-    sender: getSender(params.sender, params.subaccountName, isSignature),
+    sender: subaccountToBytes32(params.sender, params.subaccountName),
     productId: params.productId,
     amount: params.amount.toString(),
     nonce: BigNumber.from(params.nonce).toNumber(),
   };
 }
 
-function getWithdrawCollateralValues(
-  params: WithdrawCollateralParams,
-  isSignature: boolean,
-) {
+function getWithdrawCollateralValues(params: WithdrawCollateralParams) {
   return {
-    sender: getSender(params.sender, params.subaccountName, isSignature),
+    sender: subaccountToBytes32(params.sender, params.subaccountName),
     productId: params.productId,
     amount: BigNumber.from(params.amount).toString(),
     nonce: BigNumber.from(params.nonce).toNumber(),
   };
 }
 
-function getOrderValues(params: OrderParams, isSignature: boolean) {
+function getOrderValues(params: OrderParams) {
   return {
-    sender: getSender(params.sender, params.subaccountName, isSignature),
+    sender: subaccountToBytes32(params.sender, params.subaccountName),
     priceX18: toX18(params.price).toString(),
     amount: BigNumber.from(params.amount).toString(),
     expiration: BigNumber.from(params.expiration).toString(),
@@ -94,38 +80,25 @@ function getOrderValues(params: OrderParams, isSignature: boolean) {
   };
 }
 
-function getOrderCancellationValues(
-  params: OrderCancellationParams,
-  isSignature: boolean,
-) {
+function getOrderCancellationValues(params: OrderCancellationParams) {
   return {
-    sender: getSender(params.sender, params.subaccountName, isSignature),
+    sender: subaccountToBytes32(params.sender, params.subaccountName),
     productIds: params.productIds,
     digests: params.digests,
     nonce: BigNumber.from(params.nonce).toString(),
   };
 }
 
-function getLiquidateSubaccountValues(
-  params: LiquidateSubaccountParams,
-  isSignature: boolean,
-) {
+function getLiquidateSubaccountValues(params: LiquidateSubaccountParams) {
   return {
-    sender: getSender(params.sender, params.subaccountName, isSignature),
-    liquidatee: subaccountToHex(params.liquidateeOwner, params.liquidateeName),
+    sender: subaccountToBytes32(params.sender, params.subaccountName),
+    liquidatee: subaccountToBytes32(
+      params.liquidateeOwner,
+      params.liquidateeName,
+    ),
     mode: params.mode,
     healthGroup: params.healthGroup.toString(),
     amount: BigNumber.from(params.amount).toString(),
     nonce: BigNumber.from(params.nonce).toNumber(),
   };
-}
-
-function getSender(
-  owner: string,
-  subaccountName: string,
-  isSignature: boolean,
-) {
-  return isSignature
-    ? subaccountToBytes32(owner, subaccountName)
-    : subaccountToHex(owner, subaccountName);
 }
