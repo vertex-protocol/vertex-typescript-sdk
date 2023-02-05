@@ -9,7 +9,11 @@ import {
   subaccountToBytes32,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
-import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
+import {
+  nowInSeconds,
+  toBigDecimal,
+  toFixedPoint,
+} from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
 import { OrderParamsWithoutNonce } from './types';
 
@@ -127,6 +131,26 @@ async function main() {
     productId,
   });
   console.log('Market price', JSON.stringify(marketPrice, null, 2));
+  const feeRates = await client.getSubaccountFeeRates({
+    productId,
+    subaccountName: 'default',
+    sender: signer.address,
+  });
+  console.log('Fee rates', JSON.stringify(feeRates, null, 2));
+  const maxOrderSize = await client.getMaxOrderSize({
+    sender: signer.address,
+    subaccountName: 'default',
+    productId,
+    price: toBigDecimal(23000),
+    side: 'long',
+  });
+  console.log('Max roder size', JSON.stringify(maxOrderSize, null, 2));
+  const maxWithdrawable = await client.getMaxWithdrawable({
+    sender: signer.address,
+    subaccountName: 'default',
+    productId: 0,
+  });
+  console.log('Max withdrawable', JSON.stringify(maxWithdrawable, null, 2));
   const queriedOrder = await client.getOrder({
     digest: placeResult.digest,
     productId,
@@ -151,6 +175,16 @@ async function main() {
   console.log(
     'Subaccount orders after cancellation',
     JSON.stringify(subaccountOrdersAfterCancel),
+  );
+
+  const maxWithdrawableAfterCancel = await client.getMaxWithdrawable({
+    sender: signer.address,
+    subaccountName: 'default',
+    productId: 0,
+  });
+  console.log(
+    'Max withdrawable after cancel order',
+    JSON.stringify(maxWithdrawableAfterCancel, null, 2),
   );
 
   const mintSpotLpResult = await client.mintLp({
@@ -218,7 +252,10 @@ async function main() {
     sender: signer.address,
     subaccountName: 'default',
   });
-  console.log('Subaccount info', JSON.stringify(subaccountInfoAtEnd, null, 2));
+  console.log(
+    'Subaccount info after withdraw collateral',
+    JSON.stringify(subaccountInfoAtEnd, null, 2),
+  );
 }
 
 main().catch((e) => console.log(e));

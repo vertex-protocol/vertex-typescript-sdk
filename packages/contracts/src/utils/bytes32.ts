@@ -19,8 +19,6 @@ export function subaccountToBytes32(
   const address = arrayify(owner);
   const name = toUtf8Bytes(subaccountName);
 
-  console.log(`address: ${address}`);
-
   if (address.length != 20) {
     throw new Error(`owner must be 20 bytes, but found ${address.length}`);
   }
