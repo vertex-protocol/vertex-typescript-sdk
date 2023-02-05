@@ -51,8 +51,8 @@ export type GetEngineEstimatedSubaccountSummaryParams =
 export type GetEngineNoncesParams = EngineServerNoncesParams;
 
 export interface GetEngineNoncesResponse {
-  orderNonce: number;
-  txNonce: number;
+  orderNonce: string;
+  txNonce: string;
 }
 
 export type GetEngineSubaccountSummaryResponse = SubaccountSummaryResponse;
@@ -74,7 +74,7 @@ export interface EngineOrder {
   // Amount still unfilled
   unfilledAmount: BigDecimal;
   expiration: BigDecimal;
-  nonce: number;
+  nonce: string;
   digest: string;
   // Raw order params for cancellation
   orderParams: OrderParams;

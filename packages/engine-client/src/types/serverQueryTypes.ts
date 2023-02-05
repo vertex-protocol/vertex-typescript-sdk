@@ -1,4 +1,4 @@
-import { BigNumberish, Bytes } from 'ethers';
+import { BigNumberish } from 'ethers';
 import {
   EngineServerPerpBalance,
   EngineServerPerpProduct,
@@ -48,6 +48,7 @@ export interface EngineServerGetOrderQueryParams {
   product_id: number;
   digest: string;
 }
+
 export interface EngineServerValidateOrderQueryParams {
   product_id: number;
   // Bytes for order, does not need to be signed
@@ -115,8 +116,8 @@ export type EngineServerStatusResponse =
   | 'failed';
 
 export interface EngineServerNoncesResponse {
-  order_nonce: number;
-  tx_nonce: number;
+  order_nonce: string;
+  tx_nonce: string;
 }
 
 export interface EngineServerSubaccountInfoResponse {
@@ -174,7 +175,7 @@ export interface EngineServerGetOrderResponse {
   price_x18: BigNumberish;
   amount: BigNumberish;
   expiration: BigNumberish;
-  nonce: number;
+  nonce: string;
   unfilled_amount: BigNumberish;
   digest: string;
   placed_at: number;

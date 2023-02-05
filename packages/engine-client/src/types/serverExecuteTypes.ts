@@ -1,12 +1,17 @@
 import {
-  BurnLpParams,
-  LiquidateSubaccountParams,
-  MintLpParams,
-  OrderCancellationParams,
-  OrderParams,
+  EIP712BurnLpValues,
+  EIP712LiquidateSubaccountValues,
+  EIP712MintLpValues,
+  EIP712OrderCancellationValues,
+  EIP712OrderValues,
+  EIP712WithdrawCollateralValues,
   SignedTx,
-  WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
+import { Bytes } from 'ethers/lib/utils';
+
+type ByteFieldsToHex<T> = {
+  [K in keyof T]: T[K] extends Bytes ? string : T[K];
+};
 
 export interface EngineServerExecutionResult {
   status: 'success' | 'failure';
@@ -15,13 +20,9 @@ export interface EngineServerExecutionResult {
   };
 }
 
-export type EngineServerOrderParams = Omit<OrderParams, 'price'> & {
-  priceX18: string;
-};
-
 export interface EngineServerPlaceOrderParams {
   product_id: number;
-  order: EngineServerOrderParams;
+  order: ByteFieldsToHex<EIP712OrderValues>;
   // Bytes
   signature: string;
   // Engine defaults this to true
@@ -33,12 +34,21 @@ type WithSpotLeverage<T> = T & {
 };
 
 export interface EngineServerExecuteRequestByType {
-  liquidate_subaccount: SignedTx<LiquidateSubaccountParams>;
-  withdraw_collateral: WithSpotLeverage<SignedTx<WithdrawCollateralParams>>;
-  mint_lp: WithSpotLeverage<SignedTx<MintLpParams>>;
-  burn_lp: SignedTx<BurnLpParams>;
+  liquidate_subaccount: SignedTx<
+    ByteFieldsToHex<EIP712LiquidateSubaccountValues>
+  >;
+  withdraw_collateral: WithSpotLeverage<
+    SignedTx<ByteFieldsToHex<EIP712WithdrawCollateralValues>>
+  >;
+  mint_lp: WithSpotLeverage<SignedTx<ByteFieldsToHex<EIP712MintLpValues>>>;
+  burn_lp: SignedTx<ByteFieldsToHex<EIP712BurnLpValues>>;
   place_order: EngineServerPlaceOrderParams;
-  cancel_orders: SignedTx<OrderCancellationParams>;
+  cancel_orders: SignedTx<
+    Omit<ByteFieldsToHex<EIP712OrderCancellationValues>, 'productIds'> & {
+      // number[] is technically assignable to "Bytes", so we need to override the ByteFieldsToHex result here
+      productIds: number[];
+    }
+  >;
 }
 
 export type EngineServerExecuteRequestType =
