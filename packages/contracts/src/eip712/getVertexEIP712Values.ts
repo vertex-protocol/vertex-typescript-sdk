@@ -19,7 +19,7 @@ import { subaccountToBytes32, subaccountToHex } from '../utils';
  *
  * @param requestType
  * @param params
- * @param signature whether values will be used to create EIP712 signature
+ * @param isSignature whether values will be used to create EIP712 signature
  */
 export function getVertexEIP712Values<TReqType extends SignableRequestType>(
   requestType: TReqType,

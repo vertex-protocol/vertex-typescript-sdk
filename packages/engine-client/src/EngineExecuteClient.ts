@@ -36,7 +36,7 @@ export class EngineExecuteClient extends EngineBaseClient {
     const signature = await this.sign(
       'liquidate_subaccount',
       params.endpointAddr,
-      tx,
+      paramsWithNonce,
     );
 
     return this.execute('liquidate_subaccount', {
@@ -58,7 +58,7 @@ export class EngineExecuteClient extends EngineBaseClient {
     const signature = await this.sign(
       'withdraw_collateral',
       params.endpointAddr,
-      tx,
+      paramsWithNonce,
     );
 
     return this.execute('withdraw_collateral', {
@@ -76,7 +76,11 @@ export class EngineExecuteClient extends EngineBaseClient {
       'mint_lp',
       paramsWithNonce,
     ) as unknown as MintLpParams;
-    const signature = await this.sign('mint_lp', params.endpointAddr, tx);
+    const signature = await this.sign(
+      'mint_lp',
+      params.endpointAddr,
+      paramsWithNonce,
+    );
 
     return this.execute('mint_lp', {
       signature,
@@ -93,7 +97,11 @@ export class EngineExecuteClient extends EngineBaseClient {
       'burn_lp',
       paramsWithNonce,
     ) as unknown as WithdrawCollateralParams;
-    const signature = await this.sign('burn_lp', params.endpointAddr, tx);
+    const signature = await this.sign(
+      'burn_lp',
+      params.endpointAddr,
+      paramsWithNonce,
+    );
     return this.execute('burn_lp', {
       signature,
       tx,
@@ -145,7 +153,11 @@ export class EngineExecuteClient extends EngineBaseClient {
       'cancel_orders',
       paramsWithNonce,
     ) as unknown as OrderCancellationParams;
-    const signature = await this.sign('cancel_orders', params.endpointAddr, tx);
+    const signature = await this.sign(
+      'cancel_orders',
+      params.endpointAddr,
+      paramsWithNonce,
+    );
 
     return this.execute('cancel_orders', {
       tx,

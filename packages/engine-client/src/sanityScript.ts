@@ -41,12 +41,12 @@ async function main() {
   const endpointAddr = await clearinghouse.getEndpoint();
   const endpoint = await IEndpoint__factory.connect(endpointAddr, signer);
 
-  await (await quote.mint(signer.address, toFixedPoint(5000, 6))).wait();
-  await (await quote.approve(endpointAddr, toFixedPoint(5000, 6))).wait();
+  await (await quote.mint(signer.address, toFixedPoint(10000, 6))).wait();
+  await (await quote.approve(endpointAddr, toFixedPoint(10000, 6))).wait();
 
   // Deposit collateral
   const depositTx = await depositCollateral({
-    amount: toFixedPoint(5000, 6),
+    amount: toFixedPoint(10000, 6),
     endpoint,
     productId: 0,
     subaccountName: 'default',
@@ -103,7 +103,7 @@ async function main() {
     subaccountName: 'default',
     amount: -1,
     expiration: getExpiration(),
-    price: 10,
+    price: 23000,
   };
   const placeResult = await client.placeOrder({
     orderbookAddr,

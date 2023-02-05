@@ -74,12 +74,9 @@ export class EngineQueryClient extends EngineBaseClient {
   async getEstimatedSubaccountSummary(
     params: GetEngineEstimatedSubaccountSummaryParams,
   ): Promise<GetEngineSubaccountSummaryResponse> {
-    const subaccount = subaccountToBytes32(
-      params.sender,
-      params.subaccountName,
-    );
+    const subaccount = subaccountToHex(params.sender, params.subaccountName);
     const queryParams: EngineServerSubaccountInfoQueryParams = {
-      subaccount: hexlify(subaccount),
+      subaccount: subaccount,
       txns: params.txs.map(
         (
           tx,

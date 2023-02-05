@@ -16,7 +16,7 @@ export interface EngineServerSubaccountInfoQueryParams {
     | {
         mint_lp: {
           product_id: number;
-          subaccount: Bytes;
+          subaccount: string;
           amount_base: string;
           quote_amount_low: string;
           quote_amount_high: string;
@@ -25,14 +25,14 @@ export interface EngineServerSubaccountInfoQueryParams {
     | {
         burn_lp: {
           product_id: number;
-          subaccount: Bytes;
+          subaccount: string;
           amount_lp: string;
         };
       }
     | {
         apply_delta: {
           product_id: number;
-          subaccount: Bytes;
+          subaccount: string;
           amount_delta: string;
           v_quote_delta: string;
         };
