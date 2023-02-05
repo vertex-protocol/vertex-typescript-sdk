@@ -20,6 +20,6 @@ export async function getOrderDigest(params: OrderDigestParams) {
   return ethers.utils._TypedDataEncoder.hash(
     getVertexEIP712Domain(orderbookAddress, chainId),
     getVertexEIP712Types('place_order'),
-    getVertexEIP712Values('place_order', order),
+    getVertexEIP712Values('place_order', order, true),
   );
 }

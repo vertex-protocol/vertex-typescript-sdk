@@ -23,6 +23,6 @@ export function getSignedTransactionRequest<
   return params.signer._signTypedData(
     getVertexEIP712Domain(params.verifyingContract, params.chainId),
     getVertexEIP712Types(params.requestType),
-    getVertexEIP712Values(params.requestType, params.requestParams),
+    getVertexEIP712Values(params.requestType, params.requestParams, true),
   );
 }
