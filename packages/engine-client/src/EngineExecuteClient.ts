@@ -58,12 +58,15 @@ export class EngineExecuteClient extends EngineBaseClient {
     const signature = await this.sign(
       'withdraw_collateral',
       params.endpointAddr,
-      tx,
+      paramsWithNonce,
     );
 
     return this.execute('withdraw_collateral', {
       signature,
-      tx,
+      tx: {
+        ...tx,
+        sender: hexlify(tx.sender),
+      },
       spot_leverage: params.spotLeverage ?? null,
     });
   }
