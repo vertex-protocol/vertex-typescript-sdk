@@ -62,8 +62,14 @@ async function main() {
   await new Promise((resolve) => setTimeout(resolve, 5000));
   console.log(`subaccount (in): ${signer.address}; default`);
 
-  const subaccountBytes32 = subaccountToBytes32(signer.address, 'default');
-  const subaccountHex = subaccountToHex(signer.address, 'default');
+  const subaccountBytes32 = subaccountToBytes32({
+    owner: signer.address,
+    name: 'default',
+  });
+  const subaccountHex = subaccountToHex({
+    owner: signer.address,
+    name: 'default',
+  });
   console.log(`subaccountBytes32: ${subaccountBytes32}`);
   console.log(`subaccountHex: ${subaccountHex}`);
 

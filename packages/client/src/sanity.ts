@@ -77,7 +77,10 @@ async function main() {
     depth: 100,
   });
 
-  const subaccount = subaccountToBytes32(await signer.getAddress(), 'default');
+  const subaccount = subaccountToBytes32({
+    owner: await signer.getAddress(),
+    name: 'default',
+  });
 
   // State from engine
   await vertexClient.subaccount.getEngineSubaccountSummary({

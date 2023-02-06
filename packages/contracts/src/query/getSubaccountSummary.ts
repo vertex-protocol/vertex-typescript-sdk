@@ -34,7 +34,10 @@ export async function getSubaccountSummary({
   'querier',
   GetSubaccountSummaryParams
 >): Promise<SubaccountSummaryResponse> {
-  const subaccount = subaccountToBytes32(sender, subaccountName);
+  const subaccount = subaccountToBytes32({
+    owner: sender,
+    name: subaccountName,
+  });
   const subaccountInfo = await querier.getSubaccountInfo(subaccount);
 
   const balances: SubaccountSummaryResponse['balances'] = [];

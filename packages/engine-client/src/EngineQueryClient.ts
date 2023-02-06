@@ -3,7 +3,6 @@ import {
   encodeSignedOrder,
   MarketWithProduct,
   subaccountFromHex,
-  subaccountToBytes32,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
 import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
@@ -58,7 +57,10 @@ export class EngineQueryClient extends EngineBaseClient {
   async getSubaccountSummary(
     params: GetEngineSubaccountSummaryParams,
   ): Promise<GetEngineSubaccountSummaryResponse> {
-    const subaccount = subaccountToHex(params.sender, params.subaccountName);
+    const subaccount = subaccountToHex({
+      owner: params.sender,
+      name: params.subaccountName,
+    });
     const baseResponse = await this.query('subaccount_info', {
       subaccount,
     });
@@ -74,7 +76,10 @@ export class EngineQueryClient extends EngineBaseClient {
   async getEstimatedSubaccountSummary(
     params: GetEngineEstimatedSubaccountSummaryParams,
   ): Promise<GetEngineSubaccountSummaryResponse> {
-    const subaccount = subaccountToHex(params.sender, params.subaccountName);
+    const subaccount = subaccountToHex({
+      owner: params.sender,
+      name: params.subaccountName,
+    });
     const queryParams: EngineServerSubaccountInfoQueryParams = {
       subaccount: subaccount,
       txns: params.txs.map(
@@ -205,7 +210,10 @@ export class EngineQueryClient extends EngineBaseClient {
     params: GetEngineSubaccountOrdersParams,
   ): Promise<GetEngineSubaccountOrdersResponse> {
     const baseResponse = await this.query('subaccount_orders', {
-      sender: subaccountToHex(params.sender, params.subaccountName),
+      sender: subaccountToHex({
+        owner: params.sender,
+        name: params.subaccountName,
+      }),
       product_id: params.productId,
     });
 
@@ -228,7 +236,10 @@ export class EngineQueryClient extends EngineBaseClient {
   ): Promise<GetEngineSubaccountFeeRatesResponse> {
     const baseResponse = await this.query('fee_rates', {
       product_id: params.productId,
-      sender: subaccountToHex(params.sender, params.subaccountName),
+      sender: subaccountToHex({
+        owner: params.sender,
+        name: params.subaccountName,
+      }),
     });
 
     return {
@@ -282,7 +293,10 @@ export class EngineQueryClient extends EngineBaseClient {
       direction: params.side,
       price_x18: toX18(params.price).toString(),
       product_id: params.productId,
-      sender: subaccountToHex(params.sender, params.subaccountName),
+      sender: subaccountToHex({
+        owner: params.sender,
+        name: params.subaccountName,
+      }),
       spot_leverage: params.spotLeverage ?? null,
     });
 
@@ -298,7 +312,10 @@ export class EngineQueryClient extends EngineBaseClient {
   ): Promise<GetEngineMaxWithdrawableResponse> {
     const baseResponse = await this.query('max_withdrawable', {
       product_id: params.productId,
-      sender: subaccountToHex(params.sender, params.subaccountName),
+      sender: subaccountToHex({
+        owner: params.sender,
+        name: params.subaccountName,
+      }),
       spot_leverage: params.spotLeverage ?? null,
     });
 
