@@ -82,5 +82,6 @@ query SubaccountSettlementEventHistoryQuery(
     productId
     amount
     positionAmount
+    perpLiquidationPriceX18
   }
 }

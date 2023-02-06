@@ -20,9 +20,9 @@ import { createMeshHTTPHandler } from '@graphql-mesh/http';
 import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext, MeshInstance } from '@graphql-mesh/runtime';
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
+import type { VertexCandlesticksContext } from './sources/VertexCandlesticks/types';
 import type { VertexMarketsContext } from './sources/VertexMarkets/types';
 import type { VertexCoreContext } from './sources/VertexCore/types';
-import type { VertexCandlesticksContext } from './sources/VertexCandlesticks/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -4915,7 +4915,7 @@ export type PaginatedAllMarketOrdersQueryQueryVariables = Exact<{
 
 
 export type PaginatedAllMarketOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'type' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'type' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
     & { subaccount: Pick<Subaccount, 'owner' | 'name'> }
   )> };
 
@@ -4927,7 +4927,7 @@ export type PaginatedSubaccountOrdersQueryQueryVariables = Exact<{
 
 
 export type PaginatedSubaccountOrdersQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'type' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'type' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
     & { subaccount: Pick<Subaccount, 'owner' | 'name'> }
   )> };
 
@@ -4940,7 +4940,7 @@ export type PaginatedSubaccountOrdersForProductsQueryQueryVariables = Exact<{
 
 
 export type PaginatedSubaccountOrdersForProductsQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'type' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'type' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
     & { subaccount: Pick<Subaccount, 'owner' | 'name'> }
   )> };
 
@@ -4951,12 +4951,12 @@ export type OrderByDigestQueryQueryVariables = Exact<{
 
 
 export type OrderByDigestQueryQuery = { orders: Array<(
-    Pick<Order, 'id' | 'type' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
+    Pick<Order, 'id' | 'digest' | 'type' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
     & { subaccount: Pick<Subaccount, 'owner' | 'name'> }
   )> };
 
 export type OrderEntityFieldsFragmentFragment = (
-  Pick<Order, 'id' | 'type' | 'digest' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
+  Pick<Order, 'id' | 'digest' | 'type' | 'priceX18' | 'productId' | 'reportedAt' | 'reportedAtBlock' | 'filledAmount' | 'totalAmount' | 'quoteAmount' | 'collectedFee'>
   & { subaccount: Pick<Subaccount, 'owner' | 'name'> }
 );
 
@@ -4991,7 +4991,7 @@ export type SubaccountSettlementEventHistoryQueryQueryVariables = Exact<{
 }>;
 
 
-export type SubaccountSettlementEventHistoryQueryQuery = { settlePnlEvents: Array<Pick<SettlePnlEvent, 'id' | 'blockTime' | 'productId' | 'amount' | 'positionAmount'>> };
+export type SubaccountSettlementEventHistoryQueryQuery = { settlePnlEvents: Array<Pick<SettlePnlEvent, 'id' | 'blockTime' | 'productId' | 'amount' | 'positionAmount' | 'perpLiquidationPriceX18'>> };
 
 export type SubaccountOrderFillsQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
@@ -5025,8 +5025,8 @@ export type SubaccountsForAddressQuery = { subaccounts: Array<Pick<Subaccount, '
 export const OrderEntityFieldsFragmentFragmentDoc = gql`
     fragment OrderEntityFieldsFragment on Order {
   id
-  type
   digest
+  type
   priceX18
   productId
   subaccount {
@@ -5207,6 +5207,7 @@ export const SubaccountSettlementEventHistoryQueryDocument = gql`
     productId
     amount
     positionAmount
+    perpLiquidationPriceX18
   }
 }
     ` as unknown as DocumentNode<SubaccountSettlementEventHistoryQueryQuery, SubaccountSettlementEventHistoryQueryQueryVariables>;
