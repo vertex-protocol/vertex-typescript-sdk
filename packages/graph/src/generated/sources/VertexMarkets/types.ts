@@ -1,7 +1,6 @@
 
 import { InContextSdkMethod } from '@graphql-mesh/types';
 import { MeshContext } from '@graphql-mesh/runtime';
-import { Scalars } from '../..';
 
 export namespace VertexMarketsTypes {
   export type Maybe<T> = T | null;
@@ -303,7 +302,6 @@ export type PerpProduct = {
   market: Market;
   engine: PerpEngine;
   liquidationPriceX18: Scalars['BigInt'];
-  markPriceX18: Scalars['BigInt'];
   cumulativeFundingLongX18: Scalars['BigInt'];
   cumulativeFundingShortX18: Scalars['BigInt'];
   openInterest: Scalars['BigInt'];
@@ -330,7 +328,6 @@ export type PerpProductSnapshot = {
   periodIndex: Scalars['BigInt'];
   product: PerpProduct;
   liquidationPriceX18: Scalars['BigInt'];
-  markPriceX18: Scalars['BigInt'];
   cumulativeFundingLongX18: Scalars['BigInt'];
   cumulativeFundingShortX18: Scalars['BigInt'];
   openInterest: Scalars['BigInt'];
@@ -395,14 +392,6 @@ export type PerpProductSnapshot_filter = {
   liquidationPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
   liquidationPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   liquidationPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  markPriceX18?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_not?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  markPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   cumulativeFundingLongX18?: InputMaybe<Scalars['BigInt']>;
   cumulativeFundingLongX18_not?: InputMaybe<Scalars['BigInt']>;
   cumulativeFundingLongX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -477,7 +466,6 @@ export type PerpProductSnapshot_orderBy =
   | 'periodIndex'
   | 'product'
   | 'liquidationPriceX18'
-  | 'markPriceX18'
   | 'cumulativeFundingLongX18'
   | 'cumulativeFundingShortX18'
   | 'openInterest'
@@ -554,14 +542,6 @@ export type PerpProduct_filter = {
   liquidationPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
   liquidationPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   liquidationPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  markPriceX18?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_not?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  markPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   cumulativeFundingLongX18?: InputMaybe<Scalars['BigInt']>;
   cumulativeFundingLongX18_not?: InputMaybe<Scalars['BigInt']>;
   cumulativeFundingLongX18_gt?: InputMaybe<Scalars['BigInt']>;
@@ -637,7 +617,6 @@ export type PerpProduct_orderBy =
   | 'market'
   | 'engine'
   | 'liquidationPriceX18'
-  | 'markPriceX18'
   | 'cumulativeFundingLongX18'
   | 'cumulativeFundingShortX18'
   | 'openInterest'

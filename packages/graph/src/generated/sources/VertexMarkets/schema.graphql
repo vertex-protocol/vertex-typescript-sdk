@@ -286,7 +286,6 @@ type PerpProduct {
   market: Market!
   engine: PerpEngine!
   liquidationPriceX18: BigInt!
-  markPriceX18: BigInt!
   cumulativeFundingLongX18: BigInt!
   cumulativeFundingShortX18: BigInt!
   openInterest: BigInt!
@@ -304,7 +303,6 @@ type PerpProductSnapshot {
   periodIndex: BigInt!
   product: PerpProduct!
   liquidationPriceX18: BigInt!
-  markPriceX18: BigInt!
   cumulativeFundingLongX18: BigInt!
   cumulativeFundingShortX18: BigInt!
   openInterest: BigInt!
@@ -369,14 +367,6 @@ input PerpProductSnapshot_filter {
   liquidationPriceX18_lte: BigInt
   liquidationPriceX18_in: [BigInt!]
   liquidationPriceX18_not_in: [BigInt!]
-  markPriceX18: BigInt
-  markPriceX18_not: BigInt
-  markPriceX18_gt: BigInt
-  markPriceX18_lt: BigInt
-  markPriceX18_gte: BigInt
-  markPriceX18_lte: BigInt
-  markPriceX18_in: [BigInt!]
-  markPriceX18_not_in: [BigInt!]
   cumulativeFundingLongX18: BigInt
   cumulativeFundingLongX18_not: BigInt
   cumulativeFundingLongX18_gt: BigInt
@@ -451,7 +441,6 @@ enum PerpProductSnapshot_orderBy {
   periodIndex
   product
   liquidationPriceX18
-  markPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18
   openInterest
@@ -529,14 +518,6 @@ input PerpProduct_filter {
   liquidationPriceX18_lte: BigInt
   liquidationPriceX18_in: [BigInt!]
   liquidationPriceX18_not_in: [BigInt!]
-  markPriceX18: BigInt
-  markPriceX18_not: BigInt
-  markPriceX18_gt: BigInt
-  markPriceX18_lt: BigInt
-  markPriceX18_gte: BigInt
-  markPriceX18_lte: BigInt
-  markPriceX18_in: [BigInt!]
-  markPriceX18_not_in: [BigInt!]
   cumulativeFundingLongX18: BigInt
   cumulativeFundingLongX18_not: BigInt
   cumulativeFundingLongX18_gt: BigInt
@@ -612,7 +593,6 @@ enum PerpProduct_orderBy {
   market
   engine
   liquidationPriceX18
-  markPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18
   openInterest

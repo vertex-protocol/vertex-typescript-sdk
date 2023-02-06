@@ -1,7 +1,6 @@
 
 import { InContextSdkMethod } from '@graphql-mesh/types';
 import { MeshContext } from '@graphql-mesh/runtime';
-import { Scalars } from '../..';
 
 export namespace VertexCoreTypes {
   export type Maybe<T> = T | null;
@@ -470,7 +469,6 @@ export type LiquidationEvent = {
   perpAmount: Scalars['BigInt'];
   spotOraclePriceX18: Scalars['BigInt'];
   perpLiquidationPriceX18: Scalars['BigInt'];
-  perpMarkPriceX18: Scalars['BigInt'];
 };
 
 export type LiquidationEvent_filter = {
@@ -628,14 +626,6 @@ export type LiquidationEvent_filter = {
   perpLiquidationPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
   perpLiquidationPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   perpLiquidationPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  perpMarkPriceX18?: InputMaybe<Scalars['BigInt']>;
-  perpMarkPriceX18_not?: InputMaybe<Scalars['BigInt']>;
-  perpMarkPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  perpMarkPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  perpMarkPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  perpMarkPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  perpMarkPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  perpMarkPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -656,8 +646,7 @@ export type LiquidationEvent_orderBy =
   | 'perpProductId'
   | 'perpAmount'
   | 'spotOraclePriceX18'
-  | 'perpLiquidationPriceX18'
-  | 'perpMarkPriceX18';
+  | 'perpLiquidationPriceX18';
 
 export type ModifyCollateralEvent = {
   id: Scalars['ID'];
@@ -1330,7 +1319,6 @@ export type SettlePnlEvent = {
   productId: Scalars['BigInt'];
   amount: Scalars['BigInt'];
   positionAmount: Scalars['BigInt'];
-  markPriceX18: Scalars['BigInt'];
 };
 
 export type SettlePnlEvent_filter = {
@@ -1403,14 +1391,6 @@ export type SettlePnlEvent_filter = {
   positionAmount_lte?: InputMaybe<Scalars['BigInt']>;
   positionAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
   positionAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  markPriceX18?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_not?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  markPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  markPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
 };
@@ -1422,8 +1402,7 @@ export type SettlePnlEvent_orderBy =
   | 'subaccount'
   | 'productId'
   | 'amount'
-  | 'positionAmount'
-  | 'markPriceX18';
+  | 'positionAmount';
 
 export type SpotBalanceSummary = {
   id: Scalars['ID'];
