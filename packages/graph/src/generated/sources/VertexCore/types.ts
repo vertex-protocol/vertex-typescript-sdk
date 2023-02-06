@@ -1,6 +1,7 @@
 
 import { InContextSdkMethod } from '@graphql-mesh/types';
 import { MeshContext } from '@graphql-mesh/runtime';
+import { Scalars } from '../..';
 
 export namespace VertexCoreTypes {
   export type Maybe<T> = T | null;
