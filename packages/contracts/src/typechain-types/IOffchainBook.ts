@@ -29,8 +29,7 @@ import type {
 
 export declare namespace IEndpoint {
   export type OrderStruct = {
-    sender: PromiseOrValue<string>;
-    subaccountName: PromiseOrValue<string>;
+    sender: PromiseOrValue<BytesLike>;
     priceX18: PromiseOrValue<BigNumberish>;
     amount: PromiseOrValue<BigNumberish>;
     expiration: PromiseOrValue<BigNumberish>;
@@ -39,14 +38,12 @@ export declare namespace IEndpoint {
 
   export type OrderStructOutput = [
     string,
-    string,
     BigNumber,
     BigNumber,
     BigNumber,
     BigNumber
   ] & {
     sender: string;
-    subaccountName: string;
     priceX18: BigNumber;
     amount: BigNumber;
     expiration: BigNumber;
@@ -93,22 +90,14 @@ export declare namespace IEndpoint {
   };
 
   export type SwapAMMStruct = {
-    sender: PromiseOrValue<string>;
-    subaccountName: PromiseOrValue<string>;
+    sender: PromiseOrValue<BytesLike>;
     productId: PromiseOrValue<BigNumberish>;
     amount: PromiseOrValue<BigNumberish>;
     priceX18: PromiseOrValue<BigNumberish>;
   };
 
-  export type SwapAMMStructOutput = [
-    string,
-    string,
-    number,
-    BigNumber,
-    BigNumber
-  ] & {
+  export type SwapAMMStructOutput = [string, number, BigNumber, BigNumber] & {
     sender: string;
-    subaccountName: string;
     productId: number;
     amount: BigNumber;
     priceX18: BigNumber;
@@ -146,12 +135,12 @@ export interface IOffchainBookInterface extends utils.Interface {
   functions: {
     "claimSequencerFee()": FunctionFragment;
     "dumpFees()": FunctionFragment;
-    "getDigest((address,string,int128,int128,uint64,uint64))": FunctionFragment;
+    "getDigest((bytes32,int128,int128,uint64,uint64))": FunctionFragment;
     "getMarket()": FunctionFragment;
     "initialize(address,address,address,address,address,uint32,int128,int128,int128)": FunctionFragment;
-    "matchOrderAMM((uint32,((address,string,int128,int128,uint64,uint64),bytes)))": FunctionFragment;
-    "matchOrders((uint32,bool,((address,string,int128,int128,uint64,uint64),bytes),((address,string,int128,int128,uint64,uint64),bytes)))": FunctionFragment;
-    "swapAMM((address,string,uint32,int128,int128))": FunctionFragment;
+    "matchOrderAMM((uint32,((bytes32,int128,int128,uint64,uint64),bytes)))": FunctionFragment;
+    "matchOrders((uint32,bool,((bytes32,int128,int128,uint64,uint64),bytes),((bytes32,int128,int128,uint64,uint64),bytes)))": FunctionFragment;
+    "swapAMM((bytes32,uint32,int128,int128))": FunctionFragment;
   };
 
   getFunction(
@@ -222,7 +211,7 @@ export interface IOffchainBookInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "swapAMM", data: BytesLike): Result;
 
   events: {
-    "FillOrder(bytes32,uint64,int128,int128,uint64,uint64,bool,int128,int128,int128)": EventFragment;
+    "FillOrder(bytes32,bytes32,int128,int128,uint64,uint64,bool,int128,int128,int128)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "FillOrder"): EventFragment;
@@ -230,7 +219,7 @@ export interface IOffchainBookInterface extends utils.Interface {
 
 export interface FillOrderEventObject {
   digest: string;
-  subaccount: BigNumber;
+  subaccount: string;
   priceX18: BigNumber;
   amount: BigNumber;
   expiration: BigNumber;
@@ -243,7 +232,7 @@ export interface FillOrderEventObject {
 export type FillOrderEvent = TypedEvent<
   [
     string,
-    BigNumber,
+    string,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -420,9 +409,9 @@ export interface IOffchainBook extends BaseContract {
   };
 
   filters: {
-    "FillOrder(bytes32,uint64,int128,int128,uint64,uint64,bool,int128,int128,int128)"(
+    "FillOrder(bytes32,bytes32,int128,int128,uint64,uint64,bool,int128,int128,int128)"(
       digest?: PromiseOrValue<BytesLike> | null,
-      subaccount?: PromiseOrValue<BigNumberish> | null,
+      subaccount?: PromiseOrValue<BytesLike> | null,
       priceX18?: null,
       amount?: null,
       expiration?: null,
@@ -434,7 +423,7 @@ export interface IOffchainBook extends BaseContract {
     ): FillOrderEventFilter;
     FillOrder(
       digest?: PromiseOrValue<BytesLike> | null,
-      subaccount?: PromiseOrValue<BigNumberish> | null,
+      subaccount?: PromiseOrValue<BytesLike> | null,
       priceX18?: null,
       amount?: null,
       expiration?: null,

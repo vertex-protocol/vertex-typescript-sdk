@@ -427,9 +427,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
       {
         internalType: "uint32[]",
@@ -651,9 +651,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
       {
         internalType: "uint32[]",
@@ -906,9 +906,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
     ],
     name: "getSubaccountInfo",
@@ -916,9 +916,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "uint64",
-            name: "subaccountId",
-            type: "uint64",
+            internalType: "bytes32",
+            name: "subaccount",
+            type: "bytes32",
           },
           {
             internalType: "bool",
@@ -1382,9 +1382,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
       {
         components: [
@@ -1409,9 +1409,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "uint64",
-            name: "subaccountId",
-            type: "uint64",
+            internalType: "bytes32",
+            name: "subaccount",
+            type: "bytes32",
           },
           {
             internalType: "bool",

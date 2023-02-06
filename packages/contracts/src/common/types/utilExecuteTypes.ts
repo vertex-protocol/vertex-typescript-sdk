@@ -1,4 +1,4 @@
-import { BigNumberish } from 'ethers';
+import { BigNumberish, Bytes } from 'ethers';
 
 export interface MintMockERC20Params {
   productId: BigNumberish;
@@ -6,5 +6,6 @@ export interface MintMockERC20Params {
 }
 
 export interface SettlePnlParams {
-  subaccountIds: BigNumberish[];
+  subaccounts: Bytes[];
+  productIds: number[];
 }

@@ -13,8 +13,7 @@ export function getVertexEIP712Types(
     case 'withdraw_collateral':
       return {
         WithdrawCollateral: [
-          { name: 'sender', type: 'address' },
-          { name: 'subaccountName', type: 'string' },
+          { name: 'sender', type: 'bytes32' },
           { name: 'productId', type: 'uint32' },
           { name: 'amount', type: 'uint128' },
           { name: 'nonce', type: 'uint64' },
@@ -23,8 +22,7 @@ export function getVertexEIP712Types(
     case 'mint_lp':
       return {
         MintLp: [
-          { name: 'sender', type: 'address' },
-          { name: 'subaccountName', type: 'string' },
+          { name: 'sender', type: 'bytes32' },
           { name: 'productId', type: 'uint32' },
           { name: 'amountBase', type: 'uint128' },
           { name: 'quoteAmountLow', type: 'uint128' },
@@ -35,8 +33,7 @@ export function getVertexEIP712Types(
     case 'burn_lp':
       return {
         BurnLp: [
-          { name: 'sender', type: 'address' },
-          { name: 'subaccountName', type: 'string' },
+          { name: 'sender', type: 'bytes32' },
           { name: 'productId', type: 'uint32' },
           { name: 'amount', type: 'uint128' },
           { name: 'nonce', type: 'uint64' },
@@ -45,8 +42,7 @@ export function getVertexEIP712Types(
     case 'place_order':
       return {
         Order: [
-          { name: 'sender', type: 'address' },
-          { name: 'subaccountName', type: 'string' },
+          { name: 'sender', type: 'bytes32' },
           { name: 'priceX18', type: 'int128' },
           { name: 'amount', type: 'int128' },
           { name: 'expiration', type: 'uint64' },
@@ -56,8 +52,7 @@ export function getVertexEIP712Types(
     case 'cancel_orders':
       return {
         Cancellation: [
-          { name: 'sender', type: 'address' },
-          { name: 'subaccountName', type: 'string' },
+          { name: 'sender', type: 'bytes32' },
           { name: 'productIds', type: 'uint32[]' },
           { name: 'digests', type: 'bytes32[]' },
           { name: 'nonce', type: 'uint64' },
@@ -66,9 +61,8 @@ export function getVertexEIP712Types(
     case 'liquidate_subaccount':
       return {
         LiquidateSubaccount: [
-          { name: 'sender', type: 'address' },
-          { name: 'subaccountName', type: 'string' },
-          { name: 'liquidateeId', type: 'uint64' },
+          { name: 'sender', type: 'bytes32' },
+          { name: 'liquidatee', type: 'bytes32' },
           { name: 'mode', type: 'uint8' },
           { name: 'healthGroup', type: 'uint32' },
           { name: 'amount', type: 'int128' },

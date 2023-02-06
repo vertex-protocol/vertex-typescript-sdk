@@ -10,18 +10,13 @@ export interface EngineServerNoncesParams {
   address: string;
 }
 
-export interface EngineServerSubaccountIdParams {
-  address: string;
-  subaccount_name: string;
-}
-
 export interface EngineServerSubaccountInfoQueryParams {
-  subaccount_id: number;
+  subaccount: string;
   txns?: Array<
     | {
         mint_lp: {
           product_id: number;
-          subaccount_id: number;
+          subaccount: string;
           amount_base: string;
           quote_amount_low: string;
           quote_amount_high: string;
@@ -30,14 +25,14 @@ export interface EngineServerSubaccountInfoQueryParams {
     | {
         burn_lp: {
           product_id: number;
-          subaccount_id: number;
+          subaccount: string;
           amount_lp: string;
         };
       }
     | {
         apply_delta: {
           product_id: number;
-          subaccount_id: number;
+          subaccount: string;
           amount_delta: string;
           v_quote_delta: string;
         };
@@ -62,13 +57,11 @@ export interface EngineServerValidateOrderQueryParams {
 
 export interface EngineServerSubaccountOrdersQueryParams {
   sender: string;
-  subaccount_name: string;
   product_id: number;
 }
 
 export interface EngineServerSubaccountFeeRatesParams {
   sender: string;
-  subaccount_name: string;
   product_id: number;
 }
 
@@ -79,7 +72,6 @@ export interface EngineServerMarketLiquidityQueryParams {
 
 export interface EngineServerMaxWithdrawableQueryParams {
   sender: string;
-  subaccount_name: string;
   product_id: number;
   // If not given, engine defaults to true (leverage/borrow enabled)
   spot_leverage: boolean | null;
@@ -87,7 +79,6 @@ export interface EngineServerMaxWithdrawableQueryParams {
 
 export interface EngineServerMaxOrderSizeQueryParams {
   sender: string;
-  subaccount_name: string;
   product_id: number;
   price_x18: string;
   direction: 'long' | 'short';
@@ -99,7 +90,6 @@ export interface EngineServerQueryRequestByType {
   status: Record<string, never>;
   nonces: EngineServerNoncesParams;
   all_products: Record<string, never>;
-  subaccount_id: EngineServerSubaccountIdParams;
   subaccount_info: Omit<EngineServerSubaccountInfoQueryParams, 'txns'> & {
     // JSON serialized txns
     txns?: string;
@@ -120,26 +110,26 @@ export type EngineServerQueryRequestType = keyof EngineServerQueryRequestByType;
 export type EngineServerStatusResponse =
   | 'started'
   | 'active'
+  | 'stopping'
   | 'syncing'
+  | 'live_syncing'
   | 'failed';
 
 export interface EngineServerNoncesResponse {
-  order_nonce: number;
-  tx_nonce: number;
-}
-
-export interface EngineServerSubaccountIdResponse {
-  subaccount_id: number;
+  order_nonce: string;
+  tx_nonce: string;
 }
 
 export interface EngineServerSubaccountInfoResponse {
   exists: boolean;
-  subaccount_id: BigNumberish;
+  subaccount: string;
   healths: {
     health: BigNumberish;
     assets: BigNumberish;
     liabilities: BigNumberish;
   }[];
+  spot_count: number;
+  perp_count: number;
   spot_balances: EngineServerSpotBalance[];
   perp_balances: EngineServerPerpBalance[];
   spot_products: EngineServerSpotProduct[];
@@ -164,7 +154,6 @@ export interface EngineServerMarketLiquidityResponse {
 
 export interface EngineServerSubaccountOrdersResponse {
   sender: string;
-  subaccount_name: string;
   product_id: number;
   orders: EngineServerGetOrderResponse[];
 }
@@ -183,11 +172,10 @@ export interface EngineServerMarketPriceResponse {
 export interface EngineServerGetOrderResponse {
   product_id: number;
   sender: string;
-  subaccount_name: string;
   price_x18: BigNumberish;
   amount: BigNumberish;
   expiration: BigNumberish;
-  nonce: number;
+  nonce: string;
   unfilled_amount: BigNumberish;
   digest: string;
   placed_at: number;
@@ -210,7 +198,6 @@ export interface EngineServerMaxWithdrawableResponse {
 export interface EngineServerQueryResponseByType {
   status: EngineServerStatusResponse;
   nonces: EngineServerNoncesResponse;
-  subaccount_id: EngineServerSubaccountIdResponse;
   subaccount_info: EngineServerSubaccountInfoResponse;
   all_products: EngineServerAllProductsResponse;
   order: EngineServerGetOrderResponse;

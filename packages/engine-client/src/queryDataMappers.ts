@@ -13,6 +13,7 @@ import {
   PerpMarket,
   ProductEngineType,
   SpotMarket,
+  subaccountFromHex,
 } from '@vertex-protocol/contracts';
 
 export function mapEngineServerTickLiquidity(
@@ -27,14 +28,15 @@ export function mapEngineServerTickLiquidity(
 export function mapEngineServerOrder(
   order: EngineServerGetOrderResponse,
 ): EngineOrder {
+  const subaccount = subaccountFromHex(order.sender);
   return {
     digest: order.digest,
     expiration: toBigDecimal(order.expiration),
     nonce: order.nonce,
     price: fromX18(order.price_x18),
     productId: order.product_id,
-    sender: order.sender,
-    subaccountName: order.subaccount_name,
+    sender: subaccount.owner,
+    subaccountName: subaccount.name,
     totalAmount: toBigDecimal(order.amount),
     unfilledAmount: toBigDecimal(order.unfilled_amount),
     // Standardizes from hex
@@ -44,8 +46,8 @@ export function mapEngineServerOrder(
       expiration: toBigDecimal(order.expiration).toFixed(),
       nonce: order.nonce,
       price: fromX18(order.price_x18).toFixed(),
-      sender: order.sender,
-      subaccountName: order.subaccount_name,
+      sender: subaccount.owner,
+      subaccountName: subaccount.name,
     },
     placementTime: order.placed_at,
   };

@@ -9,13 +9,6 @@ import {
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import { EngineServerNoncesParams } from './serverQueryTypes';
 
-export interface GetEngineSubaccountIdParams {
-  address: string;
-  subaccountName: string;
-}
-
-export type GetEngineSubaccountIdResponse = number;
-
 export type GetEngineSubaccountSummaryParams = GetSubaccountSummaryParams;
 
 export type SubaccountTx =
@@ -58,8 +51,8 @@ export type GetEngineEstimatedSubaccountSummaryParams =
 export type GetEngineNoncesParams = EngineServerNoncesParams;
 
 export interface GetEngineNoncesResponse {
-  orderNonce: number;
-  txNonce: number;
+  orderNonce: string;
+  txNonce: string;
 }
 
 export type GetEngineSubaccountSummaryResponse = SubaccountSummaryResponse;
@@ -81,7 +74,7 @@ export interface EngineOrder {
   // Amount still unfilled
   unfilledAmount: BigDecimal;
   expiration: BigDecimal;
-  nonce: number;
+  nonce: string;
   digest: string;
   // Raw order params for cancellation
   orderParams: OrderParams;

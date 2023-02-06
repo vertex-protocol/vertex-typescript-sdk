@@ -56,11 +56,13 @@ query OrderByDigestQuery($digest: Bytes!, $productId: BigInt!) {
 # All fields on Order
 fragment OrderEntityFieldsFragment on Order {
   id
+  type
   digest
   priceX18
   productId
   subaccount {
-    subaccountId
+    owner
+    name
   }
   reportedAt
   reportedAtBlock

@@ -55,7 +55,7 @@ query SubaccountLiquidationEventHistoryQuery(
 
     # Prices at time of liquidation
     spotOraclePriceX18
-    perpMarkPriceX18
+    perpLiquidationPriceX18
   }
 }
 
@@ -79,7 +79,6 @@ query SubaccountSettlementEventHistoryQuery(
   ) {
     id
     blockTime
-
     productId
     amount
     positionAmount

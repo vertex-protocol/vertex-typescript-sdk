@@ -30,25 +30,47 @@ import type {
 export declare namespace IProductEngine {
   export type ProductDeltaStruct = {
     productId: PromiseOrValue<BigNumberish>;
-    subaccountId: PromiseOrValue<BigNumberish>;
+    subaccount: PromiseOrValue<BytesLike>;
     amountDelta: PromiseOrValue<BigNumberish>;
     vQuoteDelta: PromiseOrValue<BigNumberish>;
   };
 
   export type ProductDeltaStructOutput = [
     number,
-    BigNumber,
+    string,
     BigNumber,
     BigNumber
   ] & {
     productId: number;
-    subaccountId: BigNumber;
+    subaccount: string;
     amountDelta: BigNumber;
     vQuoteDelta: BigNumber;
   };
 }
 
 export declare namespace IPerpEngine {
+  export type BalanceStruct = {
+    amount: PromiseOrValue<BigNumberish>;
+    vQuoteBalance: PromiseOrValue<BigNumberish>;
+    lastCumulativeFundingX18: PromiseOrValue<BigNumberish>;
+  };
+
+  export type BalanceStructOutput = [BigNumber, BigNumber, BigNumber] & {
+    amount: BigNumber;
+    vQuoteBalance: BigNumber;
+    lastCumulativeFundingX18: BigNumber;
+  };
+
+  export type LpBalanceStruct = {
+    amount: PromiseOrValue<BigNumberish>;
+    lastCumulativeFundingX18: PromiseOrValue<BigNumberish>;
+  };
+
+  export type LpBalanceStructOutput = [BigNumber, BigNumber] & {
+    amount: BigNumber;
+    lastCumulativeFundingX18: BigNumber;
+  };
+
   export type LpStateStruct = {
     supply: PromiseOrValue<BigNumberish>;
     lastCumulativeFundingX18: PromiseOrValue<BigNumberish>;
@@ -71,16 +93,6 @@ export declare namespace IPerpEngine {
     quote: BigNumber;
   };
 
-  export type LpBalanceStruct = {
-    amount: PromiseOrValue<BigNumberish>;
-    lastCumulativeFundingX18: PromiseOrValue<BigNumberish>;
-  };
-
-  export type LpBalanceStructOutput = [BigNumber, BigNumber] & {
-    amount: BigNumber;
-    lastCumulativeFundingX18: BigNumber;
-  };
-
   export type StateStruct = {
     cumulativeFundingLongX18: PromiseOrValue<BigNumberish>;
     cumulativeFundingShortX18: PromiseOrValue<BigNumberish>;
@@ -99,38 +111,29 @@ export declare namespace IPerpEngine {
     availableSettle: BigNumber;
     openInterest: BigNumber;
   };
-
-  export type BalanceStruct = {
-    amount: PromiseOrValue<BigNumberish>;
-    vQuoteBalance: PromiseOrValue<BigNumberish>;
-    lastCumulativeFundingX18: PromiseOrValue<BigNumberish>;
-  };
-
-  export type BalanceStructOutput = [BigNumber, BigNumber, BigNumber] & {
-    amount: BigNumber;
-    vQuoteBalance: BigNumber;
-    lastCumulativeFundingX18: BigNumber;
-  };
 }
 
 export interface IPerpEngineInterface extends utils.Interface {
   functions: {
-    "applyDeltas((uint32,uint64,int128,int128)[])": FunctionFragment;
-    "burnLp(uint32,uint64,int128)": FunctionFragment;
-    "decomposeLps(uint64,uint64)": FunctionFragment;
+    "applyDeltas((uint32,bytes32,int128,int128)[])": FunctionFragment;
+    "burnLp(uint32,bytes32,int128)": FunctionFragment;
+    "decomposeLps(bytes32,bytes32)": FunctionFragment;
+    "getBalance(uint32,bytes32)": FunctionFragment;
+    "getBalances(uint32,bytes32)": FunctionFragment;
     "getClearinghouse()": FunctionFragment;
     "getEngineType()": FunctionFragment;
+    "getLpState(uint32)": FunctionFragment;
     "getOrderbook(uint32)": FunctionFragment;
     "getProductIds()": FunctionFragment;
-    "getSettlementState(uint32,uint64)": FunctionFragment;
-    "getStateAndBalance(uint32,uint64)": FunctionFragment;
-    "getStatesAndBalances(uint32,uint64)": FunctionFragment;
-    "hasBalance(uint32,uint64)": FunctionFragment;
+    "getSettlementState(uint32,bytes32)": FunctionFragment;
+    "getStateAndBalance(uint32,bytes32)": FunctionFragment;
+    "getStatesAndBalances(uint32,bytes32)": FunctionFragment;
+    "hasBalance(uint32,bytes32)": FunctionFragment;
     "initialize(address,address,address,address,address)": FunctionFragment;
-    "mintLp(uint32,uint64,int128,int128,int128)": FunctionFragment;
-    "settlePnl(uint256)": FunctionFragment;
-    "socializeSubaccount(uint64,int128)": FunctionFragment;
-    "swapLp(uint32,uint64,int128,int128,int128,int128)": FunctionFragment;
+    "mintLp(uint32,bytes32,int128,int128,int128)": FunctionFragment;
+    "settlePnl(bytes32,uint256)": FunctionFragment;
+    "socializeSubaccount(bytes32,int128)": FunctionFragment;
+    "swapLp(uint32,bytes32,int128,int128,int128,int128)": FunctionFragment;
     "updateStates(uint128,int128[])": FunctionFragment;
   };
 
@@ -139,8 +142,11 @@ export interface IPerpEngineInterface extends utils.Interface {
       | "applyDeltas"
       | "burnLp"
       | "decomposeLps"
+      | "getBalance"
+      | "getBalances"
       | "getClearinghouse"
       | "getEngineType"
+      | "getLpState"
       | "getOrderbook"
       | "getProductIds"
       | "getSettlementState"
@@ -163,13 +169,21 @@ export interface IPerpEngineInterface extends utils.Interface {
     functionFragment: "burnLp",
     values: [
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>,
       PromiseOrValue<BigNumberish>
     ]
   ): string;
   encodeFunctionData(
     functionFragment: "decomposeLps",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getBalance",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getBalances",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "getClearinghouse",
@@ -178,6 +192,10 @@ export interface IPerpEngineInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getEngineType",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getLpState",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getOrderbook",
@@ -189,19 +207,19 @@ export interface IPerpEngineInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getSettlementState",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "getStateAndBalance",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "getStatesAndBalances",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "hasBalance",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
@@ -217,7 +235,7 @@ export interface IPerpEngineInterface extends utils.Interface {
     functionFragment: "mintLp",
     values: [
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
@@ -225,17 +243,17 @@ export interface IPerpEngineInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "settlePnl",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "socializeSubaccount",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "swapLp",
     values: [
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
@@ -256,6 +274,11 @@ export interface IPerpEngineInterface extends utils.Interface {
     functionFragment: "decomposeLps",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getBalances",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getClearinghouse",
     data: BytesLike
@@ -264,6 +287,7 @@ export interface IPerpEngineInterface extends utils.Interface {
     functionFragment: "getEngineType",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getLpState", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getOrderbook",
     data: BytesLike
@@ -301,7 +325,7 @@ export interface IPerpEngineInterface extends utils.Interface {
   events: {
     "AddProduct(uint32)": EventFragment;
     "ProductUpdate(uint32)": EventFragment;
-    "SettlePnl(uint64,uint32,int128)": EventFragment;
+    "SettlePnl(bytes32,uint32,int128)": EventFragment;
     "SocializeProduct(uint32,int128)": EventFragment;
   };
 
@@ -326,12 +350,12 @@ export type ProductUpdateEvent = TypedEvent<[number], ProductUpdateEventObject>;
 export type ProductUpdateEventFilter = TypedEventFilter<ProductUpdateEvent>;
 
 export interface SettlePnlEventObject {
-  subaccount: BigNumber;
+  subaccount: string;
   productId: number;
   amount: BigNumber;
 }
 export type SettlePnlEvent = TypedEvent<
-  [BigNumber, number, BigNumber],
+  [string, number, BigNumber],
   SettlePnlEventObject
 >;
 
@@ -383,20 +407,39 @@ export interface IPerpEngine extends BaseContract {
 
     burnLp(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       amountLp: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     decomposeLps(
-      liquidateeId: PromiseOrValue<BigNumberish>,
-      liquidatorId: PromiseOrValue<BigNumberish>,
+      liquidatee: PromiseOrValue<BytesLike>,
+      liquidator: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    getBalance(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<[IPerpEngine.BalanceStructOutput]>;
+
+    getBalances(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<
+      [IPerpEngine.LpBalanceStructOutput, IPerpEngine.BalanceStructOutput]
+    >;
 
     getClearinghouse(overrides?: CallOverrides): Promise<[string]>;
 
     getEngineType(overrides?: CallOverrides): Promise<[number]>;
+
+    getLpState(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[IPerpEngine.LpStateStructOutput]>;
 
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
@@ -407,7 +450,7 @@ export interface IPerpEngine extends BaseContract {
 
     getSettlementState(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<
       [
@@ -427,7 +470,7 @@ export interface IPerpEngine extends BaseContract {
 
     getStateAndBalance(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<
       [IPerpEngine.StateStructOutput, IPerpEngine.BalanceStructOutput]
@@ -435,7 +478,7 @@ export interface IPerpEngine extends BaseContract {
 
     getStatesAndBalances(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<
       [
@@ -448,7 +491,7 @@ export interface IPerpEngine extends BaseContract {
 
     hasBalance(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
@@ -463,7 +506,7 @@ export interface IPerpEngine extends BaseContract {
 
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       amountBase: PromiseOrValue<BigNumberish>,
       quoteAmountLow: PromiseOrValue<BigNumberish>,
       quoteAmountHigh: PromiseOrValue<BigNumberish>,
@@ -471,19 +514,20 @@ export interface IPerpEngine extends BaseContract {
     ): Promise<ContractTransaction>;
 
     settlePnl(
-      request: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      productIds: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     socializeSubaccount(
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       insurance: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     swapLp(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       amount: PromiseOrValue<BigNumberish>,
       priceX18: PromiseOrValue<BigNumberish>,
       sizeIncrement: PromiseOrValue<BigNumberish>,
@@ -505,20 +549,39 @@ export interface IPerpEngine extends BaseContract {
 
   burnLp(
     productId: PromiseOrValue<BigNumberish>,
-    subaccountId: PromiseOrValue<BigNumberish>,
+    subaccount: PromiseOrValue<BytesLike>,
     amountLp: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   decomposeLps(
-    liquidateeId: PromiseOrValue<BigNumberish>,
-    liquidatorId: PromiseOrValue<BigNumberish>,
+    liquidatee: PromiseOrValue<BytesLike>,
+    liquidator: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  getBalance(
+    productId: PromiseOrValue<BigNumberish>,
+    subaccount: PromiseOrValue<BytesLike>,
+    overrides?: CallOverrides
+  ): Promise<IPerpEngine.BalanceStructOutput>;
+
+  getBalances(
+    productId: PromiseOrValue<BigNumberish>,
+    subaccount: PromiseOrValue<BytesLike>,
+    overrides?: CallOverrides
+  ): Promise<
+    [IPerpEngine.LpBalanceStructOutput, IPerpEngine.BalanceStructOutput]
+  >;
 
   getClearinghouse(overrides?: CallOverrides): Promise<string>;
 
   getEngineType(overrides?: CallOverrides): Promise<number>;
+
+  getLpState(
+    productId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<IPerpEngine.LpStateStructOutput>;
 
   getOrderbook(
     productId: PromiseOrValue<BigNumberish>,
@@ -529,7 +592,7 @@ export interface IPerpEngine extends BaseContract {
 
   getSettlementState(
     productId: PromiseOrValue<BigNumberish>,
-    subaccountId: PromiseOrValue<BigNumberish>,
+    subaccount: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<
     [
@@ -549,13 +612,13 @@ export interface IPerpEngine extends BaseContract {
 
   getStateAndBalance(
     productId: PromiseOrValue<BigNumberish>,
-    subaccountId: PromiseOrValue<BigNumberish>,
+    subaccount: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<[IPerpEngine.StateStructOutput, IPerpEngine.BalanceStructOutput]>;
 
   getStatesAndBalances(
     productId: PromiseOrValue<BigNumberish>,
-    subaccountId: PromiseOrValue<BigNumberish>,
+    subaccount: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<
     [
@@ -568,7 +631,7 @@ export interface IPerpEngine extends BaseContract {
 
   hasBalance(
     productId: PromiseOrValue<BigNumberish>,
-    subaccountId: PromiseOrValue<BigNumberish>,
+    subaccount: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
@@ -583,7 +646,7 @@ export interface IPerpEngine extends BaseContract {
 
   mintLp(
     productId: PromiseOrValue<BigNumberish>,
-    subaccountId: PromiseOrValue<BigNumberish>,
+    subaccount: PromiseOrValue<BytesLike>,
     amountBase: PromiseOrValue<BigNumberish>,
     quoteAmountLow: PromiseOrValue<BigNumberish>,
     quoteAmountHigh: PromiseOrValue<BigNumberish>,
@@ -591,19 +654,20 @@ export interface IPerpEngine extends BaseContract {
   ): Promise<ContractTransaction>;
 
   settlePnl(
-    request: PromiseOrValue<BigNumberish>,
+    subaccount: PromiseOrValue<BytesLike>,
+    productIds: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   socializeSubaccount(
-    subaccountId: PromiseOrValue<BigNumberish>,
+    subaccount: PromiseOrValue<BytesLike>,
     insurance: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   swapLp(
     productId: PromiseOrValue<BigNumberish>,
-    subaccountId: PromiseOrValue<BigNumberish>,
+    subaccount: PromiseOrValue<BytesLike>,
     amount: PromiseOrValue<BigNumberish>,
     priceX18: PromiseOrValue<BigNumberish>,
     sizeIncrement: PromiseOrValue<BigNumberish>,
@@ -625,20 +689,39 @@ export interface IPerpEngine extends BaseContract {
 
     burnLp(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       amountLp: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     decomposeLps(
-      liquidateeId: PromiseOrValue<BigNumberish>,
-      liquidatorId: PromiseOrValue<BigNumberish>,
+      liquidatee: PromiseOrValue<BytesLike>,
+      liquidator: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    getBalance(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<IPerpEngine.BalanceStructOutput>;
+
+    getBalances(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<
+      [IPerpEngine.LpBalanceStructOutput, IPerpEngine.BalanceStructOutput]
+    >;
 
     getClearinghouse(overrides?: CallOverrides): Promise<string>;
 
     getEngineType(overrides?: CallOverrides): Promise<number>;
+
+    getLpState(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<IPerpEngine.LpStateStructOutput>;
 
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
@@ -649,7 +732,7 @@ export interface IPerpEngine extends BaseContract {
 
     getSettlementState(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<
       [
@@ -669,7 +752,7 @@ export interface IPerpEngine extends BaseContract {
 
     getStateAndBalance(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<
       [IPerpEngine.StateStructOutput, IPerpEngine.BalanceStructOutput]
@@ -677,7 +760,7 @@ export interface IPerpEngine extends BaseContract {
 
     getStatesAndBalances(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<
       [
@@ -690,7 +773,7 @@ export interface IPerpEngine extends BaseContract {
 
     hasBalance(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -705,7 +788,7 @@ export interface IPerpEngine extends BaseContract {
 
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       amountBase: PromiseOrValue<BigNumberish>,
       quoteAmountLow: PromiseOrValue<BigNumberish>,
       quoteAmountHigh: PromiseOrValue<BigNumberish>,
@@ -713,19 +796,20 @@ export interface IPerpEngine extends BaseContract {
     ): Promise<void>;
 
     settlePnl(
-      request: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      productIds: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     socializeSubaccount(
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       insurance: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     swapLp(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       amount: PromiseOrValue<BigNumberish>,
       priceX18: PromiseOrValue<BigNumberish>,
       sizeIncrement: PromiseOrValue<BigNumberish>,
@@ -751,13 +835,13 @@ export interface IPerpEngine extends BaseContract {
       productId?: PromiseOrValue<BigNumberish> | null
     ): ProductUpdateEventFilter;
 
-    "SettlePnl(uint64,uint32,int128)"(
-      subaccount?: PromiseOrValue<BigNumberish> | null,
+    "SettlePnl(bytes32,uint32,int128)"(
+      subaccount?: PromiseOrValue<BytesLike> | null,
       productId?: null,
       amount?: null
     ): SettlePnlEventFilter;
     SettlePnl(
-      subaccount?: PromiseOrValue<BigNumberish> | null,
+      subaccount?: PromiseOrValue<BytesLike> | null,
       productId?: null,
       amount?: null
     ): SettlePnlEventFilter;
@@ -780,20 +864,37 @@ export interface IPerpEngine extends BaseContract {
 
     burnLp(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       amountLp: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     decomposeLps(
-      liquidateeId: PromiseOrValue<BigNumberish>,
-      liquidatorId: PromiseOrValue<BigNumberish>,
+      liquidatee: PromiseOrValue<BytesLike>,
+      liquidator: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    getBalance(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getBalances(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getClearinghouse(overrides?: CallOverrides): Promise<BigNumber>;
 
     getEngineType(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getLpState(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
@@ -804,25 +905,25 @@ export interface IPerpEngine extends BaseContract {
 
     getSettlementState(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getStateAndBalance(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getStatesAndBalances(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     hasBalance(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -837,7 +938,7 @@ export interface IPerpEngine extends BaseContract {
 
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       amountBase: PromiseOrValue<BigNumberish>,
       quoteAmountLow: PromiseOrValue<BigNumberish>,
       quoteAmountHigh: PromiseOrValue<BigNumberish>,
@@ -845,19 +946,20 @@ export interface IPerpEngine extends BaseContract {
     ): Promise<BigNumber>;
 
     settlePnl(
-      request: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      productIds: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     socializeSubaccount(
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       insurance: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     swapLp(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       amount: PromiseOrValue<BigNumberish>,
       priceX18: PromiseOrValue<BigNumberish>,
       sizeIncrement: PromiseOrValue<BigNumberish>,
@@ -880,20 +982,37 @@ export interface IPerpEngine extends BaseContract {
 
     burnLp(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       amountLp: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     decomposeLps(
-      liquidateeId: PromiseOrValue<BigNumberish>,
-      liquidatorId: PromiseOrValue<BigNumberish>,
+      liquidatee: PromiseOrValue<BytesLike>,
+      liquidator: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getBalance(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getBalances(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getClearinghouse(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getEngineType(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getLpState(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     getOrderbook(
       productId: PromiseOrValue<BigNumberish>,
@@ -904,25 +1023,25 @@ export interface IPerpEngine extends BaseContract {
 
     getSettlementState(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getStateAndBalance(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getStatesAndBalances(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     hasBalance(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -937,7 +1056,7 @@ export interface IPerpEngine extends BaseContract {
 
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       amountBase: PromiseOrValue<BigNumberish>,
       quoteAmountLow: PromiseOrValue<BigNumberish>,
       quoteAmountHigh: PromiseOrValue<BigNumberish>,
@@ -945,19 +1064,20 @@ export interface IPerpEngine extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     settlePnl(
-      request: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      productIds: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     socializeSubaccount(
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       insurance: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     swapLp(
       productId: PromiseOrValue<BigNumberish>,
-      subaccountId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
       amount: PromiseOrValue<BigNumberish>,
       priceX18: PromiseOrValue<BigNumberish>,
       sizeIncrement: PromiseOrValue<BigNumberish>,

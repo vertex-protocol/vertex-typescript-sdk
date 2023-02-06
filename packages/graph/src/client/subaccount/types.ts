@@ -15,7 +15,8 @@ export interface GetSubaccountsParams {
 export type GetSubaccountsResponse = SubaccountsForAddressQuery['subaccounts'];
 
 export interface GetSubaccountStateParams {
-  subaccountId: number;
+  subaccountOwner: string;
+  subaccountName: string;
 }
 
 export interface GetSubaccountStateResponse {
@@ -42,7 +43,8 @@ export interface GetSubaccountStateResponse {
 }
 
 export interface PaginatedSubaccountEventsParams extends PaginationParams {
-  subaccountId: number;
+  subaccountOwner: string;
+  subaccountName: string;
   // UNIX timestamp in seconds
   minTimeInclusive?: number;
   // UNIX timestamp in seconds
@@ -59,7 +61,8 @@ export type GetPaginatedSubaccountSettlementEventsResponse =
   SubaccountSettlementEventHistoryQueryQuery['settlePnlEvents'];
 
 export interface PaginatedSubaccountOrderFillsParams extends PaginationParams {
-  subaccountId: number;
+  subaccountOwner: string;
+  subaccountName: string;
 }
 
 export type PaginatedSubaccountOrderFillsResponse =

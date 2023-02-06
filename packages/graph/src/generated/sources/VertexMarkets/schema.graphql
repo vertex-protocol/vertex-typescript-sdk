@@ -148,10 +148,6 @@ input Market_filter {
   id_not_in: [ID!]
   clearinghouse: Bytes
   clearinghouse_not: Bytes
-  clearinghouse_gt: Bytes
-  clearinghouse_lt: Bytes
-  clearinghouse_gte: Bytes
-  clearinghouse_lte: Bytes
   clearinghouse_in: [Bytes!]
   clearinghouse_not_in: [Bytes!]
   clearinghouse_contains: Bytes
@@ -166,10 +162,6 @@ input Market_filter {
   productId_not_in: [BigInt!]
   orderbook: Bytes
   orderbook_not: Bytes
-  orderbook_gt: Bytes
-  orderbook_lt: Bytes
-  orderbook_gte: Bytes
-  orderbook_lte: Bytes
   orderbook_in: [Bytes!]
   orderbook_not_in: [Bytes!]
   orderbook_contains: Bytes
@@ -273,10 +265,6 @@ input PerpEngine_filter {
   id_not_in: [ID!]
   clearinghouse: Bytes
   clearinghouse_not: Bytes
-  clearinghouse_gt: Bytes
-  clearinghouse_lt: Bytes
-  clearinghouse_gte: Bytes
-  clearinghouse_lte: Bytes
   clearinghouse_in: [Bytes!]
   clearinghouse_not_in: [Bytes!]
   clearinghouse_contains: Bytes
@@ -297,8 +285,7 @@ type PerpProduct {
   productId: BigInt!
   market: Market!
   engine: PerpEngine!
-  priceX18: BigInt!
-  markPriceX18: BigInt!
+  liquidationPriceX18: BigInt!
   cumulativeFundingLongX18: BigInt!
   cumulativeFundingShortX18: BigInt!
   openInterest: BigInt!
@@ -315,8 +302,7 @@ type PerpProductSnapshot {
   period: BigInt!
   periodIndex: BigInt!
   product: PerpProduct!
-  priceX18: BigInt!
-  markPriceX18: BigInt!
+  liquidationPriceX18: BigInt!
   cumulativeFundingLongX18: BigInt!
   cumulativeFundingShortX18: BigInt!
   openInterest: BigInt!
@@ -373,22 +359,14 @@ input PerpProductSnapshot_filter {
   product_not_ends_with: String
   product_not_ends_with_nocase: String
   product_: PerpProduct_filter
-  priceX18: BigInt
-  priceX18_not: BigInt
-  priceX18_gt: BigInt
-  priceX18_lt: BigInt
-  priceX18_gte: BigInt
-  priceX18_lte: BigInt
-  priceX18_in: [BigInt!]
-  priceX18_not_in: [BigInt!]
-  markPriceX18: BigInt
-  markPriceX18_not: BigInt
-  markPriceX18_gt: BigInt
-  markPriceX18_lt: BigInt
-  markPriceX18_gte: BigInt
-  markPriceX18_lte: BigInt
-  markPriceX18_in: [BigInt!]
-  markPriceX18_not_in: [BigInt!]
+  liquidationPriceX18: BigInt
+  liquidationPriceX18_not: BigInt
+  liquidationPriceX18_gt: BigInt
+  liquidationPriceX18_lt: BigInt
+  liquidationPriceX18_gte: BigInt
+  liquidationPriceX18_lte: BigInt
+  liquidationPriceX18_in: [BigInt!]
+  liquidationPriceX18_not_in: [BigInt!]
   cumulativeFundingLongX18: BigInt
   cumulativeFundingLongX18_not: BigInt
   cumulativeFundingLongX18_gt: BigInt
@@ -462,8 +440,7 @@ enum PerpProductSnapshot_orderBy {
   period
   periodIndex
   product
-  priceX18
-  markPriceX18
+  liquidationPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18
   openInterest
@@ -533,22 +510,14 @@ input PerpProduct_filter {
   engine_not_ends_with: String
   engine_not_ends_with_nocase: String
   engine_: PerpEngine_filter
-  priceX18: BigInt
-  priceX18_not: BigInt
-  priceX18_gt: BigInt
-  priceX18_lt: BigInt
-  priceX18_gte: BigInt
-  priceX18_lte: BigInt
-  priceX18_in: [BigInt!]
-  priceX18_not_in: [BigInt!]
-  markPriceX18: BigInt
-  markPriceX18_not: BigInt
-  markPriceX18_gt: BigInt
-  markPriceX18_lt: BigInt
-  markPriceX18_gte: BigInt
-  markPriceX18_lte: BigInt
-  markPriceX18_in: [BigInt!]
-  markPriceX18_not_in: [BigInt!]
+  liquidationPriceX18: BigInt
+  liquidationPriceX18_not: BigInt
+  liquidationPriceX18_gt: BigInt
+  liquidationPriceX18_lt: BigInt
+  liquidationPriceX18_gte: BigInt
+  liquidationPriceX18_lte: BigInt
+  liquidationPriceX18_in: [BigInt!]
+  liquidationPriceX18_not_in: [BigInt!]
   cumulativeFundingLongX18: BigInt
   cumulativeFundingLongX18_not: BigInt
   cumulativeFundingLongX18_gt: BigInt
@@ -623,8 +592,7 @@ enum PerpProduct_orderBy {
   productId
   market
   engine
-  priceX18
-  markPriceX18
+  liquidationPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18
   openInterest
@@ -953,10 +921,6 @@ input SpotEngine_filter {
   id_not_in: [ID!]
   clearinghouse: Bytes
   clearinghouse_not: Bytes
-  clearinghouse_gt: Bytes
-  clearinghouse_lt: Bytes
-  clearinghouse_gte: Bytes
-  clearinghouse_lte: Bytes
   clearinghouse_in: [Bytes!]
   clearinghouse_not_in: [Bytes!]
   clearinghouse_contains: Bytes

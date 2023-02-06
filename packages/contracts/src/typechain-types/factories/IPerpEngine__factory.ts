@@ -38,9 +38,9 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint64",
+        internalType: "bytes32",
         name: "subaccount",
-        type: "uint64",
+        type: "bytes32",
       },
       {
         indexed: false,
@@ -87,9 +87,9 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "uint64",
-            name: "subaccountId",
-            type: "uint64",
+            internalType: "bytes32",
+            name: "subaccount",
+            type: "bytes32",
           },
           {
             internalType: "int128",
@@ -120,9 +120,9 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
       {
         internalType: "int128",
@@ -138,19 +138,118 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "liquidateeId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "liquidatee",
+        type: "bytes32",
       },
       {
-        internalType: "uint64",
-        name: "liquidatorId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "liquidator",
+        type: "bytes32",
       },
     ],
     name: "decomposeLps",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
+      },
+    ],
+    name: "getBalance",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "int128",
+            name: "amount",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "vQuoteBalance",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "lastCumulativeFundingX18",
+            type: "int128",
+          },
+        ],
+        internalType: "struct IPerpEngine.Balance",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
+      },
+    ],
+    name: "getBalances",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "int128",
+            name: "amount",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "lastCumulativeFundingX18",
+            type: "int128",
+          },
+        ],
+        internalType: "struct IPerpEngine.LpBalance",
+        name: "",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "int128",
+            name: "amount",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "vQuoteBalance",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "lastCumulativeFundingX18",
+            type: "int128",
+          },
+        ],
+        internalType: "struct IPerpEngine.Balance",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -177,6 +276,52 @@ const _abi = [
       },
     ],
     stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+    ],
+    name: "getLpState",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "int128",
+            name: "supply",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "lastCumulativeFundingX18",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "cumulativeFundingPerLpX18",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "base",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "quote",
+            type: "int128",
+          },
+        ],
+        internalType: "struct IPerpEngine.LpState",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -219,9 +364,9 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
     ],
     name: "getSettlementState",
@@ -341,9 +486,9 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
     ],
     name: "getStateAndBalance",
@@ -409,9 +554,9 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
     ],
     name: "getStatesAndBalances",
@@ -526,9 +671,9 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
     ],
     name: "hasBalance",
@@ -583,9 +728,9 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
       {
         internalType: "int128",
@@ -611,8 +756,13 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
+      },
+      {
         internalType: "uint256",
-        name: "request",
+        name: "productIds",
         type: "uint256",
       },
     ],
@@ -630,9 +780,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
       {
         internalType: "int128",
@@ -659,9 +809,9 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
       },
       {
         internalType: "int128",
