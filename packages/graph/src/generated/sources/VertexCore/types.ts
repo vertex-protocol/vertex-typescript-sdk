@@ -60,12 +60,20 @@ export type Clearinghouse_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   endpoint?: InputMaybe<Scalars['Bytes']>;
   endpoint_not?: InputMaybe<Scalars['Bytes']>;
+  endpoint_gt?: InputMaybe<Scalars['Bytes']>;
+  endpoint_lt?: InputMaybe<Scalars['Bytes']>;
+  endpoint_gte?: InputMaybe<Scalars['Bytes']>;
+  endpoint_lte?: InputMaybe<Scalars['Bytes']>;
   endpoint_in?: InputMaybe<Array<Scalars['Bytes']>>;
   endpoint_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   endpoint_contains?: InputMaybe<Scalars['Bytes']>;
   endpoint_not_contains?: InputMaybe<Scalars['Bytes']>;
   quoteProduct?: InputMaybe<Scalars['Bytes']>;
   quoteProduct_not?: InputMaybe<Scalars['Bytes']>;
+  quoteProduct_gt?: InputMaybe<Scalars['Bytes']>;
+  quoteProduct_lt?: InputMaybe<Scalars['Bytes']>;
+  quoteProduct_gte?: InputMaybe<Scalars['Bytes']>;
+  quoteProduct_lte?: InputMaybe<Scalars['Bytes']>;
   quoteProduct_in?: InputMaybe<Array<Scalars['Bytes']>>;
   quoteProduct_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   quoteProduct_contains?: InputMaybe<Scalars['Bytes']>;
@@ -89,6 +97,8 @@ export type Clearinghouse_filter = {
   subaccounts_?: InputMaybe<Subaccount_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Clearinghouse_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Clearinghouse_filter>>>;
 };
 
 export type Clearinghouse_orderBy =
@@ -194,6 +204,8 @@ export type ClosedPerpBalance_filter = {
   netFunding_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ClosedPerpBalance_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<ClosedPerpBalance_filter>>>;
 };
 
 export type ClosedPerpBalance_orderBy =
@@ -300,6 +312,8 @@ export type ClosedSpotBalance_filter = {
   netInterest_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ClosedSpotBalance_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<ClosedSpotBalance_filter>>>;
 };
 
 export type ClosedSpotBalance_orderBy =
@@ -438,6 +452,8 @@ export type FillOrderEvent_filter = {
   newOrderFilledAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<FillOrderEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<FillOrderEvent_filter>>>;
 };
 
 export type FillOrderEvent_orderBy =
@@ -629,6 +645,8 @@ export type LiquidationEvent_filter = {
   perpLiquidationPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<LiquidationEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<LiquidationEvent_filter>>>;
 };
 
 export type LiquidationEvent_orderBy =
@@ -740,6 +758,8 @@ export type ModifyCollateralEvent_filter = {
   oraclePriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ModifyCollateralEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<ModifyCollateralEvent_filter>>>;
 };
 
 export type ModifyCollateralEvent_orderBy =
@@ -805,6 +825,10 @@ export type Order_filter = {
   type_not_in?: InputMaybe<Array<OrderType>>;
   digest?: InputMaybe<Scalars['Bytes']>;
   digest_not?: InputMaybe<Scalars['Bytes']>;
+  digest_gt?: InputMaybe<Scalars['Bytes']>;
+  digest_lt?: InputMaybe<Scalars['Bytes']>;
+  digest_gte?: InputMaybe<Scalars['Bytes']>;
+  digest_lte?: InputMaybe<Scalars['Bytes']>;
   digest_in?: InputMaybe<Array<Scalars['Bytes']>>;
   digest_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   digest_contains?: InputMaybe<Scalars['Bytes']>;
@@ -908,6 +932,8 @@ export type Order_filter = {
   collectedFee_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Order_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Order_filter>>>;
 };
 
 export type Order_orderBy =
@@ -1011,6 +1037,8 @@ export type PerpBalanceSummary_filter = {
   closedBalances_?: InputMaybe<ClosedPerpBalance_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<PerpBalanceSummary_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<PerpBalanceSummary_filter>>>;
 };
 
 export type PerpBalanceSummary_orderBy =
@@ -1320,6 +1348,7 @@ export type SettlePnlEvent = {
   productId: Scalars['BigInt'];
   amount: Scalars['BigInt'];
   positionAmount: Scalars['BigInt'];
+  perpLiquidationPriceX18: Scalars['BigInt'];
 };
 
 export type SettlePnlEvent_filter = {
@@ -1392,8 +1421,18 @@ export type SettlePnlEvent_filter = {
   positionAmount_lte?: InputMaybe<Scalars['BigInt']>;
   positionAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
   positionAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpLiquidationPriceX18?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  perpLiquidationPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpLiquidationPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<SettlePnlEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<SettlePnlEvent_filter>>>;
 };
 
 export type SettlePnlEvent_orderBy =
@@ -1403,7 +1442,8 @@ export type SettlePnlEvent_orderBy =
   | 'subaccount'
   | 'productId'
   | 'amount'
-  | 'positionAmount';
+  | 'positionAmount'
+  | 'perpLiquidationPriceX18';
 
 export type SpotBalanceSummary = {
   id: Scalars['ID'];
@@ -1489,6 +1529,8 @@ export type SpotBalanceSummary_filter = {
   closedBalances_?: InputMaybe<ClosedSpotBalance_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<SpotBalanceSummary_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<SpotBalanceSummary_filter>>>;
 };
 
 export type SpotBalanceSummary_orderBy =
@@ -1631,6 +1673,10 @@ export type Subaccount_filter = {
   clearinghouse_?: InputMaybe<Clearinghouse_filter>;
   owner?: InputMaybe<Scalars['Bytes']>;
   owner_not?: InputMaybe<Scalars['Bytes']>;
+  owner_gt?: InputMaybe<Scalars['Bytes']>;
+  owner_lt?: InputMaybe<Scalars['Bytes']>;
+  owner_gte?: InputMaybe<Scalars['Bytes']>;
+  owner_lte?: InputMaybe<Scalars['Bytes']>;
   owner_in?: InputMaybe<Array<Scalars['Bytes']>>;
   owner_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   owner_contains?: InputMaybe<Scalars['Bytes']>;
@@ -1682,6 +1728,8 @@ export type Subaccount_filter = {
   fillOrderEvents_?: InputMaybe<FillOrderEvent_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Subaccount_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Subaccount_filter>>>;
 };
 
 export type Subaccount_orderBy =
@@ -1720,12 +1768,20 @@ export type SubmitSlowModeTransactionEvent_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   sender?: InputMaybe<Scalars['Bytes']>;
   sender_not?: InputMaybe<Scalars['Bytes']>;
+  sender_gt?: InputMaybe<Scalars['Bytes']>;
+  sender_lt?: InputMaybe<Scalars['Bytes']>;
+  sender_gte?: InputMaybe<Scalars['Bytes']>;
+  sender_lte?: InputMaybe<Scalars['Bytes']>;
   sender_in?: InputMaybe<Array<Scalars['Bytes']>>;
   sender_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   sender_contains?: InputMaybe<Scalars['Bytes']>;
   sender_not_contains?: InputMaybe<Scalars['Bytes']>;
   tx?: InputMaybe<Scalars['Bytes']>;
   tx_not?: InputMaybe<Scalars['Bytes']>;
+  tx_gt?: InputMaybe<Scalars['Bytes']>;
+  tx_lt?: InputMaybe<Scalars['Bytes']>;
+  tx_gte?: InputMaybe<Scalars['Bytes']>;
+  tx_lte?: InputMaybe<Scalars['Bytes']>;
   tx_in?: InputMaybe<Array<Scalars['Bytes']>>;
   tx_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   tx_contains?: InputMaybe<Scalars['Bytes']>;
@@ -1748,6 +1804,8 @@ export type SubmitSlowModeTransactionEvent_filter = {
   createdAt_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<SubmitSlowModeTransactionEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<SubmitSlowModeTransactionEvent_filter>>>;
 };
 
 export type SubmitSlowModeTransactionEvent_orderBy =
@@ -1788,6 +1846,8 @@ export type SubmitTransactionsEvent_filter = {
   createdAt_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<SubmitTransactionsEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<SubmitTransactionsEvent_filter>>>;
 };
 
 export type SubmitTransactionsEvent_orderBy =
@@ -2167,6 +2227,8 @@ export type TradeSummary_filter = {
   totalCloseAmountAbs_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<TradeSummary_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<TradeSummary_filter>>>;
 };
 
 export type TradeSummary_orderBy =
