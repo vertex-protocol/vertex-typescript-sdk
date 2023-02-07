@@ -127,8 +127,6 @@ export type MarketCandlestick_filter = {
   volumeQuote_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<MarketCandlestick_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<MarketCandlestick_filter>>>;
 };
 
 export type MarketCandlestick_orderBy =

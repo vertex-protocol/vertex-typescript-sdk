@@ -124,8 +124,6 @@ input MarketCandlestick_filter {
   volumeQuote_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
-  and: [MarketCandlestick_filter]
-  or: [MarketCandlestick_filter]
 }
 
 enum MarketCandlestick_orderBy {

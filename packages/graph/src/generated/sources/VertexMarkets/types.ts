@@ -137,8 +137,6 @@ export type MarketSnapshot_filter = {
   volumeQuote_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<MarketSnapshot_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<MarketSnapshot_filter>>>;
 };
 
 export type MarketSnapshot_orderBy =
@@ -161,10 +159,6 @@ export type Market_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   clearinghouse?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_not?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_gt?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_lt?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_gte?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_lte?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_contains?: InputMaybe<Scalars['Bytes']>;
@@ -179,10 +173,6 @@ export type Market_filter = {
   productId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   orderbook?: InputMaybe<Scalars['Bytes']>;
   orderbook_not?: InputMaybe<Scalars['Bytes']>;
-  orderbook_gt?: InputMaybe<Scalars['Bytes']>;
-  orderbook_lt?: InputMaybe<Scalars['Bytes']>;
-  orderbook_gte?: InputMaybe<Scalars['Bytes']>;
-  orderbook_lte?: InputMaybe<Scalars['Bytes']>;
   orderbook_in?: InputMaybe<Array<Scalars['Bytes']>>;
   orderbook_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   orderbook_contains?: InputMaybe<Scalars['Bytes']>;
@@ -246,8 +236,6 @@ export type Market_filter = {
   snapshots_?: InputMaybe<MarketSnapshot_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Market_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Market_filter>>>;
 };
 
 export type Market_orderBy =
@@ -295,10 +283,6 @@ export type PerpEngine_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   clearinghouse?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_not?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_gt?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_lt?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_gte?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_lte?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_contains?: InputMaybe<Scalars['Bytes']>;
@@ -306,8 +290,6 @@ export type PerpEngine_filter = {
   products_?: InputMaybe<PerpProduct_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<PerpEngine_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<PerpEngine_filter>>>;
 };
 
 export type PerpEngine_orderBy =
@@ -477,8 +459,6 @@ export type PerpProductSnapshot_filter = {
   lpCumulativeFundingPerLpX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<PerpProductSnapshot_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<PerpProductSnapshot_filter>>>;
 };
 
 export type PerpProductSnapshot_orderBy =
@@ -630,8 +610,6 @@ export type PerpProduct_filter = {
   snapshots_?: InputMaybe<PerpProductSnapshot_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<PerpProduct_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<PerpProduct_filter>>>;
 };
 
 export type PerpProduct_orderBy =
@@ -891,8 +869,6 @@ export type SocializeProductEvent_filter = {
   amountSocialized_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<SocializeProductEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<SocializeProductEvent_filter>>>;
 };
 
 export type SocializeProductEvent_orderBy =
@@ -928,10 +904,6 @@ export type SpotEngine_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   clearinghouse?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_not?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_gt?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_lt?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_gte?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_lte?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_contains?: InputMaybe<Scalars['Bytes']>;
@@ -939,8 +911,6 @@ export type SpotEngine_filter = {
   products_?: InputMaybe<SpotProduct_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<SpotEngine_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<SpotEngine_filter>>>;
 };
 
 export type SpotEngine_orderBy =
@@ -1100,8 +1070,6 @@ export type SpotProductSnapshot_filter = {
   lpBaseAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<SpotProductSnapshot_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<SpotProductSnapshot_filter>>>;
 };
 
 export type SpotProductSnapshot_orderBy =
@@ -1244,8 +1212,6 @@ export type SpotProduct_filter = {
   snapshots_?: InputMaybe<SpotProductSnapshot_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<SpotProduct_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<SpotProduct_filter>>>;
 };
 
 export type SpotProduct_orderBy =
