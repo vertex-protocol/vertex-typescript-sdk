@@ -221,11 +221,6 @@
                 "type": "int128"
               },
               {
-                "internalType": "int128",
-                "name": "indexPriceX18",
-                "type": "int128"
-              },
-              {
                 "components": [
                   {
                     "internalType": "int128",
@@ -506,11 +501,6 @@
           {
             "internalType": "int128",
             "name": "oraclePriceX18",
-            "type": "int128"
-          },
-          {
-            "internalType": "int128",
-            "name": "indexPriceX18",
             "type": "int128"
           },
           {
@@ -1235,11 +1225,6 @@
                 "type": "int128"
               },
               {
-                "internalType": "int128",
-                "name": "indexPriceX18",
-                "type": "int128"
-              },
-              {
                 "components": [
                   {
                     "internalType": "int128",
@@ -1725,11 +1710,6 @@
               {
                 "internalType": "int128",
                 "name": "oraclePriceX18",
-                "type": "int128"
-              },
-              {
-                "internalType": "int128",
-                "name": "indexPriceX18",
                 "type": "int128"
               },
               {
