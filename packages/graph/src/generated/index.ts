@@ -21,8 +21,8 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import type { VertexCandlesticksContext } from './sources/VertexCandlesticks/types';
-import type { VertexMarketsContext } from './sources/VertexMarkets/types';
 import type { VertexCoreContext } from './sources/VertexCore/types';
+import type { VertexMarketsContext } from './sources/VertexMarkets/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -1130,8 +1130,6 @@ export type MarketCandlestick_filter = {
   volumeQuote_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<MarketCandlestick_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<MarketCandlestick_filter>>>;
 };
 
 export type MarketCandlestick_orderBy =
@@ -1288,8 +1286,6 @@ export type MarketSnapshot_filter = {
   volumeQuote_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<MarketSnapshot_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<MarketSnapshot_filter>>>;
 };
 
 export type MarketSnapshot_orderBy =
@@ -1312,10 +1308,6 @@ export type Market_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   clearinghouse?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_not?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_gt?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_lt?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_gte?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_lte?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_contains?: InputMaybe<Scalars['Bytes']>;
@@ -1330,10 +1322,6 @@ export type Market_filter = {
   productId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   orderbook?: InputMaybe<Scalars['Bytes']>;
   orderbook_not?: InputMaybe<Scalars['Bytes']>;
-  orderbook_gt?: InputMaybe<Scalars['Bytes']>;
-  orderbook_lt?: InputMaybe<Scalars['Bytes']>;
-  orderbook_gte?: InputMaybe<Scalars['Bytes']>;
-  orderbook_lte?: InputMaybe<Scalars['Bytes']>;
   orderbook_in?: InputMaybe<Array<Scalars['Bytes']>>;
   orderbook_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   orderbook_contains?: InputMaybe<Scalars['Bytes']>;
@@ -1397,8 +1385,6 @@ export type Market_filter = {
   snapshots_?: InputMaybe<MarketSnapshot_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Market_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Market_filter>>>;
 };
 
 export type Market_orderBy =
@@ -1441,10 +1427,6 @@ export type PerpEngine_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   clearinghouse?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_not?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_gt?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_lt?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_gte?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_lte?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_contains?: InputMaybe<Scalars['Bytes']>;
@@ -1452,8 +1434,6 @@ export type PerpEngine_filter = {
   products_?: InputMaybe<PerpProduct_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<PerpEngine_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<PerpEngine_filter>>>;
 };
 
 export type PerpEngine_orderBy =
@@ -1623,8 +1603,6 @@ export type PerpProductSnapshot_filter = {
   lpCumulativeFundingPerLpX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<PerpProductSnapshot_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<PerpProductSnapshot_filter>>>;
 };
 
 export type PerpProductSnapshot_orderBy =
@@ -1776,8 +1754,6 @@ export type PerpProduct_filter = {
   snapshots_?: InputMaybe<PerpProductSnapshot_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<PerpProduct_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<PerpProduct_filter>>>;
 };
 
 export type PerpProduct_orderBy =
@@ -1847,8 +1823,6 @@ export type SocializeProductEvent_filter = {
   amountSocialized_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<SocializeProductEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<SocializeProductEvent_filter>>>;
 };
 
 export type SocializeProductEvent_orderBy =
@@ -1884,10 +1858,6 @@ export type SpotEngine_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   clearinghouse?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_not?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_gt?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_lt?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_gte?: InputMaybe<Scalars['Bytes']>;
-  clearinghouse_lte?: InputMaybe<Scalars['Bytes']>;
   clearinghouse_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   clearinghouse_contains?: InputMaybe<Scalars['Bytes']>;
@@ -1895,8 +1865,6 @@ export type SpotEngine_filter = {
   products_?: InputMaybe<SpotProduct_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<SpotEngine_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<SpotEngine_filter>>>;
 };
 
 export type SpotEngine_orderBy =
@@ -2056,8 +2024,6 @@ export type SpotProductSnapshot_filter = {
   lpBaseAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<SpotProductSnapshot_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<SpotProductSnapshot_filter>>>;
 };
 
 export type SpotProductSnapshot_orderBy =
@@ -2200,8 +2166,6 @@ export type SpotProduct_filter = {
   snapshots_?: InputMaybe<SpotProductSnapshot_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<SpotProduct_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<SpotProduct_filter>>>;
 };
 
 export type SpotProduct_orderBy =
@@ -2248,20 +2212,12 @@ export type Clearinghouse_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   endpoint?: InputMaybe<Scalars['Bytes']>;
   endpoint_not?: InputMaybe<Scalars['Bytes']>;
-  endpoint_gt?: InputMaybe<Scalars['Bytes']>;
-  endpoint_lt?: InputMaybe<Scalars['Bytes']>;
-  endpoint_gte?: InputMaybe<Scalars['Bytes']>;
-  endpoint_lte?: InputMaybe<Scalars['Bytes']>;
   endpoint_in?: InputMaybe<Array<Scalars['Bytes']>>;
   endpoint_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   endpoint_contains?: InputMaybe<Scalars['Bytes']>;
   endpoint_not_contains?: InputMaybe<Scalars['Bytes']>;
   quoteProduct?: InputMaybe<Scalars['Bytes']>;
   quoteProduct_not?: InputMaybe<Scalars['Bytes']>;
-  quoteProduct_gt?: InputMaybe<Scalars['Bytes']>;
-  quoteProduct_lt?: InputMaybe<Scalars['Bytes']>;
-  quoteProduct_gte?: InputMaybe<Scalars['Bytes']>;
-  quoteProduct_lte?: InputMaybe<Scalars['Bytes']>;
   quoteProduct_in?: InputMaybe<Array<Scalars['Bytes']>>;
   quoteProduct_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   quoteProduct_contains?: InputMaybe<Scalars['Bytes']>;
@@ -2285,8 +2241,6 @@ export type Clearinghouse_filter = {
   subaccounts_?: InputMaybe<Subaccount_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Clearinghouse_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Clearinghouse_filter>>>;
 };
 
 export type Clearinghouse_orderBy =
@@ -2392,8 +2346,6 @@ export type ClosedPerpBalance_filter = {
   netFunding_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<ClosedPerpBalance_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<ClosedPerpBalance_filter>>>;
 };
 
 export type ClosedPerpBalance_orderBy =
@@ -2500,8 +2452,6 @@ export type ClosedSpotBalance_filter = {
   netInterest_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<ClosedSpotBalance_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<ClosedSpotBalance_filter>>>;
 };
 
 export type ClosedSpotBalance_orderBy =
@@ -2640,8 +2590,6 @@ export type FillOrderEvent_filter = {
   newOrderFilledAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<FillOrderEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<FillOrderEvent_filter>>>;
 };
 
 export type FillOrderEvent_orderBy =
@@ -2673,7 +2621,7 @@ export type LiquidationEvent = {
   perpProductId: Scalars['BigInt'];
   perpAmount: Scalars['BigInt'];
   spotOraclePriceX18: Scalars['BigInt'];
-  perpLiquidationPriceX18: Scalars['BigInt'];
+  perpOraclePriceX18: Scalars['BigInt'];
 };
 
 export type LiquidationEvent_filter = {
@@ -2823,18 +2771,16 @@ export type LiquidationEvent_filter = {
   spotOraclePriceX18_lte?: InputMaybe<Scalars['BigInt']>;
   spotOraclePriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
   spotOraclePriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  perpLiquidationPriceX18?: InputMaybe<Scalars['BigInt']>;
-  perpLiquidationPriceX18_not?: InputMaybe<Scalars['BigInt']>;
-  perpLiquidationPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  perpLiquidationPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  perpLiquidationPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  perpLiquidationPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  perpLiquidationPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  perpLiquidationPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpOraclePriceX18?: InputMaybe<Scalars['BigInt']>;
+  perpOraclePriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  perpOraclePriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  perpOraclePriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  perpOraclePriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  perpOraclePriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  perpOraclePriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpOraclePriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<LiquidationEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<LiquidationEvent_filter>>>;
 };
 
 export type LiquidationEvent_orderBy =
@@ -2853,7 +2799,7 @@ export type LiquidationEvent_orderBy =
   | 'perpProductId'
   | 'perpAmount'
   | 'spotOraclePriceX18'
-  | 'perpLiquidationPriceX18';
+  | 'perpOraclePriceX18';
 
 export type ModifyCollateralEvent = {
   id: Scalars['ID'];
@@ -2946,8 +2892,6 @@ export type ModifyCollateralEvent_filter = {
   oraclePriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<ModifyCollateralEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<ModifyCollateralEvent_filter>>>;
 };
 
 export type ModifyCollateralEvent_orderBy =
@@ -3008,10 +2952,6 @@ export type Order_filter = {
   type_not_in?: InputMaybe<Array<OrderType>>;
   digest?: InputMaybe<Scalars['Bytes']>;
   digest_not?: InputMaybe<Scalars['Bytes']>;
-  digest_gt?: InputMaybe<Scalars['Bytes']>;
-  digest_lt?: InputMaybe<Scalars['Bytes']>;
-  digest_gte?: InputMaybe<Scalars['Bytes']>;
-  digest_lte?: InputMaybe<Scalars['Bytes']>;
   digest_in?: InputMaybe<Array<Scalars['Bytes']>>;
   digest_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   digest_contains?: InputMaybe<Scalars['Bytes']>;
@@ -3115,8 +3055,6 @@ export type Order_filter = {
   collectedFee_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Order_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Order_filter>>>;
 };
 
 export type Order_orderBy =
@@ -3220,8 +3158,6 @@ export type PerpBalanceSummary_filter = {
   closedBalances_?: InputMaybe<ClosedPerpBalance_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<PerpBalanceSummary_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<PerpBalanceSummary_filter>>>;
 };
 
 export type PerpBalanceSummary_orderBy =
@@ -3241,7 +3177,7 @@ export type SettlePnlEvent = {
   productId: Scalars['BigInt'];
   amount: Scalars['BigInt'];
   positionAmount: Scalars['BigInt'];
-  perpLiquidationPriceX18: Scalars['BigInt'];
+  perpOraclePriceX18: Scalars['BigInt'];
 };
 
 export type SettlePnlEvent_filter = {
@@ -3314,18 +3250,16 @@ export type SettlePnlEvent_filter = {
   positionAmount_lte?: InputMaybe<Scalars['BigInt']>;
   positionAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
   positionAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  perpLiquidationPriceX18?: InputMaybe<Scalars['BigInt']>;
-  perpLiquidationPriceX18_not?: InputMaybe<Scalars['BigInt']>;
-  perpLiquidationPriceX18_gt?: InputMaybe<Scalars['BigInt']>;
-  perpLiquidationPriceX18_lt?: InputMaybe<Scalars['BigInt']>;
-  perpLiquidationPriceX18_gte?: InputMaybe<Scalars['BigInt']>;
-  perpLiquidationPriceX18_lte?: InputMaybe<Scalars['BigInt']>;
-  perpLiquidationPriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  perpLiquidationPriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpOraclePriceX18?: InputMaybe<Scalars['BigInt']>;
+  perpOraclePriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  perpOraclePriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  perpOraclePriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  perpOraclePriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  perpOraclePriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  perpOraclePriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perpOraclePriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<SettlePnlEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<SettlePnlEvent_filter>>>;
 };
 
 export type SettlePnlEvent_orderBy =
@@ -3336,7 +3270,7 @@ export type SettlePnlEvent_orderBy =
   | 'productId'
   | 'amount'
   | 'positionAmount'
-  | 'perpLiquidationPriceX18';
+  | 'perpOraclePriceX18';
 
 export type SpotBalanceSummary = {
   id: Scalars['ID'];
@@ -3422,8 +3356,6 @@ export type SpotBalanceSummary_filter = {
   closedBalances_?: InputMaybe<ClosedSpotBalance_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<SpotBalanceSummary_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<SpotBalanceSummary_filter>>>;
 };
 
 export type SpotBalanceSummary_orderBy =
@@ -3566,10 +3498,6 @@ export type Subaccount_filter = {
   clearinghouse_?: InputMaybe<Clearinghouse_filter>;
   owner?: InputMaybe<Scalars['Bytes']>;
   owner_not?: InputMaybe<Scalars['Bytes']>;
-  owner_gt?: InputMaybe<Scalars['Bytes']>;
-  owner_lt?: InputMaybe<Scalars['Bytes']>;
-  owner_gte?: InputMaybe<Scalars['Bytes']>;
-  owner_lte?: InputMaybe<Scalars['Bytes']>;
   owner_in?: InputMaybe<Array<Scalars['Bytes']>>;
   owner_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   owner_contains?: InputMaybe<Scalars['Bytes']>;
@@ -3621,8 +3549,6 @@ export type Subaccount_filter = {
   fillOrderEvents_?: InputMaybe<FillOrderEvent_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Subaccount_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Subaccount_filter>>>;
 };
 
 export type Subaccount_orderBy =
@@ -3661,20 +3587,12 @@ export type SubmitSlowModeTransactionEvent_filter = {
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
   sender?: InputMaybe<Scalars['Bytes']>;
   sender_not?: InputMaybe<Scalars['Bytes']>;
-  sender_gt?: InputMaybe<Scalars['Bytes']>;
-  sender_lt?: InputMaybe<Scalars['Bytes']>;
-  sender_gte?: InputMaybe<Scalars['Bytes']>;
-  sender_lte?: InputMaybe<Scalars['Bytes']>;
   sender_in?: InputMaybe<Array<Scalars['Bytes']>>;
   sender_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   sender_contains?: InputMaybe<Scalars['Bytes']>;
   sender_not_contains?: InputMaybe<Scalars['Bytes']>;
   tx?: InputMaybe<Scalars['Bytes']>;
   tx_not?: InputMaybe<Scalars['Bytes']>;
-  tx_gt?: InputMaybe<Scalars['Bytes']>;
-  tx_lt?: InputMaybe<Scalars['Bytes']>;
-  tx_gte?: InputMaybe<Scalars['Bytes']>;
-  tx_lte?: InputMaybe<Scalars['Bytes']>;
   tx_in?: InputMaybe<Array<Scalars['Bytes']>>;
   tx_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   tx_contains?: InputMaybe<Scalars['Bytes']>;
@@ -3697,8 +3615,6 @@ export type SubmitSlowModeTransactionEvent_filter = {
   createdAt_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<SubmitSlowModeTransactionEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<SubmitSlowModeTransactionEvent_filter>>>;
 };
 
 export type SubmitSlowModeTransactionEvent_orderBy =
@@ -3739,8 +3655,6 @@ export type SubmitTransactionsEvent_filter = {
   createdAt_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<SubmitTransactionsEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<SubmitTransactionsEvent_filter>>>;
 };
 
 export type SubmitTransactionsEvent_orderBy =
@@ -3830,8 +3744,6 @@ export type TradeSummary_filter = {
   totalCloseAmountAbs_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<TradeSummary_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<TradeSummary_filter>>>;
 };
 
 export type TradeSummary_orderBy =
@@ -4409,7 +4321,7 @@ export type LiquidationEventResolvers<ContextType = MeshContext & { coreEndpoint
   perpProductId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   perpAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   spotOraclePriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  perpLiquidationPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  perpOraclePriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4463,7 +4375,7 @@ export type SettlePnlEventResolvers<ContextType = MeshContext & { coreEndpoint: 
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   amount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   positionAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  perpLiquidationPriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  perpOraclePriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4612,7 +4524,7 @@ const vertexCandlesticksTransforms = [];
 const additionalTypeDefs = [] as any[];
 const vertexCoreHandler = new GraphqlHandler({
               name: "VertexCore",
-              config: {"endpoint":"{context.coreEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-dev-core}"},
+              config: {"endpoint":"{context.coreEndpoint:http://localhost:8000/subgraphs/name/vertex-subgraphs-core}"},
               baseDir,
               cache,
               pubsub,
@@ -4622,7 +4534,7 @@ const vertexCoreHandler = new GraphqlHandler({
             });
 const vertexMarketsHandler = new GraphqlHandler({
               name: "VertexMarkets",
-              config: {"endpoint":"{context.marketsEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-dev-markets}"},
+              config: {"endpoint":"{context.marketsEndpoint:http://localhost:8000/subgraphs/name/vertex-subgraphs-markets}"},
               baseDir,
               cache,
               pubsub,
@@ -4632,7 +4544,7 @@ const vertexMarketsHandler = new GraphqlHandler({
             });
 const vertexCandlesticksHandler = new GraphqlHandler({
               name: "VertexCandlesticks",
-              config: {"endpoint":"{context.candlesticksEndpoint:https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-dev-candlesticks}"},
+              config: {"endpoint":"{context.candlesticksEndpoint:http://localhost:8000/subgraphs/name/vertex-subgraphs-candlesticks}"},
               baseDir,
               cache,
               pubsub,
@@ -4980,7 +4892,7 @@ export type SubaccountLiquidationEventHistoryQueryQueryVariables = Exact<{
 }>;
 
 
-export type SubaccountLiquidationEventHistoryQueryQuery = { liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'spotProductId' | 'perpProductId' | 'perpAmount' | 'spotAmount' | 'liquidationPayment' | 'insuranceCoverage' | 'spotOraclePriceX18' | 'perpLiquidationPriceX18'>> };
+export type SubaccountLiquidationEventHistoryQueryQuery = { liquidationEvents: Array<Pick<LiquidationEvent, 'id' | 'blockTime' | 'spotProductId' | 'perpProductId' | 'perpAmount' | 'spotAmount' | 'liquidationPayment' | 'insuranceCoverage' | 'spotOraclePriceX18' | 'perpOraclePriceX18'>> };
 
 export type SubaccountSettlementEventHistoryQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
@@ -4991,7 +4903,7 @@ export type SubaccountSettlementEventHistoryQueryQueryVariables = Exact<{
 }>;
 
 
-export type SubaccountSettlementEventHistoryQueryQuery = { settlePnlEvents: Array<Pick<SettlePnlEvent, 'id' | 'blockTime' | 'productId' | 'amount' | 'positionAmount' | 'perpLiquidationPriceX18'>> };
+export type SubaccountSettlementEventHistoryQueryQuery = { settlePnlEvents: Array<Pick<SettlePnlEvent, 'id' | 'blockTime' | 'productId' | 'amount' | 'positionAmount' | 'perpOraclePriceX18'>> };
 
 export type SubaccountOrderFillsQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
@@ -5189,7 +5101,7 @@ export const SubaccountLiquidationEventHistoryQueryDocument = gql`
     liquidationPayment
     insuranceCoverage
     spotOraclePriceX18
-    perpLiquidationPriceX18
+    perpOraclePriceX18
   }
 }
     ` as unknown as DocumentNode<SubaccountLiquidationEventHistoryQueryQuery, SubaccountLiquidationEventHistoryQueryQueryVariables>;
@@ -5207,7 +5119,7 @@ export const SubaccountSettlementEventHistoryQueryDocument = gql`
     productId
     amount
     positionAmount
-    perpLiquidationPriceX18
+    perpOraclePriceX18
   }
 }
     ` as unknown as DocumentNode<SubaccountSettlementEventHistoryQueryQuery, SubaccountSettlementEventHistoryQueryQueryVariables>;
