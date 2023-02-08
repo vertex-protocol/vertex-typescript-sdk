@@ -16,7 +16,8 @@
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "dev": "tsc -w",
-    "sanity": "ts-node ./src/sanityScript.ts"
+    "sanity": "ts-node ./src/sanityScript.ts",
+    "setupBots": "ts-node ./src/setupBots.ts"
   },
   "files": [
     "dist",
