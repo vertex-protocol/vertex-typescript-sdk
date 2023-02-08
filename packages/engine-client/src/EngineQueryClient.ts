@@ -38,7 +38,6 @@ import {
   mapEngineServerSpotProduct,
   mapEngineServerTickLiquidity,
 } from './queryDataMappers';
-import { hexlify } from 'ethers/lib/utils';
 
 export class EngineQueryClient extends EngineBaseClient {
   /**
@@ -94,7 +93,7 @@ export class EngineQueryClient extends EngineBaseClient {
                 burn_lp: {
                   product_id: tx.tx.productId,
                   subaccount,
-                  amount_lp: tx.tx.amountLp.toString(),
+                  amount_lp: tx.tx.amountLp.toFixed(),
                 },
               };
             case 'apply_delta':
@@ -102,8 +101,8 @@ export class EngineQueryClient extends EngineBaseClient {
                 apply_delta: {
                   product_id: tx.tx.productId,
                   subaccount,
-                  amount_delta: tx.tx.amountDelta.toString(),
-                  v_quote_delta: tx.tx.vQuoteDelta.toString(),
+                  amount_delta: tx.tx.amountDelta.toFixed(),
+                  v_quote_delta: tx.tx.vQuoteDelta.toFixed(),
                 },
               };
             case 'mint_lp':
@@ -111,9 +110,9 @@ export class EngineQueryClient extends EngineBaseClient {
                 mint_lp: {
                   product_id: tx.tx.productId,
                   subaccount,
-                  amount_base: tx.tx.amountBase.toString(),
-                  quote_amount_low: tx.tx.amountQuoteLow.toString(),
-                  quote_amount_high: tx.tx.amountQuoteHigh.toString(),
+                  amount_base: tx.tx.amountBase.toFixed(),
+                  quote_amount_low: tx.tx.amountQuoteLow.toFixed(),
+                  quote_amount_high: tx.tx.amountQuoteHigh.toFixed(),
                 },
               };
           }

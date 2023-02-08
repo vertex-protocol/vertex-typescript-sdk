@@ -4,7 +4,8 @@
  */
 
 export function getSubaccountEntityId(owner: string, name: string) {
-  return `subaccount-${owner}-${name}`;
+  // `owner` is a hex address, lowercased to standardize
+  return `subaccount-${owner.toLowerCase()}-${name}`;
 }
 
 export function getProductEntityId(productId: number) {
