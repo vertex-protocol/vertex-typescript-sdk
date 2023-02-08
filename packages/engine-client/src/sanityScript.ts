@@ -157,6 +157,16 @@ async function main() {
     productId: 0,
   });
   console.log('Max withdrawable', JSON.stringify(maxWithdrawable, null, 2));
+  const maxWithdrawableNoSpotLeverage = await client.getMaxWithdrawable({
+    sender: signer.address,
+    subaccountName: 'default',
+    productId: 0,
+    spotLeverage: false,
+  });
+  console.log(
+    'Max withdrawable no spot leverage',
+    JSON.stringify(maxWithdrawableNoSpotLeverage, null, 2),
+  );
   const queriedOrder = await client.getOrder({
     digest: placeResult.digest,
     productId,
