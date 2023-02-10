@@ -20,8 +20,8 @@ import { createMeshHTTPHandler } from '@graphql-mesh/http';
 import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext, MeshInstance } from '@graphql-mesh/runtime';
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
-import type { VertexCoreContext } from './sources/VertexCore/types';
 import type { VertexMarketsContext } from './sources/VertexMarkets/types';
+import type { VertexCoreContext } from './sources/VertexCore/types';
 import type { VertexCandlesticksContext } from './sources/VertexCandlesticks/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -5303,7 +5303,7 @@ export type SubaccountModifyCollateralEventHistoryQueryQueryVariables = Exact<{
 }>;
 
 
-export type SubaccountModifyCollateralEventHistoryQueryQuery = { modifyCollateralEvents: Array<Pick<ModifyCollateralEvent, 'id' | 'blockTime' | 'amount' | 'productId'>> };
+export type SubaccountModifyCollateralEventHistoryQueryQuery = { modifyCollateralEvents: Array<Pick<ModifyCollateralEvent, 'id' | 'blockTime' | 'amount' | 'productId' | 'newBalanceAmount' | 'oraclePriceX18'>> };
 
 export type SubaccountLiquidationEventHistoryQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
@@ -5502,6 +5502,8 @@ export const SubaccountModifyCollateralEventHistoryQueryDocument = gql`
     blockTime
     amount
     productId
+    newBalanceAmount
+    oraclePriceX18
   }
 }
     ` as unknown as DocumentNode<SubaccountModifyCollateralEventHistoryQueryQuery, SubaccountModifyCollateralEventHistoryQueryQueryVariables>;

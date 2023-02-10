@@ -21,6 +21,9 @@ query SubaccountModifyCollateralEventHistoryQuery(
 
     amount
     productId
+
+    newBalanceAmount
+    oraclePriceX18
   }
 }
 
