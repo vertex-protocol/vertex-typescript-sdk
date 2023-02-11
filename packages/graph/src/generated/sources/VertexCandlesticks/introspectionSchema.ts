@@ -397,7 +397,7 @@ const schemaAST = {
           "kind": "FieldDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeBaseX18"
+            "value": "volumeBase"
           },
           "arguments": [],
           "type": {
@@ -416,7 +416,7 @@ const schemaAST = {
           "kind": "FieldDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeQuoteX18"
+            "value": "volumeQuote"
           },
           "arguments": [],
           "type": {
@@ -1502,7 +1502,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeBaseX18"
+            "value": "volumeBase"
           },
           "type": {
             "kind": "NamedType",
@@ -1517,7 +1517,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeBaseX18_not"
+            "value": "volumeBase_not"
           },
           "type": {
             "kind": "NamedType",
@@ -1532,7 +1532,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeBaseX18_gt"
+            "value": "volumeBase_gt"
           },
           "type": {
             "kind": "NamedType",
@@ -1547,7 +1547,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeBaseX18_lt"
+            "value": "volumeBase_lt"
           },
           "type": {
             "kind": "NamedType",
@@ -1562,7 +1562,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeBaseX18_gte"
+            "value": "volumeBase_gte"
           },
           "type": {
             "kind": "NamedType",
@@ -1577,7 +1577,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeBaseX18_lte"
+            "value": "volumeBase_lte"
           },
           "type": {
             "kind": "NamedType",
@@ -1592,7 +1592,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeBaseX18_in"
+            "value": "volumeBase_in"
           },
           "type": {
             "kind": "ListType",
@@ -1613,7 +1613,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeBaseX18_not_in"
+            "value": "volumeBase_not_in"
           },
           "type": {
             "kind": "ListType",
@@ -1634,7 +1634,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeQuoteX18"
+            "value": "volumeQuote"
           },
           "type": {
             "kind": "NamedType",
@@ -1649,7 +1649,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeQuoteX18_not"
+            "value": "volumeQuote_not"
           },
           "type": {
             "kind": "NamedType",
@@ -1664,7 +1664,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeQuoteX18_gt"
+            "value": "volumeQuote_gt"
           },
           "type": {
             "kind": "NamedType",
@@ -1679,7 +1679,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeQuoteX18_lt"
+            "value": "volumeQuote_lt"
           },
           "type": {
             "kind": "NamedType",
@@ -1694,7 +1694,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeQuoteX18_gte"
+            "value": "volumeQuote_gte"
           },
           "type": {
             "kind": "NamedType",
@@ -1709,7 +1709,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeQuoteX18_lte"
+            "value": "volumeQuote_lte"
           },
           "type": {
             "kind": "NamedType",
@@ -1724,7 +1724,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeQuoteX18_in"
+            "value": "volumeQuote_in"
           },
           "type": {
             "kind": "ListType",
@@ -1745,7 +1745,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeQuoteX18_not_in"
+            "value": "volumeQuote_not_in"
           },
           "type": {
             "kind": "ListType",
@@ -1778,6 +1778,42 @@ const schemaAST = {
             "name": {
               "kind": "Name",
               "value": "BlockChangedFilter"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "and"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "MarketCandlestick_filter"
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "or"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "MarketCandlestick_filter"
+              }
             }
           },
           "directives": []
@@ -1860,7 +1896,7 @@ const schemaAST = {
           "kind": "EnumValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeBaseX18"
+            "value": "volumeBase"
           },
           "directives": []
         },
@@ -1868,7 +1904,7 @@ const schemaAST = {
           "kind": "EnumValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "volumeQuoteX18"
+            "value": "volumeQuote"
           },
           "directives": []
         }

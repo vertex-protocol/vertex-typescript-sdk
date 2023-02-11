@@ -29,8 +29,7 @@ import type {
 
 export declare namespace IEndpoint {
   export type OrderStruct = {
-    sender: PromiseOrValue<string>;
-    subaccountName: PromiseOrValue<string>;
+    sender: PromiseOrValue<BytesLike>;
     priceX18: PromiseOrValue<BigNumberish>;
     amount: PromiseOrValue<BigNumberish>;
     expiration: PromiseOrValue<BigNumberish>;
@@ -39,14 +38,12 @@ export declare namespace IEndpoint {
 
   export type OrderStructOutput = [
     string,
-    string,
     BigNumber,
     BigNumber,
     BigNumber,
     BigNumber
   ] & {
     sender: string;
-    subaccountName: string;
     priceX18: BigNumber;
     amount: BigNumber;
     expiration: BigNumber;
@@ -93,22 +90,14 @@ export declare namespace IEndpoint {
   };
 
   export type SwapAMMStruct = {
-    sender: PromiseOrValue<string>;
-    subaccountName: PromiseOrValue<string>;
+    sender: PromiseOrValue<BytesLike>;
     productId: PromiseOrValue<BigNumberish>;
     amount: PromiseOrValue<BigNumberish>;
     priceX18: PromiseOrValue<BigNumberish>;
   };
 
-  export type SwapAMMStructOutput = [
-    string,
-    string,
-    number,
-    BigNumber,
-    BigNumber
-  ] & {
+  export type SwapAMMStructOutput = [string, number, BigNumber, BigNumber] & {
     sender: string;
-    subaccountName: string;
     productId: number;
     amount: BigNumber;
     priceX18: BigNumber;
@@ -121,11 +110,13 @@ export declare namespace IOffchainBook {
     sizeIncrement: PromiseOrValue<BigNumberish>;
     priceIncrementX18: PromiseOrValue<BigNumberish>;
     lpSpreadX18: PromiseOrValue<BigNumberish>;
-    collectedFeesX18: PromiseOrValue<BigNumberish>;
+    collectedFees: PromiseOrValue<BigNumberish>;
+    sequencerFees: PromiseOrValue<BigNumberish>;
   };
 
   export type MarketStructOutput = [
     number,
+    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -135,23 +126,26 @@ export declare namespace IOffchainBook {
     sizeIncrement: BigNumber;
     priceIncrementX18: BigNumber;
     lpSpreadX18: BigNumber;
-    collectedFeesX18: BigNumber;
+    collectedFees: BigNumber;
+    sequencerFees: BigNumber;
   };
 }
 
 export interface IOffchainBookInterface extends utils.Interface {
   functions: {
+    "claimSequencerFee()": FunctionFragment;
     "dumpFees()": FunctionFragment;
-    "getDigest((address,string,int256,int256,uint64,uint64),bool)": FunctionFragment;
+    "getDigest((bytes32,int128,int128,uint64,uint64))": FunctionFragment;
     "getMarket()": FunctionFragment;
-    "initialize(address,address,address,address,address,uint32,int256,int256,int256)": FunctionFragment;
-    "matchOrderAMM((uint32,((address,string,int256,int256,uint64,uint64),bytes)))": FunctionFragment;
-    "matchOrders((uint32,bool,((address,string,int256,int256,uint64,uint64),bytes),((address,string,int256,int256,uint64,uint64),bytes)))": FunctionFragment;
-    "swapAMM((address,string,uint32,int256,int256))": FunctionFragment;
+    "initialize(address,address,address,address,address,uint32,int128,int128,int128)": FunctionFragment;
+    "matchOrderAMM((uint32,((bytes32,int128,int128,uint64,uint64),bytes)))": FunctionFragment;
+    "matchOrders((uint32,bool,((bytes32,int128,int128,uint64,uint64),bytes),((bytes32,int128,int128,uint64,uint64),bytes)))": FunctionFragment;
+    "swapAMM((bytes32,uint32,int128,int128))": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "claimSequencerFee"
       | "dumpFees"
       | "getDigest"
       | "getMarket"
@@ -161,10 +155,14 @@ export interface IOffchainBookInterface extends utils.Interface {
       | "swapAMM"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "claimSequencerFee",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "dumpFees", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getDigest",
-    values: [IEndpoint.OrderStruct, PromiseOrValue<boolean>]
+    values: [IEndpoint.OrderStruct]
   ): string;
   encodeFunctionData(functionFragment: "getMarket", values?: undefined): string;
   encodeFunctionData(
@@ -194,6 +192,10 @@ export interface IOffchainBookInterface extends utils.Interface {
     values: [IEndpoint.SwapAMMStruct]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "claimSequencerFee",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "dumpFees", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getDigest", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getMarket", data: BytesLike): Result;
@@ -209,7 +211,7 @@ export interface IOffchainBookInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "swapAMM", data: BytesLike): Result;
 
   events: {
-    "FillOrder(bytes32,uint64,int256,int256,uint64,uint64,bool,int256,int256,int256)": EventFragment;
+    "FillOrder(bytes32,bytes32,int128,int128,uint64,uint64,bool,int128,int128,int128)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "FillOrder"): EventFragment;
@@ -217,20 +219,20 @@ export interface IOffchainBookInterface extends utils.Interface {
 
 export interface FillOrderEventObject {
   digest: string;
-  subaccount: BigNumber;
+  subaccount: string;
   priceX18: BigNumber;
   amount: BigNumber;
   expiration: BigNumber;
   nonce: BigNumber;
   isTaker: boolean;
-  feeAmountX18: BigNumber;
-  baseDeltaX18: BigNumber;
-  quoteDeltaX18: BigNumber;
+  feeAmount: BigNumber;
+  baseDelta: BigNumber;
+  quoteDelta: BigNumber;
 }
 export type FillOrderEvent = TypedEvent<
   [
     string,
-    BigNumber,
+    string,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -272,13 +274,16 @@ export interface IOffchainBook extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    claimSequencerFee(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     dumpFees(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     getDigest(
       order: IEndpoint.OrderStruct,
-      isCancellation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
@@ -315,13 +320,16 @@ export interface IOffchainBook extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  claimSequencerFee(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   dumpFees(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   getDigest(
     order: IEndpoint.OrderStruct,
-    isCancellation: PromiseOrValue<boolean>,
     overrides?: CallOverrides
   ): Promise<string>;
 
@@ -358,11 +366,12 @@ export interface IOffchainBook extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    claimSequencerFee(overrides?: CallOverrides): Promise<BigNumber>;
+
     dumpFees(overrides?: CallOverrides): Promise<void>;
 
     getDigest(
       order: IEndpoint.OrderStruct,
-      isCancellation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<string>;
 
@@ -400,40 +409,43 @@ export interface IOffchainBook extends BaseContract {
   };
 
   filters: {
-    "FillOrder(bytes32,uint64,int256,int256,uint64,uint64,bool,int256,int256,int256)"(
+    "FillOrder(bytes32,bytes32,int128,int128,uint64,uint64,bool,int128,int128,int128)"(
       digest?: PromiseOrValue<BytesLike> | null,
-      subaccount?: PromiseOrValue<BigNumberish> | null,
+      subaccount?: PromiseOrValue<BytesLike> | null,
       priceX18?: null,
       amount?: null,
       expiration?: null,
       nonce?: null,
       isTaker?: null,
-      feeAmountX18?: null,
-      baseDeltaX18?: null,
-      quoteDeltaX18?: null
+      feeAmount?: null,
+      baseDelta?: null,
+      quoteDelta?: null
     ): FillOrderEventFilter;
     FillOrder(
       digest?: PromiseOrValue<BytesLike> | null,
-      subaccount?: PromiseOrValue<BigNumberish> | null,
+      subaccount?: PromiseOrValue<BytesLike> | null,
       priceX18?: null,
       amount?: null,
       expiration?: null,
       nonce?: null,
       isTaker?: null,
-      feeAmountX18?: null,
-      baseDeltaX18?: null,
-      quoteDeltaX18?: null
+      feeAmount?: null,
+      baseDelta?: null,
+      quoteDelta?: null
     ): FillOrderEventFilter;
   };
 
   estimateGas: {
+    claimSequencerFee(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     dumpFees(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     getDigest(
       order: IEndpoint.OrderStruct,
-      isCancellation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -469,13 +481,16 @@ export interface IOffchainBook extends BaseContract {
   };
 
   populateTransaction: {
+    claimSequencerFee(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     dumpFees(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     getDigest(
       order: IEndpoint.OrderStruct,
-      isCancellation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

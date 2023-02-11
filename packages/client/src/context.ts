@@ -85,9 +85,10 @@ export async function createClientContext(
             endpointAddress: VERTEX_DEPLOYMENTS.testnet.endpoint,
           },
           graph: {
-            coreEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.core,
-            marketsEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.markets,
-            candlesticksEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.candlesticks,
+            // TODO: switch to test
+            coreEndpoint: GRAPH_CLIENT_ENDPOINTS.dev.core,
+            marketsEndpoint: GRAPH_CLIENT_ENDPOINTS.dev.markets,
+            candlesticksEndpoint: GRAPH_CLIENT_ENDPOINTS.dev.candlesticks,
           },
           offchainEngineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
         };

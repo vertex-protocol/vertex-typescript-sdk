@@ -21,6 +21,9 @@ query SubaccountModifyCollateralEventHistoryQuery(
 
     amount
     productId
+
+    newBalanceAmount
+    oraclePriceX18
   }
 }
 
@@ -48,14 +51,14 @@ query SubaccountLiquidationEventHistoryQuery(
     spotProductId
     perpProductId
 
-    perpAmountX18
-    spotAmountX18
-    liquidationPaymentX18
-    insuranceCoverageX18
+    perpAmount
+    spotAmount
+    liquidationPayment
+    insuranceCoverage
 
     # Prices at time of liquidation
     spotOraclePriceX18
-    perpMarkPriceX18
+    perpOraclePriceX18
   }
 }
 
@@ -79,10 +82,9 @@ query SubaccountSettlementEventHistoryQuery(
   ) {
     id
     blockTime
-
     productId
     amount
     positionAmount
-    markPriceX18
+    perpOraclePriceX18
   }
 }

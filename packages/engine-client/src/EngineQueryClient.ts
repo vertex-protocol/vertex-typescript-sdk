@@ -2,8 +2,9 @@ import { EngineBaseClient } from './EngineBaseClient';
 import {
   encodeSignedOrder,
   MarketWithProduct,
+  subaccountFromHex,
+  subaccountToHex,
 } from '@vertex-protocol/contracts';
-import { BigNumber } from 'ethers';
 import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
 import {
   EngineServerStatusResponse,
@@ -23,8 +24,6 @@ import {
   GetEngineOrderResponse,
   GetEngineSubaccountFeeRatesParams,
   GetEngineSubaccountFeeRatesResponse,
-  GetEngineSubaccountIdParams,
-  GetEngineSubaccountIdResponse,
   GetEngineSubaccountOrdersParams,
   GetEngineSubaccountOrdersResponse,
   GetEngineSubaccountSummaryParams,
@@ -49,21 +48,6 @@ export class EngineQueryClient extends EngineBaseClient {
   }
 
   /**
-   * Retrieves the subaccount ID reflective of the offchain engine
-   * @param params
-   */
-  async getSubaccountId(
-    params: GetEngineSubaccountIdParams,
-  ): Promise<GetEngineSubaccountIdResponse> {
-    const baseResponse = await this.query('subaccount_id', {
-      address: params.address,
-      subaccount_name: params.subaccountName,
-    });
-
-    return baseResponse.subaccount_id;
-  }
-
-  /**
    * Retrieves a subaccount summary reflective of the state within the offchain engine. This adheres to the
    * same return interface as the contract version
    *
@@ -72,8 +56,12 @@ export class EngineQueryClient extends EngineBaseClient {
   async getSubaccountSummary(
     params: GetEngineSubaccountSummaryParams,
   ): Promise<GetEngineSubaccountSummaryResponse> {
+    const subaccount = subaccountToHex({
+      owner: params.sender,
+      name: params.subaccountName,
+    });
     const baseResponse = await this.query('subaccount_info', {
-      subaccount_id: BigNumber.from(params.subaccountId).toNumber(),
+      subaccount,
     });
 
     return mapSubaccountSummary(baseResponse);
@@ -87,9 +75,12 @@ export class EngineQueryClient extends EngineBaseClient {
   async getEstimatedSubaccountSummary(
     params: GetEngineEstimatedSubaccountSummaryParams,
   ): Promise<GetEngineSubaccountSummaryResponse> {
-    const subaccountId = BigNumber.from(params.subaccountId).toNumber();
+    const subaccount = subaccountToHex({
+      owner: params.sender,
+      name: params.subaccountName,
+    });
     const queryParams: EngineServerSubaccountInfoQueryParams = {
-      subaccount_id: subaccountId,
+      subaccount: subaccount,
       txns: params.txs.map(
         (
           tx,
@@ -101,29 +92,27 @@ export class EngineQueryClient extends EngineBaseClient {
               return {
                 burn_lp: {
                   product_id: tx.tx.productId,
-                  subaccount_id: subaccountId,
-                  amount_lp_x18: toX18(tx.tx.amountLp).toString(),
+                  subaccount,
+                  amount_lp: tx.tx.amountLp.toFixed(),
                 },
               };
             case 'apply_delta':
               return {
                 apply_delta: {
                   product_id: tx.tx.productId,
-                  subaccount_id: subaccountId,
-                  amount_delta_x18: toX18(tx.tx.amountDelta).toString(),
-                  v_quote_delta_x18: toX18(tx.tx.vQuoteDelta).toString(),
+                  subaccount,
+                  amount_delta: tx.tx.amountDelta.toFixed(),
+                  v_quote_delta: tx.tx.vQuoteDelta.toFixed(),
                 },
               };
             case 'mint_lp':
               return {
                 mint_lp: {
                   product_id: tx.tx.productId,
-                  subaccount_id: subaccountId,
-                  amount_base_x18: toX18(tx.tx.amountBase).toString(),
-                  quote_amount_low_x18: toX18(tx.tx.amountQuoteLow).toString(),
-                  quote_amount_high_x18: toX18(
-                    tx.tx.amountQuoteHigh,
-                  ).toString(),
+                  subaccount,
+                  amount_base: tx.tx.amountBase.toFixed(),
+                  quote_amount_low: tx.tx.amountQuoteLow.toFixed(),
+                  quote_amount_high: tx.tx.amountQuoteHigh.toFixed(),
                 },
               };
           }
@@ -131,7 +120,7 @@ export class EngineQueryClient extends EngineBaseClient {
       ),
     };
     const baseResponse = await this.query('subaccount_info', {
-      subaccount_id: queryParams.subaccount_id,
+      subaccount: queryParams.subaccount,
       txns: JSON.stringify(queryParams.txns),
     });
 
@@ -220,16 +209,20 @@ export class EngineQueryClient extends EngineBaseClient {
     params: GetEngineSubaccountOrdersParams,
   ): Promise<GetEngineSubaccountOrdersResponse> {
     const baseResponse = await this.query('subaccount_orders', {
+      sender: subaccountToHex({
+        owner: params.sender,
+        name: params.subaccountName,
+      }),
       product_id: params.productId,
-      sender: params.sender,
-      subaccount_name: params.subaccountName,
     });
+
+    const subaccount = subaccountFromHex(baseResponse.sender);
 
     return {
       orders: baseResponse.orders.map(mapEngineServerOrder),
       productId: params.productId,
-      sender: baseResponse.sender,
-      subaccountName: baseResponse.subaccount_name,
+      sender: subaccount.owner,
+      subaccountName: subaccount.name,
     };
   }
 
@@ -242,8 +235,10 @@ export class EngineQueryClient extends EngineBaseClient {
   ): Promise<GetEngineSubaccountFeeRatesResponse> {
     const baseResponse = await this.query('fee_rates', {
       product_id: params.productId,
-      sender: params.sender,
-      subaccount_name: params.subaccountName,
+      sender: subaccountToHex({
+        owner: params.sender,
+        name: params.subaccountName,
+      }),
     });
 
     return {
@@ -297,8 +292,10 @@ export class EngineQueryClient extends EngineBaseClient {
       direction: params.side,
       price_x18: toX18(params.price).toString(),
       product_id: params.productId,
-      sender: params.sender,
-      subaccount_name: params.subaccountName,
+      sender: subaccountToHex({
+        owner: params.sender,
+        name: params.subaccountName,
+      }),
       spot_leverage: params.spotLeverage ?? null,
     });
 
@@ -314,8 +311,10 @@ export class EngineQueryClient extends EngineBaseClient {
   ): Promise<GetEngineMaxWithdrawableResponse> {
     const baseResponse = await this.query('max_withdrawable', {
       product_id: params.productId,
-      sender: params.sender,
-      subaccount_name: params.subaccountName,
+      sender: subaccountToHex({
+        owner: params.sender,
+        name: params.subaccountName,
+      }),
       spot_leverage: params.spotLeverage ?? null,
     });
 
@@ -337,8 +336,8 @@ function mapSubaccountSummary(
     }
 
     balances.push({
-      amount: fromX18(spotBalance.balance.amount_x18),
-      lpAmount: fromX18(spotBalance.lp_balance.amount_x18),
+      amount: toBigDecimal(spotBalance.balance.amount),
+      lpAmount: toBigDecimal(spotBalance.lp_balance.amount),
       ...mapEngineServerSpotProduct(product).product,
     });
   });
@@ -352,9 +351,9 @@ function mapSubaccountSummary(
     }
 
     balances.push({
-      amount: fromX18(perpBalance.balance.amount_x18),
-      lpAmount: fromX18(perpBalance.lp_balance.amount_x18),
-      vQuoteBalance: fromX18(perpBalance.balance.v_quote_balance_x18),
+      amount: toBigDecimal(perpBalance.balance.amount),
+      lpAmount: toBigDecimal(perpBalance.lp_balance.amount),
+      vQuoteBalance: toBigDecimal(perpBalance.balance.v_quote_balance),
       ...mapEngineServerPerpProduct(product).product,
     });
   });
@@ -363,19 +362,19 @@ function mapSubaccountSummary(
     balances: balances,
     health: {
       initial: {
-        health: fromX18(baseResponse.healths[0].health_x18),
-        assets: fromX18(baseResponse.healths[0].assets_x18),
-        liabilities: fromX18(baseResponse.healths[0].liabilities_x18),
+        health: toBigDecimal(baseResponse.healths[0].health),
+        assets: toBigDecimal(baseResponse.healths[0].assets),
+        liabilities: toBigDecimal(baseResponse.healths[0].liabilities),
       },
       maintenance: {
-        health: fromX18(baseResponse.healths[1].health_x18),
-        assets: fromX18(baseResponse.healths[1].assets_x18),
-        liabilities: fromX18(baseResponse.healths[1].liabilities_x18),
+        health: toBigDecimal(baseResponse.healths[1].health),
+        assets: toBigDecimal(baseResponse.healths[1].assets),
+        liabilities: toBigDecimal(baseResponse.healths[1].liabilities),
       },
       unweighted: {
-        health: fromX18(baseResponse.healths[2].health_x18),
-        assets: fromX18(baseResponse.healths[2].assets_x18),
-        liabilities: fromX18(baseResponse.healths[2].liabilities_x18),
+        health: toBigDecimal(baseResponse.healths[2].health),
+        assets: toBigDecimal(baseResponse.healths[2].assets),
+        liabilities: toBigDecimal(baseResponse.healths[2].liabilities),
       },
     },
   };

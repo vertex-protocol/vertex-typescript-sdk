@@ -7,8 +7,8 @@ query LatestOrderFillsQuery($productId: BigInt!) {
     first: 100
   ) {
     blockTime
-    quoteDeltaX18
-    amountDeltaX18
+    quoteDelta
+    amountDelta
     order {
       priceX18
     }

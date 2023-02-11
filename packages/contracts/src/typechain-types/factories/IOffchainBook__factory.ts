@@ -18,21 +18,21 @@ const _abi = [
       },
       {
         indexed: true,
-        internalType: "uint64",
+        internalType: "bytes32",
         name: "subaccount",
-        type: "uint64",
+        type: "bytes32",
       },
       {
         indexed: false,
-        internalType: "int256",
+        internalType: "int128",
         name: "priceX18",
-        type: "int256",
+        type: "int128",
       },
       {
         indexed: false,
-        internalType: "int256",
+        internalType: "int128",
         name: "amount",
-        type: "int256",
+        type: "int128",
       },
       {
         indexed: false,
@@ -54,25 +54,38 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "int256",
-        name: "feeAmountX18",
-        type: "int256",
+        internalType: "int128",
+        name: "feeAmount",
+        type: "int128",
       },
       {
         indexed: false,
-        internalType: "int256",
-        name: "baseDeltaX18",
-        type: "int256",
+        internalType: "int128",
+        name: "baseDelta",
+        type: "int128",
       },
       {
         indexed: false,
-        internalType: "int256",
-        name: "quoteDeltaX18",
-        type: "int256",
+        internalType: "int128",
+        name: "quoteDelta",
+        type: "int128",
       },
     ],
     name: "FillOrder",
     type: "event",
+  },
+  {
+    inputs: [],
+    name: "claimSequencerFee",
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
     inputs: [],
@@ -86,24 +99,19 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
+            type: "bytes32",
           },
           {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
-          },
-          {
-            internalType: "int256",
+            internalType: "int128",
             name: "priceX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "amount",
-            type: "int256",
+            type: "int128",
           },
           {
             internalType: "uint64",
@@ -119,11 +127,6 @@ const _abi = [
         internalType: "struct IEndpoint.Order",
         name: "order",
         type: "tuple",
-      },
-      {
-        internalType: "bool",
-        name: "isCancellation",
-        type: "bool",
       },
     ],
     name: "getDigest",
@@ -149,24 +152,29 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "sizeIncrement",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "priceIncrementX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "lpSpreadX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
-            name: "collectedFeesX18",
-            type: "int256",
+            internalType: "int128",
+            name: "collectedFees",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "sequencerFees",
+            type: "int128",
           },
         ],
         internalType: "struct IOffchainBook.Market",
@@ -210,19 +218,19 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "_sizeIncrement",
-        type: "int256",
+        type: "int128",
       },
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "_priceIncrementX18",
-        type: "int256",
+        type: "int128",
       },
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "_lpSpreadX18",
-        type: "int256",
+        type: "int128",
       },
     ],
     name: "initialize",
@@ -244,24 +252,19 @@ const _abi = [
               {
                 components: [
                   {
-                    internalType: "address",
+                    internalType: "bytes32",
                     name: "sender",
-                    type: "address",
+                    type: "bytes32",
                   },
                   {
-                    internalType: "string",
-                    name: "subaccountName",
-                    type: "string",
-                  },
-                  {
-                    internalType: "int256",
+                    internalType: "int128",
                     name: "priceX18",
-                    type: "int256",
+                    type: "int128",
                   },
                   {
-                    internalType: "int256",
+                    internalType: "int128",
                     name: "amount",
-                    type: "int256",
+                    type: "int128",
                   },
                   {
                     internalType: "uint64",
@@ -318,24 +321,19 @@ const _abi = [
               {
                 components: [
                   {
-                    internalType: "address",
+                    internalType: "bytes32",
                     name: "sender",
-                    type: "address",
+                    type: "bytes32",
                   },
                   {
-                    internalType: "string",
-                    name: "subaccountName",
-                    type: "string",
-                  },
-                  {
-                    internalType: "int256",
+                    internalType: "int128",
                     name: "priceX18",
-                    type: "int256",
+                    type: "int128",
                   },
                   {
-                    internalType: "int256",
+                    internalType: "int128",
                     name: "amount",
-                    type: "int256",
+                    type: "int128",
                   },
                   {
                     internalType: "uint64",
@@ -367,24 +365,19 @@ const _abi = [
               {
                 components: [
                   {
-                    internalType: "address",
+                    internalType: "bytes32",
                     name: "sender",
-                    type: "address",
+                    type: "bytes32",
                   },
                   {
-                    internalType: "string",
-                    name: "subaccountName",
-                    type: "string",
-                  },
-                  {
-                    internalType: "int256",
+                    internalType: "int128",
                     name: "priceX18",
-                    type: "int256",
+                    type: "int128",
                   },
                   {
-                    internalType: "int256",
+                    internalType: "int128",
                     name: "amount",
-                    type: "int256",
+                    type: "int128",
                   },
                   {
                     internalType: "uint64",
@@ -427,14 +420,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
+            type: "bytes32",
           },
           {
             internalType: "uint32",
@@ -442,14 +430,14 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "amount",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "priceX18",
-            type: "int256",
+            type: "int128",
           },
         ],
         internalType: "struct IEndpoint.SwapAMM",

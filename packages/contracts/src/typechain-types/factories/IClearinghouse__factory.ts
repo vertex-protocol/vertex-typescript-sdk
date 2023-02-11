@@ -39,41 +39,16 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "name",
-        type: "string",
-      },
-      {
-        indexed: false,
-        internalType: "uint64",
-        name: "subaccount",
-        type: "uint64",
-      },
-    ],
-    name: "CreateSubaccount",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: true,
-        internalType: "uint64",
+        internalType: "bytes32",
         name: "liquidatorSubaccount",
-        type: "uint64",
+        type: "bytes32",
       },
       {
         indexed: true,
-        internalType: "uint64",
+        internalType: "bytes32",
         name: "liquidateeSubaccount",
-        type: "uint64",
+        type: "bytes32",
       },
       {
         indexed: true,
@@ -89,21 +64,21 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "int256",
-        name: "amountX18",
-        type: "int256",
+        internalType: "int128",
+        name: "amount",
+        type: "int128",
       },
       {
         indexed: false,
-        internalType: "int256",
-        name: "amountQuoteX18",
-        type: "int256",
+        internalType: "int128",
+        name: "amountQuote",
+        type: "int128",
       },
       {
         indexed: false,
-        internalType: "int256",
-        name: "insuranceCoverX18",
-        type: "int256",
+        internalType: "int128",
+        name: "insuranceCover",
+        type: "int128",
       },
     ],
     name: "Liquidation",
@@ -114,15 +89,15 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: "int256",
+        internalType: "int128",
         name: "amount",
-        type: "int256",
+        type: "int128",
       },
       {
         indexed: true,
-        internalType: "uint64",
+        internalType: "bytes32",
         name: "subaccount",
-        type: "uint64",
+        type: "bytes32",
       },
       {
         indexed: false,
@@ -157,14 +132,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
+            type: "bytes32",
           },
           {
             internalType: "uint32",
@@ -172,9 +142,9 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "amount",
-            type: "uint256",
+            type: "uint128",
           },
           {
             internalType: "uint64",
@@ -197,14 +167,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
+            type: "bytes32",
           },
           {
             internalType: "uint32",
@@ -212,9 +177,9 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "amount",
-            type: "uint256",
+            type: "uint128",
           },
         ],
         internalType: "struct IEndpoint.DepositCollateral",
@@ -232,19 +197,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
-            name: "sender",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "amount",
-            type: "uint256",
-          },
-          {
-            internalType: "uint64",
-            name: "nonce",
-            type: "uint64",
+            type: "uint128",
           },
         ],
         internalType: "struct IEndpoint.DepositInsurance",
@@ -309,6 +264,30 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
+      },
+      {
+        internalType: "enum IProductEngine.HealthType",
+        name: "healthType",
+        type: "uint8",
+      },
+    ],
+    name: "getHealth",
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "getHealthGroups",
     outputs: [
@@ -334,37 +313,13 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-      {
-        internalType: "enum IProductEngine.HealthType",
-        name: "healthType",
-        type: "uint8",
-      },
-    ],
-    name: "getHealthX18",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "getInsurance",
     outputs: [
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "",
-        type: "int256",
+        type: "int128",
       },
     ],
     stateMutability: "view",
@@ -384,19 +339,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "getNumSubaccounts",
-    outputs: [
-      {
-        internalType: "uint64",
-        name: "",
-        type: "uint64",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "uint32",
@@ -407,9 +349,40 @@ const _abi = [
     name: "getOraclePriceX18",
     outputs: [
       {
-        internalType: "int256",
+        internalType: "int128",
         name: "",
-        type: "int256",
+        type: "int128",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "healthGroup",
+        type: "uint32",
+      },
+    ],
+    name: "getOraclePricesX18",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "int128",
+            name: "spotPriceX18",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "perpPriceX18",
+            type: "int128",
+          },
+        ],
+        internalType: "struct IEndpoint.Prices",
+        name: "",
+        type: "tuple",
       },
     ],
     stateMutability: "view",
@@ -460,77 +433,34 @@ const _abi = [
       {
         components: [
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "longWeightInitialX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "shortWeightInitialX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "longWeightMaintenanceX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "shortWeightMaintenanceX18",
-            type: "int256",
+            type: "int128",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "largePositionPenaltyX18",
-            type: "int256",
+            type: "int128",
           },
         ],
         internalType: "struct RiskHelper.Risk",
         name: "",
         type: "tuple",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        internalType: "string",
-        name: "subaccountName",
-        type: "string",
-      },
-    ],
-    name: "getSubaccountId",
-    outputs: [
-      {
-        internalType: "uint64",
-        name: "",
-        type: "uint64",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-    ],
-    name: "getSubaccountOwner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
       },
     ],
     stateMutability: "view",
@@ -554,19 +484,14 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
+            type: "bytes32",
           },
           {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
-          },
-          {
-            internalType: "uint64",
-            name: "liquidateeId",
-            type: "uint64",
+            internalType: "bytes32",
+            name: "liquidatee",
+            type: "bytes32",
           },
           {
             internalType: "uint8",
@@ -579,9 +504,9 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "int256",
+            internalType: "int128",
             name: "amount",
-            type: "int256",
+            type: "int128",
           },
           {
             internalType: "uint64",
@@ -604,14 +529,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
+            type: "bytes32",
           },
           {
             internalType: "uint32",
@@ -619,19 +539,19 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "amountBase",
-            type: "uint256",
+            type: "uint128",
           },
           {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "quoteAmountLow",
-            type: "uint256",
+            type: "uint128",
           },
           {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "quoteAmountHigh",
-            type: "uint256",
+            type: "uint128",
           },
           {
             internalType: "uint64",
@@ -659,29 +579,29 @@ const _abi = [
       {
         components: [
           {
-            internalType: "int48",
+            internalType: "int32",
             name: "longWeightInitial",
-            type: "int48",
+            type: "int32",
           },
           {
-            internalType: "int48",
+            internalType: "int32",
             name: "shortWeightInitial",
-            type: "int48",
+            type: "int32",
           },
           {
-            internalType: "int48",
+            internalType: "int32",
             name: "longWeightMaintenance",
-            type: "int48",
+            type: "int32",
           },
           {
-            internalType: "int48",
+            internalType: "int32",
             name: "shortWeightMaintenance",
-            type: "int48",
+            type: "int32",
           },
           {
-            internalType: "int48",
+            internalType: "int32",
             name: "largePositionPenalty",
-            type: "int48",
+            type: "int32",
           },
         ],
         internalType: "struct IClearinghouseState.RiskStore",
@@ -710,9 +630,14 @@ const _abi = [
       {
         components: [
           {
-            internalType: "uint64[]",
-            name: "subaccountIds",
-            type: "uint64[]",
+            internalType: "bytes32[]",
+            name: "subaccounts",
+            type: "bytes32[]",
+          },
+          {
+            internalType: "uint256[]",
+            name: "productIds",
+            type: "uint256[]",
           },
         ],
         internalType: "struct IEndpoint.SettlePnl",
@@ -730,14 +655,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
+            internalType: "bytes32",
             name: "sender",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "subaccountName",
-            type: "string",
+            type: "bytes32",
           },
           {
             internalType: "uint32",
@@ -745,9 +665,9 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "uint256",
+            internalType: "uint128",
             name: "amount",
-            type: "uint256",
+            type: "uint128",
           },
           {
             internalType: "uint64",

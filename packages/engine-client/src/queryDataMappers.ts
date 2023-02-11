@@ -13,6 +13,7 @@ import {
   PerpMarket,
   ProductEngineType,
   SpotMarket,
+  subaccountFromHex,
 } from '@vertex-protocol/contracts';
 
 export function mapEngineServerTickLiquidity(
@@ -27,14 +28,15 @@ export function mapEngineServerTickLiquidity(
 export function mapEngineServerOrder(
   order: EngineServerGetOrderResponse,
 ): EngineOrder {
+  const subaccount = subaccountFromHex(order.sender);
   return {
     digest: order.digest,
     expiration: toBigDecimal(order.expiration),
     nonce: order.nonce,
     price: fromX18(order.price_x18),
     productId: order.product_id,
-    sender: order.sender,
-    subaccountName: order.subaccount_name,
+    sender: subaccount.owner,
+    subaccountName: subaccount.name,
     totalAmount: toBigDecimal(order.amount),
     unfilledAmount: toBigDecimal(order.unfilled_amount),
     // Standardizes from hex
@@ -44,8 +46,8 @@ export function mapEngineServerOrder(
       expiration: toBigDecimal(order.expiration).toFixed(),
       nonce: order.nonce,
       price: fromX18(order.price_x18).toFixed(),
-      sender: order.sender,
-      subaccountName: order.subaccount_name,
+      sender: subaccount.owner,
+      subaccountName: subaccount.name,
     },
     placementTime: order.placed_at,
   };
@@ -63,11 +65,11 @@ export function mapEngineServerSpotProduct(
       productId: product.product_id,
       type: ProductEngineType.SPOT,
       totalBorrowed: calcTotalBorrowed(
-        toEthersBN(product.state.total_borrows_normalized_x18),
+        toEthersBN(product.state.total_borrows_normalized),
         toEthersBN(product.state.cumulative_borrows_multiplier_x18),
       ),
       totalDeposited: calcTotalDeposited(
-        toEthersBN(product.state.total_deposits_normalized_x18),
+        toEthersBN(product.state.total_deposits_normalized),
         toEthersBN(product.state.cumulative_deposits_multiplier_x18),
       ),
       oraclePrice: fromX18(product.oracle_price_x18),
@@ -85,8 +87,8 @@ export function mapEngineServerSpotProduct(
         product.risk.short_weight_maintenance_x18,
       ),
       tokenAddr: product.config.token,
-      totalLpBaseAmount: fromX18(product.lp_state.base.amount_x18),
-      totalLpQuoteAmount: fromX18(product.lp_state.quote.amount_x18),
+      totalLpBaseAmount: toBigDecimal(product.lp_state.base.amount),
+      totalLpQuoteAmount: toBigDecimal(product.lp_state.quote.amount),
       totalLpSupply: toBigDecimal(product.lp_state.supply),
     },
   };
@@ -99,11 +101,10 @@ export function mapEngineServerPerpProduct(
     type: ProductEngineType.PERP,
     productId: product.product_id,
     priceIncrement: fromX18(product.book_info.price_increment_x18),
-    sizeIncrement: fromX18(product.book_info.size_increment),
+    sizeIncrement: toBigDecimal(product.book_info.size_increment),
     product: {
       productId: product.product_id,
       type: ProductEngineType.PERP,
-      markPrice: fromX18(product.mark_price_x18),
       oraclePrice: fromX18(product.oracle_price_x18),
       largePositionPenalty: fromX18(product.risk.large_position_penalty_x18),
       longWeightInitial: fromX18(product.risk.long_weight_initial_x18),
@@ -112,7 +113,7 @@ export function mapEngineServerPerpProduct(
       shortWeightMaintenance: fromX18(
         product.risk.short_weight_maintenance_x18,
       ),
-      openInterest: fromX18(product.state.open_interest_x18),
+      openInterest: toBigDecimal(product.state.open_interest),
       totalLpBaseAmount: toBigDecimal(product.lp_state.base),
       totalLpQuoteAmount: toBigDecimal(product.lp_state.quote),
       totalLpSupply: toBigDecimal(product.lp_state.supply),

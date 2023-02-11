@@ -61,12 +61,13 @@ fragment OrderEntityFieldsFragment on Order {
   priceX18
   productId
   subaccount {
-    subaccountId
+    owner
+    name
   }
   reportedAt
   reportedAtBlock
-  filledAmountX18
+  filledAmount
   totalAmount
-  quoteAmountX18
-  collectedFeeX18
+  quoteAmount
+  collectedFee
 }

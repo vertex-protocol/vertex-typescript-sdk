@@ -11,7 +11,7 @@ import {
   SubaccountOrdersResponse,
 } from './types';
 import { getSubaccountEntityId } from '../../utils';
-import { fromX18 } from '@vertex-protocol/utils';
+import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 
 export class OrdersQueryClient extends BaseVertexGraphClient {
   async getLatestOrderFills(params: LatestOrderFillsParams) {
@@ -21,7 +21,7 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
     return data.fillOrderEvents.map((event) => {
       return {
         time: event.blockTime,
-        takerAmountDelta: fromX18(event.amountDeltaX18).negated(),
+        takerAmountDelta: toBigDecimal(event.amountDelta).negated(),
         price: fromX18(event.order.priceX18),
       };
     });
@@ -52,7 +52,10 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
     params: SubaccountOrdersParams,
   ): Promise<SubaccountOrdersResponse> {
     const data = await this.graph.PaginatedSubaccountOrdersQuery({
-      subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+      subaccountEntityId: getSubaccountEntityId(
+        params.subaccountOwner,
+        params.subaccountName,
+      ),
       first: params.first,
       skip: params.skip,
     });
@@ -68,7 +71,10 @@ export class OrdersQueryClient extends BaseVertexGraphClient {
     params: SubaccountOrdersForProductsParams,
   ): Promise<SubaccountOrdersForProductsResponse> {
     const data = await this.graph.PaginatedSubaccountOrdersForProductsQuery({
-      subaccountEntityId: getSubaccountEntityId(params.subaccountId),
+      subaccountEntityId: getSubaccountEntityId(
+        params.subaccountOwner,
+        params.subaccountName,
+      ),
       allowedProductIds: params.productIds,
       first: params.first,
       skip: params.skip,

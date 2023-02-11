@@ -1,14 +1,17 @@
 {
   "nodeUrl": "https://goerli-rollup.arbitrum.io/rpc",
   "explorerUrl": "https://goerli-rollup-explorer.arbitrum.io",
-  "clearinghouseGraphUrl": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli",
-  "clearinghouseGraphUrlSlim": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-slim",
-  "startBlock": 1543212,
+  "subgraphCoreUrl": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-core",
+  "subgraphMarketsUrl": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets",
+  "subgraphCandleSticksUrl": "https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-candlesticks",
+  "startBlock": 6954759,
   "deployer": "0x3c06e307BA6Ab81E8Ff6661c1559ce8027744AE5",
   "quote": "0x179522635726710Dd7D2035a81d856de4Aa7836c",
-  "querier": "0x69cA2B5bf6c2AaCc427c64f4BEC621B112A26b25",
-  "clearinghouse": "0x202892657Bfd7a6f740edEAafd2566136B387493",
-  "endpoint": "0x7b467433F8627312b170f32381941F4945bf7d97",
-  "spotEngine": "0x7Fa5Ba8F323a3436c08f0DD0133767EE7e63875E",
-  "perpEngine": "0x9De2AFAceb2011332Cd6e1B84fB89E51121B764b"
+  "querier": "0xd6e9Af99AEa0f321319d9524b92715B3454C3007",
+  "feeCalculator": "0x427650d2Ad45f61c39337c978e4fe92DC514Cf94",
+  "clearinghouse": "0x2769F1422C0123143793AD25CB65140d056FE54d",
+  "clearinghouseLiq": "0x479dFdF9159255E656ff2167d5b6351aC68809a2",
+  "endpoint": "0x016afE7C6fb0116886c2E61BA00175BC01Fd5674",
+  "spotEngine": "0x0FAF9e0eBF3cE58f63DED8ad832B83Aeb1291f4e",
+  "perpEngine": "0x41A8FE9653201D1c06015A70d1E8B6d0162dEE18"
 }

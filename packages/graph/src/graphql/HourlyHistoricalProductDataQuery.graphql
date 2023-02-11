@@ -26,7 +26,7 @@ query HourlyHistoricalProductDataQuery(
   ) {
     id
     periodIndex
-    priceX18
-    openInterestX18
+    liquidationPriceX18
+    openInterest
   }
 }

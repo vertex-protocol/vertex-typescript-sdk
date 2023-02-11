@@ -1,22 +1,22 @@
 import { BigNumberish } from 'ethers';
 
 export interface EngineServerSpotBalanceData {
-  amount_x18: BigNumberish;
+  amount: BigNumberish;
   last_cumulative_multiplier_x18: BigNumberish;
 }
 
 export interface EngineServerSpotLpBalanceData {
-  amount_x18: BigNumberish;
+  amount: BigNumberish;
 }
 
 export interface EngineServerPerpBalanceData {
-  amount_x18: BigNumberish;
-  v_quote_balance_x18: BigNumberish;
+  amount: BigNumberish;
+  v_quote_balance: BigNumberish;
   last_cumulative_funding_x18: BigNumberish;
 }
 
 export interface EngineServerPerpLpBalanceData {
-  amount_x18: BigNumberish;
+  amount: BigNumberish;
   last_cumulative_funding_x18: BigNumberish;
 }
 
@@ -31,7 +31,7 @@ export interface EngineServerRisk {
 export interface EngineServerBookInfo {
   size_increment: BigNumberish;
   price_increment_x18: BigNumberish;
-  collected_fees_x18: BigNumberish;
+  collected_fees: BigNumberish;
   lp_spread_x18: BigNumberish;
 }
 
@@ -46,24 +46,21 @@ export interface EngineServerSpotConfig {
 export interface EngineServerSpotState {
   cumulative_deposits_multiplier_x18: BigNumberish;
   cumulative_borrows_multiplier_x18: BigNumberish;
-  total_deposits_normalized_x18: BigNumberish;
-  total_borrows_normalized_x18: BigNumberish;
-  last_update_time: BigNumberish;
+  total_deposits_normalized: BigNumberish;
+  total_borrows_normalized: BigNumberish;
 }
 
 export interface EngineServerSpotLpState {
   supply: BigNumberish;
   quote: EngineServerSpotBalanceData;
   base: EngineServerSpotBalanceData;
-  last_update_time: BigNumberish;
 }
 
 export interface EngineServerPerpState {
   cumulative_funding_long_x18: BigNumberish;
   cumulative_funding_short_x18: BigNumberish;
-  open_interest_x18: BigNumberish;
-  available_settle_x18: BigNumberish;
-  last_update_time: BigNumberish;
+  available_settle: BigNumberish;
+  open_interest: BigNumberish;
 }
 
 export interface EngineServerPerpLpState {
@@ -72,7 +69,6 @@ export interface EngineServerPerpLpState {
   quote: BigNumberish;
   last_cumulative_funding_x18: BigNumberish;
   cumulative_funding_per_lp_x18: BigNumberish;
-  last_update_time: BigNumberish;
 }
 
 export interface EngineServerSpotProduct {
@@ -89,15 +85,12 @@ export interface EngineServerSpotBalance {
   product_id: number;
   balance: EngineServerSpotBalanceData;
   lp_balance: EngineServerSpotLpBalanceData;
-  initial_x18: BigNumberish;
-  maintenance_x18: BigNumberish;
-  pnl_x18: BigNumberish;
 }
 
 export interface EngineServerPerpProduct {
   product_id: number;
   oracle_price_x18: BigNumberish;
-  mark_price_x18: BigNumberish;
+  index_price_x18: BigNumberish;
   risk: EngineServerRisk;
   state: EngineServerPerpState;
   lp_state: EngineServerPerpLpState;
@@ -108,7 +101,4 @@ export interface EngineServerPerpBalance {
   product_id: number;
   balance: EngineServerPerpBalanceData;
   lp_balance: EngineServerPerpLpBalanceData;
-  initial_x18: BigNumberish;
-  maintenance_x18: BigNumberish;
-  pnl_x18: BigNumberish;
 }

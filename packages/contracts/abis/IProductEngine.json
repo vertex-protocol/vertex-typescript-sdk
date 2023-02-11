@@ -20,6 +20,80 @@
         "internalType": "uint32",
         "name": "productId",
         "type": "uint32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "int128",
+        "name": "lpAmount",
+        "type": "int128"
+      },
+      {
+        "indexed": false,
+        "internalType": "int128",
+        "name": "baseAmount",
+        "type": "int128"
+      },
+      {
+        "indexed": false,
+        "internalType": "int128",
+        "name": "quoteAmount",
+        "type": "int128"
+      }
+    ],
+    "name": "BurnLp",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "int128",
+        "name": "lpAmount",
+        "type": "int128"
+      },
+      {
+        "indexed": false,
+        "internalType": "int128",
+        "name": "baseAmount",
+        "type": "int128"
+      },
+      {
+        "indexed": false,
+        "internalType": "int128",
+        "name": "quoteAmount",
+        "type": "int128"
+      }
+    ],
+    "name": "MintLp",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint32",
+        "name": "productId",
+        "type": "uint32"
       }
     ],
     "name": "ProductUpdate",
@@ -36,9 +110,9 @@
       },
       {
         "indexed": false,
-        "internalType": "int256",
-        "name": "amountSocializedX18",
-        "type": "int256"
+        "internalType": "int128",
+        "name": "amountSocialized",
+        "type": "int128"
       }
     ],
     "name": "SocializeProduct",
@@ -54,19 +128,19 @@
             "type": "uint32"
           },
           {
-            "internalType": "uint64",
-            "name": "subaccountId",
-            "type": "uint64"
+            "internalType": "bytes32",
+            "name": "subaccount",
+            "type": "bytes32"
           },
           {
-            "internalType": "int256",
-            "name": "amountDeltaX18",
-            "type": "int256"
+            "internalType": "int128",
+            "name": "amountDelta",
+            "type": "int128"
           },
           {
-            "internalType": "int256",
-            "name": "vQuoteDeltaX18",
-            "type": "int256"
+            "internalType": "int128",
+            "name": "vQuoteDelta",
+            "type": "int128"
           }
         ],
         "internalType": "struct IProductEngine.ProductDelta[]",
@@ -87,14 +161,14 @@
         "type": "uint32"
       },
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       },
       {
-        "internalType": "int256",
-        "name": "amountLpX18",
-        "type": "int256"
+        "internalType": "int128",
+        "name": "amountLp",
+        "type": "int128"
       }
     ],
     "name": "burnLp",
@@ -105,14 +179,14 @@
   {
     "inputs": [
       {
-        "internalType": "uint64",
-        "name": "liquidateeId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "liquidatee",
+        "type": "bytes32"
       },
       {
-        "internalType": "uint64",
-        "name": "liquidatorId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "liquidator",
+        "type": "bytes32"
       }
     ],
     "name": "decomposeLps",
@@ -219,24 +293,24 @@
         "type": "uint32"
       },
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       },
       {
-        "internalType": "int256",
-        "name": "amountBaseX18",
-        "type": "int256"
+        "internalType": "int128",
+        "name": "amountBase",
+        "type": "int128"
       },
       {
-        "internalType": "int256",
-        "name": "quoteAmountLowX18",
-        "type": "int256"
+        "internalType": "int128",
+        "name": "quoteAmountLow",
+        "type": "int128"
       },
       {
-        "internalType": "int256",
-        "name": "quoteAmountHighX18",
-        "type": "int256"
+        "internalType": "int128",
+        "name": "quoteAmountHigh",
+        "type": "int128"
       }
     ],
     "name": "mintLp",
@@ -247,22 +321,22 @@
   {
     "inputs": [
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       },
       {
-        "internalType": "int256",
-        "name": "insuranceX18",
-        "type": "int256"
+        "internalType": "int128",
+        "name": "insurance",
+        "type": "int128"
       }
     ],
     "name": "socializeSubaccount",
     "outputs": [
       {
-        "internalType": "int256",
+        "internalType": "int128",
         "name": "",
-        "type": "int256"
+        "type": "int128"
       }
     ],
     "stateMutability": "nonpayable",
@@ -276,57 +350,44 @@
         "type": "uint32"
       },
       {
-        "internalType": "uint64",
-        "name": "subaccountId",
-        "type": "uint64"
+        "internalType": "bytes32",
+        "name": "subaccount",
+        "type": "bytes32"
       },
       {
-        "internalType": "int256",
+        "internalType": "int128",
         "name": "amount",
-        "type": "int256"
+        "type": "int128"
       },
       {
-        "internalType": "int256",
+        "internalType": "int128",
         "name": "priceX18",
-        "type": "int256"
+        "type": "int128"
       },
       {
-        "internalType": "int256",
+        "internalType": "int128",
         "name": "sizeIncrement",
-        "type": "int256"
+        "type": "int128"
       },
       {
-        "internalType": "int256",
+        "internalType": "int128",
         "name": "lpSpreadX18",
-        "type": "int256"
+        "type": "int128"
       }
     ],
     "name": "swapLp",
     "outputs": [
       {
-        "internalType": "int256",
+        "internalType": "int128",
         "name": "",
-        "type": "int256"
+        "type": "int128"
       },
       {
-        "internalType": "int256",
+        "internalType": "int128",
         "name": "",
-        "type": "int256"
+        "type": "int128"
       }
     ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "dt",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateStates",
-    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   }
