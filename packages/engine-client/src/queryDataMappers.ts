@@ -35,8 +35,8 @@ export function mapEngineServerOrder(
     nonce: order.nonce,
     price: fromX18(order.price_x18),
     productId: order.product_id,
-    sender: subaccount.owner,
-    subaccountName: subaccount.name,
+    subaccountOwner: subaccount.subaccountOwner,
+    subaccountName: subaccount.subaccountName,
     totalAmount: toBigDecimal(order.amount),
     unfilledAmount: toBigDecimal(order.unfilled_amount),
     // Standardizes from hex
@@ -46,8 +46,8 @@ export function mapEngineServerOrder(
       expiration: toBigDecimal(order.expiration).toFixed(),
       nonce: order.nonce,
       price: fromX18(order.price_x18).toFixed(),
-      sender: subaccount.owner,
-      subaccountName: subaccount.name,
+      subaccountOwner: subaccount.subaccountOwner,
+      subaccountName: subaccount.subaccountName,
     },
     placementTime: order.placed_at,
   };

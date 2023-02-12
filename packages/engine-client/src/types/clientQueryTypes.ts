@@ -4,6 +4,7 @@ import {
   GetSubaccountSummaryParams,
   OrderParams,
   SignedOrderParams,
+  Subaccount,
   SubaccountSummaryResponse,
 } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
@@ -64,10 +65,8 @@ export interface GetEngineOrderParams {
   digest: string;
 }
 
-export interface EngineOrder {
+export interface EngineOrder extends Subaccount {
   productId: number;
-  sender: string;
-  subaccountName: string;
   price: BigDecimal;
   // Amount initially requested
   totalAmount: BigDecimal;
@@ -99,22 +98,16 @@ export interface ValidateEngineOrderResponse {
   valid: boolean;
 }
 
-export interface GetEngineSubaccountOrdersParams {
-  sender: string;
-  subaccountName: string;
+export interface GetEngineSubaccountOrdersParams extends Subaccount {
   productId: number;
 }
 
-export interface GetEngineSubaccountOrdersResponse {
-  sender: string;
-  subaccountName: string;
+export interface GetEngineSubaccountOrdersResponse extends Subaccount {
   productId: number;
   orders: EngineOrder[];
 }
 
-export interface GetEngineSubaccountFeeRatesParams {
-  sender: string;
-  subaccountName: string;
+export interface GetEngineSubaccountFeeRatesParams extends Subaccount {
   productId: number;
 }
 
@@ -149,10 +142,8 @@ export interface GetEngineMarketPriceResponse {
   ask: BigDecimal;
 }
 
-export interface GetEngineMaxOrderSizeParams {
-  sender: string;
+export interface GetEngineMaxOrderSizeParams extends Subaccount {
   price: BigDecimal;
-  subaccountName: string;
   productId: number;
   side: BalanceSide;
   // If not given, engine defaults to true (leverage/borrow enabled)
@@ -161,9 +152,7 @@ export interface GetEngineMaxOrderSizeParams {
 
 export type GetEngineMaxOrderSizeResponse = BigDecimal;
 
-export interface GetEngineMaxWithdrawableParams {
-  sender: string;
-  subaccountName: string;
+export interface GetEngineMaxWithdrawableParams extends Subaccount {
   productId: number;
   // If not given, engine defaults to true (leverage/borrow enabled)
   spotLeverage?: boolean;

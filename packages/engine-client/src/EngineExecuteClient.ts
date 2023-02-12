@@ -4,7 +4,6 @@ import {
   getVertexEIP712Values,
   LiquidateSubaccountParams,
   OrderCancellationParams,
-  WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import {
   EngineMintLpParams,
@@ -50,17 +49,13 @@ export class EngineExecuteClient extends EngineBaseClient {
     const { txNonce } = await this.getNoncesForCurrentSigner();
     const paramsWithNonce = { ...params, nonce: txNonce };
 
-    const tx = getVertexEIP712Values(
-      'withdraw_collateral',
-      paramsWithNonce,
-    ) as unknown as WithdrawCollateralParams;
-    tx.sender = hexlify(tx.sender);
     const signature = await this.sign(
       'withdraw_collateral',
       params.endpointAddr,
       paramsWithNonce,
     );
 
+    const tx = getVertexEIP712Values('withdraw_collateral', paramsWithNonce);
     return this.execute('withdraw_collateral', {
       signature,
       tx: {

@@ -1,4 +1,5 @@
 import { BigNumberish } from 'ethers';
+import { Subaccount } from '../common';
 
 export interface SignedTx<TBaseTx> {
   tx: TBaseTx;
@@ -10,19 +11,13 @@ export interface SignedOrderParams {
   signature: string;
 }
 
-export interface WithdrawCollateralParams {
-  // Address of sender
-  sender: string;
-  subaccountName: string;
+export interface WithdrawCollateralParams extends Subaccount {
   productId: number;
   amount: BigNumberish;
   nonce: string;
 }
 
-export interface MintLpParams {
-  // Address of sender
-  sender: string;
-  subaccountName: string;
+export interface MintLpParams extends Subaccount {
   productId: number;
   amountBase: BigNumberish;
   quoteAmountLow: BigNumberish;
@@ -30,19 +25,13 @@ export interface MintLpParams {
   nonce: string;
 }
 
-export interface BurnLpParams {
-  // Address of sender
-  sender: string;
-  subaccountName: string;
+export interface BurnLpParams extends Subaccount {
   productId: number;
   amount: BigNumberish;
   nonce: string;
 }
 
-export interface LiquidateSubaccountParams {
-  // Address of sender
-  sender: string;
-  subaccountName: string;
+export interface LiquidateSubaccountParams extends Subaccount {
   // Subaccount being liquidated
   liquidateeOwner: string;
   liquidateeName: string;
@@ -54,16 +43,12 @@ export interface LiquidateSubaccountParams {
   nonce: string;
 }
 
-export interface OrderParams {
+export interface OrderParams extends Subaccount {
   /**
    * IOC/FOK not currently supported
    * Number -> Expiration time in seconds
    */
   expiration: BigNumberish;
-  // Sender address of the order
-  sender: string;
-  // Sender subaccount name
-  subaccountName: string;
   // Limit price
   price: BigNumberish;
   // Positive for buy, negative for sell
@@ -72,10 +57,7 @@ export interface OrderParams {
   nonce: string;
 }
 
-export interface OrderCancellationParams {
-  // Address of sender
-  sender: string;
-  subaccountName: string;
+export interface OrderCancellationParams extends Subaccount {
   productIds: number[];
   digests: string[];
   nonce: string;

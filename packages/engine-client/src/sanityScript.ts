@@ -63,12 +63,12 @@ async function main() {
   console.log(`subaccount (in): ${signer.address}; default`);
 
   const subaccountBytes32 = subaccountToBytes32({
-    owner: signer.address,
-    name: 'default',
+    subaccountOwner: signer.address,
+    subaccountName: 'default',
   });
   const subaccountHex = subaccountToHex({
-    owner: signer.address,
-    name: 'default',
+    subaccountOwner: signer.address,
+    subaccountName: 'default',
   });
   console.log(`subaccountBytes32: ${subaccountBytes32}`);
   console.log(`subaccountHex: ${subaccountHex}`);
@@ -76,11 +76,11 @@ async function main() {
   const subaccountFrom32BytesOut = subaccountFromBytes32(subaccountBytes32);
   const subaccountFromHexOut = subaccountFromHex(subaccountHex);
   console.log(
-    `subaccountFrom32Bytes (out): ${subaccountFrom32BytesOut.owner}; ${subaccountFrom32BytesOut.name}`,
+    `subaccountFrom32Bytes (out): ${subaccountFrom32BytesOut.subaccountOwner}; ${subaccountFrom32BytesOut.subaccountName}`,
   );
 
   console.log(
-    `subaccountFromHex (out): ${subaccountFromHexOut.owner}; ${subaccountFromHexOut.name}`,
+    `subaccountFromHex (out): ${subaccountFromHexOut.subaccountOwner}; ${subaccountFromHexOut.subaccountName}`,
   );
   let subaccountId;
   while (true) {
@@ -97,7 +97,7 @@ async function main() {
   console.log('Querying subaccount');
 
   const subaccountInfo = await client.getSubaccountSummary({
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
   });
   console.log('Subaccount info', JSON.stringify(subaccountInfo, null, 2));
@@ -109,7 +109,7 @@ async function main() {
   const productId = 1;
   const orderbookAddr = await clearinghouse.getOrderbook(productId);
   const order: OrderParamsWithoutNonce = {
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
     amount: -1,
     expiration: getExpiration(),
@@ -125,7 +125,7 @@ async function main() {
   const subaccountOrders = await client.getSubaccountOrders({
     productId,
     subaccountName: 'default',
-    sender: signer.address,
+    subaccountOwner: signer.address,
   });
   console.log('Subaccount orders', JSON.stringify(subaccountOrders));
   const marketLiquidity = await client.getMarketLiquidity({
@@ -140,11 +140,11 @@ async function main() {
   const feeRates = await client.getSubaccountFeeRates({
     productId,
     subaccountName: 'default',
-    sender: signer.address,
+    subaccountOwner: signer.address,
   });
   console.log('Fee rates', JSON.stringify(feeRates, null, 2));
   const maxOrderSize = await client.getMaxOrderSize({
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
     productId,
     price: toBigDecimal(23000),
@@ -152,13 +152,13 @@ async function main() {
   });
   console.log('Max roder size', JSON.stringify(maxOrderSize, null, 2));
   const maxWithdrawable = await client.getMaxWithdrawable({
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 0,
   });
   console.log('Max withdrawable', JSON.stringify(maxWithdrawable, null, 2));
   const maxWithdrawableNoSpotLeverage = await client.getMaxWithdrawable({
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 0,
     spotLeverage: false,
@@ -176,7 +176,7 @@ async function main() {
   console.log('Cancelling order');
   const cancelResult = await client.cancelOrder({
     subaccountName: 'default',
-    sender: signer.address,
+    subaccountOwner: signer.address,
     productIds: [productId],
     digests: [placeResult.digest],
     endpointAddr,
@@ -185,7 +185,7 @@ async function main() {
 
   const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
     productId,
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
   });
   console.log(
@@ -194,7 +194,7 @@ async function main() {
   );
 
   const maxWithdrawableAfterCancel = await client.getMaxWithdrawable({
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 0,
   });
@@ -204,7 +204,7 @@ async function main() {
   );
 
   const mintSpotLpResult = await client.mintLp({
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 3,
     amountBase: toFixedPoint(1, 18),
@@ -215,7 +215,7 @@ async function main() {
   console.log('Done minting spot lp', mintSpotLpResult);
 
   const mintPerpLpResult = await client.mintLp({
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 4,
     amountBase: toFixedPoint(1, 18),
@@ -226,7 +226,7 @@ async function main() {
   console.log('Done minting perp lp', mintPerpLpResult);
 
   const subaccountInfoAfterMintingLp = await client.getSubaccountSummary({
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
   });
   console.log(
@@ -235,7 +235,7 @@ async function main() {
   );
 
   const burnSpotLpResult = await client.burnLp({
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 3,
     amount: toFixedPoint(1, 18),
@@ -245,7 +245,7 @@ async function main() {
   console.log('Done burning spot lp', burnSpotLpResult);
 
   const burnPerpLpResult = await client.burnLp({
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 4,
     amount: toFixedPoint(1, 6),
@@ -255,7 +255,7 @@ async function main() {
   console.log('Done burning perp lp', burnPerpLpResult);
 
   const withdrawResult = await client.withdrawCollateral({
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 0,
     amount: toFixedPoint(4999, 6),
@@ -265,7 +265,7 @@ async function main() {
   console.log('Done withdrawing collateral, result', withdrawResult);
 
   const subaccountInfoAtEnd = await client.getSubaccountSummary({
-    sender: signer.address,
+    subaccountOwner: signer.address,
     subaccountName: 'default',
   });
   console.log(

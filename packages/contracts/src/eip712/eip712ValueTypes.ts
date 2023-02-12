@@ -8,10 +8,11 @@ import {
 } from './signatureParamTypes';
 import { Bytes } from 'ethers/lib/utils';
 
-type WithEIP712Sender<T extends { sender: string; subaccountName: string }> =
-  Omit<T, 'sender' | 'subaccountName'> & {
-    sender: Bytes;
-  };
+type WithEIP712Sender<
+  T extends { subaccountOwner: string; subaccountName: string },
+> = Omit<T, 'subaccountOwner' | 'subaccountName'> & {
+  sender: Bytes;
+};
 
 export type EIP712WithdrawCollateralValues =
   WithEIP712Sender<WithdrawCollateralParams>;

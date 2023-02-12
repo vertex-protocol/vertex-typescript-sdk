@@ -17,7 +17,10 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
    */
   async getSubaccountId(params: GetSubaccountIdParams): Promise<number> {
     const bnId = await this.context.contracts.endpoint.getSubaccountId(
-      subaccountToBytes32({ owner: params.address, name: params.name }),
+      subaccountToBytes32({
+        subaccountOwner: params.address,
+        subaccountName: params.name,
+      }),
     );
     return Number(bnId);
   }

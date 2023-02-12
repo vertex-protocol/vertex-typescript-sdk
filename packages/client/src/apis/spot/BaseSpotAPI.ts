@@ -1,7 +1,7 @@
 import { BaseVertexAPI } from '../base';
 import { IERC20, IERC20__factory } from '@vertex-protocol/contracts';
 
-export type WithoutSender<T> = Omit<T, 'sender'>;
+export type WithoutSubaccountOwner<T> = Omit<T, 'subaccountOwner'>;
 
 export class BaseSpotAPI extends BaseVertexAPI {
   /**

@@ -5,7 +5,7 @@ import {
   MintMockERC20Params,
   MockERC20__factory,
 } from '@vertex-protocol/contracts';
-import { BaseSpotAPI, WithoutSender } from './BaseSpotAPI';
+import { BaseSpotAPI, WithoutSubaccountOwner } from './BaseSpotAPI';
 import { ApproveAllowanceParams } from './types';
 import {
   EngineWithdrawCollateralParams,
@@ -23,12 +23,14 @@ export class SpotExecuteAPI extends BaseSpotAPI {
   }
 
   async withdraw(
-    params: WithoutSender<WithoutNonce<EngineWithdrawCollateralParams>>,
+    params: WithoutSubaccountOwner<
+      WithoutNonce<EngineWithdrawCollateralParams>
+    >,
   ) {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
     return this.context.engineClient.withdrawCollateral({
-      sender,
+      subaccountOwner: sender,
       endpointAddr: this.context.contracts.endpoint.address,
       ...params,
     });

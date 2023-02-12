@@ -7,5 +7,5 @@ export type OrderActionParams = Omit<
   PlaceOrderParams,
   'orderbookAddr' | 'order'
 > & {
-  order: Omit<OrderParamsWithoutNonce, 'sender'>;
+  order: Omit<OrderParamsWithoutNonce, 'subaccountOwner'>;
 };
