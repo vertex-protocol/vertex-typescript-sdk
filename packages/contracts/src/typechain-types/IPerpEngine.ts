@@ -131,7 +131,7 @@ export interface IPerpEngineInterface extends utils.Interface {
     "hasBalance(uint32,bytes32)": FunctionFragment;
     "initialize(address,address,address,address,address)": FunctionFragment;
     "mintLp(uint32,bytes32,int128,int128,int128)": FunctionFragment;
-    "settlePnl(bytes32,uint256)": FunctionFragment;
+    "settlePnl(bytes32,uint256,bool)": FunctionFragment;
     "socializeSubaccount(bytes32,int128)": FunctionFragment;
     "swapLp(uint32,bytes32,int128,int128,int128,int128)": FunctionFragment;
     "updateStates(uint128,int128[])": FunctionFragment;
@@ -243,7 +243,11 @@ export interface IPerpEngineInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "settlePnl",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<boolean>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "socializeSubaccount",
@@ -324,12 +328,16 @@ export interface IPerpEngineInterface extends utils.Interface {
 
   events: {
     "AddProduct(uint32)": EventFragment;
+    "BurnLp(uint32,bytes32,int128,int128,int128)": EventFragment;
+    "MintLp(uint32,bytes32,int128,int128,int128)": EventFragment;
     "ProductUpdate(uint32)": EventFragment;
     "SettlePnl(bytes32,uint32,int128)": EventFragment;
     "SocializeProduct(uint32,int128)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AddProduct"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "BurnLp"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MintLp"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ProductUpdate"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SettlePnl"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SocializeProduct"): EventFragment;
@@ -341,6 +349,34 @@ export interface AddProductEventObject {
 export type AddProductEvent = TypedEvent<[number], AddProductEventObject>;
 
 export type AddProductEventFilter = TypedEventFilter<AddProductEvent>;
+
+export interface BurnLpEventObject {
+  productId: number;
+  subaccount: string;
+  lpAmount: BigNumber;
+  baseAmount: BigNumber;
+  quoteAmount: BigNumber;
+}
+export type BurnLpEvent = TypedEvent<
+  [number, string, BigNumber, BigNumber, BigNumber],
+  BurnLpEventObject
+>;
+
+export type BurnLpEventFilter = TypedEventFilter<BurnLpEvent>;
+
+export interface MintLpEventObject {
+  productId: number;
+  subaccount: string;
+  lpAmount: BigNumber;
+  baseAmount: BigNumber;
+  quoteAmount: BigNumber;
+}
+export type MintLpEvent = TypedEvent<
+  [number, string, BigNumber, BigNumber, BigNumber],
+  MintLpEventObject
+>;
+
+export type MintLpEventFilter = TypedEventFilter<MintLpEvent>;
 
 export interface ProductUpdateEventObject {
   productId: number;
@@ -516,6 +552,7 @@ export interface IPerpEngine extends BaseContract {
     settlePnl(
       subaccount: PromiseOrValue<BytesLike>,
       productIds: PromiseOrValue<BigNumberish>,
+      inLiquidation: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -656,6 +693,7 @@ export interface IPerpEngine extends BaseContract {
   settlePnl(
     subaccount: PromiseOrValue<BytesLike>,
     productIds: PromiseOrValue<BigNumberish>,
+    inLiquidation: PromiseOrValue<boolean>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -798,6 +836,7 @@ export interface IPerpEngine extends BaseContract {
     settlePnl(
       subaccount: PromiseOrValue<BytesLike>,
       productIds: PromiseOrValue<BigNumberish>,
+      inLiquidation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -827,6 +866,36 @@ export interface IPerpEngine extends BaseContract {
   filters: {
     "AddProduct(uint32)"(productId?: null): AddProductEventFilter;
     AddProduct(productId?: null): AddProductEventFilter;
+
+    "BurnLp(uint32,bytes32,int128,int128,int128)"(
+      productId?: PromiseOrValue<BigNumberish> | null,
+      subaccount?: PromiseOrValue<BytesLike> | null,
+      lpAmount?: null,
+      baseAmount?: null,
+      quoteAmount?: null
+    ): BurnLpEventFilter;
+    BurnLp(
+      productId?: PromiseOrValue<BigNumberish> | null,
+      subaccount?: PromiseOrValue<BytesLike> | null,
+      lpAmount?: null,
+      baseAmount?: null,
+      quoteAmount?: null
+    ): BurnLpEventFilter;
+
+    "MintLp(uint32,bytes32,int128,int128,int128)"(
+      productId?: PromiseOrValue<BigNumberish> | null,
+      subaccount?: PromiseOrValue<BytesLike> | null,
+      lpAmount?: null,
+      baseAmount?: null,
+      quoteAmount?: null
+    ): MintLpEventFilter;
+    MintLp(
+      productId?: PromiseOrValue<BigNumberish> | null,
+      subaccount?: PromiseOrValue<BytesLike> | null,
+      lpAmount?: null,
+      baseAmount?: null,
+      quoteAmount?: null
+    ): MintLpEventFilter;
 
     "ProductUpdate(uint32)"(
       productId?: PromiseOrValue<BigNumberish> | null
@@ -948,6 +1017,7 @@ export interface IPerpEngine extends BaseContract {
     settlePnl(
       subaccount: PromiseOrValue<BytesLike>,
       productIds: PromiseOrValue<BigNumberish>,
+      inLiquidation: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1066,6 +1136,7 @@ export interface IPerpEngine extends BaseContract {
     settlePnl(
       subaccount: PromiseOrValue<BytesLike>,
       productIds: PromiseOrValue<BigNumberish>,
+      inLiquidation: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
