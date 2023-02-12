@@ -229,11 +229,6 @@ const _abi = [
                 type: "int128",
               },
               {
-                internalType: "int128",
-                name: "indexPriceX18",
-                type: "int128",
-              },
-              {
                 components: [
                   {
                     internalType: "int128",
@@ -514,11 +509,6 @@ const _abi = [
           {
             internalType: "int128",
             name: "oraclePriceX18",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "indexPriceX18",
             type: "int128",
           },
           {
@@ -1243,11 +1233,6 @@ const _abi = [
                 type: "int128",
               },
               {
-                internalType: "int128",
-                name: "indexPriceX18",
-                type: "int128",
-              },
-              {
                 components: [
                   {
                     internalType: "int128",
@@ -1733,11 +1718,6 @@ const _abi = [
               {
                 internalType: "int128",
                 name: "oraclePriceX18",
-                type: "int128",
-              },
-              {
-                internalType: "int128",
-                name: "indexPriceX18",
                 type: "int128",
               },
               {
