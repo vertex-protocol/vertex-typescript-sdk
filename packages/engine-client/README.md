@@ -1,2 +1,2 @@
-# `@vertex-protocol/engine-server`
+# `@vertex-protocol/engine-client`
 

@@ -25,6 +25,7 @@
   "dependencies": {
     "@vertex-protocol/contracts": "^0.1.0-alpha.71",
     "@vertex-protocol/engine-client": "^0.1.0-alpha.71",
+    "@vertex-protocol/indexer-client": "^0.1.0-alpha.71",
     "@vertex-protocol/graph": "^0.1.0-alpha.71",
     "@vertex-protocol/utils": "^0.1.0-alpha.71",
     "ethers": "^5.7.1",

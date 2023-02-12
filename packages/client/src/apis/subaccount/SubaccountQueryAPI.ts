@@ -10,6 +10,7 @@ import {
   GetEngineSubaccountSummaryParams,
 } from '@vertex-protocol/engine-client';
 import { GetSubaccountIdParams } from './queryTypes';
+import { IndexerSubaccountSummaryParams } from '@vertex-protocol/indexer-client';
 
 export class SubaccountQueryAPI extends BaseVertexAPI {
   /**
@@ -45,6 +46,13 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
    */
   async getEngineSubaccountSummary(params: GetEngineSubaccountSummaryParams) {
     return this.context.engineClient.getSubaccountSummary(params);
+  }
+
+  /**
+   * Gets indexer subaccount state for historical data
+   */
+  async getIndexerSubaccountSummary(params: IndexerSubaccountSummaryParams) {
+    return this.context.indexerClient.getSubaccountSummary(params);
   }
 
   /**

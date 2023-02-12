@@ -1,0 +1,2 @@
+# `@vertex-protocol/indexer-client`
+
