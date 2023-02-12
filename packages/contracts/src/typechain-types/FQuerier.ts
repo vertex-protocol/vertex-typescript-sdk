@@ -171,7 +171,6 @@ export declare namespace FQuerier {
   export type PerpProductStruct = {
     productId: PromiseOrValue<BigNumberish>;
     oraclePriceX18: PromiseOrValue<BigNumberish>;
-    indexPriceX18: PromiseOrValue<BigNumberish>;
     risk: RiskHelper.RiskStruct;
     state: IPerpEngine.StateStruct;
     lpState: IPerpEngine.LpStateStruct;
@@ -181,7 +180,6 @@ export declare namespace FQuerier {
   export type PerpProductStructOutput = [
     number,
     BigNumber,
-    BigNumber,
     RiskHelper.RiskStructOutput,
     IPerpEngine.StateStructOutput,
     IPerpEngine.LpStateStructOutput,
@@ -189,7 +187,6 @@ export declare namespace FQuerier {
   ] & {
     productId: number;
     oraclePriceX18: BigNumber;
-    indexPriceX18: BigNumber;
     risk: RiskHelper.RiskStructOutput;
     state: IPerpEngine.StateStructOutput;
     lpState: IPerpEngine.LpStateStructOutput;

@@ -45,7 +45,6 @@ export interface IEndpointInterface extends utils.Interface {
     "depositInsurance(uint128)": FunctionFragment;
     "getNonce(address)": FunctionFragment;
     "getNumSubaccounts()": FunctionFragment;
-    "getPerpIndexPriceX18(uint32)": FunctionFragment;
     "getPriceX18(uint32)": FunctionFragment;
     "getPricesX18(uint32)": FunctionFragment;
     "getSubaccountById(uint64)": FunctionFragment;
@@ -62,7 +61,6 @@ export interface IEndpointInterface extends utils.Interface {
       | "depositInsurance"
       | "getNonce"
       | "getNumSubaccounts"
-      | "getPerpIndexPriceX18"
       | "getPriceX18"
       | "getPricesX18"
       | "getSubaccountById"
@@ -92,10 +90,6 @@ export interface IEndpointInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getNumSubaccounts",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getPerpIndexPriceX18",
-    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getPriceX18",
@@ -138,10 +132,6 @@ export interface IEndpointInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getNumSubaccounts",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getPerpIndexPriceX18",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -248,11 +238,6 @@ export interface IEndpoint extends BaseContract {
 
     getNumSubaccounts(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    getPerpIndexPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -312,11 +297,6 @@ export interface IEndpoint extends BaseContract {
 
   getNumSubaccounts(overrides?: CallOverrides): Promise<BigNumber>;
 
-  getPerpIndexPriceX18(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
   getPriceX18(
     productId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -375,11 +355,6 @@ export interface IEndpoint extends BaseContract {
     ): Promise<BigNumber>;
 
     getNumSubaccounts(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getPerpIndexPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
@@ -457,11 +432,6 @@ export interface IEndpoint extends BaseContract {
 
     getNumSubaccounts(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getPerpIndexPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -521,11 +491,6 @@ export interface IEndpoint extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getNumSubaccounts(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getPerpIndexPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     getPriceX18(
       productId: PromiseOrValue<BigNumberish>,
