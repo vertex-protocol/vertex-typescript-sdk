@@ -8,19 +8,21 @@ import {
   EngineMintLpParams,
   WithoutNonce,
 } from '@vertex-protocol/engine-client';
-import { WithoutSender } from '../spot/BaseSpotAPI';
+import { WithoutSubaccountOwner } from '../spot/BaseSpotAPI';
 
 export class MarketExecuteAPI extends BaseVertexAPI {
   /**
    * Mint LP tokens through engine
    * @param params
    */
-  async mintLp(params: WithoutSender<WithoutNonce<EngineMintLpParams>>) {
+  async mintLp(
+    params: WithoutSubaccountOwner<WithoutNonce<EngineMintLpParams>>,
+  ) {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
     return this.context.engineClient.mintLp({
       endpointAddr: this.context.contracts.endpoint.address,
-      sender,
+      subaccountOwner: sender,
       ...params,
     });
   }
@@ -29,12 +31,12 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Burn LP tokens through engine
    * @param params
    */
-  async burnLp(params: WithoutSender<WithoutNonce<BurnLpParams>>) {
+  async burnLp(params: WithoutSubaccountOwner<WithoutNonce<BurnLpParams>>) {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
     return this.context.engineClient.burnLp({
       endpointAddr: this.context.contracts.endpoint.address,
-      sender,
+      subaccountOwner: sender,
       ...params,
     });
   }
@@ -49,7 +51,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
     return this.context.engineClient.placeOrder({
       order: {
         ...order,
-        sender: (await this.context.engineSigner?.getAddress()) ?? '',
+        subaccountOwner: (await this.context.engineSigner?.getAddress()) ?? '',
       },
       orderbookAddr,
       productId,
@@ -61,12 +63,12 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * @param params
    */
   async cancelOrder(
-    params: WithoutSender<WithoutNonce<OrderCancellationParams>>,
+    params: WithoutSubaccountOwner<WithoutNonce<OrderCancellationParams>>,
   ) {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
     return this.context.engineClient.cancelOrder({
-      sender,
+      subaccountOwner: sender,
       endpointAddr: this.context.contracts.endpoint.address,
       ...params,
     });

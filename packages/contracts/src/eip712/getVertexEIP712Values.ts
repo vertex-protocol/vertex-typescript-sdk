@@ -68,8 +68,8 @@ function getWithdrawCollateralValues(
 ): EIP712WithdrawCollateralValues {
   return {
     sender: subaccountToBytes32({
-      owner: params.sender,
-      name: params.subaccountName,
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.subaccountName,
     }),
     productId: params.productId,
     amount: BigNumber.from(params.amount).toString(),
@@ -80,8 +80,8 @@ function getWithdrawCollateralValues(
 function getMintLpValues(params: MintLpParams): EIP712MintLpValues {
   return {
     sender: subaccountToBytes32({
-      owner: params.sender,
-      name: params.subaccountName,
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.subaccountName,
     }),
     productId: params.productId,
     amountBase: params.amountBase.toString(),
@@ -94,8 +94,8 @@ function getMintLpValues(params: MintLpParams): EIP712MintLpValues {
 function getBurnLpValues(params: BurnLpParams): EIP712BurnLpValues {
   return {
     sender: subaccountToBytes32({
-      owner: params.sender,
-      name: params.subaccountName,
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.subaccountName,
     }),
     productId: params.productId,
     amount: params.amount.toString(),
@@ -106,8 +106,8 @@ function getBurnLpValues(params: BurnLpParams): EIP712BurnLpValues {
 function getOrderValues(params: OrderParams): EIP712OrderValues {
   return {
     sender: subaccountToBytes32({
-      owner: params.sender,
-      name: params.subaccountName,
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.subaccountName,
     }),
     priceX18: toX18(params.price).toString(),
     amount: BigNumber.from(params.amount).toString(),
@@ -121,8 +121,8 @@ function getOrderCancellationValues(
 ): EIP712OrderCancellationValues {
   return {
     sender: subaccountToBytes32({
-      owner: params.sender,
-      name: params.subaccountName,
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.subaccountName,
     }),
     productIds: params.productIds,
     digests: params.digests,
@@ -135,12 +135,12 @@ function getLiquidateSubaccountValues(
 ): EIP712LiquidateSubaccountValues {
   return {
     sender: subaccountToBytes32({
-      owner: params.sender,
-      name: params.subaccountName,
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.subaccountName,
     }),
     liquidatee: subaccountToBytes32({
-      owner: params.liquidateeOwner,
-      name: params.liquidateeName,
+      subaccountOwner: params.liquidateeOwner,
+      subaccountName: params.liquidateeName,
     }),
     mode: params.mode,
     healthGroup: params.healthGroup.toString(),

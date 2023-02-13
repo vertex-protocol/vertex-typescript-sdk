@@ -1,19 +1,9 @@
+import { arrayify, hexlify, toUtf8Bytes, toUtf8String } from 'ethers/lib/utils';
 import {
-  arrayify,
-  Bytes,
-  hexlify,
-  toUtf8Bytes,
-  toUtf8String,
-} from 'ethers/lib/utils';
-
-export type SubaccountBytes32 = Bytes;
-
-export type SubaccountNameBytes12 = Bytes;
-
-export interface Subaccount {
-  owner: string;
-  name: string;
-}
+  Subaccount,
+  SubaccountBytes32,
+  SubaccountNameBytes12,
+} from '../common';
 
 /**
  * Converts a subaccount object (owner + name) to it's bytes32 representation.
@@ -21,8 +11,8 @@ export interface Subaccount {
  * @returns bytes32 representation of a subaccount
  */
 export function subaccountToBytes32(subaccount: Subaccount): SubaccountBytes32 {
-  const address = arrayify(subaccount.owner);
-  const name = toUtf8Bytes(subaccount.name);
+  const address = arrayify(subaccount.subaccountOwner);
+  const name = toUtf8Bytes(subaccount.subaccountName);
 
   if (address.length != 20) {
     throw new Error(`owner must be 20 bytes, but found ${address.length}`);
@@ -61,8 +51,9 @@ export function subaccountFromBytes32(bytes: SubaccountBytes32): Subaccount {
   }
 
   return {
-    owner: hexlify(address),
-    name: toUtf8String(name).replace(/\0/g, ''),
+    subaccountOwner: hexlify(address),
+    // toUtf8String will replace zero bytes with \0, so strip them out here
+    subaccountName: toUtf8String(name).replace(/\0/g, ''),
   };
 }
 

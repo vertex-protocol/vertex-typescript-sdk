@@ -16,7 +16,7 @@ export function encodeSignedWithdrawCollateralTx(
     [
       [
         [
-          signed.tx.sender,
+          signed.tx.subaccountOwner,
           signed.tx.subaccountName,
           signed.tx.productId,
           signed.tx.amount,
@@ -36,7 +36,7 @@ export function encodeSignedOrder(signed: SignedOrderParams) {
     [
       [
         [
-          signed.order.sender,
+          signed.order.subaccountOwner,
           signed.order.subaccountName,
           toX18(signed.order.price),
           signed.order.amount,

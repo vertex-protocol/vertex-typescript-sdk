@@ -78,22 +78,22 @@ async function main() {
   });
 
   const subaccount = subaccountToBytes32({
-    owner: await signer.getAddress(),
-    name: 'default',
+    subaccountOwner: await signer.getAddress(),
+    subaccountName: 'default',
   });
 
   // State from engine
   await vertexClient.subaccount.getEngineSubaccountSummary({
-    sender: await signer.getAddress(),
+    subaccountOwner: await signer.getAddress(),
     subaccountName: 'default',
   });
   // State from Arbitrum
   await vertexClient.subaccount.getSubaccountSummary({
-    sender: await signer.getAddress(),
+    subaccountOwner: await signer.getAddress(),
     subaccountName: 'default',
   });
   await vertexClient.market.getOpenSubaccountOrders({
-    sender: await signer.getAddress(),
+    subaccountOwner: await signer.getAddress(),
     subaccountName: 'default',
     productId: 1,
   });
