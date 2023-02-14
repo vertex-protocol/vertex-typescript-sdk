@@ -13,8 +13,8 @@ import { toFixedPoint } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
 
 async function main() {
-  const clearinghouseAddr = '0x0165878A594ca255338adfa4d48449f69242Eb8F';
-  const quoteAddr = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+  const clearinghouseAddr = '0x66256D9663fc368A1285d94E58615B0bf2Ac38f4';
+  const quoteAddr = '0x179522635726710Dd7D2035a81d856de4Aa7836c';
   const accounts = [
     '0xbc0af72214879b0b84bb1414e30f81d26216e50c5f0bcaaa8db5df78a7f7cbad', // liquidator
     '0x803db2d44f343ca0cf6615de269bfd20e2aa3b705bb63d2dd101d7521bd0ef1e', // price maintainer
@@ -24,24 +24,29 @@ async function main() {
     '0x5ae81c27cd8dcff37dab4199e8fa42fb8c979341e9c079b34914cc9bf4423576', // mm for ETH perp
   ];
 
-  // this is only needed when running the script on local node.
+  // // this is only needed when running the script on local node.
+  // for (const account of accounts) {
+  //   // Hardhat deployers
+  //   const signer = new Wallet(
+  //     '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
+  //     new ethers.providers.JsonRpcProvider(),
+  //   );
+
+  //   const bot = new Wallet(account, new ethers.providers.JsonRpcProvider());
+
+  //   await signer.sendTransaction({
+  //     to: bot.address,
+  //     value: ethers.utils.parseEther('1000.0'),
+  //   });
+  // }
+
   for (const account of accounts) {
-    // Hardhat deployers
     const signer = new Wallet(
-      '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
-      new ethers.providers.JsonRpcProvider(),
+      account,
+      new ethers.providers.JsonRpcProvider(
+        'https://goerli-rollup.arbitrum.io/rpc',
+      ),
     );
-
-    const bot = new Wallet(account, new ethers.providers.JsonRpcProvider());
-
-    await signer.sendTransaction({
-      to: bot.address,
-      value: ethers.utils.parseEther('1000.0'),
-    });
-  }
-
-  for (const account of accounts) {
-    const signer = new Wallet(account, new ethers.providers.JsonRpcProvider());
     const quote = await MockERC20__factory.connect(quoteAddr, signer);
     const clearinghouse = await IClearinghouse__factory.connect(
       clearinghouseAddr,
