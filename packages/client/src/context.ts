@@ -20,6 +20,7 @@ import {
   ENGINE_CLIENT_ENDPOINTS,
   EngineClient,
 } from '@vertex-protocol/engine-client';
+import { IndexerClient } from '@vertex-protocol/indexer-client';
 
 /**
  * Context required to use the Vertex client.
@@ -33,6 +34,7 @@ export interface VertexClientContext {
   contracts: VertexContracts;
   graph: VertexGraphClient;
   engineClient: EngineClient;
+  indexerClient: IndexerClient;
 }
 
 /**
@@ -151,6 +153,9 @@ export async function createClientContext(
       url: offchainEngineEndpoint,
       signer: engineSigner,
       signingChainId: signerOpts.engineSigningChainId,
+    }),
+    indexerClient: new IndexerClient({
+      url: `${offchainEngineEndpoint}/indexer`,
     }),
   };
 }
