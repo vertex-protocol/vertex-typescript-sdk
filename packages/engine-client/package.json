@@ -16,7 +16,7 @@
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "dev": "tsc -w",
-    "sanity": "ts-node ./src/sanityScript.ts"
+    "sanity": "ts-node ./src/ws/sanityScript.ts"
   },
   "files": [
     "dist",
@@ -27,7 +27,8 @@
     "@vertex-protocol/utils": "^0.1.0-alpha.72",
     "axios": "^1.1.2",
     "ethers": "^5.7.1",
-    "ts-mixer": "^6.0.1"
+    "ts-mixer": "^6.0.1",
+    "ws": "^8.12.1"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
