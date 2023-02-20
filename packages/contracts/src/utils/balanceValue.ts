@@ -2,6 +2,7 @@ import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
 import {
   BalanceWithProduct,
   PerpBalanceWithProduct,
+  Product,
   SpotBalanceWithProduct,
 } from '../common';
 
@@ -46,8 +47,6 @@ export function calcPerpBalanceValue(
  * Calculates the implied value of an LP balance, in terms of quote units
  *
  * @param balanceWithProduct
- * @param decimals
- * @param quoteDecimals
  */
 export function calcLpBalanceValue(
   balanceWithProduct: BalanceWithProduct,
@@ -57,16 +56,21 @@ export function calcLpBalanceValue(
     return toBigDecimal(0);
   }
 
-  const impliedBaseBalance = balanceWithProduct.totalLpBaseAmount
-    .div(balanceWithProduct.totalLpSupply)
-    .multipliedBy(lpBalance);
-  const impliedBaseValue = impliedBaseBalance.multipliedBy(
-    balanceWithProduct.oraclePrice,
-  );
+  return calcLpTokenValue(balanceWithProduct).times(lpBalance);
+}
 
-  const impliedQuoteBalance = balanceWithProduct.totalLpQuoteAmount
-    .div(balanceWithProduct.totalLpSupply)
-    .multipliedBy(lpBalance);
-
-  return impliedBaseValue.plus(impliedQuoteBalance);
+/**
+ * Calculates the implied value of an LP token, in terms of quote units
+ *
+ * @param product
+ */
+export function calcLpTokenValue(product: Product) {
+  if (product.totalLpSupply.isZero()) {
+    return toBigDecimal(0);
+  }
+  const baseValue = product.totalLpBaseAmount
+    .div(product.totalLpSupply)
+    .multipliedBy(product.oraclePrice);
+  const quoteValue = product.totalLpQuoteAmount.div(product.totalLpSupply);
+  return baseValue.plus(quoteValue);
 }
