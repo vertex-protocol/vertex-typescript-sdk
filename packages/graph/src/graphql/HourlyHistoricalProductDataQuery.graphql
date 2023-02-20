@@ -15,6 +15,10 @@ query HourlyHistoricalProductDataQuery(
     id
     periodIndex
     priceX18
+
+    lpBaseAmount
+    lpQuoteAmount
+    lpSupply
   }
   perpProductSnapshots(
     where: {
@@ -28,5 +32,9 @@ query HourlyHistoricalProductDataQuery(
     periodIndex
     liquidationPriceX18
     openInterest
+
+    lpBaseAmount
+    lpQuoteAmount
+    lpSupply
   }
 }

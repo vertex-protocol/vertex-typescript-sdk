@@ -1640,6 +1640,17 @@ enum MarketSnapshot_orderBy {
   period
   periodIndex
   market
+  market__id
+  market__clearinghouse
+  market__productId
+  market__orderbook
+  market__sizeIncrement
+  market__priceIncrementX18
+  market__createdAt
+  market__createdAtBlock
+  market__lastFillPriceX18
+  market__volumeBase
+  market__volumeQuote
   lastFillPriceX18
   volumeBase
   volumeQuote
@@ -1960,6 +1971,17 @@ enum PerpProductSnapshot_orderBy {
   period
   periodIndex
   product
+  product__id
+  product__productId
+  product__liquidationPriceX18
+  product__cumulativeFundingLongX18
+  product__cumulativeFundingShortX18
+  product__openInterest
+  product__availableSettle
+  product__lpSupply
+  product__lpQuoteAmount
+  product__lpBaseAmount
+  product__lpCumulativeFundingPerLpX18
   liquidationPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18
@@ -2113,7 +2135,20 @@ enum PerpProduct_orderBy {
   id
   productId
   market
+  market__id
+  market__clearinghouse
+  market__productId
+  market__orderbook
+  market__sizeIncrement
+  market__priceIncrementX18
+  market__createdAt
+  market__createdAtBlock
+  market__lastFillPriceX18
+  market__volumeBase
+  market__volumeQuote
   engine
+  engine__id
+  engine__clearinghouse
   liquidationPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18
@@ -2379,6 +2414,16 @@ enum SpotProductSnapshot_orderBy {
   period
   periodIndex
   product
+  product__id
+  product__productId
+  product__priceX18
+  product__cumulativeDepositsMultiplierX18
+  product__cumulativeBorrowsMultiplierX18
+  product__totalDepositsNormalized
+  product__totalBorrowsNormalized
+  product__lpSupply
+  product__lpQuoteAmount
+  product__lpBaseAmount
   priceX18
   cumulativeDepositsMultiplierX18
   cumulativeBorrowsMultiplierX18
@@ -2523,7 +2568,20 @@ enum SpotProduct_orderBy {
   id
   productId
   market
+  market__id
+  market__clearinghouse
+  market__productId
+  market__orderbook
+  market__sizeIncrement
+  market__priceIncrementX18
+  market__createdAt
+  market__createdAtBlock
+  market__lastFillPriceX18
+  market__volumeBase
+  market__volumeQuote
   engine
+  engine__id
+  engine__clearinghouse
   priceX18
   cumulativeDepositsMultiplierX18
   cumulativeBorrowsMultiplierX18
@@ -2635,6 +2693,11 @@ enum BurnLpEvent_orderBy {
   block
   blockTime
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   productId
   lpAmount
   baseAmount
@@ -2814,7 +2877,17 @@ enum ClosedPerpBalance_orderBy {
   id
   productId
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   balance
+  balance__id
+  balance__productId
+  balance__timeOpened
+  balance__vQuoteWithoutFunding
+  balance__totalNetFunding
   timeOpened
   timeClosed
   netFunding
@@ -2923,7 +2996,17 @@ enum ClosedSpotBalance_orderBy {
   id
   productId
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   balance
+  balance__id
+  balance__productId
+  balance__timeOpened
+  balance__netRealAmount
+  balance__totalNetInterest
   timeOpened
   timeClosed
   netInterest
@@ -3066,7 +3149,26 @@ enum FillOrderEvent_orderBy {
   block
   blockTime
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   order
+  order__id
+  order__productId
+  order__type
+  order__digest
+  order__priceX18
+  order__isTaker
+  order__expiration
+  order__realExpiration
+  order__reportedAt
+  order__reportedAtBlock
+  order__totalAmount
+  order__filledAmount
+  order__quoteAmount
+  order__collectedFee
   isTaker
   feeQuote
   amountDelta
@@ -3259,7 +3361,17 @@ enum LiquidationEvent_orderBy {
   block
   blockTime
   liquidator
+  liquidator__id
+  liquidator__owner
+  liquidator__name
+  liquidator__createdAt
+  liquidator__createdAtBlock
   liquidatee
+  liquidatee__id
+  liquidatee__owner
+  liquidatee__name
+  liquidatee__createdAt
+  liquidatee__createdAtBlock
   mode
   healthGroup
   liquidationAmount
@@ -3373,6 +3485,11 @@ enum MintLpEvent_orderBy {
   block
   blockTime
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   productId
   lpAmount
   baseAmount
@@ -3479,6 +3596,11 @@ enum ModifyCollateralEvent_orderBy {
   block
   blockTime
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   amount
   productId
   newBalanceAmount
@@ -3655,6 +3777,11 @@ enum Order_orderBy {
   expiration
   realExpiration
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   reportedAt
   reportedAtBlock
   totalAmount
@@ -3746,6 +3873,11 @@ enum PerpBalanceSummary_orderBy {
   id
   productId
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   timeOpened
   vQuoteWithoutFunding
   totalNetFunding
@@ -3852,6 +3984,11 @@ enum SettlePnlEvent_orderBy {
   block
   blockTime
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   productId
   amount
   positionAmount
@@ -3941,6 +4078,11 @@ enum SpotBalanceSummary_orderBy {
   id
   productId
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   timeOpened
   netRealAmount
   totalNetInterest
@@ -4059,6 +4201,11 @@ input Subaccount_filter {
 enum Subaccount_orderBy {
   id
   clearinghouse
+  clearinghouse__id
+  clearinghouse__endpoint
+  clearinghouse__quoteProduct
+  clearinghouse__numSubaccounts
+  clearinghouse__numProducts
   owner
   name
   createdAt
@@ -4272,6 +4419,11 @@ enum TradeSummary_orderBy {
   id
   productId
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   totalEntryQuoteAmountAbs
   totalEntryAmountAbs
   totalCloseQuoteAmountAbs

@@ -126,6 +126,11 @@ enum BurnLpEvent_orderBy {
   block
   blockTime
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   productId
   lpAmount
   baseAmount
@@ -307,7 +312,17 @@ enum ClosedPerpBalance_orderBy {
   id
   productId
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   balance
+  balance__id
+  balance__productId
+  balance__timeOpened
+  balance__vQuoteWithoutFunding
+  balance__totalNetFunding
   timeOpened
   timeClosed
   netFunding
@@ -416,7 +431,17 @@ enum ClosedSpotBalance_orderBy {
   id
   productId
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   balance
+  balance__id
+  balance__productId
+  balance__timeOpened
+  balance__netRealAmount
+  balance__totalNetInterest
   timeOpened
   timeClosed
   netInterest
@@ -559,7 +584,26 @@ enum FillOrderEvent_orderBy {
   block
   blockTime
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   order
+  order__id
+  order__productId
+  order__type
+  order__digest
+  order__priceX18
+  order__isTaker
+  order__expiration
+  order__realExpiration
+  order__reportedAt
+  order__reportedAtBlock
+  order__totalAmount
+  order__filledAmount
+  order__quoteAmount
+  order__collectedFee
   isTaker
   feeQuote
   amountDelta
@@ -752,7 +796,17 @@ enum LiquidationEvent_orderBy {
   block
   blockTime
   liquidator
+  liquidator__id
+  liquidator__owner
+  liquidator__name
+  liquidator__createdAt
+  liquidator__createdAtBlock
   liquidatee
+  liquidatee__id
+  liquidatee__owner
+  liquidatee__name
+  liquidatee__createdAt
+  liquidatee__createdAtBlock
   mode
   healthGroup
   liquidationAmount
@@ -866,6 +920,11 @@ enum MintLpEvent_orderBy {
   block
   blockTime
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   productId
   lpAmount
   baseAmount
@@ -972,6 +1031,11 @@ enum ModifyCollateralEvent_orderBy {
   block
   blockTime
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   amount
   productId
   newBalanceAmount
@@ -1154,6 +1218,11 @@ enum Order_orderBy {
   expiration
   realExpiration
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   reportedAt
   reportedAtBlock
   totalAmount
@@ -1245,6 +1314,11 @@ enum PerpBalanceSummary_orderBy {
   id
   productId
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   timeOpened
   vQuoteWithoutFunding
   totalNetFunding
@@ -1772,6 +1846,11 @@ enum SettlePnlEvent_orderBy {
   block
   blockTime
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   productId
   amount
   positionAmount
@@ -1861,6 +1940,11 @@ enum SpotBalanceSummary_orderBy {
   id
   productId
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   timeOpened
   netRealAmount
   totalNetInterest
@@ -1979,6 +2063,11 @@ input Subaccount_filter {
 enum Subaccount_orderBy {
   id
   clearinghouse
+  clearinghouse__id
+  clearinghouse__endpoint
+  clearinghouse__quoteProduct
+  clearinghouse__numSubaccounts
+  clearinghouse__numProducts
   owner
   name
   createdAt
@@ -2613,6 +2702,11 @@ enum TradeSummary_orderBy {
   id
   productId
   subaccount
+  subaccount__id
+  subaccount__owner
+  subaccount__name
+  subaccount__createdAt
+  subaccount__createdAtBlock
   totalEntryQuoteAmountAbs
   totalEntryAmountAbs
   totalCloseQuoteAmountAbs

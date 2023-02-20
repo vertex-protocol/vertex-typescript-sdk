@@ -134,6 +134,17 @@ enum MarketSnapshot_orderBy {
   period
   periodIndex
   market
+  market__id
+  market__clearinghouse
+  market__productId
+  market__orderbook
+  market__sizeIncrement
+  market__priceIncrementX18
+  market__createdAt
+  market__createdAtBlock
+  market__lastFillPriceX18
+  market__volumeBase
+  market__volumeQuote
   lastFillPriceX18
   volumeBase
   volumeQuote
@@ -460,6 +471,17 @@ enum PerpProductSnapshot_orderBy {
   period
   periodIndex
   product
+  product__id
+  product__productId
+  product__liquidationPriceX18
+  product__cumulativeFundingLongX18
+  product__cumulativeFundingShortX18
+  product__openInterest
+  product__availableSettle
+  product__lpSupply
+  product__lpQuoteAmount
+  product__lpBaseAmount
+  product__lpCumulativeFundingPerLpX18
   liquidationPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18
@@ -613,7 +635,20 @@ enum PerpProduct_orderBy {
   id
   productId
   market
+  market__id
+  market__clearinghouse
+  market__productId
+  market__orderbook
+  market__sizeIncrement
+  market__priceIncrementX18
+  market__createdAt
+  market__createdAtBlock
+  market__lastFillPriceX18
+  market__volumeBase
+  market__volumeQuote
   engine
+  engine__id
+  engine__clearinghouse
   liquidationPriceX18
   cumulativeFundingLongX18
   cumulativeFundingShortX18
@@ -1118,6 +1153,16 @@ enum SpotProductSnapshot_orderBy {
   period
   periodIndex
   product
+  product__id
+  product__productId
+  product__priceX18
+  product__cumulativeDepositsMultiplierX18
+  product__cumulativeBorrowsMultiplierX18
+  product__totalDepositsNormalized
+  product__totalBorrowsNormalized
+  product__lpSupply
+  product__lpQuoteAmount
+  product__lpBaseAmount
   priceX18
   cumulativeDepositsMultiplierX18
   cumulativeBorrowsMultiplierX18
@@ -1262,7 +1307,20 @@ enum SpotProduct_orderBy {
   id
   productId
   market
+  market__id
+  market__clearinghouse
+  market__productId
+  market__orderbook
+  market__sizeIncrement
+  market__priceIncrementX18
+  market__createdAt
+  market__createdAtBlock
+  market__lastFillPriceX18
+  market__volumeBase
+  market__volumeQuote
   engine
+  engine__id
+  engine__clearinghouse
   priceX18
   cumulativeDepositsMultiplierX18
   cumulativeBorrowsMultiplierX18
