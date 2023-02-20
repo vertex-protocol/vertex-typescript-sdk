@@ -112,8 +112,12 @@ export interface GetEngineSubaccountFeeRatesParams extends Subaccount {
 }
 
 export interface GetEngineSubaccountFeeRatesResponse {
-  takerRate: BigDecimal;
-  makerRate: BigDecimal;
+  orders: {
+    maker: BigDecimal;
+    taker: BigDecimal;
+  };
+  // By Product ID
+  withdrawal: Record<number, BigDecimal>;
 }
 
 export interface EnginePriceTickLiquidity {

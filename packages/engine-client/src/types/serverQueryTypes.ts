@@ -159,8 +159,14 @@ export interface EngineServerSubaccountOrdersResponse {
 }
 
 export interface EngineServerSubaccountFeeRatesResponse {
-  taker_fee_rate_x18: BigNumberish;
-  maker_fee_rate_x18: BigNumberish;
+  taker_fee_rate_x18: string;
+  maker_fee_rate_x18: string;
+
+  liquidation_sequencer_fee: string;
+  health_check_sequencer_fee: string;
+  taker_sequencer_fee: string;
+  // Product ID is the index
+  withdraw_sequencer_fees: string[];
 }
 
 export interface EngineServerMarketPriceResponse {

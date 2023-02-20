@@ -38,6 +38,7 @@ import {
   mapEngineServerSpotProduct,
   mapEngineServerTickLiquidity,
 } from './queryDataMappers';
+import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 
 export class EngineQueryClient extends EngineBaseClient {
   /**
@@ -242,8 +243,17 @@ export class EngineQueryClient extends EngineBaseClient {
     });
 
     return {
-      makerRate: fromX18(baseResponse.maker_fee_rate_x18),
-      takerRate: fromX18(baseResponse.taker_fee_rate_x18),
+      orders: {
+        maker: fromX18(baseResponse.maker_fee_rate_x18),
+        taker: fromX18(baseResponse.taker_fee_rate_x18),
+      },
+      withdrawal: baseResponse.withdraw_sequencer_fees.reduce(
+        (acc, productFee, currIndex) => {
+          acc[currIndex] = toBigDecimal(productFee);
+          return acc;
+        },
+        {} as Record<number, BigDecimal>,
+      ),
     };
   }
 
