@@ -68,14 +68,6 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * Queries engine to get subaccount order fee rates
-   * @param params
-   */
-  async getSubaccountOrderFeeRates(params: GetEngineSubaccountOrdersParams) {
-    return this.context.engineClient.getSubaccountFeeRates(params);
-  }
-
-  /**
    * Retrieves liquidity per price tick from the engine. The engine will skip price levels that have no liquidity,
    * so it is not guaranteed that the bids/asks are evenly spaced
    */

@@ -28,6 +28,7 @@ import {
   GetEngineSubaccountOrdersResponse,
   GetEngineSubaccountSummaryParams,
   GetEngineSubaccountSummaryResponse,
+  SubaccountOrderFeeRates,
   ValidateEngineOrderParams,
   ValidateEngineOrderResponse,
   ValidateSignedEngineOrderParams,
@@ -235,7 +236,6 @@ export class EngineQueryClient extends EngineBaseClient {
     params: GetEngineSubaccountFeeRatesParams,
   ): Promise<GetEngineSubaccountFeeRatesResponse> {
     const baseResponse = await this.query('fee_rates', {
-      product_id: params.productId,
       sender: subaccountToHex({
         subaccountOwner: params.subaccountOwner,
         subaccountName: params.subaccountName,
@@ -243,10 +243,16 @@ export class EngineQueryClient extends EngineBaseClient {
     });
 
     return {
-      orders: {
-        maker: fromX18(baseResponse.maker_fee_rate_x18),
-        taker: fromX18(baseResponse.taker_fee_rate_x18),
-      },
+      orders: baseResponse.taker_fee_rates_x18.reduce(
+        (acc, takerRateX18, currIndex) => {
+          acc[currIndex] = {
+            taker: fromX18(takerRateX18),
+            maker: fromX18(baseResponse.maker_fee_rates_x18[currIndex]),
+          };
+          return acc;
+        },
+        {} as Record<number, SubaccountOrderFeeRates>,
+      ),
       withdrawal: baseResponse.withdraw_sequencer_fees.reduce(
         (acc, productFee, currIndex) => {
           acc[currIndex] = toBigDecimal(productFee);

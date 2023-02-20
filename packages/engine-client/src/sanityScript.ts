@@ -138,7 +138,6 @@ async function main() {
   });
   console.log('Market price', JSON.stringify(marketPrice, null, 2));
   const feeRates = await client.getSubaccountFeeRates({
-    productId,
     subaccountName: 'default',
     subaccountOwner: signer.address,
   });
@@ -150,7 +149,7 @@ async function main() {
     price: toBigDecimal(23000),
     side: 'long',
   });
-  console.log('Max roder size', JSON.stringify(maxOrderSize, null, 2));
+  console.log('Max order size', JSON.stringify(maxOrderSize, null, 2));
   const maxWithdrawable = await client.getMaxWithdrawable({
     subaccountOwner: signer.address,
     subaccountName: 'default',

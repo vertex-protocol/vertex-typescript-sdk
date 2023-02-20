@@ -7,6 +7,7 @@ import {
 import { GetSubaccountsParams } from '@vertex-protocol/graph';
 import {
   GetEngineEstimatedSubaccountSummaryParams,
+  GetEngineSubaccountFeeRatesParams,
   GetEngineSubaccountSummaryParams,
 } from '@vertex-protocol/engine-client';
 import { GetSubaccountIdParams } from './queryTypes';
@@ -63,5 +64,13 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
     params: GetEngineEstimatedSubaccountSummaryParams,
   ) {
     return this.context.engineClient.getEstimatedSubaccountSummary(params);
+  }
+
+  /**
+   * Queries engine to get subaccount fee rates
+   * @param params
+   */
+  async getSubaccountFeeRates(params: GetEngineSubaccountFeeRatesParams) {
+    return this.context.engineClient.getSubaccountFeeRates(params);
   }
 }
