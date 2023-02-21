@@ -51,7 +51,7 @@ export class IndexerBaseClient {
 
     this.checkResponseStatus(response);
 
-    return response.data;
+    return response.data as IndexerServerQueryResponseByType[TRequestType];
   }
 
   private checkResponseStatus(response: AxiosResponse) {

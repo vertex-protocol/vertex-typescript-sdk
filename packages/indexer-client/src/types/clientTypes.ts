@@ -15,3 +15,14 @@ export interface IndexerSubaccountBalance {
   productId: number;
   unrealizedPnl: BigDecimal;
 }
+
+export interface GetIndexerFundingRateParams {
+  productId: number;
+}
+
+export interface GetIndexerFundingRateResponse {
+  productId: number;
+  fundingRate: BigDecimal;
+  // Seconds
+  updateTime: number;
+}

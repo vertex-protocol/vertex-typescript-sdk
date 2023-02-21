@@ -5,7 +5,6 @@ import {
 } from '@vertex-protocol/contracts';
 import { GetCandlesticksParams } from '@vertex-protocol/graph';
 import {
-  GetEngineFundingRateParams,
   GetEngineMarketLiquidityParams,
   GetEngineMarketPriceParams,
   GetEngineMaxOrderSizeParams,
@@ -13,6 +12,7 @@ import {
   ValidateEngineOrderParams,
 } from '@vertex-protocol/engine-client';
 import { GetOrderByDigestParams, GetOrderByDigestResponse } from './queryTypes';
+import { GetIndexerFundingRateParams } from '@vertex-protocol/indexer-client';
 
 export class MarketQueryAPI extends BaseVertexAPI {
   /**
@@ -99,7 +99,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async getFundingRate(params: GetEngineFundingRateParams) {
-    return this.context.engineClient.getFundingRate(params);
+  async getFundingRate(params: GetIndexerFundingRateParams) {
+    return this.context.indexerClient.getFundingRate(params);
   }
 }

@@ -1,10 +1,13 @@
 import { IndexerBaseClient } from './IndexerBaseClient';
 import {
+  GetIndexerFundingRateParams,
+  GetIndexerFundingRateResponse,
   IndexerSubaccountSummaryParams,
   IndexerSubaccountSummaryResponse,
 } from './types';
 import { subaccountToHex } from '@vertex-protocol/contracts';
 import { mapIndexerServerBalance } from './dataMappers';
+import { fromX18 } from '@vertex-protocol/utils';
 
 export class IndexerClient extends IndexerBaseClient {
   /**
@@ -30,6 +33,24 @@ export class IndexerClient extends IndexerBaseClient {
       spotLpBalances: baseResponse.spot_lp_balances.map(
         mapIndexerServerBalance,
       ),
+    };
+  }
+
+  /**
+   * Retrieves funding rate for a product, where 1 = 100%
+   * @param params
+   */
+  async getFundingRate(
+    params: GetIndexerFundingRateParams,
+  ): Promise<GetIndexerFundingRateResponse> {
+    const baseResponse = await this.query('funding_rate', {
+      product_id: params.productId,
+    });
+
+    return {
+      fundingRate: fromX18(baseResponse.funding_rate_x18),
+      updateTime: baseResponse.update_time,
+      productId: baseResponse.product_id,
     };
   }
 }

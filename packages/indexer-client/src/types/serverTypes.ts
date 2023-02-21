@@ -3,8 +3,13 @@ export interface IndexerServerSubaccountSummaryParams {
   subaccount: string;
 }
 
+export interface IndexerServerFundingRateParams {
+  product_id: number;
+}
+
 export interface IndexerServerQueryRequestByType {
   summary: IndexerServerSubaccountSummaryParams;
+  funding_rate: IndexerServerFundingRateParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -24,8 +29,15 @@ export interface IndexerServerSubaccountBalance {
   unrealized_pnl: string;
 }
 
+export interface IndexerServerFundingRateResponse {
+  product_id: number;
+  funding_rate_x18: string;
+  update_time: number;
+}
+
 export interface IndexerServerQueryResponseByType {
   summary: IndexerServerSubaccountSummaryResponse;
+  funding_rate: IndexerServerFundingRateResponse;
 }
 
 export type IndexerServerQueryResponse =
