@@ -85,6 +85,10 @@ export interface EngineServerMaxOrderSizeQueryParams {
   spot_leverage: boolean | null;
 }
 
+export interface EngineServerFundingRateParams {
+  product_id: number;
+}
+
 export interface EngineServerQueryRequestByType {
   status: Record<string, never>;
   nonces: EngineServerNoncesParams;
@@ -101,6 +105,7 @@ export interface EngineServerQueryRequestByType {
   market_liquidity: EngineServerMarketLiquidityQueryParams;
   max_order_size: EngineServerMaxOrderSizeQueryParams;
   max_withdrawable: EngineServerMaxWithdrawableQueryParams;
+  funding_rate: EngineServerFundingRateParams;
 }
 
 export type EngineServerQueryRequestType = keyof EngineServerQueryRequestByType;
@@ -199,6 +204,12 @@ export interface EngineServerMaxWithdrawableResponse {
   max_withdrawable: BigNumberish;
 }
 
+export interface EngineServerFundingRateResponse {
+  product_id: number;
+  funding_rate_x18: string;
+  update_time: number;
+}
+
 export interface EngineServerQueryResponseByType {
   status: EngineServerStatusResponse;
   nonces: EngineServerNoncesResponse;
@@ -212,6 +223,7 @@ export interface EngineServerQueryResponseByType {
   market_price: EngineServerMarketPriceResponse;
   max_order_size: EngineServerMaxOrderSizeResponse;
   max_withdrawable: EngineServerMaxWithdrawableResponse;
+  funding_rate: EngineServerFundingRateResponse;
 }
 
 export interface EngineServerQueryResponse<

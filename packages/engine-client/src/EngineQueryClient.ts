@@ -12,6 +12,8 @@ import {
   EngineServerSubaccountInfoResponse,
   GetEngineAllMarketsResponse,
   GetEngineEstimatedSubaccountSummaryParams,
+  GetEngineFundingRateParams,
+  GetEngineFundingRateResponse,
   GetEngineMarketLiquidityParams,
   GetEngineMarketLiquidityResponse,
   GetEngineMarketPriceParams,
@@ -335,6 +337,24 @@ export class EngineQueryClient extends EngineBaseClient {
     });
 
     return toBigDecimal(baseResponse.max_withdrawable);
+  }
+
+  /**
+   * Retrieves funding rate for a product, where 1 = 100%
+   * @param params
+   */
+  async getFundingRate(
+    params: GetEngineFundingRateParams,
+  ): Promise<GetEngineFundingRateResponse> {
+    const baseResponse = await this.query('funding_rate', {
+      product_id: params.productId,
+    });
+
+    return {
+      fundingRate: fromX18(baseResponse.funding_rate_x18),
+      updateTime: baseResponse.update_time,
+      productId: baseResponse.product_id,
+    };
   }
 }
 

@@ -5,6 +5,7 @@ import {
 } from '@vertex-protocol/contracts';
 import { GetCandlesticksParams } from '@vertex-protocol/graph';
 import {
+  GetEngineFundingRateParams,
   GetEngineMarketLiquidityParams,
   GetEngineMarketPriceParams,
   GetEngineMaxOrderSizeParams,
@@ -91,5 +92,14 @@ export class MarketQueryAPI extends BaseVertexAPI {
    */
   async getLatestMarketPrice(params: GetEngineMarketPriceParams) {
     return this.context.engineClient.getMarketPrice(params);
+  }
+
+  /**
+   * Retrieves the latest funding rate for perp products
+   *
+   * @param params
+   */
+  async getFundingRate(params: GetEngineFundingRateParams) {
+    return this.context.engineClient.getFundingRate(params);
   }
 }
