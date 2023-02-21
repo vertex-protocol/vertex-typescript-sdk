@@ -163,3 +163,14 @@ export interface GetEngineMaxWithdrawableParams extends Subaccount {
 }
 
 export type GetEngineMaxWithdrawableResponse = BigDecimal;
+
+export interface GetEngineFundingRateParams {
+  productId: number;
+}
+
+export interface GetEngineFundingRateResponse {
+  productId: number;
+  fundingRate: BigDecimal;
+  // Seconds
+  updateTime: number;
+}
