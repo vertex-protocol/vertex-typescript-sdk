@@ -107,16 +107,16 @@ export interface GetEngineSubaccountOrdersResponse extends Subaccount {
   orders: EngineOrder[];
 }
 
-export interface GetEngineSubaccountFeeRatesParams extends Subaccount {
-  productId: number;
+export type GetEngineSubaccountFeeRatesParams = Subaccount;
+
+export interface SubaccountOrderFeeRates {
+  maker: BigDecimal;
+  taker: BigDecimal;
 }
 
 export interface GetEngineSubaccountFeeRatesResponse {
-  orders: {
-    maker: BigDecimal;
-    taker: BigDecimal;
-  };
   // By Product ID
+  orders: Record<number, SubaccountOrderFeeRates>;
   withdrawal: Record<number, BigDecimal>;
 }
 

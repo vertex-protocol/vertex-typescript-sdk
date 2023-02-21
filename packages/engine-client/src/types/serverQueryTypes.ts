@@ -62,7 +62,6 @@ export interface EngineServerSubaccountOrdersQueryParams {
 
 export interface EngineServerSubaccountFeeRatesParams {
   sender: string;
-  product_id: number;
 }
 
 export interface EngineServerMarketLiquidityQueryParams {
@@ -159,14 +158,13 @@ export interface EngineServerSubaccountOrdersResponse {
 }
 
 export interface EngineServerSubaccountFeeRatesResponse {
-  taker_fee_rate_x18: string;
-  maker_fee_rate_x18: string;
-
   liquidation_sequencer_fee: string;
   health_check_sequencer_fee: string;
   taker_sequencer_fee: string;
   // Product ID is the index
   withdraw_sequencer_fees: string[];
+  taker_fee_rates_x18: string[];
+  maker_fee_rates_x18: string[];
 }
 
 export interface EngineServerMarketPriceResponse {
