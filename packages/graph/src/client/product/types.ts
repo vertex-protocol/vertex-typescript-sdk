@@ -8,10 +8,13 @@ export interface HourlyHistoricalProductDataParams {
   maxTimeExclusive?: number;
 }
 
-interface BaseProductHourlySnapshot {
+export interface BaseProductHourlySnapshot {
   // UNIX seconds
   approximateSnapshotTime: number;
   oraclePrice: BigDecimal;
+  totalLpSupply: BigDecimal;
+  totalLpBaseAmount: BigDecimal;
+  totalLpQuoteAmount: BigDecimal;
 }
 
 export type SpotProductHourlySnapshot = BaseProductHourlySnapshot;

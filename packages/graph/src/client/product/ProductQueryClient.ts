@@ -26,6 +26,9 @@ export class ProductQueryClient extends BaseVertexGraphClient {
           return {
             approximateSnapshotTime: fromHourIndex(snapshot.periodIndex),
             oraclePrice: fromX18(snapshot.priceX18),
+            totalLpBaseAmount: toBigDecimal(snapshot.lpBaseAmount),
+            totalLpQuoteAmount: toBigDecimal(snapshot.lpQuoteAmount),
+            totalLpSupply: toBigDecimal(snapshot.lpSupply),
           };
         },
       ),
@@ -35,6 +38,9 @@ export class ProductQueryClient extends BaseVertexGraphClient {
             approximateSnapshotTime: fromHourIndex(snapshot.periodIndex),
             oraclePrice: fromX18(snapshot.liquidationPriceX18),
             openInterest: toBigDecimal(snapshot.openInterest),
+            totalLpBaseAmount: toBigDecimal(snapshot.lpBaseAmount),
+            totalLpQuoteAmount: toBigDecimal(snapshot.lpQuoteAmount),
+            totalLpSupply: toBigDecimal(snapshot.lpSupply),
           };
         },
       ),
