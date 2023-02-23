@@ -641,6 +641,25 @@ const _abi = [
         name: "productId",
         type: "uint32",
       },
+    ],
+    name: "getWithdrawFee",
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
       {
         internalType: "bytes32",
         name: "subaccount",

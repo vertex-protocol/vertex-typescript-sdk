@@ -136,6 +136,7 @@ export interface ISpotEngineInterface extends utils.Interface {
     "getProductIds()": FunctionFragment;
     "getStateAndBalance(uint32,bytes32)": FunctionFragment;
     "getStatesAndBalances(uint32,bytes32)": FunctionFragment;
+    "getWithdrawFee(uint32)": FunctionFragment;
     "hasBalance(uint32,bytes32)": FunctionFragment;
     "initialize(address,address,address,address,address)": FunctionFragment;
     "mintLp(uint32,bytes32,int128,int128,int128)": FunctionFragment;
@@ -159,6 +160,7 @@ export interface ISpotEngineInterface extends utils.Interface {
       | "getProductIds"
       | "getStateAndBalance"
       | "getStatesAndBalances"
+      | "getWithdrawFee"
       | "hasBalance"
       | "initialize"
       | "mintLp"
@@ -222,6 +224,10 @@ export interface ISpotEngineInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getStatesAndBalances",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getWithdrawFee",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "hasBalance",
@@ -305,6 +311,10 @@ export interface ISpotEngineInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getStatesAndBalances",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getWithdrawFee",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "hasBalance", data: BytesLike): Result;
@@ -490,6 +500,11 @@ export interface ISpotEngine extends BaseContract {
       ]
     >;
 
+    getWithdrawFee(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     hasBalance(
       productId: PromiseOrValue<BigNumberish>,
       subaccount: PromiseOrValue<BytesLike>,
@@ -607,6 +622,11 @@ export interface ISpotEngine extends BaseContract {
       ISpotEngine.BalanceStructOutput
     ]
   >;
+
+  getWithdrawFee(
+    productId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   hasBalance(
     productId: PromiseOrValue<BigNumberish>,
@@ -727,6 +747,11 @@ export interface ISpotEngine extends BaseContract {
         ISpotEngine.BalanceStructOutput
       ]
     >;
+
+    getWithdrawFee(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     hasBalance(
       productId: PromiseOrValue<BigNumberish>,
@@ -889,6 +914,11 @@ export interface ISpotEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getWithdrawFee(
+      productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     hasBalance(
       productId: PromiseOrValue<BigNumberish>,
       subaccount: PromiseOrValue<BytesLike>,
@@ -996,6 +1026,11 @@ export interface ISpotEngine extends BaseContract {
     getStatesAndBalances(
       productId: PromiseOrValue<BigNumberish>,
       subaccount: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getWithdrawFee(
+      productId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
