@@ -78,12 +78,12 @@ export function calcTotalPortfolioValues(
  * @param summary
  */
 export function calcSubaccountLeverage(summary: SubaccountSummaryResponse) {
-  const initialHealth = summary.health.initial;
-  const numerator = initialHealth.assets.plus(initialHealth.liabilities);
+  const unweightedHealth = summary.health.unweighted;
+  const numerator = unweightedHealth.assets.plus(unweightedHealth.liabilities);
   if (numerator.isZero()) {
     return toBigDecimal(0);
   }
-  const denom = initialHealth.assets.minus(initialHealth.liabilities);
+  const denom = unweightedHealth.assets.minus(unweightedHealth.liabilities);
   if (denom.isLessThanOrEqualTo(0)) {
     return toBigDecimal('Infinity');
   }
