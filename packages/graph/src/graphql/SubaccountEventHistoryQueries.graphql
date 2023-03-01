@@ -27,6 +27,36 @@ query SubaccountModifyCollateralEventHistoryQuery(
   }
 }
 
+query SubaccountLpEventHistoryQuery(
+  $subaccountEntityId: String!
+  $maxTimeExclusive: BigInt!
+  $minTimeInclusive: BigInt!
+  $skip: Int
+  $first: Int
+) {
+  lpEvents(
+    where: {
+      subaccount: $subaccountEntityId
+      blockTime_lt: $maxTimeExclusive
+      blockTime_gt: $minTimeInclusive
+    }
+    orderBy: blockTime
+    orderDirection: desc
+    first: $first
+    skip: $skip
+  ) {
+    id
+    blockTime
+
+    lpDelta
+    quoteDelta
+    baseDelta
+    productId
+
+    oraclePriceX18
+  }
+}
+
 query SubaccountLiquidationEventHistoryQuery(
   $subaccountEntityId: String!
   $maxTimeExclusive: BigInt!

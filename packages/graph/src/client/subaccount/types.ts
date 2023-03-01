@@ -1,5 +1,6 @@
 import {
   SubaccountLiquidationEventHistoryQueryQuery,
+  SubaccountLpEventHistoryQueryQuery,
   SubaccountModifyCollateralEventHistoryQueryQuery,
   SubaccountOrderFillsQueryQuery,
   SubaccountSettlementEventHistoryQueryQuery,
@@ -53,6 +54,9 @@ export interface PaginatedSubaccountEventsParams extends PaginationParams {
 
 export type GetPaginatedSubaccountModifyCollateralEventsResponse =
   SubaccountModifyCollateralEventHistoryQueryQuery['modifyCollateralEvents'];
+
+export type GetPaginatedSubaccountLpEventsResponse =
+  SubaccountLpEventHistoryQueryQuery['lpEvents'];
 
 export type GetPaginatedSubaccountLiquidationEventsResponse =
   SubaccountLiquidationEventHistoryQueryQuery['liquidationEvents'];

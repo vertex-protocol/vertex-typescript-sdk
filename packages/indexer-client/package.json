@@ -33,5 +33,6 @@
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
     "displayName": "Vertex Engine Server Utils"
-  }
+  },
+  "gitHead": "90331cb980846c283980cdcbce89b1c1a9cf3b8d"
 }

@@ -1,6 +1,7 @@
 import { BaseVertexGraphClient } from '../base';
 import {
   GetPaginatedSubaccountLiquidationEventsResponse,
+  GetPaginatedSubaccountLpEventsResponse,
   GetPaginatedSubaccountModifyCollateralEventsResponse,
   GetPaginatedSubaccountSettlementEventsResponse,
   GetSubaccountsParams,
@@ -99,17 +100,24 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
     params: PaginatedSubaccountEventsParams,
   ): Promise<GetPaginatedSubaccountModifyCollateralEventsResponse> {
     const baseResponse =
-      await this.graph.SubaccountModifyCollateralEventHistoryQuery({
-        subaccountEntityId: getSubaccountEntityId(
-          params.subaccountOwner,
-          params.subaccountName,
-        ),
-        maxTimeExclusive: params.maxTimeExclusive ?? nowInSeconds(),
-        minTimeInclusive: params.minTimeInclusive ?? 0,
-        skip: params.skip,
-        first: params.first,
-      });
+      await this.graph.SubaccountModifyCollateralEventHistoryQuery(
+        paginationParamsToGraphParams(params),
+      );
     return baseResponse.modifyCollateralEvents;
+  }
+
+  /**
+   * Retrieves on-chain mint/burn events for a given subaccount
+   *
+   * @param params
+   */
+  async getSubaccountPaginatedLpEvents(
+    params: PaginatedSubaccountEventsParams,
+  ): Promise<GetPaginatedSubaccountLpEventsResponse> {
+    const baseResponse = await this.graph.SubaccountLpEventHistoryQuery(
+      paginationParamsToGraphParams(params),
+    );
+    return baseResponse.lpEvents;
   }
 
   /**
@@ -121,16 +129,9 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
     params: PaginatedSubaccountEventsParams,
   ): Promise<GetPaginatedSubaccountLiquidationEventsResponse> {
     const baseResponse =
-      await this.graph.SubaccountLiquidationEventHistoryQuery({
-        subaccountEntityId: getSubaccountEntityId(
-          params.subaccountOwner,
-          params.subaccountName,
-        ),
-        maxTimeExclusive: params.maxTimeExclusive ?? nowInSeconds(),
-        minTimeInclusive: params.minTimeInclusive ?? 0,
-        skip: params.skip,
-        first: params.first,
-      });
+      await this.graph.SubaccountLiquidationEventHistoryQuery(
+        paginationParamsToGraphParams(params),
+      );
     return baseResponse.liquidationEvents;
   }
 
@@ -143,16 +144,7 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
     params: PaginatedSubaccountEventsParams,
   ): Promise<GetPaginatedSubaccountSettlementEventsResponse> {
     const baseResponse = await this.graph.SubaccountSettlementEventHistoryQuery(
-      {
-        subaccountEntityId: getSubaccountEntityId(
-          params.subaccountOwner,
-          params.subaccountName,
-        ),
-        maxTimeExclusive: params.maxTimeExclusive ?? nowInSeconds(),
-        minTimeInclusive: params.minTimeInclusive ?? 0,
-        skip: params.skip,
-        first: params.first,
-      },
+      paginationParamsToGraphParams(params),
     );
     return baseResponse.settlePnlEvents;
   }
@@ -175,4 +167,19 @@ export class SubaccountQueryClient extends BaseVertexGraphClient {
     });
     return baseResponse.fillOrderEvents;
   }
+}
+
+function paginationParamsToGraphParams(
+  params: PaginatedSubaccountEventsParams,
+) {
+  return {
+    subaccountEntityId: getSubaccountEntityId(
+      params.subaccountOwner,
+      params.subaccountName,
+    ),
+    maxTimeExclusive: params.maxTimeExclusive ?? nowInSeconds(),
+    minTimeInclusive: params.minTimeInclusive ?? 0,
+    skip: params.skip,
+    first: params.first,
+  };
 }

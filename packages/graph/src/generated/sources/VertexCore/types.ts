@@ -31,116 +31,6 @@ export type Block_height = {
   number_gte?: InputMaybe<Scalars['Int']>;
 };
 
-export type BurnLpEvent = {
-  id: Scalars['ID'];
-  block: Scalars['BigInt'];
-  blockTime: Scalars['BigInt'];
-  subaccount: Subaccount;
-  productId: Scalars['BigInt'];
-  lpAmount: Scalars['BigInt'];
-  baseAmount: Scalars['BigInt'];
-  quoteAmount: Scalars['BigInt'];
-};
-
-export type BurnLpEvent_filter = {
-  id?: InputMaybe<Scalars['ID']>;
-  id_not?: InputMaybe<Scalars['ID']>;
-  id_gt?: InputMaybe<Scalars['ID']>;
-  id_lt?: InputMaybe<Scalars['ID']>;
-  id_gte?: InputMaybe<Scalars['ID']>;
-  id_lte?: InputMaybe<Scalars['ID']>;
-  id_in?: InputMaybe<Array<Scalars['ID']>>;
-  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
-  block?: InputMaybe<Scalars['BigInt']>;
-  block_not?: InputMaybe<Scalars['BigInt']>;
-  block_gt?: InputMaybe<Scalars['BigInt']>;
-  block_lt?: InputMaybe<Scalars['BigInt']>;
-  block_gte?: InputMaybe<Scalars['BigInt']>;
-  block_lte?: InputMaybe<Scalars['BigInt']>;
-  block_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  block_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  blockTime?: InputMaybe<Scalars['BigInt']>;
-  blockTime_not?: InputMaybe<Scalars['BigInt']>;
-  blockTime_gt?: InputMaybe<Scalars['BigInt']>;
-  blockTime_lt?: InputMaybe<Scalars['BigInt']>;
-  blockTime_gte?: InputMaybe<Scalars['BigInt']>;
-  blockTime_lte?: InputMaybe<Scalars['BigInt']>;
-  blockTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  blockTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  subaccount?: InputMaybe<Scalars['String']>;
-  subaccount_not?: InputMaybe<Scalars['String']>;
-  subaccount_gt?: InputMaybe<Scalars['String']>;
-  subaccount_lt?: InputMaybe<Scalars['String']>;
-  subaccount_gte?: InputMaybe<Scalars['String']>;
-  subaccount_lte?: InputMaybe<Scalars['String']>;
-  subaccount_in?: InputMaybe<Array<Scalars['String']>>;
-  subaccount_not_in?: InputMaybe<Array<Scalars['String']>>;
-  subaccount_contains?: InputMaybe<Scalars['String']>;
-  subaccount_contains_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_not_contains?: InputMaybe<Scalars['String']>;
-  subaccount_not_contains_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_starts_with?: InputMaybe<Scalars['String']>;
-  subaccount_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_not_starts_with?: InputMaybe<Scalars['String']>;
-  subaccount_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_ends_with?: InputMaybe<Scalars['String']>;
-  subaccount_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_not_ends_with?: InputMaybe<Scalars['String']>;
-  subaccount_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_?: InputMaybe<Subaccount_filter>;
-  productId?: InputMaybe<Scalars['BigInt']>;
-  productId_not?: InputMaybe<Scalars['BigInt']>;
-  productId_gt?: InputMaybe<Scalars['BigInt']>;
-  productId_lt?: InputMaybe<Scalars['BigInt']>;
-  productId_gte?: InputMaybe<Scalars['BigInt']>;
-  productId_lte?: InputMaybe<Scalars['BigInt']>;
-  productId_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  productId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  lpAmount?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_not?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  lpAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  baseAmount?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_not?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  baseAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  quoteAmount?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_not?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  quoteAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  /** Filter for the block changed event. */
-  _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<BurnLpEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<BurnLpEvent_filter>>>;
-};
-
-export type BurnLpEvent_orderBy =
-  | 'id'
-  | 'block'
-  | 'blockTime'
-  | 'subaccount'
-  | 'subaccount__id'
-  | 'subaccount__owner'
-  | 'subaccount__name'
-  | 'subaccount__createdAt'
-  | 'subaccount__createdAtBlock'
-  | 'productId'
-  | 'lpAmount'
-  | 'baseAmount'
-  | 'quoteAmount';
-
 export type Clearinghouse = {
   id: Scalars['ID'];
   endpoint: Scalars['Bytes'];
@@ -826,18 +716,19 @@ export type LiquidationEvent_orderBy =
   | 'spotOraclePriceX18'
   | 'perpOraclePriceX18';
 
-export type MintLpEvent = {
+export type LpEvent = {
   id: Scalars['ID'];
   block: Scalars['BigInt'];
   blockTime: Scalars['BigInt'];
   subaccount: Subaccount;
   productId: Scalars['BigInt'];
-  lpAmount: Scalars['BigInt'];
-  baseAmount: Scalars['BigInt'];
-  quoteAmount: Scalars['BigInt'];
+  oraclePriceX18: Scalars['BigInt'];
+  lpDelta: Scalars['BigInt'];
+  baseDelta: Scalars['BigInt'];
+  quoteDelta: Scalars['BigInt'];
 };
 
-export type MintLpEvent_filter = {
+export type LpEvent_filter = {
   id?: InputMaybe<Scalars['ID']>;
   id_not?: InputMaybe<Scalars['ID']>;
   id_gt?: InputMaybe<Scalars['ID']>;
@@ -891,37 +782,45 @@ export type MintLpEvent_filter = {
   productId_lte?: InputMaybe<Scalars['BigInt']>;
   productId_in?: InputMaybe<Array<Scalars['BigInt']>>;
   productId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  lpAmount?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_not?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  lpAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  baseAmount?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_not?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  baseAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  quoteAmount?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_not?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  quoteAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  oraclePriceX18?: InputMaybe<Scalars['BigInt']>;
+  oraclePriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  oraclePriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  oraclePriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  oraclePriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  oraclePriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  oraclePriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  oraclePriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpDelta?: InputMaybe<Scalars['BigInt']>;
+  lpDelta_not?: InputMaybe<Scalars['BigInt']>;
+  lpDelta_gt?: InputMaybe<Scalars['BigInt']>;
+  lpDelta_lt?: InputMaybe<Scalars['BigInt']>;
+  lpDelta_gte?: InputMaybe<Scalars['BigInt']>;
+  lpDelta_lte?: InputMaybe<Scalars['BigInt']>;
+  lpDelta_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpDelta_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  baseDelta?: InputMaybe<Scalars['BigInt']>;
+  baseDelta_not?: InputMaybe<Scalars['BigInt']>;
+  baseDelta_gt?: InputMaybe<Scalars['BigInt']>;
+  baseDelta_lt?: InputMaybe<Scalars['BigInt']>;
+  baseDelta_gte?: InputMaybe<Scalars['BigInt']>;
+  baseDelta_lte?: InputMaybe<Scalars['BigInt']>;
+  baseDelta_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  baseDelta_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  quoteDelta?: InputMaybe<Scalars['BigInt']>;
+  quoteDelta_not?: InputMaybe<Scalars['BigInt']>;
+  quoteDelta_gt?: InputMaybe<Scalars['BigInt']>;
+  quoteDelta_lt?: InputMaybe<Scalars['BigInt']>;
+  quoteDelta_gte?: InputMaybe<Scalars['BigInt']>;
+  quoteDelta_lte?: InputMaybe<Scalars['BigInt']>;
+  quoteDelta_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  quoteDelta_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<MintLpEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<MintLpEvent_filter>>>;
+  and?: InputMaybe<Array<InputMaybe<LpEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<LpEvent_filter>>>;
 };
 
-export type MintLpEvent_orderBy =
+export type LpEvent_orderBy =
   | 'id'
   | 'block'
   | 'blockTime'
@@ -932,9 +831,10 @@ export type MintLpEvent_orderBy =
   | 'subaccount__createdAt'
   | 'subaccount__createdAtBlock'
   | 'productId'
-  | 'lpAmount'
-  | 'baseAmount'
-  | 'quoteAmount';
+  | 'oraclePriceX18'
+  | 'lpDelta'
+  | 'baseDelta'
+  | 'quoteDelta';
 
 export type ModifyCollateralEvent = {
   id: Scalars['ID'];
@@ -1341,10 +1241,8 @@ export type Query = {
   orders: Array<Order>;
   modifyCollateralEvent?: Maybe<ModifyCollateralEvent>;
   modifyCollateralEvents: Array<ModifyCollateralEvent>;
-  mintLpEvent?: Maybe<MintLpEvent>;
-  mintLpEvents: Array<MintLpEvent>;
-  burnLpEvent?: Maybe<BurnLpEvent>;
-  burnLpEvents: Array<BurnLpEvent>;
+  lpEvent?: Maybe<LpEvent>;
+  lpEvents: Array<LpEvent>;
   settlePnlEvent?: Maybe<SettlePnlEvent>;
   settlePnlEvents: Array<SettlePnlEvent>;
   liquidationEvent?: Maybe<LiquidationEvent>;
@@ -1426,37 +1324,19 @@ export type QuerymodifyCollateralEventsArgs = {
 };
 
 
-export type QuerymintLpEventArgs = {
+export type QuerylpEventArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type QuerymintLpEventsArgs = {
+export type QuerylpEventsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<MintLpEvent_orderBy>;
+  orderBy?: InputMaybe<LpEvent_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<MintLpEvent_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryburnLpEventArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryburnLpEventsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<BurnLpEvent_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<BurnLpEvent_filter>;
+  where?: InputMaybe<LpEvent_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2201,10 +2081,8 @@ export type Subscription = {
   orders: Array<Order>;
   modifyCollateralEvent?: Maybe<ModifyCollateralEvent>;
   modifyCollateralEvents: Array<ModifyCollateralEvent>;
-  mintLpEvent?: Maybe<MintLpEvent>;
-  mintLpEvents: Array<MintLpEvent>;
-  burnLpEvent?: Maybe<BurnLpEvent>;
-  burnLpEvents: Array<BurnLpEvent>;
+  lpEvent?: Maybe<LpEvent>;
+  lpEvents: Array<LpEvent>;
   settlePnlEvent?: Maybe<SettlePnlEvent>;
   settlePnlEvents: Array<SettlePnlEvent>;
   liquidationEvent?: Maybe<LiquidationEvent>;
@@ -2286,37 +2164,19 @@ export type SubscriptionmodifyCollateralEventsArgs = {
 };
 
 
-export type SubscriptionmintLpEventArgs = {
+export type SubscriptionlpEventArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionmintLpEventsArgs = {
+export type SubscriptionlpEventsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<MintLpEvent_orderBy>;
+  orderBy?: InputMaybe<LpEvent_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<MintLpEvent_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionburnLpEventArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionburnLpEventsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<BurnLpEvent_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<BurnLpEvent_filter>;
+  where?: InputMaybe<LpEvent_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2670,13 +2530,9 @@ export type QueryVertexCoreSdk = {
   /** null **/
   modifyCollateralEvents: InContextSdkMethod<VertexCoreTypes.Query['modifyCollateralEvents'], VertexCoreTypes.QuerymodifyCollateralEventsArgs, MeshContext>,
   /** null **/
-  mintLpEvent: InContextSdkMethod<VertexCoreTypes.Query['mintLpEvent'], VertexCoreTypes.QuerymintLpEventArgs, MeshContext>,
+  lpEvent: InContextSdkMethod<VertexCoreTypes.Query['lpEvent'], VertexCoreTypes.QuerylpEventArgs, MeshContext>,
   /** null **/
-  mintLpEvents: InContextSdkMethod<VertexCoreTypes.Query['mintLpEvents'], VertexCoreTypes.QuerymintLpEventsArgs, MeshContext>,
-  /** null **/
-  burnLpEvent: InContextSdkMethod<VertexCoreTypes.Query['burnLpEvent'], VertexCoreTypes.QueryburnLpEventArgs, MeshContext>,
-  /** null **/
-  burnLpEvents: InContextSdkMethod<VertexCoreTypes.Query['burnLpEvents'], VertexCoreTypes.QueryburnLpEventsArgs, MeshContext>,
+  lpEvents: InContextSdkMethod<VertexCoreTypes.Query['lpEvents'], VertexCoreTypes.QuerylpEventsArgs, MeshContext>,
   /** null **/
   settlePnlEvent: InContextSdkMethod<VertexCoreTypes.Query['settlePnlEvent'], VertexCoreTypes.QuerysettlePnlEventArgs, MeshContext>,
   /** null **/
@@ -2743,13 +2599,9 @@ export type SubscriptionVertexCoreSdk = {
   /** null **/
   modifyCollateralEvents: InContextSdkMethod<VertexCoreTypes.Subscription['modifyCollateralEvents'], VertexCoreTypes.SubscriptionmodifyCollateralEventsArgs, MeshContext>,
   /** null **/
-  mintLpEvent: InContextSdkMethod<VertexCoreTypes.Subscription['mintLpEvent'], VertexCoreTypes.SubscriptionmintLpEventArgs, MeshContext>,
+  lpEvent: InContextSdkMethod<VertexCoreTypes.Subscription['lpEvent'], VertexCoreTypes.SubscriptionlpEventArgs, MeshContext>,
   /** null **/
-  mintLpEvents: InContextSdkMethod<VertexCoreTypes.Subscription['mintLpEvents'], VertexCoreTypes.SubscriptionmintLpEventsArgs, MeshContext>,
-  /** null **/
-  burnLpEvent: InContextSdkMethod<VertexCoreTypes.Subscription['burnLpEvent'], VertexCoreTypes.SubscriptionburnLpEventArgs, MeshContext>,
-  /** null **/
-  burnLpEvents: InContextSdkMethod<VertexCoreTypes.Subscription['burnLpEvents'], VertexCoreTypes.SubscriptionburnLpEventsArgs, MeshContext>,
+  lpEvents: InContextSdkMethod<VertexCoreTypes.Subscription['lpEvents'], VertexCoreTypes.SubscriptionlpEventsArgs, MeshContext>,
   /** null **/
   settlePnlEvent: InContextSdkMethod<VertexCoreTypes.Subscription['settlePnlEvent'], VertexCoreTypes.SubscriptionsettlePnlEventArgs, MeshContext>,
   /** null **/

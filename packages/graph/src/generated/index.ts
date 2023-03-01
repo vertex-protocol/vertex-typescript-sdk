@@ -20,9 +20,9 @@ import { createMeshHTTPHandler } from '@graphql-mesh/http';
 import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext, MeshInstance } from '@graphql-mesh/runtime';
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
+import type { VertexCoreContext } from './sources/VertexCore/types';
 import type { VertexMarketsContext } from './sources/VertexMarkets/types';
 import type { VertexCandlesticksContext } from './sources/VertexCandlesticks/types';
-import type { VertexCoreContext } from './sources/VertexCore/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -73,10 +73,8 @@ export type Query = {
   orders: Array<Order>;
   modifyCollateralEvent?: Maybe<ModifyCollateralEvent>;
   modifyCollateralEvents: Array<ModifyCollateralEvent>;
-  mintLpEvent?: Maybe<MintLpEvent>;
-  mintLpEvents: Array<MintLpEvent>;
-  burnLpEvent?: Maybe<BurnLpEvent>;
-  burnLpEvents: Array<BurnLpEvent>;
+  lpEvent?: Maybe<LpEvent>;
+  lpEvents: Array<LpEvent>;
   settlePnlEvent?: Maybe<SettlePnlEvent>;
   settlePnlEvents: Array<SettlePnlEvent>;
   liquidationEvent?: Maybe<LiquidationEvent>;
@@ -341,37 +339,19 @@ export type QuerymodifyCollateralEventsArgs = {
 };
 
 
-export type QuerymintLpEventArgs = {
+export type QuerylpEventArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type QuerymintLpEventsArgs = {
+export type QuerylpEventsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<MintLpEvent_orderBy>;
+  orderBy?: InputMaybe<LpEvent_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<MintLpEvent_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryburnLpEventArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryburnLpEventsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<BurnLpEvent_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<BurnLpEvent_filter>;
+  where?: InputMaybe<LpEvent_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -603,10 +583,8 @@ export type Subscription = {
   orders: Array<Order>;
   modifyCollateralEvent?: Maybe<ModifyCollateralEvent>;
   modifyCollateralEvents: Array<ModifyCollateralEvent>;
-  mintLpEvent?: Maybe<MintLpEvent>;
-  mintLpEvents: Array<MintLpEvent>;
-  burnLpEvent?: Maybe<BurnLpEvent>;
-  burnLpEvents: Array<BurnLpEvent>;
+  lpEvent?: Maybe<LpEvent>;
+  lpEvents: Array<LpEvent>;
   settlePnlEvent?: Maybe<SettlePnlEvent>;
   settlePnlEvents: Array<SettlePnlEvent>;
   liquidationEvent?: Maybe<LiquidationEvent>;
@@ -871,37 +849,19 @@ export type SubscriptionmodifyCollateralEventsArgs = {
 };
 
 
-export type SubscriptionmintLpEventArgs = {
+export type SubscriptionlpEventArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionmintLpEventsArgs = {
+export type SubscriptionlpEventsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<MintLpEvent_orderBy>;
+  orderBy?: InputMaybe<LpEvent_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<MintLpEvent_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionburnLpEventArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionburnLpEventsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<BurnLpEvent_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<BurnLpEvent_filter>;
+  where?: InputMaybe<LpEvent_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2357,116 +2317,6 @@ export type SpotProduct_orderBy =
   | 'lpBaseAmount'
   | 'snapshots';
 
-export type BurnLpEvent = {
-  id: Scalars['ID'];
-  block: Scalars['BigInt'];
-  blockTime: Scalars['BigInt'];
-  subaccount: Subaccount;
-  productId: Scalars['BigInt'];
-  lpAmount: Scalars['BigInt'];
-  baseAmount: Scalars['BigInt'];
-  quoteAmount: Scalars['BigInt'];
-};
-
-export type BurnLpEvent_filter = {
-  id?: InputMaybe<Scalars['ID']>;
-  id_not?: InputMaybe<Scalars['ID']>;
-  id_gt?: InputMaybe<Scalars['ID']>;
-  id_lt?: InputMaybe<Scalars['ID']>;
-  id_gte?: InputMaybe<Scalars['ID']>;
-  id_lte?: InputMaybe<Scalars['ID']>;
-  id_in?: InputMaybe<Array<Scalars['ID']>>;
-  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
-  block?: InputMaybe<Scalars['BigInt']>;
-  block_not?: InputMaybe<Scalars['BigInt']>;
-  block_gt?: InputMaybe<Scalars['BigInt']>;
-  block_lt?: InputMaybe<Scalars['BigInt']>;
-  block_gte?: InputMaybe<Scalars['BigInt']>;
-  block_lte?: InputMaybe<Scalars['BigInt']>;
-  block_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  block_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  blockTime?: InputMaybe<Scalars['BigInt']>;
-  blockTime_not?: InputMaybe<Scalars['BigInt']>;
-  blockTime_gt?: InputMaybe<Scalars['BigInt']>;
-  blockTime_lt?: InputMaybe<Scalars['BigInt']>;
-  blockTime_gte?: InputMaybe<Scalars['BigInt']>;
-  blockTime_lte?: InputMaybe<Scalars['BigInt']>;
-  blockTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  blockTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  subaccount?: InputMaybe<Scalars['String']>;
-  subaccount_not?: InputMaybe<Scalars['String']>;
-  subaccount_gt?: InputMaybe<Scalars['String']>;
-  subaccount_lt?: InputMaybe<Scalars['String']>;
-  subaccount_gte?: InputMaybe<Scalars['String']>;
-  subaccount_lte?: InputMaybe<Scalars['String']>;
-  subaccount_in?: InputMaybe<Array<Scalars['String']>>;
-  subaccount_not_in?: InputMaybe<Array<Scalars['String']>>;
-  subaccount_contains?: InputMaybe<Scalars['String']>;
-  subaccount_contains_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_not_contains?: InputMaybe<Scalars['String']>;
-  subaccount_not_contains_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_starts_with?: InputMaybe<Scalars['String']>;
-  subaccount_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_not_starts_with?: InputMaybe<Scalars['String']>;
-  subaccount_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_ends_with?: InputMaybe<Scalars['String']>;
-  subaccount_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_not_ends_with?: InputMaybe<Scalars['String']>;
-  subaccount_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  subaccount_?: InputMaybe<Subaccount_filter>;
-  productId?: InputMaybe<Scalars['BigInt']>;
-  productId_not?: InputMaybe<Scalars['BigInt']>;
-  productId_gt?: InputMaybe<Scalars['BigInt']>;
-  productId_lt?: InputMaybe<Scalars['BigInt']>;
-  productId_gte?: InputMaybe<Scalars['BigInt']>;
-  productId_lte?: InputMaybe<Scalars['BigInt']>;
-  productId_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  productId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  lpAmount?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_not?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  lpAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  baseAmount?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_not?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  baseAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  quoteAmount?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_not?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  quoteAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  /** Filter for the block changed event. */
-  _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<BurnLpEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<BurnLpEvent_filter>>>;
-};
-
-export type BurnLpEvent_orderBy =
-  | 'id'
-  | 'block'
-  | 'blockTime'
-  | 'subaccount'
-  | 'subaccount__id'
-  | 'subaccount__owner'
-  | 'subaccount__name'
-  | 'subaccount__createdAt'
-  | 'subaccount__createdAtBlock'
-  | 'productId'
-  | 'lpAmount'
-  | 'baseAmount'
-  | 'quoteAmount';
-
 export type Clearinghouse = {
   id: Scalars['ID'];
   endpoint: Scalars['Bytes'];
@@ -3152,18 +3002,19 @@ export type LiquidationEvent_orderBy =
   | 'spotOraclePriceX18'
   | 'perpOraclePriceX18';
 
-export type MintLpEvent = {
+export type LpEvent = {
   id: Scalars['ID'];
   block: Scalars['BigInt'];
   blockTime: Scalars['BigInt'];
   subaccount: Subaccount;
   productId: Scalars['BigInt'];
-  lpAmount: Scalars['BigInt'];
-  baseAmount: Scalars['BigInt'];
-  quoteAmount: Scalars['BigInt'];
+  oraclePriceX18: Scalars['BigInt'];
+  lpDelta: Scalars['BigInt'];
+  baseDelta: Scalars['BigInt'];
+  quoteDelta: Scalars['BigInt'];
 };
 
-export type MintLpEvent_filter = {
+export type LpEvent_filter = {
   id?: InputMaybe<Scalars['ID']>;
   id_not?: InputMaybe<Scalars['ID']>;
   id_gt?: InputMaybe<Scalars['ID']>;
@@ -3217,37 +3068,45 @@ export type MintLpEvent_filter = {
   productId_lte?: InputMaybe<Scalars['BigInt']>;
   productId_in?: InputMaybe<Array<Scalars['BigInt']>>;
   productId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  lpAmount?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_not?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  lpAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  lpAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  baseAmount?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_not?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  baseAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  baseAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  quoteAmount?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_not?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  quoteAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  quoteAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  oraclePriceX18?: InputMaybe<Scalars['BigInt']>;
+  oraclePriceX18_not?: InputMaybe<Scalars['BigInt']>;
+  oraclePriceX18_gt?: InputMaybe<Scalars['BigInt']>;
+  oraclePriceX18_lt?: InputMaybe<Scalars['BigInt']>;
+  oraclePriceX18_gte?: InputMaybe<Scalars['BigInt']>;
+  oraclePriceX18_lte?: InputMaybe<Scalars['BigInt']>;
+  oraclePriceX18_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  oraclePriceX18_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpDelta?: InputMaybe<Scalars['BigInt']>;
+  lpDelta_not?: InputMaybe<Scalars['BigInt']>;
+  lpDelta_gt?: InputMaybe<Scalars['BigInt']>;
+  lpDelta_lt?: InputMaybe<Scalars['BigInt']>;
+  lpDelta_gte?: InputMaybe<Scalars['BigInt']>;
+  lpDelta_lte?: InputMaybe<Scalars['BigInt']>;
+  lpDelta_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lpDelta_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  baseDelta?: InputMaybe<Scalars['BigInt']>;
+  baseDelta_not?: InputMaybe<Scalars['BigInt']>;
+  baseDelta_gt?: InputMaybe<Scalars['BigInt']>;
+  baseDelta_lt?: InputMaybe<Scalars['BigInt']>;
+  baseDelta_gte?: InputMaybe<Scalars['BigInt']>;
+  baseDelta_lte?: InputMaybe<Scalars['BigInt']>;
+  baseDelta_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  baseDelta_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  quoteDelta?: InputMaybe<Scalars['BigInt']>;
+  quoteDelta_not?: InputMaybe<Scalars['BigInt']>;
+  quoteDelta_gt?: InputMaybe<Scalars['BigInt']>;
+  quoteDelta_lt?: InputMaybe<Scalars['BigInt']>;
+  quoteDelta_gte?: InputMaybe<Scalars['BigInt']>;
+  quoteDelta_lte?: InputMaybe<Scalars['BigInt']>;
+  quoteDelta_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  quoteDelta_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<MintLpEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<MintLpEvent_filter>>>;
+  and?: InputMaybe<Array<InputMaybe<LpEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<LpEvent_filter>>>;
 };
 
-export type MintLpEvent_orderBy =
+export type LpEvent_orderBy =
   | 'id'
   | 'block'
   | 'blockTime'
@@ -3258,9 +3117,10 @@ export type MintLpEvent_orderBy =
   | 'subaccount__createdAt'
   | 'subaccount__createdAtBlock'
   | 'productId'
-  | 'lpAmount'
-  | 'baseAmount'
-  | 'quoteAmount';
+  | 'oraclePriceX18'
+  | 'lpDelta'
+  | 'baseDelta'
+  | 'quoteDelta';
 
 export type ModifyCollateralEvent = {
   id: Scalars['ID'];
@@ -4415,9 +4275,6 @@ export type ResolversTypes = ResolversObject<{
   SpotProductSnapshot_orderBy: SpotProductSnapshot_orderBy;
   SpotProduct_filter: SpotProduct_filter;
   SpotProduct_orderBy: SpotProduct_orderBy;
-  BurnLpEvent: ResolverTypeWrapper<BurnLpEvent>;
-  BurnLpEvent_filter: BurnLpEvent_filter;
-  BurnLpEvent_orderBy: BurnLpEvent_orderBy;
   Clearinghouse: ResolverTypeWrapper<Clearinghouse>;
   Clearinghouse_filter: Clearinghouse_filter;
   Clearinghouse_orderBy: Clearinghouse_orderBy;
@@ -4433,9 +4290,9 @@ export type ResolversTypes = ResolversObject<{
   LiquidationEvent: ResolverTypeWrapper<LiquidationEvent>;
   LiquidationEvent_filter: LiquidationEvent_filter;
   LiquidationEvent_orderBy: LiquidationEvent_orderBy;
-  MintLpEvent: ResolverTypeWrapper<MintLpEvent>;
-  MintLpEvent_filter: MintLpEvent_filter;
-  MintLpEvent_orderBy: MintLpEvent_orderBy;
+  LpEvent: ResolverTypeWrapper<LpEvent>;
+  LpEvent_filter: LpEvent_filter;
+  LpEvent_orderBy: LpEvent_orderBy;
   ModifyCollateralEvent: ResolverTypeWrapper<ModifyCollateralEvent>;
   ModifyCollateralEvent_filter: ModifyCollateralEvent_filter;
   ModifyCollateralEvent_orderBy: ModifyCollateralEvent_orderBy;
@@ -4502,8 +4359,6 @@ export type ResolversParentTypes = ResolversObject<{
   SpotProductSnapshot: SpotProductSnapshot;
   SpotProductSnapshot_filter: SpotProductSnapshot_filter;
   SpotProduct_filter: SpotProduct_filter;
-  BurnLpEvent: BurnLpEvent;
-  BurnLpEvent_filter: BurnLpEvent_filter;
   Clearinghouse: Clearinghouse;
   Clearinghouse_filter: Clearinghouse_filter;
   ClosedPerpBalance: ClosedPerpBalance;
@@ -4514,8 +4369,8 @@ export type ResolversParentTypes = ResolversObject<{
   FillOrderEvent_filter: FillOrderEvent_filter;
   LiquidationEvent: LiquidationEvent;
   LiquidationEvent_filter: LiquidationEvent_filter;
-  MintLpEvent: MintLpEvent;
-  MintLpEvent_filter: MintLpEvent_filter;
+  LpEvent: LpEvent;
+  LpEvent_filter: LpEvent_filter;
   ModifyCollateralEvent: ModifyCollateralEvent;
   ModifyCollateralEvent_filter: ModifyCollateralEvent_filter;
   Order: Order;
@@ -4564,10 +4419,8 @@ export type QueryResolvers<ContextType = MeshContext & { coreEndpoint: string; m
   orders?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType, RequireFields<QueryordersArgs, 'skip' | 'first' | 'subgraphError'>>;
   modifyCollateralEvent?: Resolver<Maybe<ResolversTypes['ModifyCollateralEvent']>, ParentType, ContextType, RequireFields<QuerymodifyCollateralEventArgs, 'id' | 'subgraphError'>>;
   modifyCollateralEvents?: Resolver<Array<ResolversTypes['ModifyCollateralEvent']>, ParentType, ContextType, RequireFields<QuerymodifyCollateralEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  mintLpEvent?: Resolver<Maybe<ResolversTypes['MintLpEvent']>, ParentType, ContextType, RequireFields<QuerymintLpEventArgs, 'id' | 'subgraphError'>>;
-  mintLpEvents?: Resolver<Array<ResolversTypes['MintLpEvent']>, ParentType, ContextType, RequireFields<QuerymintLpEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  burnLpEvent?: Resolver<Maybe<ResolversTypes['BurnLpEvent']>, ParentType, ContextType, RequireFields<QueryburnLpEventArgs, 'id' | 'subgraphError'>>;
-  burnLpEvents?: Resolver<Array<ResolversTypes['BurnLpEvent']>, ParentType, ContextType, RequireFields<QueryburnLpEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  lpEvent?: Resolver<Maybe<ResolversTypes['LpEvent']>, ParentType, ContextType, RequireFields<QuerylpEventArgs, 'id' | 'subgraphError'>>;
+  lpEvents?: Resolver<Array<ResolversTypes['LpEvent']>, ParentType, ContextType, RequireFields<QuerylpEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   settlePnlEvent?: Resolver<Maybe<ResolversTypes['SettlePnlEvent']>, ParentType, ContextType, RequireFields<QuerysettlePnlEventArgs, 'id' | 'subgraphError'>>;
   settlePnlEvents?: Resolver<Array<ResolversTypes['SettlePnlEvent']>, ParentType, ContextType, RequireFields<QuerysettlePnlEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   liquidationEvent?: Resolver<Maybe<ResolversTypes['LiquidationEvent']>, ParentType, ContextType, RequireFields<QueryliquidationEventArgs, 'id' | 'subgraphError'>>;
@@ -4620,10 +4473,8 @@ export type SubscriptionResolvers<ContextType = MeshContext & { coreEndpoint: st
   orders?: SubscriptionResolver<Array<ResolversTypes['Order']>, "orders", ParentType, ContextType, RequireFields<SubscriptionordersArgs, 'skip' | 'first' | 'subgraphError'>>;
   modifyCollateralEvent?: SubscriptionResolver<Maybe<ResolversTypes['ModifyCollateralEvent']>, "modifyCollateralEvent", ParentType, ContextType, RequireFields<SubscriptionmodifyCollateralEventArgs, 'id' | 'subgraphError'>>;
   modifyCollateralEvents?: SubscriptionResolver<Array<ResolversTypes['ModifyCollateralEvent']>, "modifyCollateralEvents", ParentType, ContextType, RequireFields<SubscriptionmodifyCollateralEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  mintLpEvent?: SubscriptionResolver<Maybe<ResolversTypes['MintLpEvent']>, "mintLpEvent", ParentType, ContextType, RequireFields<SubscriptionmintLpEventArgs, 'id' | 'subgraphError'>>;
-  mintLpEvents?: SubscriptionResolver<Array<ResolversTypes['MintLpEvent']>, "mintLpEvents", ParentType, ContextType, RequireFields<SubscriptionmintLpEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  burnLpEvent?: SubscriptionResolver<Maybe<ResolversTypes['BurnLpEvent']>, "burnLpEvent", ParentType, ContextType, RequireFields<SubscriptionburnLpEventArgs, 'id' | 'subgraphError'>>;
-  burnLpEvents?: SubscriptionResolver<Array<ResolversTypes['BurnLpEvent']>, "burnLpEvents", ParentType, ContextType, RequireFields<SubscriptionburnLpEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  lpEvent?: SubscriptionResolver<Maybe<ResolversTypes['LpEvent']>, "lpEvent", ParentType, ContextType, RequireFields<SubscriptionlpEventArgs, 'id' | 'subgraphError'>>;
+  lpEvents?: SubscriptionResolver<Array<ResolversTypes['LpEvent']>, "lpEvents", ParentType, ContextType, RequireFields<SubscriptionlpEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   settlePnlEvent?: SubscriptionResolver<Maybe<ResolversTypes['SettlePnlEvent']>, "settlePnlEvent", ParentType, ContextType, RequireFields<SubscriptionsettlePnlEventArgs, 'id' | 'subgraphError'>>;
   settlePnlEvents?: SubscriptionResolver<Array<ResolversTypes['SettlePnlEvent']>, "settlePnlEvents", ParentType, ContextType, RequireFields<SubscriptionsettlePnlEventsArgs, 'skip' | 'first' | 'subgraphError'>>;
   liquidationEvent?: SubscriptionResolver<Maybe<ResolversTypes['LiquidationEvent']>, "liquidationEvent", ParentType, ContextType, RequireFields<SubscriptionliquidationEventArgs, 'id' | 'subgraphError'>>;
@@ -4806,18 +4657,6 @@ export type SpotProductSnapshotResolvers<ContextType = MeshContext & { coreEndpo
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type BurnLpEventResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['BurnLpEvent'] = ResolversParentTypes['BurnLpEvent']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  lpAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  baseAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  quoteAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type ClearinghouseResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['Clearinghouse'] = ResolversParentTypes['Clearinghouse']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   endpoint?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
@@ -4885,15 +4724,16 @@ export type LiquidationEventResolvers<ContextType = MeshContext & { coreEndpoint
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type MintLpEventResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['MintLpEvent'] = ResolversParentTypes['MintLpEvent']> = ResolversObject<{
+export type LpEventResolvers<ContextType = MeshContext & { coreEndpoint: string; marketsEndpoint: string; candlesticksEndpoint: string }, ParentType extends ResolversParentTypes['LpEvent'] = ResolversParentTypes['LpEvent']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   block?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   blockTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   subaccount?: Resolver<ResolversTypes['Subaccount'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  lpAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  baseAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  quoteAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  oraclePriceX18?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  lpDelta?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  baseDelta?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  quoteDelta?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -5026,13 +4866,12 @@ export type Resolvers<ContextType = MeshContext & { coreEndpoint: string; market
   SpotEngine?: SpotEngineResolvers<ContextType>;
   SpotProduct?: SpotProductResolvers<ContextType>;
   SpotProductSnapshot?: SpotProductSnapshotResolvers<ContextType>;
-  BurnLpEvent?: BurnLpEventResolvers<ContextType>;
   Clearinghouse?: ClearinghouseResolvers<ContextType>;
   ClosedPerpBalance?: ClosedPerpBalanceResolvers<ContextType>;
   ClosedSpotBalance?: ClosedSpotBalanceResolvers<ContextType>;
   FillOrderEvent?: FillOrderEventResolvers<ContextType>;
   LiquidationEvent?: LiquidationEventResolvers<ContextType>;
-  MintLpEvent?: MintLpEventResolvers<ContextType>;
+  LpEvent?: LpEventResolvers<ContextType>;
   ModifyCollateralEvent?: ModifyCollateralEventResolvers<ContextType>;
   Order?: OrderResolvers<ContextType>;
   PerpBalanceSummary?: PerpBalanceSummaryResolvers<ContextType>;
@@ -5288,6 +5127,12 @@ const merger = new(StitchingMerger as any)({
         },
         location: 'SubaccountModifyCollateralEventHistoryQueryDocument.graphql'
       },{
+        document: SubaccountLpEventHistoryQueryDocument,
+        get rawSDL() {
+          return printWithCache(SubaccountLpEventHistoryQueryDocument);
+        },
+        location: 'SubaccountLpEventHistoryQueryDocument.graphql'
+      },{
         document: SubaccountLiquidationEventHistoryQueryDocument,
         get rawSDL() {
           return printWithCache(SubaccountLiquidationEventHistoryQueryDocument);
@@ -5456,6 +5301,17 @@ export type SubaccountModifyCollateralEventHistoryQueryQueryVariables = Exact<{
 
 
 export type SubaccountModifyCollateralEventHistoryQueryQuery = { modifyCollateralEvents: Array<Pick<ModifyCollateralEvent, 'id' | 'blockTime' | 'amount' | 'productId' | 'newBalanceAmount' | 'oraclePriceX18'>> };
+
+export type SubaccountLpEventHistoryQueryQueryVariables = Exact<{
+  subaccountEntityId: Scalars['String'];
+  maxTimeExclusive: Scalars['BigInt'];
+  minTimeInclusive: Scalars['BigInt'];
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SubaccountLpEventHistoryQueryQuery = { lpEvents: Array<Pick<LpEvent, 'id' | 'blockTime' | 'lpDelta' | 'quoteDelta' | 'baseDelta' | 'productId' | 'oraclePriceX18'>> };
 
 export type SubaccountLiquidationEventHistoryQueryQueryVariables = Exact<{
   subaccountEntityId: Scalars['String'];
@@ -5665,6 +5521,25 @@ export const SubaccountModifyCollateralEventHistoryQueryDocument = gql`
   }
 }
     ` as unknown as DocumentNode<SubaccountModifyCollateralEventHistoryQueryQuery, SubaccountModifyCollateralEventHistoryQueryQueryVariables>;
+export const SubaccountLpEventHistoryQueryDocument = gql`
+    query SubaccountLpEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $skip: Int, $first: Int) {
+  lpEvents(
+    where: {subaccount: $subaccountEntityId, blockTime_lt: $maxTimeExclusive, blockTime_gt: $minTimeInclusive}
+    orderBy: blockTime
+    orderDirection: desc
+    first: $first
+    skip: $skip
+  ) {
+    id
+    blockTime
+    lpDelta
+    quoteDelta
+    baseDelta
+    productId
+    oraclePriceX18
+  }
+}
+    ` as unknown as DocumentNode<SubaccountLpEventHistoryQueryQuery, SubaccountLpEventHistoryQueryQueryVariables>;
 export const SubaccountLiquidationEventHistoryQueryDocument = gql`
     query SubaccountLiquidationEventHistoryQuery($subaccountEntityId: String!, $maxTimeExclusive: BigInt!, $minTimeInclusive: BigInt!, $skip: Int, $first: Int) {
   liquidationEvents(
@@ -5788,6 +5663,7 @@ export const SubaccountsForAddressDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -5817,6 +5693,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     SubaccountModifyCollateralEventHistoryQuery(variables: SubaccountModifyCollateralEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountModifyCollateralEventHistoryQueryQuery> {
       return requester<SubaccountModifyCollateralEventHistoryQueryQuery, SubaccountModifyCollateralEventHistoryQueryQueryVariables>(SubaccountModifyCollateralEventHistoryQueryDocument, variables, options) as Promise<SubaccountModifyCollateralEventHistoryQueryQuery>;
+    },
+    SubaccountLpEventHistoryQuery(variables: SubaccountLpEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountLpEventHistoryQueryQuery> {
+      return requester<SubaccountLpEventHistoryQueryQuery, SubaccountLpEventHistoryQueryQueryVariables>(SubaccountLpEventHistoryQueryDocument, variables, options) as Promise<SubaccountLpEventHistoryQueryQuery>;
     },
     SubaccountLiquidationEventHistoryQuery(variables: SubaccountLiquidationEventHistoryQueryQueryVariables, options?: C): Promise<SubaccountLiquidationEventHistoryQueryQuery> {
       return requester<SubaccountLiquidationEventHistoryQueryQuery, SubaccountLiquidationEventHistoryQueryQueryVariables>(SubaccountLiquidationEventHistoryQueryDocument, variables, options) as Promise<SubaccountLiquidationEventHistoryQueryQuery>;
