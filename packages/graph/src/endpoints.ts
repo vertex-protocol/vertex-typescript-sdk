@@ -6,18 +6,11 @@ export const GRAPH_CLIENT_ENDPOINTS = {
     candlesticks:
       'http://localhost:8000/subgraphs/name/vertex-subgraphs-candlesticks',
   },
-  dev: {
+  testnet: {
     core: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-dev-core',
     markets:
       'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-dev-markets',
     candlesticks:
       'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-dev-candlesticks',
-  },
-  testnet: {
-    core: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-core',
-    markets:
-      'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-markets',
-    candlesticks:
-      'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-goerli-candlesticks',
   },
 };
