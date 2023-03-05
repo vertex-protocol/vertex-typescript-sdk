@@ -186,6 +186,32 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getMinSize",
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getVersion",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "contract IClearinghouse",
@@ -225,6 +251,11 @@ const _abi = [
       {
         internalType: "int128",
         name: "_priceIncrementX18",
+        type: "int128",
+      },
+      {
+        internalType: "int128",
+        name: "_minSize",
         type: "int128",
       },
       {
@@ -411,6 +442,34 @@ const _abi = [
       },
     ],
     name: "matchOrders",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "int128",
+        name: "_sizeIncrement",
+        type: "int128",
+      },
+      {
+        internalType: "int128",
+        name: "_priceIncrementX18",
+        type: "int128",
+      },
+      {
+        internalType: "int128",
+        name: "_minSize",
+        type: "int128",
+      },
+      {
+        internalType: "int128",
+        name: "_lpSpreadX18",
+        type: "int128",
+      },
+    ],
+    name: "modifyConfig",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

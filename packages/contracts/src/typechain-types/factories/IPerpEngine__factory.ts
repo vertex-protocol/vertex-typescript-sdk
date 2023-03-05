@@ -418,6 +418,30 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
+      },
+    ],
+    name: "getPositionPnl",
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "getProductIds",
     outputs: [
@@ -797,6 +821,19 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "int128[]",
+        name: "openInterests",
+        type: "int128[]",
+      },
+    ],
+    name: "manualAssert",
+    outputs: [],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint32",
         name: "productId",
         type: "uint32",
@@ -838,11 +875,6 @@ const _abi = [
         internalType: "uint256",
         name: "productIds",
         type: "uint256",
-      },
-      {
-        internalType: "bool",
-        name: "inLiquidation",
-        type: "bool",
       },
     ],
     name: "settlePnl",

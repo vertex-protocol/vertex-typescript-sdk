@@ -64,19 +64,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint128",
-        name: "amount",
-        type: "uint128",
-      },
-    ],
-    name: "depositInsurance",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "address",
         name: "sender",
         type: "address",
@@ -205,6 +192,19 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getVersion",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {

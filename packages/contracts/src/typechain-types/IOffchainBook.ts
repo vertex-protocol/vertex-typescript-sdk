@@ -137,9 +137,12 @@ export interface IOffchainBookInterface extends utils.Interface {
     "dumpFees()": FunctionFragment;
     "getDigest((bytes32,int128,int128,uint64,uint64))": FunctionFragment;
     "getMarket()": FunctionFragment;
-    "initialize(address,address,address,address,address,uint32,int128,int128,int128)": FunctionFragment;
+    "getMinSize()": FunctionFragment;
+    "getVersion()": FunctionFragment;
+    "initialize(address,address,address,address,address,uint32,int128,int128,int128,int128)": FunctionFragment;
     "matchOrderAMM((uint32,((bytes32,int128,int128,uint64,uint64),bytes)))": FunctionFragment;
     "matchOrders((uint32,bool,((bytes32,int128,int128,uint64,uint64),bytes),((bytes32,int128,int128,uint64,uint64),bytes)))": FunctionFragment;
+    "modifyConfig(int128,int128,int128,int128)": FunctionFragment;
     "swapAMM((bytes32,uint32,int128,int128))": FunctionFragment;
   };
 
@@ -149,9 +152,12 @@ export interface IOffchainBookInterface extends utils.Interface {
       | "dumpFees"
       | "getDigest"
       | "getMarket"
+      | "getMinSize"
+      | "getVersion"
       | "initialize"
       | "matchOrderAMM"
       | "matchOrders"
+      | "modifyConfig"
       | "swapAMM"
   ): FunctionFragment;
 
@@ -166,6 +172,14 @@ export interface IOffchainBookInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "getMarket", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "getMinSize",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getVersion",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "initialize",
     values: [
       PromiseOrValue<string>,
@@ -173,6 +187,7 @@ export interface IOffchainBookInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
@@ -188,6 +203,15 @@ export interface IOffchainBookInterface extends utils.Interface {
     values: [IEndpoint.MatchOrdersStruct]
   ): string;
   encodeFunctionData(
+    functionFragment: "modifyConfig",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "swapAMM",
     values: [IEndpoint.SwapAMMStruct]
   ): string;
@@ -199,6 +223,8 @@ export interface IOffchainBookInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "dumpFees", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getDigest", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getMarket", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getMinSize", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getVersion", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "matchOrderAMM",
@@ -206,6 +232,10 @@ export interface IOffchainBookInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "matchOrders",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "modifyConfig",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "swapAMM", data: BytesLike): Result;
@@ -291,6 +321,12 @@ export interface IOffchainBook extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[IOffchainBook.MarketStructOutput]>;
 
+    getMinSize(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getVersion(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _engine: PromiseOrValue<string>,
@@ -300,6 +336,7 @@ export interface IOffchainBook extends BaseContract {
       _productId: PromiseOrValue<BigNumberish>,
       _sizeIncrement: PromiseOrValue<BigNumberish>,
       _priceIncrementX18: PromiseOrValue<BigNumberish>,
+      _minSize: PromiseOrValue<BigNumberish>,
       _lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -311,6 +348,14 @@ export interface IOffchainBook extends BaseContract {
 
     matchOrders(
       tx: IEndpoint.MatchOrdersStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    modifyConfig(
+      _sizeIncrement: PromiseOrValue<BigNumberish>,
+      _priceIncrementX18: PromiseOrValue<BigNumberish>,
+      _minSize: PromiseOrValue<BigNumberish>,
+      _lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -337,6 +382,12 @@ export interface IOffchainBook extends BaseContract {
     overrides?: CallOverrides
   ): Promise<IOffchainBook.MarketStructOutput>;
 
+  getMinSize(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getVersion(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   initialize(
     _clearinghouse: PromiseOrValue<string>,
     _engine: PromiseOrValue<string>,
@@ -346,6 +397,7 @@ export interface IOffchainBook extends BaseContract {
     _productId: PromiseOrValue<BigNumberish>,
     _sizeIncrement: PromiseOrValue<BigNumberish>,
     _priceIncrementX18: PromiseOrValue<BigNumberish>,
+    _minSize: PromiseOrValue<BigNumberish>,
     _lpSpreadX18: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -357,6 +409,14 @@ export interface IOffchainBook extends BaseContract {
 
   matchOrders(
     tx: IEndpoint.MatchOrdersStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  modifyConfig(
+    _sizeIncrement: PromiseOrValue<BigNumberish>,
+    _priceIncrementX18: PromiseOrValue<BigNumberish>,
+    _minSize: PromiseOrValue<BigNumberish>,
+    _lpSpreadX18: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -379,6 +439,10 @@ export interface IOffchainBook extends BaseContract {
       overrides?: CallOverrides
     ): Promise<IOffchainBook.MarketStructOutput>;
 
+    getMinSize(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getVersion(overrides?: CallOverrides): Promise<BigNumber>;
+
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _engine: PromiseOrValue<string>,
@@ -388,6 +452,7 @@ export interface IOffchainBook extends BaseContract {
       _productId: PromiseOrValue<BigNumberish>,
       _sizeIncrement: PromiseOrValue<BigNumberish>,
       _priceIncrementX18: PromiseOrValue<BigNumberish>,
+      _minSize: PromiseOrValue<BigNumberish>,
       _lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -399,6 +464,14 @@ export interface IOffchainBook extends BaseContract {
 
     matchOrders(
       tx: IEndpoint.MatchOrdersStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    modifyConfig(
+      _sizeIncrement: PromiseOrValue<BigNumberish>,
+      _priceIncrementX18: PromiseOrValue<BigNumberish>,
+      _minSize: PromiseOrValue<BigNumberish>,
+      _lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -451,6 +524,12 @@ export interface IOffchainBook extends BaseContract {
 
     getMarket(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getMinSize(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getVersion(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _engine: PromiseOrValue<string>,
@@ -460,6 +539,7 @@ export interface IOffchainBook extends BaseContract {
       _productId: PromiseOrValue<BigNumberish>,
       _sizeIncrement: PromiseOrValue<BigNumberish>,
       _priceIncrementX18: PromiseOrValue<BigNumberish>,
+      _minSize: PromiseOrValue<BigNumberish>,
       _lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -471,6 +551,14 @@ export interface IOffchainBook extends BaseContract {
 
     matchOrders(
       tx: IEndpoint.MatchOrdersStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    modifyConfig(
+      _sizeIncrement: PromiseOrValue<BigNumberish>,
+      _priceIncrementX18: PromiseOrValue<BigNumberish>,
+      _minSize: PromiseOrValue<BigNumberish>,
+      _lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -496,6 +584,12 @@ export interface IOffchainBook extends BaseContract {
 
     getMarket(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    getMinSize(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getVersion(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       _engine: PromiseOrValue<string>,
@@ -505,6 +599,7 @@ export interface IOffchainBook extends BaseContract {
       _productId: PromiseOrValue<BigNumberish>,
       _sizeIncrement: PromiseOrValue<BigNumberish>,
       _priceIncrementX18: PromiseOrValue<BigNumberish>,
+      _minSize: PromiseOrValue<BigNumberish>,
       _lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -516,6 +611,14 @@ export interface IOffchainBook extends BaseContract {
 
     matchOrders(
       tx: IEndpoint.MatchOrdersStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    modifyConfig(
+      _sizeIncrement: PromiseOrValue<BigNumberish>,
+      _priceIncrementX18: PromiseOrValue<BigNumberish>,
+      _minSize: PromiseOrValue<BigNumberish>,
+      _lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

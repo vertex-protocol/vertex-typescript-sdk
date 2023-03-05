@@ -124,14 +124,16 @@ export interface IPerpEngineInterface extends utils.Interface {
     "getEngineType()": FunctionFragment;
     "getLpState(uint32)": FunctionFragment;
     "getOrderbook(uint32)": FunctionFragment;
+    "getPositionPnl(uint32,bytes32)": FunctionFragment;
     "getProductIds()": FunctionFragment;
     "getSettlementState(uint32,bytes32)": FunctionFragment;
     "getStateAndBalance(uint32,bytes32)": FunctionFragment;
     "getStatesAndBalances(uint32,bytes32)": FunctionFragment;
     "hasBalance(uint32,bytes32)": FunctionFragment;
     "initialize(address,address,address,address,address)": FunctionFragment;
+    "manualAssert(int128[])": FunctionFragment;
     "mintLp(uint32,bytes32,int128,int128,int128)": FunctionFragment;
-    "settlePnl(bytes32,uint256,bool)": FunctionFragment;
+    "settlePnl(bytes32,uint256)": FunctionFragment;
     "socializeSubaccount(bytes32,int128)": FunctionFragment;
     "swapLp(uint32,bytes32,int128,int128,int128,int128)": FunctionFragment;
     "updateStates(uint128,int128[])": FunctionFragment;
@@ -148,12 +150,14 @@ export interface IPerpEngineInterface extends utils.Interface {
       | "getEngineType"
       | "getLpState"
       | "getOrderbook"
+      | "getPositionPnl"
       | "getProductIds"
       | "getSettlementState"
       | "getStateAndBalance"
       | "getStatesAndBalances"
       | "hasBalance"
       | "initialize"
+      | "manualAssert"
       | "mintLp"
       | "settlePnl"
       | "socializeSubaccount"
@@ -202,6 +206,10 @@ export interface IPerpEngineInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "getPositionPnl",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getProductIds",
     values?: undefined
   ): string;
@@ -232,6 +240,10 @@ export interface IPerpEngineInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "manualAssert",
+    values: [PromiseOrValue<BigNumberish>[]]
+  ): string;
+  encodeFunctionData(
     functionFragment: "mintLp",
     values: [
       PromiseOrValue<BigNumberish>,
@@ -243,11 +255,7 @@ export interface IPerpEngineInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "settlePnl",
-    values: [
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<boolean>
-    ]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "socializeSubaccount",
@@ -297,6 +305,10 @@ export interface IPerpEngineInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getPositionPnl",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getProductIds",
     data: BytesLike
   ): Result;
@@ -314,6 +326,10 @@ export interface IPerpEngineInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "hasBalance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "manualAssert",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "mintLp", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "settlePnl", data: BytesLike): Result;
   decodeFunctionResult(
@@ -482,6 +498,12 @@ export interface IPerpEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    getPositionPnl(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     getProductIds(overrides?: CallOverrides): Promise<[number[]]>;
 
     getSettlementState(
@@ -540,6 +562,11 @@ export interface IPerpEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    manualAssert(
+      openInterests: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccount: PromiseOrValue<BytesLike>,
@@ -552,7 +579,6 @@ export interface IPerpEngine extends BaseContract {
     settlePnl(
       subaccount: PromiseOrValue<BytesLike>,
       productIds: PromiseOrValue<BigNumberish>,
-      inLiquidation: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -625,6 +651,12 @@ export interface IPerpEngine extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  getPositionPnl(
+    productId: PromiseOrValue<BigNumberish>,
+    subaccount: PromiseOrValue<BytesLike>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   getProductIds(overrides?: CallOverrides): Promise<number[]>;
 
   getSettlementState(
@@ -681,6 +713,11 @@ export interface IPerpEngine extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  manualAssert(
+    openInterests: PromiseOrValue<BigNumberish>[],
+    overrides?: CallOverrides
+  ): Promise<void>;
+
   mintLp(
     productId: PromiseOrValue<BigNumberish>,
     subaccount: PromiseOrValue<BytesLike>,
@@ -693,7 +730,6 @@ export interface IPerpEngine extends BaseContract {
   settlePnl(
     subaccount: PromiseOrValue<BytesLike>,
     productIds: PromiseOrValue<BigNumberish>,
-    inLiquidation: PromiseOrValue<boolean>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -766,6 +802,12 @@ export interface IPerpEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    getPositionPnl(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getProductIds(overrides?: CallOverrides): Promise<number[]>;
 
     getSettlementState(
@@ -824,6 +866,11 @@ export interface IPerpEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    manualAssert(
+      openInterests: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccount: PromiseOrValue<BytesLike>,
@@ -836,7 +883,6 @@ export interface IPerpEngine extends BaseContract {
     settlePnl(
       subaccount: PromiseOrValue<BytesLike>,
       productIds: PromiseOrValue<BigNumberish>,
-      inLiquidation: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -970,6 +1016,12 @@ export interface IPerpEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getPositionPnl(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getProductIds(overrides?: CallOverrides): Promise<BigNumber>;
 
     getSettlementState(
@@ -1005,6 +1057,11 @@ export interface IPerpEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    manualAssert(
+      openInterests: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccount: PromiseOrValue<BytesLike>,
@@ -1017,7 +1074,6 @@ export interface IPerpEngine extends BaseContract {
     settlePnl(
       subaccount: PromiseOrValue<BytesLike>,
       productIds: PromiseOrValue<BigNumberish>,
-      inLiquidation: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1089,6 +1145,12 @@ export interface IPerpEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getPositionPnl(
+      productId: PromiseOrValue<BigNumberish>,
+      subaccount: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getProductIds(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getSettlementState(
@@ -1124,6 +1186,11 @@ export interface IPerpEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    manualAssert(
+      openInterests: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccount: PromiseOrValue<BytesLike>,
@@ -1136,7 +1203,6 @@ export interface IPerpEngine extends BaseContract {
     settlePnl(
       subaccount: PromiseOrValue<BytesLike>,
       productIds: PromiseOrValue<BigNumberish>,
-      inLiquidation: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

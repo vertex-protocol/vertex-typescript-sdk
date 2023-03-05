@@ -42,7 +42,6 @@ export declare namespace IEndpoint {
 export interface IEndpointInterface extends utils.Interface {
   functions: {
     "depositCollateral(bytes12,uint32,uint128)": FunctionFragment;
-    "depositInsurance(uint128)": FunctionFragment;
     "getNonce(address)": FunctionFragment;
     "getNumSubaccounts()": FunctionFragment;
     "getPriceX18(uint32)": FunctionFragment;
@@ -50,6 +49,7 @@ export interface IEndpointInterface extends utils.Interface {
     "getSubaccountById(uint64)": FunctionFragment;
     "getSubaccountId(bytes32)": FunctionFragment;
     "getTime()": FunctionFragment;
+    "getVersion()": FunctionFragment;
     "setBook(uint32,address)": FunctionFragment;
     "submitSlowModeTransaction(bytes)": FunctionFragment;
     "submitTransactionsChecked(uint64,bytes[])": FunctionFragment;
@@ -58,7 +58,6 @@ export interface IEndpointInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "depositCollateral"
-      | "depositInsurance"
       | "getNonce"
       | "getNumSubaccounts"
       | "getPriceX18"
@@ -66,6 +65,7 @@ export interface IEndpointInterface extends utils.Interface {
       | "getSubaccountById"
       | "getSubaccountId"
       | "getTime"
+      | "getVersion"
       | "setBook"
       | "submitSlowModeTransaction"
       | "submitTransactionsChecked"
@@ -78,10 +78,6 @@ export interface IEndpointInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "depositInsurance",
-    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getNonce",
@@ -109,6 +105,10 @@ export interface IEndpointInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "getTime", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "getVersion",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "setBook",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
@@ -123,10 +123,6 @@ export interface IEndpointInterface extends utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "depositCollateral",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "depositInsurance",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
@@ -151,6 +147,7 @@ export interface IEndpointInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getTime", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getVersion", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setBook", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "submitSlowModeTransaction",
@@ -226,11 +223,6 @@ export interface IEndpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    depositInsurance(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     getNonce(
       sender: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -260,6 +252,10 @@ export interface IEndpoint extends BaseContract {
 
     getTime(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    getVersion(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     setBook(
       productId: PromiseOrValue<BigNumberish>,
       book: PromiseOrValue<string>,
@@ -281,11 +277,6 @@ export interface IEndpoint extends BaseContract {
   depositCollateral(
     subaccountName: PromiseOrValue<BytesLike>,
     productId: PromiseOrValue<BigNumberish>,
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  depositInsurance(
     amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -319,6 +310,10 @@ export interface IEndpoint extends BaseContract {
 
   getTime(overrides?: CallOverrides): Promise<BigNumber>;
 
+  getVersion(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   setBook(
     productId: PromiseOrValue<BigNumberish>,
     book: PromiseOrValue<string>,
@@ -340,11 +335,6 @@ export interface IEndpoint extends BaseContract {
     depositCollateral(
       subaccountName: PromiseOrValue<BytesLike>,
       productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    depositInsurance(
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -377,6 +367,8 @@ export interface IEndpoint extends BaseContract {
     ): Promise<BigNumber>;
 
     getTime(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getVersion(overrides?: CallOverrides): Promise<BigNumber>;
 
     setBook(
       productId: PromiseOrValue<BigNumberish>,
@@ -420,11 +412,6 @@ export interface IEndpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    depositInsurance(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     getNonce(
       sender: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -454,6 +441,10 @@ export interface IEndpoint extends BaseContract {
 
     getTime(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getVersion(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     setBook(
       productId: PromiseOrValue<BigNumberish>,
       book: PromiseOrValue<string>,
@@ -476,11 +467,6 @@ export interface IEndpoint extends BaseContract {
     depositCollateral(
       subaccountName: PromiseOrValue<BytesLike>,
       productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    depositInsurance(
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -513,6 +499,10 @@ export interface IEndpoint extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getTime(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getVersion(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     setBook(
       productId: PromiseOrValue<BigNumberish>,

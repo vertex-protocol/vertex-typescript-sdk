@@ -124,6 +124,7 @@ export declare namespace FQuerier {
   export type BookInfoStruct = {
     sizeIncrement: PromiseOrValue<BigNumberish>;
     priceIncrementX18: PromiseOrValue<BigNumberish>;
+    minSize: PromiseOrValue<BigNumberish>;
     collectedFees: PromiseOrValue<BigNumberish>;
     lpSpreadX18: PromiseOrValue<BigNumberish>;
   };
@@ -132,10 +133,12 @@ export declare namespace FQuerier {
     BigNumber,
     BigNumber,
     BigNumber,
+    BigNumber,
     BigNumber
   ] & {
     sizeIncrement: BigNumber;
     priceIncrementX18: BigNumber;
+    minSize: BigNumber;
     collectedFees: BigNumber;
     lpSpreadX18: BigNumber;
   };
@@ -368,6 +371,7 @@ export interface FQuerierInterface extends utils.Interface {
     "getSpotProducts(uint32[])": FunctionFragment;
     "getSubaccountInfo(bytes32)": FunctionFragment;
     "getSubaccountInfoWithStateChange(bytes32,(address,bytes)[])": FunctionFragment;
+    "getVersion()": FunctionFragment;
     "initialize(address)": FunctionFragment;
   };
 
@@ -382,6 +386,7 @@ export interface FQuerierInterface extends utils.Interface {
       | "getSpotProducts"
       | "getSubaccountInfo"
       | "getSubaccountInfoWithStateChange"
+      | "getVersion"
       | "initialize"
   ): FunctionFragment;
 
@@ -420,6 +425,10 @@ export interface FQuerierInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getSubaccountInfoWithStateChange",
     values: [PromiseOrValue<BytesLike>, FQuerier.TxnStruct[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getVersion",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
@@ -462,6 +471,7 @@ export interface FQuerierInterface extends utils.Interface {
     functionFragment: "getSubaccountInfoWithStateChange",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getVersion", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
 
   events: {};
@@ -559,6 +569,8 @@ export interface FQuerier extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    getVersion(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -610,6 +622,8 @@ export interface FQuerier extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  getVersion(overrides?: CallOverrides): Promise<BigNumber>;
+
   initialize(
     _clearinghouse: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -660,6 +674,8 @@ export interface FQuerier extends BaseContract {
       txns: FQuerier.TxnStruct[],
       overrides?: CallOverrides
     ): Promise<FQuerier.SubaccountInfoStructOutput>;
+
+    getVersion(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
       _clearinghouse: PromiseOrValue<string>,
@@ -713,6 +729,8 @@ export interface FQuerier extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    getVersion(overrides?: CallOverrides): Promise<BigNumber>;
+
     initialize(
       _clearinghouse: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -762,6 +780,8 @@ export interface FQuerier extends BaseContract {
       txns: FQuerier.TxnStruct[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    getVersion(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
       _clearinghouse: PromiseOrValue<string>,

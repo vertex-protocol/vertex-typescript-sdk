@@ -713,6 +713,24 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "int128[]",
+        name: "totalDeposits",
+        type: "int128[]",
+      },
+      {
+        internalType: "int128[]",
+        name: "totalBorrows",
+        type: "int128[]",
+      },
+    ],
+    name: "manualAssert",
+    outputs: [],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint32",
         name: "productId",
         type: "uint32",
@@ -750,20 +768,9 @@ const _abi = [
         name: "subaccount",
         type: "bytes32",
       },
-      {
-        internalType: "int128",
-        name: "insurance",
-        type: "int128",
-      },
     ],
     name: "socializeSubaccount",
-    outputs: [
-      {
-        internalType: "int128",
-        name: "",
-        type: "int128",
-      },
-    ],
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },

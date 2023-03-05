@@ -198,6 +198,11 @@ const _abi = [
                   },
                   {
                     internalType: "int128",
+                    name: "minSize",
+                    type: "int128",
+                  },
+                  {
+                    internalType: "int128",
                     name: "collectedFees",
                     type: "int128",
                   },
@@ -333,6 +338,11 @@ const _abi = [
                   },
                   {
                     internalType: "int128",
+                    name: "minSize",
+                    type: "int128",
+                  },
+                  {
+                    internalType: "int128",
                     name: "collectedFees",
                     type: "int128",
                   },
@@ -385,6 +395,11 @@ const _abi = [
           {
             internalType: "int128",
             name: "priceIncrementX18",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "minSize",
             type: "int128",
           },
           {
@@ -612,6 +627,11 @@ const _abi = [
               {
                 internalType: "int128",
                 name: "priceIncrementX18",
+                type: "int128",
+              },
+              {
+                internalType: "int128",
+                name: "minSize",
                 type: "int128",
               },
               {
@@ -867,6 +887,11 @@ const _abi = [
               {
                 internalType: "int128",
                 name: "priceIncrementX18",
+                type: "int128",
+              },
+              {
+                internalType: "int128",
+                name: "minSize",
                 type: "int128",
               },
               {
@@ -1202,6 +1227,11 @@ const _abi = [
                   },
                   {
                     internalType: "int128",
+                    name: "minSize",
+                    type: "int128",
+                  },
+                  {
+                    internalType: "int128",
                     name: "collectedFees",
                     type: "int128",
                   },
@@ -1333,6 +1363,11 @@ const _abi = [
                   {
                     internalType: "int128",
                     name: "priceIncrementX18",
+                    type: "int128",
+                  },
+                  {
+                    internalType: "int128",
+                    name: "minSize",
                     type: "int128",
                   },
                   {
@@ -1690,6 +1725,11 @@ const _abi = [
                   },
                   {
                     internalType: "int128",
+                    name: "minSize",
+                    type: "int128",
+                  },
+                  {
+                    internalType: "int128",
                     name: "collectedFees",
                     type: "int128",
                   },
@@ -1825,6 +1865,11 @@ const _abi = [
                   },
                   {
                     internalType: "int128",
+                    name: "minSize",
+                    type: "int128",
+                  },
+                  {
+                    internalType: "int128",
                     name: "collectedFees",
                     type: "int128",
                   },
@@ -1850,6 +1895,19 @@ const _abi = [
       },
     ],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getVersion",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "pure",
     type: "function",
   },
   {
