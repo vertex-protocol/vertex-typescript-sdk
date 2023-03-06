@@ -55,6 +55,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
       },
       orderbookAddr,
       productId,
+      spotLeverage: params.spotLeverage,
     });
   }
 
