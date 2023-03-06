@@ -13,4 +13,11 @@ export const GRAPH_CLIENT_ENDPOINTS = {
     candlesticks:
       'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-dev-candlesticks',
   },
+  mainnet: {
+    core: 'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-prod-core',
+    markets:
+      'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-prod-markets',
+    candlesticks:
+      'https://api.thegraph.com/subgraphs/name/vertex-protocol/vertex-prod-candlesticks',
+  },
 };
