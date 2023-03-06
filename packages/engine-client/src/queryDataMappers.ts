@@ -59,6 +59,7 @@ export function mapEngineServerSpotProduct(
   return {
     type: ProductEngineType.SPOT,
     productId: product.product_id,
+    minSize: toBigDecimal(product.book_info.min_size),
     priceIncrement: fromX18(product.book_info.price_increment_x18),
     sizeIncrement: toBigDecimal(product.book_info.size_increment),
     product: {
@@ -100,6 +101,7 @@ export function mapEngineServerPerpProduct(
   return {
     type: ProductEngineType.PERP,
     productId: product.product_id,
+    minSize: toBigDecimal(product.book_info.min_size),
     priceIncrement: fromX18(product.book_info.price_increment_x18),
     sizeIncrement: toBigDecimal(product.book_info.size_increment),
     product: {

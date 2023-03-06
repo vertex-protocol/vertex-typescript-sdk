@@ -13,6 +13,8 @@ export interface Market {
   productId: number;
   type: ProductEngineType;
   product: Product;
+  // Minimum order size to be placed on the book (i.e. not an IOC order)
+  minSize: BigDecimal;
   // Price increment for the orderbook, order prices must be placed at multiples of this increment
   priceIncrement: BigDecimal;
   // Size increment for the orderbook, order sizes must be placed at multiples of this increment

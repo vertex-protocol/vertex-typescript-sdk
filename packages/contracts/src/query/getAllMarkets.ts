@@ -19,6 +19,7 @@ export async function getAllMarkets({
       productId: productInfo.productId,
       type: ProductEngineType.SPOT,
       product: mapEngineSpotProduct(productInfo),
+      minSize: toBigDecimal(productInfo.bookInfo.minSize),
       priceIncrement: fromX18(productInfo.bookInfo.priceIncrementX18),
       sizeIncrement: toBigDecimal(productInfo.bookInfo.sizeIncrement),
     });
@@ -29,6 +30,7 @@ export async function getAllMarkets({
       productId: productInfo.productId,
       type: ProductEngineType.PERP,
       product: mapEnginePerpProduct(productInfo),
+      minSize: toBigDecimal(productInfo.bookInfo.minSize),
       priceIncrement: fromX18(productInfo.bookInfo.priceIncrementX18),
       sizeIncrement: toBigDecimal(productInfo.bookInfo.sizeIncrement),
     });
