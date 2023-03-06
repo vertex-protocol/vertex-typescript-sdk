@@ -139,8 +139,9 @@ export interface ISpotEngineInterface extends utils.Interface {
     "getWithdrawFee(uint32)": FunctionFragment;
     "hasBalance(uint32,bytes32)": FunctionFragment;
     "initialize(address,address,address,address,address)": FunctionFragment;
+    "manualAssert(int128[],int128[])": FunctionFragment;
     "mintLp(uint32,bytes32,int128,int128,int128)": FunctionFragment;
-    "socializeSubaccount(bytes32,int128)": FunctionFragment;
+    "socializeSubaccount(bytes32)": FunctionFragment;
     "swapLp(uint32,bytes32,int128,int128,int128,int128)": FunctionFragment;
     "updateStates(uint128)": FunctionFragment;
   };
@@ -163,6 +164,7 @@ export interface ISpotEngineInterface extends utils.Interface {
       | "getWithdrawFee"
       | "hasBalance"
       | "initialize"
+      | "manualAssert"
       | "mintLp"
       | "socializeSubaccount"
       | "swapLp"
@@ -244,6 +246,10 @@ export interface ISpotEngineInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "manualAssert",
+    values: [PromiseOrValue<BigNumberish>[], PromiseOrValue<BigNumberish>[]]
+  ): string;
+  encodeFunctionData(
     functionFragment: "mintLp",
     values: [
       PromiseOrValue<BigNumberish>,
@@ -255,7 +261,7 @@ export interface ISpotEngineInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "socializeSubaccount",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "swapLp",
@@ -319,6 +325,10 @@ export interface ISpotEngineInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "hasBalance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "manualAssert",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "mintLp", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "socializeSubaccount",
@@ -520,6 +530,12 @@ export interface ISpotEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    manualAssert(
+      totalDeposits: PromiseOrValue<BigNumberish>[],
+      totalBorrows: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccount: PromiseOrValue<BytesLike>,
@@ -531,7 +547,6 @@ export interface ISpotEngine extends BaseContract {
 
     socializeSubaccount(
       subaccount: PromiseOrValue<BytesLike>,
-      insurance: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -643,6 +658,12 @@ export interface ISpotEngine extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  manualAssert(
+    totalDeposits: PromiseOrValue<BigNumberish>[],
+    totalBorrows: PromiseOrValue<BigNumberish>[],
+    overrides?: CallOverrides
+  ): Promise<void>;
+
   mintLp(
     productId: PromiseOrValue<BigNumberish>,
     subaccount: PromiseOrValue<BytesLike>,
@@ -654,7 +675,6 @@ export interface ISpotEngine extends BaseContract {
 
   socializeSubaccount(
     subaccount: PromiseOrValue<BytesLike>,
-    insurance: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -768,6 +788,12 @@ export interface ISpotEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    manualAssert(
+      totalDeposits: PromiseOrValue<BigNumberish>[],
+      totalBorrows: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccount: PromiseOrValue<BytesLike>,
@@ -779,9 +805,8 @@ export interface ISpotEngine extends BaseContract {
 
     socializeSubaccount(
       subaccount: PromiseOrValue<BytesLike>,
-      insurance: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<void>;
 
     swapLp(
       productId: PromiseOrValue<BigNumberish>,
@@ -934,6 +959,12 @@ export interface ISpotEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    manualAssert(
+      totalDeposits: PromiseOrValue<BigNumberish>[],
+      totalBorrows: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccount: PromiseOrValue<BytesLike>,
@@ -945,7 +976,6 @@ export interface ISpotEngine extends BaseContract {
 
     socializeSubaccount(
       subaccount: PromiseOrValue<BytesLike>,
-      insurance: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1049,6 +1079,12 @@ export interface ISpotEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    manualAssert(
+      totalDeposits: PromiseOrValue<BigNumberish>[],
+      totalBorrows: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     mintLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccount: PromiseOrValue<BytesLike>,
@@ -1060,7 +1096,6 @@ export interface ISpotEngine extends BaseContract {
 
     socializeSubaccount(
       subaccount: PromiseOrValue<BytesLike>,
-      insurance: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

@@ -227,8 +227,10 @@ export interface IClearinghouseInterface extends utils.Interface {
     "getQuote()": FunctionFragment;
     "getRisk(uint32)": FunctionFragment;
     "getSupportedEngines()": FunctionFragment;
+    "getVersion()": FunctionFragment;
     "liquidateSubaccount((bytes32,bytes32,uint8,uint32,int128,uint64))": FunctionFragment;
     "mintLp((bytes32,uint32,uint128,uint128,uint128,uint64))": FunctionFragment;
+    "modifyProductConfig(uint32,(int32,int32,int32,int32,int32))": FunctionFragment;
     "registerProductForId(address,(int32,int32,int32,int32,int32),uint32)": FunctionFragment;
     "settlePnl((bytes32[],uint256[]))": FunctionFragment;
     "withdrawCollateral((bytes32,uint32,uint128,uint64))": FunctionFragment;
@@ -253,8 +255,10 @@ export interface IClearinghouseInterface extends utils.Interface {
       | "getQuote"
       | "getRisk"
       | "getSupportedEngines"
+      | "getVersion"
       | "liquidateSubaccount"
       | "mintLp"
+      | "modifyProductConfig"
       | "registerProductForId"
       | "settlePnl"
       | "withdrawCollateral"
@@ -326,12 +330,20 @@ export interface IClearinghouseInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "getVersion",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "liquidateSubaccount",
     values: [IEndpoint.LiquidateSubaccountStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "mintLp",
     values: [IEndpoint.MintLpStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "modifyProductConfig",
+    values: [PromiseOrValue<BigNumberish>, IClearinghouseState.RiskStoreStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "registerProductForId",
@@ -403,11 +415,16 @@ export interface IClearinghouseInterface extends utils.Interface {
     functionFragment: "getSupportedEngines",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getVersion", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "liquidateSubaccount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "mintLp", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "modifyProductConfig",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "registerProductForId",
     data: BytesLike
@@ -571,6 +588,10 @@ export interface IClearinghouse extends BaseContract {
 
     getSupportedEngines(overrides?: CallOverrides): Promise<[number[]]>;
 
+    getVersion(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     liquidateSubaccount(
       tx: IEndpoint.LiquidateSubaccountStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -578,6 +599,12 @@ export interface IClearinghouse extends BaseContract {
 
     mintLp(
       tx: IEndpoint.MintLpStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    modifyProductConfig(
+      productId: PromiseOrValue<BigNumberish>,
+      riskStore: IClearinghouseState.RiskStoreStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -670,6 +697,10 @@ export interface IClearinghouse extends BaseContract {
 
   getSupportedEngines(overrides?: CallOverrides): Promise<number[]>;
 
+  getVersion(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   liquidateSubaccount(
     tx: IEndpoint.LiquidateSubaccountStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -677,6 +708,12 @@ export interface IClearinghouse extends BaseContract {
 
   mintLp(
     tx: IEndpoint.MintLpStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  modifyProductConfig(
+    productId: PromiseOrValue<BigNumberish>,
+    riskStore: IClearinghouseState.RiskStoreStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -769,6 +806,8 @@ export interface IClearinghouse extends BaseContract {
 
     getSupportedEngines(overrides?: CallOverrides): Promise<number[]>;
 
+    getVersion(overrides?: CallOverrides): Promise<BigNumber>;
+
     liquidateSubaccount(
       tx: IEndpoint.LiquidateSubaccountStruct,
       overrides?: CallOverrides
@@ -776,6 +815,12 @@ export interface IClearinghouse extends BaseContract {
 
     mintLp(
       tx: IEndpoint.MintLpStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    modifyProductConfig(
+      productId: PromiseOrValue<BigNumberish>,
+      riskStore: IClearinghouseState.RiskStoreStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -910,6 +955,10 @@ export interface IClearinghouse extends BaseContract {
 
     getSupportedEngines(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getVersion(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     liquidateSubaccount(
       tx: IEndpoint.LiquidateSubaccountStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -917,6 +966,12 @@ export interface IClearinghouse extends BaseContract {
 
     mintLp(
       tx: IEndpoint.MintLpStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    modifyProductConfig(
+      productId: PromiseOrValue<BigNumberish>,
+      riskStore: IClearinghouseState.RiskStoreStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1010,6 +1065,10 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getVersion(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     liquidateSubaccount(
       tx: IEndpoint.LiquidateSubaccountStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1017,6 +1076,12 @@ export interface IClearinghouse extends BaseContract {
 
     mintLp(
       tx: IEndpoint.MintLpStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    modifyProductConfig(
+      productId: PromiseOrValue<BigNumberish>,
+      riskStore: IClearinghouseState.RiskStoreStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

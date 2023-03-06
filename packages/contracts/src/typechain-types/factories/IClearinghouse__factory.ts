@@ -480,6 +480,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getVersion",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         components: [
@@ -565,6 +578,51 @@ const _abi = [
       },
     ],
     name: "mintLp",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        components: [
+          {
+            internalType: "int32",
+            name: "longWeightInitial",
+            type: "int32",
+          },
+          {
+            internalType: "int32",
+            name: "shortWeightInitial",
+            type: "int32",
+          },
+          {
+            internalType: "int32",
+            name: "longWeightMaintenance",
+            type: "int32",
+          },
+          {
+            internalType: "int32",
+            name: "shortWeightMaintenance",
+            type: "int32",
+          },
+          {
+            internalType: "int32",
+            name: "largePositionPenalty",
+            type: "int32",
+          },
+        ],
+        internalType: "struct IClearinghouseState.RiskStore",
+        name: "riskStore",
+        type: "tuple",
+      },
+    ],
+    name: "modifyProductConfig",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -59,7 +59,6 @@ export interface IProductEngineInterface extends utils.Interface {
     "getProductIds()": FunctionFragment;
     "initialize(address,address,address,address,address)": FunctionFragment;
     "mintLp(uint32,bytes32,int128,int128,int128)": FunctionFragment;
-    "socializeSubaccount(bytes32,int128)": FunctionFragment;
     "swapLp(uint32,bytes32,int128,int128,int128,int128)": FunctionFragment;
   };
 
@@ -74,7 +73,6 @@ export interface IProductEngineInterface extends utils.Interface {
       | "getProductIds"
       | "initialize"
       | "mintLp"
-      | "socializeSubaccount"
       | "swapLp"
   ): FunctionFragment;
 
@@ -131,10 +129,6 @@ export interface IProductEngineInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "socializeSubaccount",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "swapLp",
     values: [
       PromiseOrValue<BigNumberish>,
@@ -173,10 +167,6 @@ export interface IProductEngineInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "mintLp", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "socializeSubaccount",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "swapLp", data: BytesLike): Result;
 
   events: {
@@ -322,12 +312,6 @@ export interface IProductEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    socializeSubaccount(
-      subaccount: PromiseOrValue<BytesLike>,
-      insurance: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     swapLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccount: PromiseOrValue<BytesLike>,
@@ -383,12 +367,6 @@ export interface IProductEngine extends BaseContract {
     amountBase: PromiseOrValue<BigNumberish>,
     quoteAmountLow: PromiseOrValue<BigNumberish>,
     quoteAmountHigh: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  socializeSubaccount(
-    subaccount: PromiseOrValue<BytesLike>,
-    insurance: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -449,12 +427,6 @@ export interface IProductEngine extends BaseContract {
       quoteAmountHigh: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    socializeSubaccount(
-      subaccount: PromiseOrValue<BytesLike>,
-      insurance: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     swapLp(
       productId: PromiseOrValue<BigNumberish>,
@@ -566,12 +538,6 @@ export interface IProductEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    socializeSubaccount(
-      subaccount: PromiseOrValue<BytesLike>,
-      insurance: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     swapLp(
       productId: PromiseOrValue<BigNumberish>,
       subaccount: PromiseOrValue<BytesLike>,
@@ -628,12 +594,6 @@ export interface IProductEngine extends BaseContract {
       amountBase: PromiseOrValue<BigNumberish>,
       quoteAmountLow: PromiseOrValue<BigNumberish>,
       quoteAmountHigh: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    socializeSubaccount(
-      subaccount: PromiseOrValue<BytesLike>,
-      insurance: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
