@@ -8,7 +8,10 @@ import {
   SubaccountSummaryResponse,
 } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
-import { EngineServerNoncesParams } from './serverQueryTypes';
+import {
+  EngineServerCheckIpResponse,
+  EngineServerNoncesParams,
+} from './serverQueryTypes';
 
 export type GetEngineSubaccountSummaryParams = GetSubaccountSummaryParams;
 
@@ -163,3 +166,5 @@ export interface GetEngineMaxWithdrawableParams extends Subaccount {
 }
 
 export type GetEngineMaxWithdrawableResponse = BigDecimal;
+
+export type GetEngineIpCheckResponse = EngineServerCheckIpResponse;

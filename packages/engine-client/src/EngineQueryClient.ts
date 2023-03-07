@@ -12,6 +12,7 @@ import {
   EngineServerSubaccountInfoResponse,
   GetEngineAllMarketsResponse,
   GetEngineEstimatedSubaccountSummaryParams,
+  GetEngineIpCheckResponse,
   GetEngineMarketLiquidityParams,
   GetEngineMarketLiquidityResponse,
   GetEngineMarketPriceParams,
@@ -40,6 +41,7 @@ import {
   mapEngineServerTickLiquidity,
 } from './queryDataMappers';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
+import axios from 'axios';
 
 export class EngineQueryClient extends EngineBaseClient {
   /**
@@ -335,6 +337,13 @@ export class EngineQueryClient extends EngineBaseClient {
     });
 
     return toBigDecimal(baseResponse.max_withdrawable);
+  }
+
+  /**
+   * Determines whether client IP is blocked from interacting with the engine
+   */
+  async checkIp(): Promise<GetEngineIpCheckResponse> {
+    return axios.get(`${this.opts.url}/ip`).then((res) => res.data);
   }
 }
 
