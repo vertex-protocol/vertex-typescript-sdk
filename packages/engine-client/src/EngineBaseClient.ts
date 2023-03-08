@@ -71,9 +71,9 @@ export class EngineBaseClient {
    *
    * @param requestType
    * @param params
-   * @protected
+   * @public
    */
-  protected async query<TRequestType extends EngineServerQueryRequestType>(
+  public async query<TRequestType extends EngineServerQueryRequestType>(
     requestType: TRequestType,
     params: EngineServerQueryRequestByType[TRequestType],
   ): Promise<EngineServerQueryResponseByType[TRequestType]> {
@@ -105,9 +105,9 @@ export class EngineBaseClient {
    *
    * @param requestType
    * @param params
-   * @protected
+   * @public
    */
-  protected async execute<TRequestType extends EngineServerExecuteRequestType>(
+  public async execute<TRequestType extends EngineServerExecuteRequestType>(
     requestType: TRequestType,
     params: EngineServerExecuteRequestByType[TRequestType],
   ): Promise<EngineExecuteRequestResponse> {
@@ -137,9 +137,9 @@ export class EngineBaseClient {
    * @param requestType
    * @param verifyingContract
    * @param params
-   * @protected
+   * @public
    */
-  protected async sign<T extends SignableRequestType>(
+  public async sign<T extends SignableRequestType>(
     requestType: T,
     verifyingContract: string,
     params: SignableRequestTypeToParams[T],
