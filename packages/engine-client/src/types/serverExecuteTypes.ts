@@ -9,7 +9,7 @@ import {
   SignedTx,
 } from '@vertex-protocol/contracts';
 import { Bytes } from 'ethers/lib/utils';
-import { RequireExactlyOne } from '../utils';
+import { RequireExactlyOne } from '@vertex-protocol/utils';
 
 type ByteFieldsToHex<T> = {
   [K in keyof T]: T[K] extends Bytes ? string : T[K];
