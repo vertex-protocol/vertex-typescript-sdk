@@ -32,7 +32,7 @@
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
-    "displayName": "Vertex Engine Server Utils"
+    "displayName": "Vertex Indexer Server Utils"
   },
   "gitHead": "ba0ae9600c33f8e859edca210398333a7633fe16"
 }
