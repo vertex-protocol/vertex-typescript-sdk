@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@ethersproject/bignumber": "^5.7.0",
-    "bignumber.js": "^9.1.0",
+    "bignumber.js": "^9.1.1",
     "ethers": "^5.7.1",
     "evm-bn": "^1.1.2"
   },
