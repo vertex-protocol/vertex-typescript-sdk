@@ -86,8 +86,7 @@ export const ARB_ONE_METADATA_BY_PRODUCT_ID: Record<number, ProductMetadata> = {
  * Retrieves the product's metadata on a provided network by productId
  * @param network testnet | mainnet
  * @param productId Id of product to retrieve metadata for.
- * @returns a ProductMetadata obj.
- * @throws an error if an invalid product is provided.
+ * @returns a ProductMetadata obj or undefined for an invalid productId.
  */
 export const getProductMetadataByProductId = (
   network: NetworkName,
