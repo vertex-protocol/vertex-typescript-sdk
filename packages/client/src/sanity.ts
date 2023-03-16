@@ -3,10 +3,7 @@ import { ethers, Wallet } from 'ethers';
 import { nowInSeconds } from '@vertex-protocol/utils';
 import { OrderActionParams } from './apis/market';
 import { subaccountToBytes32 } from '@vertex-protocol/contracts';
-
-function getNonce() {
-  return Date.now();
-}
+import { getProductMetadataByProductId } from './utils';
 
 async function main() {
   const signer = new Wallet(
@@ -108,6 +105,21 @@ async function main() {
     productId: 0,
     amount: 10,
   });
+
+  console.log('Products metatada (spot)');
+  const spotProductId = 1;
+  console.log(getProductMetadataByProductId('testnet', spotProductId));
+  console.log(getProductMetadataByProductId('mainnet', spotProductId));
+
+  console.log('Products metatada (perp)');
+  const perpProductId = 2;
+  console.log(getProductMetadataByProductId('testnet', perpProductId));
+  console.log(getProductMetadataByProductId('mainnet', perpProductId));
+
+  console.log('Invalid product');
+  const invalidProductId = 10000;
+  console.log(getProductMetadataByProductId('testnet', invalidProductId));
+  console.log(getProductMetadataByProductId('mainnet', invalidProductId));
 }
 
 main();
