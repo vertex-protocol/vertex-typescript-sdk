@@ -10,7 +10,6 @@ import {
   subaccountToHex,
 } from '@vertex-protocol/contracts';
 import {
-  getProductMetadataByProductId,
   nowInSeconds,
   toBigDecimal,
   toFixedPoint,
@@ -243,16 +242,6 @@ async function main() {
     'Subaccount info after withdraw collateral',
     JSON.stringify(subaccountInfoAtEnd, null, 2),
   );
-
-  console.log('Products metatada (spot)');
-  const spotProductId = 1;
-  console.log(getProductMetadataByProductId('testnet', spotProductId));
-  console.log(getProductMetadataByProductId('mainnet', spotProductId));
-
-  console.log('Products metatada (perp)');
-  const perpProductId = 2;
-  console.log(getProductMetadataByProductId('testnet', perpProductId));
-  console.log(getProductMetadataByProductId('mainnet', perpProductId));
 }
 
 main().catch((e) => console.log(e));
