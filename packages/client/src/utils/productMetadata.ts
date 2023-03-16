@@ -92,10 +92,7 @@ export const ARB_ONE_METADATA_BY_PRODUCT_ID: Record<number, ProductMetadata> = {
 export const getProductMetadataByProductId = (
   network: NetworkName,
   productId: number,
-): ProductMetadata => {
-  if (productId < 0 || productId > 4) {
-    throw Error('invalid productId provided');
-  }
+): ProductMetadata | undefined => {
   switch (network) {
     case 'testnet':
       return ARB_GOERLI_METADATA_BY_PRODUCT_ID[productId];

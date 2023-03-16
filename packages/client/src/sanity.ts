@@ -5,10 +5,6 @@ import { OrderActionParams } from './apis/market';
 import { subaccountToBytes32 } from '@vertex-protocol/contracts';
 import { getProductMetadataByProductId } from './utils';
 
-function getNonce() {
-  return Date.now();
-}
-
 async function main() {
   const signer = new Wallet(
     'xxx',
@@ -119,6 +115,11 @@ async function main() {
   const perpProductId = 2;
   console.log(getProductMetadataByProductId('testnet', perpProductId));
   console.log(getProductMetadataByProductId('mainnet', perpProductId));
+
+  console.log('Invalid product');
+  const invalidProductId = 10000;
+  console.log(getProductMetadataByProductId('testnet', invalidProductId));
+  console.log(getProductMetadataByProductId('mainnet', invalidProductId));
 }
 
 main();
