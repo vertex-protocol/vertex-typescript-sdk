@@ -1,11 +1,23 @@
 import {
+  EIP712LiquidateSubaccountValues,
   MintLpParams,
   OrderParams,
+  SignableRequestTypeToEIP712Values,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import { EngineServerExecutionResult } from './serverExecuteTypes';
 
 export type WithoutNonce<T extends { nonce: unknown }> = Omit<T, 'nonce'>;
+
+export type WithOptionalTx<
+  T extends {
+    nonce: unknown;
+    tx?: SignableRequestTypeToEIP712Values[keyof SignableRequestTypeToEIP712Values];
+  },
+> = WithoutNonce<T> & {
+  nonce?: string;
+  signature?: string;
+};
 
 export type OrderParamsWithoutNonce = WithoutNonce<OrderParams>;
 

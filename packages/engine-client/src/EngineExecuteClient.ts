@@ -110,7 +110,7 @@ export class EngineExecuteClient extends EngineBaseClient {
   async placeOrder(
     params: PlaceOrderParamsWithoutNonce,
   ): Promise<OrderActionResult> {
-    const { orderNonce } = await this.getNoncesForCurrentSigner();
+    const orderNonce = await this.genOrderNonce();
     const orderWithNonce = {
       ...params.order,
       nonce: orderNonce,
@@ -143,7 +143,7 @@ export class EngineExecuteClient extends EngineBaseClient {
   async cancelOrder(
     params: WithoutNonce<WithEndpointAddr<OrderCancellationParams>>,
   ) {
-    const { orderNonce } = await this.getNoncesForCurrentSigner();
+    const orderNonce = await this.genOrderNonce();
     const paramsWithNonce = { ...params, nonce: orderNonce };
 
     const tx = getVertexEIP712Values('cancel_orders', paramsWithNonce);
