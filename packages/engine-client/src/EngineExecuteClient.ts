@@ -1,16 +1,15 @@
 import {
-  BurnLpParams,
   getOrderDigest,
   getVertexEIP712Values,
-  LiquidateSubaccountParams,
-  OrderCancellationParams,
 } from '@vertex-protocol/contracts';
 import {
-  EngineMintLpParams,
-  EngineWithdrawCollateralParams,
+  BurnLpParamsWithOptionalSignature,
+  EngineMintLpParamsWithOptionalSignature,
+  EngineWithdrawCollateralParamsWithOptionalSignature,
+  LiquidateSubaccountParamsWithOptionalSignature,
   OrderActionResult,
-  PlaceOrderParamsWithoutNonce,
-  WithoutNonce,
+  OrderCancellationParamsWithOptionalSignature,
+  PlaceOrderParamsWithOptionalTxFields,
 } from './types';
 import { EngineBaseClient } from './EngineBaseClient';
 import { hexlify } from 'ethers/lib/utils';
@@ -21,17 +20,20 @@ type WithEndpointAddr<T> = T & {
 
 export class EngineExecuteClient extends EngineBaseClient {
   async liquidateSubaccount(
-    params: WithoutNonce<WithEndpointAddr<LiquidateSubaccountParams>>,
+    params: WithEndpointAddr<LiquidateSubaccountParamsWithOptionalSignature>,
   ) {
-    const { txNonce } = await this.getNoncesForCurrentSigner();
-    const paramsWithNonce = { ...params, nonce: txNonce };
+    const nonce =
+      params.nonce || (await this.getNoncesForCurrentSigner()).txNonce;
+    const paramsWithNonce = { ...params, nonce };
 
     const tx = getVertexEIP712Values('liquidate_subaccount', paramsWithNonce);
-    const signature = await this.sign(
-      'liquidate_subaccount',
-      params.endpointAddr,
-      paramsWithNonce,
-    );
+    const signature =
+      params.signature ||
+      (await this.sign(
+        'liquidate_subaccount',
+        params.endpointAddr,
+        paramsWithNonce,
+      ));
 
     return this.execute('liquidate_subaccount', {
       signature,
@@ -44,16 +46,19 @@ export class EngineExecuteClient extends EngineBaseClient {
   }
 
   async withdrawCollateral(
-    params: WithoutNonce<WithEndpointAddr<EngineWithdrawCollateralParams>>,
+    params: WithEndpointAddr<EngineWithdrawCollateralParamsWithOptionalSignature>,
   ) {
-    const { txNonce } = await this.getNoncesForCurrentSigner();
-    const paramsWithNonce = { ...params, nonce: txNonce };
+    const nonce =
+      params.nonce || (await this.getNoncesForCurrentSigner()).txNonce;
+    const paramsWithNonce = { ...params, nonce };
 
-    const signature = await this.sign(
-      'withdraw_collateral',
-      params.endpointAddr,
-      paramsWithNonce,
-    );
+    const signature =
+      params.signature ||
+      (await this.sign(
+        'withdraw_collateral',
+        params.endpointAddr,
+        paramsWithNonce,
+      ));
 
     const tx = getVertexEIP712Values('withdraw_collateral', paramsWithNonce);
     return this.execute('withdraw_collateral', {
@@ -66,16 +71,17 @@ export class EngineExecuteClient extends EngineBaseClient {
     });
   }
 
-  async mintLp(params: WithoutNonce<WithEndpointAddr<EngineMintLpParams>>) {
-    const { txNonce } = await this.getNoncesForCurrentSigner();
-    const paramsWithNonce = { ...params, nonce: txNonce };
+  async mintLp(
+    params: WithEndpointAddr<EngineMintLpParamsWithOptionalSignature>,
+  ) {
+    const nonce =
+      params.nonce || (await this.getNoncesForCurrentSigner()).txNonce;
+    const paramsWithNonce = { ...params, nonce };
 
     const tx = getVertexEIP712Values('mint_lp', paramsWithNonce);
-    const signature = await this.sign(
-      'mint_lp',
-      params.endpointAddr,
-      paramsWithNonce,
-    );
+    const signature =
+      params.signature ||
+      (await this.sign('mint_lp', params.endpointAddr, paramsWithNonce));
 
     return this.execute('mint_lp', {
       signature,
@@ -87,9 +93,10 @@ export class EngineExecuteClient extends EngineBaseClient {
     });
   }
 
-  async burnLp(params: WithoutNonce<WithEndpointAddr<BurnLpParams>>) {
-    const { txNonce } = await this.getNoncesForCurrentSigner();
-    const paramsWithNonce = { ...params, nonce: txNonce };
+  async burnLp(params: WithEndpointAddr<BurnLpParamsWithOptionalSignature>) {
+    const nonce =
+      params.nonce || (await (await this.getNoncesForCurrentSigner()).txNonce);
+    const paramsWithNonce = { ...params, nonce };
 
     const tx = getVertexEIP712Values('burn_lp', paramsWithNonce);
     const signature = await this.sign(
@@ -108,20 +115,26 @@ export class EngineExecuteClient extends EngineBaseClient {
   }
 
   async placeOrder(
-    params: PlaceOrderParamsWithoutNonce,
+    params: PlaceOrderParamsWithOptionalTxFields,
   ): Promise<OrderActionResult> {
-    const orderNonce = await this.genOrderNonce();
+    const orderNonce = params.order.nonce || (await this.genOrderNonce());
     const orderWithNonce = {
       ...params.order,
       nonce: orderNonce,
     };
 
-    const digest = await getOrderDigest({
-      chainId: await this.getSigningChainId(),
-      order: orderWithNonce,
-      orderbookAddress: params.orderbookAddr,
-    });
+    const digest =
+      params.digest ||
+      (await getOrderDigest({
+        chainId: await this.getSigningChainId(),
+        order: orderWithNonce,
+        orderbookAddress: params.orderbookAddr,
+      }));
+
     const order = getVertexEIP712Values('place_order', orderWithNonce);
+    const signature =
+      params.signature ||
+      (await this.sign('place_order', params.orderbookAddr, orderWithNonce));
 
     const executeResult = await this.execute('place_order', {
       product_id: params.productId,
@@ -129,11 +142,7 @@ export class EngineExecuteClient extends EngineBaseClient {
         ...order,
         sender: hexlify(order.sender),
       },
-      signature: await this.sign(
-        'place_order',
-        params.orderbookAddr,
-        orderWithNonce,
-      ),
+      signature,
       spot_leverage: params.spotLeverage ?? null,
     });
 
@@ -141,17 +150,15 @@ export class EngineExecuteClient extends EngineBaseClient {
   }
 
   async cancelOrder(
-    params: WithoutNonce<WithEndpointAddr<OrderCancellationParams>>,
+    params: WithEndpointAddr<OrderCancellationParamsWithOptionalSignature>,
   ) {
-    const orderNonce = await this.genOrderNonce();
+    const orderNonce = params.nonce || (await this.genOrderNonce());
     const paramsWithNonce = { ...params, nonce: orderNonce };
 
     const tx = getVertexEIP712Values('cancel_orders', paramsWithNonce);
-    const signature = await this.sign(
-      'cancel_orders',
-      params.endpointAddr,
-      paramsWithNonce,
-    );
+    const signature =
+      params.signature ||
+      (await this.sign('cancel_orders', params.endpointAddr, paramsWithNonce));
 
     return this.execute('cancel_orders', {
       tx: {
