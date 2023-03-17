@@ -167,4 +167,14 @@ export interface GetEngineMaxWithdrawableParams extends Subaccount {
 
 export type GetEngineMaxWithdrawableResponse = BigDecimal;
 
+export interface GetEngineMaxMintLpAmountParams extends Subaccount {
+  productId: number;
+  // If not given, engine defaults to true (leverage/borrow enabled)
+  spotLeverage?: boolean;
+}
+
+export interface GetEngineMaxMintLpAmountResponse {
+  maxBaseAmount: BigDecimal;
+}
+
 export type GetEngineIpCheckResponse = EngineServerCheckIpResponse;

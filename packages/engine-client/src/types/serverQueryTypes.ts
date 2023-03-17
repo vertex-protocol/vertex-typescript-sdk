@@ -1,4 +1,3 @@
-import { BigNumberish } from 'ethers';
 import {
   EngineServerPerpBalance,
   EngineServerPerpProduct,
@@ -85,6 +84,13 @@ export interface EngineServerMaxOrderSizeQueryParams {
   spot_leverage: boolean | null;
 }
 
+export interface EngineServerMaxMintLpQueryParams {
+  sender: string;
+  product_id: number;
+  // If not given, engine defaults to true (leverage/borrow enabled)
+  spot_leverage: boolean | null;
+}
+
 export interface EngineServerQueryRequestByType {
   status: Record<string, never>;
   nonces: EngineServerNoncesParams;
@@ -101,6 +107,7 @@ export interface EngineServerQueryRequestByType {
   market_liquidity: EngineServerMarketLiquidityQueryParams;
   max_order_size: EngineServerMaxOrderSizeQueryParams;
   max_withdrawable: EngineServerMaxWithdrawableQueryParams;
+  max_lp_mintable: EngineServerMaxMintLpQueryParams;
 }
 
 export type EngineServerQueryRequestType = keyof EngineServerQueryRequestByType;
@@ -123,9 +130,9 @@ export interface EngineServerSubaccountInfoResponse {
   exists: boolean;
   subaccount: string;
   healths: {
-    health: BigNumberish;
-    assets: BigNumberish;
-    liabilities: BigNumberish;
+    health: string;
+    assets: string;
+    liabilities: string;
   }[];
   spot_count: number;
   perp_count: number;
@@ -142,8 +149,8 @@ export interface EngineServerAllProductsResponse {
 
 // Price, liquidity pairs
 export type EngineServerPriceTickLiquidity = [
-  priceX18: BigNumberish,
-  liquidity: BigNumberish,
+  priceX18: string,
+  liquidity: string,
 ];
 
 export interface EngineServerMarketLiquidityResponse {
@@ -169,18 +176,18 @@ export interface EngineServerSubaccountFeeRatesResponse {
 
 export interface EngineServerMarketPriceResponse {
   product_id: number;
-  bid_x18: BigNumberish;
-  ask_x18: BigNumberish;
+  bid_x18: string;
+  ask_x18: string;
 }
 
 export interface EngineServerGetOrderResponse {
   product_id: number;
   sender: string;
-  price_x18: BigNumberish;
-  amount: BigNumberish;
-  expiration: BigNumberish;
+  price_x18: string;
+  amount: string;
+  expiration: string;
   nonce: string;
-  unfilled_amount: BigNumberish;
+  unfilled_amount: string;
   digest: string;
   placed_at: number;
 }
@@ -192,11 +199,15 @@ export interface EngineServerValidateOrderResponse {
 }
 
 export interface EngineServerMaxOrderSizeResponse {
-  max_order_size: BigNumberish;
+  max_order_size: string;
 }
 
 export interface EngineServerMaxWithdrawableResponse {
-  max_withdrawable: BigNumberish;
+  max_withdrawable: string;
+}
+
+export interface EngineServerMaxMintLpResponse {
+  max_base_amount: string;
 }
 
 export interface EngineServerCheckIpResponse {
@@ -219,6 +230,7 @@ export interface EngineServerQueryResponseByType {
   market_price: EngineServerMarketPriceResponse;
   max_order_size: EngineServerMaxOrderSizeResponse;
   max_withdrawable: EngineServerMaxWithdrawableResponse;
+  max_lp_mintable: EngineServerMaxMintLpResponse;
 }
 
 export interface EngineServerQueryResponse<

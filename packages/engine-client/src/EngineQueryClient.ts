@@ -17,6 +17,8 @@ import {
   GetEngineMarketLiquidityResponse,
   GetEngineMarketPriceParams,
   GetEngineMarketPriceResponse,
+  GetEngineMaxMintLpAmountParams,
+  GetEngineMaxMintLpAmountResponse,
   GetEngineMaxOrderSizeParams,
   GetEngineMaxOrderSizeResponse,
   GetEngineMaxWithdrawableParams,
@@ -337,6 +339,28 @@ export class EngineQueryClient extends EngineBaseClient {
     });
 
     return toBigDecimal(baseResponse.max_withdrawable);
+  }
+
+  /**
+   * Retrieves the estimated max base amount for minting LPs for a product
+   *
+   * @param params
+   */
+  async getMaxMintLpAmount(
+    params: GetEngineMaxMintLpAmountParams,
+  ): Promise<GetEngineMaxMintLpAmountResponse> {
+    const baseResponse = await this.query('max_lp_mintable', {
+      product_id: params.productId,
+      sender: subaccountToHex({
+        subaccountOwner: params.subaccountOwner,
+        subaccountName: params.subaccountName,
+      }),
+      spot_leverage: params.spotLeverage ?? null,
+    });
+
+    return {
+      maxBaseAmount: toBigDecimal(baseResponse.max_base_amount),
+    };
   }
 
   /**

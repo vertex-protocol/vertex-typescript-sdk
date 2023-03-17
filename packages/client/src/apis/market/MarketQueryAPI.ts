@@ -7,6 +7,7 @@ import { GetCandlesticksParams } from '@vertex-protocol/graph';
 import {
   GetEngineMarketLiquidityParams,
   GetEngineMarketPriceParams,
+  GetEngineMaxMintLpAmountParams,
   GetEngineMaxOrderSizeParams,
   GetEngineSubaccountOrdersParams,
   ValidateEngineOrderParams,
@@ -66,6 +67,14 @@ export class MarketQueryAPI extends BaseVertexAPI {
    */
   async getMaxOrderSize(params: GetEngineMaxOrderSizeParams) {
     return this.context.engineClient.getMaxOrderSize(params);
+  }
+
+  /**
+   * Queries engine to determine maximum base amount contribution for minting LPs
+   * @param params
+   */
+  async getMaxMintLp(params: GetEngineMaxMintLpAmountParams) {
+    return this.context.engineClient.getMaxMintLpAmount(params);
   }
 
   /**
