@@ -231,7 +231,7 @@ async function main() {
     subaccountName: 'default',
     productId: 0,
     amount: toFixedPoint(4999, 6),
-    endpointAddr,
+    verifyingAddr: endpointAddr,
   });
   console.log('Done withdrawing collateral, result', withdrawResult);
   const subaccountInfoAtEnd = await client.getSubaccountSummary({

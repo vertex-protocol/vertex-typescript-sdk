@@ -1,15 +1,13 @@
 import {
   BurnLpParams,
-  getOrderDigest,
   getVertexEIP712Values,
   LiquidateSubaccountParams,
   OrderCancellationParams,
 } from '@vertex-protocol/contracts';
 import {
+  EngineExecuteRequestParamsByType,
   EngineMintLpParams,
-  EngineWithdrawCollateralParams,
-  OrderActionResult,
-  PlaceOrderParamsWithoutNonce,
+  EngineServerExecuteRequestByType,
   WithoutNonce,
 } from './types';
 import { EngineBaseClient } from './EngineBaseClient';
@@ -44,26 +42,46 @@ export class EngineExecuteClient extends EngineBaseClient {
   }
 
   async withdrawCollateral(
-    params: WithoutNonce<WithEndpointAddr<EngineWithdrawCollateralParams>>,
+    params: EngineExecuteRequestParamsByType['withdraw_collateral'],
   ) {
-    const { txNonce } = await this.getNoncesForCurrentSigner();
-    const paramsWithNonce = { ...params, nonce: txNonce };
-
-    const signature = await this.sign(
+    return this.execute(
       'withdraw_collateral',
-      params.endpointAddr,
-      paramsWithNonce,
+      await this.getServerWithdrawCollateralParams(params),
     );
+  }
+
+  async getServerWithdrawCollateralParams(
+    params: EngineExecuteRequestParamsByType['withdraw_collateral'],
+  ): Promise<EngineServerExecuteRequestByType['withdraw_collateral']> {
+    const nonce = await (async () => {
+      if (params.nonce) {
+        return params.nonce;
+      }
+      const { txNonce } = await this.getNoncesForCurrentSigner();
+      return txNonce;
+    })();
+
+    const paramsWithNonce = { ...params, nonce };
+    const signature = await (async () => {
+      if ('signature' in params) {
+        return params.signature;
+      }
+      return await this.sign(
+        'withdraw_collateral',
+        params.verifyingAddr,
+        paramsWithNonce,
+      );
+    })();
 
     const tx = getVertexEIP712Values('withdraw_collateral', paramsWithNonce);
-    return this.execute('withdraw_collateral', {
+    return {
       signature,
       tx: {
         ...tx,
         sender: hexlify(tx.sender),
       },
       spot_leverage: params.spotLeverage ?? null,
-    });
+    };
   }
 
   async mintLp(params: WithoutNonce<WithEndpointAddr<EngineMintLpParams>>) {
@@ -107,37 +125,50 @@ export class EngineExecuteClient extends EngineBaseClient {
     });
   }
 
-  async placeOrder(
-    params: PlaceOrderParamsWithoutNonce,
-  ): Promise<OrderActionResult> {
-    const { orderNonce } = await this.getNoncesForCurrentSigner();
+  async placeOrder(params: EngineExecuteRequestParamsByType['place_order']) {
+    return this.execute(
+      'place_order',
+      await this.getServerPlaceOrderParams(params),
+    );
+  }
+
+  async getServerPlaceOrderParams(
+    params: EngineExecuteRequestParamsByType['place_order'],
+  ): Promise<EngineServerExecuteRequestByType['place_order']> {
+    const nonce = await (async () => {
+      if (params.nonce) {
+        return params.nonce;
+      }
+      const { orderNonce } = await this.getNoncesForCurrentSigner();
+      return orderNonce;
+    })();
+
     const orderWithNonce = {
       ...params.order,
-      nonce: orderNonce,
+      nonce,
     };
 
-    const digest = await getOrderDigest({
-      chainId: await this.getSigningChainId(),
-      order: orderWithNonce,
-      orderbookAddress: params.orderbookAddr,
-    });
     const order = getVertexEIP712Values('place_order', orderWithNonce);
+    const signature = await (async () => {
+      if ('signature' in params) {
+        return params.signature;
+      }
+      return await this.sign(
+        'place_order',
+        params.verifyingAddr,
+        orderWithNonce,
+      );
+    })();
 
-    const executeResult = await this.execute('place_order', {
+    return {
       product_id: params.productId,
       order: {
         ...order,
         sender: hexlify(order.sender),
       },
-      signature: await this.sign(
-        'place_order',
-        params.orderbookAddr,
-        orderWithNonce,
-      ),
+      signature,
       spot_leverage: params.spotLeverage ?? null,
-    });
-
-    return { digest, ...executeResult };
+    };
   }
 
   async cancelOrder(
@@ -161,6 +192,4 @@ export class EngineExecuteClient extends EngineBaseClient {
       signature,
     });
   }
-
-  // TODO: settle PNL
 }

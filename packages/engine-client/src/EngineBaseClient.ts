@@ -1,7 +1,9 @@
 import {
+  EngineServerExecuteRequest,
   EngineServerExecuteRequestByType,
   EngineServerExecuteRequestType,
   EngineServerExecutionResult,
+  EngineServerQueryRequest,
   EngineServerQueryRequestByType,
   EngineServerQueryRequestType,
   EngineServerQueryResponse,
@@ -77,11 +79,12 @@ export class EngineBaseClient {
     requestType: TRequestType,
     params: EngineServerQueryRequestByType[TRequestType],
   ): Promise<EngineServerQueryResponseByType[TRequestType]> {
-    const queryParams: Record<string, string | number> = {
-      type: requestType,
-    };
-    Object.keys(params).forEach((key) => {
-      const value = params[key as keyof typeof params];
+    const request = this.getQueryRequest(requestType, params);
+    const queryParams: Record<string, unknown> = {};
+
+    // Special consideration for sending params as query string
+    Object.keys(request).forEach((key) => {
+      const value = request[key as keyof typeof request];
       // Remove null values and stringify
       if (value != null) {
         queryParams[key] = String(value);
@@ -101,6 +104,22 @@ export class EngineBaseClient {
   }
 
   /**
+   * A simple, typechecked fn for constructing a query request in the format expected by the server.
+   *
+   * @param requestType
+   * @param params
+   */
+  public getQueryRequest<TRequestType extends EngineServerQueryRequestType>(
+    requestType: TRequestType,
+    params: EngineServerQueryRequestByType[TRequestType],
+  ): EngineServerQueryRequest<TRequestType> {
+    return {
+      type: requestType,
+      ...params,
+    };
+  }
+
+  /**
    * POSTs an execute message to the engine
    *
    * @param requestType
@@ -111,12 +130,9 @@ export class EngineBaseClient {
     requestType: TRequestType,
     params: EngineServerExecuteRequestByType[TRequestType],
   ): Promise<EngineExecuteRequestResponse> {
-    const reqBody: EngineExecuteRequestBody = {
-      [requestType]: params,
-    };
     const response = await axios.post<EngineExecuteRequestResponse>(
       `${this.opts.url}/execute`,
-      reqBody,
+      this.getExecuteRequest(requestType, params),
     );
 
     this.checkResponseStatus(response);
@@ -125,10 +141,19 @@ export class EngineBaseClient {
     return response.data;
   }
 
-  protected async getSigningChainId(): Promise<number> {
-    return (
-      this.opts.signingChainId ?? (await this.opts.signer?.getChainId()) ?? -1
-    );
+  /**
+   * A simple, typechecked fn for constructing an execute request in the format expected by the server.
+   *
+   * @param requestType
+   * @param params
+   */
+  public getExecuteRequest<TRequestType extends EngineServerExecuteRequestType>(
+    requestType: TRequestType,
+    params: EngineServerExecuteRequestByType[TRequestType],
+  ): EngineServerExecuteRequest {
+    return {
+      [requestType]: params,
+    };
   }
 
   /**
@@ -154,6 +179,12 @@ export class EngineBaseClient {
       signer: this.opts.signer,
       verifyingContract,
     });
+  }
+
+  protected async getSigningChainId(): Promise<number> {
+    return (
+      this.opts.signingChainId ?? (await this.opts.signer?.getChainId()) ?? -1
+    );
   }
 
   private checkResponseStatus(response: AxiosResponse) {

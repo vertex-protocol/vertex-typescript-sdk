@@ -53,3 +53,8 @@ export interface EngineServerExecuteRequestByType {
 
 export type EngineServerExecuteRequestType =
   keyof EngineServerExecuteRequestByType;
+
+// This isn't QUITE correct - only one of the keys in EngineServerExecuteRequestByType should be present
+// So, something like: https://github.com/sindresorhus/type-fest/blob/main/source/require-exactly-one.d.ts
+export type EngineServerExecuteRequest =
+  Partial<EngineServerExecuteRequestByType>;

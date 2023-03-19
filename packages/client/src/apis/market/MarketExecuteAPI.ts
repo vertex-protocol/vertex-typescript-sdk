@@ -53,7 +53,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
         ...order,
         subaccountOwner: (await this.context.engineSigner?.getAddress()) ?? '',
       },
-      orderbookAddr,
+      verifyingAddr: orderbookAddr,
       productId,
       spotLeverage: params.spotLeverage,
     });

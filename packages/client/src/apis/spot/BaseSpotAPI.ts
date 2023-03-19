@@ -1,6 +1,7 @@
 import { BaseVertexAPI } from '../base';
 import { IERC20, IERC20__factory } from '@vertex-protocol/contracts';
 
+// TODO: lift this up a level
 export type WithoutSubaccountOwner<T> = Omit<T, 'subaccountOwner'>;
 
 export class BaseSpotAPI extends BaseVertexAPI {

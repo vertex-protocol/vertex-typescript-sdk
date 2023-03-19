@@ -1,11 +1,9 @@
 import {
+  BaseEnginePlaceOrderParams,
   OrderParamsWithoutNonce,
-  PlaceOrderParams,
 } from '@vertex-protocol/engine-client';
+import { WithoutSubaccountOwner } from '../spot/BaseSpotAPI';
 
-export type OrderActionParams = Omit<
-  PlaceOrderParams,
-  'orderbookAddr' | 'order'
-> & {
-  order: Omit<OrderParamsWithoutNonce, 'subaccountOwner'>;
+export type OrderActionParams = Omit<BaseEnginePlaceOrderParams, 'order'> & {
+  order: WithoutSubaccountOwner<OrderParamsWithoutNonce>;
 };

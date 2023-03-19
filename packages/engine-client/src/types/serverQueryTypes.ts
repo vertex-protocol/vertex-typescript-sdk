@@ -112,6 +112,12 @@ export interface EngineServerQueryRequestByType {
 
 export type EngineServerQueryRequestType = keyof EngineServerQueryRequestByType;
 
+export type EngineServerQueryRequest<
+  TRequestType extends EngineServerQueryRequestType,
+> = {
+  type: TRequestType;
+} & EngineServerQueryRequestByType[TRequestType];
+
 // Unless in active state, engine is not fully operational
 export type EngineServerStatusResponse =
   | 'started'
