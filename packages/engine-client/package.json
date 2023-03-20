@@ -26,8 +26,13 @@
     "@vertex-protocol/contracts": "^0.1.0-alpha.78",
     "@vertex-protocol/utils": "^0.1.0-alpha.78",
     "axios": "^1.1.2",
-    "ethers": "^5.7.1",
     "ts-mixer": "^6.0.1"
+  },
+  "peerDependencies": {
+    "ethers": "^5.7.1"
+  },
+  "devDependencies": {
+    "ethers": "^5.7.1"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
