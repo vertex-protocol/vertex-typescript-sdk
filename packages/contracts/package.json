@@ -24,16 +24,15 @@
     "abis"
   ],
   "dependencies": {
-    "@ethersproject/abi": "^5.7.0",
-    "@ethersproject/bytes": "^5.7.0",
-    "@ethersproject/constants": "^5.7.0",
-    "@ethersproject/providers": "^5.7.1",
-    "@vertex-protocol/utils": "^0.1.0-alpha.78",
+    "@vertex-protocol/utils": "^0.1.0-alpha.78"
+  },
+  "peerDependencies": {
     "ethers": "^5.7.1"
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^10.1.0",
     "env-cmd": "^10.1.0",
+    "ethers": "^5.7.1",
     "typechain": "^8.1.0"
   },
   "typedoc": {
