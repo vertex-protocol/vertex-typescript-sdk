@@ -5,7 +5,7 @@ import {
   EngineServerPerpProduct,
   EngineServerPriceTickLiquidity,
   EngineServerSpotProduct,
-} from './types';
+} from '../types';
 import { fromX18, toBigDecimal, toEthersBN } from '@vertex-protocol/utils';
 import {
   calcTotalBorrowed,

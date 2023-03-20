@@ -75,7 +75,8 @@ export class MarketExecuteAPI extends BaseVertexAPI {
     });
   }
 
-  private getOrderbookAddress(productId: number) {
-    return this.context.contracts.clearinghouse.getOrderbook(productId);
+  private async getOrderbookAddress(productId: number) {
+    const contracts = await this.context.engineClient.getContracts();
+    return contracts.orderbookAddrs[productId];
   }
 }

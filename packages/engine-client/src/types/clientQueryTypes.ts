@@ -47,6 +47,12 @@ export interface SubaccountProductDeltaTx {
   vQuoteDelta: BigDecimal;
 }
 
+export interface GetEngineContractsResponse {
+  chainId: string;
+  endpointAddr: string;
+  orderbookAddrs: string[];
+}
+
 export type GetEngineEstimatedSubaccountSummaryParams =
   GetSubaccountSummaryParams & {
     txs: SubaccountTx[];
