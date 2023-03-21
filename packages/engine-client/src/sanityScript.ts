@@ -91,21 +91,21 @@ async function main() {
   const products = await client.getAllMarkets();
   console.log('All products', JSON.stringify(products, null, 2));
   console.log('Placing order');
-  const productId = 1;
+  const productId = 2;
   const orderbookAddr = await clearinghouse.getOrderbook(productId);
   const order: EngineExecuteOrderParams = {
     subaccountOwner: signer.address,
     subaccountName: 'default',
-    amount: -1,
+    amount: toFixedPoint(-0.01),
     expiration: getExpiration(),
-    price: 23000,
+    price: 28000,
   };
   const placeResult = await client.placeOrder({
     verifyingAddr: orderbookAddr,
     productId,
     order,
   });
-  console.log('Done placing order', placeResult);
+  console.log('Done placing spot order', placeResult);
   const subaccountOrders = await client.getSubaccountOrders({
     productId,
     subaccountName: 'default',
@@ -130,7 +130,7 @@ async function main() {
     subaccountOwner: signer.address,
     subaccountName: 'default',
     productId,
-    price: toBigDecimal(23000),
+    price: toBigDecimal(28000),
     side: 'long',
   });
   console.log('Max order size', JSON.stringify(maxOrderSize, null, 2));

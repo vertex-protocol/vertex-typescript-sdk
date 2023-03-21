@@ -84,7 +84,7 @@ export class EngineBaseClient {
     const request = this.getQueryRequest(requestType, params);
     const queryParams: Record<string, string | number> = {};
     Object.keys(request).forEach((key) => {
-      const value = params[key as keyof typeof params];
+      const value = request[key as keyof typeof request];
       // Remove null values and stringify
       if (value != null) {
         queryParams[key] = String(value);
