@@ -1,48 +1,67 @@
 import { BigNumber, BigNumberish } from 'ethers';
 
+import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
+
 // All valid "special" order expiration types
 export type OrderExpirationType = 'default' | 'ioc' | 'fok' | 'post_only';
 
 // 2 MSBs of u64
-const EXPIRATION_TYPE_TO_VAL: Record<OrderExpirationType, BigNumber> = {
-  default: BigNumber.from('0'),
-  // value of 1
-  ioc: BigNumber.from('4611686018427387904'),
-  // value of 2
-  fok: BigNumber.from('9223372036854775808'),
-  // value of 3
-  post_only: BigNumber.from('13835058055282163712'),
+const EXPIRATION_TYPE_TO_MS2B: Record<OrderExpirationType, bigint> = {
+  default: 0n,
+  ioc: 1n,
+  fok: 2n,
+  post_only: 3n,
 };
 
 /**
  * Special order types, such as immediate-or-cancel, are encoded into the expiration field.
  * This is a utility to create the proper timestamp needed
+ *
+ * @param type The type of expiration
+ * @param expiration The expiration timestamp in UNIX seconds
  */
 export function getExpirationTimestamp(
   type: OrderExpirationType,
-  expiration = 0,
-): BigNumber {
-  return EXPIRATION_TYPE_TO_VAL[type].add(expiration);
+  expiration: number,
+): BigDecimal {
+  const bigIntVal =
+    BigInt(expiration.toFixed(0)) | (EXPIRATION_TYPE_TO_MS2B[type] << 62n);
+  return toBigDecimal(bigIntVal.toString());
 }
 
+/**
+ * Parses the expiration timestamp into the expiration type and expiration timestamp in UNIX seconds
+ *
+ * @param rawExpiration
+ */
 export function parseRawExpirationTimestamp(rawExpiration: BigNumberish): {
   type: OrderExpirationType;
-  expiration: BigNumberish;
+  expiration: number;
 } {
-  // Value of bits 63 and 64
-  const maskedExpirationValue = BigNumber.from(rawExpiration).mask(62);
-  for (const [expirationType, expirationTypeValue] of Object.entries(
-    EXPIRATION_TYPE_TO_VAL,
-  )) {
-    if (maskedExpirationValue.sub(expirationTypeValue).eq(0)) {
-      return {
-        type: expirationType as OrderExpirationType,
-        expiration: BigNumber.from(rawExpiration).sub(expirationTypeValue),
-      };
+  const bigIntRawExpiration = BigInt(BigNumber.from(rawExpiration).toString());
+  const largestTwoBits = bigIntRawExpiration >> 62n;
+
+  const expirationType = (() => {
+    if (largestTwoBits === EXPIRATION_TYPE_TO_MS2B.default) {
+      return 'default';
     }
-  }
+    if (largestTwoBits === EXPIRATION_TYPE_TO_MS2B.ioc) {
+      return 'ioc';
+    }
+    if (largestTwoBits === EXPIRATION_TYPE_TO_MS2B.fok) {
+      return 'fok';
+    }
+    if (largestTwoBits === EXPIRATION_TYPE_TO_MS2B.post_only) {
+      return 'post_only';
+    }
+    throw new Error(
+      `Could not detect order expiration type. Raw expiration ${bigIntRawExpiration.toString()}`,
+    );
+  })();
+  const bigIntExpiration = bigIntRawExpiration - (largestTwoBits << 62n);
+
   return {
-    type: 'default',
-    expiration: rawExpiration,
+    type: expirationType,
+    expiration: Number(bigIntExpiration.toString()),
   };
 }

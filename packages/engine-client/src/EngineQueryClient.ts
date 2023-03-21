@@ -11,6 +11,7 @@ import {
   EngineServerSubaccountInfoQueryParams,
   EngineServerSubaccountInfoResponse,
   GetEngineAllMarketsResponse,
+  GetEngineContractsResponse,
   GetEngineEstimatedSubaccountSummaryParams,
   GetEngineIpCheckResponse,
   GetEngineMarketLiquidityParams,
@@ -41,11 +42,23 @@ import {
   mapEngineServerPerpProduct,
   mapEngineServerSpotProduct,
   mapEngineServerTickLiquidity,
-} from './queryDataMappers';
+} from './utils/queryDataMappers';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import axios from 'axios';
 
 export class EngineQueryClient extends EngineBaseClient {
+  /**
+   * Retrieves the set of contracts that the engine is interfacing with
+   */
+  async getContracts(): Promise<GetEngineContractsResponse> {
+    const baseResponse = await this.query('contracts', {});
+    return {
+      chainId: baseResponse.chain_id,
+      endpointAddr: baseResponse.endpoint_addr,
+      orderbookAddrs: baseResponse.book_addrs,
+    };
+  }
+
   /**
    * Retrieves current engine status
    */

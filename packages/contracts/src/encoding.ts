@@ -3,8 +3,8 @@ import {
   SignedTx,
   WithdrawCollateralParams,
 } from './eip712';
-import { defaultAbiCoder } from '@ethersproject/abi';
 import { toX18 } from '@vertex-protocol/utils';
+import { defaultAbiCoder } from 'ethers/lib/utils';
 
 export function encodeSignedWithdrawCollateralTx(
   signed: SignedTx<WithdrawCollateralParams>,

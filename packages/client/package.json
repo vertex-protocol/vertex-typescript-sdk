@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/client",
-  "version": "0.1.0-alpha.78",
+  "version": "0.1.0-alpha.79",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -23,13 +23,18 @@
     "src"
   ],
   "dependencies": {
-    "@vertex-protocol/contracts": "^0.1.0-alpha.78",
-    "@vertex-protocol/engine-client": "^0.1.0-alpha.78",
-    "@vertex-protocol/graph": "^0.1.0-alpha.78",
-    "@vertex-protocol/indexer-client": "^0.1.0-alpha.78",
-    "@vertex-protocol/utils": "^0.1.0-alpha.78",
-    "ethers": "^5.7.1",
+    "@vertex-protocol/contracts": "^0.1.0-alpha.79",
+    "@vertex-protocol/engine-client": "^0.1.0-alpha.79",
+    "@vertex-protocol/graph": "^0.1.0-alpha.79",
+    "@vertex-protocol/indexer-client": "^0.1.0-alpha.79",
+    "@vertex-protocol/utils": "^0.1.0-alpha.79",
     "ts-mixer": "^6.0.1"
+  },
+  "peerDependencies": {
+    "ethers": "^5.7.1"
+  },
+  "devDependencies": {
+    "ethers": "^5.7.1"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
