@@ -6,6 +6,7 @@ import {
   OrderParams,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
+import { RequireExactlyOne } from '../utils';
 import { EngineServerExecutionResult } from './serverExecuteTypes';
 
 /**
@@ -84,6 +85,8 @@ export interface EngineExecuteRequestParamsByType {
   cancel_orders: EngineExecuteCancelOrdersParams;
 }
 
-export interface OrderActionResult extends EngineServerExecutionResult {
-  digest: string;
-}
+export type EngineExecuteRequestParamsType =
+  keyof EngineExecuteRequestParamsByType;
+
+export type EngineExecuteRequestParams =
+  RequireExactlyOne<EngineExecuteRequestParamsType>;

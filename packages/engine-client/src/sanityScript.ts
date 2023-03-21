@@ -4,6 +4,7 @@ import {
   IClearinghouse__factory,
   IEndpoint__factory,
   MockERC20__factory,
+  OrderParams,
   subaccountFromBytes32,
   subaccountFromHex,
   subaccountToBytes32,
@@ -16,6 +17,7 @@ import {
 } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
 import { EngineOrderParams } from './types';
+import { getOrderNonce } from './utils';
 
 function getExpiration() {
   return nowInSeconds() + 1000;
@@ -99,12 +101,17 @@ async function main() {
     amount: toFixedPoint(-0.01),
     expiration: getExpiration(),
     price: 28000,
+    nonce: getOrderNonce(),
   };
   const placeResult = await client.placeOrder({
     verifyingAddr: orderbookAddr,
     productId,
     order,
   });
+  const orderDigest = await client.getOrderDigest(
+    order as OrderParams,
+    orderbookAddr,
+  );
   console.log('Done placing spot order', placeResult);
   const subaccountOrders = await client.getSubaccountOrders({
     productId,
@@ -151,7 +158,7 @@ async function main() {
     JSON.stringify(maxWithdrawableNoSpotLeverage, null, 2),
   );
   const queriedOrder = await client.getOrder({
-    digest: placeResult.digest,
+    digest: orderDigest,
     productId,
   });
   console.log('Queried order', JSON.stringify(queriedOrder, null, 2));
@@ -160,7 +167,7 @@ async function main() {
     subaccountName: 'default',
     subaccountOwner: signer.address,
     productIds: [productId],
-    digests: [placeResult.digest],
+    digests: [orderDigest],
     verifyingAddr: endpointAddr,
   });
   console.log('Done cancelling order', cancelResult);

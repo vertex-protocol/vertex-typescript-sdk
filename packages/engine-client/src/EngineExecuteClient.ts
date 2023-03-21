@@ -1,4 +1,4 @@
-import { EngineExecuteRequestParamsByType, OrderActionResult } from './types';
+import { EngineExecuteRequestParamsByType } from './types';
 import { EngineExecuteBuilder } from './EngineExecuteBuilder';
 
 export class EngineExecuteClient extends EngineExecuteBuilder {
@@ -25,20 +25,14 @@ export class EngineExecuteClient extends EngineExecuteBuilder {
   }
 
   async burnLp(params: EngineExecuteRequestParamsByType['burn_lp']) {
-    return this.execute('burn_lp', await this.burnBurnLpServerPayload(params));
+    return this.execute('burn_lp', await this.buildBurnLpServerPayload(params));
   }
 
-  async placeOrder(
-    params: EngineExecuteRequestParamsByType['place_order'],
-  ): Promise<OrderActionResult> {
-    const { digest, ...serverParams } = await this.buildPlaceOrderServerPayload(
-      params,
-      true,
+  async placeOrder(params: EngineExecuteRequestParamsByType['place_order']) {
+    return this.execute(
+      'place_order',
+      await this.buildPlaceOrderServerPayload(params),
     );
-    return {
-      digest: digest as string,
-      ...(await this.execute('place_order', serverParams)),
-    };
   }
 
   async cancelOrders(

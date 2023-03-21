@@ -18,6 +18,7 @@ import {
 import axios, { AxiosResponse } from 'axios';
 import { TypedDataSigner } from '@ethersproject/abstract-signer';
 import { Signer } from 'ethers';
+import { getOrderNonce } from './utils';
 
 export interface EngineClientOpts {
   // Server URL

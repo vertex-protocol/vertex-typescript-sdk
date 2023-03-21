@@ -1,6 +1,7 @@
 import {
   getOrderDigest,
   getVertexEIP712Values,
+  OrderParams,
 } from '@vertex-protocol/contracts';
 import { hexlify } from 'ethers/lib/utils';
 import { EngineBaseClient } from './EngineBaseClient';
@@ -135,7 +136,7 @@ export class EngineExecuteBuilder extends EngineBaseClient {
    * @param clientParams Client BurnLp params.
    * @returns `burn_lp` payload
    */
-  async burnBurnLpServerPayload(
+  async buildBurnLpServerPayload(
     clientParams: EngineExecuteRequestParamsByType['burn_lp'],
   ): Promise<EngineServerExecuteRequestByType['burn_lp']> {
     const nonce = await (async () => {
@@ -170,15 +171,11 @@ export class EngineExecuteBuilder extends EngineBaseClient {
   /**
    * Builds server payload for the `place_order` execute action.
    * @param clientParams Client PlaceOrder params.
-   * @param includeDigest Optionally compute `order` digest. Must be excluded from final payload send to the server.
    * @returns `place_order` payload
    */
   async buildPlaceOrderServerPayload(
     clientParams: EngineExecuteRequestParamsByType['place_order'],
-    includeDigest = false,
-  ): Promise<
-    EngineServerExecuteRequestByType['place_order'] & { digest: string | null }
-  > {
+  ): Promise<EngineServerExecuteRequestByType['place_order']> {
     const nonce = await (async () => {
       if (clientParams.order.nonce) {
         return clientParams.order.nonce;
@@ -192,26 +189,15 @@ export class EngineExecuteBuilder extends EngineBaseClient {
     };
 
     const order = getVertexEIP712Values('place_order', orderWithNonce);
-    const { signature, digest } = await (async () => {
+    const signature = await (async () => {
       if ('signature' in clientParams) {
-        return { signature: clientParams.signature, digest: null };
+        return clientParams.signature;
       }
-      const digest = includeDigest
-        ? await getOrderDigest({
-            chainId: await this.getSigningChainId(),
-            order: orderWithNonce,
-            verifyingAddr: clientParams.verifyingAddr,
-          })
-        : null;
-      const signature = await this.sign(
+      return await this.sign(
         'place_order',
         clientParams.verifyingAddr,
         orderWithNonce,
       );
-      return {
-        signature,
-        digest,
-      };
     })();
 
     return {
@@ -222,7 +208,6 @@ export class EngineExecuteBuilder extends EngineBaseClient {
       },
       signature,
       spot_leverage: clientParams.spotLeverage ?? null,
-      digest,
     };
   }
 
@@ -256,5 +241,16 @@ export class EngineExecuteBuilder extends EngineBaseClient {
       },
       signature,
     };
+  }
+
+  async getOrderDigest(
+    order: OrderParams,
+    verifyingAddr: string,
+  ): Promise<string> {
+    return await getOrderDigest({
+      chainId: await this.getSigningChainId(),
+      order,
+      verifyingAddr,
+    });
   }
 }
