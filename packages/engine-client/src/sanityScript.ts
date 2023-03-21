@@ -15,7 +15,7 @@ import {
   toFixedPoint,
 } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
-import { EngineExecuteOrderParams } from './types';
+import { EngineOrderParams } from './types';
 
 function getExpiration() {
   return nowInSeconds() + 1000;
@@ -93,7 +93,7 @@ async function main() {
   console.log('Placing order');
   const productId = 2;
   const orderbookAddr = await clearinghouse.getOrderbook(productId);
-  const order: EngineExecuteOrderParams = {
+  const order: EngineOrderParams = {
     subaccountOwner: signer.address,
     subaccountName: 'default',
     amount: toFixedPoint(-0.01),

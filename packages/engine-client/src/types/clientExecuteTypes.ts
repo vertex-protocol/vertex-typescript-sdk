@@ -45,14 +45,14 @@ export interface PlaceOrderParams {
   spotLeverage?: boolean;
 }
 
-export type EngineExecuteOrderParams = WithoutNonce<OrderParams> & {
+export type EngineOrderParams = WithoutNonce<OrderParams> & {
   nonce?: string;
 };
 
 export type EngineExecutePlaceOrderParams = WithBaseEngineExecuteParams<
   Omit<PlaceOrderParams, 'order' | 'orderbookAddr'> & {
     productId: number;
-    order: EngineExecuteOrderParams;
+    order: EngineOrderParams;
   }
 >;
 

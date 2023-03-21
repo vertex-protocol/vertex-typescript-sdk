@@ -200,7 +200,7 @@ export class EngineExecuteBuilder extends EngineBaseClient {
         ? await getOrderDigest({
             chainId: await this.getSigningChainId(),
             order: orderWithNonce,
-            orderbookAddress: clientParams.verifyingAddr,
+            verifyingAddr: clientParams.verifyingAddr,
           })
         : null;
       const signature = await this.sign(
