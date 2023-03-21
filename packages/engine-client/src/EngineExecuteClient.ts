@@ -14,6 +14,7 @@ import {
 } from './types';
 import { EngineBaseClient } from './EngineBaseClient';
 import { hexlify } from 'ethers/lib/utils';
+import { getOrderNonce } from './utils';
 
 type WithEndpointAddr<T> = T & {
   endpointAddr: string;
@@ -23,7 +24,7 @@ export class EngineExecuteClient extends EngineBaseClient {
   async liquidateSubaccount(
     params: WithoutNonce<WithEndpointAddr<LiquidateSubaccountParams>>,
   ) {
-    const { txNonce } = await this.getNoncesForCurrentSigner();
+    const txNonce = await this.getTxNonce();
     const paramsWithNonce = { ...params, nonce: txNonce };
 
     const tx = getVertexEIP712Values('liquidate_subaccount', paramsWithNonce);
@@ -46,7 +47,7 @@ export class EngineExecuteClient extends EngineBaseClient {
   async withdrawCollateral(
     params: WithoutNonce<WithEndpointAddr<EngineWithdrawCollateralParams>>,
   ) {
-    const { txNonce } = await this.getNoncesForCurrentSigner();
+    const txNonce = await this.getTxNonce();
     const paramsWithNonce = { ...params, nonce: txNonce };
 
     const signature = await this.sign(
@@ -67,7 +68,7 @@ export class EngineExecuteClient extends EngineBaseClient {
   }
 
   async mintLp(params: WithoutNonce<WithEndpointAddr<EngineMintLpParams>>) {
-    const { txNonce } = await this.getNoncesForCurrentSigner();
+    const txNonce = await this.getTxNonce();
     const paramsWithNonce = { ...params, nonce: txNonce };
 
     const tx = getVertexEIP712Values('mint_lp', paramsWithNonce);
@@ -88,7 +89,7 @@ export class EngineExecuteClient extends EngineBaseClient {
   }
 
   async burnLp(params: WithoutNonce<WithEndpointAddr<BurnLpParams>>) {
-    const { txNonce } = await this.getNoncesForCurrentSigner();
+    const txNonce = await this.getTxNonce();
     const paramsWithNonce = { ...params, nonce: txNonce };
 
     const tx = getVertexEIP712Values('burn_lp', paramsWithNonce);
@@ -110,7 +111,7 @@ export class EngineExecuteClient extends EngineBaseClient {
   async placeOrder(
     params: PlaceOrderParamsWithoutNonce,
   ): Promise<OrderActionResult> {
-    const { orderNonce } = await this.getNoncesForCurrentSigner();
+    const orderNonce = getOrderNonce();
     const orderWithNonce = {
       ...params.order,
       nonce: orderNonce,
@@ -143,7 +144,7 @@ export class EngineExecuteClient extends EngineBaseClient {
   async cancelOrder(
     params: WithoutNonce<WithEndpointAddr<OrderCancellationParams>>,
   ) {
-    const { orderNonce } = await this.getNoncesForCurrentSigner();
+    const orderNonce = getOrderNonce();
     const paramsWithNonce = { ...params, nonce: orderNonce };
 
     const tx = getVertexEIP712Values('cancel_orders', paramsWithNonce);

@@ -46,16 +46,19 @@ export class EngineBaseClient {
     this.opts = opts;
   }
 
-  async getNoncesForCurrentSigner(): Promise<GetEngineNoncesResponse> {
-    if (this.opts.signer == null) {
-      throw Error('No current signer in opts');
+  public async getTxNonce(address?: string): Promise<string> {
+    const addr = address ?? (await this.opts.signer?.getAddress());
+    if (addr === undefined) {
+      throw Error('No current signer in opts and no address provided');
     }
-    return this.getNonces({
-      address: await this.opts.signer.getAddress(),
-    });
+    return (
+      await this.getNonces({
+        address: addr,
+      })
+    ).txNonce;
   }
 
-  async getNonces(
+  public async getNonces(
     params: GetEngineNoncesParams,
   ): Promise<GetEngineNoncesResponse> {
     const baseResp = await this.query('nonces', params);
