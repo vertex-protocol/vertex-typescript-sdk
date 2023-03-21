@@ -92,6 +92,7 @@ export interface EngineServerMaxMintLpQueryParams {
 }
 
 export interface EngineServerQueryRequestByType {
+  contracts: Record<string, never>;
   status: Record<string, never>;
   nonces: EngineServerNoncesParams;
   all_products: Record<string, never>;
@@ -111,6 +112,13 @@ export interface EngineServerQueryRequestByType {
 }
 
 export type EngineServerQueryRequestType = keyof EngineServerQueryRequestByType;
+
+export interface EngineServerContractsResponse {
+  chain_id: string;
+  endpoint_addr: string;
+  // Index is product ID
+  book_addrs: string[];
+}
 
 // Unless in active state, engine is not fully operational
 export type EngineServerStatusResponse =
@@ -218,6 +226,7 @@ export interface EngineServerCheckIpResponse {
 }
 
 export interface EngineServerQueryResponseByType {
+  contracts: EngineServerContractsResponse;
   status: EngineServerStatusResponse;
   nonces: EngineServerNoncesResponse;
   subaccount_info: EngineServerSubaccountInfoResponse;
