@@ -67,15 +67,6 @@ export class EngineBaseClient {
   }
 
   /**
-   * Util to generate the order nonce. this is equivalent to how
-   * `orderNonce` is computed via `getNonces(...)`.
-   * @returns
-   */
-  public async genOrderNonce(): Promise<string> {
-    return (BigInt(Date.now() + 100000) << BigInt(20)).toString();
-  }
-
-  /**
    * Queries the engine, all query params are stringified into the query string
    *
    * @param requestType

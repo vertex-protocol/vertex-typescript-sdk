@@ -13,6 +13,7 @@ import {
 } from './types';
 import { EngineBaseClient } from './EngineBaseClient';
 import { hexlify } from 'ethers/lib/utils';
+import { getOrderNonce } from './utils';
 
 type WithEndpointAddr<T> = T & {
   endpointAddr: string;
@@ -117,7 +118,7 @@ export class EngineExecuteClient extends EngineBaseClient {
   async placeOrder(
     params: PlaceOrderParamsWithOptionalTxFields,
   ): Promise<OrderActionResult> {
-    const orderNonce = params.order.nonce || (await this.genOrderNonce());
+    const orderNonce = params.order.nonce || (await getOrderNonce());
     const orderWithNonce = {
       ...params.order,
       nonce: orderNonce,
@@ -152,7 +153,7 @@ export class EngineExecuteClient extends EngineBaseClient {
   async cancelOrder(
     params: WithEndpointAddr<OrderCancellationParamsWithOptionalSignature>,
   ) {
-    const orderNonce = params.nonce || (await this.genOrderNonce());
+    const orderNonce = params.nonce || (await getOrderNonce());
     const paramsWithNonce = { ...params, nonce: orderNonce };
 
     const tx = getVertexEIP712Values('cancel_orders', paramsWithNonce);
