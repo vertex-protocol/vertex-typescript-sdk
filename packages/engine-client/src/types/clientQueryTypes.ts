@@ -159,7 +159,8 @@ export interface GetEngineMaxOrderSizeParams extends Subaccount {
   price: BigDecimal;
   productId: number;
   side: BalanceSide;
-  // If not given, engine defaults to true (leverage/borrow enabled)
+  // If not given, engine defaults to true (leverage/borrow enabled) for spot
+  // Do not pass this for perp products
   spotLeverage?: boolean;
 }
 
@@ -175,7 +176,8 @@ export type GetEngineMaxWithdrawableResponse = BigDecimal;
 
 export interface GetEngineMaxMintLpAmountParams extends Subaccount {
   productId: number;
-  // If not given, engine defaults to true (leverage/borrow enabled)
+  // If not given, engine defaults to true (leverage/borrow enabled) for spot
+  // Do not pass this for perp products
   spotLeverage?: boolean;
 }
 
