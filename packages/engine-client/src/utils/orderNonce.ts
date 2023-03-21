@@ -4,7 +4,7 @@
  * @param randomInt a random integer to avoid hash collisions
  */
 export function getOrderNonce(
-  recvTimeMillis: number = Date.now() + 100 * 10,
+  recvTimeMillis: number = Date.now() + 100 * 1000,
   randomInt: number = Math.floor(Math.random() * 1000),
 ): string {
   return ((BigInt(recvTimeMillis) << 20n) + BigInt(randomInt)).toString();
