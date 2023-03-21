@@ -1,10 +1,6 @@
 import { EngineExecuteRequestParamsByType, OrderActionResult } from './types';
 import { EngineExecuteBuilder } from './EngineExecuteBuilder';
 
-type WithEndpointAddr<T> = T & {
-  endpointAddr: string;
-};
-
 export class EngineExecuteClient extends EngineExecuteBuilder {
   async liquidateSubaccount(
     params: EngineExecuteRequestParamsByType['liquidate_subaccount'],
