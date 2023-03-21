@@ -8,6 +8,7 @@ import {
   SignedTx,
 } from '@vertex-protocol/contracts';
 import { Bytes } from 'ethers/lib/utils';
+import { RequireExactlyOne } from '../utils';
 
 type ByteFieldsToHex<T> = {
   [K in keyof T]: T[K] extends Bytes ? string : T[K];
@@ -53,3 +54,6 @@ export interface EngineServerExecuteRequestByType {
 
 export type EngineServerExecuteRequestType =
   keyof EngineServerExecuteRequestByType;
+
+export type EngineServerExecuteRequest =
+  RequireExactlyOne<EngineServerExecuteRequestByType>;

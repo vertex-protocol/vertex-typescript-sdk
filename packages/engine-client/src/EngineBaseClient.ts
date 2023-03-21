@@ -2,6 +2,7 @@ import {
   EngineServerExecuteRequestByType,
   EngineServerExecuteRequestType,
   EngineServerExecutionResult,
+  EngineServerQueryRequest,
   EngineServerQueryRequestByType,
   EngineServerQueryRequestType,
   EngineServerQueryResponse,
@@ -101,6 +102,22 @@ export class EngineBaseClient {
     this.checkServerStatus(response);
 
     return response.data.data as EngineServerQueryResponseByType[TRequestType];
+  }
+
+  /**
+   * A simple, typechecked fn for constructing a query request in the format expected by the server.
+   *
+   * @param requestType
+   * @param params
+   */
+  public getQueryRequest<TRequestType extends EngineServerQueryRequestType>(
+    requestType: TRequestType,
+    params: EngineServerQueryRequestByType[TRequestType],
+  ): EngineServerQueryRequest<TRequestType> {
+    return {
+      type: requestType,
+      ...params,
+    };
   }
 
   /**

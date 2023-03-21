@@ -113,6 +113,12 @@ export interface EngineServerQueryRequestByType {
 
 export type EngineServerQueryRequestType = keyof EngineServerQueryRequestByType;
 
+export type EngineServerQueryRequest<
+  TRequestType extends EngineServerQueryRequestType,
+> = {
+  type: TRequestType;
+} & EngineServerQueryRequestByType[TRequestType];
+
 export interface EngineServerContractsResponse {
   chain_id: string;
   endpoint_addr: string;

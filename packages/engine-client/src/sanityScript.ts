@@ -15,7 +15,7 @@ import {
   toFixedPoint,
 } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
-import { OrderParamsWithoutNonce } from './types';
+import { EngineExecuteOrderParams } from './types';
 
 function getExpiration() {
   return nowInSeconds() + 1000;
@@ -93,7 +93,7 @@ async function main() {
   console.log('Placing order');
   const productId = 1;
   const orderbookAddr = await clearinghouse.getOrderbook(productId);
-  const order: OrderParamsWithoutNonce = {
+  const order: EngineExecuteOrderParams = {
     subaccountOwner: signer.address,
     subaccountName: 'default',
     amount: -1,
@@ -101,7 +101,7 @@ async function main() {
     price: 23000,
   };
   const placeResult = await client.placeOrder({
-    orderbookAddr,
+    verifyingAddr: orderbookAddr,
     productId,
     order,
   });
@@ -156,12 +156,12 @@ async function main() {
   });
   console.log('Queried order', JSON.stringify(queriedOrder, null, 2));
   console.log('Cancelling order');
-  const cancelResult = await client.cancelOrder({
+  const cancelResult = await client.cancelOrders({
     subaccountName: 'default',
     subaccountOwner: signer.address,
     productIds: [productId],
     digests: [placeResult.digest],
-    endpointAddr,
+    verifyingAddr: endpointAddr,
   });
   console.log('Done cancelling order', cancelResult);
   const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
@@ -189,7 +189,7 @@ async function main() {
     amountBase: toFixedPoint(1, 18),
     quoteAmountLow: toFixedPoint(1000, 18),
     quoteAmountHigh: toFixedPoint(2000, 18),
-    endpointAddr,
+    verifyingAddr: endpointAddr,
   });
   console.log('Done minting spot lp', mintSpotLpResult);
   const mintPerpLpResult = await client.mintLp({
@@ -199,7 +199,7 @@ async function main() {
     amountBase: toFixedPoint(1, 18),
     quoteAmountLow: toFixedPoint(1000, 18),
     quoteAmountHigh: toFixedPoint(2000, 18),
-    endpointAddr,
+    verifyingAddr: endpointAddr,
   });
   console.log('Done minting perp lp', mintPerpLpResult);
   const subaccountInfoAfterMintingLp = await client.getSubaccountSummary({
@@ -215,7 +215,7 @@ async function main() {
     subaccountName: 'default',
     productId: 3,
     amount: toFixedPoint(1, 18),
-    endpointAddr,
+    verifyingAddr: endpointAddr,
   });
   console.log('Done burning spot lp', burnSpotLpResult);
   const burnPerpLpResult = await client.burnLp({
@@ -223,7 +223,7 @@ async function main() {
     subaccountName: 'default',
     productId: 4,
     amount: toFixedPoint(1, 6),
-    endpointAddr,
+    verifyingAddr: endpointAddr,
   });
   console.log('Done burning perp lp', burnPerpLpResult);
   const withdrawResult = await client.withdrawCollateral({
@@ -231,7 +231,7 @@ async function main() {
     subaccountName: 'default',
     productId: 0,
     amount: toFixedPoint(4999, 6),
-    endpointAddr,
+    verifyingAddr: endpointAddr,
   });
   console.log('Done withdrawing collateral, result', withdrawResult);
   const subaccountInfoAtEnd = await client.getSubaccountSummary({
