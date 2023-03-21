@@ -21,7 +21,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
     return this.context.engineClient.mintLp({
-      endpointAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.context.contracts.endpoint.address,
       subaccountOwner: sender,
       ...params,
     });
@@ -35,7 +35,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
     return this.context.engineClient.burnLp({
-      endpointAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.context.contracts.endpoint.address,
       subaccountOwner: sender,
       ...params,
     });
@@ -53,7 +53,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
         ...order,
         subaccountOwner: (await this.context.engineSigner?.getAddress()) ?? '',
       },
-      orderbookAddr,
+      verifyingAddr: orderbookAddr,
       productId,
       spotLeverage: params.spotLeverage,
     });
@@ -68,9 +68,9 @@ export class MarketExecuteAPI extends BaseVertexAPI {
   ) {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
-    return this.context.engineClient.cancelOrder({
+    return this.context.engineClient.cancelOrders({
       subaccountOwner: sender,
-      endpointAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.context.contracts.endpoint.address,
       ...params,
     });
   }
