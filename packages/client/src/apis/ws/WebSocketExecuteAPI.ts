@@ -11,7 +11,7 @@ import {
 } from '@vertex-protocol/engine-client';
 import { BaseVertexAPI } from '../base';
 
-export class WSExecuteAPI extends BaseVertexAPI {
+export class WebSocketExecuteAPI extends BaseVertexAPI {
   public async buildExecuteMsg<
     TRequestType extends EngineServerExecuteRequestType,
   >(

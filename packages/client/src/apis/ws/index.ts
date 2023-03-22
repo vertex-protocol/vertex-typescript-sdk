@@ -1,5 +1,8 @@
 import { Mixin } from 'ts-mixer';
-import { WSExecuteAPI } from './WSExecuteAPI';
-import { WSQueryAPI } from './WSQueryAPI';
+import { WebSocketExecuteAPI } from './WebSocketExecuteAPI';
+import { WebSocketQueryAPI } from './WebSocketQueryAPI';
 
-export class WebsocketAPI extends Mixin(WSExecuteAPI, WSQueryAPI) {}
+export class WebsocketAPI extends Mixin(
+  WebSocketExecuteAPI,
+  WebSocketQueryAPI,
+) {}

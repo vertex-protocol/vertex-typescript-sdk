@@ -2,8 +2,9 @@ import { createVertexClient } from './createVertexClient';
 import { ethers, Wallet } from 'ethers';
 import { nowInSeconds } from '@vertex-protocol/utils';
 import { OrderActionParams } from './apis/market';
-import { subaccountToBytes32 } from '@vertex-protocol/contracts';
+import { OrderParams, subaccountToBytes32 } from '@vertex-protocol/contracts';
 import { getProductMetadataByProductId } from './utils';
+import { getOrderNonce } from '@vertex-protocol/engine-client';
 
 async function main() {
   const signer = new Wallet(
@@ -49,13 +50,22 @@ async function main() {
     // Limit price
     price: 1,
     amount: 1,
+    nonce: getOrderNonce(),
   };
 
-  const { digest } = await vertexClient.market.placeOrder({
+  await vertexClient.market.placeOrder({
     order: orderParams,
     // Product you're sending the order for
     productId: 1,
   });
+
+  const verifyingAddr = (await vertexClient.context.engineClient.getContracts())
+    .orderbookAddrs[1];
+
+  const digest = await vertexClient.context.engineClient.getOrderDigest(
+    orderParams as OrderParams,
+    verifyingAddr,
+  );
 
   await vertexClient.market.cancelOrder({
     digests: [digest],
