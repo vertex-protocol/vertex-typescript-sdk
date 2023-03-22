@@ -1,4 +1,5 @@
 import {
+  EngineServerExecuteRequest,
   EngineServerExecuteRequestByType,
   EngineServerExecuteRequestType,
   EngineServerExecutionResult,
@@ -50,7 +51,7 @@ export class EngineBaseClient {
 
   public async getTxNonce(address?: string): Promise<string> {
     const addr = address ?? (await this.opts.signer?.getAddress());
-    if (addr === undefined) {
+    if (!addr) {
       throw Error('No current signer in opts and no address provided');
     }
     return (
@@ -131,9 +132,7 @@ export class EngineBaseClient {
     requestType: TRequestType,
     params: EngineServerExecuteRequestByType[TRequestType],
   ): Promise<EngineExecuteRequestResponse> {
-    const reqBody: EngineExecuteRequestBody = {
-      [requestType]: params,
-    };
+    const reqBody = this.getExecuteRequest(requestType, params);
     const response = await axios.post<EngineExecuteRequestResponse>(
       `${this.opts.url}/execute`,
       reqBody,
@@ -143,6 +142,21 @@ export class EngineBaseClient {
     this.checkServerStatus(response);
 
     return response.data;
+  }
+
+  /**
+   * A simple, typechecked fn for constructing an execute request in the format expected by the server.
+   *
+   * @param requestType
+   * @param params
+   */
+  public getExecuteRequest<TRequestType extends EngineServerExecuteRequestType>(
+    requestType: TRequestType,
+    params: EngineServerExecuteRequestByType[TRequestType],
+  ): EngineExecuteRequestBody {
+    return {
+      [requestType]: params,
+    };
   }
 
   protected async getSigningChainId(): Promise<number> {
