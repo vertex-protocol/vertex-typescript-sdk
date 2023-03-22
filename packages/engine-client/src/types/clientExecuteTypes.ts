@@ -89,3 +89,8 @@ export type EngineExecuteRequestParamsType =
 
 export type EngineExecuteRequestParams =
   RequireExactlyOne<EngineExecuteRequestParamsType>;
+
+export interface EngineExecutePlaceOrderResult
+  extends EngineServerExecutionResult {
+  orderParams: OrderParams;
+}

@@ -1,13 +1,9 @@
-import { createVertexClient } from './createVertexClient';
+import { createVertexClient } from '../createVertexClient';
 import { ethers, Wallet } from 'ethers';
 import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
-import { OrderActionParams } from './apis/market';
-import {
-  OrderParams,
-  subaccountToBytes32,
-  subaccountToHex,
-} from '@vertex-protocol/contracts';
-import { getProductMetadataByProductId } from './utils';
+import { OrderActionParams } from '../apis/market';
+import { OrderParams, subaccountToBytes32 } from '@vertex-protocol/contracts';
+import { getProductMetadataByProductId } from '../utils';
 import { getOrderNonce } from '@vertex-protocol/engine-client';
 
 async function main() {
@@ -46,6 +42,8 @@ async function main() {
   });
   await depositTx.wait();
 
+  const orderNonce = getOrderNonce();
+
   const orderParams: OrderActionParams['order'] = {
     subaccountName: 'default',
     // `nowInSeconds` is exposed by the `@vertex-protocol/utils` package
@@ -54,7 +52,7 @@ async function main() {
     // Limit price
     price: 28000,
     amount: toFixedPoint(0.01),
-    nonce: getOrderNonce(),
+    nonce: orderNonce,
   };
 
   await vertexClient.market.placeOrder({
@@ -70,7 +68,8 @@ async function main() {
     {
       ...orderParams,
       subaccountOwner: await signer.getAddress(),
-    } as OrderParams,
+      nonce: orderNonce,
+    },
     verifyingAddr,
   );
 

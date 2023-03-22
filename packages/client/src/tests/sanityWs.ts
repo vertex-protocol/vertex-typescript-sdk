@@ -1,8 +1,8 @@
-import { createVertexClient } from './createVertexClient';
+import { createVertexClient } from '../createVertexClient';
 import { ethers, Wallet } from 'ethers';
 import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
-import { OrderActionParams } from './apis/market';
-import { OrderParams, subaccountToHex } from '@vertex-protocol/contracts';
+import { OrderActionParams } from '../apis/market';
+import { subaccountToHex } from '@vertex-protocol/contracts';
 import { getOrderNonce } from '@vertex-protocol/engine-client';
 
 async function main() {
@@ -81,17 +81,8 @@ async function main() {
     `Place Order WS request: ${JSON.stringify(wsPlaceOrderReq, null, 2)}`,
   );
 
-  const wsPlaceOrderRes = await vertexClient.context.engineClient.execute(
-    'place_order',
-    wsPlaceOrderReq,
-  );
-
-  console.log(
-    `Place Order WS response:  ${JSON.stringify(wsPlaceOrderRes, null, 2)}`,
-  );
-
   const wsOrderDigest = await vertexClient.context.engineClient.getOrderDigest(
-    wsOrder as OrderParams,
+    wsOrder,
     verifyingAddr,
   );
 
@@ -147,7 +138,7 @@ async function main() {
     )}`,
   );
 
-  const wsQuerySubaccountInfoReq = vertexClient.ws.query.buildPayload(
+  const wsQuerySubaccountInfoReq = vertexClient.ws.query.buildQueryPayload(
     'subaccount_info',
     {
       subaccount: subaccountToHex({

@@ -1,4 +1,7 @@
-import { EngineExecuteRequestParamsByType } from './types';
+import {
+  EngineExecutePlaceOrderResult,
+  EngineExecuteRequestParamsByType,
+} from './types';
 import { EngineExecuteBuilder } from './EngineExecuteBuilder';
 import { EngineBaseClient, EngineClientOpts } from './EngineBaseClient';
 import { getOrderDigest, OrderParams } from '@vertex-protocol/contracts';
@@ -43,13 +46,16 @@ export class EngineExecuteClient extends EngineBaseClient {
     );
   }
 
-  async placeOrder(params: EngineExecuteRequestParamsByType['place_order']) {
-    return this.execute(
-      'place_order',
-      await (
-        await this.payloadBuilder.buildPlaceOrderPayload(params)
-      ).payload,
+  async placeOrder(
+    params: EngineExecuteRequestParamsByType['place_order'],
+  ): Promise<EngineExecutePlaceOrderResult> {
+    const placeOrderPayload = await this.payloadBuilder.buildPlaceOrderPayload(
+      params,
     );
+    return {
+      ...(await this.execute('place_order', placeOrderPayload.payload)),
+      orderParams: placeOrderPayload.orderParams,
+    };
   }
 
   async cancelOrders(
@@ -71,6 +77,5 @@ export class EngineExecuteClient extends EngineBaseClient {
       verifyingAddr,
     });
   }
-
   // TODO: settle PNL
 }

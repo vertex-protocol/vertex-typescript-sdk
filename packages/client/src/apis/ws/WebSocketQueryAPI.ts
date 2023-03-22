@@ -7,12 +7,12 @@ import { BaseVertexAPI } from '../base';
 
 export class WebSocketQueryAPI extends BaseVertexAPI {
   /**
-   * Builds a query request as expected by the server via Websocket.
+   * Builds a query request payload as expected by the server via Websocket.
    * @param requestType
    * @param params
    * @returns query request payload as expected by the server to be sent via Websocket.
    */
-  public buildPayload<TRequestType extends EngineServerQueryRequestType>(
+  public buildQueryPayload<TRequestType extends EngineServerQueryRequestType>(
     requestType: TRequestType,
     params: EngineServerQueryRequestByType[TRequestType],
   ): EngineServerQueryRequest<TRequestType> {

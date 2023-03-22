@@ -47,7 +47,9 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    */
   async placeOrder(params: OrderActionParams) {
     const { productId, order } = params;
-    const orderbookAddr = await this.getOrderbookAddress(productId);
+    const orderbookAddr = await this.context.engineClient.getOrderbookAddress(
+      productId,
+    );
     return this.context.engineClient.placeOrder({
       order: {
         ...order,
@@ -73,10 +75,5 @@ export class MarketExecuteAPI extends BaseVertexAPI {
       verifyingAddr: this.context.contracts.endpoint.address,
       ...params,
     });
-  }
-
-  private async getOrderbookAddress(productId: number) {
-    const contracts = await this.context.engineClient.getContracts();
-    return contracts.orderbookAddrs[productId];
   }
 }
