@@ -16,20 +16,26 @@ import { getOrderNonce } from './utils';
  * @param nonce A nonce is computed when one is not provided.
  * @param signature A signature is computed when one is not provided.
  */
-export class EngineExecuteBuilder extends EngineBaseClient {
+export class EngineExecuteBuilder {
+  readonly engineClient: EngineBaseClient;
+
+  constructor(engineClient: EngineBaseClient) {
+    this.engineClient = engineClient;
+  }
+
   /**
    * Builds server payload for the `liquidate_subaccount` execute action.
    * @param clientParams Client LiquidateSubaccount params.
    * @returns `liquidate_subaccount` payload
    */
-  async buildLiquidateSubaccountServerPayload(
+  async buildLiquidateSubaccountPayload(
     clientParams: EngineExecuteRequestParamsByType['liquidate_subaccount'],
   ): Promise<EngineServerExecuteRequestByType['liquidate_subaccount']> {
     const nonce = await (async () => {
       if (clientParams.nonce) {
         return clientParams.nonce;
       }
-      return await this.getTxNonce();
+      return await this.engineClient.getTxNonce();
     })();
     const paramsWithNonce = { ...clientParams, nonce };
 
@@ -38,7 +44,7 @@ export class EngineExecuteBuilder extends EngineBaseClient {
       if ('signature' in clientParams) {
         return clientParams.signature;
       }
-      return await this.sign(
+      return await this.engineClient.sign(
         'liquidate_subaccount',
         clientParams.verifyingAddr,
         paramsWithNonce,
@@ -60,14 +66,14 @@ export class EngineExecuteBuilder extends EngineBaseClient {
    * @param clientParams Client WithdrawCollateral params.
    * @returns `liquidate_subaccount` payload
    */
-  async buildWithdrawCollateralServerPayload(
+  async buildWithdrawCollateralPayload(
     clientParams: EngineExecuteRequestParamsByType['withdraw_collateral'],
   ): Promise<EngineServerExecuteRequestByType['withdraw_collateral']> {
     const nonce = await (async () => {
       if (clientParams.nonce) {
         return clientParams.nonce;
       }
-      return await this.getTxNonce();
+      return await this.engineClient.getTxNonce();
     })();
     const paramsWithNonce = { ...clientParams, nonce };
 
@@ -75,7 +81,7 @@ export class EngineExecuteBuilder extends EngineBaseClient {
       if ('signature' in clientParams) {
         return clientParams.signature;
       }
-      return await this.sign(
+      return await this.engineClient.sign(
         'withdraw_collateral',
         clientParams.verifyingAddr,
         paramsWithNonce,
@@ -98,14 +104,14 @@ export class EngineExecuteBuilder extends EngineBaseClient {
    * @param clientParams Client MintLp params.
    * @returns `mint_lp` payload
    */
-  async buildMintLpServerPayload(
+  async buildMintLpPayload(
     clientParams: EngineExecuteRequestParamsByType['mint_lp'],
   ): Promise<EngineServerExecuteRequestByType['mint_lp']> {
     const nonce = await (async () => {
       if (clientParams.nonce) {
         return clientParams.nonce;
       }
-      return await this.getTxNonce();
+      return await this.engineClient.getTxNonce();
     })();
     const paramsWithNonce = { ...clientParams, nonce };
 
@@ -114,7 +120,7 @@ export class EngineExecuteBuilder extends EngineBaseClient {
       if ('signature' in clientParams) {
         return clientParams.signature;
       }
-      return await this.sign(
+      return await this.engineClient.sign(
         'mint_lp',
         clientParams.verifyingAddr,
         paramsWithNonce,
@@ -136,14 +142,14 @@ export class EngineExecuteBuilder extends EngineBaseClient {
    * @param clientParams Client BurnLp params.
    * @returns `burn_lp` payload
    */
-  async buildBurnLpServerPayload(
+  async buildBurnLpPayload(
     clientParams: EngineExecuteRequestParamsByType['burn_lp'],
   ): Promise<EngineServerExecuteRequestByType['burn_lp']> {
     const nonce = await (async () => {
       if (clientParams.nonce) {
         return clientParams.nonce;
       }
-      return await this.getTxNonce();
+      return await this.engineClient.getTxNonce();
     })();
     const paramsWithNonce = { ...clientParams, nonce };
 
@@ -152,7 +158,7 @@ export class EngineExecuteBuilder extends EngineBaseClient {
       if ('signature' in clientParams) {
         return clientParams.signature;
       }
-      return await this.sign(
+      return await this.engineClient.sign(
         'burn_lp',
         clientParams.verifyingAddr,
         paramsWithNonce,
@@ -173,7 +179,7 @@ export class EngineExecuteBuilder extends EngineBaseClient {
    * @param clientParams Client PlaceOrder params.
    * @returns `place_order` payload
    */
-  async buildPlaceOrderServerPayload(
+  async buildPlaceOrderPayload(
     clientParams: EngineExecuteRequestParamsByType['place_order'],
   ): Promise<EngineServerExecuteRequestByType['place_order']> {
     const nonce = await (async () => {
@@ -193,7 +199,7 @@ export class EngineExecuteBuilder extends EngineBaseClient {
       if ('signature' in clientParams) {
         return clientParams.signature;
       }
-      return await this.sign(
+      return await this.engineClient.sign(
         'place_order',
         clientParams.verifyingAddr,
         orderWithNonce,
@@ -211,7 +217,7 @@ export class EngineExecuteBuilder extends EngineBaseClient {
     };
   }
 
-  async buildCancelOrdersServerPayload(
+  async buildCancelOrdersPayload(
     clientParams: EngineExecuteRequestParamsByType['cancel_orders'],
   ): Promise<EngineServerExecuteRequestByType['cancel_orders']> {
     const nonce = await (async () => {
@@ -227,7 +233,7 @@ export class EngineExecuteBuilder extends EngineBaseClient {
       if ('signature' in clientParams) {
         return clientParams.signature;
       }
-      return await this.sign(
+      return await this.engineClient.sign(
         'cancel_orders',
         clientParams.verifyingAddr,
         paramsWithNonce,
@@ -241,16 +247,5 @@ export class EngineExecuteBuilder extends EngineBaseClient {
       },
       signature,
     };
-  }
-
-  async getOrderDigest(
-    order: OrderParams,
-    verifyingAddr: string,
-  ): Promise<string> {
-    return await getOrderDigest({
-      chainId: await this.getSigningChainId(),
-      order,
-      verifyingAddr,
-    });
   }
 }

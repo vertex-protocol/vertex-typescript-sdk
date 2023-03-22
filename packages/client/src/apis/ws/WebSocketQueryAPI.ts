@@ -12,7 +12,7 @@ export class WebSocketQueryAPI extends BaseVertexAPI {
    * @param params
    * @returns query request payload as expected by the server to be sent via Websocket.
    */
-  public buildQueryMsg<TRequestType extends EngineServerQueryRequestType>(
+  public buildPayload<TRequestType extends EngineServerQueryRequestType>(
     requestType: TRequestType,
     params: EngineServerQueryRequestByType[TRequestType],
   ): EngineServerQueryRequest<TRequestType> {

@@ -159,7 +159,7 @@ export class EngineBaseClient {
     };
   }
 
-  protected async getSigningChainId(): Promise<number> {
+  public async getSigningChainId(): Promise<number> {
     return (
       this.opts.signingChainId ?? (await this.opts.signer?.getChainId()) ?? -1
     );
