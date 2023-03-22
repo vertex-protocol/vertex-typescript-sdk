@@ -12,6 +12,12 @@ import {
 import { BaseVertexAPI } from '../base';
 
 export class WebSocketExecuteAPI extends BaseVertexAPI {
+  /**
+   * Builds an execute request as expected by the server via Websocket.
+   * @param requestType
+   * @param params
+   * @returns execute request payload as expected by the server to be sent via Websocket.
+   */
   public async buildExecuteMsg<
     TRequestType extends EngineServerExecuteRequestType,
   >(

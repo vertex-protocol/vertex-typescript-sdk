@@ -1,8 +1,12 @@
 import { createVertexClient } from './createVertexClient';
 import { ethers, Wallet } from 'ethers';
-import { nowInSeconds } from '@vertex-protocol/utils';
+import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
 import { OrderActionParams } from './apis/market';
-import { OrderParams, subaccountToBytes32 } from '@vertex-protocol/contracts';
+import {
+  OrderParams,
+  subaccountToBytes32,
+  subaccountToHex,
+} from '@vertex-protocol/contracts';
 import { getProductMetadataByProductId } from './utils';
 import { getOrderNonce } from '@vertex-protocol/engine-client';
 
@@ -48,8 +52,8 @@ async function main() {
     // This gives 60s before the order expires
     expiration: nowInSeconds() + 60,
     // Limit price
-    price: 1,
-    amount: 1,
+    price: 28000,
+    amount: toFixedPoint(0.01),
     nonce: getOrderNonce(),
   };
 
@@ -63,7 +67,10 @@ async function main() {
     .orderbookAddrs[1];
 
   const digest = await vertexClient.context.engineClient.getOrderDigest(
-    orderParams as OrderParams,
+    {
+      ...orderParams,
+      subaccountOwner: await signer.getAddress(),
+    } as OrderParams,
     verifyingAddr,
   );
 
@@ -130,6 +137,119 @@ async function main() {
   const invalidProductId = 10000;
   console.log(getProductMetadataByProductId('testnet', invalidProductId));
   console.log(getProductMetadataByProductId('mainnet', invalidProductId));
+
+  // Websocket payloads
+  const wsOrder = {
+    ...orderParams,
+    subaccountOwner: await signer.getAddress(),
+    nonce: getOrderNonce(),
+  };
+
+  console.log(`WS Order ${JSON.stringify(wsOrder, null, 2)}`);
+
+  const wsOrderSig = await vertexClient.context.engineClient.sign(
+    'place_order',
+    verifyingAddr,
+    wsOrder,
+  );
+
+  const wsPlaceOrderReq = await vertexClient.ws.buildExecuteMsg('place_order', {
+    productId: 1,
+    order: wsOrder,
+    signature: wsOrderSig,
+  });
+
+  console.log(
+    `Place Order WS request: ${JSON.stringify(wsPlaceOrderReq, null, 2)}`,
+  );
+
+  const wsPlaceOrderRes = await vertexClient.context.engineClient.execute(
+    'place_order',
+    wsPlaceOrderReq,
+  );
+
+  console.log(
+    `Place Order WS response:  ${JSON.stringify(wsPlaceOrderRes, null, 2)}`,
+  );
+
+  const wsOrderDigest = await vertexClient.context.engineClient.getOrderDigest(
+    wsOrder as OrderParams,
+    verifyingAddr,
+  );
+
+  const wsCancelOrdersReq = await vertexClient.ws.buildExecuteMsg(
+    'cancel_orders',
+    {
+      subaccountOwner: await signer.getAddress(),
+      subaccountName: 'default',
+      productIds: [1],
+      digests: [wsOrderDigest],
+      signature: '',
+    },
+  );
+
+  console.log(
+    `Cancel Orders WS request: ${JSON.stringify(wsCancelOrdersReq, null, 2)}`,
+  );
+
+  const wsMintLpReq = await vertexClient.ws.buildExecuteMsg('mint_lp', {
+    productId: 1,
+    subaccountOwner: await signer.getAddress(),
+    subaccountName: 'default',
+    amountBase: toFixedPoint(1, 18),
+    quoteAmountLow: toFixedPoint(1000, 18),
+    quoteAmountHigh: toFixedPoint(2000, 18),
+    signature: '',
+  });
+
+  console.log(`Mint LP WS request: ${JSON.stringify(wsMintLpReq, null, 2)}`);
+
+  const wsBurnLpReq = await vertexClient.ws.buildExecuteMsg('burn_lp', {
+    productId: 1,
+    subaccountOwner: await signer.getAddress(),
+    subaccountName: 'default',
+    amount: toFixedPoint(1, 18),
+    signature: '',
+  });
+
+  console.log(`Burn LP WS request: ${JSON.stringify(wsBurnLpReq, null, 2)}`);
+
+  const wsWithdrawCollateralReq = await vertexClient.ws.buildExecuteMsg(
+    'withdraw_collateral',
+    {
+      subaccountOwner: signer.address,
+      subaccountName: 'default',
+      productId: 0,
+      amount: toFixedPoint(4999, 6),
+      signature: '',
+    },
+  );
+
+  console.log(
+    `Withdraw collateral WS request: ${JSON.stringify(
+      wsWithdrawCollateralReq,
+      null,
+      2,
+    )}`,
+  );
+
+  const wsQuerySubaccountInfoReq = vertexClient.ws.buildQueryMsg(
+    'subaccount_info',
+    {
+      subaccount: subaccountToHex({
+        subaccountOwner: signer.address,
+        subaccountName: 'default',
+      }),
+    },
+  );
+
+  console.log(
+    `Query subaccount info WS request: ${JSON.stringify(
+      wsQuerySubaccountInfoReq,
+      null,
+      2,
+    )}`,
+  );
 }
 
-main();
+main().catch((e) => console.log(e));
