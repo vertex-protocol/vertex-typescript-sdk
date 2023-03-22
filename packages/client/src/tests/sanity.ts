@@ -61,8 +61,8 @@ async function main() {
     productId: 1,
   });
 
-  const verifyingAddr = (await vertexClient.context.engineClient.getContracts())
-    .orderbookAddrs[1];
+  const verifyingAddr =
+    await vertexClient.context.engineClient.getOrderbookAddress(1);
 
   const digest = await vertexClient.context.engineClient.getOrderDigest(
     {
