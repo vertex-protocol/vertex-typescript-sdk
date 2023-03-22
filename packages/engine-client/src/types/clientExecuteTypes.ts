@@ -50,12 +50,11 @@ export type EngineOrderParams = WithoutNonce<OrderParams> & {
   nonce?: string;
 };
 
-export type EngineExecutePlaceOrderParams = WithBaseEngineExecuteParams<
+export type EngineExecutePlaceOrderParams = SignatureParams &
   Omit<PlaceOrderParams, 'order' | 'orderbookAddr'> & {
     productId: number;
     order: EngineOrderParams;
-  }
->;
+  };
 
 export type EngineExecuteLiquidateSubaccountParams =
   WithBaseEngineExecuteParams<LiquidateSubaccountParams>;
