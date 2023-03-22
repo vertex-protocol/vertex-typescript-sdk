@@ -8,4 +8,5 @@ export type OrderActionParams = Omit<
   'orderbookAddr' | 'order'
 > & {
   order: Omit<EngineOrderParams, 'subaccountOwner'>;
+  nonce?: string;
 };

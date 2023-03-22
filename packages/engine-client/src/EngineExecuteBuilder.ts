@@ -184,8 +184,8 @@ export class EngineExecuteBuilder {
     clientParams: EngineExecuteRequestParamsByType['place_order'],
   ): Promise<EngineServerExecutePlaceOrderPayload> {
     const nonce = await (async () => {
-      if (clientParams.order.nonce) {
-        return clientParams.order.nonce;
+      if (clientParams.nonce) {
+        return clientParams.nonce;
       }
       return getOrderNonce();
     })();

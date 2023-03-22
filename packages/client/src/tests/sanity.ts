@@ -1,29 +1,12 @@
-import { createVertexClient } from '../createVertexClient';
-import { ethers, Wallet } from 'ethers';
+import { Wallet } from 'ethers';
 import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
 import { OrderActionParams } from '../apis/market';
-import { OrderParams, subaccountToBytes32 } from '@vertex-protocol/contracts';
+import { subaccountToBytes32 } from '@vertex-protocol/contracts';
 import { getProductMetadataByProductId } from '../utils';
 import { getOrderNonce } from '@vertex-protocol/engine-client';
+import { VertexClient } from '../client';
 
-async function main() {
-  const signer = new Wallet(
-    'xxx',
-    new ethers.providers.StaticJsonRpcProvider(
-      'https://goerli-rollup.arbitrum.io/rpc',
-      {
-        name: 'arbitrum-goerli',
-        chainId: 421613,
-      },
-    ),
-  );
-
-  const vertexClient = await createVertexClient('testnet', {
-    // Specify different signers/providers if needed
-    chainSignerOrProvider: signer,
-    engineSigner: signer,
-  });
-
+export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
   await vertexClient.spot._mintMockERC20({
     // 10 tokens
     amount: 10,
@@ -52,24 +35,20 @@ async function main() {
     // Limit price
     price: 28000,
     amount: toFixedPoint(0.01),
-    nonce: orderNonce,
   };
 
-  await vertexClient.market.placeOrder({
+  const orderResult = await vertexClient.market.placeOrder({
     order: orderParams,
     // Product you're sending the order for
     productId: 1,
+    nonce: orderNonce,
   });
 
   const verifyingAddr =
     await vertexClient.context.engineClient.getOrderbookAddress(1);
 
   const digest = await vertexClient.context.engineClient.getOrderDigest(
-    {
-      ...orderParams,
-      subaccountOwner: await signer.getAddress(),
-      nonce: orderNonce,
-    },
+    orderResult.orderParams,
     verifyingAddr,
   );
 
@@ -137,5 +116,3 @@ async function main() {
   console.log(getProductMetadataByProductId('testnet', invalidProductId));
   console.log(getProductMetadataByProductId('mainnet', invalidProductId));
 }
-
-main().catch((e) => console.log(e));

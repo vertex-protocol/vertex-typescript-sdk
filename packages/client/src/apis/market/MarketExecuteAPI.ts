@@ -46,7 +46,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * @param params
    */
   async placeOrder(params: OrderActionParams) {
-    const { productId, order } = params;
+    const { productId, order, nonce } = params;
     const orderbookAddr = await this.context.engineClient.getOrderbookAddress(
       productId,
     );
@@ -58,6 +58,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
       verifyingAddr: orderbookAddr,
       productId,
       spotLeverage: params.spotLeverage,
+      nonce,
     });
   }
 

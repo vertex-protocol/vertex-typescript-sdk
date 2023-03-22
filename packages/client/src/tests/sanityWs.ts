@@ -1,46 +1,11 @@
-import { createVertexClient } from '../createVertexClient';
-import { ethers, Wallet } from 'ethers';
+import { Wallet } from 'ethers';
 import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
 import { OrderActionParams } from '../apis/market';
 import { subaccountToHex } from '@vertex-protocol/contracts';
 import { getOrderNonce } from '@vertex-protocol/engine-client';
+import { VertexClient } from '../client';
 
-async function main() {
-  const signer = new Wallet(
-    'xxx',
-    new ethers.providers.StaticJsonRpcProvider(
-      'https://goerli-rollup.arbitrum.io/rpc',
-      {
-        name: 'arbitrum-goerli',
-        chainId: 421613,
-      },
-    ),
-  );
-
-  const vertexClient = await createVertexClient('testnet', {
-    // Specify different signers/providers if needed
-    chainSignerOrProvider: signer,
-    engineSigner: signer,
-  });
-
-  await vertexClient.spot._mintMockERC20({
-    // 10 tokens
-    amount: 10,
-    productId: 0,
-  });
-
-  await vertexClient.spot.approveAllowance({
-    amount: 10,
-    productId: 0,
-  });
-
-  const depositTx = await vertexClient.spot.deposit({
-    subaccountName: 'default',
-    productId: 0,
-    amount: 10,
-  });
-  await depositTx.wait();
-
+export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
   const orderParams: OrderActionParams['order'] = {
     subaccountName: 'default',
     // `nowInSeconds` is exposed by the `@vertex-protocol/utils` package
@@ -156,5 +121,3 @@ async function main() {
     )}`,
   );
 }
-
-main().catch((e) => console.log(e));

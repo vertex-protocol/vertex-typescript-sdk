@@ -101,15 +101,15 @@ async function main() {
     amount: toFixedPoint(-0.01),
     expiration: getExpiration(),
     price: 28000,
-    nonce: getOrderNonce(),
   };
   const placeResult = await client.placeOrder({
     verifyingAddr: orderbookAddr,
     productId,
     order,
+    nonce: getOrderNonce(),
   });
   const orderDigest = await client.getOrderDigest(
-    order as OrderParams,
+    placeResult.orderParams,
     orderbookAddr,
   );
   console.log('Done placing spot order', placeResult);

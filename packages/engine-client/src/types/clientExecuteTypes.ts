@@ -24,7 +24,7 @@ export type SignatureParams =
 
 export type WithoutNonce<T extends { nonce: unknown }> = Omit<T, 'nonce'>;
 
-export type WithSpotLeverage<T> = T & {
+type WithSpotLeverage<T> = T & {
   spotLeverage?: boolean;
 };
 
@@ -46,15 +46,14 @@ export interface PlaceOrderParams {
   spotLeverage?: boolean;
 }
 
-export type EngineOrderParams = WithoutNonce<OrderParams> & {
-  nonce?: string;
-};
+export type EngineOrderParams = WithoutNonce<OrderParams>;
 
-export type EngineExecutePlaceOrderParams = SignatureParams &
+export type EngineExecutePlaceOrderParams = WithBaseEngineExecuteParams<
   Omit<PlaceOrderParams, 'order' | 'orderbookAddr'> & {
     productId: number;
     order: EngineOrderParams;
-  };
+  }
+>;
 
 export type EngineExecuteLiquidateSubaccountParams =
   WithBaseEngineExecuteParams<LiquidateSubaccountParams>;
