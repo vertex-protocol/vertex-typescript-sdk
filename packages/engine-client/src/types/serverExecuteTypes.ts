@@ -5,6 +5,7 @@ import {
   EIP712OrderCancellationValues,
   EIP712OrderValues,
   EIP712WithdrawCollateralValues,
+  OrderParams,
   SignedTx,
 } from '@vertex-protocol/contracts';
 import { Bytes } from 'ethers/lib/utils';
@@ -57,3 +58,8 @@ export type EngineServerExecuteRequestType =
 
 export type EngineServerExecuteRequest =
   RequireExactlyOne<EngineServerExecuteRequestByType>;
+
+export type EngineServerExecutePlaceOrderPayload = {
+  payload: EngineServerExecuteRequestByType['place_order'];
+  orderParams: OrderParams;
+};

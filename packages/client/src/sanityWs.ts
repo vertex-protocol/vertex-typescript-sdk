@@ -69,11 +69,13 @@ async function main() {
     wsOrder,
   );
 
-  const wsPlaceOrderReq = await vertexClient.ws.execute.buildPlaceOrderPayload({
-    productId: 1,
-    order: wsOrder,
-    signature: wsOrderSig,
-  });
+  const wsPlaceOrderReq = (
+    await vertexClient.ws.execute.buildPlaceOrderPayload({
+      productId: 1,
+      order: wsOrder,
+      signature: wsOrderSig,
+    })
+  ).payload;
 
   console.log(
     `Place Order WS request: ${JSON.stringify(wsPlaceOrderReq, null, 2)}`,

@@ -7,6 +7,7 @@ import { hexlify } from 'ethers/lib/utils';
 import { EngineBaseClient } from './EngineBaseClient';
 import {
   EngineExecuteRequestParamsByType,
+  EngineServerExecutePlaceOrderPayload,
   EngineServerExecuteRequestByType,
 } from './types';
 import { getOrderNonce } from './utils';
@@ -181,7 +182,7 @@ export class EngineExecuteBuilder {
    */
   async buildPlaceOrderPayload(
     clientParams: EngineExecuteRequestParamsByType['place_order'],
-  ): Promise<EngineServerExecuteRequestByType['place_order']> {
+  ): Promise<EngineServerExecutePlaceOrderPayload> {
     const nonce = await (async () => {
       if (clientParams.order.nonce) {
         return clientParams.order.nonce;
@@ -207,13 +208,16 @@ export class EngineExecuteBuilder {
     })();
 
     return {
-      product_id: clientParams.productId,
-      order: {
-        ...order,
-        sender: hexlify(order.sender),
+      payload: {
+        product_id: clientParams.productId,
+        order: {
+          ...order,
+          sender: hexlify(order.sender),
+        },
+        signature,
+        spot_leverage: clientParams.spotLeverage ?? null,
       },
-      signature,
-      spot_leverage: clientParams.spotLeverage ?? null,
+      orderParams: orderWithNonce,
     };
   }
 
