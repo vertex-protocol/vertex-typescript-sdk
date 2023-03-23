@@ -5,6 +5,10 @@ import {
 } from '@vertex-protocol/engine-client';
 import { BaseVertexAPI } from '../base';
 
+/**
+ * @description Allows you to build query payloads as expected by the server to send over Websocket.
+ * @example vertexClient.ws.query.buildQueryPayload('all_products', {})
+ */
 export class WebSocketQueryAPI extends BaseVertexAPI {
   /**
    * Builds a query request payload as expected by the server via Websocket.
