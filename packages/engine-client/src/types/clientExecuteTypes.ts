@@ -38,22 +38,14 @@ export type EngineWithdrawCollateralParams =
 
 export type EngineMintLpParams = WithSpotLeverage<MintLpParams>;
 
-export interface PlaceOrderParams {
-  productId: number;
-  orderbookAddr: string;
-  order: OrderParams;
-  // If not given, engine defaults to true (leverage/borrow enabled)
-  spotLeverage?: boolean;
-}
-
 export type EngineOrderParams = WithoutNonce<OrderParams>;
 
-export type EngineExecutePlaceOrderParams = WithBaseEngineExecuteParams<
-  Omit<PlaceOrderParams, 'order' | 'orderbookAddr'> & {
-    productId: number;
-    order: EngineOrderParams;
-  }
->;
+export type EngineExecutePlaceOrderParams = WithBaseEngineExecuteParams<{
+  productId: number;
+  order: EngineOrderParams;
+  // If not given, engine defaults to true (leverage/borrow enabled)
+  spotLeverage?: boolean;
+}>;
 
 export type EngineExecuteLiquidateSubaccountParams =
   WithBaseEngineExecuteParams<LiquidateSubaccountParams>;

@@ -1,12 +1,9 @@
 import {
   EngineOrderParams,
-  PlaceOrderParams,
+  EngineExecutePlaceOrderParams,
 } from '@vertex-protocol/engine-client';
 
-export type OrderActionParams = Omit<
-  PlaceOrderParams,
-  'orderbookAddr' | 'order'
-> & {
+export type OrderActionParams = Omit<EngineExecutePlaceOrderParams, 'order'> & {
   order: Omit<EngineOrderParams, 'subaccountOwner'>;
   nonce?: string;
 };
