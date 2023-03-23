@@ -4,7 +4,6 @@ import {
   IClearinghouse__factory,
   IEndpoint__factory,
   MockERC20__factory,
-  OrderParams,
   subaccountFromBytes32,
   subaccountFromHex,
   subaccountToBytes32,
