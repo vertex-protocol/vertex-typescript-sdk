@@ -1,10 +1,7 @@
 import { Wallet } from 'ethers';
-import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
+import { toFixedPoint } from '@vertex-protocol/utils';
 import { OrderActionParams } from '../apis/market';
-import {
-  getExpirationTimestamp,
-  subaccountToBytes32,
-} from '@vertex-protocol/contracts';
+import { getExpirationTimestamp } from '@vertex-protocol/contracts';
 import { getProductMetadataByProductId } from '../utils';
 import { getOrderNonce } from '@vertex-protocol/engine-client';
 import { VertexClient } from '../client';
@@ -40,10 +37,7 @@ export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
 
   const orderParams: OrderActionParams['order'] = {
     subaccountName: 'default',
-    expiration: getExpirationTimestamp(
-      'post_only',
-      Date.now() / 1000 + 60,
-    ).toString(),
+    expiration: getExpirationTimestamp('post_only', Date.now() / 1000 + 60),
     // Limit price
     price: 1800,
     amount: toFixedPoint(-3.5),
