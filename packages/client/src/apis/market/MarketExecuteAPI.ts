@@ -21,7 +21,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
     return this.context.engineClient.mintLp({
-      endpointAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.context.contracts.endpoint.address,
       subaccountOwner: sender,
       ...params,
     });
@@ -35,7 +35,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
     return this.context.engineClient.burnLp({
-      endpointAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.context.contracts.endpoint.address,
       subaccountOwner: sender,
       ...params,
     });
@@ -46,16 +46,19 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * @param params
    */
   async placeOrder(params: OrderActionParams) {
-    const { productId, order } = params;
-    const orderbookAddr = await this.getOrderbookAddress(productId);
+    const { productId, order, nonce } = params;
+    const orderbookAddr = await this.context.engineClient.getOrderbookAddress(
+      productId,
+    );
     return this.context.engineClient.placeOrder({
       order: {
         ...order,
         subaccountOwner: (await this.context.engineSigner?.getAddress()) ?? '',
       },
-      orderbookAddr,
+      verifyingAddr: orderbookAddr,
       productId,
       spotLeverage: params.spotLeverage,
+      nonce,
     });
   }
 
@@ -68,15 +71,10 @@ export class MarketExecuteAPI extends BaseVertexAPI {
   ) {
     const sender = (await this.context.engineSigner?.getAddress()) ?? '';
 
-    return this.context.engineClient.cancelOrder({
+    return this.context.engineClient.cancelOrders({
       subaccountOwner: sender,
-      endpointAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.context.contracts.endpoint.address,
       ...params,
     });
-  }
-
-  private async getOrderbookAddress(productId: number) {
-    const contracts = await this.context.engineClient.getContracts();
-    return contracts.orderbookAddrs[productId];
   }
 }

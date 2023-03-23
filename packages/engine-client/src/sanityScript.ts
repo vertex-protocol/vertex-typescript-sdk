@@ -15,7 +15,8 @@ import {
   toFixedPoint,
 } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
-import { OrderParamsWithoutNonce } from './types';
+import { EngineOrderParams } from './types';
+import { getOrderNonce } from './utils';
 
 function getExpiration() {
   return nowInSeconds() + 1000;
@@ -91,21 +92,26 @@ async function main() {
   const products = await client.getAllMarkets();
   console.log('All products', JSON.stringify(products, null, 2));
   console.log('Placing order');
-  const productId = 1;
+  const productId = 2;
   const orderbookAddr = await clearinghouse.getOrderbook(productId);
-  const order: OrderParamsWithoutNonce = {
+  const order: EngineOrderParams = {
     subaccountOwner: signer.address,
     subaccountName: 'default',
-    amount: -1,
+    amount: toFixedPoint(-0.01),
     expiration: getExpiration(),
-    price: 23000,
+    price: 28000,
   };
   const placeResult = await client.placeOrder({
-    orderbookAddr,
+    verifyingAddr: orderbookAddr,
     productId,
     order,
+    nonce: getOrderNonce(),
   });
-  console.log('Done placing order', placeResult);
+  const orderDigest = await client.getOrderDigest(
+    placeResult.orderParams,
+    orderbookAddr,
+  );
+  console.log('Done placing spot order', placeResult);
   const subaccountOrders = await client.getSubaccountOrders({
     productId,
     subaccountName: 'default',
@@ -130,7 +136,7 @@ async function main() {
     subaccountOwner: signer.address,
     subaccountName: 'default',
     productId,
-    price: toBigDecimal(23000),
+    price: toBigDecimal(28000),
     side: 'long',
   });
   console.log('Max order size', JSON.stringify(maxOrderSize, null, 2));
@@ -151,17 +157,17 @@ async function main() {
     JSON.stringify(maxWithdrawableNoSpotLeverage, null, 2),
   );
   const queriedOrder = await client.getOrder({
-    digest: placeResult.digest,
+    digest: orderDigest,
     productId,
   });
   console.log('Queried order', JSON.stringify(queriedOrder, null, 2));
   console.log('Cancelling order');
-  const cancelResult = await client.cancelOrder({
+  const cancelResult = await client.cancelOrders({
     subaccountName: 'default',
     subaccountOwner: signer.address,
     productIds: [productId],
-    digests: [placeResult.digest],
-    endpointAddr,
+    digests: [orderDigest],
+    verifyingAddr: endpointAddr,
   });
   console.log('Done cancelling order', cancelResult);
   const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
@@ -189,7 +195,7 @@ async function main() {
     amountBase: toFixedPoint(1, 18),
     quoteAmountLow: toFixedPoint(1000, 18),
     quoteAmountHigh: toFixedPoint(2000, 18),
-    endpointAddr,
+    verifyingAddr: endpointAddr,
   });
   console.log('Done minting spot lp', mintSpotLpResult);
   const mintPerpLpResult = await client.mintLp({
@@ -199,7 +205,7 @@ async function main() {
     amountBase: toFixedPoint(1, 18),
     quoteAmountLow: toFixedPoint(1000, 18),
     quoteAmountHigh: toFixedPoint(2000, 18),
-    endpointAddr,
+    verifyingAddr: endpointAddr,
   });
   console.log('Done minting perp lp', mintPerpLpResult);
   const subaccountInfoAfterMintingLp = await client.getSubaccountSummary({
@@ -215,7 +221,7 @@ async function main() {
     subaccountName: 'default',
     productId: 3,
     amount: toFixedPoint(1, 18),
-    endpointAddr,
+    verifyingAddr: endpointAddr,
   });
   console.log('Done burning spot lp', burnSpotLpResult);
   const burnPerpLpResult = await client.burnLp({
@@ -223,7 +229,7 @@ async function main() {
     subaccountName: 'default',
     productId: 4,
     amount: toFixedPoint(1, 6),
-    endpointAddr,
+    verifyingAddr: endpointAddr,
   });
   console.log('Done burning perp lp', burnPerpLpResult);
   const withdrawResult = await client.withdrawCollateral({
@@ -231,7 +237,7 @@ async function main() {
     subaccountName: 'default',
     productId: 0,
     amount: toFixedPoint(4999, 6),
-    endpointAddr,
+    verifyingAddr: endpointAddr,
   });
   console.log('Done withdrawing collateral, result', withdrawResult);
   const subaccountInfoAtEnd = await client.getSubaccountSummary({

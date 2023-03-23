@@ -4,6 +4,7 @@ import { SubaccountAPI } from './apis/subaccount';
 import { SpotAPI } from './apis/spot';
 import { PerpAPI } from './apis/perp';
 import { isSigner } from './utils';
+import { WebsocketAPI } from './apis/ws';
 
 /**
  * Client for querying and executing against Vertex Clearinghouse.
@@ -15,6 +16,7 @@ export class VertexClient {
   readonly subaccount: SubaccountAPI;
   readonly spot: SpotAPI;
   readonly perp: PerpAPI;
+  readonly ws: WebsocketAPI;
 
   constructor(context: VertexClientContext) {
     this.context = context;
@@ -23,6 +25,7 @@ export class VertexClient {
     this.subaccount = new SubaccountAPI(context);
     this.spot = new SpotAPI(context);
     this.perp = new PerpAPI(context);
+    this.ws = new WebsocketAPI(context);
   }
 
   /**

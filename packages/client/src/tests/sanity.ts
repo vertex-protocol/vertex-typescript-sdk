@@ -1,65 +1,78 @@
-import { createVertexClient } from './createVertexClient';
-import { ethers, Wallet } from 'ethers';
-import { nowInSeconds } from '@vertex-protocol/utils';
-import { OrderActionParams } from './apis/market';
-import { subaccountToBytes32 } from '@vertex-protocol/contracts';
-import { getProductMetadataByProductId } from './utils';
+import { Wallet } from 'ethers';
+import { toFixedPoint } from '@vertex-protocol/utils';
+import { OrderActionParams } from '../apis/market';
+import { getExpirationTimestamp } from '@vertex-protocol/contracts';
+import { getProductMetadataByProductId } from '../utils';
+import { getOrderNonce } from '@vertex-protocol/engine-client';
+import { VertexClient } from '../client';
 
-async function main() {
-  const signer = new Wallet(
-    'xxx',
-    new ethers.providers.StaticJsonRpcProvider(
-      'https://goerli-rollup.arbitrum.io/rpc',
-      {
-        name: 'arbitrum-goerli',
-        chainId: 421613,
-      },
-    ),
-  );
+export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
+  console.log('Running full sanity...');
 
-  const vertexClient = await createVertexClient('testnet', {
-    // Specify different signers/providers if needed
-    chainSignerOrProvider: signer,
-    engineSigner: signer,
-  });
-
-  await vertexClient.spot._mintMockERC20({
+  console.log('Minting tokens...');
+  const mintTx = await vertexClient.spot._mintMockERC20({
     // 10 tokens
-    amount: 10,
+    amount: toFixedPoint(10, 6),
     productId: 0,
   });
+  await mintTx.wait();
 
-  await vertexClient.spot.approveAllowance({
-    amount: 10,
+  console.log('Approving allowance...');
+  const approveTx = await vertexClient.spot.approveAllowance({
+    amount: toFixedPoint(10000, 6),
     productId: 0,
   });
+  await approveTx.wait();
 
+  console.log('Depositing tokens...');
   const depositTx = await vertexClient.spot.deposit({
     subaccountName: 'default',
     productId: 0,
-    amount: 10,
+    amount: toFixedPoint(10000, 6),
   });
   await depositTx.wait();
 
+  console.log('Placing order...');
+  const orderNonce = getOrderNonce();
+
   const orderParams: OrderActionParams['order'] = {
     subaccountName: 'default',
-    // `nowInSeconds` is exposed by the `@vertex-protocol/utils` package
-    // This gives 60s before the order expires
-    expiration: nowInSeconds() + 60,
+    expiration: getExpirationTimestamp('post_only', Date.now() / 1000 + 60),
     // Limit price
-    price: 1,
-    amount: 1,
+    price: 1800,
+    amount: toFixedPoint(-3.5),
   };
 
-  const { digest } = await vertexClient.market.placeOrder({
+  const orderResult = await vertexClient.market.placeOrder({
     order: orderParams,
     // Product you're sending the order for
-    productId: 1,
+    productId: 3,
+    nonce: orderNonce,
   });
 
+  console.log(`Place order result: ${JSON.stringify(orderResult, null, 2)}`);
+
+  const subaccountOrders =
+    await vertexClient.context.engineClient.getSubaccountOrders({
+      productId: 3,
+      subaccountName: 'default',
+      subaccountOwner: signer.address,
+    });
+
+  console.log('Subaccount orders', JSON.stringify(subaccountOrders));
+
+  const verifyingAddr =
+    await vertexClient.context.engineClient.getOrderbookAddress(3);
+
+  const digest = await vertexClient.context.engineClient.getOrderDigest(
+    orderResult.orderParams,
+    verifyingAddr,
+  );
+
+  console.log(`Order digest: ${digest}`);
   await vertexClient.market.cancelOrder({
     digests: [digest],
-    productIds: [1],
+    productIds: [3],
     subaccountName: 'default',
   });
 
@@ -67,16 +80,11 @@ async function main() {
   await vertexClient.market.getAllEngineMarkets();
   // Fetches state from Arbitrum
   await vertexClient.market.getAllMarkets();
-  await vertexClient.market.getLatestMarketPrice({ productId: 1 });
+  await vertexClient.market.getLatestMarketPrice({ productId: 3 });
   await vertexClient.market.getMarketLiquidity({
-    productId: 1,
+    productId: 3,
     // Per side of the book
     depth: 100,
-  });
-
-  const subaccount = subaccountToBytes32({
-    subaccountOwner: await signer.getAddress(),
-    subaccountName: 'default',
   });
 
   // State from engine
@@ -92,7 +100,7 @@ async function main() {
   await vertexClient.market.getOpenSubaccountOrders({
     subaccountOwner: await signer.getAddress(),
     subaccountName: 'default',
-    productId: 1,
+    productId: 3,
   });
 
   await vertexClient.context.graph.getSubaccountOrders({
@@ -103,7 +111,7 @@ async function main() {
   await vertexClient.spot.withdraw({
     subaccountName: 'default',
     productId: 0,
-    amount: 10,
+    amount: toFixedPoint(1000, 6),
   });
 
   console.log('Products metatada (spot)');
@@ -121,5 +129,3 @@ async function main() {
   console.log(getProductMetadataByProductId('testnet', invalidProductId));
   console.log(getProductMetadataByProductId('mainnet', invalidProductId));
 }
-
-main();

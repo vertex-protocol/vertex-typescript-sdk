@@ -5,9 +5,11 @@ import {
   EIP712OrderCancellationValues,
   EIP712OrderValues,
   EIP712WithdrawCollateralValues,
+  OrderParams,
   SignedTx,
 } from '@vertex-protocol/contracts';
 import { Bytes } from 'ethers/lib/utils';
+import { RequireExactlyOne } from '../utils';
 
 type ByteFieldsToHex<T> = {
   [K in keyof T]: T[K] extends Bytes ? string : T[K];
@@ -53,3 +55,11 @@ export interface EngineServerExecuteRequestByType {
 
 export type EngineServerExecuteRequestType =
   keyof EngineServerExecuteRequestByType;
+
+export type EngineServerExecuteRequest =
+  RequireExactlyOne<EngineServerExecuteRequestByType>;
+
+export type EngineServerExecutePlaceOrderPayload = {
+  payload: EngineServerExecuteRequestByType['place_order'];
+  orderParams: OrderParams;
+};

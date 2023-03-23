@@ -1,166 +1,81 @@
 import {
-  BurnLpParams,
-  getOrderDigest,
-  getVertexEIP712Values,
-  LiquidateSubaccountParams,
-  OrderCancellationParams,
-} from '@vertex-protocol/contracts';
-import {
-  EngineMintLpParams,
-  EngineWithdrawCollateralParams,
-  OrderActionResult,
-  PlaceOrderParamsWithoutNonce,
-  WithoutNonce,
+  EngineExecutePlaceOrderResult,
+  EngineExecuteRequestParamsByType,
 } from './types';
-import { EngineBaseClient } from './EngineBaseClient';
-import { hexlify } from 'ethers/lib/utils';
-
-type WithEndpointAddr<T> = T & {
-  endpointAddr: string;
-};
+import { EngineExecuteBuilder } from './EngineExecuteBuilder';
+import { EngineBaseClient, EngineClientOpts } from './EngineBaseClient';
+import { getOrderDigest, OrderParams } from '@vertex-protocol/contracts';
 
 export class EngineExecuteClient extends EngineBaseClient {
+  readonly payloadBuilder: EngineExecuteBuilder;
+
+  constructor(opts: EngineClientOpts) {
+    super(opts);
+    this.payloadBuilder = new EngineExecuteBuilder(this);
+  }
+
   async liquidateSubaccount(
-    params: WithoutNonce<WithEndpointAddr<LiquidateSubaccountParams>>,
+    params: EngineExecuteRequestParamsByType['liquidate_subaccount'],
   ) {
-    const { txNonce } = await this.getNoncesForCurrentSigner();
-    const paramsWithNonce = { ...params, nonce: txNonce };
-
-    const tx = getVertexEIP712Values('liquidate_subaccount', paramsWithNonce);
-    const signature = await this.sign(
+    return this.execute(
       'liquidate_subaccount',
-      params.endpointAddr,
-      paramsWithNonce,
+      await this.payloadBuilder.buildLiquidateSubaccountPayload(params),
     );
-
-    return this.execute('liquidate_subaccount', {
-      signature,
-      tx: {
-        ...tx,
-        liquidatee: hexlify(tx.liquidatee),
-        sender: hexlify(tx.sender),
-      },
-    });
   }
 
   async withdrawCollateral(
-    params: WithoutNonce<WithEndpointAddr<EngineWithdrawCollateralParams>>,
+    params: EngineExecuteRequestParamsByType['withdraw_collateral'],
   ) {
-    const { txNonce } = await this.getNoncesForCurrentSigner();
-    const paramsWithNonce = { ...params, nonce: txNonce };
-
-    const signature = await this.sign(
+    return this.execute(
       'withdraw_collateral',
-      params.endpointAddr,
-      paramsWithNonce,
+      await this.payloadBuilder.buildWithdrawCollateralPayload(params),
     );
-
-    const tx = getVertexEIP712Values('withdraw_collateral', paramsWithNonce);
-    return this.execute('withdraw_collateral', {
-      signature,
-      tx: {
-        ...tx,
-        sender: hexlify(tx.sender),
-      },
-      spot_leverage: params.spotLeverage ?? null,
-    });
   }
 
-  async mintLp(params: WithoutNonce<WithEndpointAddr<EngineMintLpParams>>) {
-    const { txNonce } = await this.getNoncesForCurrentSigner();
-    const paramsWithNonce = { ...params, nonce: txNonce };
-
-    const tx = getVertexEIP712Values('mint_lp', paramsWithNonce);
-    const signature = await this.sign(
+  async mintLp(params: EngineExecuteRequestParamsByType['mint_lp']) {
+    return this.execute(
       'mint_lp',
-      params.endpointAddr,
-      paramsWithNonce,
+      await this.payloadBuilder.buildMintLpPayload(params),
     );
-
-    return this.execute('mint_lp', {
-      signature,
-      tx: {
-        ...tx,
-        sender: hexlify(tx.sender),
-      },
-      spot_leverage: params.spotLeverage ?? null,
-    });
   }
 
-  async burnLp(params: WithoutNonce<WithEndpointAddr<BurnLpParams>>) {
-    const { txNonce } = await this.getNoncesForCurrentSigner();
-    const paramsWithNonce = { ...params, nonce: txNonce };
-
-    const tx = getVertexEIP712Values('burn_lp', paramsWithNonce);
-    const signature = await this.sign(
+  async burnLp(params: EngineExecuteRequestParamsByType['burn_lp']) {
+    return this.execute(
       'burn_lp',
-      params.endpointAddr,
-      paramsWithNonce,
+      await this.payloadBuilder.buildBurnLpPayload(params),
     );
-
-    return this.execute('burn_lp', {
-      signature,
-      tx: {
-        ...tx,
-        sender: hexlify(tx.sender),
-      },
-    });
   }
 
   async placeOrder(
-    params: PlaceOrderParamsWithoutNonce,
-  ): Promise<OrderActionResult> {
-    const { orderNonce } = await this.getNoncesForCurrentSigner();
-    const orderWithNonce = {
-      ...params.order,
-      nonce: orderNonce,
-    };
-
-    const digest = await getOrderDigest({
-      chainId: await this.getSigningChainId(),
-      order: orderWithNonce,
-      orderbookAddress: params.orderbookAddr,
-    });
-    const order = getVertexEIP712Values('place_order', orderWithNonce);
-
-    const executeResult = await this.execute('place_order', {
-      product_id: params.productId,
-      order: {
-        ...order,
-        sender: hexlify(order.sender),
-      },
-      signature: await this.sign(
-        'place_order',
-        params.orderbookAddr,
-        orderWithNonce,
-      ),
-      spot_leverage: params.spotLeverage ?? null,
-    });
-
-    return { digest, ...executeResult };
-  }
-
-  async cancelOrder(
-    params: WithoutNonce<WithEndpointAddr<OrderCancellationParams>>,
-  ) {
-    const { orderNonce } = await this.getNoncesForCurrentSigner();
-    const paramsWithNonce = { ...params, nonce: orderNonce };
-
-    const tx = getVertexEIP712Values('cancel_orders', paramsWithNonce);
-    const signature = await this.sign(
-      'cancel_orders',
-      params.endpointAddr,
-      paramsWithNonce,
+    params: EngineExecuteRequestParamsByType['place_order'],
+  ): Promise<EngineExecutePlaceOrderResult> {
+    const placeOrderPayload = await this.payloadBuilder.buildPlaceOrderPayload(
+      params,
     );
-
-    return this.execute('cancel_orders', {
-      tx: {
-        ...tx,
-        sender: hexlify(tx.sender),
-      },
-      signature,
-    });
+    return {
+      ...(await this.execute('place_order', placeOrderPayload.payload)),
+      orderParams: placeOrderPayload.orderParams,
+    };
   }
 
+  async cancelOrders(
+    params: EngineExecuteRequestParamsByType['cancel_orders'],
+  ) {
+    return this.execute(
+      'cancel_orders',
+      await this.payloadBuilder.buildCancelOrdersPayload(params),
+    );
+  }
+
+  async getOrderDigest(
+    order: OrderParams,
+    verifyingAddr: string,
+  ): Promise<string> {
+    return await getOrderDigest({
+      chainId: await this.getSigningChainId(),
+      order,
+      verifyingAddr,
+    });
+  }
   // TODO: settle PNL
 }

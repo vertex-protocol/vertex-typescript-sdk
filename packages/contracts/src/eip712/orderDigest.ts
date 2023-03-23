@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 
 interface OrderDigestParams {
   order: OrderParams;
-  orderbookAddress: string;
+  verifyingAddr: string;
   chainId: number;
 }
 
@@ -16,9 +16,9 @@ interface OrderDigestParams {
  * @param params
  */
 export async function getOrderDigest(params: OrderDigestParams) {
-  const { chainId, order, orderbookAddress } = params;
+  const { chainId, order, verifyingAddr } = params;
   return ethers.utils._TypedDataEncoder.hash(
-    getVertexEIP712Domain(orderbookAddress, chainId),
+    getVertexEIP712Domain(verifyingAddr, chainId),
     getVertexEIP712Types('place_order'),
     getVertexEIP712Values('place_order', order),
   );

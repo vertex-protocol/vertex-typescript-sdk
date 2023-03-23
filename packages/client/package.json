@@ -16,7 +16,7 @@
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "dev": "tsc -w",
-    "sanity": "ts-node ./src/sanity.ts"
+    "sanity": "ts-node ./src/tests/index.ts"
   },
   "files": [
     "dist",

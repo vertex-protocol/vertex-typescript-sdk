@@ -1,7 +1,9 @@
 import {
+  EngineServerExecuteRequest,
   EngineServerExecuteRequestByType,
   EngineServerExecuteRequestType,
   EngineServerExecutionResult,
+  EngineServerQueryRequest,
   EngineServerQueryRequestByType,
   EngineServerQueryRequestType,
   EngineServerQueryResponse,
@@ -17,6 +19,7 @@ import {
 import axios, { AxiosResponse } from 'axios';
 import { TypedDataSigner } from '@ethersproject/abstract-signer';
 import { Signer } from 'ethers';
+import { getOrderNonce } from './utils';
 
 export interface EngineClientOpts {
   // Server URL
@@ -46,16 +49,19 @@ export class EngineBaseClient {
     this.opts = opts;
   }
 
-  async getNoncesForCurrentSigner(): Promise<GetEngineNoncesResponse> {
-    if (this.opts.signer == null) {
-      throw Error('No current signer in opts');
+  public async getTxNonce(address?: string): Promise<string> {
+    const addr = address ?? (await this.opts.signer?.getAddress());
+    if (!addr) {
+      throw Error('No current signer in opts and no address provided');
     }
-    return this.getNonces({
-      address: await this.opts.signer.getAddress(),
-    });
+    return (
+      await this.getNonces({
+        address: addr,
+      })
+    ).txNonce;
   }
 
-  async getNonces(
+  public async getNonces(
     params: GetEngineNoncesParams,
   ): Promise<GetEngineNoncesResponse> {
     const baseResp = await this.query('nonces', params);
@@ -77,11 +83,10 @@ export class EngineBaseClient {
     requestType: TRequestType,
     params: EngineServerQueryRequestByType[TRequestType],
   ): Promise<EngineServerQueryResponseByType[TRequestType]> {
-    const queryParams: Record<string, string | number> = {
-      type: requestType,
-    };
-    Object.keys(params).forEach((key) => {
-      const value = params[key as keyof typeof params];
+    const request = this.getQueryRequest(requestType, params);
+    const queryParams: Record<string, string | number> = {};
+    Object.keys(request).forEach((key) => {
+      const value = request[key as keyof typeof request];
       // Remove null values and stringify
       if (value != null) {
         queryParams[key] = String(value);
@@ -101,6 +106,22 @@ export class EngineBaseClient {
   }
 
   /**
+   * A simple, typechecked fn for constructing a query request in the format expected by the server.
+   *
+   * @param requestType
+   * @param params
+   */
+  public getQueryRequest<TRequestType extends EngineServerQueryRequestType>(
+    requestType: TRequestType,
+    params: EngineServerQueryRequestByType[TRequestType],
+  ): EngineServerQueryRequest<TRequestType> {
+    return {
+      type: requestType,
+      ...params,
+    };
+  }
+
+  /**
    * POSTs an execute message to the engine
    *
    * @param requestType
@@ -111,9 +132,7 @@ export class EngineBaseClient {
     requestType: TRequestType,
     params: EngineServerExecuteRequestByType[TRequestType],
   ): Promise<EngineExecuteRequestResponse> {
-    const reqBody: EngineExecuteRequestBody = {
-      [requestType]: params,
-    };
+    const reqBody = this.getExecuteRequest(requestType, params);
     const response = await axios.post<EngineExecuteRequestResponse>(
       `${this.opts.url}/execute`,
       reqBody,
@@ -125,7 +144,22 @@ export class EngineBaseClient {
     return response.data;
   }
 
-  protected async getSigningChainId(): Promise<number> {
+  /**
+   * A simple, typechecked fn for constructing an execute request in the format expected by the server.
+   *
+   * @param requestType
+   * @param params
+   */
+  public getExecuteRequest<TRequestType extends EngineServerExecuteRequestType>(
+    requestType: TRequestType,
+    params: EngineServerExecuteRequestByType[TRequestType],
+  ): EngineExecuteRequestBody {
+    return {
+      [requestType]: params,
+    };
+  }
+
+  public async getSigningChainId(): Promise<number> {
     return (
       this.opts.signingChainId ?? (await this.opts.signer?.getChainId()) ?? -1
     );

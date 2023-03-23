@@ -382,6 +382,16 @@ export class EngineQueryClient extends EngineBaseClient {
   async checkIp(): Promise<GetEngineIpCheckResponse> {
     return axios.get(`${this.opts.url}/ip`).then((res) => res.data);
   }
+
+  /**
+   * Gets the orderbook contract address for a given product
+   * @param productId
+   * @returns
+   */
+  public async getOrderbookAddress(productId: number): Promise<string> {
+    const contracts = await this.getContracts();
+    return contracts.orderbookAddrs[productId];
+  }
 }
 
 function mapSubaccountSummary(
