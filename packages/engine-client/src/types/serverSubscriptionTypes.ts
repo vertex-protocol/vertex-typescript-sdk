@@ -1,4 +1,3 @@
-import { RequireExactlyOne } from '../utils';
 import {
   SubscriptionBestBidOfferEvent,
   SubscriptionBookDepthEvent,
@@ -47,13 +46,13 @@ export type EngineServerSubscriptionStream<
   type: TStreamType;
 } & EngineServerSubscriptionStreamByType[TStreamType];
 
-export type EngineServerSubscriptionParams = RequireExactlyOne<
-  EngineServerSubscriptionStream<EngineServerSubscriptionStreamType>
->;
+export interface EngineServerSubscriptionStreamParams {
+  stream: EngineServerSubscriptionStream<EngineServerSubscriptionStreamType>;
+}
 
 export interface EngineServerSubscriptionRequestByType {
-  subscribe: EngineServerSubscriptionParams;
-  unsubscribe: EngineServerSubscriptionParams;
+  subscribe: EngineServerSubscriptionStreamParams;
+  unsubscribe: EngineServerSubscriptionStreamParams;
   list: Record<string, never>;
 }
 
@@ -64,12 +63,13 @@ export type EngineServerSubscriptionRequest<
   TRequestType extends EngineServerSubscriptionRequestType,
 > = {
   method: TRequestType;
+  id: number;
 } & EngineServerSubscriptionRequestByType[TRequestType];
 
 export interface EngineServerSubscriptionResponseByType {
   subscribe: Record<string, never>;
   unsubscribe: Record<string, never>;
-  list: EngineServerSubscriptionParams[];
+  list: EngineServerSubscriptionStream<EngineServerSubscriptionStreamType>[];
 }
 
 export interface EngineServerSubscriptionResponse<

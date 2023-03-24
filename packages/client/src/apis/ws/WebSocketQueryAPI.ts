@@ -14,7 +14,7 @@ export class WebSocketQueryAPI extends BaseVertexAPI {
    * Builds a query request payload as expected by the server via Websocket.
    * @param requestType
    * @param params
-   * @returns query request payload as expected by the server to be sent via Websocket.
+   * @returns query request payload.
    */
   public buildQueryPayload<TRequestType extends EngineServerQueryRequestType>(
     requestType: TRequestType,

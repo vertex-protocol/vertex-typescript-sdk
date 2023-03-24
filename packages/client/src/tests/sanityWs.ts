@@ -120,4 +120,56 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
       2,
     )}`,
   );
+
+  const wsTradeStream = vertexClient.ws.subscription.buildStreamPayload(
+    'trade',
+    {
+      product_id: 0,
+    },
+  );
+  const wsTradeSubscriptionReq =
+    vertexClient.ws.subscription.buildSubscriptionPayload(
+      'subscribe',
+      1,
+      wsTradeStream,
+    );
+
+  console.log(
+    `Trade subscription WS request: ${JSON.stringify(
+      wsTradeSubscriptionReq,
+      null,
+      2,
+    )}`,
+  );
+
+  const wsFillStream = vertexClient.ws.subscription.buildStreamPayload('fill', {
+    product_id: 1,
+    subaccount:
+      '0x3b69d1a1021a1979cc6e16987ce0fcfa8875484064656661756c740000000000',
+  });
+  const wsFillUnsubscribeReq =
+    vertexClient.ws.subscription.buildSubscriptionPayload(
+      'unsubscribe',
+      1,
+      wsFillStream,
+    );
+
+  console.log(
+    `Fill unsubscribe WS request: ${JSON.stringify(
+      wsFillUnsubscribeReq,
+      null,
+      2,
+    )}`,
+  );
+
+  const wsListSubscriptionsReq =
+    vertexClient.ws.subscription.buildSubscriptionPayload('list', 1, {});
+
+  console.log(
+    `Lists subscriptions WS request: ${JSON.stringify(
+      wsListSubscriptionsReq,
+      null,
+      2,
+    )}`,
+  );
 }
