@@ -6,7 +6,7 @@ import {
   OrderParams,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
-import { RequireExactlyOne } from '../utils';
+import { RequireExactlyOne } from '@vertex-protocol/utils';
 import { EngineServerExecutionResult } from './serverExecuteTypes';
 
 /**

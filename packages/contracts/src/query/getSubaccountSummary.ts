@@ -5,7 +5,7 @@ import {
   WithContract,
 } from '../common';
 import { toBigDecimal } from '@vertex-protocol/utils';
-import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
+import { mapContractPerpProduct, mapContractSpotProduct } from './utils';
 import { subaccountToBytes32 } from '../utils/bytes32';
 
 /**
@@ -52,7 +52,7 @@ export async function getSubaccountSummary({
     balances.push({
       amount: toBigDecimal(spotBalance.balance.amount),
       lpAmount: toBigDecimal(spotBalance.lpBalance.amount),
-      ...mapEngineSpotProduct(product),
+      ...mapContractSpotProduct(product),
     });
   });
 
@@ -69,7 +69,7 @@ export async function getSubaccountSummary({
       amount: toBigDecimal(perpBalance.balance.amount),
       lpAmount: toBigDecimal(perpBalance.lpBalance.amount),
       vQuoteBalance: toBigDecimal(perpBalance.balance.vQuoteBalance),
-      ...mapEnginePerpProduct(product),
+      ...mapContractPerpProduct(product),
     });
   });
 

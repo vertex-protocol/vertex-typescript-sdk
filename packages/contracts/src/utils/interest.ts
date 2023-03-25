@@ -2,7 +2,7 @@ import {
   BigDecimal,
   BigDecimalish,
   fromX18,
-  SECONDS_IN_YEAR,
+  TimeInSeconds,
   toBigDecimal,
 } from '@vertex-protocol/utils';
 import { SpotProduct } from '../common';
@@ -88,7 +88,7 @@ export function calcBorrowRatePerSecond(product: SpotProduct) {
     annualRate = interestFloor.plus(utilizationTerm);
   }
 
-  return annualRate.div(SECONDS_IN_YEAR);
+  return annualRate.div(TimeInSeconds.YEAR);
 }
 
 /**

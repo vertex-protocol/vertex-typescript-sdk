@@ -24,6 +24,7 @@
   ],
   "dependencies": {
     "@vertex-protocol/contracts": "^0.1.0-alpha.79",
+    "@vertex-protocol/engine-client": "^0.1.0-alpha.79",
     "@vertex-protocol/utils": "^0.1.0-alpha.79",
     "axios": "^1.1.2",
     "ethers": "^5.7.1",

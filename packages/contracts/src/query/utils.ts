@@ -3,7 +3,7 @@ import { PerpProduct, ProductEngineType, SpotProduct } from '../common';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import { calcTotalBorrowed, calcTotalDeposited } from '../utils';
 
-export function mapEngineSpotProduct(
+export function mapContractSpotProduct(
   product: FQuerier.SpotProductStructOutput,
 ): SpotProduct {
   return {
@@ -34,7 +34,7 @@ export function mapEngineSpotProduct(
   };
 }
 
-export function mapEnginePerpProduct(
+export function mapContractPerpProduct(
   product: FQuerier.PerpProductStructOutput,
 ): PerpProduct {
   return {

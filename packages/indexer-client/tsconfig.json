@@ -18,5 +18,8 @@
     {
       "path": "../contracts"
     },
+    {
+      "path": "../engine-client"
+    }
   ]
 }

@@ -20,7 +20,10 @@ import {
   ENGINE_CLIENT_ENDPOINTS,
   EngineClient,
 } from '@vertex-protocol/engine-client';
-import { IndexerClient } from '@vertex-protocol/indexer-client';
+import {
+  INDEXER_CLIENT_ENDPOINTS,
+  IndexerClient,
+} from '@vertex-protocol/indexer-client';
 
 /**
  * Context required to use the Vertex client.
@@ -51,7 +54,8 @@ interface VertexClientContextOpts {
     endpointAddress?: string;
   };
   graph: GraphClientOpts;
-  offchainEngineEndpoint: string;
+  engineEndpoint: string;
+  indexerEndpoint: string;
 }
 
 /**
@@ -78,7 +82,7 @@ export async function createClientContext(
   opts: CreateVertexClientContextOpts,
   signerOpts: CreateVertexClientContextSignerOpts,
 ): Promise<VertexClientContext> {
-  const { contracts, graph, offchainEngineEndpoint } =
+  const { contracts, graph, engineEndpoint, indexerEndpoint } =
     ((): VertexClientContextOpts => {
       if (opts === 'testnet') {
         return {
@@ -94,7 +98,8 @@ export async function createClientContext(
             marketsEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.markets,
             candlesticksEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.candlesticks,
           },
-          offchainEngineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
+          engineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
+          indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.testnet,
         };
       } else if (opts === 'mainnet') {
         return {
@@ -110,7 +115,8 @@ export async function createClientContext(
             marketsEndpoint: GRAPH_CLIENT_ENDPOINTS.mainnet.markets,
             candlesticksEndpoint: GRAPH_CLIENT_ENDPOINTS.mainnet.candlesticks,
           },
-          offchainEngineEndpoint: ENGINE_CLIENT_ENDPOINTS.mainnet,
+          engineEndpoint: ENGINE_CLIENT_ENDPOINTS.mainnet,
+          indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.mainnet,
         };
       } else {
         return opts;
@@ -168,12 +174,12 @@ export async function createClientContext(
     },
     graph: new VertexGraphClient(graph),
     engineClient: new EngineClient({
-      url: offchainEngineEndpoint,
+      url: engineEndpoint,
       signer: engineSigner,
       signingChainId: signerOpts.engineSigningChainId,
     }),
     indexerClient: new IndexerClient({
-      url: `${offchainEngineEndpoint}/indexer`,
+      url: indexerEndpoint,
     }),
   };
 }
