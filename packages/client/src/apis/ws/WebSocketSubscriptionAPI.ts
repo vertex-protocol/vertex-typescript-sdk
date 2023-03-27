@@ -2,8 +2,8 @@ import {
   EngineServerSubscriptionRequestType,
   EngineServerSubscriptionRequestByType,
   EngineServerSubscriptionRequest,
-  EngineServerSubscriptionStreamType,
-  EngineServerSubscriptionStreamByType,
+  EngineServerSubscriptionStreamParamsType,
+  EngineServerSubscriptionStreamParamsByType,
   EngineServerSubscriptionStream,
 } from '@vertex-protocol/engine-client';
 import { BaseVertexAPI } from '../base';
@@ -44,10 +44,10 @@ export class WebSocketSubscriptionAPI extends BaseVertexAPI {
    * @returns subscription stream params.
    */
   public buildSubscriptionParams<
-    TStreamType extends EngineServerSubscriptionStreamType,
+    TStreamType extends EngineServerSubscriptionStreamParamsType,
   >(
     streamType: TStreamType,
-    params: EngineServerSubscriptionStreamByType[TStreamType],
+    params: EngineServerSubscriptionStreamParamsByType[TStreamType],
   ): {
     stream: EngineServerSubscriptionStream<TStreamType>;
   } {

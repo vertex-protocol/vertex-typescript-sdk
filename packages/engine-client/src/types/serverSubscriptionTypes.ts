@@ -23,7 +23,7 @@ export interface EngineServerBookDepthStreamParams {
 /**
  * @description Available subscription streams
  */
-export interface EngineServerSubscriptionStreamByType {
+export interface EngineServerSubscriptionStreamParamsByType {
   trade: EngineServerTradeStreamParams;
   best_bid_offer: EngineServerBestBidOfferStreamParams;
   fill: EngineServerFillStreamParams;
@@ -31,23 +31,23 @@ export interface EngineServerSubscriptionStreamByType {
   book_depth: EngineServerBookDepthStreamParams;
 }
 
-export type EngineServerSubscriptionStreamType =
-  keyof EngineServerSubscriptionStreamByType;
+export type EngineServerSubscriptionStreamParamsType =
+  keyof EngineServerSubscriptionStreamParamsByType;
 
 /**
  * @description Describes a stream that can be subscribed to.
  */
 export type EngineServerSubscriptionStream<
-  TStreamType extends EngineServerSubscriptionStreamType,
+  TStreamType extends EngineServerSubscriptionStreamParamsType,
 > = {
   type: TStreamType;
-} & EngineServerSubscriptionStreamByType[TStreamType];
+} & EngineServerSubscriptionStreamParamsByType[TStreamType];
 
 /**
  * @description Params to provide to a `subscribe` / `unsubscribe` action.
  */
 export interface EngineServerSubscriptionParams {
-  stream: EngineServerSubscriptionStream<EngineServerSubscriptionStreamType>;
+  stream: EngineServerSubscriptionStream<EngineServerSubscriptionStreamParamsType>;
 }
 
 /**
