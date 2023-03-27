@@ -1,11 +1,3 @@
-import {
-  SubscriptionBestBidOfferEvent,
-  SubscriptionBookDepthEvent,
-  SubscriptionFillEvent,
-  SubscriptionPositionChangeEvent,
-  SubscriptionTradeEvent,
-} from './serverSubscriptionModelTypes';
-
 export interface EngineServerTradeStreamParams {
   product_id: number;
 }
@@ -28,8 +20,10 @@ export interface EngineServerBookDepthStreamParams {
   product_id: number;
 }
 
-export interface EngineServerSubscriptionStreamByType {
-  default: Record<string, never>;
+/**
+ * @description Available subscription streams
+ */
+export interface EngineServerSubscriptionStreamParamsByType {
   trade: EngineServerTradeStreamParams;
   best_bid_offer: EngineServerBestBidOfferStreamParams;
   fill: EngineServerFillStreamParams;
@@ -37,59 +31,43 @@ export interface EngineServerSubscriptionStreamByType {
   book_depth: EngineServerBookDepthStreamParams;
 }
 
-export type EngineServerSubscriptionStreamType =
-  keyof EngineServerSubscriptionStreamByType;
+export type EngineServerSubscriptionStreamParamsType =
+  keyof EngineServerSubscriptionStreamParamsByType;
 
-export type EngineServerSubscriptionStream<
-  TStreamType extends EngineServerSubscriptionStreamType,
+/**
+ * @description Describes a stream that can be subscribed to.
+ */
+export type EngineServerSubscriptionStreamParams<
+  TStreamType extends EngineServerSubscriptionStreamParamsType,
 > = {
   type: TStreamType;
-} & EngineServerSubscriptionStreamByType[TStreamType];
+} & EngineServerSubscriptionStreamParamsByType[TStreamType];
 
-export interface EngineServerSubscriptionStreamParams {
-  stream: EngineServerSubscriptionStream<EngineServerSubscriptionStreamType>;
+/**
+ * @description Params to provide to a `subscribe` / `unsubscribe` action.
+ */
+export interface EngineServerSubscriptionParams {
+  stream: EngineServerSubscriptionStreamParams<EngineServerSubscriptionStreamParamsType>;
 }
 
+/**
+ * @description Available actions on the subscription API.
+ */
 export interface EngineServerSubscriptionRequestByType {
-  subscribe: EngineServerSubscriptionStreamParams;
-  unsubscribe: EngineServerSubscriptionStreamParams;
+  subscribe: EngineServerSubscriptionParams;
+  unsubscribe: EngineServerSubscriptionParams;
   list: Record<string, never>;
 }
 
 export type EngineServerSubscriptionRequestType =
   keyof EngineServerSubscriptionRequestByType;
 
+/**
+ * @description Top level request to provide to send to the server.
+ */
 export type EngineServerSubscriptionRequest<
   TRequestType extends EngineServerSubscriptionRequestType,
 > = {
   method: TRequestType;
   id: number;
 } & EngineServerSubscriptionRequestByType[TRequestType];
-
-export interface EngineServerSubscriptionResponseByType {
-  subscribe: Record<string, never>;
-  unsubscribe: Record<string, never>;
-  list: EngineServerSubscriptionStream<EngineServerSubscriptionStreamType>[];
-}
-
-export interface EngineServerSubscriptionResponse<
-  TRequestType extends keyof EngineServerSubscriptionResponseByType = EngineServerSubscriptionRequestType,
-> {
-  id: number;
-  result: EngineServerSubscriptionResponseByType[TRequestType];
-}
-
-export interface EngineServerSubscriptionEventResponseByType {
-  default: Record<string, never>;
-  trade: SubscriptionTradeEvent;
-  best_bid_offer: SubscriptionBestBidOfferEvent;
-  fill: SubscriptionFillEvent;
-  position_change: SubscriptionPositionChangeEvent;
-  book_depth: SubscriptionBookDepthEvent;
-}
-
-export type EngineServerSubscriptionEventResponse<
-  TRequestType extends keyof EngineServerSubscriptionEventResponseByType = EngineServerSubscriptionStreamType,
-> = {
-  type: TRequestType;
-} & EngineServerSubscriptionEventResponseByType[TRequestType];

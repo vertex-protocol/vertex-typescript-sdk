@@ -17,9 +17,9 @@
 <h1>Class WebSocketSubscriptionAPI</h1></div>
 <section class="tsd-panel tsd-comment">
 <div class="tsd-comment tsd-typography">
-<h3>Description</h3><p>Allows you to build subscription payloads as expected by the server to send over Websocket.</p>
+<h3>Description</h3><p>Allows you to build subscription messages as expected by the server to send over Websocket.</p>
 
-<h3>Example</h3><pre><code class="language-ts"><span class="hl-5">const</span><span class="hl-0"> </span><span class="hl-2">tradeStreamPayload</span><span class="hl-0"> = </span><span class="hl-1">vertexClient</span><span class="hl-0">.</span><span class="hl-1">ws</span><span class="hl-0">.</span><span class="hl-1">subscription</span><span class="hl-0">.</span><span class="hl-4">buildStreamPayload</span><span class="hl-0">(</span><span class="hl-3">&#39;trade&#39;</span><span class="hl-0">, ...);</span><br/><span class="hl-5">const</span><span class="hl-0"> </span><span class="hl-2">tradeSubscriptionPayload</span><span class="hl-0"> = </span><span class="hl-1">vertexClient</span><span class="hl-0">.</span><span class="hl-1">ws</span><span class="hl-0">.</span><span class="hl-1">subscription</span><span class="hl-0">.</span><span class="hl-4">buildSubscriptionPayload</span><span class="hl-0">(</span><br/><span class="hl-0">   </span><span class="hl-3">&#39;subscribe&#39;</span><span class="hl-0">, </span><span class="hl-1">tradeStreamPayload</span><span class="hl-0">);</span>
+<h3>Example</h3><pre><code class="language-ts"><span class="hl-5">const</span><span class="hl-0"> </span><span class="hl-2">tradeSubscriptionParams</span><span class="hl-0"> = </span><span class="hl-1">vertexClient</span><span class="hl-0">.</span><span class="hl-1">ws</span><span class="hl-0">.</span><span class="hl-1">subscription</span><span class="hl-0">.</span><span class="hl-4">buildStreamParam</span><span class="hl-0">(</span><span class="hl-3">&#39;trade&#39;</span><span class="hl-0">, ...);</span><br/><span class="hl-5">const</span><span class="hl-0"> </span><span class="hl-2">tradeSubscriptionMessage</span><span class="hl-0"> = </span><span class="hl-1">vertexClient</span><span class="hl-0">.</span><span class="hl-1">ws</span><span class="hl-0">.</span><span class="hl-1">subscription</span><span class="hl-0">.</span><span class="hl-4">buildSubscriptionMessage</span><span class="hl-0">(</span><br/><span class="hl-0">   </span><span class="hl-3">&#39;subscribe&#39;</span><span class="hl-0">, </span><span class="hl-1">tradeSubscriptionParams</span><span class="hl-0">);</span>
 </code></pre>
 </div></section>
 <section class="tsd-panel tsd-hierarchy">
@@ -29,7 +29,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">WebSocketSubscriptionAPI</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in client/src/apis/ws/WebSocketSubscriptionAPI.ts:18</li></ul></aside>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/f899d55/packages/client/src/apis/ws/WebSocketSubscriptionAPI.ts#L18">client/src/apis/ws/WebSocketSubscriptionAPI.ts:18</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -45,8 +45,8 @@
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Methods</h3>
-<div class="tsd-index-list"><a href="Vertex_Client.Internal.WebSocketSubscriptionAPI.html#buildSubscriptionPayload" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF4DB8" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-2048-path"></rect><path d="M9.162 16V7.24H10.578L11.514 10.072C11.602 10.328 11.674 10.584 11.73 10.84C11.794 11.088 11.842 11.28 11.874 11.416C11.906 11.28 11.954 11.088 12.018 10.84C12.082 10.584 12.154 10.324 12.234 10.06L13.122 7.24H14.538V16H13.482V12.82C13.482 12.468 13.49 12.068 13.506 11.62C13.53 11.172 13.558 10.716 13.59 10.252C13.622 9.78 13.654 9.332 13.686 8.908C13.726 8.476 13.762 8.1 13.794 7.78L12.366 12.16H11.334L9.894 7.78C9.934 8.092 9.97 8.456 10.002 8.872C10.042 9.28 10.078 9.716 10.11 10.18C10.142 10.636 10.166 11.092 10.182 11.548C10.206 12.004 10.218 12.428 10.218 12.82V16H9.162Z" fill="var(--color-text)" id="icon-2048-text"></path></svg><span>build<wbr/>Subscription<wbr/>Payload</span></a>
-<a href="Vertex_Client.Internal.WebSocketSubscriptionAPI.html#buildStreamPayload" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>build<wbr/>Stream<wbr/>Payload</span></a>
+<div class="tsd-index-list"><a href="Vertex_Client.Internal.WebSocketSubscriptionAPI.html#buildSubscriptionMessage" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF4DB8" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-2048-path"></rect><path d="M9.162 16V7.24H10.578L11.514 10.072C11.602 10.328 11.674 10.584 11.73 10.84C11.794 11.088 11.842 11.28 11.874 11.416C11.906 11.28 11.954 11.088 12.018 10.84C12.082 10.584 12.154 10.324 12.234 10.06L13.122 7.24H14.538V16H13.482V12.82C13.482 12.468 13.49 12.068 13.506 11.62C13.53 11.172 13.558 10.716 13.59 10.252C13.622 9.78 13.654 9.332 13.686 8.908C13.726 8.476 13.762 8.1 13.794 7.78L12.366 12.16H11.334L9.894 7.78C9.934 8.092 9.97 8.456 10.002 8.872C10.042 9.28 10.078 9.716 10.11 10.18C10.142 10.636 10.166 11.092 10.182 11.548C10.206 12.004 10.218 12.428 10.218 12.82V16H9.162Z" fill="var(--color-text)" id="icon-2048-text"></path></svg><span>build<wbr/>Subscription<wbr/>Message</span></a>
+<a href="Vertex_Client.Internal.WebSocketSubscriptionAPI.html#buildSubscriptionParams" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>build<wbr/>Subscription<wbr/>Params</span></a>
 </div></section></div></details></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
@@ -55,7 +55,7 @@
 <div class="tsd-signature">context<span class="tsd-signature-symbol">:</span> <a href="../interfaces/Vertex_Client.VertexClientContext.html" class="tsd-signature-type" data-tsd-kind="Interface">VertexClientContext</a></div><aside class="tsd-sources">
 <p>Inherited from <a href="Vertex_Client.Internal.BaseVertexAPI.html">BaseVertexAPI</a>.<a href="Vertex_Client.Internal.BaseVertexAPI.html#context">context</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/9100ffe/packages/client/src/apis/base.ts#L6">client/src/apis/base.ts:6</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/f899d55/packages/client/src/apis/base.ts#L6">client/src/apis/base.ts:6</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Constructors</h2>
 <section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a id="constructor" class="tsd-anchor"></a>
@@ -71,17 +71,17 @@
 <h4 class="tsd-returns-title">Returns <a href="Vertex_Client.Internal.WebSocketSubscriptionAPI.html" class="tsd-signature-type" data-tsd-kind="Class">WebSocketSubscriptionAPI</a></h4><aside class="tsd-sources">
 <p>Inherited from <a href="Vertex_Client.Internal.BaseVertexAPI.html">BaseVertexAPI</a>.<a href="Vertex_Client.Internal.BaseVertexAPI.html#constructor">constructor</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/9100ffe/packages/client/src/apis/base.ts#L8">client/src/apis/base.ts:8</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/f899d55/packages/client/src/apis/base.ts#L8">client/src/apis/base.ts:8</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
-<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="buildSubscriptionPayload" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>build<wbr/>Subscription<wbr/>Payload</span><a href="#buildSubscriptionPayload" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="buildSubscriptionMessage" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>build<wbr/>Subscription<wbr/>Message</span><a href="#buildSubscriptionMessage" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="buildSubscriptionPayload.buildSubscriptionPayload-1">build<wbr/>Subscription<wbr/>Payload<span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TRequestType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span>requestType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TRequestType</span>, id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EngineServerSubscriptionRequestByType</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TRequestType</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EngineServerSubscriptionRequest</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TRequestType</span><span class="tsd-signature-symbol">&gt;</span><a href="#buildSubscriptionPayload.buildSubscriptionPayload-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="buildSubscriptionMessage.buildSubscriptionMessage-1">build<wbr/>Subscription<wbr/>Message<span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TRequestType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span>requestType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TRequestType</span>, id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EngineServerSubscriptionRequestByType</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TRequestType</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EngineServerSubscriptionRequest</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TRequestType</span><span class="tsd-signature-symbol">&gt;</span><a href="#buildSubscriptionMessage.buildSubscriptionMessage-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Builds a subscription request payload as expected by the server via Websocket.</p>
+<div class="tsd-comment tsd-typography"><p>Builds a subscription request message as expected by the server via Websocket.</p>
 
-<h3>Returns</h3><p>subscription request payload.</p>
+<h3>Returns</h3><p>subscription request message.</p>
 </div>
 <div class="tsd-type-parameters">
 <h4 class="tsd-type-parameters-title">Type Parameters</h4>
@@ -93,7 +93,7 @@
 <ul class="tsd-parameter-list">
 <li>
 <h5>requestType: <span class="tsd-signature-type" data-tsd-kind="Type parameter">TRequestType</span></h5>
-<div class="tsd-comment tsd-typography"><p>name of request to build payload for.</p>
+<div class="tsd-comment tsd-typography"><p>name of request to build message for.</p>
 </div></li>
 <li>
 <h5>id: <span class="tsd-signature-type">number</span></h5>
@@ -101,42 +101,40 @@
 </div></li>
 <li>
 <h5>params: <span class="tsd-signature-type">EngineServerSubscriptionRequestByType</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TRequestType</span><span class="tsd-signature-symbol">]</span></h5>
-<div class="tsd-comment tsd-typography"><p>request payload params.</p>
+<div class="tsd-comment tsd-typography"><p>request message params.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">EngineServerSubscriptionRequest</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TRequestType</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in client/src/apis/ws/WebSocketSubscriptionAPI.ts:26</li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="buildStreamPayload" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>build<wbr/>Stream<wbr/>Payload</span><a href="#buildStreamPayload" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/f899d55/packages/client/src/apis/ws/WebSocketSubscriptionAPI.ts#L26">client/src/apis/ws/WebSocketSubscriptionAPI.ts:26</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="buildSubscriptionParams" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>build<wbr/>Subscription<wbr/>Params</span><a href="#buildSubscriptionParams" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="buildStreamPayload.buildStreamPayload-1">build<wbr/>Stream<wbr/>Payload<span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span>streamType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span>, params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EngineServerSubscriptionStreamByType</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>stream<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EngineServerSubscriptionStream</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><a href="#buildStreamPayload.buildStreamPayload-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="buildSubscriptionParams.buildSubscriptionParams-1">build<wbr/>Subscription<wbr/>Params<span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span>streamType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span>, params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EngineServerSubscriptionStreamParamsByType</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>stream<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EngineServerSubscriptionStreamParams</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><a href="#buildSubscriptionParams.buildSubscriptionParams-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Builds a subscription stream payload as expected by the server via Websocket.</p>
+<div class="tsd-comment tsd-typography"><p>Builds subscription stream params as expected by the server via Websocket.</p>
 
-<h3>Returns</h3><p>subscription stream payload.</p>
+<h3>Returns</h3><p>subscription stream params.</p>
 </div>
 <div class="tsd-type-parameters">
 <h4 class="tsd-type-parameters-title">Type Parameters</h4>
 <ul class="tsd-type-parameters">
 <li>
-<h4>TStreamType<span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">EngineServerSubscriptionStreamByType</span></h4></li></ul></div>
+<h4>TStreamType<span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">EngineServerSubscriptionStreamParamsByType</span></h4></li></ul></div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
 <h5>streamType: <span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span></h5>
-<div class="tsd-comment tsd-typography"><p>name of stream to build payload for.</p>
+<div class="tsd-comment tsd-typography"><p>name of stream to build params for.</p>
 </div></li>
 <li>
-<h5>params: <span class="tsd-signature-type">EngineServerSubscriptionStreamByType</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span><span class="tsd-signature-symbol">]</span></h5>
-<div class="tsd-comment tsd-typography"><p>stream payload params.</p>
-</div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>stream<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EngineServerSubscriptionStream</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span></h4>
+<h5>params: <span class="tsd-signature-type">EngineServerSubscriptionStreamParamsByType</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span><span class="tsd-signature-symbol">]</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>stream<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EngineServerSubscriptionStreamParams</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span></h4>
 <ul class="tsd-parameters">
 <li class="tsd-parameter">
-<h5>stream<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EngineServerSubscriptionStream</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul><aside class="tsd-sources">
+<h5>stream<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EngineServerSubscriptionStreamParams</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">TStreamType</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul><aside class="tsd-sources">
 <ul>
-<li>Defined in client/src/apis/ws/WebSocketSubscriptionAPI.ts:46</li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/f899d55/packages/client/src/apis/ws/WebSocketSubscriptionAPI.ts#L46">client/src/apis/ws/WebSocketSubscriptionAPI.ts:46</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -179,8 +177,8 @@
 <ul>
 <li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="Vertex_Client.Internal.WebSocketSubscriptionAPI.html#context" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>context</a></li>
 <li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a href="Vertex_Client.Internal.WebSocketSubscriptionAPI.html#constructor" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-512-path"></use><use href="#icon-512-text"></use></svg>constructor</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class"><a href="Vertex_Client.Internal.WebSocketSubscriptionAPI.html#buildSubscriptionPayload" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>build<wbr/>Subscription<wbr/>Payload</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class"><a href="Vertex_Client.Internal.WebSocketSubscriptionAPI.html#buildStreamPayload" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>build<wbr/>Stream<wbr/>Payload</a></li></ul></li></ul></nav></div></div>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="Vertex_Client.Internal.WebSocketSubscriptionAPI.html#buildSubscriptionMessage" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>build<wbr/>Subscription<wbr/>Message</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="Vertex_Client.Internal.WebSocketSubscriptionAPI.html#buildSubscriptionParams" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>build<wbr/>Subscription<wbr/>Params</a></li></ul></li></ul></nav></div></div>
 <div class="container tsd-generator">
 <p style="line-height: 28px;">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
 <div class="overlay"></div><script src="../assets/main.js"></script></body></html>

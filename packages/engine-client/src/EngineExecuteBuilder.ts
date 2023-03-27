@@ -221,6 +221,11 @@ export class EngineExecuteBuilder {
     };
   }
 
+  /**
+   * Builds server payload for the `cancel_orders` execute action.
+   * @param clientParams Client CancelOrders params.
+   * @returns `cancel_orders` payload
+   */
   async buildCancelOrdersPayload(
     clientParams: EngineExecuteRequestParamsByType['cancel_orders'],
   ): Promise<EngineServerExecuteRequestByType['cancel_orders']> {

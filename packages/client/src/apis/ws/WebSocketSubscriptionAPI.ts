@@ -2,28 +2,28 @@ import {
   EngineServerSubscriptionRequestType,
   EngineServerSubscriptionRequestByType,
   EngineServerSubscriptionRequest,
-  EngineServerSubscriptionStreamType,
-  EngineServerSubscriptionStreamByType,
-  EngineServerSubscriptionStream,
+  EngineServerSubscriptionStreamParamsType,
+  EngineServerSubscriptionStreamParamsByType,
+  EngineServerSubscriptionStreamParams,
 } from '@vertex-protocol/engine-client';
 import { BaseVertexAPI } from '../base';
 
 /**
- * @description Allows you to build subscription payloads as expected by the server to send over Websocket.
+ * @description Allows you to build subscription messages as expected by the server to send over Websocket.
  * @example
- * const tradeStreamPayload = vertexClient.ws.subscription.buildStreamPayload('trade', ...);
- * const tradeSubscriptionPayload = vertexClient.ws.subscription.buildSubscriptionPayload(
- *    'subscribe', tradeStreamPayload);
+ * const tradeSubscriptionParams = vertexClient.ws.subscription.buildStreamParam('trade', ...);
+ * const tradeSubscriptionMessage = vertexClient.ws.subscription.buildSubscriptionMessage(
+ *    'subscribe', tradeSubscriptionParams);
  */
 export class WebSocketSubscriptionAPI extends BaseVertexAPI {
   /**
-   * Builds a subscription request payload as expected by the server via Websocket.
-   * @param requestType name of request to build payload for.
+   * Builds a subscription request message as expected by the server via Websocket.
+   * @param requestType name of request to build message for.
    * @param id identifier to associate messages with responses.
-   * @param params request payload params.
-   * @returns subscription request payload.
+   * @param params request message params.
+   * @returns subscription request message.
    */
-  public buildSubscriptionPayload<
+  public buildSubscriptionMessage<
     TRequestType extends EngineServerSubscriptionRequestType,
   >(
     requestType: TRequestType,
@@ -38,18 +38,18 @@ export class WebSocketSubscriptionAPI extends BaseVertexAPI {
   }
 
   /**
-   * Builds a subscription stream payload as expected by the server via Websocket.
-   * @param streamType name of stream to build payload for.
-   * @param params stream payload params.
-   * @returns subscription stream payload.
+   * Builds subscription stream params as expected by the server via Websocket.
+   * @param streamType name of stream to build params for.
+   * @param params
+   * @returns subscription stream params.
    */
-  public buildStreamPayload<
-    TStreamType extends EngineServerSubscriptionStreamType,
+  public buildSubscriptionParams<
+    TStreamType extends EngineServerSubscriptionStreamParamsType,
   >(
     streamType: TStreamType,
-    params: EngineServerSubscriptionStreamByType[TStreamType],
+    params: EngineServerSubscriptionStreamParamsByType[TStreamType],
   ): {
-    stream: EngineServerSubscriptionStream<TStreamType>;
+    stream: EngineServerSubscriptionStreamParams<TStreamType>;
   } {
     return {
       stream: {
