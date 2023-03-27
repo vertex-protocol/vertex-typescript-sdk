@@ -1,5 +1,5 @@
 import { Product, WithContracts } from '../common';
-import { mapEnginePerpProduct, mapEngineSpotProduct } from './utils';
+import { mapContractPerpProduct, mapContractSpotProduct } from './utils';
 
 export type GetAllProductsResponse = Product[];
 
@@ -12,10 +12,10 @@ export async function getAllProducts({
   const contractData = await querier.getAllProducts();
   const products: Product[] = [];
   contractData.spotProducts.forEach((productInfo) => {
-    products.push(mapEngineSpotProduct(productInfo));
+    products.push(mapContractSpotProduct(productInfo));
   });
   contractData.perpProducts.forEach((productInfo) => {
-    products.push(mapEnginePerpProduct(productInfo));
+    products.push(mapContractPerpProduct(productInfo));
   });
 
   return products;

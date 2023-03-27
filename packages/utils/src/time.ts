@@ -1,4 +1,9 @@
-export const SECONDS_IN_YEAR = 31536000;
+export enum TimeInSeconds {
+  MINUTE = 60,
+  HOUR = 3600,
+  DAY = 86400,
+  YEAR = 31536000,
+}
 
 /**
  * Converts timestamp in milliseconds to seconds

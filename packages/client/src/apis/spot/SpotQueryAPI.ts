@@ -1,22 +1,9 @@
-import {
-  getAllProducts,
-  isSpotProduct,
-  SpotProduct,
-} from '@vertex-protocol/contracts';
 import { BigNumber } from 'ethers';
 import { BaseSpotAPI } from './BaseSpotAPI';
 import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
 import { GetEngineMaxWithdrawableParams } from '@vertex-protocol/engine-client';
 
 export class SpotQueryAPI extends BaseSpotAPI {
-  /**
-   * Retrieves all spot product states from the on-chain contracts
-   */
-  async getAllSpotProducts(): Promise<SpotProduct[]> {
-    const allProducts = await getAllProducts(this.context.contracts);
-    return allProducts.filter(isSpotProduct);
-  }
-
   /**
    * Gets the estimated max withdrawable amount for a product
    * @param params
@@ -30,7 +17,7 @@ export class SpotQueryAPI extends BaseSpotAPI {
    */
   async getTokenWalletBalance(productId: number): Promise<BigNumber> {
     const token = await this.getTokenContractForProduct(productId);
-    return token.balanceOf(this.getChainSignerAddress());
+    return token.balanceOf(this.getSignerAddress());
   }
 
   /**
@@ -40,7 +27,7 @@ export class SpotQueryAPI extends BaseSpotAPI {
     const token = await this.getTokenContractForProduct(productId);
     return toBigDecimal(
       await token.allowance(
-        this.getChainSignerAddress(),
+        this.getSignerAddress(),
         this.context.contracts.endpoint.address,
       ),
     );

@@ -20,17 +20,19 @@ import {
   ENGINE_CLIENT_ENDPOINTS,
   EngineClient,
 } from '@vertex-protocol/engine-client';
-import { IndexerClient } from '@vertex-protocol/indexer-client';
+import {
+  INDEXER_CLIENT_ENDPOINTS,
+  IndexerClient,
+} from '@vertex-protocol/indexer-client';
+
+type ValidSigner = TypedDataSigner & Signer;
 
 /**
  * Context required to use the Vertex client.
  */
 export interface VertexClientContext {
-  // Must be a signer to use any contract executions, used for queries/executions to the chain
-  chainSignerOrProvider: Signer | Provider;
-  // Signer for offchain engine transactions, defaults to chainSignerOrProvider, this can be overridden
-  // in cases like the frontend, where we can allow signers on a different chain to execute transactions
-  engineSigner?: TypedDataSigner & Signer;
+  // Must be a signer to use any executions
+  signerOrProvider: ValidSigner | Provider;
   contracts: VertexContracts;
   graph: VertexGraphClient;
   engineClient: EngineClient;
@@ -51,17 +53,17 @@ interface VertexClientContextOpts {
     endpointAddress?: string;
   };
   graph: GraphClientOpts;
-  offchainEngineEndpoint: string;
+  engineEndpoint: string;
+  indexerEndpoint: string;
 }
 
 /**
  * Args for signing configuration for creating a context
  */
-export interface CreateVertexClientContextSignerOpts
-  extends Pick<VertexClientContext, 'chainSignerOrProvider' | 'engineSigner'> {
-  // Override the EIP712 signing chain ID, otherwise the chain ID of the engineSigner will be used
-  engineSigningChainId?: number;
-}
+export type CreateVertexClientContextSignerOpts = Pick<
+  VertexClientContext,
+  'signerOrProvider'
+>;
 
 export type CreateVertexClientContextOpts =
   | VertexClientContextOpts
@@ -78,7 +80,7 @@ export async function createClientContext(
   opts: CreateVertexClientContextOpts,
   signerOpts: CreateVertexClientContextSignerOpts,
 ): Promise<VertexClientContext> {
-  const { contracts, graph, offchainEngineEndpoint } =
+  const { contracts, graph, engineEndpoint, indexerEndpoint } =
     ((): VertexClientContextOpts => {
       if (opts === 'testnet') {
         return {
@@ -94,7 +96,8 @@ export async function createClientContext(
             marketsEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.markets,
             candlesticksEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.candlesticks,
           },
-          offchainEngineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
+          engineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
+          indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.testnet,
         };
       } else if (opts === 'mainnet') {
         return {
@@ -110,30 +113,31 @@ export async function createClientContext(
             marketsEndpoint: GRAPH_CLIENT_ENDPOINTS.mainnet.markets,
             candlesticksEndpoint: GRAPH_CLIENT_ENDPOINTS.mainnet.candlesticks,
           },
-          offchainEngineEndpoint: ENGINE_CLIENT_ENDPOINTS.mainnet,
+          engineEndpoint: ENGINE_CLIENT_ENDPOINTS.mainnet,
+          indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.mainnet,
         };
       } else {
         return opts;
       }
     })();
-  const { chainSignerOrProvider, engineSigner: engineSignerParam } = signerOpts;
+  const { signerOrProvider } = signerOpts;
 
   const querier = FQuerier__factory.connect(
     contracts.querierAddress,
-    chainSignerOrProvider,
+    signerOrProvider,
   );
   const clearinghouseAddress =
     contracts.clearinghouseAddress ?? (await querier.getClearinghouse());
   const clearinghouse = await IClearinghouse__factory.connect(
     clearinghouseAddress,
-    chainSignerOrProvider,
+    signerOrProvider,
   );
 
   const endpointContractAddress =
     contracts.endpointAddress ?? (await clearinghouse.getEndpoint());
   const endpoint = await IEndpoint__factory.connect(
     endpointContractAddress,
-    chainSignerOrProvider,
+    signerOrProvider,
   );
 
   const spotAddress =
@@ -144,36 +148,27 @@ export async function createClientContext(
     (await clearinghouse.getEngineByType(ProductEngineType.PERP));
 
   // TODO: hack - better checking here
-  const chainTypedDataSigner =
-    chainSignerOrProvider instanceof Signer
-      ? (chainSignerOrProvider as TypedDataSigner & Signer)
+  const validSigner =
+    signerOrProvider instanceof Signer
+      ? (signerOrProvider as TypedDataSigner & Signer)
       : undefined;
-  const engineSigner = engineSignerParam ?? chainTypedDataSigner;
 
   return {
-    chainSignerOrProvider: chainSignerOrProvider,
-    engineSigner: engineSigner,
+    signerOrProvider: signerOrProvider,
     contracts: {
       querier,
       clearinghouse,
       endpoint,
-      spotEngine: ISpotEngine__factory.connect(
-        spotAddress,
-        chainSignerOrProvider,
-      ),
-      perpEngine: IPerpEngine__factory.connect(
-        perpAddress,
-        chainSignerOrProvider,
-      ),
+      spotEngine: ISpotEngine__factory.connect(spotAddress, signerOrProvider),
+      perpEngine: IPerpEngine__factory.connect(perpAddress, signerOrProvider),
     },
     graph: new VertexGraphClient(graph),
     engineClient: new EngineClient({
-      url: offchainEngineEndpoint,
-      signer: engineSigner,
-      signingChainId: signerOpts.engineSigningChainId,
+      url: engineEndpoint,
+      signer: validSigner,
     }),
     indexerClient: new IndexerClient({
-      url: `${offchainEngineEndpoint}/indexer`,
+      url: indexerEndpoint,
     }),
   };
 }

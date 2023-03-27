@@ -1,0 +1,9 @@
+export enum IndexerEventType {
+  LIQUIDATE_SUBACCOUNT = 0,
+  DEPOSIT_COLLATERAL = 1,
+  WITHDRAW_COLLATERAL = 2,
+  SETTLE_PNL = 5,
+  MATCH_ORDERS = 6,
+  MINT_LP = 9,
+  BURN_LP = 10,
+}
