@@ -35,7 +35,7 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
   );
 
   const wsPlaceOrderReq = (
-    await vertexClient.ws.execute.buildPlaceOrderPayload({
+    await vertexClient.ws.execute.buildPlaceOrderMessage({
       productId: 1,
       order: wsOrder,
       signature: wsOrderSig,
@@ -52,7 +52,7 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
   );
 
   const wsCancelOrdersReq =
-    await vertexClient.ws.execute.buildCancelOrdersPayload({
+    await vertexClient.ws.execute.buildCancelOrdersMessage({
       subaccountOwner: await signer.getAddress(),
       subaccountName: 'default',
       productIds: [1],
@@ -64,7 +64,7 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
     `Cancel Orders WS request: ${JSON.stringify(wsCancelOrdersReq, null, 2)}`,
   );
 
-  const wsMintLpReq = await vertexClient.ws.execute.buildMintLpPayload({
+  const wsMintLpReq = await vertexClient.ws.execute.buildMintLpMessage({
     productId: 1,
     subaccountOwner: await signer.getAddress(),
     subaccountName: 'default',
@@ -76,7 +76,7 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
 
   console.log(`Mint LP WS request: ${JSON.stringify(wsMintLpReq, null, 2)}`);
 
-  const wsBurnLpReq = await vertexClient.ws.execute.buildBurnLpPayload({
+  const wsBurnLpReq = await vertexClient.ws.execute.buildBurnLpMessage({
     productId: 1,
     subaccountOwner: await signer.getAddress(),
     subaccountName: 'default',
@@ -87,7 +87,7 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
   console.log(`Burn LP WS request: ${JSON.stringify(wsBurnLpReq, null, 2)}`);
 
   const wsWithdrawCollateralReq =
-    await vertexClient.ws.execute.buildWithdrawCollateralPayload({
+    await vertexClient.ws.execute.buildWithdrawCollateralMessage({
       subaccountOwner: signer.address,
       subaccountName: 'default',
       productId: 0,
@@ -103,7 +103,7 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
     )}`,
   );
 
-  const wsQuerySubaccountInfoReq = vertexClient.ws.query.buildQueryPayload(
+  const wsQuerySubaccountInfoReq = vertexClient.ws.query.buildQueryMessage(
     'subaccount_info',
     {
       subaccount: subaccountToHex({
@@ -116,6 +116,61 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
   console.log(
     `Query subaccount info WS request: ${JSON.stringify(
       wsQuerySubaccountInfoReq,
+      null,
+      2,
+    )}`,
+  );
+
+  const wsTradeStream = vertexClient.ws.subscription.buildSubscriptionParams(
+    'trade',
+    {
+      product_id: 0,
+    },
+  );
+  const wsTradeSubscriptionReq =
+    vertexClient.ws.subscription.buildSubscriptionMessage(
+      1,
+      'subscribe',
+      wsTradeStream,
+    );
+
+  console.log(
+    `Trade subscription WS request: ${JSON.stringify(
+      wsTradeSubscriptionReq,
+      null,
+      2,
+    )}`,
+  );
+
+  const wsFillStream = vertexClient.ws.subscription.buildSubscriptionParams(
+    'fill',
+    {
+      product_id: 1,
+      subaccount:
+        '0x3b69d1a1021a1979cc6e16987ce0fcfa8875484064656661756c740000000000',
+    },
+  );
+  const wsFillUnsubscribeReq =
+    vertexClient.ws.subscription.buildSubscriptionMessage(
+      1,
+      'unsubscribe',
+      wsFillStream,
+    );
+
+  console.log(
+    `Fill unsubscribe WS request: ${JSON.stringify(
+      wsFillUnsubscribeReq,
+      null,
+      2,
+    )}`,
+  );
+
+  const wsListSubscriptionsReq =
+    vertexClient.ws.subscription.buildSubscriptionMessage(1, 'list', {});
+
+  console.log(
+    `Lists subscriptions WS request: ${JSON.stringify(
+      wsListSubscriptionsReq,
       null,
       2,
     )}`,
