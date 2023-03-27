@@ -2,16 +2,16 @@ import {
   EngineServerSubscriptionRequestType,
   EngineServerSubscriptionRequestByType,
   EngineServerSubscriptionRequest,
-  EngineServerSubscriptionStreamParamsType,
-  EngineServerSubscriptionStreamParamsByType,
-  EngineServerSubscriptionStreamParams,
+  EngineServerSubscriptionStreamType,
+  EngineServerSubscriptionStreamByType,
+  EngineServerSubscriptionStream,
 } from '@vertex-protocol/engine-client';
 import { BaseVertexAPI } from '../base';
 
 /**
  * @description Allows you to build subscription messages as expected by the server to send over Websocket.
  * @example
- * const tradeSubscriptionParams = vertexClient.ws.subscription.buildStreamParam('trade', ...);
+ * const tradeSubscriptionParams = vertexClient.ws.subscription.buildSubscriptionParams('trade', ...);
  * const tradeSubscriptionMessage = vertexClient.ws.subscription.buildSubscriptionMessage(
  *    'subscribe', tradeSubscriptionParams);
  */
@@ -26,8 +26,8 @@ export class WebSocketSubscriptionAPI extends BaseVertexAPI {
   public buildSubscriptionMessage<
     TRequestType extends EngineServerSubscriptionRequestType,
   >(
-    requestType: TRequestType,
     id: number,
+    requestType: TRequestType,
     params: EngineServerSubscriptionRequestByType[TRequestType],
   ): EngineServerSubscriptionRequest<TRequestType> {
     return {
@@ -38,18 +38,18 @@ export class WebSocketSubscriptionAPI extends BaseVertexAPI {
   }
 
   /**
-   * Builds subscription stream params as expected by the server via Websocket.
+   * Builds a subscription stream params as expected by the server via Websocket.
    * @param streamType name of stream to build params for.
    * @param params
    * @returns subscription stream params.
    */
   public buildSubscriptionParams<
-    TStreamType extends EngineServerSubscriptionStreamParamsType,
+    TStreamType extends EngineServerSubscriptionStreamType,
   >(
     streamType: TStreamType,
-    params: EngineServerSubscriptionStreamParamsByType[TStreamType],
+    params: EngineServerSubscriptionStreamByType[TStreamType],
   ): {
-    stream: EngineServerSubscriptionStreamParams<TStreamType>;
+    stream: EngineServerSubscriptionStream<TStreamType>;
   } {
     return {
       stream: {

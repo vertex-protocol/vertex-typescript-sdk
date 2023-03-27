@@ -129,8 +129,8 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
   );
   const wsTradeSubscriptionReq =
     vertexClient.ws.subscription.buildSubscriptionMessage(
-      'subscribe',
       1,
+      'subscribe',
       wsTradeStream,
     );
 
@@ -152,8 +152,8 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
   );
   const wsFillUnsubscribeReq =
     vertexClient.ws.subscription.buildSubscriptionMessage(
-      'unsubscribe',
       1,
+      'unsubscribe',
       wsFillStream,
     );
 
@@ -166,7 +166,7 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
   );
 
   const wsListSubscriptionsReq =
-    vertexClient.ws.subscription.buildSubscriptionMessage('list', 1, {});
+    vertexClient.ws.subscription.buildSubscriptionMessage(1, 'list', {});
 
   console.log(
     `Lists subscriptions WS request: ${JSON.stringify(
