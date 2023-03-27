@@ -38,7 +38,7 @@ export class WebSocketSubscriptionAPI extends BaseVertexAPI {
   }
 
   /**
-   * Builds a subscription stream params as expected by the server via Websocket.
+   * Builds a subscription stream param as expected by the server via Websocket.
    * @param streamType name of stream to build params for.
    * @param params
    * @returns subscription stream params.
