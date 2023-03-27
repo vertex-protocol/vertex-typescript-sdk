@@ -32,6 +32,6 @@ export class VertexClient {
    * Whether the current Vertex client is initialized with an on-chain signer
    */
   hasChainSigner() {
-    return isSigner(this.context.chainSignerOrProvider);
+    return isSigner(this.context.signerOrProvider);
   }
 }

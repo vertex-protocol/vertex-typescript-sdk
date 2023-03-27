@@ -17,8 +17,7 @@ async function main() {
 
   const vertexClient = await createVertexClient('testnet', {
     // Specify different signers/providers if needed
-    chainSignerOrProvider: signer,
-    engineSigner: signer,
+    signerOrProvider: signer,
   });
 
   await fullSanity(signer, vertexClient);

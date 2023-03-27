@@ -9,9 +9,9 @@ export class BaseVertexAPI {
     this.context = context;
   }
 
-  protected async getChainSignerAddress() {
-    if (isSigner(this.context.chainSignerOrProvider)) {
-      return this.context.chainSignerOrProvider.getAddress();
+  protected async getSignerAddress() {
+    if (isSigner(this.context.signerOrProvider)) {
+      return this.context.signerOrProvider.getAddress();
     }
     throw Error('Current context does not have a chain signer');
   }

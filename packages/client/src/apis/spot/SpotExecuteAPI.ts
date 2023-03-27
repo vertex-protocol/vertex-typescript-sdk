@@ -27,10 +27,8 @@ export class SpotExecuteAPI extends BaseSpotAPI {
       WithoutNonce<EngineWithdrawCollateralParams>
     >,
   ) {
-    const sender = (await this.context.engineSigner?.getAddress()) ?? '';
-
     return this.context.engineClient.withdrawCollateral({
-      subaccountOwner: sender,
+      subaccountOwner: await this.getSignerAddress(),
       verifyingAddr: this.context.contracts.endpoint.address,
       ...params,
     });
@@ -50,7 +48,7 @@ export class SpotExecuteAPI extends BaseSpotAPI {
     );
     const erc20 = await MockERC20__factory.connect(
       config.token,
-      this.context.chainSignerOrProvider,
+      this.context.signerOrProvider,
     );
     return erc20.mint(erc20.signer.getAddress(), params.amount);
   }
