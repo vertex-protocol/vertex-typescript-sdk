@@ -24,8 +24,6 @@ export interface EngineClientOpts {
   url: string;
   // Signer for EIP712 signing, if not provided, execute requests will error
   signer?: TypedDataSigner & Signer;
-  // Chain ID override for EIP712 signing
-  signingChainId?: number;
 }
 
 // Only 1 key can be defined per execute request
@@ -158,9 +156,10 @@ export class EngineBaseClient {
   }
 
   public async getSigningChainId(): Promise<number> {
-    return (
-      this.opts.signingChainId ?? (await this.opts.signer?.getChainId()) ?? -1
-    );
+    if (!this.opts.signer) {
+      throw Error('No signer provided');
+    }
+    return this.opts.signer.getChainId();
   }
 
   /**

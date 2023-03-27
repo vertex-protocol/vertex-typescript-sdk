@@ -25,15 +25,14 @@ import {
   IndexerClient,
 } from '@vertex-protocol/indexer-client';
 
+type ValidSigner = TypedDataSigner & Signer;
+
 /**
  * Context required to use the Vertex client.
  */
 export interface VertexClientContext {
-  // Must be a signer to use any contract executions, used for queries/executions to the chain
-  chainSignerOrProvider: Signer | Provider;
-  // Signer for offchain engine transactions, defaults to chainSignerOrProvider, this can be overridden
-  // in cases like the frontend, where we can allow signers on a different chain to execute transactions
-  engineSigner?: TypedDataSigner & Signer;
+  // Must be a signer to use any executions
+  signerOrProvider: ValidSigner | Provider;
   contracts: VertexContracts;
   graph: VertexGraphClient;
   engineClient: EngineClient;
@@ -61,11 +60,10 @@ interface VertexClientContextOpts {
 /**
  * Args for signing configuration for creating a context
  */
-export interface CreateVertexClientContextSignerOpts
-  extends Pick<VertexClientContext, 'chainSignerOrProvider' | 'engineSigner'> {
-  // Override the EIP712 signing chain ID, otherwise the chain ID of the engineSigner will be used
-  engineSigningChainId?: number;
-}
+export type CreateVertexClientContextSignerOpts = Pick<
+  VertexClientContext,
+  'signerOrProvider'
+>;
 
 export type CreateVertexClientContextOpts =
   | VertexClientContextOpts
@@ -122,24 +120,24 @@ export async function createClientContext(
         return opts;
       }
     })();
-  const { chainSignerOrProvider, engineSigner: engineSignerParam } = signerOpts;
+  const { signerOrProvider } = signerOpts;
 
   const querier = FQuerier__factory.connect(
     contracts.querierAddress,
-    chainSignerOrProvider,
+    signerOrProvider,
   );
   const clearinghouseAddress =
     contracts.clearinghouseAddress ?? (await querier.getClearinghouse());
   const clearinghouse = await IClearinghouse__factory.connect(
     clearinghouseAddress,
-    chainSignerOrProvider,
+    signerOrProvider,
   );
 
   const endpointContractAddress =
     contracts.endpointAddress ?? (await clearinghouse.getEndpoint());
   const endpoint = await IEndpoint__factory.connect(
     endpointContractAddress,
-    chainSignerOrProvider,
+    signerOrProvider,
   );
 
   const spotAddress =
@@ -150,33 +148,24 @@ export async function createClientContext(
     (await clearinghouse.getEngineByType(ProductEngineType.PERP));
 
   // TODO: hack - better checking here
-  const chainTypedDataSigner =
-    chainSignerOrProvider instanceof Signer
-      ? (chainSignerOrProvider as TypedDataSigner & Signer)
+  const validSigner =
+    signerOrProvider instanceof Signer
+      ? (signerOrProvider as TypedDataSigner & Signer)
       : undefined;
-  const engineSigner = engineSignerParam ?? chainTypedDataSigner;
 
   return {
-    chainSignerOrProvider: chainSignerOrProvider,
-    engineSigner: engineSigner,
+    signerOrProvider: signerOrProvider,
     contracts: {
       querier,
       clearinghouse,
       endpoint,
-      spotEngine: ISpotEngine__factory.connect(
-        spotAddress,
-        chainSignerOrProvider,
-      ),
-      perpEngine: IPerpEngine__factory.connect(
-        perpAddress,
-        chainSignerOrProvider,
-      ),
+      spotEngine: ISpotEngine__factory.connect(spotAddress, signerOrProvider),
+      perpEngine: IPerpEngine__factory.connect(perpAddress, signerOrProvider),
     },
     graph: new VertexGraphClient(graph),
     engineClient: new EngineClient({
       url: engineEndpoint,
-      signer: engineSigner,
-      signingChainId: signerOpts.engineSigningChainId,
+      signer: validSigner,
     }),
     indexerClient: new IndexerClient({
       url: indexerEndpoint,

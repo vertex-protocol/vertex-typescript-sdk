@@ -9,9 +9,6 @@ export class BaseSpotAPI extends BaseVertexAPI {
    */
   async getTokenContractForProduct(productId: number): Promise<IERC20> {
     const config = await this.context.contracts.spotEngine.getConfig(productId);
-    return IERC20__factory.connect(
-      config.token,
-      this.context.chainSignerOrProvider,
-    );
+    return IERC20__factory.connect(config.token, this.context.signerOrProvider);
   }
 }

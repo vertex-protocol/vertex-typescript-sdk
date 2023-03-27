@@ -18,7 +18,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
   async mintLp(
     params: WithoutSubaccountOwner<WithoutNonce<EngineMintLpParams>>,
   ) {
-    const sender = (await this.context.engineSigner?.getAddress()) ?? '';
+    const sender = await this.getSignerAddress();
 
     return this.context.engineClient.mintLp({
       verifyingAddr: this.context.contracts.endpoint.address,
@@ -32,7 +32,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * @param params
    */
   async burnLp(params: WithoutSubaccountOwner<WithoutNonce<BurnLpParams>>) {
-    const sender = (await this.context.engineSigner?.getAddress()) ?? '';
+    const sender = await this.getSignerAddress();
 
     return this.context.engineClient.burnLp({
       verifyingAddr: this.context.contracts.endpoint.address,
@@ -53,7 +53,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
     return this.context.engineClient.placeOrder({
       order: {
         ...order,
-        subaccountOwner: (await this.context.engineSigner?.getAddress()) ?? '',
+        subaccountOwner: await this.getSignerAddress(),
       },
       verifyingAddr: orderbookAddr,
       productId,
@@ -69,7 +69,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
   async cancelOrder(
     params: WithoutSubaccountOwner<WithoutNonce<OrderCancellationParams>>,
   ) {
-    const sender = (await this.context.engineSigner?.getAddress()) ?? '';
+    const sender = await this.getSignerAddress();
 
     return this.context.engineClient.cancelOrders({
       subaccountOwner: sender,

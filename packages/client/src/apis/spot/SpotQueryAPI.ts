@@ -17,7 +17,7 @@ export class SpotQueryAPI extends BaseSpotAPI {
    */
   async getTokenWalletBalance(productId: number): Promise<BigNumber> {
     const token = await this.getTokenContractForProduct(productId);
-    return token.balanceOf(this.getChainSignerAddress());
+    return token.balanceOf(this.getSignerAddress());
   }
 
   /**
@@ -27,7 +27,7 @@ export class SpotQueryAPI extends BaseSpotAPI {
     const token = await this.getTokenContractForProduct(productId);
     return toBigDecimal(
       await token.allowance(
-        this.getChainSignerAddress(),
+        this.getSignerAddress(),
         this.context.contracts.endpoint.address,
       ),
     );
