@@ -95,13 +95,19 @@ export type GetIndexerProductSnapshotsResponse = (Market & {
   submissionIndex: string;
 })[];
 
+// There can be multiple events per tx, this allows a limit depending on usecase
+export type GetIndexerEventsLimitType = 'events' | 'txs';
+
 export interface GetIndexerEventsParams {
   startCursor?: string;
   subaccount?: Subaccount;
   productIds?: number[];
   eventTypes?: IndexerEventType[];
   maxTimestampInclusive?: number;
-  limit: number;
+  limit?: {
+    type: GetIndexerEventsLimitType;
+    value: number;
+  };
 }
 
 export interface IndexerEvent {

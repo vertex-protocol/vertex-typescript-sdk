@@ -6,6 +6,7 @@ import {
   IndexerServerProductSnapshot,
   IndexerServerTx,
 } from './serverModelTypes';
+import { IndexerEventType } from './IndexerEventType';
 
 /**
  * Params
@@ -38,11 +39,17 @@ export interface IndexerServerProductsParams {
 export interface IndexerServerEventsParams {
   subaccount?: string;
   product_ids?: number[];
-  event_types?: number[];
+  event_types?: IndexerEventType[];
   // submission_idx for pagination, inclusive
   idx?: string;
   max_time?: number;
-  limit: number;
+  limit?:
+    | {
+        raw: number;
+      }
+    | {
+        txs: number;
+      };
 }
 
 export interface IndexerServerOrdersParams {

@@ -1,6 +1,6 @@
 import { IndexerClient } from './IndexerClient';
 import { INDEXER_CLIENT_ENDPOINTS } from './endpoints';
-import { CandlestickPeriod, IndexerEventType } from './types';
+import { CandlestickPeriod } from './types';
 import { Subaccount } from '@vertex-protocol/contracts';
 import { nowInSeconds, toPrintableObject } from '@vertex-protocol/utils';
 
@@ -54,11 +54,11 @@ async function main() {
   prettyPrint('Paginated Orders', orders);
 
   const events = await client.getEvents({
-    eventTypes: [
-      IndexerEventType.DEPOSIT_COLLATERAL,
-      IndexerEventType.WITHDRAW_COLLATERAL,
-    ],
-    limit: 2,
+    eventTypes: ['deposit_collateral', 'withdraw_collateral'],
+    limit: {
+      type: 'txs',
+      value: 1,
+    },
     maxTimestampInclusive: nowInSeconds(),
     subaccount,
   });

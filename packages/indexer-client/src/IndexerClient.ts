@@ -14,7 +14,6 @@ import {
   GetIndexerSubaccountSettlementEventsParams,
   GetIndexerSubaccountSettlementEventsResponse,
   IndexerCollateralEvent,
-  IndexerEventType,
   IndexerLiquidationEvent,
   IndexerLpEvent,
   IndexerSettlementEvent,
@@ -59,11 +58,14 @@ export class IndexerClient extends IndexerBaseClient {
 
     // There are 2 events per mint/burn for spot - one associated with the product & the other with the quote
     // There is only 1 event per mint/burn for perp - associated with the product, where the quote delta is encoded in vQuote
-    const limit = 2 * requestedLimit + 1;
+    const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
-      eventTypes: [IndexerEventType.MINT_LP, IndexerEventType.BURN_LP],
-      limit,
+      eventTypes: ['mint_lp', 'burn_lp'],
+      limit: {
+        type: 'txs',
+        value: limit,
+      },
       subaccount: { subaccountName, subaccountOwner },
     });
 
@@ -141,11 +143,11 @@ export class IndexerClient extends IndexerBaseClient {
     const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
-      eventTypes: [
-        IndexerEventType.DEPOSIT_COLLATERAL,
-        IndexerEventType.WITHDRAW_COLLATERAL,
-      ],
-      limit,
+      eventTypes: ['deposit_collateral', 'withdraw_collateral'],
+      limit: {
+        type: 'txs',
+        value: limit,
+      },
       subaccount: { subaccountName, subaccountOwner },
     });
 
@@ -209,15 +211,15 @@ export class IndexerClient extends IndexerBaseClient {
       subaccountOwner,
     } = params;
 
-    // Each settlement has a quote & perp balance change. To prevent consumer from having to pass in product IDs,
-    // we just filter out quote events, but this means we need to query for 2 * requestedLimit + 2
-    // The additional 2 is for pagination, as we ignore events associated with quote, we need 2 additional base events
-    // to determine if there is a next page
-    const limit = 2 * requestedLimit + 2;
+    // Each settlement has a quote & perp balance change, so 2 events per settlement tx
+    const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
-      eventTypes: [IndexerEventType.SETTLE_PNL],
-      limit,
+      eventTypes: ['settle_pnl'],
+      limit: {
+        type: 'txs',
+        value: limit,
+      },
       subaccount: { subaccountName, subaccountOwner },
     });
 
@@ -259,11 +261,14 @@ export class IndexerClient extends IndexerBaseClient {
     // However, if the balance change is 0, then the liquidation did not touch the product
     // A tx operates on a given health group, so only a spot & its associated perp can be actually liquidated within a single tx
     // with an associated quote balance change
-    const limit = requestedLimit * 5 + 1;
+    const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
-      eventTypes: [IndexerEventType.LIQUIDATE_SUBACCOUNT],
-      limit,
+      eventTypes: ['liquidate_subaccount'],
+      limit: {
+        type: 'txs',
+        value: limit,
+      },
       subaccount: { subaccountName, subaccountOwner },
     });
 

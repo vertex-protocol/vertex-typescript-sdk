@@ -16,6 +16,7 @@ import {
   GetIndexerSummaryResponse,
   IndexerEventWithTx,
   IndexerMatchEvent,
+  IndexerServerEventsParams,
   IndexerServerQueryRequestByType,
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
@@ -150,6 +151,21 @@ export class IndexerBaseClient {
   async getEvents(
     params: GetIndexerEventsParams,
   ): Promise<GetIndexerEventsResponse> {
+    const serverLimit = ((): IndexerServerEventsParams['limit'] | undefined => {
+      if (!params.limit) {
+        return;
+      }
+
+      if (params.limit.type === 'events') {
+        return {
+          raw: params.limit.value,
+        };
+      }
+      return {
+        txs: params.limit.value,
+      };
+    })();
+
     const baseResponse = await this.query('events', {
       subaccount: params.subaccount
         ? subaccountToHex({
@@ -160,7 +176,7 @@ export class IndexerBaseClient {
       product_ids: params.productIds,
       event_types: params.eventTypes,
       max_time: params.maxTimestampInclusive,
-      limit: params.limit,
+      limit: serverLimit,
       idx: params.startCursor,
     });
 
@@ -222,8 +238,15 @@ export class IndexerBaseClient {
       idx: params.startCursor,
     });
 
+    // Same as logic in `getEvents`
+    let lastTxIdx = 0;
     return baseResponse.matches.map((matchEvent, index): IndexerMatchEvent => {
-      const { tx, timestamp } = baseResponse.txs[index];
+      if (
+        baseResponse.txs[lastTxIdx].submission_idx !== matchEvent.submission_idx
+      ) {
+        lastTxIdx += 1;
+      }
+      const { tx, timestamp } = baseResponse.txs[lastTxIdx];
 
       const productId = (() => {
         if ('match_orders' in tx) {
