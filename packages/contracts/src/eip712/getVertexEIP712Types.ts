@@ -58,6 +58,14 @@ export function getVertexEIP712Types(
           { name: 'nonce', type: 'uint64' },
         ],
       };
+    case 'cancel_product_orders':
+      return {
+        CancellationProducts: [
+          { name: 'sender', type: 'bytes32' },
+          { name: 'productIds', type: 'uint32[]' },
+          { name: 'nonce', type: 'uint64' },
+        ],
+      };
     case 'liquidate_subaccount':
       return {
         LiquidateSubaccount: [

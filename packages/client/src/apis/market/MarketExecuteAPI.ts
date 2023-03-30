@@ -3,6 +3,7 @@ import { OrderActionParams } from './executeTypes';
 import {
   BurnLpParams,
   OrderCancellationParams,
+  ProductOrdersCancellationParams,
 } from '@vertex-protocol/contracts';
 import {
   EngineMintLpParams,
@@ -72,6 +73,24 @@ export class MarketExecuteAPI extends BaseVertexAPI {
     const sender = await this.getSignerAddress();
 
     return this.context.engineClient.cancelOrders({
+      subaccountOwner: sender,
+      verifyingAddr: this.context.contracts.endpoint.address,
+      ...params,
+    });
+  }
+
+  /**
+   * Cancels all orders for provided products through the engine.
+   * @param params
+   */
+  async cancelProductOrders(
+    params: WithoutSubaccountOwner<
+      WithoutNonce<ProductOrdersCancellationParams>
+    >,
+  ) {
+    const sender = await this.getSignerAddress();
+
+    return this.context.engineClient.cancelProductOrders({
       subaccountOwner: sender,
       verifyingAddr: this.context.contracts.endpoint.address,
       ...params,

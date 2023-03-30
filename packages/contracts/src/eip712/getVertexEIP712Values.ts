@@ -8,12 +8,14 @@ import {
   MintLpParams,
   OrderCancellationParams,
   OrderParams,
+  ProductOrdersCancellationParams,
   WithdrawCollateralParams,
 } from './signatureParamTypes';
 import { toX18 } from '@vertex-protocol/utils';
 import { BigNumber } from 'ethers';
 import { subaccountToBytes32 } from '../utils';
 import {
+  EIP712ProductOrdersCancellationValues,
   EIP712BurnLpValues,
   EIP712LiquidateSubaccountValues,
   EIP712MintLpValues,
@@ -54,6 +56,10 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
     case 'cancel_orders':
       return getOrderCancellationValues(
         params as OrderCancellationParams,
+      ) as SignableRequestTypeToEIP712Values[TReqType];
+    case 'cancel_product_orders':
+      return getProductOrdersCancellationValues(
+        params as ProductOrdersCancellationParams,
       ) as SignableRequestTypeToEIP712Values[TReqType];
     case 'liquidate_subaccount':
       return getLiquidateSubaccountValues(
@@ -126,6 +132,19 @@ function getOrderCancellationValues(
     }),
     productIds: params.productIds,
     digests: params.digests,
+    nonce: BigNumber.from(params.nonce).toString(),
+  };
+}
+
+function getProductOrdersCancellationValues(
+  params: ProductOrdersCancellationParams,
+): EIP712ProductOrdersCancellationValues {
+  return {
+    sender: subaccountToBytes32({
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.subaccountName,
+    }),
+    productIds: params.productIds,
     nonce: BigNumber.from(params.nonce).toString(),
   };
 }

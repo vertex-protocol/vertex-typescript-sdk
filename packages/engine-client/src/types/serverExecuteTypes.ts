@@ -1,4 +1,5 @@
 import {
+  EIP712ProductOrdersCancellationValues,
   EIP712BurnLpValues,
   EIP712LiquidateSubaccountValues,
   EIP712MintLpValues,
@@ -47,6 +48,15 @@ export interface EngineServerExecuteRequestByType {
   place_order: EngineServerPlaceOrderParams;
   cancel_orders: SignedTx<
     Omit<ByteFieldsToHex<EIP712OrderCancellationValues>, 'productIds'> & {
+      // number[] is technically assignable to "Bytes", so we need to override the ByteFieldsToHex result here
+      productIds: number[];
+    }
+  >;
+  cancel_product_orders: SignedTx<
+    Omit<
+      ByteFieldsToHex<EIP712ProductOrdersCancellationValues>,
+      'productIds'
+    > & {
       // number[] is technically assignable to "Bytes", so we need to override the ByteFieldsToHex result here
       productIds: number[];
     }
