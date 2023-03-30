@@ -235,12 +235,13 @@ async function main() {
 
   // places order for multiple products
   for (const productId of [1, 2]) {
+    console.log('Placing order for product', productId);
     const orderbookAddr = await clearinghouse.getOrderbook(productId);
     const order: EngineOrderParams = {
       subaccountOwner: signer.address,
       subaccountName: 'default',
       amount: toFixedPoint(-0.01),
-      expiration: getExpiration() + 100000,
+      expiration: getExpiration(),
       price: 28000,
     };
     const placeResult = await client.placeOrder({
@@ -276,7 +277,10 @@ async function main() {
       subaccountName: 'default',
     });
 
-    console.log('Subaccount Orders after cancel', subaccountOrdersAfterCancel);
+    console.log(
+      `Subaccount Orders after cancel for product ${productId}`,
+      subaccountOrdersAfterCancel,
+    );
   }
 
   const withdrawResult = await client.withdrawCollateral({
