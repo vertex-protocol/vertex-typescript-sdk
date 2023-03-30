@@ -257,4 +257,41 @@ export class EngineExecuteBuilder {
       signature,
     };
   }
+
+  /**
+   * Builds server payload for the `cancel_product_orders` execute action.
+   * @param clientParams Client CancelProductOrders params.
+   * @returns `cancel_product_orders` payload
+   */
+  async buildCancelProductOrdersPayload(
+    clientParams: EngineExecuteRequestParamsByType['cancel_product_orders'],
+  ): Promise<EngineServerExecuteRequestByType['cancel_product_orders']> {
+    const nonce = await (async () => {
+      if (clientParams.nonce) {
+        return clientParams.nonce;
+      }
+      return getOrderNonce();
+    })();
+    const paramsWithNonce = { ...clientParams, nonce };
+
+    const tx = getVertexEIP712Values('cancel_product_orders', paramsWithNonce);
+    const signature = await (async () => {
+      if ('signature' in clientParams) {
+        return clientParams.signature;
+      }
+      return await this.engineClient.sign(
+        'cancel_product_orders',
+        clientParams.verifyingAddr,
+        paramsWithNonce,
+      );
+    })();
+
+    return {
+      tx: {
+        ...tx,
+        sender: hexlify(tx.sender),
+      },
+      signature,
+    };
+  }
 }

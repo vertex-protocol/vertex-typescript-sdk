@@ -125,7 +125,7 @@ export interface ISpotEngineInterface extends utils.Interface {
   functions: {
     "applyDeltas((uint32,bytes32,int128,int128)[])": FunctionFragment;
     "burnLp(uint32,bytes32,int128)": FunctionFragment;
-    "decomposeLps(bytes32,bytes32)": FunctionFragment;
+    "decomposeLps(bytes32,bytes32,address)": FunctionFragment;
     "getBalance(uint32,bytes32)": FunctionFragment;
     "getBalances(uint32,bytes32)": FunctionFragment;
     "getClearinghouse()": FunctionFragment;
@@ -185,7 +185,11 @@ export interface ISpotEngineInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "decomposeLps",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BytesLike>]
+    values: [
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "getBalance",
@@ -451,6 +455,7 @@ export interface ISpotEngine extends BaseContract {
     decomposeLps(
       liquidatee: PromiseOrValue<BytesLike>,
       liquidator: PromiseOrValue<BytesLike>,
+      feeCalculator: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -581,6 +586,7 @@ export interface ISpotEngine extends BaseContract {
   decomposeLps(
     liquidatee: PromiseOrValue<BytesLike>,
     liquidator: PromiseOrValue<BytesLike>,
+    feeCalculator: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -704,13 +710,14 @@ export interface ISpotEngine extends BaseContract {
       subaccount: PromiseOrValue<BytesLike>,
       amountLp: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<BigNumber>;
 
     decomposeLps(
       liquidatee: PromiseOrValue<BytesLike>,
       liquidator: PromiseOrValue<BytesLike>,
+      feeCalculator: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<BigNumber>;
 
     getBalance(
       productId: PromiseOrValue<BigNumberish>,
@@ -891,6 +898,7 @@ export interface ISpotEngine extends BaseContract {
     decomposeLps(
       liquidatee: PromiseOrValue<BytesLike>,
       liquidator: PromiseOrValue<BytesLike>,
+      feeCalculator: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1011,6 +1019,7 @@ export interface ISpotEngine extends BaseContract {
     decomposeLps(
       liquidatee: PromiseOrValue<BytesLike>,
       liquidator: PromiseOrValue<BytesLike>,
+      feeCalculator: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

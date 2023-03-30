@@ -67,6 +67,15 @@ export class EngineExecuteClient extends EngineBaseClient {
     );
   }
 
+  async cancelProductOrders(
+    params: EngineExecuteRequestParamsByType['cancel_product_orders'],
+  ) {
+    return this.execute(
+      'cancel_product_orders',
+      await this.payloadBuilder.buildCancelProductOrdersPayload(params),
+    );
+  }
+
   async getOrderDigest(
     order: OrderParams,
     verifyingAddr: string,

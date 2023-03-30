@@ -183,7 +183,13 @@ const _abi = [
       },
     ],
     name: "burnLp",
-    outputs: [],
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -199,9 +205,20 @@ const _abi = [
         name: "liquidator",
         type: "bytes32",
       },
+      {
+        internalType: "address",
+        name: "feeCalculator",
+        type: "address",
+      },
     ],
     name: "decomposeLps",
-    outputs: [],
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "function",
   },

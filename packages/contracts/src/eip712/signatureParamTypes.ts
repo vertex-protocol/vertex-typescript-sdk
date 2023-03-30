@@ -62,3 +62,8 @@ export interface OrderCancellationParams extends Subaccount {
   digests: string[];
   nonce: string;
 }
+
+export interface ProductOrdersCancellationParams extends Subaccount {
+  productIds: number[];
+  nonce: string;
+}

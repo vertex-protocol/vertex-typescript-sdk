@@ -4,6 +4,7 @@ import {
   MintLpParams,
   OrderCancellationParams,
   OrderParams,
+  ProductOrdersCancellationParams,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import { RequireExactlyOne } from '@vertex-protocol/utils';
@@ -66,6 +67,9 @@ export type EngineExecuteCancelOrdersParams = WithBaseEngineExecuteParams<
   WithoutNonce<OrderCancellationParams>
 >;
 
+export type EngineExecuteCancelProductOrdersParams =
+  WithBaseEngineExecuteParams<WithoutNonce<ProductOrdersCancellationParams>>;
+
 export interface EngineExecuteRequestParamsByType {
   liquidate_subaccount: EngineExecuteLiquidateSubaccountParams;
   mint_lp: EngineExecuteMintLpParams;
@@ -73,6 +77,7 @@ export interface EngineExecuteRequestParamsByType {
   burn_lp: EngineExecuteBurnLpParams;
   place_order: EngineExecutePlaceOrderParams;
   cancel_orders: EngineExecuteCancelOrdersParams;
+  cancel_product_orders: EngineExecuteCancelProductOrdersParams;
 }
 
 export type EngineExecuteRequestParamsType =

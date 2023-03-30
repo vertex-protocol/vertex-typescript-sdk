@@ -4,6 +4,7 @@ import {
   MintLpParams,
   OrderCancellationParams,
   OrderParams,
+  ProductOrdersCancellationParams,
   WithdrawCollateralParams,
 } from './signatureParamTypes';
 import { Bytes } from 'ethers/lib/utils';
@@ -35,6 +36,9 @@ export type EIP712OrderValues = Omit<WithEIP712Sender<OrderParams>, 'price'> & {
 export type EIP712OrderCancellationValues =
   WithEIP712Sender<OrderCancellationParams>;
 
+export type EIP712ProductOrdersCancellationValues =
+  WithEIP712Sender<ProductOrdersCancellationParams>;
+
 /**
  * All possible requests to be signed, to the EIP712 value interface
  */
@@ -44,5 +48,6 @@ export interface SignableRequestTypeToEIP712Values {
   burn_lp: EIP712BurnLpValues;
   place_order: EIP712OrderValues;
   cancel_orders: EIP712OrderCancellationValues;
+  cancel_product_orders: EIP712ProductOrdersCancellationValues;
   liquidate_subaccount: EIP712LiquidateSubaccountValues;
 }
