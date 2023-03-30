@@ -92,13 +92,13 @@ async function main() {
   const products = await client.getAllMarkets();
   console.log('All products', JSON.stringify(products, null, 2));
   console.log('Placing order');
-  const productId = 2;
+  const productId = 1;
   const orderbookAddr = await clearinghouse.getOrderbook(productId);
   const order: EngineOrderParams = {
     subaccountOwner: signer.address,
     subaccountName: 'default',
     amount: toFixedPoint(-0.01),
-    expiration: getExpiration(),
+    expiration: getExpiration() + 100000,
     price: 28000,
   };
   const placeResult = await client.placeOrder({
@@ -113,11 +113,11 @@ async function main() {
   );
   console.log('Done placing spot order', placeResult);
   const subaccountOrders = await client.getSubaccountOrders({
-    productId,
+    productId: 2,
     subaccountName: 'default',
     subaccountOwner: signer.address,
   });
-  console.log('Subaccount orders', JSON.stringify(subaccountOrders));
+  console.log('Subaccount orders', subaccountOrders);
   const marketLiquidity = await client.getMarketLiquidity({
     depth: 10,
     productId,
@@ -232,6 +232,53 @@ async function main() {
     verifyingAddr: endpointAddr,
   });
   console.log('Done burning perp lp', burnPerpLpResult);
+
+  // places order for multiple products
+  for (const productId of [1, 2]) {
+    const orderbookAddr = await clearinghouse.getOrderbook(productId);
+    const order: EngineOrderParams = {
+      subaccountOwner: signer.address,
+      subaccountName: 'default',
+      amount: toFixedPoint(-0.01),
+      expiration: getExpiration() + 100000,
+      price: 28000,
+    };
+    const placeResult = await client.placeOrder({
+      verifyingAddr: orderbookAddr,
+      productId,
+      order,
+      nonce: getOrderNonce(),
+    });
+    console.log('Done placing order', placeResult);
+
+    const subaccountOrdersAfterPlace = await client.getSubaccountOrders({
+      productId,
+      subaccountOwner: signer.address,
+      subaccountName: 'default',
+    });
+
+    console.log('Subaccount Orders after place', subaccountOrdersAfterPlace);
+  }
+
+  // cancels orders for all products
+  const cancelProductOrdersRes = await client.cancelProductOrders({
+    subaccountName: 'default',
+    subaccountOwner: signer.address,
+    productIds: [],
+    verifyingAddr: endpointAddr,
+  });
+  console.log('Cancel Product Orders', cancelProductOrdersRes);
+
+  for (const productId of [1, 2]) {
+    const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
+      productId,
+      subaccountOwner: signer.address,
+      subaccountName: 'default',
+    });
+
+    console.log('Subaccount Orders after cancel', subaccountOrdersAfterCancel);
+  }
+
   const withdrawResult = await client.withdrawCollateral({
     subaccountOwner: signer.address,
     subaccountName: 'default',
