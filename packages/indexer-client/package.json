@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/indexer-client",
-  "version": "0.1.0-alpha.84",
+  "version": "0.1.0-alpha.85",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -23,9 +23,9 @@
     "src"
   ],
   "dependencies": {
-    "@vertex-protocol/contracts": "^0.1.0-alpha.84",
-    "@vertex-protocol/engine-client": "^0.1.0-alpha.84",
-    "@vertex-protocol/utils": "^0.1.0-alpha.84",
+    "@vertex-protocol/contracts": "^0.1.0-alpha.85",
+    "@vertex-protocol/engine-client": "^0.1.0-alpha.85",
+    "@vertex-protocol/utils": "^0.1.0-alpha.85",
     "axios": "^1.1.2",
     "ethers": "^5.7.1",
     "ts-mixer": "^6.0.1"
