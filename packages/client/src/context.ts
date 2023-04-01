@@ -147,11 +147,9 @@ export async function createClientContext(
     contracts.perpEngineAddress ??
     (await clearinghouse.getEngineByType(ProductEngineType.PERP));
 
-  // TODO: hack - better checking here
-  const validSigner =
-    signerOrProvider instanceof Signer
-      ? (signerOrProvider as TypedDataSigner & Signer)
-      : undefined;
+  const validSigner = Signer.isSigner(signerOrProvider)
+    ? (signerOrProvider as TypedDataSigner & Signer)
+    : undefined;
 
   return {
     signerOrProvider: signerOrProvider,
