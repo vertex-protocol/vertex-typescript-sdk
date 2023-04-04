@@ -64,8 +64,11 @@ export interface IndexerLpEvent extends BaseIndexerPaginatedEvent {
 export type GetIndexerSubaccountLpEventsResponse =
   PaginatedIndexerEventsResponse<IndexerLpEvent>;
 
-export type GetIndexerSubaccountMatchEventParams =
-  BaseSubaccountPaginationParams;
+export interface GetIndexerSubaccountMatchEventParams
+  extends BaseSubaccountPaginationParams {
+  // If not given, defaults to all products
+  productIds?: number[];
+}
 
 export type GetIndexerSubaccountMatchEventsResponse =
   PaginatedIndexerEventsResponse<IndexerMatchEvent>;
