@@ -51,6 +51,23 @@ export interface IndexerSummaryBalance {
 
 export type GetIndexerSummaryResponse = IndexerSummaryBalance[];
 
+export interface GetIndexerRewardsParams {
+  subaccount: Subaccount;
+}
+
+export interface IndexerRewardEpoch {
+  epoch: number;
+  startTime: BigDecimal;
+  period: BigDecimal;
+  totalEpochMakerTokens: BigDecimal;
+  totalEpochTakerTokens: BigDecimal;
+  subaccountMakerTokens: BigDecimal;
+  subaccountTakerTokens: BigDecimal;
+  updateTime: BigDecimal;
+}
+
+export type GetIndexerRewardsResponse = IndexerRewardEpoch[];
+
 export interface GetIndexerFundingRateParams {
   productId: number;
 }

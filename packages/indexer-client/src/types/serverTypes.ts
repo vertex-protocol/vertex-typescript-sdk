@@ -16,6 +16,10 @@ export interface IndexerServerSummaryParams {
   timestamp: number;
 }
 
+export interface IndexerServerRewardsParams {
+  subaccount: string;
+}
+
 export interface IndexerServerFundingRateParams {
   product_id: number;
 }
@@ -74,6 +78,7 @@ export interface IndexerServerMatchEventsParams {
 // Request
 export interface IndexerServerQueryRequestByType {
   summary: IndexerServerSummaryParams;
+  rewards: IndexerServerRewardsParams;
   funding_rate: IndexerServerFundingRateParams;
   candlesticks: IndexerServerCandlesticksParams;
   products: IndexerServerProductsParams;
@@ -90,6 +95,23 @@ export type IndexerServerQueryRequestType =
  */
 export interface IndexerServerSummaryResponse {
   events: IndexerServerEvent[];
+}
+
+export interface IndexerServerRewardEpoch {
+  epoch: number;
+  start_time: string;
+  period: string;
+  // Totals
+  epoch_maker_tokens: string;
+  epoch_taker_tokens: string;
+  // For the subaccount
+  subaccount_maker_tokens: string;
+  subaccount_taker_tokens: string;
+  update_time: string;
+}
+
+export interface IndexerServerRewardsResponse {
+  rewards: IndexerServerRewardEpoch[];
 }
 
 export interface IndexerServerFundingRateResponse {
@@ -124,6 +146,7 @@ export interface IndexerServerMatchEventsResponse {
 // Response
 export interface IndexerServerQueryResponseByType {
   summary: IndexerServerSummaryResponse;
+  rewards: IndexerServerRewardsResponse;
   funding_rate: IndexerServerFundingRateResponse;
   candlesticks: IndexerServerCandlesticksResponse;
   products: IndexerServerProductsResponse;
