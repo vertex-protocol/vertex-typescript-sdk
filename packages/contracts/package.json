@@ -27,13 +27,13 @@
     "@vertex-protocol/utils": "^0.1.0-alpha.86"
   },
   "peerDependencies": {
-    "ethers": "^5.7.1"
+    "ethers": "^5.7.2"
   },
   "devDependencies": {
-    "@typechain/ethers-v5": "^10.1.0",
+    "@typechain/ethers-v5": "^10.2.0",
     "env-cmd": "^10.1.0",
-    "ethers": "^5.7.1",
-    "typechain": "^8.1.0"
+    "ethers": "^5.7.2",
+    "typechain": "^8.1.1"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",

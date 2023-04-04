@@ -28,13 +28,13 @@
     "@vertex-protocol/graph": "^0.1.0-alpha.86",
     "@vertex-protocol/indexer-client": "^0.1.0-alpha.86",
     "@vertex-protocol/utils": "^0.1.0-alpha.86",
-    "ts-mixer": "^6.0.1"
+    "ts-mixer": "^6.0.3"
   },
   "peerDependencies": {
-    "ethers": "^5.7.1"
+    "ethers": "^5.7.2"
   },
   "devDependencies": {
-    "ethers": "^5.7.1"
+    "ethers": "^5.7.2"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
