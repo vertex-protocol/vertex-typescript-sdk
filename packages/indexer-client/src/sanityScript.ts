@@ -27,7 +27,7 @@ async function main() {
 
   prettyPrint('Funding rate', fundingRate.fundingRate.toString());
 
-  const price = await client.getPrice({
+  const price = await client.getPerpPrices({
     productId: 2,
   });
 
