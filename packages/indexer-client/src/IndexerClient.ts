@@ -41,6 +41,7 @@ export class IndexerClient extends IndexerBaseClient {
       startCursor,
       limit,
       subaccount: { subaccountName, subaccountOwner },
+      productIds: params.productIds,
     });
 
     return this.getPaginationResponse(events, requestedLimit);
