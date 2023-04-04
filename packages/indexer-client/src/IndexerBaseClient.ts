@@ -10,14 +10,14 @@ import {
   GetIndexerMatchEventsResponse,
   GetIndexerOrdersParams,
   GetIndexerOrdersResponse,
-  GetIndexerPriceParams,
-  GetIndexerPriceResponse,
+  GetIndexerPerpPricesParams,
+  GetIndexerPerpPricesResponse,
   GetIndexerProductSnapshotsParams,
   GetIndexerProductSnapshotsResponse,
-  GetIndexerRewardsParams,
-  GetIndexerRewardsResponse,
+  GetIndexerSubaccountRewardsParams,
   GetIndexerSummaryParams,
   GetIndexerSummaryResponse,
+  GetSubaccountIndexerRewardsResponse,
   IndexerEventWithTx,
   IndexerMatchEvent,
   IndexerRewardEpoch,
@@ -86,8 +86,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getSubaccountRewards(
-    params: GetIndexerRewardsParams,
-  ): Promise<GetIndexerRewardsResponse> {
+    params: GetIndexerSubaccountRewardsParams,
+  ): Promise<GetSubaccountIndexerRewardsResponse> {
     const baseResponse = await this.query('rewards', {
       subaccount: subaccountToHex({
         subaccountOwner: params.subaccount.subaccountOwner,
@@ -136,8 +136,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getPerpPrices(
-    params: GetIndexerPriceParams,
-  ): Promise<GetIndexerPriceResponse> {
+    params: GetIndexerPerpPricesParams,
+  ): Promise<GetIndexerPerpPricesResponse> {
     const baseResponse = await this.query('price', {
       product_id: params.productId,
     });
