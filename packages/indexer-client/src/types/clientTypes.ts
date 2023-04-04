@@ -68,6 +68,18 @@ export interface IndexerRewardEpoch {
 
 export type GetIndexerRewardsResponse = IndexerRewardEpoch[];
 
+export interface GetIndexerPriceParams {
+  productId: number;
+}
+
+export interface GetIndexerPriceResponse {
+  productId: number;
+  indexPrice: BigDecimal;
+  markPrice: BigDecimal;
+  // Seconds
+  updateTime: BigDecimal;
+}
+
 export interface GetIndexerFundingRateParams {
   productId: number;
 }

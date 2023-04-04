@@ -24,6 +24,10 @@ export interface IndexerServerFundingRateParams {
   product_id: number;
 }
 
+export interface IndexerServerPriceParams {
+  product_id: number;
+}
+
 export interface IndexerServerCandlesticksParams {
   product_id: number;
   granularity: number;
@@ -80,6 +84,7 @@ export interface IndexerServerQueryRequestByType {
   summary: IndexerServerSummaryParams;
   rewards: IndexerServerRewardsParams;
   funding_rate: IndexerServerFundingRateParams;
+  price: IndexerServerPriceParams;
   candlesticks: IndexerServerCandlesticksParams;
   products: IndexerServerProductsParams;
   events: IndexerServerEventsParams;
@@ -120,6 +125,13 @@ export interface IndexerServerFundingRateResponse {
   update_time: number;
 }
 
+export interface IndexerServerPriceResponse {
+  product_id: number;
+  index_price_x18: string;
+  mark_price_x18: string;
+  update_time: number;
+}
+
 export interface IndexerServerCandlesticksResponse {
   candlesticks: IndexerServerCandlestick[];
 }
@@ -148,6 +160,7 @@ export interface IndexerServerQueryResponseByType {
   summary: IndexerServerSummaryResponse;
   rewards: IndexerServerRewardsResponse;
   funding_rate: IndexerServerFundingRateResponse;
+  price: IndexerServerPriceResponse;
   candlesticks: IndexerServerCandlesticksResponse;
   products: IndexerServerProductsResponse;
   events: IndexerServerEventsResponse;
