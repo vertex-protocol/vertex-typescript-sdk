@@ -6,6 +6,8 @@ import {
   GetIndexerEventsResponse,
   GetIndexerFundingRateParams,
   GetIndexerFundingRateResponse,
+  GetIndexerPriceParams,
+  GetIndexerPriceResponse,
   GetIndexerMatchEventsParams,
   GetIndexerMatchEventsResponse,
   GetIndexerOrdersParams,
@@ -119,6 +121,25 @@ export class IndexerBaseClient {
 
     return {
       fundingRate: fromX18(baseResponse.funding_rate_x18),
+      updateTime: toBigDecimal(baseResponse.update_time),
+      productId: baseResponse.product_id,
+    };
+  }
+
+  /**
+   * Retrieves latest mark/index price for a perp product
+   * @param params
+   */
+  async getPrice(
+    params: GetIndexerPriceParams,
+  ): Promise<GetIndexerPriceResponse> {
+    const baseResponse = await this.query('price', {
+      product_id: params.productId,
+    });
+
+    return {
+      indexPrice: fromX18(baseResponse.index_price_x18),
+      markPrice: fromX18(baseResponse.mark_price_x18),
       updateTime: toBigDecimal(baseResponse.update_time),
       productId: baseResponse.product_id,
     };

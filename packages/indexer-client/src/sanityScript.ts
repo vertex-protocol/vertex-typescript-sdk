@@ -22,10 +22,16 @@ async function main() {
   prettyPrint('Summary', summary);
 
   const fundingRate = await client.getFundingRate({
-    productId: 1,
+    productId: 2,
   });
 
   prettyPrint('Funding rate', fundingRate.fundingRate.toString());
+
+  const price = await client.getPrice({
+    productId: 2,
+  });
+
+  prettyPrint('Perp prices', toPrintableObject(price));
 
   const rewards = await client.getSubaccountRewards({
     subaccount,
