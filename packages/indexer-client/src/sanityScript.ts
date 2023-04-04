@@ -27,6 +27,12 @@ async function main() {
 
   prettyPrint('Funding rate', fundingRate.fundingRate.toString());
 
+  const rewards = await client.getSubaccountRewards({
+    subaccount,
+  });
+
+  prettyPrint('Rewards', toPrintableObject(rewards));
+
   const productSnapshots = await client.getProductSnapshots({
     limit: 2,
     maxTimestampInclusive: nowInSeconds(),

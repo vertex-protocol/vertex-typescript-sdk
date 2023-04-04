@@ -12,10 +12,13 @@ import {
   GetIndexerOrdersResponse,
   GetIndexerProductSnapshotsParams,
   GetIndexerProductSnapshotsResponse,
+  GetIndexerRewardsParams,
+  GetIndexerRewardsResponse,
   GetIndexerSummaryParams,
   GetIndexerSummaryResponse,
   IndexerEventWithTx,
   IndexerMatchEvent,
+  IndexerRewardEpoch,
   IndexerServerEventsParams,
   IndexerServerQueryRequestByType,
   IndexerServerQueryRequestType,
@@ -71,6 +74,34 @@ export class IndexerBaseClient {
         productId: mappedEvent.productId,
         state: mappedEvent.state,
         trackedVars: mappedEvent.trackedVars,
+      };
+    });
+  }
+
+  async getSubaccountRewards(
+    params: GetIndexerRewardsParams,
+  ): Promise<GetIndexerRewardsResponse> {
+    const baseResponse = await this.query('rewards', {
+      subaccount: subaccountToHex({
+        subaccountOwner: params.subaccount.subaccountOwner,
+        subaccountName: params.subaccount.subaccountName,
+      }),
+    });
+
+    return baseResponse.rewards.map((rewardEpoch): IndexerRewardEpoch => {
+      return {
+        epoch: rewardEpoch.epoch,
+        period: toBigDecimal(rewardEpoch.period),
+        startTime: toBigDecimal(rewardEpoch.start_time),
+        subaccountMakerTokens: toBigDecimal(
+          rewardEpoch.subaccount_maker_tokens,
+        ),
+        subaccountTakerTokens: toBigDecimal(
+          rewardEpoch.subaccount_taker_tokens,
+        ),
+        totalEpochMakerTokens: toBigDecimal(rewardEpoch.epoch_maker_tokens),
+        totalEpochTakerTokens: toBigDecimal(rewardEpoch.epoch_maker_tokens),
+        updateTime: toBigDecimal(rewardEpoch.update_time),
       };
     });
   }
