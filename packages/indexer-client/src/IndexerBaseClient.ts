@@ -6,12 +6,12 @@ import {
   GetIndexerEventsResponse,
   GetIndexerFundingRateParams,
   GetIndexerFundingRateResponse,
-  GetIndexerPriceParams,
-  GetIndexerPriceResponse,
   GetIndexerMatchEventsParams,
   GetIndexerMatchEventsResponse,
   GetIndexerOrdersParams,
   GetIndexerOrdersResponse,
+  GetIndexerPriceParams,
+  GetIndexerPriceResponse,
   GetIndexerProductSnapshotsParams,
   GetIndexerProductSnapshotsResponse,
   GetIndexerRewardsParams,
@@ -80,6 +80,11 @@ export class IndexerBaseClient {
     });
   }
 
+  /**
+   * Retrieves estimated / past trading rewards for a subaccount
+   *
+   * @param params
+   */
   async getSubaccountRewards(
     params: GetIndexerRewardsParams,
   ): Promise<GetIndexerRewardsResponse> {
