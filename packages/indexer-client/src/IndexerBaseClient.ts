@@ -135,7 +135,7 @@ export class IndexerBaseClient {
    * Retrieves latest mark/index price for a perp product
    * @param params
    */
-  async getPrice(
+  async getPerpPrices(
     params: GetIndexerPriceParams,
   ): Promise<GetIndexerPriceResponse> {
     const baseResponse = await this.query('price', {
