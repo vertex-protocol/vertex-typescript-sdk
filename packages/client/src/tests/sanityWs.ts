@@ -1,12 +1,12 @@
 import { Wallet } from 'ethers';
 import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
-import { OrderActionParams } from '../apis/market';
+import { PlaceOrderParams } from '../apis/market';
 import { subaccountToHex } from '@vertex-protocol/contracts';
 import { getOrderNonce } from '@vertex-protocol/engine-client';
 import { VertexClient } from '../client';
 
 export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
-  const orderParams: OrderActionParams['order'] = {
+  const orderParams: PlaceOrderParams['order'] = {
     subaccountName: 'default',
     // `nowInSeconds` is exposed by the `@vertex-protocol/utils` package
     // This gives 60s before the order expires

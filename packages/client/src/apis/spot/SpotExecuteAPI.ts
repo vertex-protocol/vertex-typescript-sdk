@@ -5,12 +5,13 @@ import {
   MintMockERC20Params,
   MockERC20__factory,
 } from '@vertex-protocol/contracts';
-import { BaseSpotAPI, WithoutSubaccountOwner } from './BaseSpotAPI';
+import { BaseSpotAPI } from './BaseSpotAPI';
 import { ApproveAllowanceParams } from './types';
 import {
   EngineWithdrawCollateralParams,
   WithoutNonce,
 } from '@vertex-protocol/engine-client';
+import { WithoutSubaccountOwner } from '../types';
 
 export class SpotExecuteAPI extends BaseSpotAPI {
   async deposit(params: ExecuteDepositCollateralParams) {

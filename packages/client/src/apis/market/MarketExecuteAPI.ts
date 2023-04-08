@@ -1,15 +1,16 @@
 import { BaseVertexAPI } from '../base';
-import { OrderActionParams } from './executeTypes';
 import {
-  BurnLpParams,
-  OrderCancellationParams,
-  ProductOrdersCancellationParams,
-} from '@vertex-protocol/contracts';
+  CancelOrdersParams,
+  CancelProductOrdersParams,
+  PlaceOrderParams,
+} from './executeTypes';
+import { BurnLpParams } from '@vertex-protocol/contracts';
 import {
   EngineMintLpParams,
   WithoutNonce,
 } from '@vertex-protocol/engine-client';
-import { WithoutSubaccountOwner } from '../spot/BaseSpotAPI';
+
+import { WithoutSubaccountOwner } from '../types';
 
 export class MarketExecuteAPI extends BaseVertexAPI {
   /**
@@ -46,7 +47,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Places an order through the engine
    * @param params
    */
-  async placeOrder(params: OrderActionParams) {
+  async placeOrder(params: PlaceOrderParams) {
     const { productId, order, nonce } = params;
     const orderbookAddr = await this.context.engineClient.getOrderbookAddress(
       productId,
@@ -64,12 +65,10 @@ export class MarketExecuteAPI extends BaseVertexAPI {
   }
 
   /**
-   * Cancels an order through the engine
+   * Cancels orders through the engine
    * @param params
    */
-  async cancelOrder(
-    params: WithoutSubaccountOwner<WithoutNonce<OrderCancellationParams>>,
-  ) {
+  async cancelOrders(params: CancelOrdersParams) {
     const sender = await this.getSignerAddress();
 
     return this.context.engineClient.cancelOrders({
@@ -83,11 +82,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Cancels all orders for provided products through the engine.
    * @param params
    */
-  async cancelProductOrders(
-    params: WithoutSubaccountOwner<
-      WithoutNonce<ProductOrdersCancellationParams>
-    >,
-  ) {
+  async cancelProductOrders(params: CancelProductOrdersParams) {
     const sender = await this.getSignerAddress();
 
     return this.context.engineClient.cancelProductOrders({

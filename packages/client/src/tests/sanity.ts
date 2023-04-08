@@ -1,6 +1,6 @@
 import { Wallet } from 'ethers';
 import { toFixedPoint } from '@vertex-protocol/utils';
-import { OrderActionParams } from '../apis/market';
+import { PlaceOrderParams } from '../apis/market';
 import { getExpirationTimestamp } from '@vertex-protocol/contracts';
 import { getProductMetadataByProductId } from '../utils';
 import { getOrderNonce } from '@vertex-protocol/engine-client';
@@ -35,7 +35,7 @@ export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
   console.log('Placing order...');
   const orderNonce = getOrderNonce();
 
-  const orderParams: OrderActionParams['order'] = {
+  const orderParams: PlaceOrderParams['order'] = {
     subaccountName: 'default',
     expiration: getExpirationTimestamp('post_only', Date.now() / 1000 + 60),
     // Limit price
@@ -70,7 +70,7 @@ export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
   );
 
   console.log(`Order digest: ${digest}`);
-  await vertexClient.market.cancelOrder({
+  await vertexClient.market.cancelOrders({
     digests: [digest],
     productIds: [3],
     subaccountName: 'default',
