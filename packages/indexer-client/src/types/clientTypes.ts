@@ -211,3 +211,7 @@ export interface IndexerMatchEvent {
 }
 
 export type GetIndexerMatchEventsResponse = IndexerMatchEvent[];
+
+export interface GetIndexerQuotePriceResponse {
+  price: BigDecimal;
+}

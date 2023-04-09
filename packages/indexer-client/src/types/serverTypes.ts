@@ -90,6 +90,7 @@ export interface IndexerServerQueryRequestByType {
   events: IndexerServerEventsParams;
   orders: IndexerServerOrdersParams;
   matches: IndexerServerMatchEventsParams;
+  usdc_price: Record<string, never>;
 }
 
 export type IndexerServerQueryRequestType =
@@ -155,6 +156,10 @@ export interface IndexerServerMatchEventsResponse {
   txs: IndexerServerTx[];
 }
 
+export interface IndexerServerUsdcPriceResponse {
+  price_x18: string;
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   summary: IndexerServerSummaryResponse;
@@ -166,4 +171,5 @@ export interface IndexerServerQueryResponseByType {
   events: IndexerServerEventsResponse;
   orders: IndexerServerOrdersResponse;
   matches: IndexerServerMatchEventsResponse;
+  usdc_price: IndexerServerUsdcPriceResponse;
 }

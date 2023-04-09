@@ -14,6 +14,7 @@ import {
   GetIndexerPerpPricesResponse,
   GetIndexerProductSnapshotsParams,
   GetIndexerProductSnapshotsResponse,
+  GetIndexerQuotePriceResponse,
   GetIndexerSubaccountRewardsParams,
   GetIndexerSummaryParams,
   GetIndexerSummaryResponse,
@@ -327,6 +328,16 @@ export class IndexerBaseClient {
         timestamp: toBigDecimal(timestamp),
       };
     });
+  }
+
+  /**
+   * Gets quote (USDC) price in terms of USD
+   */
+  async getQuotePrice(): Promise<GetIndexerQuotePriceResponse> {
+    const baseResponse = await this.query('usdc_price', {});
+    return {
+      price: fromX18(baseResponse.price_x18),
+    };
   }
 
   protected async query<TRequestType extends IndexerServerQueryRequestType>(
