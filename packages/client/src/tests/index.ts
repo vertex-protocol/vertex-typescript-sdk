@@ -5,7 +5,7 @@ import { createVertexClient } from '../createVertexClient';
 
 async function main() {
   const signer = new Wallet(
-    '0xa0dff2b40838cef1ae86ddd11b8c2a34aa52d2d6f4355e3eb9abbaaf8eccee91',
+    'xxx',
     new ethers.providers.StaticJsonRpcProvider(
       'https://goerli-rollup.arbitrum.io/rpc',
       {
