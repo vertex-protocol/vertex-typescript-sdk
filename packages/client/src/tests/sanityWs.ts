@@ -6,6 +6,8 @@ import { getOrderNonce } from '@vertex-protocol/engine-client';
 import { VertexClient } from '../client';
 
 export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
+  const chainId = await signer.getChainId();
+
   const orderParams: PlaceOrderParams['order'] = {
     subaccountName: 'default',
     // `nowInSeconds` is exposed by the `@vertex-protocol/utils` package
@@ -31,6 +33,7 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
   const wsOrderSig = await vertexClient.context.engineClient.sign(
     'place_order',
     verifyingAddr,
+    chainId,
     wsOrder,
   );
 
@@ -46,9 +49,10 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
     `Place Order WS request: ${JSON.stringify(wsPlaceOrderReq, null, 2)}`,
   );
 
-  const wsOrderDigest = await vertexClient.context.engineClient.getOrderDigest(
+  const wsOrderDigest = vertexClient.context.engineClient.getOrderDigest(
     wsOrder,
     verifyingAddr,
+    chainId,
   );
 
   const wsCancelOrdersReq =

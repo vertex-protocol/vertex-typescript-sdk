@@ -28,6 +28,7 @@ async function main() {
     '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
     new ethers.providers.JsonRpcProvider(),
   );
+  const chainId = await signer.getChainId();
   const client = new EngineClient({
     url: 'http://localhost:80/api',
     signer,
@@ -103,13 +104,15 @@ async function main() {
   };
   const placeResult = await client.placeOrder({
     verifyingAddr: orderbookAddr,
+    chainId,
     productId,
     order,
     nonce: getOrderNonce(),
   });
-  const orderDigest = await client.getOrderDigest(
+  const orderDigest = client.getOrderDigest(
     placeResult.orderParams,
     orderbookAddr,
+    chainId,
   );
   console.log('Done placing spot order', placeResult);
   const subaccountOrders = await client.getSubaccountOrders({
@@ -168,6 +171,7 @@ async function main() {
     productIds: [productId],
     digests: [orderDigest],
     verifyingAddr: endpointAddr,
+    chainId,
   });
   console.log('Done cancelling order', cancelResult);
   const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
@@ -196,6 +200,7 @@ async function main() {
     quoteAmountLow: toFixedPoint(1000, 18),
     quoteAmountHigh: toFixedPoint(2000, 18),
     verifyingAddr: endpointAddr,
+    chainId,
   });
   console.log('Done minting spot lp', mintSpotLpResult);
   const mintPerpLpResult = await client.mintLp({
@@ -206,6 +211,7 @@ async function main() {
     quoteAmountLow: toFixedPoint(1000, 18),
     quoteAmountHigh: toFixedPoint(2000, 18),
     verifyingAddr: endpointAddr,
+    chainId,
   });
   console.log('Done minting perp lp', mintPerpLpResult);
   const subaccountInfoAfterMintingLp = await client.getSubaccountSummary({
@@ -222,6 +228,7 @@ async function main() {
     productId: 3,
     amount: toFixedPoint(1, 18),
     verifyingAddr: endpointAddr,
+    chainId,
   });
   console.log('Done burning spot lp', burnSpotLpResult);
   const burnPerpLpResult = await client.burnLp({
@@ -230,6 +237,7 @@ async function main() {
     productId: 4,
     amount: toFixedPoint(1, 6),
     verifyingAddr: endpointAddr,
+    chainId,
   });
   console.log('Done burning perp lp', burnPerpLpResult);
 
@@ -249,6 +257,7 @@ async function main() {
       productId,
       order,
       nonce: getOrderNonce(),
+      chainId,
     });
     console.log('Done placing order', placeResult);
 
@@ -267,6 +276,7 @@ async function main() {
     subaccountOwner: signer.address,
     productIds: [],
     verifyingAddr: endpointAddr,
+    chainId,
   });
   console.log('Cancel Product Orders', cancelProductOrdersRes);
 
@@ -289,6 +299,7 @@ async function main() {
     productId: 0,
     amount: toFixedPoint(4999, 6),
     verifyingAddr: endpointAddr,
+    chainId,
   });
   console.log('Done withdrawing collateral, result', withdrawResult);
   const subaccountInfoAtEnd = await client.getSubaccountSummary({

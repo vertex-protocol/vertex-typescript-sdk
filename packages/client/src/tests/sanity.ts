@@ -10,6 +10,8 @@ import { Endpoint__factory } from '@vertex-protocol/contracts';
 export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
   console.log('Running full sanity...');
 
+  const chainId = await signer.getChainId();
+
   console.log('Minting tokens...');
   const mintTx = await vertexClient.spot._mintMockERC20({
     // 10 tokens
@@ -65,9 +67,10 @@ export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
   const verifyingAddr =
     await vertexClient.context.engineClient.getOrderbookAddress(3);
 
-  const digest = await vertexClient.context.engineClient.getOrderDigest(
+  const digest = vertexClient.context.engineClient.getOrderDigest(
     orderResult.orderParams,
     verifyingAddr,
+    chainId,
   );
 
   console.log(`Order digest: ${digest}`);

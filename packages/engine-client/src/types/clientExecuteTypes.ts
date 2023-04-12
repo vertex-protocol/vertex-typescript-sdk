@@ -18,6 +18,7 @@ export type SignatureParams =
   | {
       // Endpoint address for all executes except order placement
       verifyingAddr: string;
+      chainId: number;
     }
   | {
       signature: string;
@@ -27,6 +28,10 @@ export type WithoutNonce<T extends { nonce: unknown }> = Omit<T, 'nonce'>;
 
 type WithSpotLeverage<T> = T & {
   spotLeverage?: boolean;
+};
+
+export type WithSignature<T> = T & {
+  signature: string;
 };
 
 export type WithBaseEngineExecuteParams<T> = T &

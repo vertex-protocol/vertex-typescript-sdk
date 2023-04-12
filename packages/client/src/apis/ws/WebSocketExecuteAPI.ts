@@ -1,4 +1,7 @@
-import { EngineExecuteRequestParamsByType } from '@vertex-protocol/engine-client';
+import {
+  EngineExecuteRequestParamsByType,
+  WithSignature,
+} from '@vertex-protocol/engine-client';
 import { BaseVertexAPI } from '../base';
 
 /**
@@ -59,8 +62,8 @@ export class WebSocketExecuteAPI extends BaseVertexAPI {
    * @param param PlaceOrder params.
    * @returns `place_order` execute message
    */
-  async buildPlaceOrderMessage(
-    params: EngineExecuteRequestParamsByType['place_order'],
+  buildPlaceOrderMessage(
+    params: WithSignature<EngineExecuteRequestParamsByType['place_order']>,
   ) {
     return this.context.engineClient.payloadBuilder.buildPlaceOrderPayload(
       params,
@@ -72,8 +75,8 @@ export class WebSocketExecuteAPI extends BaseVertexAPI {
    * @param param PlaceOrder params.
    * @returns `cancel_orders` execute message
    */
-  async buildCancelOrdersMessage(
-    params: EngineExecuteRequestParamsByType['cancel_orders'],
+  buildCancelOrdersMessage(
+    params: WithSignature<EngineExecuteRequestParamsByType['cancel_orders']>,
   ) {
     return this.context.engineClient.payloadBuilder.buildCancelOrdersPayload(
       params,
