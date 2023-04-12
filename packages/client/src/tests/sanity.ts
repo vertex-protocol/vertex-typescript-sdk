@@ -1,10 +1,11 @@
-import { Wallet } from 'ethers';
+import { Wallet, ethers } from 'ethers';
 import { toFixedPoint } from '@vertex-protocol/utils';
 import { PlaceOrderParams } from '../apis/market';
-import { getExpirationTimestamp } from '@vertex-protocol/contracts';
+import { Endpoint, getExpirationTimestamp } from '@vertex-protocol/contracts';
 import { getProductMetadataByProductId } from '../utils';
 import { getOrderNonce } from '@vertex-protocol/engine-client';
 import { VertexClient } from '../client';
+import { Endpoint__factory } from '@vertex-protocol/contracts';
 
 export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
   console.log('Running full sanity...');
@@ -128,4 +129,13 @@ export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
   const invalidProductId = 10000;
   console.log(getProductMetadataByProductId('testnet', invalidProductId));
   console.log(getProductMetadataByProductId('mainnet', invalidProductId));
+
+  const endpoint = await Endpoint__factory.connect(
+    vertexClient.context.contracts.endpoint.address,
+    vertexClient.context.signerOrProvider,
+  );
+
+  const nSubmissions = await endpoint.nSubmissions();
+
+  console.log(`nSubmissions: ${nSubmissions}`);
 }

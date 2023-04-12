@@ -316,7 +316,7 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+] as const;
 
 export class MockERC20__factory {
   static readonly abi = _abi;
