@@ -101,14 +101,10 @@ export class IndexerBaseClient {
         epoch: rewardEpoch.epoch,
         period: toBigDecimal(rewardEpoch.period),
         startTime: toBigDecimal(rewardEpoch.start_time),
-        subaccountMakerTokens: toBigDecimal(
-          rewardEpoch.subaccount_maker_tokens,
-        ),
-        subaccountTakerTokens: toBigDecimal(
-          rewardEpoch.subaccount_taker_tokens,
-        ),
-        totalEpochMakerTokens: toBigDecimal(rewardEpoch.epoch_maker_tokens),
-        totalEpochTakerTokens: toBigDecimal(rewardEpoch.epoch_maker_tokens),
+        subaccountMakerTokens: fromX18(rewardEpoch.subaccount_maker_tokens),
+        subaccountTakerTokens: fromX18(rewardEpoch.subaccount_taker_tokens),
+        totalEpochMakerTokens: fromX18(rewardEpoch.epoch_maker_tokens),
+        totalEpochTakerTokens: fromX18(rewardEpoch.epoch_maker_tokens),
         updateTime: toBigDecimal(rewardEpoch.update_time),
       };
     });
