@@ -42,10 +42,18 @@ export class EngineExecuteBuilder {
       if ('signature' in clientParams) {
         return clientParams.signature;
       }
+
+      const chainId = await (async () => {
+        if (clientParams.chainId) {
+          return clientParams.chainId;
+        }
+        return await this.engineClient.getSigningChainId();
+      })();
+
       return await this.engineClient.sign(
         'liquidate_subaccount',
         clientParams.verifyingAddr,
-        clientParams.chainId,
+        chainId,
         paramsWithNonce,
       );
     })();
@@ -80,10 +88,18 @@ export class EngineExecuteBuilder {
       if ('signature' in clientParams) {
         return clientParams.signature;
       }
+
+      const chainId = await (async () => {
+        if (clientParams.chainId) {
+          return clientParams.chainId;
+        }
+        return await this.engineClient.getSigningChainId();
+      })();
+
       return await this.engineClient.sign(
         'withdraw_collateral',
         clientParams.verifyingAddr,
-        clientParams.chainId,
+        chainId,
         paramsWithNonce,
       );
     })();
@@ -120,10 +136,18 @@ export class EngineExecuteBuilder {
       if ('signature' in clientParams) {
         return clientParams.signature;
       }
+
+      const chainId = await (async () => {
+        if (clientParams.chainId) {
+          return clientParams.chainId;
+        }
+        return await this.engineClient.getSigningChainId();
+      })();
+
       return await this.engineClient.sign(
         'mint_lp',
         clientParams.verifyingAddr,
-        clientParams.chainId,
+        chainId,
         paramsWithNonce,
       );
     })();
@@ -159,10 +183,18 @@ export class EngineExecuteBuilder {
       if ('signature' in clientParams) {
         return clientParams.signature;
       }
+
+      const chainId = await (async () => {
+        if (clientParams.chainId) {
+          return clientParams.chainId;
+        }
+        return await this.engineClient.getSigningChainId();
+      })();
+
       return await this.engineClient.sign(
         'burn_lp',
         clientParams.verifyingAddr,
-        clientParams.chainId,
+        chainId,
         paramsWithNonce,
       );
     })();
@@ -264,10 +296,18 @@ export class EngineExecuteBuilder {
       if ('signature' in clientParams) {
         return clientParams.signature;
       }
+
+      const chainId = await (async () => {
+        if (clientParams.chainId) {
+          return clientParams.chainId;
+        }
+        return await this.engineClient.getSigningChainId();
+      })();
+
       return await this.engineClient.sign(
         'cancel_product_orders',
         clientParams.verifyingAddr,
-        clientParams.chainId,
+        chainId,
         paramsWithNonce,
       );
     })();
