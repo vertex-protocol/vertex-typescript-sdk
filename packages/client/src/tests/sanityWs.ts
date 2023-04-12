@@ -37,13 +37,11 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
     wsOrder,
   );
 
-  const wsPlaceOrderReq = (
-    await vertexClient.ws.execute.buildPlaceOrderMessage({
-      productId: 1,
-      order: wsOrder,
-      signature: wsOrderSig,
-    })
-  ).payload;
+  const wsPlaceOrderReq = vertexClient.ws.execute.buildPlaceOrderMessage({
+    productId: 1,
+    order: wsOrder,
+    signature: wsOrderSig,
+  }).payload;
 
   console.log(
     `Place Order WS request: ${JSON.stringify(wsPlaceOrderReq, null, 2)}`,
@@ -55,14 +53,13 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
     chainId,
   );
 
-  const wsCancelOrdersReq =
-    await vertexClient.ws.execute.buildCancelOrdersMessage({
-      subaccountOwner: await signer.getAddress(),
-      subaccountName: 'default',
-      productIds: [1],
-      digests: [wsOrderDigest],
-      signature: '',
-    });
+  const wsCancelOrdersReq = vertexClient.ws.execute.buildCancelOrdersMessage({
+    subaccountOwner: await signer.getAddress(),
+    subaccountName: 'default',
+    productIds: [1],
+    digests: [wsOrderDigest],
+    signature: '',
+  });
 
   console.log(
     `Cancel Orders WS request: ${JSON.stringify(wsCancelOrdersReq, null, 2)}`,

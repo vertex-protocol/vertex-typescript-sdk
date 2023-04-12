@@ -71,7 +71,10 @@ export class EngineExecuteClient extends EngineBaseClient {
     })();
 
     const placeOrderPayload = this.payloadBuilder.buildPlaceOrderPayload({
-      ...params,
+      ...{
+        ...params,
+        order: orderWithNonce,
+      },
       signature,
     });
     return {
@@ -104,8 +107,8 @@ export class EngineExecuteClient extends EngineBaseClient {
 
     return this.execute(
       'cancel_orders',
-      await this.payloadBuilder.buildCancelOrdersPayload({
-        ...params,
+      this.payloadBuilder.buildCancelOrdersPayload({
+        ...paramsWithNonce,
         signature,
       }),
     );
