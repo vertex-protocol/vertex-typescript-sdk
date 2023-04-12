@@ -15,7 +15,7 @@ interface OrderDigestParams {
  *
  * @param params
  */
-export async function getOrderDigest(params: OrderDigestParams) {
+export function getOrderDigest(params: OrderDigestParams): string {
   const { chainId, order, verifyingAddr } = params;
   return ethers.utils._TypedDataEncoder.hash(
     getVertexEIP712Domain(verifyingAddr, chainId),

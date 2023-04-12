@@ -6,6 +6,8 @@ import { getOrderNonce } from '@vertex-protocol/engine-client';
 import { VertexClient } from '../client';
 
 export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
+  const chainId = await signer.getChainId();
+
   const orderParams: PlaceOrderParams['order'] = {
     subaccountName: 'default',
     // `nowInSeconds` is exposed by the `@vertex-protocol/utils` package
@@ -31,34 +33,33 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
   const wsOrderSig = await vertexClient.context.engineClient.sign(
     'place_order',
     verifyingAddr,
+    chainId,
     wsOrder,
   );
 
-  const wsPlaceOrderReq = (
-    await vertexClient.ws.execute.buildPlaceOrderMessage({
-      productId: 1,
-      order: wsOrder,
-      signature: wsOrderSig,
-    })
-  ).payload;
+  const wsPlaceOrderReq = vertexClient.ws.execute.buildPlaceOrderMessage({
+    productId: 1,
+    order: wsOrder,
+    signature: wsOrderSig,
+  }).payload;
 
   console.log(
     `Place Order WS request: ${JSON.stringify(wsPlaceOrderReq, null, 2)}`,
   );
 
-  const wsOrderDigest = await vertexClient.context.engineClient.getOrderDigest(
+  const wsOrderDigest = vertexClient.context.engineClient.getOrderDigest(
     wsOrder,
     verifyingAddr,
+    chainId,
   );
 
-  const wsCancelOrdersReq =
-    await vertexClient.ws.execute.buildCancelOrdersMessage({
-      subaccountOwner: await signer.getAddress(),
-      subaccountName: 'default',
-      productIds: [1],
-      digests: [wsOrderDigest],
-      signature: '',
-    });
+  const wsCancelOrdersReq = vertexClient.ws.execute.buildCancelOrdersMessage({
+    subaccountOwner: await signer.getAddress(),
+    subaccountName: 'default',
+    productIds: [1],
+    digests: [wsOrderDigest],
+    signature: '',
+  });
 
   console.log(
     `Cancel Orders WS request: ${JSON.stringify(wsCancelOrdersReq, null, 2)}`,

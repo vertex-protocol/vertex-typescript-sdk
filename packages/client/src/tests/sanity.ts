@@ -10,6 +10,8 @@ import { Endpoint__factory } from '@vertex-protocol/contracts';
 export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
   console.log('Running full sanity...');
 
+  const chainId = await signer.getChainId();
+
   console.log('Minting tokens...');
   const mintTx = await vertexClient.spot._mintMockERC20({
     // 10 tokens
@@ -40,7 +42,7 @@ export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
     subaccountName: 'default',
     expiration: getExpirationTimestamp('post_only', Date.now() / 1000 + 60),
     // Limit price
-    price: 1800,
+    price: 2000,
     amount: toFixedPoint(-3.5),
   };
 
@@ -65,17 +67,22 @@ export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
   const verifyingAddr =
     await vertexClient.context.engineClient.getOrderbookAddress(3);
 
-  const digest = await vertexClient.context.engineClient.getOrderDigest(
+  const digest = vertexClient.context.engineClient.getOrderDigest(
     orderResult.orderParams,
     verifyingAddr,
+    chainId,
   );
 
   console.log(`Order digest: ${digest}`);
+
+  console.log(`Cancelling order`);
   await vertexClient.market.cancelOrders({
     digests: [digest],
     productIds: [3],
     subaccountName: 'default',
   });
+
+  console.log(`Order cancelled`);
 
   // Fetches state from offchain sequencer
   await vertexClient.market.getAllEngineMarkets();

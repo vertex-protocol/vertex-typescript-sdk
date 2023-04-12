@@ -1,14 +1,11 @@
-import {
-  getOrderDigest,
-  getVertexEIP712Values,
-  OrderParams,
-} from '@vertex-protocol/contracts';
+import { getVertexEIP712Values } from '@vertex-protocol/contracts';
 import { hexlify } from 'ethers/lib/utils';
 import { EngineBaseClient } from './EngineBaseClient';
 import {
   EngineExecuteRequestParamsByType,
   EngineServerExecutePlaceOrderPayload,
   EngineServerExecuteRequestByType,
+  WithSignature,
 } from './types';
 import { getOrderNonce } from './utils';
 
@@ -48,6 +45,7 @@ export class EngineExecuteBuilder {
       return await this.engineClient.sign(
         'liquidate_subaccount',
         clientParams.verifyingAddr,
+        clientParams.chainId,
         paramsWithNonce,
       );
     })();
@@ -85,6 +83,7 @@ export class EngineExecuteBuilder {
       return await this.engineClient.sign(
         'withdraw_collateral',
         clientParams.verifyingAddr,
+        clientParams.chainId,
         paramsWithNonce,
       );
     })();
@@ -124,6 +123,7 @@ export class EngineExecuteBuilder {
       return await this.engineClient.sign(
         'mint_lp',
         clientParams.verifyingAddr,
+        clientParams.chainId,
         paramsWithNonce,
       );
     })();
@@ -162,6 +162,7 @@ export class EngineExecuteBuilder {
       return await this.engineClient.sign(
         'burn_lp',
         clientParams.verifyingAddr,
+        clientParams.chainId,
         paramsWithNonce,
       );
     })();
@@ -180,10 +181,12 @@ export class EngineExecuteBuilder {
    * @param clientParams Client PlaceOrder params.
    * @returns `place_order` payload
    */
-  async buildPlaceOrderPayload(
-    clientParams: EngineExecuteRequestParamsByType['place_order'],
-  ): Promise<EngineServerExecutePlaceOrderPayload> {
-    const nonce = await (async () => {
+  buildPlaceOrderPayload(
+    clientParams: WithSignature<
+      EngineExecuteRequestParamsByType['place_order']
+    >,
+  ): EngineServerExecutePlaceOrderPayload {
+    const nonce = (() => {
       if (clientParams.nonce) {
         return clientParams.nonce;
       }
@@ -196,16 +199,6 @@ export class EngineExecuteBuilder {
     };
 
     const order = getVertexEIP712Values('place_order', orderWithNonce);
-    const signature = await (async () => {
-      if ('signature' in clientParams) {
-        return clientParams.signature;
-      }
-      return await this.engineClient.sign(
-        'place_order',
-        clientParams.verifyingAddr,
-        orderWithNonce,
-      );
-    })();
 
     return {
       payload: {
@@ -214,7 +207,7 @@ export class EngineExecuteBuilder {
           ...order,
           sender: hexlify(order.sender),
         },
-        signature,
+        signature: clientParams.signature,
         spot_leverage: clientParams.spotLeverage ?? null,
       },
       orderParams: orderWithNonce,
@@ -226,10 +219,12 @@ export class EngineExecuteBuilder {
    * @param clientParams Client CancelOrders params.
    * @returns `cancel_orders` payload
    */
-  async buildCancelOrdersPayload(
-    clientParams: EngineExecuteRequestParamsByType['cancel_orders'],
-  ): Promise<EngineServerExecuteRequestByType['cancel_orders']> {
-    const nonce = await (async () => {
+  buildCancelOrdersPayload(
+    clientParams: WithSignature<
+      EngineExecuteRequestParamsByType['cancel_orders']
+    >,
+  ): EngineServerExecuteRequestByType['cancel_orders'] {
+    const nonce = (() => {
       if (clientParams.nonce) {
         return clientParams.nonce;
       }
@@ -238,23 +233,13 @@ export class EngineExecuteBuilder {
     const paramsWithNonce = { ...clientParams, nonce };
 
     const tx = getVertexEIP712Values('cancel_orders', paramsWithNonce);
-    const signature = await (async () => {
-      if ('signature' in clientParams) {
-        return clientParams.signature;
-      }
-      return await this.engineClient.sign(
-        'cancel_orders',
-        clientParams.verifyingAddr,
-        paramsWithNonce,
-      );
-    })();
 
     return {
       tx: {
         ...tx,
         sender: hexlify(tx.sender),
       },
-      signature,
+      signature: clientParams.signature,
     };
   }
 
@@ -282,6 +267,7 @@ export class EngineExecuteBuilder {
       return await this.engineClient.sign(
         'cancel_product_orders',
         clientParams.verifyingAddr,
+        clientParams.chainId,
         paramsWithNonce,
       );
     })();

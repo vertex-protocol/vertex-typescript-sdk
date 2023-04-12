@@ -99,6 +99,7 @@ export interface ValidateSignedEngineOrderParams {
 export interface ValidateEngineOrderParams {
   productId: number;
   orderbookAddr: string;
+  chainId: number;
   order: OrderParams;
 }
 

@@ -173,13 +173,14 @@ export class EngineBaseClient {
   public async sign<T extends SignableRequestType>(
     requestType: T,
     verifyingContract: string,
+    chainId: number,
     params: SignableRequestTypeToParams[T],
   ) {
     if (this.opts.signer == null) {
       throw Error('No signer provided');
     }
     return getSignedTransactionRequest({
-      chainId: await this.getSigningChainId(),
+      chainId,
       requestParams: params,
       requestType,
       signer: this.opts.signer,

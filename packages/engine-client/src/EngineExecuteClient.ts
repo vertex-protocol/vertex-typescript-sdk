@@ -5,6 +5,7 @@ import {
 import { EngineExecuteBuilder } from './EngineExecuteBuilder';
 import { EngineBaseClient, EngineClientOpts } from './EngineBaseClient';
 import { getOrderDigest, OrderParams } from '@vertex-protocol/contracts';
+import { getOrderNonce } from './utils';
 
 export class EngineExecuteClient extends EngineBaseClient {
   readonly payloadBuilder: EngineExecuteBuilder;
@@ -49,9 +50,33 @@ export class EngineExecuteClient extends EngineBaseClient {
   async placeOrder(
     params: EngineExecuteRequestParamsByType['place_order'],
   ): Promise<EngineExecutePlaceOrderResult> {
-    const placeOrderPayload = await this.payloadBuilder.buildPlaceOrderPayload(
-      params,
-    );
+    const nonce = (() => {
+      if (params.nonce) {
+        return params.nonce;
+      }
+      return getOrderNonce();
+    })();
+    const orderWithNonce = { ...params.order, nonce };
+
+    const signature = await (async () => {
+      if ('signature' in params) {
+        return params.signature;
+      }
+      return await this.sign(
+        'place_order',
+        params.verifyingAddr,
+        params.chainId,
+        orderWithNonce,
+      );
+    })();
+
+    const placeOrderPayload = this.payloadBuilder.buildPlaceOrderPayload({
+      ...{
+        ...params,
+        order: orderWithNonce,
+      },
+      signature,
+    });
     return {
       ...(await this.execute('place_order', placeOrderPayload.payload)),
       orderParams: placeOrderPayload.orderParams,
@@ -61,9 +86,31 @@ export class EngineExecuteClient extends EngineBaseClient {
   async cancelOrders(
     params: EngineExecuteRequestParamsByType['cancel_orders'],
   ) {
+    const nonce = (() => {
+      if (params.nonce) {
+        return params.nonce;
+      }
+      return getOrderNonce();
+    })();
+    const paramsWithNonce = { ...params, nonce };
+    const signature = await (async () => {
+      if ('signature' in params) {
+        return params.signature;
+      }
+      return await this.sign(
+        'cancel_orders',
+        params.verifyingAddr,
+        params.chainId,
+        paramsWithNonce,
+      );
+    })();
+
     return this.execute(
       'cancel_orders',
-      await this.payloadBuilder.buildCancelOrdersPayload(params),
+      this.payloadBuilder.buildCancelOrdersPayload({
+        ...paramsWithNonce,
+        signature,
+      }),
     );
   }
 
@@ -76,12 +123,13 @@ export class EngineExecuteClient extends EngineBaseClient {
     );
   }
 
-  async getOrderDigest(
+  getOrderDigest(
     order: OrderParams,
     verifyingAddr: string,
-  ): Promise<string> {
-    return await getOrderDigest({
-      chainId: await this.getSigningChainId(),
+    chainId: number,
+  ): string {
+    return getOrderDigest({
+      chainId,
       order,
       verifyingAddr,
     });

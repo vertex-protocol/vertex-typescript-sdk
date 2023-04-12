@@ -192,6 +192,7 @@ export class EngineQueryClient extends EngineBaseClient {
       signature: await this.sign(
         'place_order',
         params.orderbookAddr,
+        params.chainId,
         params.order,
       ),
     };
