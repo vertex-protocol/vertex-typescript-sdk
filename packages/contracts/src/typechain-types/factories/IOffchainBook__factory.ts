@@ -509,7 +509,7 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+] as const;
 
 export class IOffchainBook__factory {
   static readonly abi = _abi;

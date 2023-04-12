@@ -619,6 +619,31 @@
   {
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "bytes32[]",
+            "name": "subaccounts",
+            "type": "bytes32[]"
+          },
+          {
+            "internalType": "int128[]",
+            "name": "amounts",
+            "type": "int128[]"
+          }
+        ],
+        "internalType": "struct IEndpoint.Rebate",
+        "name": "tx",
+        "type": "tuple"
+      }
+    ],
+    "name": "rebate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "book",
         "type": "address"

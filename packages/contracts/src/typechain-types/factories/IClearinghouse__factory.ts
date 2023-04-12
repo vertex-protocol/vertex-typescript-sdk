@@ -630,6 +630,31 @@ const _abi = [
   {
     inputs: [
       {
+        components: [
+          {
+            internalType: "bytes32[]",
+            name: "subaccounts",
+            type: "bytes32[]",
+          },
+          {
+            internalType: "int128[]",
+            name: "amounts",
+            type: "int128[]",
+          },
+        ],
+        internalType: "struct IEndpoint.Rebate",
+        name: "tx",
+        type: "tuple",
+      },
+    ],
+    name: "rebate",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "book",
         type: "address",
@@ -743,7 +768,7 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+] as const;
 
 export class IClearinghouse__factory {
   static readonly abi = _abi;

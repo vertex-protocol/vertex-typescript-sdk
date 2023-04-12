@@ -120,6 +120,16 @@ export declare namespace IEndpoint {
     nonce: BigNumber;
   };
 
+  export type RebateStruct = {
+    subaccounts: PromiseOrValue<BytesLike>[];
+    amounts: PromiseOrValue<BigNumberish>[];
+  };
+
+  export type RebateStructOutput = [string[], BigNumber[]] & {
+    subaccounts: string[];
+    amounts: BigNumber[];
+  };
+
   export type SettlePnlStruct = {
     subaccounts: PromiseOrValue<BytesLike>[];
     productIds: PromiseOrValue<BigNumberish>[];
@@ -231,6 +241,7 @@ export interface IClearinghouseInterface extends utils.Interface {
     "liquidateSubaccount((bytes32,bytes32,uint8,uint32,int128,uint64))": FunctionFragment;
     "mintLp((bytes32,uint32,uint128,uint128,uint128,uint64))": FunctionFragment;
     "modifyProductConfig(uint32,(int32,int32,int32,int32,int32))": FunctionFragment;
+    "rebate((bytes32[],int128[]))": FunctionFragment;
     "registerProductForId(address,(int32,int32,int32,int32,int32),uint32)": FunctionFragment;
     "settlePnl((bytes32[],uint256[]))": FunctionFragment;
     "withdrawCollateral((bytes32,uint32,uint128,uint64))": FunctionFragment;
@@ -259,6 +270,7 @@ export interface IClearinghouseInterface extends utils.Interface {
       | "liquidateSubaccount"
       | "mintLp"
       | "modifyProductConfig"
+      | "rebate"
       | "registerProductForId"
       | "settlePnl"
       | "withdrawCollateral"
@@ -346,6 +358,10 @@ export interface IClearinghouseInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, IClearinghouseState.RiskStoreStruct]
   ): string;
   encodeFunctionData(
+    functionFragment: "rebate",
+    values: [IEndpoint.RebateStruct]
+  ): string;
+  encodeFunctionData(
     functionFragment: "registerProductForId",
     values: [
       PromiseOrValue<string>,
@@ -425,6 +441,7 @@ export interface IClearinghouseInterface extends utils.Interface {
     functionFragment: "modifyProductConfig",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "rebate", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "registerProductForId",
     data: BytesLike
@@ -608,6 +625,11 @@ export interface IClearinghouse extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    rebate(
+      tx: IEndpoint.RebateStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     registerProductForId(
       book: PromiseOrValue<string>,
       riskStore: IClearinghouseState.RiskStoreStruct,
@@ -717,6 +739,11 @@ export interface IClearinghouse extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  rebate(
+    tx: IEndpoint.RebateStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   registerProductForId(
     book: PromiseOrValue<string>,
     riskStore: IClearinghouseState.RiskStoreStruct,
@@ -821,6 +848,11 @@ export interface IClearinghouse extends BaseContract {
     modifyProductConfig(
       productId: PromiseOrValue<BigNumberish>,
       riskStore: IClearinghouseState.RiskStoreStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    rebate(
+      tx: IEndpoint.RebateStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -975,6 +1007,11 @@ export interface IClearinghouse extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    rebate(
+      tx: IEndpoint.RebateStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     registerProductForId(
       book: PromiseOrValue<string>,
       riskStore: IClearinghouseState.RiskStoreStruct,
@@ -1082,6 +1119,11 @@ export interface IClearinghouse extends BaseContract {
     modifyProductConfig(
       productId: PromiseOrValue<BigNumberish>,
       riskStore: IClearinghouseState.RiskStoreStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    rebate(
+      tx: IEndpoint.RebateStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
