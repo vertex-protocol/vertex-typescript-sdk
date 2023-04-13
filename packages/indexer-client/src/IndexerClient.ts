@@ -1,3 +1,9 @@
+import {
+  ProductEngineType,
+  QUOTE_PRODUCT_ID,
+} from '@vertex-protocol/contracts';
+import { toBigDecimal } from '@vertex-protocol/utils';
+
 import { IndexerBaseClient } from './IndexerBaseClient';
 import {
   BaseIndexerPaginatedEvent,
@@ -19,11 +25,7 @@ import {
   IndexerSettlementEvent,
   PaginatedIndexerEventsResponse,
 } from './types';
-import {
-  ProductEngineType,
-  QUOTE_PRODUCT_ID,
-} from '@vertex-protocol/contracts';
-import { toBigDecimal } from '@vertex-protocol/utils';
+import { CollateralEventType } from './types/collateralEventType';
 
 export class IndexerClient extends IndexerBaseClient {
   async getPaginatedSubaccountMatchEvents(
@@ -132,6 +134,7 @@ export class IndexerClient extends IndexerBaseClient {
   }
 
   async getPaginatedSubaccountCollateralEvents(
+    eventTypes: CollateralEventType[],
     params: GetIndexerSubaccountCollateralEventsParams,
   ): Promise<GetIndexerSubaccountCollateralEventsResponse> {
     const {
@@ -144,7 +147,7 @@ export class IndexerClient extends IndexerBaseClient {
     const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
-      eventTypes: ['deposit_collateral', 'withdraw_collateral'],
+      eventTypes,
       limit: {
         type: 'txs',
         value: limit,

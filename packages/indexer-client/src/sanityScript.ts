@@ -1,8 +1,9 @@
-import { IndexerClient } from './IndexerClient';
-import { INDEXER_CLIENT_ENDPOINTS } from './endpoints';
-import { CandlestickPeriod } from './types';
 import { Subaccount } from '@vertex-protocol/contracts';
 import { nowInSeconds, toPrintableObject } from '@vertex-protocol/utils';
+
+import { INDEXER_CLIENT_ENDPOINTS } from './endpoints';
+import { IndexerClient } from './IndexerClient';
+import { CandlestickPeriod } from './types';
 
 async function main() {
   const client = new IndexerClient({
@@ -95,14 +96,42 @@ async function main() {
 
   prettyPrint('Paginated settlement events', settlementEvents);
 
-  const collateralEvents = await client.getPaginatedSubaccountCollateralEvents({
-    limit: 1,
-    startCursor: '507204',
-    subaccountName: subaccount.subaccountName,
-    subaccountOwner: subaccount.subaccountOwner,
-  });
+  const allCollateralEvents =
+    await client.getPaginatedSubaccountCollateralEvents(
+      ['deposit_collateral', 'withdraw_collateral'],
+      {
+        limit: 1,
+        startCursor: '507204',
+        subaccountName: subaccount.subaccountName,
+        subaccountOwner: subaccount.subaccountOwner,
+      },
+    );
 
-  prettyPrint('Paginated collateral events', collateralEvents);
+  prettyPrint('Paginated deposit events', allCollateralEvents);
+
+  const depositEvents = await client.getPaginatedSubaccountCollateralEvents(
+    ['deposit_collateral'],
+    {
+      limit: 1,
+      startCursor: '507204',
+      subaccountName: subaccount.subaccountName,
+      subaccountOwner: subaccount.subaccountOwner,
+    },
+  );
+
+  prettyPrint('Paginated deposit events', depositEvents);
+
+  const withdrawEvents = await client.getPaginatedSubaccountCollateralEvents(
+    ['withdraw_collateral'],
+    {
+      limit: 1,
+      startCursor: '507204',
+      subaccountName: subaccount.subaccountName,
+      subaccountOwner: subaccount.subaccountOwner,
+    },
+  );
+
+  prettyPrint('Paginated withdrawal events', withdrawEvents);
 
   const lpEvents = await client.getPaginatedSubaccountLpEvents({
     limit: 1,
