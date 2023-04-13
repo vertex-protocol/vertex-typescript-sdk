@@ -134,7 +134,6 @@ export class IndexerClient extends IndexerBaseClient {
   }
 
   async getPaginatedSubaccountCollateralEvents(
-    eventTypes: CollateralEventType[],
     params: GetIndexerSubaccountCollateralEventsParams,
   ): Promise<GetIndexerSubaccountCollateralEventsResponse> {
     const {
@@ -147,7 +146,10 @@ export class IndexerClient extends IndexerBaseClient {
     const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
-      eventTypes,
+      eventTypes: params.eventTypes || [
+        'deposit_collateral',
+        'withdraw_collateral',
+      ],
       limit: {
         type: 'txs',
         value: limit,
