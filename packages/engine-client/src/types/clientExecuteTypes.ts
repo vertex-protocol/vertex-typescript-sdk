@@ -18,7 +18,7 @@ export type SignatureParams =
   | {
       // Endpoint address for all executes except order placement
       verifyingAddr: string;
-      chainId: number;
+      chainId?: number;
     }
   | {
       signature: string;

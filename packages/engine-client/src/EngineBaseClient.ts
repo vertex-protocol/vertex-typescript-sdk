@@ -162,6 +162,13 @@ export class EngineBaseClient {
     return this.opts.signer.getChainId();
   }
 
+  async getChainIdIfNeeded(params: { chainId?: number }): Promise<number> {
+    if (params.chainId) {
+      return params.chainId;
+    }
+    return await this.getSigningChainId();
+  }
+
   /**
    * Signs a given request with the signer provided to the engine
    *
