@@ -1,7 +1,7 @@
 import {
+  Endpoint__factory,
   FQuerier__factory,
   IClearinghouse__factory,
-  IEndpoint__factory,
   IPerpEngine__factory,
   ISpotEngine__factory,
   ProductEngineType,
@@ -135,7 +135,7 @@ export async function createClientContext(
 
   const endpointContractAddress =
     contracts.endpointAddress ?? (await clearinghouse.getEndpoint());
-  const endpoint = await IEndpoint__factory.connect(
+  const endpoint = await Endpoint__factory.connect(
     endpointContractAddress,
     signerOrProvider,
   );
