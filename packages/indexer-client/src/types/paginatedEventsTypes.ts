@@ -6,6 +6,7 @@ import {
   IndexerMatchEvent,
   IndexerOrder,
 } from './clientTypes';
+import { CollateralEventType } from './collateralEventType';
 
 export interface IndexerPaginationParams {
   limit: number;
@@ -34,7 +35,9 @@ export interface PaginatedIndexerEventsResponse<
 }
 
 export type GetIndexerSubaccountCollateralEventsParams =
-  BaseSubaccountPaginationParams;
+  BaseSubaccountPaginationParams & {
+    eventTypes?: CollateralEventType[];
+  };
 
 export interface IndexerCollateralEvent extends BaseIndexerPaginatedEvent {
   // Positive for deposits, negative for withdrawals
