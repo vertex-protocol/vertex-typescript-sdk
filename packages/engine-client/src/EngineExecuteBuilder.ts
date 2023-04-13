@@ -43,12 +43,7 @@ export class EngineExecuteBuilder {
         return clientParams.signature;
       }
 
-      const chainId = await (async () => {
-        if (clientParams.chainId) {
-          return clientParams.chainId;
-        }
-        return await this.engineClient.getSigningChainId();
-      })();
+      const chainId = await this.engineClient.getChainIdIfNeeded(clientParams);
 
       return await this.engineClient.sign(
         'liquidate_subaccount',
@@ -89,12 +84,7 @@ export class EngineExecuteBuilder {
         return clientParams.signature;
       }
 
-      const chainId = await (async () => {
-        if (clientParams.chainId) {
-          return clientParams.chainId;
-        }
-        return await this.engineClient.getSigningChainId();
-      })();
+      const chainId = await this.engineClient.getChainIdIfNeeded(clientParams);
 
       return await this.engineClient.sign(
         'withdraw_collateral',
@@ -137,12 +127,7 @@ export class EngineExecuteBuilder {
         return clientParams.signature;
       }
 
-      const chainId = await (async () => {
-        if (clientParams.chainId) {
-          return clientParams.chainId;
-        }
-        return await this.engineClient.getSigningChainId();
-      })();
+      const chainId = await this.engineClient.getChainIdIfNeeded(clientParams);
 
       return await this.engineClient.sign(
         'mint_lp',
@@ -184,12 +169,7 @@ export class EngineExecuteBuilder {
         return clientParams.signature;
       }
 
-      const chainId = await (async () => {
-        if (clientParams.chainId) {
-          return clientParams.chainId;
-        }
-        return await this.engineClient.getSigningChainId();
-      })();
+      const chainId = await this.engineClient.getChainIdIfNeeded(clientParams);
 
       return await this.engineClient.sign(
         'burn_lp',
@@ -297,12 +277,7 @@ export class EngineExecuteBuilder {
         return clientParams.signature;
       }
 
-      const chainId = await (async () => {
-        if (clientParams.chainId) {
-          return clientParams.chainId;
-        }
-        return await this.engineClient.getSigningChainId();
-      })();
+      const chainId = await this.engineClient.getChainIdIfNeeded(clientParams);
 
       return await this.engineClient.sign(
         'cancel_product_orders',

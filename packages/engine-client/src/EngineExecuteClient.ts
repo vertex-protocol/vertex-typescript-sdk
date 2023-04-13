@@ -63,12 +63,7 @@ export class EngineExecuteClient extends EngineBaseClient {
         return params.signature;
       }
 
-      const chainId = await (async () => {
-        if (params.chainId) {
-          return params.chainId;
-        }
-        return await this.getSigningChainId();
-      })();
+      const chainId = await this.getChainIdIfNeeded(params);
 
       return await this.sign(
         'place_order',
@@ -106,13 +101,7 @@ export class EngineExecuteClient extends EngineBaseClient {
         return params.signature;
       }
 
-      const chainId = await (async () => {
-        if (params.chainId) {
-          return params.chainId;
-        }
-        return await this.getSigningChainId();
-      })();
-
+      const chainId = await this.getChainIdIfNeeded(params);
       return await this.sign(
         'cancel_orders',
         params.verifyingAddr,
