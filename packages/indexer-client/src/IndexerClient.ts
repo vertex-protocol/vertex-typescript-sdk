@@ -134,7 +134,7 @@ export class IndexerClient extends IndexerBaseClient {
   }
 
   async getPaginatedSubaccountCollateralEvents(
-    eventType: CollateralEventType[],
+    eventTypes: CollateralEventType[],
     params: GetIndexerSubaccountCollateralEventsParams,
   ): Promise<GetIndexerSubaccountCollateralEventsResponse> {
     const {
@@ -147,7 +147,7 @@ export class IndexerClient extends IndexerBaseClient {
     const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
-      eventTypes: eventType,
+      eventTypes,
       limit: {
         type: 'txs',
         value: limit,
