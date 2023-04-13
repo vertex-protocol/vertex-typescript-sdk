@@ -25,6 +25,7 @@ import {
   IndexerSettlementEvent,
   PaginatedIndexerEventsResponse,
 } from './types';
+import { CollateralEventType } from './types/collateralEventType';
 
 export class IndexerClient extends IndexerBaseClient {
   async getPaginatedSubaccountMatchEvents(
@@ -132,7 +133,8 @@ export class IndexerClient extends IndexerBaseClient {
     return this.getPaginationResponse(events, requestedLimit);
   }
 
-  async getPaginatedSubaccountDepositEvents(
+  async getPaginatedSubaccountCollateralEvents(
+    eventType: CollateralEventType[],
     params: GetIndexerSubaccountCollateralEventsParams,
   ): Promise<GetIndexerSubaccountCollateralEventsResponse> {
     const {
@@ -145,46 +147,7 @@ export class IndexerClient extends IndexerBaseClient {
     const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
-      eventTypes: ['deposit_collateral'],
-      limit: {
-        type: 'txs',
-        value: limit,
-      },
-      subaccount: { subaccountName, subaccountOwner },
-    });
-
-    const events = baseResponse.map((event): IndexerCollateralEvent => {
-      if (event.state.type !== ProductEngineType.SPOT) {
-        throw Error('Incorrect event state for collateral event');
-      }
-
-      return {
-        timestamp: event.timestamp,
-        submissionIndex: event.submissionIndex,
-        snapshot: event.state,
-        amount: event.state.postBalance.amount.minus(
-          event.state.preBalance.amount,
-        ),
-        newAmount: event.state.postBalance.amount,
-      };
-    });
-
-    return this.getPaginationResponse(events, requestedLimit);
-  }
-  async getPaginatedSubaccountWithdrawEvents(
-    params: GetIndexerSubaccountCollateralEventsParams,
-  ): Promise<GetIndexerSubaccountCollateralEventsResponse> {
-    const {
-      startCursor,
-      limit: requestedLimit,
-      subaccountName,
-      subaccountOwner,
-    } = params;
-
-    const limit = requestedLimit + 1;
-    const baseResponse = await this.getEvents({
-      startCursor,
-      eventTypes: ['withdraw_collateral'],
+      eventTypes: eventType,
       limit: {
         type: 'txs',
         value: limit,

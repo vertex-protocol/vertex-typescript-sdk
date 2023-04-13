@@ -96,21 +96,40 @@ async function main() {
 
   prettyPrint('Paginated settlement events', settlementEvents);
 
-  const depositEvents = await client.getPaginatedSubaccountDepositEvents({
-    limit: 1,
-    startCursor: '507204',
-    subaccountName: subaccount.subaccountName,
-    subaccountOwner: subaccount.subaccountOwner,
-  });
+  const allCollateralEvents =
+    await client.getPaginatedSubaccountCollateralEvents(
+      ['deposit_collateral', 'withdraw_collateral'],
+      {
+        limit: 1,
+        startCursor: '507204',
+        subaccountName: subaccount.subaccountName,
+        subaccountOwner: subaccount.subaccountOwner,
+      },
+    );
+
+  prettyPrint('Paginated deposit events', allCollateralEvents);
+
+  const depositEvents = await client.getPaginatedSubaccountCollateralEvents(
+    ['deposit_collateral'],
+    {
+      limit: 1,
+      startCursor: '507204',
+      subaccountName: subaccount.subaccountName,
+      subaccountOwner: subaccount.subaccountOwner,
+    },
+  );
 
   prettyPrint('Paginated deposit events', depositEvents);
 
-  const withdrawEvents = await client.getPaginatedSubaccountWithdrawEvents({
-    limit: 1,
-    startCursor: '507204',
-    subaccountName: subaccount.subaccountName,
-    subaccountOwner: subaccount.subaccountOwner,
-  });
+  const withdrawEvents = await client.getPaginatedSubaccountCollateralEvents(
+    ['withdraw_collateral'],
+    {
+      limit: 1,
+      startCursor: '507204',
+      subaccountName: subaccount.subaccountName,
+      subaccountOwner: subaccount.subaccountOwner,
+    },
+  );
 
   prettyPrint('Paginated withdrawal events', withdrawEvents);
 
