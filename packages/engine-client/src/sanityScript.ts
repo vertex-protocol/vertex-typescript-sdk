@@ -1,8 +1,8 @@
 import { BigNumber, ethers, Wallet } from 'ethers';
 import {
   depositCollateral,
+  Endpoint__factory,
   IClearinghouse__factory,
-  IEndpoint__factory,
   MockERC20__factory,
   subaccountFromBytes32,
   subaccountFromHex,
@@ -41,7 +41,7 @@ async function main() {
     signer,
   );
   const endpointAddr = await clearinghouse.getEndpoint();
-  const endpoint = await IEndpoint__factory.connect(endpointAddr, signer);
+  const endpoint = await Endpoint__factory.connect(endpointAddr, signer);
   await (await quote.mint(signer.address, toFixedPoint(10000, 6))).wait();
   await (await quote.approve(endpointAddr, toFixedPoint(10000, 6))).wait();
   // Deposit collateral
