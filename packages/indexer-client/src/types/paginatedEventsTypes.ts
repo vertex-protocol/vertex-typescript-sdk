@@ -34,10 +34,10 @@ export interface PaginatedIndexerEventsResponse<
   events: T[];
 }
 
-export type GetIndexerSubaccountCollateralEventsParams =
-  BaseSubaccountPaginationParams & {
-    eventTypes?: CollateralEventType[];
-  };
+export interface GetIndexerSubaccountCollateralEventsParams
+  extends BaseSubaccountPaginationParams {
+  eventTypes?: CollateralEventType[];
+}
 
 export interface IndexerCollateralEvent extends BaseIndexerPaginatedEvent {
   // Positive for deposits, negative for withdrawals

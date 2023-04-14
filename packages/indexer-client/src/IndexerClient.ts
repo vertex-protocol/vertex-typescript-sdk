@@ -146,7 +146,7 @@ export class IndexerClient extends IndexerBaseClient {
     const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
-      eventTypes: params.eventTypes || [
+      eventTypes: params.eventTypes ?? [
         'deposit_collateral',
         'withdraw_collateral',
       ],
