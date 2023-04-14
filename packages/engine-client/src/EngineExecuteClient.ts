@@ -51,7 +51,7 @@ export class EngineExecuteClient extends EngineBaseClient {
     params: EngineExecuteRequestParamsByType['place_order'],
   ): Promise<EngineExecutePlaceOrderResult> {
     const nonce = (() => {
-      if (params.nonce !== undefined) {
+      if (params.nonce) {
         return params.nonce;
       }
       return getOrderNonce();
