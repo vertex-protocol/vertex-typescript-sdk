@@ -73,9 +73,10 @@ export class EngineExecuteClient extends EngineBaseClient {
       );
     })();
 
+    const clientParams = { ...params, nonce };
     const placeOrderPayload = this.payloadBuilder.buildPlaceOrderPayload({
       ...{
-        ...params,
+        ...clientParams,
         order: orderWithNonce,
       },
       signature,
