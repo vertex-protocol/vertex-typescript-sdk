@@ -1,6 +1,14 @@
 import { SubaccountSummaryResponse } from '../query';
-import { ProductEngineType } from '../common';
-import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
+import {
+  BalanceWithProduct,
+  ProductEngineType,
+  QUOTE_PRODUCT_ID,
+} from '../common';
+import {
+  BigDecimal,
+  sumBigDecimalBy,
+  toBigDecimal,
+} from '@vertex-protocol/utils';
 import {
   calcLpBalanceValue,
   calcPerpBalanceNotionalValue,
@@ -73,21 +81,23 @@ export function calcTotalPortfolioValues(
 }
 
 /**
- * Leverage calculated as (assets + liabilities) / (assets - liabilities), using initial health
+ * Leverage calculated as sum(abs(unweighted health for non-quote balances)) / unweighted health
  *
  * @param summary
  */
 export function calcSubaccountLeverage(summary: SubaccountSummaryResponse) {
-  const unweightedHealth = summary.health.unweighted;
-  const numerator = unweightedHealth.assets.plus(unweightedHealth.liabilities);
-  if (numerator.isZero()) {
+  const unweightedHealth = summary.health.unweighted.health;
+  if (unweightedHealth.isZero()) {
     return toBigDecimal(0);
   }
-  const denom = unweightedHealth.assets.minus(unweightedHealth.liabilities);
-  if (denom.isLessThanOrEqualTo(0)) {
-    return toBigDecimal('Infinity');
-  }
-  return numerator.dividedBy(denom);
+
+  const numerator = sumBigDecimalBy(summary.balances, (balance) => {
+    if (balance.productId === QUOTE_PRODUCT_ID) {
+      return toBigDecimal(0);
+    }
+    return balance.amount.abs().times(balance.oraclePrice);
+  });
+  return numerator.dividedBy(unweightedHealth);
 }
 
 export interface MarginUsageFractions {
@@ -101,7 +111,7 @@ export interface MarginUsageFractions {
  *
  * @param summary
  */
-export function calcMarginUsageFractions(
+export function calcSubaccountMarginUsageFractions(
   summary: SubaccountSummaryResponse,
 ): MarginUsageFractions {
   const initialMarginUsage = summary.health.initial.assets.eq(0)
@@ -114,6 +124,34 @@ export function calcMarginUsageFractions(
     : summary.health.maintenance.liabilities
         .abs()
         .div(summary.health.maintenance.assets);
+
+  return {
+    initial: initialMarginUsage,
+    maintenance: maintenanceMarginUsage,
+  };
+}
+
+/**
+ * Calculates margin usage fractions for a single balance. The margin approximately consumed by a single balance
+ * is given by max(0, balance.healthContribution) using either initial/maintenance
+ *
+ * @param balance
+ * @param summary
+ */
+export function calcBalanceMarginUsageFractions(
+  balance: BalanceWithProduct,
+  summary: SubaccountSummaryResponse,
+): MarginUsageFractions {
+  const initialMarginUsage = summary.health.initial.assets.eq(0)
+    ? toBigDecimal(0)
+    : BigDecimal.max(0, balance.healthContributions.initial).div(
+        summary.health.initial.assets,
+      );
+  const maintenanceMarginUsage = summary.health.maintenance.assets.eq(0)
+    ? toBigDecimal(0)
+    : BigDecimal.max(0, balance.healthContributions.maintenance).div(
+        summary.health.maintenance.assets,
+      );
 
   return {
     initial: initialMarginUsage,

@@ -8,6 +8,7 @@ import {
 } from '../types';
 import { fromX18, toBigDecimal, toEthersBN } from '@vertex-protocol/utils';
 import {
+  BalanceHealthContributions,
   calcTotalBorrowed,
   calcTotalDeposited,
   PerpMarket,
@@ -120,5 +121,15 @@ export function mapEngineServerPerpProduct(
       totalLpQuoteAmount: toBigDecimal(product.lp_state.quote),
       totalLpSupply: toBigDecimal(product.lp_state.supply),
     },
+  };
+}
+
+export function mapEngineServerBalanceHealthContributions(
+  healthContributionsForBalance: string[],
+): BalanceHealthContributions {
+  return {
+    initial: toBigDecimal(healthContributionsForBalance[0]),
+    maintenance: toBigDecimal(healthContributionsForBalance[1]),
+    unweighted: toBigDecimal(healthContributionsForBalance[2]),
   };
 }

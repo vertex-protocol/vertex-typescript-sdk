@@ -13,17 +13,21 @@ import {
 import { CandlestickPeriod } from './CandlestickPeriod';
 import { IndexerEventType } from './IndexerEventType';
 
+export type IndexerSpotBalance = Omit<SpotBalance, 'healthContributions'>;
+
+export type IndexerPerpBalance = Omit<PerpBalance, 'healthContributions'>;
+
 export interface IndexerEventSpotStateSnapshot {
   type: ProductEngineType.SPOT;
-  preBalance: SpotBalance;
-  postBalance: SpotBalance;
+  preBalance: IndexerSpotBalance;
+  postBalance: IndexerSpotBalance;
   market: SpotMarket;
 }
 
 export interface IndexerEventPerpStateSnapshot {
   type: ProductEngineType.PERP;
-  preBalance: PerpBalance;
-  postBalance: PerpBalance;
+  preBalance: IndexerPerpBalance;
+  postBalance: IndexerPerpBalance;
   market: PerpMarket;
 }
 

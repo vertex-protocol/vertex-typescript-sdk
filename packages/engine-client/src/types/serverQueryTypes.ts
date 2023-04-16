@@ -148,6 +148,8 @@ export interface EngineServerSubaccountInfoResponse {
     assets: string;
     liabilities: string;
   }[];
+  // First index is product ID, each subarray is of length 3 [initial, maintenance, unweighted]
+  health_contributions: string[][];
   spot_count: number;
   perp_count: number;
   spot_balances: EngineServerSpotBalance[];
