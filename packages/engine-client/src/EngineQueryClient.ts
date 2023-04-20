@@ -38,6 +38,7 @@ import {
   ValidateSignedEngineOrderParams,
 } from './types';
 import {
+  mapEngineServerBalanceHealthContributions,
   mapEngineServerOrder,
   mapEngineServerPerpProduct,
   mapEngineServerSpotProduct,
@@ -411,6 +412,9 @@ function mapSubaccountSummary(
     balances.push({
       amount: toBigDecimal(spotBalance.balance.amount),
       lpAmount: toBigDecimal(spotBalance.lp_balance.amount),
+      healthContributions: mapEngineServerBalanceHealthContributions(
+        baseResponse.health_contributions[spotBalance.product_id],
+      ),
       ...mapEngineServerSpotProduct(product).product,
     });
   });
@@ -427,6 +431,9 @@ function mapSubaccountSummary(
       amount: toBigDecimal(perpBalance.balance.amount),
       lpAmount: toBigDecimal(perpBalance.lp_balance.amount),
       vQuoteBalance: toBigDecimal(perpBalance.balance.v_quote_balance),
+      healthContributions: mapEngineServerBalanceHealthContributions(
+        baseResponse.health_contributions[perpBalance.product_id],
+      ),
       ...mapEngineServerPerpProduct(product).product,
     });
   });

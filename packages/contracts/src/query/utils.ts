@@ -1,7 +1,13 @@
 import { FQuerier } from '../typechain-types';
-import { PerpProduct, ProductEngineType, SpotProduct } from '../common';
+import {
+  BalanceHealthContributions,
+  PerpProduct,
+  ProductEngineType,
+  SpotProduct,
+} from '../common';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import { calcTotalBorrowed, calcTotalDeposited } from '../utils';
+import { BigNumber } from 'ethers';
 
 export function mapContractSpotProduct(
   product: FQuerier.SpotProductStructOutput,
@@ -50,5 +56,16 @@ export function mapContractPerpProduct(
     totalLpBaseAmount: toBigDecimal(product.lpState.base),
     totalLpQuoteAmount: toBigDecimal(product.lpState.quote),
     totalLpSupply: toBigDecimal(product.lpState.supply),
+  };
+}
+
+export function mapHealthContributions(
+  contributionsForProduct: BigNumber[],
+): BalanceHealthContributions {
+  // Initial, maint, unweighted
+  return {
+    initial: toBigDecimal(contributionsForProduct[0]),
+    maintenance: toBigDecimal(contributionsForProduct[1]),
+    unweighted: toBigDecimal(contributionsForProduct[2]),
   };
 }

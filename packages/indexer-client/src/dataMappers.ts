@@ -2,21 +2,20 @@ import {
   IndexerEvent,
   IndexerEventWithTx,
   IndexerOrder,
+  IndexerPerpBalance,
   IndexerServerBalance,
   IndexerServerEvent,
   IndexerServerOrder,
   IndexerServerProduct,
   IndexerServerTx,
+  IndexerSpotBalance,
 } from './types';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import {
-  Balance,
   Market,
   parseRawExpirationTimestamp,
-  PerpBalance,
   PerpMarket,
   ProductEngineType,
-  SpotBalance,
   SpotMarket,
 } from '@vertex-protocol/contracts';
 import {
@@ -34,7 +33,7 @@ export function mapIndexerServerProduct(product: IndexerServerProduct): Market {
 
 export function mapIndexerServerBalance(
   balance: IndexerServerBalance,
-): Balance {
+): IndexerSpotBalance | IndexerPerpBalance {
   if ('spot' in balance) {
     return {
       amount: toBigDecimal(balance.spot.balance.amount),
@@ -80,15 +79,23 @@ export function mapIndexerEvent(event: IndexerServerEvent): IndexerEvent {
       return {
         type: ProductEngineType.SPOT,
         market: mapIndexerServerProduct(event.product) as SpotMarket,
-        preBalance: mapIndexerServerBalance(event.pre_balance) as SpotBalance,
-        postBalance: mapIndexerServerBalance(event.post_balance) as SpotBalance,
+        preBalance: mapIndexerServerBalance(
+          event.pre_balance,
+        ) as IndexerSpotBalance,
+        postBalance: mapIndexerServerBalance(
+          event.post_balance,
+        ) as IndexerSpotBalance,
       };
     }
     return {
       type: ProductEngineType.PERP,
       market: mapIndexerServerProduct(event.product) as PerpMarket,
-      preBalance: mapIndexerServerBalance(event.pre_balance) as PerpBalance,
-      postBalance: mapIndexerServerBalance(event.post_balance) as PerpBalance,
+      preBalance: mapIndexerServerBalance(
+        event.pre_balance,
+      ) as IndexerPerpBalance,
+      postBalance: mapIndexerServerBalance(
+        event.post_balance,
+      ) as IndexerPerpBalance,
     };
   })();
 

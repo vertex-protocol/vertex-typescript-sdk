@@ -1447,6 +1447,11 @@ const _abi = [
             type: "tuple[]",
           },
           {
+            internalType: "int128[][]",
+            name: "healthContributions",
+            type: "int128[][]",
+          },
+          {
             internalType: "uint32",
             name: "spotCount",
             type: "uint32",

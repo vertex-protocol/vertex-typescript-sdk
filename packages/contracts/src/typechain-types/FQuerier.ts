@@ -257,6 +257,7 @@ export declare namespace FQuerier {
     subaccount: PromiseOrValue<BytesLike>;
     exists: PromiseOrValue<boolean>;
     healths: FQuerier.HealthInfoStruct[];
+    healthContributions: PromiseOrValue<BigNumberish>[][];
     spotCount: PromiseOrValue<BigNumberish>;
     perpCount: PromiseOrValue<BigNumberish>;
     spotBalances: FQuerier.SpotBalanceStruct[];
@@ -269,6 +270,7 @@ export declare namespace FQuerier {
     string,
     boolean,
     FQuerier.HealthInfoStructOutput[],
+    BigNumber[][],
     number,
     number,
     FQuerier.SpotBalanceStructOutput[],
@@ -279,6 +281,7 @@ export declare namespace FQuerier {
     subaccount: string;
     exists: boolean;
     healths: FQuerier.HealthInfoStructOutput[];
+    healthContributions: BigNumber[][];
     spotCount: number;
     perpCount: number;
     spotBalances: FQuerier.SpotBalanceStructOutput[];

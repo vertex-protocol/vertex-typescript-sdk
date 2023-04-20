@@ -1,7 +1,10 @@
 import { PerpProduct, ProductEngineType, SpotProduct } from './productTypes';
 import { BigDecimal } from '@vertex-protocol/utils';
+import { HealthType } from './healthTypes';
 
 export type BalanceSide = 'long' | 'short';
+
+export type BalanceHealthContributions = Record<HealthType, BigDecimal>;
 
 /**
  * Shared properties of a product balance
@@ -13,6 +16,8 @@ interface BaseBalance {
   amount: BigDecimal;
   // Amount for the LP balance
   lpAmount: BigDecimal;
+  // Contributions to subaccount health
+  healthContributions: BalanceHealthContributions;
 }
 
 /**
