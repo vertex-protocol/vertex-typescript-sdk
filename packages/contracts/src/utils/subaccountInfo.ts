@@ -132,8 +132,7 @@ export function calcSubaccountMarginUsageFractions(
 }
 
 /**
- * Calculates margin usage fractions for a single balance. The margin approximately consumed by a single balance
- * is given by max(0, balance.healthContribution) using either initial/maintenance
+ * Calculates margin usage fractions for a single balance.
  *
  * @param balance
  * @param summary
@@ -142,19 +141,32 @@ export function calcBalanceMarginUsageFractions(
   balance: BalanceWithProduct,
   summary: SubaccountSummaryResponse,
 ): MarginUsageFractions {
+  const marginUsed = calcBalanceMarginUsed(balance);
   const initialMarginUsage = summary.health.initial.assets.eq(0)
     ? toBigDecimal(0)
-    : BigDecimal.max(0, balance.healthContributions.initial).div(
-        summary.health.initial.assets,
-      );
+    : marginUsed.initial.div(summary.health.initial.assets);
   const maintenanceMarginUsage = summary.health.maintenance.assets.eq(0)
     ? toBigDecimal(0)
-    : BigDecimal.max(0, balance.healthContributions.maintenance).div(
-        summary.health.maintenance.assets,
-      );
+    : marginUsed.maintenance.div(summary.health.maintenance.assets);
 
   return {
     initial: initialMarginUsage,
     maintenance: maintenanceMarginUsage,
+  };
+}
+
+/**
+ * Calculates margin used for a single balance. The health contribution given is negative if a balance is a liability,
+ * so the margin consumed is max(0, -healthContribution)
+ *
+ * @param balance
+ */
+export function calcBalanceMarginUsed(balance: BalanceWithProduct) {
+  return {
+    initial: BigDecimal.max(0, balance.healthContributions.initial.negated()),
+    maintenance: BigDecimal.max(
+      0,
+      balance.healthContributions.maintenance.negated(),
+    ),
   };
 }
