@@ -56,21 +56,47 @@ export interface IndexerSummaryBalance {
 export type GetIndexerSummaryResponse = IndexerSummaryBalance[];
 
 export interface GetIndexerSubaccountRewardsParams {
-  subaccount: Subaccount;
+  address: string;
+}
+
+export interface IndexerSubaccountRewardsForProduct {
+  productId: number;
+  qScore: BigDecimal;
+  sumQMin: BigDecimal;
+  uptime: number;
+  makerVolume: BigDecimal;
+  takerVolume: BigDecimal;
+  makerFee: BigDecimal;
+  takerFee: BigDecimal;
+  makerTokens: BigDecimal;
+  takerTokens: BigDecimal;
+  rebates: BigDecimal;
+}
+
+export interface IndexerGlobalRewardsForProduct {
+  productId: number;
+  rewardCoefficient: BigDecimal;
+  qScores: BigDecimal;
+  makerVolumes: BigDecimal;
+  takerVolumes: BigDecimal;
+  makerFees: BigDecimal;
+  takerFees: BigDecimal;
+  makerTokens: BigDecimal;
+  takerTokens: BigDecimal;
 }
 
 export interface IndexerRewardEpoch {
   epoch: number;
   startTime: BigDecimal;
   period: BigDecimal;
-  totalEpochMakerTokens: BigDecimal;
-  totalEpochTakerTokens: BigDecimal;
-  subaccountMakerTokens: BigDecimal;
-  subaccountTakerTokens: BigDecimal;
-  updateTime: BigDecimal;
+  addressRewards: IndexerSubaccountRewardsForProduct[];
+  globalRewards: IndexerGlobalRewardsForProduct[];
 }
 
-export type GetSubaccountIndexerRewardsResponse = IndexerRewardEpoch[];
+export interface GetSubaccountIndexerRewardsResponse {
+  epochs: IndexerRewardEpoch[];
+  updateTime: BigDecimal;
+}
 
 export interface GetIndexerPerpPricesParams {
   productId: number;

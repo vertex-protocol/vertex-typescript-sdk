@@ -1,14 +1,18 @@
 import {
   IndexerEvent,
   IndexerEventWithTx,
+  IndexerGlobalRewardsForProduct,
   IndexerOrder,
   IndexerPerpBalance,
+  IndexerRewardEpoch,
   IndexerServerBalance,
   IndexerServerEvent,
   IndexerServerOrder,
   IndexerServerProduct,
+  IndexerServerRewardEpoch,
   IndexerServerTx,
   IndexerSpotBalance,
+  IndexerSubaccountRewardsForProduct,
 } from './types';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import {
@@ -125,5 +129,47 @@ export function mapIndexerEventWithTx(
   return {
     timestamp: toBigDecimal(tx.timestamp),
     ...mapIndexerEvent(event),
+  };
+}
+
+export function mapIndexerRewardEpoch(
+  epoch: IndexerServerRewardEpoch,
+): IndexerRewardEpoch {
+  return {
+    epoch: epoch.epoch,
+    period: toBigDecimal(epoch.period),
+    startTime: toBigDecimal(epoch.start_time),
+    addressRewards: epoch.address_rewards.map(
+      (reward): IndexerSubaccountRewardsForProduct => {
+        return {
+          productId: reward.product_id,
+          makerFee: toBigDecimal(reward.maker_fee),
+          makerTokens: toBigDecimal(reward.maker_tokens),
+          makerVolume: toBigDecimal(reward.maker_volume),
+          qScore: toBigDecimal(reward.q_score),
+          rebates: toBigDecimal(reward.rebates),
+          sumQMin: toBigDecimal(reward.sum_q_min),
+          takerFee: toBigDecimal(reward.taker_fee),
+          takerTokens: toBigDecimal(reward.taker_tokens),
+          takerVolume: toBigDecimal(reward.taker_volume),
+          uptime: reward.uptime,
+        };
+      },
+    ),
+    globalRewards: epoch.global_rewards.map(
+      (reward): IndexerGlobalRewardsForProduct => {
+        return {
+          productId: reward.product_id,
+          makerFees: toBigDecimal(reward.maker_fees),
+          makerTokens: toBigDecimal(reward.maker_tokens),
+          makerVolumes: toBigDecimal(reward.maker_volumes),
+          qScores: toBigDecimal(reward.q_scores),
+          rewardCoefficient: toBigDecimal(reward.reward_coefficient),
+          takerFees: toBigDecimal(reward.taker_fees),
+          takerTokens: toBigDecimal(reward.taker_tokens),
+          takerVolumes: toBigDecimal(reward.taker_volumes),
+        };
+      },
+    ),
   };
 }

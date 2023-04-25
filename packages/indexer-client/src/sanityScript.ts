@@ -35,7 +35,7 @@ async function main() {
   prettyPrint('Perp prices', toPrintableObject(price));
 
   const rewards = await client.getSubaccountRewards({
-    subaccount,
+    address: subaccount.subaccountOwner,
   });
 
   prettyPrint('Rewards', toPrintableObject(rewards));

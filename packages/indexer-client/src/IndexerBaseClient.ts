@@ -21,7 +21,6 @@ import {
   GetSubaccountIndexerRewardsResponse,
   IndexerEventWithTx,
   IndexerMatchEvent,
-  IndexerRewardEpoch,
   IndexerServerEventsParams,
   IndexerServerQueryRequestByType,
   IndexerServerQueryRequestType,
@@ -35,6 +34,7 @@ import {
   mapIndexerEvent,
   mapIndexerEventWithTx,
   mapIndexerOrder,
+  mapIndexerRewardEpoch,
   mapIndexerServerProduct,
 } from './dataMappers';
 
@@ -90,24 +90,13 @@ export class IndexerBaseClient {
     params: GetIndexerSubaccountRewardsParams,
   ): Promise<GetSubaccountIndexerRewardsResponse> {
     const baseResponse = await this.query('rewards', {
-      subaccount: subaccountToHex({
-        subaccountOwner: params.subaccount.subaccountOwner,
-        subaccountName: params.subaccount.subaccountName,
-      }),
+      address: params.address,
     });
 
-    return baseResponse.rewards.map((rewardEpoch): IndexerRewardEpoch => {
-      return {
-        epoch: rewardEpoch.epoch,
-        period: toBigDecimal(rewardEpoch.period),
-        startTime: toBigDecimal(rewardEpoch.start_time),
-        subaccountMakerTokens: fromX18(rewardEpoch.subaccount_maker_tokens),
-        subaccountTakerTokens: fromX18(rewardEpoch.subaccount_taker_tokens),
-        totalEpochMakerTokens: fromX18(rewardEpoch.epoch_maker_tokens),
-        totalEpochTakerTokens: fromX18(rewardEpoch.epoch_maker_tokens),
-        updateTime: toBigDecimal(rewardEpoch.update_time),
-      };
-    });
+    return {
+      epochs: baseResponse.rewards.map(mapIndexerRewardEpoch),
+      updateTime: toBigDecimal(baseResponse.update_time),
+    };
   }
 
   /**
