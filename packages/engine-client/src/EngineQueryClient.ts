@@ -69,7 +69,7 @@ export class EngineQueryClient extends EngineBaseClient {
   }
 
   /**
-   * Retrieves current engine status
+   * Retrieves current server time from engine
    */
   async getTime(): Promise<EngineServerTimeResponse> {
     return this.query('time', {});
