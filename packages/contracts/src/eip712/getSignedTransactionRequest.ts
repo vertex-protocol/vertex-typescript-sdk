@@ -20,9 +20,17 @@ interface Params<TReqType extends SignableRequestType> {
 export function getSignedTransactionRequest<
   TReqType extends SignableRequestType,
 >(params: Params<TReqType>) {
-  return params.signer._signTypedData(
-    getVertexEIP712Domain(params.verifyingContract, params.chainId),
-    getVertexEIP712Types(params.requestType),
-    getVertexEIP712Values(params.requestType, params.requestParams),
+  const domain = getVertexEIP712Domain(
+    params.verifyingContract,
+    params.chainId,
   );
+  const types = getVertexEIP712Types(params.requestType);
+  const values = getVertexEIP712Values(
+    params.requestType,
+    params.requestParams,
+  );
+
+  console.log('getSignedTransactionRequest', domain, types, values);
+
+  return params.signer._signTypedData(domain, types, values);
 }
