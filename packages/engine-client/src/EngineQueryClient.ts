@@ -69,7 +69,7 @@ export class EngineQueryClient extends EngineBaseClient {
   }
 
   /**
-   * Retrieves current server time from engine
+   * Retrieves current server epoch in milliseconds
    */
   async getTime(): Promise<EngineServerTimeResponse> {
     return this.query('time', {});
