@@ -102,7 +102,8 @@ export interface IndexerLiquidationEvent extends BaseIndexerPaginatedEvent {
   spot?: LiquidationAmounts & IndexerEventSpotStateSnapshot;
   perp?: LiquidationAmounts & IndexerEventPerpStateSnapshot;
   quote: {
-    // Payment to the liquidatee for the liquidation
+    // Quote delta for the subaccount
+    // Only the SPOT QUOTE payment made for the liquidation. Does not include the perp vQuote balance change
     payment: BigDecimal;
   } & IndexerEventSpotStateSnapshot;
 }

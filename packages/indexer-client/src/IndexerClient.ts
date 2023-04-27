@@ -25,7 +25,6 @@ import {
   IndexerSettlementEvent,
   PaginatedIndexerEventsResponse,
 } from './types';
-import { CollateralEventType } from './types/collateralEventType';
 
 export class IndexerClient extends IndexerBaseClient {
   async getPaginatedSubaccountMatchEvents(
