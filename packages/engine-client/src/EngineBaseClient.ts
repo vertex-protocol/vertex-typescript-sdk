@@ -92,7 +92,6 @@ export class EngineBaseClient {
     const queryString = Object.keys(queryParams)
       .map((key) => `${key}=${queryParams[key]}`)
       .join('&');
-
     const requestUrl = `${this.opts.url}/query?${queryString}`;
     const response = await axios.get<EngineQueryRequestResponse>(requestUrl);
 
