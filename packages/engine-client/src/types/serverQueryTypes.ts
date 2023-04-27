@@ -222,6 +222,8 @@ export interface EngineServerMaxWithdrawableResponse {
   max_withdrawable: string;
 }
 
+export type EngineServerTimeResponse = number;
+
 export interface EngineServerMaxMintLpResponse {
   max_base_amount: string;
 }

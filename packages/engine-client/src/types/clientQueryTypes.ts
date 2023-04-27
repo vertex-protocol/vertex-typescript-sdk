@@ -11,6 +11,7 @@ import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import {
   EngineServerCheckIpResponse,
   EngineServerNoncesParams,
+  EngineServerTimeResponse,
 } from './serverQueryTypes';
 
 export type GetEngineSubaccountSummaryParams = GetSubaccountSummaryParams;
@@ -187,3 +188,5 @@ export interface GetEngineMaxMintLpAmountResponse {
 }
 
 export type GetEngineIpCheckResponse = EngineServerCheckIpResponse;
+
+export type GetEngineTimeResponse = EngineServerTimeResponse;

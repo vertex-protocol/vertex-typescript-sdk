@@ -140,4 +140,8 @@ export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
     await vertexClient.context.contracts.endpoint.nSubmissions();
 
   console.log(`nSubmissions: ${nSubmissions}`);
+
+  const engineTime = await vertexClient.context.engineClient.getTime();
+
+  console.log(`Engine time: ${engineTime}`);
 }
