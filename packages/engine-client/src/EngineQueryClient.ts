@@ -36,6 +36,7 @@ import {
   ValidateEngineOrderParams,
   ValidateEngineOrderResponse,
   ValidateSignedEngineOrderParams,
+  EngineServerTimeResponse,
 } from './types';
 import {
   mapEngineServerBalanceHealthContributions,
@@ -65,6 +66,13 @@ export class EngineQueryClient extends EngineBaseClient {
    */
   async getStatus(): Promise<EngineServerStatusResponse> {
     return this.query('status', {});
+  }
+
+  /**
+   * Retrieves current engine status
+   */
+  async getTime(): Promise<EngineServerTimeResponse> {
+    return this.query('time', {});
   }
 
   /**
