@@ -36,7 +36,7 @@ import {
   ValidateEngineOrderParams,
   ValidateEngineOrderResponse,
   ValidateSignedEngineOrderParams,
-  EngineServerTimeResponse,
+  GetEngineTimeResponse,
 } from './types';
 import {
   mapEngineServerBalanceHealthContributions,
@@ -66,13 +66,6 @@ export class EngineQueryClient extends EngineBaseClient {
    */
   async getStatus(): Promise<EngineServerStatusResponse> {
     return this.query('status', {});
-  }
-
-  /**
-   * Retrieves current server epoch in milliseconds
-   */
-  async getTime(): Promise<EngineServerTimeResponse> {
-    return this.query('time', {});
   }
 
   /**
@@ -391,6 +384,13 @@ export class EngineQueryClient extends EngineBaseClient {
    */
   async checkIp(): Promise<GetEngineIpCheckResponse> {
     return axios.get(`${this.opts.url}/ip`).then((res) => res.data);
+  }
+
+  /**
+   * Retrieves current server epoch in milliseconds
+   */
+  async getTime(): Promise<GetEngineTimeResponse> {
+    return axios.get(`${this.opts.url}/time`).then((res) => res.data);
   }
 
   /**

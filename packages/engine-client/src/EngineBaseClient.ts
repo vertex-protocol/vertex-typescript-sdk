@@ -93,12 +93,7 @@ export class EngineBaseClient {
       .map((key) => `${key}=${queryParams[key]}`)
       .join('&');
 
-    let requestUrl;
-    if (requestType == 'time') {
-      requestUrl = `${this.opts.url}/time`;
-    } else {
-      requestUrl = `${this.opts.url}/query?${queryString}`;
-    }
+    const requestUrl = `${this.opts.url}/query?${queryString}`;
     const response = await axios.get<EngineQueryRequestResponse>(requestUrl);
 
     this.checkResponseStatus(response);

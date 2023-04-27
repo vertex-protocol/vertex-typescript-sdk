@@ -92,7 +92,6 @@ export interface EngineServerMaxMintLpQueryParams {
 }
 
 export interface EngineServerQueryRequestByType {
-  time: Record<string, never>;
   contracts: Record<string, never>;
   status: Record<string, never>;
   nonces: EngineServerNoncesParams;
@@ -237,7 +236,6 @@ export interface EngineServerCheckIpResponse {
 }
 
 export interface EngineServerQueryResponseByType {
-  time: EngineServerTimeResponse;
   contracts: EngineServerContractsResponse;
   status: EngineServerStatusResponse;
   nonces: EngineServerNoncesResponse;
