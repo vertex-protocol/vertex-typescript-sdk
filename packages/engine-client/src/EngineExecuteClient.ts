@@ -58,21 +58,12 @@ export class EngineExecuteClient extends EngineBaseClient {
     })();
     const orderWithNonce = { ...params.order, nonce };
 
-    console.log('EngineExecuteClient: orderWithNonce', orderWithNonce);
-
     const signature = await (async () => {
       if ('signature' in params) {
         return params.signature;
       }
 
       const chainId = await this.getChainIdIfNeeded(params);
-
-      const digest = getOrderDigest({
-        chainId,
-        order: orderWithNonce,
-        verifyingAddr: params.verifyingAddr,
-      });
-      console.log('EngineExecuteClient: computed digest', digest);
 
       return await this.sign(
         'place_order',
@@ -82,22 +73,16 @@ export class EngineExecuteClient extends EngineBaseClient {
       );
     })();
 
+    const clientParams = { ...params, nonce };
     const placeOrderPayload = this.payloadBuilder.buildPlaceOrderPayload({
-      ...params,
-      nonce,
-      order: orderWithNonce,
+      ...{
+        ...clientParams,
+        order: orderWithNonce,
+      },
       signature,
     });
-
-    console.log('EngineExecuteClient: placeOrderPayload', placeOrderPayload);
-
-    const executeResult = await this.execute(
-      'place_order',
-      placeOrderPayload.payload,
-    );
-
     return {
-      ...executeResult,
+      ...(await this.execute('place_order', placeOrderPayload.payload)),
       orderParams: placeOrderPayload.orderParams,
     };
   }
@@ -155,6 +140,5 @@ export class EngineExecuteClient extends EngineBaseClient {
       verifyingAddr,
     });
   }
-
   // TODO: settle PNL
 }
