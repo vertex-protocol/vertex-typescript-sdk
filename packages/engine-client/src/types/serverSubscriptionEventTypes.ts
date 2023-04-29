@@ -4,7 +4,7 @@ import { EngineServerPriceTickLiquidity } from './serverQueryTypes';
  * @description Event from subscribing to a `trade` stream.
  */
 export interface SubscriptionTradeEvent {
-  timestamp: number;
+  timestamp: string;
   product_id: number;
   price: string;
   taker_qty: string;
@@ -16,7 +16,7 @@ export interface SubscriptionTradeEvent {
  * @description Event from subscribing to a `best_bid_offer` stream.
  */
 export interface SubscriptionBestBidOfferEvent {
-  timestamp: number;
+  timestamp: string;
   product_id: number;
   bid_price: string;
   bid_qty: string;
@@ -28,7 +28,7 @@ export interface SubscriptionBestBidOfferEvent {
  * @description Event from subscribing to a `fill` stream.
  */
 export interface SubscriptionFillEvent {
-  timestamp: number;
+  timestamp: string;
   product_id: number;
   subaccount: string;
   order_digest: string;
@@ -42,7 +42,7 @@ export interface SubscriptionFillEvent {
  * @description Event from subscribing to a `position_change` stream.
  */
 export interface SubscriptionPositionChangeEvent {
-  timestamp: number;
+  timestamp: string;
   product_id: number;
   is_lp: false;
   subaccount: string;
@@ -51,8 +51,8 @@ export interface SubscriptionPositionChangeEvent {
 }
 
 export interface SubscriptionBookDepthEvent {
-  min_timestamp: number;
-  max_timestamp: number;
+  min_timestamp: string;
+  max_timestamp: string;
   product_id: number;
   bids: EngineServerPriceTickLiquidity[];
   asks: EngineServerPriceTickLiquidity[];
