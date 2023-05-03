@@ -34,9 +34,11 @@ async function main() {
 
   prettyPrint('Perp prices', toPrintableObject(price));
 
-  const oraclePrice = await client.getOraclePrice({ productId: 1 });
+  const oraclePrices = await client.getOraclePrice({
+    productIds: [1, 2, 3, 4],
+  });
 
-  prettyPrint('Oracle Price', toPrintableObject(oraclePrice));
+  prettyPrint('Oracle Prices', toPrintableObject(oraclePrices));
 
   const rewards = await client.getSubaccountRewards({
     address: subaccount.subaccountOwner,

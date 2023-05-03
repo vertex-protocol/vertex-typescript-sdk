@@ -1,5 +1,6 @@
 import {
   Candlestick,
+  OraclePrice,
   GetIndexerCandlesticksParams,
   GetIndexerCandlesticksResponse,
   GetIndexerEventsParams,
@@ -146,14 +147,16 @@ export class IndexerBaseClient {
     params: GetIndexerOraclePriceParams,
   ): Promise<GetIndexerOraclePriceResponse> {
     const baseResponse = await this.query('oracle_price', {
-      product_id: params.productId,
+      product_ids: params.productIds,
     });
 
-    return {
-      oraclePrice: fromX18(baseResponse.oracle_price_x18),
-      updateTime: toBigDecimal(baseResponse.update_time),
-      productId: baseResponse.product_id,
-    };
+    return baseResponse.prices.map((price): OraclePrice => {
+      return {
+        oraclePrice: fromX18(price.oracle_price_x18),
+        updateTime: toBigDecimal(price.update_time),
+        productId: price.product_id,
+      };
+    });
   }
 
   /**

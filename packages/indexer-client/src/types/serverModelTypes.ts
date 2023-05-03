@@ -92,3 +92,9 @@ export interface IndexerServerMatchEvent {
   cumulative_quote_filled: string;
   submission_idx: string;
 }
+
+export interface IndexerServerOraclePrice {
+  product_id: number;
+  oracle_price_x18: string;
+  update_time: number;
+}

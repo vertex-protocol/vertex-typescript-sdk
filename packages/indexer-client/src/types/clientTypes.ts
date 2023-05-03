@@ -111,15 +111,17 @@ export interface GetIndexerPerpPricesResponse {
 }
 
 export interface GetIndexerOraclePriceParams {
-  productId: number;
+  productIds: number[];
 }
 
-export interface GetIndexerOraclePriceResponse {
+export interface OraclePrice {
   productId: number;
   oraclePrice: BigDecimal;
   // Seconds
   updateTime: BigDecimal;
 }
+
+export type GetIndexerOraclePriceResponse = OraclePrice[];
 
 export interface GetIndexerFundingRateParams {
   productId: number;

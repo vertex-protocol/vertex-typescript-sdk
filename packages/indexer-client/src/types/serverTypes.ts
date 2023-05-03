@@ -5,6 +5,7 @@ import {
   IndexerServerOrder,
   IndexerServerProductSnapshot,
   IndexerServerTx,
+  IndexerServerOraclePrice,
 } from './serverModelTypes';
 import { IndexerEventType } from './IndexerEventType';
 
@@ -29,7 +30,7 @@ export interface IndexerServerPriceParams {
 }
 
 export interface IndexerServerOraclePriceParams {
-  product_id: number;
+  product_ids: number[];
 }
 
 export interface IndexerServerCandlesticksParams {
@@ -163,9 +164,7 @@ export interface IndexerServerPriceResponse {
 }
 
 export interface IndexerServerOraclePriceResponse {
-  product_id: number;
-  oracle_price_x18: string;
-  update_time: number;
+  prices: IndexerServerOraclePrice[];
 }
 
 export interface IndexerServerCandlesticksResponse {
