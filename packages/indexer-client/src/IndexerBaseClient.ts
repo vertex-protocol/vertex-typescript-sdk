@@ -12,6 +12,8 @@ import {
   GetIndexerOrdersResponse,
   GetIndexerPerpPricesParams,
   GetIndexerPerpPricesResponse,
+  GetIndexerOraclePriceParams,
+  GetIndexerOraclePriceResponse,
   GetIndexerProductSnapshotsParams,
   GetIndexerProductSnapshotsResponse,
   GetIndexerQuotePriceResponse,
@@ -131,6 +133,24 @@ export class IndexerBaseClient {
     return {
       indexPrice: fromX18(baseResponse.index_price_x18),
       markPrice: fromX18(baseResponse.mark_price_x18),
+      updateTime: toBigDecimal(baseResponse.update_time),
+      productId: baseResponse.product_id,
+    };
+  }
+
+  /**
+   * Retrieves latest oracle price for a product
+   * @param params
+   */
+  async getOraclePrice(
+    params: GetIndexerOraclePriceParams,
+  ): Promise<GetIndexerOraclePriceResponse> {
+    const baseResponse = await this.query('oracle_price', {
+      product_id: params.productId,
+    });
+
+    return {
+      oraclePrice: fromX18(baseResponse.oracle_price_x18),
       updateTime: toBigDecimal(baseResponse.update_time),
       productId: baseResponse.product_id,
     };

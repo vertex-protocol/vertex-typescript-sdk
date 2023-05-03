@@ -28,6 +28,10 @@ export interface IndexerServerPriceParams {
   product_id: number;
 }
 
+export interface IndexerServerOraclePriceParams {
+  product_id: number;
+}
+
 export interface IndexerServerCandlesticksParams {
   product_id: number;
   granularity: number;
@@ -85,6 +89,7 @@ export interface IndexerServerQueryRequestByType {
   rewards: IndexerServerRewardsParams;
   funding_rate: IndexerServerFundingRateParams;
   price: IndexerServerPriceParams;
+  oracle_price: IndexerServerOraclePriceParams;
   candlesticks: IndexerServerCandlesticksParams;
   products: IndexerServerProductsParams;
   events: IndexerServerEventsParams;
@@ -157,6 +162,12 @@ export interface IndexerServerPriceResponse {
   update_time: number;
 }
 
+export interface IndexerServerOraclePriceResponse {
+  product_id: number;
+  oracle_price_x18: string;
+  update_time: number;
+}
+
 export interface IndexerServerCandlesticksResponse {
   candlesticks: IndexerServerCandlestick[];
 }
@@ -190,6 +201,7 @@ export interface IndexerServerQueryResponseByType {
   rewards: IndexerServerRewardsResponse;
   funding_rate: IndexerServerFundingRateResponse;
   price: IndexerServerPriceResponse;
+  oracle_price: IndexerServerOraclePriceResponse;
   candlesticks: IndexerServerCandlesticksResponse;
   products: IndexerServerProductsResponse;
   events: IndexerServerEventsResponse;
