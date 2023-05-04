@@ -32,11 +32,11 @@ import {
   GetEngineSubaccountOrdersResponse,
   GetEngineSubaccountSummaryParams,
   GetEngineSubaccountSummaryResponse,
+  GetEngineTimeResponse,
   SubaccountOrderFeeRates,
   ValidateEngineOrderParams,
   ValidateEngineOrderResponse,
   ValidateSignedEngineOrderParams,
-  GetEngineTimeResponse,
 } from './types';
 import {
   mapEngineServerBalanceHealthContributions,
@@ -263,6 +263,13 @@ export class EngineQueryClient extends EngineBaseClient {
     });
 
     return {
+      healthCheckSequencerFee: toBigDecimal(
+        baseResponse.health_check_sequencer_fee,
+      ),
+      liquidationSequencerFee: toBigDecimal(
+        baseResponse.liquidation_sequencer_fee,
+      ),
+      takerSequencerFee: toBigDecimal(baseResponse.taker_sequencer_fee),
       orders: baseResponse.taker_fee_rates_x18.reduce(
         (acc, takerRateX18, currIndex) => {
           acc[currIndex] = {

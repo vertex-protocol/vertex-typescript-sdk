@@ -129,6 +129,9 @@ export interface GetEngineSubaccountFeeRatesResponse {
   // By Product ID
   orders: Record<number, SubaccountOrderFeeRates>;
   withdrawal: Record<number, BigDecimal>;
+  liquidationSequencerFee: BigDecimal;
+  healthCheckSequencerFee: BigDecimal;
+  takerSequencerFee: BigDecimal;
 }
 
 export interface EnginePriceTickLiquidity {
