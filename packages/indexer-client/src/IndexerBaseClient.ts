@@ -1,6 +1,5 @@
 import {
   Candlestick,
-  OraclePrice,
   GetIndexerCandlesticksParams,
   GetIndexerCandlesticksResponse,
   GetIndexerEventsParams,
@@ -29,6 +28,7 @@ import {
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
   IndexerSummaryBalance,
+  IndexerOraclePrice,
 } from './types';
 import axios, { AxiosResponse } from 'axios';
 import { subaccountToHex } from '@vertex-protocol/contracts';
@@ -150,7 +150,7 @@ export class IndexerBaseClient {
       product_ids: params.productIds,
     });
 
-    return baseResponse.prices.map((price): OraclePrice => {
+    return baseResponse.prices.map((price): IndexerOraclePrice => {
       return {
         oraclePrice: fromX18(price.oracle_price_x18),
         updateTime: toBigDecimal(price.update_time),
