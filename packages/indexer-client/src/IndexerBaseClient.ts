@@ -26,6 +26,9 @@ import {
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
   IndexerSummaryBalance,
+  IndexerOraclePrice,
+  GetIndexerOraclePricesParams,
+  GetIndexerOraclePricesResponse,
 } from './types';
 import axios, { AxiosResponse } from 'axios';
 import { subaccountToHex } from '@vertex-protocol/contracts';
@@ -134,6 +137,26 @@ export class IndexerBaseClient {
       updateTime: toBigDecimal(baseResponse.update_time),
       productId: baseResponse.product_id,
     };
+  }
+
+  /**
+   * Retrieves latest oracle prices for provided products
+   * @param params
+   */
+  async getOraclePrices(
+    params: GetIndexerOraclePricesParams,
+  ): Promise<GetIndexerOraclePricesResponse> {
+    const baseResponse = await this.query('oracle_price', {
+      product_ids: params.productIds,
+    });
+
+    return baseResponse.prices.map((price): IndexerOraclePrice => {
+      return {
+        oraclePrice: fromX18(price.oracle_price_x18),
+        updateTime: toBigDecimal(price.update_time),
+        productId: price.product_id,
+      };
+    });
   }
 
   /**

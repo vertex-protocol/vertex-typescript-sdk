@@ -5,6 +5,7 @@ import {
   IndexerServerOrder,
   IndexerServerProductSnapshot,
   IndexerServerTx,
+  IndexerServerOraclePrice,
 } from './serverModelTypes';
 import { IndexerEventType } from './IndexerEventType';
 
@@ -26,6 +27,10 @@ export interface IndexerServerFundingRateParams {
 
 export interface IndexerServerPriceParams {
   product_id: number;
+}
+
+export interface IndexerServerOraclePricesParams {
+  product_ids: number[];
 }
 
 export interface IndexerServerCandlesticksParams {
@@ -85,6 +90,7 @@ export interface IndexerServerQueryRequestByType {
   rewards: IndexerServerRewardsParams;
   funding_rate: IndexerServerFundingRateParams;
   price: IndexerServerPriceParams;
+  oracle_price: IndexerServerOraclePricesParams;
   candlesticks: IndexerServerCandlesticksParams;
   products: IndexerServerProductsParams;
   events: IndexerServerEventsParams;
@@ -157,6 +163,10 @@ export interface IndexerServerPriceResponse {
   update_time: number;
 }
 
+export interface IndexerServerOraclePricesResponse {
+  prices: IndexerServerOraclePrice[];
+}
+
 export interface IndexerServerCandlesticksResponse {
   candlesticks: IndexerServerCandlestick[];
 }
@@ -190,6 +200,7 @@ export interface IndexerServerQueryResponseByType {
   rewards: IndexerServerRewardsResponse;
   funding_rate: IndexerServerFundingRateResponse;
   price: IndexerServerPriceResponse;
+  oracle_price: IndexerServerOraclePricesResponse;
   candlesticks: IndexerServerCandlesticksResponse;
   products: IndexerServerProductsResponse;
   events: IndexerServerEventsResponse;
