@@ -34,7 +34,7 @@ async function main() {
 
   prettyPrint('Perp prices', toPrintableObject(price));
 
-  const oraclePrices = await client.getOraclePrice({
+  const oraclePrices = await client.getOraclePrices({
     productIds: [1, 2, 3, 4],
   });
 
