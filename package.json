@@ -11,13 +11,13 @@
     "build": "npx lerna run build",
     "publish": "yarn build && npx lerna publish --force-publish --no-private",
     "dev": "npx lerna run dev",
-    "lint": "eslint './**/*.ts' --fix && prettier --write './**/*.{ts,graphql}'",
+    "lint": "eslint './**/*.ts' --fix && prettier --write './**/*.ts'",
     "gen-typedoc": "npx typedoc",
     "link-local": "lerna exec -- yarn link",
     "unlink-local": "lerna exec -- yarn unlink"
   },
   "lint-staged": {
-    "*.{ts,graphql}": "yarn lint"
+    "*.ts": "yarn lint"
   },
   "devDependencies": {
     "@types/node": "^18.6.5",

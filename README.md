@@ -1,7 +1,7 @@
 # Vertex Typescript SDK
 
 Monorepo for the Vertex TS SDK. The Vertex SDK is a collection of utilities
-for interacting with the Vertex Clearinghouse and associated Subgraph.
+for interacting with the Vertex API and contracts.
 
 [SDK Docs](https://vertex-protocol.github.io/vertex-sdk)
 
@@ -9,11 +9,7 @@ for interacting with the Vertex Clearinghouse and associated Subgraph.
 
 ### `@vertex-protocol/client`
 
-Exposes `VertexClient`, which composes utils for subgraph & contract interaction.
-
-### `@vertex-protocol/graph`
-
-Exposes `VertexGraphClient`, an interface for interacting with the Clearinghouse Subgraph.
+Exposes `VertexClient`, which composes utils for API & contract interaction.
 
 ### `@vertex-protocol/contracts`
 

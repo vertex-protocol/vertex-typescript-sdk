@@ -110,11 +110,6 @@ export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
     productId: 3,
   });
 
-  await vertexClient.context.graph.getSubaccountOrders({
-    subaccountOwner: await signer.getAddress(),
-    subaccountName: 'default',
-  });
-
   await vertexClient.spot.withdraw({
     subaccountName: 'default',
     productId: 0,

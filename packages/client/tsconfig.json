@@ -19,9 +19,6 @@
       "path": "../indexer-client"
     },
     {
-      "path": "../graph"
-    },
-    {
       "path": "../contracts"
     },
     {

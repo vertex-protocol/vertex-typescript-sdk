@@ -10,11 +10,6 @@ import {
 } from '@vertex-protocol/contracts';
 import { Signer } from 'ethers';
 import { Provider } from '@ethersproject/providers';
-import {
-  GRAPH_CLIENT_ENDPOINTS,
-  GraphClientOpts,
-  VertexGraphClient,
-} from '@vertex-protocol/graph';
 import { TypedDataSigner } from '@ethersproject/abstract-signer';
 import {
   ENGINE_CLIENT_ENDPOINTS,
@@ -34,7 +29,6 @@ export interface VertexClientContext {
   // Must be a signer to use any executions
   signerOrProvider: ValidSigner | Provider;
   contracts: VertexContracts;
-  graph: VertexGraphClient;
   engineClient: EngineClient;
   indexerClient: IndexerClient;
 }
@@ -52,7 +46,6 @@ interface VertexClientContextOpts {
     clearinghouseAddress?: string;
     endpointAddress?: string;
   };
-  graph: GraphClientOpts;
   engineEndpoint: string;
   indexerEndpoint: string;
 }
@@ -80,7 +73,7 @@ export async function createClientContext(
   opts: CreateVertexClientContextOpts,
   signerOpts: CreateVertexClientContextSignerOpts,
 ): Promise<VertexClientContext> {
-  const { contracts, graph, engineEndpoint, indexerEndpoint } =
+  const { contracts, engineEndpoint, indexerEndpoint } =
     ((): VertexClientContextOpts => {
       if (opts === 'testnet') {
         return {
@@ -90,11 +83,6 @@ export async function createClientContext(
             perpEngineAddress: VERTEX_DEPLOYMENTS.testnet.perpEngine,
             clearinghouseAddress: VERTEX_DEPLOYMENTS.testnet.clearinghouse,
             endpointAddress: VERTEX_DEPLOYMENTS.testnet.endpoint,
-          },
-          graph: {
-            coreEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.core,
-            marketsEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.markets,
-            candlesticksEndpoint: GRAPH_CLIENT_ENDPOINTS.testnet.candlesticks,
           },
           engineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
           indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.testnet,
@@ -107,11 +95,6 @@ export async function createClientContext(
             perpEngineAddress: VERTEX_DEPLOYMENTS.mainnet.perpEngine,
             clearinghouseAddress: VERTEX_DEPLOYMENTS.mainnet.clearinghouse,
             endpointAddress: VERTEX_DEPLOYMENTS.mainnet.endpoint,
-          },
-          graph: {
-            coreEndpoint: GRAPH_CLIENT_ENDPOINTS.mainnet.core,
-            marketsEndpoint: GRAPH_CLIENT_ENDPOINTS.mainnet.markets,
-            candlesticksEndpoint: GRAPH_CLIENT_ENDPOINTS.mainnet.candlesticks,
           },
           engineEndpoint: ENGINE_CLIENT_ENDPOINTS.mainnet,
           indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.mainnet,
@@ -160,7 +143,6 @@ export async function createClientContext(
       spotEngine: ISpotEngine__factory.connect(spotAddress, signerOrProvider),
       perpEngine: IPerpEngine__factory.connect(perpAddress, signerOrProvider),
     },
-    graph: new VertexGraphClient(graph),
     engineClient: new EngineClient({
       url: engineEndpoint,
       signer: validSigner,
