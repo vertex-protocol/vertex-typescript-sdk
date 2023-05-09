@@ -5,7 +5,6 @@
 dist/
 
 # Individual repos
-packages/graph/src/generated
 packages/contracts/src/typechain-types
 
 # dependencies

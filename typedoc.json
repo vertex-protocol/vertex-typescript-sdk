@@ -14,8 +14,7 @@
     "**/dist/**/*"
   ],
   "externalPattern": [
-    "./packages/contracts/src/typechain-types/**",
-    "./packages/graph/src/generated/**"
+    "./packages/contracts/src/typechain-types/**"
   ],
   "out": "apps/docs",
   "internalModule": "Internal",

@@ -1,7 +1,0 @@
-query SubaccountsForAddress($address: Bytes!) {
-  subaccounts(where: { owner: $address }) {
-    id
-    name
-    owner
-  }
-}

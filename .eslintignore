@@ -4,7 +4,6 @@ build/
 dist/
 
 # Individual repos
-packages/graph/src/generated
 packages/contracts/src/typechain-types
 
 # Logs

@@ -4,7 +4,6 @@ import {
   GetSubaccountSummaryParams,
   subaccountToBytes32,
 } from '@vertex-protocol/contracts';
-import { GetSubaccountsParams } from '@vertex-protocol/graph';
 import {
   GetEngineEstimatedSubaccountSummaryParams,
   GetEngineSubaccountFeeRatesParams,
@@ -25,13 +24,6 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
       }),
     );
     return Number(bnId);
-  }
-
-  /**
-   * {@link (VertexGraphClient.getSubaccountsForAddress)}
-   */
-  async getSubaccountsForAddress(params: GetSubaccountsParams) {
-    return this.context.graph.getSubaccountsForAddress(params);
   }
 
   /**
