@@ -106,24 +106,50 @@ export interface MarginUsageFractions {
 }
 
 /**
- * Calculate margin usage fractions. Which is = sum(negative health).abs() / sum(positive health)
- * Health is either maintenance / initial.
+ * Calculate margin usage fractions. Which is = (unweighted health - initial/maint health) / unweighted health
+ * iff subaccount has borrows or perp positions, and 0 otherwise.
  *
  * @param summary
  */
 export function calcSubaccountMarginUsageFractions(
   summary: SubaccountSummaryResponse,
 ): MarginUsageFractions {
-  const initialMarginUsage = summary.health.initial.assets.eq(0)
-    ? toBigDecimal(0)
-    : summary.health.initial.liabilities
-        .abs()
-        .div(summary.health.initial.assets);
-  const maintenanceMarginUsage = summary.health.maintenance.assets.eq(0)
-    ? toBigDecimal(0)
-    : summary.health.maintenance.liabilities
-        .abs()
-        .div(summary.health.maintenance.assets);
+  const unweightedHealth = summary.health.unweighted.health;
+  const initialHealth = summary.health.initial.health;
+  const maintenanceHealth = summary.health.maintenance.health;
+
+  const zeroMarginUsage: MarginUsageFractions = {
+    initial: toBigDecimal(0),
+    maintenance: toBigDecimal(0),
+  };
+
+  if (unweightedHealth.isZero()) {
+    return zeroMarginUsage;
+  }
+
+  let hasBorrowsOrPerps = false;
+  for (const balance of summary.balances) {
+    if (balance.amount.lt(0)) {
+      // Either a spot borrow or a perp position
+      hasBorrowsOrPerps = true;
+      break;
+    } else if (balance.type === ProductEngineType.PERP) {
+      if (!balance.amount.isZero() || !balance.lpAmount.isZero()) {
+        hasBorrowsOrPerps = true;
+        break;
+      }
+    }
+  }
+  if (!hasBorrowsOrPerps) {
+    return zeroMarginUsage;
+  }
+
+  const initialMarginUsage = unweightedHealth
+    .minus(initialHealth)
+    .div(unweightedHealth);
+  const maintenanceMarginUsage = unweightedHealth
+    .minus(maintenanceHealth)
+    .div(unweightedHealth);
 
   return {
     initial: initialMarginUsage,
