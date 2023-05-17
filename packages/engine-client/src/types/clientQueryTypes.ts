@@ -193,3 +193,9 @@ export interface GetEngineMaxMintLpAmountResponse {
 export type GetEngineIpCheckResponse = EngineServerCheckIpResponse;
 
 export type GetEngineTimeResponse = EngineServerTimeResponse;
+
+export type GetEngineLinkedSignerParams = Subaccount;
+
+export interface GetEngineLinkedSignerResponse {
+  signer: string;
+}

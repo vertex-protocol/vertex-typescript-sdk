@@ -1,10 +1,17 @@
-import { getVertexEIP712Values } from '@vertex-protocol/contracts';
+import {
+  getVertexEIP712Values,
+  OrderParams,
+  SignableRequestType,
+  SignableRequestTypeToParams,
+} from '@vertex-protocol/contracts';
 import { hexlify } from 'ethers/lib/utils';
 import { EngineBaseClient } from './EngineBaseClient';
 import {
   EngineExecuteRequestParamsByType,
   EngineServerExecutePlaceOrderPayload,
   EngineServerExecuteRequestByType,
+  SignatureParams,
+  WithBaseEngineExecuteParams,
   WithSignature,
 } from './types';
 import { getOrderNonce } from './utils';
@@ -29,29 +36,14 @@ export class EngineExecuteBuilder {
   async buildLiquidateSubaccountPayload(
     clientParams: EngineExecuteRequestParamsByType['liquidate_subaccount'],
   ): Promise<EngineServerExecuteRequestByType['liquidate_subaccount']> {
-    const nonce = await (async () => {
-      if (clientParams.nonce) {
-        return clientParams.nonce;
-      }
-      return await this.engineClient.getTxNonce();
-    })();
+    const nonce = await this.getTxNonceIfNeeded(clientParams);
     const paramsWithNonce = { ...clientParams, nonce };
 
     const tx = getVertexEIP712Values('liquidate_subaccount', paramsWithNonce);
-    const signature = await (async () => {
-      if ('signature' in clientParams) {
-        return clientParams.signature;
-      }
-
-      const chainId = await this.engineClient.getChainIdIfNeeded(clientParams);
-
-      return await this.engineClient.sign(
-        'liquidate_subaccount',
-        clientParams.verifyingAddr,
-        chainId,
-        paramsWithNonce,
-      );
-    })();
+    const signature = await this.getSignatureIfNeeded(
+      'liquidate_subaccount',
+      paramsWithNonce,
+    );
 
     return {
       signature,
@@ -71,28 +63,13 @@ export class EngineExecuteBuilder {
   async buildWithdrawCollateralPayload(
     clientParams: EngineExecuteRequestParamsByType['withdraw_collateral'],
   ): Promise<EngineServerExecuteRequestByType['withdraw_collateral']> {
-    const nonce = await (async () => {
-      if (clientParams.nonce) {
-        return clientParams.nonce;
-      }
-      return await this.engineClient.getTxNonce();
-    })();
+    const nonce = await this.getTxNonceIfNeeded(clientParams);
     const paramsWithNonce = { ...clientParams, nonce };
 
-    const signature = await (async () => {
-      if ('signature' in clientParams) {
-        return clientParams.signature;
-      }
-
-      const chainId = await this.engineClient.getChainIdIfNeeded(clientParams);
-
-      return await this.engineClient.sign(
-        'withdraw_collateral',
-        clientParams.verifyingAddr,
-        chainId,
-        paramsWithNonce,
-      );
-    })();
+    const signature = await this.getSignatureIfNeeded(
+      'withdraw_collateral',
+      paramsWithNonce,
+    );
 
     const tx = getVertexEIP712Values('withdraw_collateral', paramsWithNonce);
     return {
@@ -113,29 +90,14 @@ export class EngineExecuteBuilder {
   async buildMintLpPayload(
     clientParams: EngineExecuteRequestParamsByType['mint_lp'],
   ): Promise<EngineServerExecuteRequestByType['mint_lp']> {
-    const nonce = await (async () => {
-      if (clientParams.nonce) {
-        return clientParams.nonce;
-      }
-      return await this.engineClient.getTxNonce();
-    })();
+    const nonce = await this.getTxNonceIfNeeded(clientParams);
     const paramsWithNonce = { ...clientParams, nonce };
 
     const tx = getVertexEIP712Values('mint_lp', paramsWithNonce);
-    const signature = await (async () => {
-      if ('signature' in clientParams) {
-        return clientParams.signature;
-      }
-
-      const chainId = await this.engineClient.getChainIdIfNeeded(clientParams);
-
-      return await this.engineClient.sign(
-        'mint_lp',
-        clientParams.verifyingAddr,
-        chainId,
-        paramsWithNonce,
-      );
-    })();
+    const signature = await this.getSignatureIfNeeded(
+      'mint_lp',
+      paramsWithNonce,
+    );
 
     return {
       signature,
@@ -155,29 +117,14 @@ export class EngineExecuteBuilder {
   async buildBurnLpPayload(
     clientParams: EngineExecuteRequestParamsByType['burn_lp'],
   ): Promise<EngineServerExecuteRequestByType['burn_lp']> {
-    const nonce = await (async () => {
-      if (clientParams.nonce) {
-        return clientParams.nonce;
-      }
-      return await this.engineClient.getTxNonce();
-    })();
+    const nonce = await this.getTxNonceIfNeeded(clientParams);
     const paramsWithNonce = { ...clientParams, nonce };
 
     const tx = getVertexEIP712Values('burn_lp', paramsWithNonce);
-    const signature = await (async () => {
-      if ('signature' in clientParams) {
-        return clientParams.signature;
-      }
-
-      const chainId = await this.engineClient.getChainIdIfNeeded(clientParams);
-
-      return await this.engineClient.sign(
-        'burn_lp',
-        clientParams.verifyingAddr,
-        chainId,
-        paramsWithNonce,
-      );
-    })();
+    const signature = await this.getSignatureIfNeeded(
+      'burn_lp',
+      paramsWithNonce,
+    );
 
     return {
       signature,
@@ -190,61 +137,95 @@ export class EngineExecuteBuilder {
 
   /**
    * Builds server payload for the `place_order` execute action.
+   *
    * @param clientParams Client PlaceOrder params.
    * @returns `place_order` payload
    */
-  buildPlaceOrderPayload(
+  async buildPlaceOrderPayload(
+    clientParams: EngineExecuteRequestParamsByType['place_order'],
+  ): Promise<EngineServerExecutePlaceOrderPayload> {
+    const nonce = this.getOrderNonceIfNeeded(clientParams);
+    const orderWithNonce = { ...clientParams.order, nonce };
+
+    const signature = await this.getSignatureIfNeeded('place_order', {
+      // Gets expected type
+      ...clientParams,
+      ...orderWithNonce,
+    });
+
+    return this.buildPlaceOrderPayloadSync({
+      ...clientParams,
+      order: orderWithNonce,
+      signature,
+    });
+  }
+
+  /**
+   * Synchronously builds server payload for the `place_order` execute action.
+   *
+   * @param clientParams Client PlaceOrder params.
+   * @returns `place_order` payload
+   */
+  buildPlaceOrderPayloadSync(
     clientParams: WithSignature<
-      EngineExecuteRequestParamsByType['place_order']
+      EngineExecuteRequestParamsByType['place_order'] & {
+        order: OrderParams;
+      }
     >,
   ): EngineServerExecutePlaceOrderPayload {
-    const nonce = (() => {
-      if (clientParams.nonce) {
-        return clientParams.nonce;
-      }
-      return getOrderNonce();
-    })();
-
-    const orderWithNonce = {
-      ...clientParams.order,
-      nonce,
-    };
-
-    const order = getVertexEIP712Values('place_order', orderWithNonce);
+    const orderEIP712Values = getVertexEIP712Values(
+      'place_order',
+      clientParams.order,
+    );
 
     return {
       payload: {
         product_id: clientParams.productId,
         order: {
-          ...order,
-          sender: hexlify(order.sender),
+          ...orderEIP712Values,
+          sender: hexlify(orderEIP712Values.sender),
         },
         signature: clientParams.signature,
         spot_leverage: clientParams.spotLeverage ?? null,
       },
-      orderParams: orderWithNonce,
+      orderParams: clientParams.order,
     };
   }
 
   /**
-   * Builds server payload for the `cancel_orders` execute action.
+   * Builds server payload for the `cancel_orders` execute action. As such, requires a signature to be given
+   *
    * @param clientParams Client CancelOrders params.
    * @returns `cancel_orders` payload
    */
-  buildCancelOrdersPayload(
+  async buildCancelOrdersPayload(
+    clientParams: EngineExecuteRequestParamsByType['cancel_orders'],
+  ): Promise<EngineServerExecuteRequestByType['cancel_orders']> {
+    const nonce = this.getOrderNonceIfNeeded(clientParams);
+    const paramsWithNonce = { ...clientParams, nonce };
+    const signature = await this.getSignatureIfNeeded(
+      'cancel_orders',
+      paramsWithNonce,
+    );
+
+    return this.buildCancelOrdersPayloadSync({
+      ...paramsWithNonce,
+      signature,
+    });
+  }
+
+  /**
+   * Synchronously builds server payload for the `cancel_orders` execute action.
+   *
+   * @param clientParams Client CancelOrders params.
+   * @returns `cancel_orders` payload
+   */
+  buildCancelOrdersPayloadSync(
     clientParams: WithSignature<
-      EngineExecuteRequestParamsByType['cancel_orders']
+      EngineExecuteRequestParamsByType['cancel_orders'] & { nonce: string }
     >,
   ): EngineServerExecuteRequestByType['cancel_orders'] {
-    const nonce = (() => {
-      if (clientParams.nonce) {
-        return clientParams.nonce;
-      }
-      return getOrderNonce();
-    })();
-    const paramsWithNonce = { ...clientParams, nonce };
-
-    const tx = getVertexEIP712Values('cancel_orders', paramsWithNonce);
+    const tx = getVertexEIP712Values('cancel_orders', clientParams);
 
     return {
       tx: {
@@ -263,29 +244,14 @@ export class EngineExecuteBuilder {
   async buildCancelProductOrdersPayload(
     clientParams: EngineExecuteRequestParamsByType['cancel_product_orders'],
   ): Promise<EngineServerExecuteRequestByType['cancel_product_orders']> {
-    const nonce = await (async () => {
-      if (clientParams.nonce) {
-        return clientParams.nonce;
-      }
-      return getOrderNonce();
-    })();
+    const nonce = this.getOrderNonceIfNeeded(clientParams);
     const paramsWithNonce = { ...clientParams, nonce };
 
     const tx = getVertexEIP712Values('cancel_product_orders', paramsWithNonce);
-    const signature = await (async () => {
-      if ('signature' in clientParams) {
-        return clientParams.signature;
-      }
-
-      const chainId = await this.engineClient.getChainIdIfNeeded(clientParams);
-
-      return await this.engineClient.sign(
-        'cancel_product_orders',
-        clientParams.verifyingAddr,
-        chainId,
-        paramsWithNonce,
-      );
-    })();
+    const signature = await this.getSignatureIfNeeded(
+      'cancel_product_orders',
+      paramsWithNonce,
+    );
 
     return {
       tx: {
@@ -294,5 +260,68 @@ export class EngineExecuteBuilder {
       },
       signature,
     };
+  }
+
+  /**
+   * Builds server payload for the `link_signer` execute action.
+   *
+   * @param clientParams Client LinkSigner params.
+   * @returns `link_signer` payload
+   */
+  async buildLinkSignerPayload(
+    clientParams: EngineExecuteRequestParamsByType['link_signer'],
+  ): Promise<EngineServerExecuteRequestByType['link_signer']> {
+    const nonce = await this.getTxNonceIfNeeded(clientParams);
+    const paramsWithNonce = { ...clientParams, nonce };
+
+    const tx = getVertexEIP712Values('link_signer', paramsWithNonce);
+    const signature = await this.getSignatureIfNeeded(
+      'link_signer',
+      paramsWithNonce,
+    );
+
+    return {
+      tx: {
+        ...tx,
+        sender: hexlify(tx.sender),
+      },
+      signature,
+    };
+  }
+
+  protected async getSignatureIfNeeded<T extends SignableRequestType>(
+    requestType: T,
+    paramsWithNonce: SignatureParams & SignableRequestTypeToParams[T],
+  ) {
+    if ('signature' in paramsWithNonce) {
+      return paramsWithNonce.signature;
+    }
+
+    const chainId = await this.engineClient.getChainIdIfNeeded(paramsWithNonce);
+
+    return await this.engineClient.sign(
+      requestType,
+      paramsWithNonce.verifyingAddr,
+      chainId,
+      paramsWithNonce,
+    );
+  }
+
+  protected async getTxNonceIfNeeded(
+    params: WithBaseEngineExecuteParams<unknown>,
+  ) {
+    if (params.nonce) {
+      return params.nonce;
+    }
+    return await this.engineClient.getTxNonce();
+  }
+
+  protected getOrderNonceIfNeeded(
+    params: WithBaseEngineExecuteParams<unknown>,
+  ) {
+    if (params.nonce) {
+      return params.nonce;
+    }
+    return getOrderNonce();
   }
 }

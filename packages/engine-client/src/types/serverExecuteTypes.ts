@@ -1,10 +1,11 @@
 import {
-  EIP712ProductOrdersCancellationValues,
   EIP712BurnLpValues,
+  EIP712LinkSignerValues,
   EIP712LiquidateSubaccountValues,
   EIP712MintLpValues,
   EIP712OrderCancellationValues,
   EIP712OrderValues,
+  EIP712ProductOrdersCancellationValues,
   EIP712WithdrawCollateralValues,
   OrderParams,
   SignedTx,
@@ -61,6 +62,7 @@ export interface EngineServerExecuteRequestByType {
       productIds: number[];
     }
   >;
+  link_signer: SignedTx<ByteFieldsToHex<EIP712LinkSignerValues>>;
 }
 
 export type EngineServerExecuteRequestType =

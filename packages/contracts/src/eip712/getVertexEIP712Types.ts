@@ -77,5 +77,13 @@ export function getVertexEIP712Types(
           { name: 'nonce', type: 'uint64' },
         ],
       };
+    case 'link_signer':
+      return {
+        LinkSigner: [
+          { name: 'sender', type: 'bytes32' },
+          { name: 'signer', type: 'bytes32' },
+          { name: 'nonce', type: 'uint64' },
+        ],
+      };
   }
 }

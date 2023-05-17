@@ -59,6 +59,7 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
     productIds: [1],
     digests: [wsOrderDigest],
     signature: '',
+    nonce: getOrderNonce(),
   });
 
   console.log(

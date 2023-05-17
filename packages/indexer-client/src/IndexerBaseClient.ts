@@ -6,8 +6,12 @@ import {
   GetIndexerEventsResponse,
   GetIndexerFundingRateParams,
   GetIndexerFundingRateResponse,
+  GetIndexerLinkedSignerParams,
+  GetIndexerLinkedSignerResponse,
   GetIndexerMatchEventsParams,
   GetIndexerMatchEventsResponse,
+  GetIndexerOraclePricesParams,
+  GetIndexerOraclePricesResponse,
   GetIndexerOrdersParams,
   GetIndexerOrdersResponse,
   GetIndexerPerpPricesParams,
@@ -21,14 +25,12 @@ import {
   GetSubaccountIndexerRewardsResponse,
   IndexerEventWithTx,
   IndexerMatchEvent,
+  IndexerOraclePrice,
   IndexerServerEventsParams,
   IndexerServerQueryRequestByType,
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
   IndexerSummaryBalance,
-  IndexerOraclePrice,
-  GetIndexerOraclePricesParams,
-  GetIndexerOraclePricesResponse,
 } from './types';
 import axios, { AxiosResponse } from 'axios';
 import { subaccountToHex } from '@vertex-protocol/contracts';
@@ -345,6 +347,22 @@ export class IndexerBaseClient {
     const baseResponse = await this.query('usdc_price', {});
     return {
       price: fromX18(baseResponse.price_x18),
+    };
+  }
+
+  /**
+   * Fetches currently registered linked signer with the remaining txs allowed for the subaccount
+   */
+  async getLinkedSignerWithRateLimit(
+    params: GetIndexerLinkedSignerParams,
+  ): Promise<GetIndexerLinkedSignerResponse> {
+    const baseResponse = await this.query('linked_signer_rate_limit', {
+      subaccount: subaccountToHex(params.subaccount),
+    });
+    return {
+      remainingTxs: toBigDecimal(baseResponse.remaining_tx),
+      signer: baseResponse.signer,
+      waitTimeUntilNextTx: toBigDecimal(baseResponse.wait_time),
     };
   }
 

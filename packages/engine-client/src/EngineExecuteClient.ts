@@ -5,7 +5,6 @@ import {
 import { EngineExecuteBuilder } from './EngineExecuteBuilder';
 import { EngineBaseClient, EngineClientOpts } from './EngineBaseClient';
 import { getOrderDigest, OrderParams } from '@vertex-protocol/contracts';
-import { getOrderNonce } from './utils';
 
 export class EngineExecuteClient extends EngineBaseClient {
   readonly payloadBuilder: EngineExecuteBuilder;
@@ -50,37 +49,9 @@ export class EngineExecuteClient extends EngineBaseClient {
   async placeOrder(
     params: EngineExecuteRequestParamsByType['place_order'],
   ): Promise<EngineExecutePlaceOrderResult> {
-    const nonce = (() => {
-      if (params.nonce) {
-        return params.nonce;
-      }
-      return getOrderNonce();
-    })();
-    const orderWithNonce = { ...params.order, nonce };
-
-    const signature = await (async () => {
-      if ('signature' in params) {
-        return params.signature;
-      }
-
-      const chainId = await this.getChainIdIfNeeded(params);
-
-      return await this.sign(
-        'place_order',
-        params.verifyingAddr,
-        chainId,
-        orderWithNonce,
-      );
-    })();
-
-    const clientParams = { ...params, nonce };
-    const placeOrderPayload = this.payloadBuilder.buildPlaceOrderPayload({
-      ...{
-        ...clientParams,
-        order: orderWithNonce,
-      },
-      signature,
-    });
+    const placeOrderPayload = await this.payloadBuilder.buildPlaceOrderPayload(
+      params,
+    );
     return {
       ...(await this.execute('place_order', placeOrderPayload.payload)),
       orderParams: placeOrderPayload.orderParams,
@@ -90,33 +61,9 @@ export class EngineExecuteClient extends EngineBaseClient {
   async cancelOrders(
     params: EngineExecuteRequestParamsByType['cancel_orders'],
   ) {
-    const nonce = (() => {
-      if (params.nonce) {
-        return params.nonce;
-      }
-      return getOrderNonce();
-    })();
-    const paramsWithNonce = { ...params, nonce };
-    const signature = await (async () => {
-      if ('signature' in params) {
-        return params.signature;
-      }
-
-      const chainId = await this.getChainIdIfNeeded(params);
-      return await this.sign(
-        'cancel_orders',
-        params.verifyingAddr,
-        chainId,
-        paramsWithNonce,
-      );
-    })();
-
     return this.execute(
       'cancel_orders',
-      this.payloadBuilder.buildCancelOrdersPayload({
-        ...paramsWithNonce,
-        signature,
-      }),
+      await this.payloadBuilder.buildCancelOrdersPayload(params),
     );
   }
 
@@ -126,6 +73,13 @@ export class EngineExecuteClient extends EngineBaseClient {
     return this.execute(
       'cancel_product_orders',
       await this.payloadBuilder.buildCancelProductOrdersPayload(params),
+    );
+  }
+
+  async linkSigner(params: EngineExecuteRequestParamsByType['link_signer']) {
+    return this.execute(
+      'link_signer',
+      await this.payloadBuilder.buildLinkSignerPayload(params),
     );
   }
 
@@ -140,5 +94,6 @@ export class EngineExecuteClient extends EngineBaseClient {
       verifyingAddr,
     });
   }
+
   // TODO: settle PNL
 }

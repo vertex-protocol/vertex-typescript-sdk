@@ -1,9 +1,8 @@
-import { VertexClientContext } from './context';
+import { ValidVertexSigner, VertexClientContext } from './context';
 import { MarketAPI } from './apis/market';
 import { SubaccountAPI } from './apis/subaccount';
 import { SpotAPI } from './apis/spot';
 import { PerpAPI } from './apis/perp';
-import { isSigner } from './utils';
 import { WebsocketAPI } from './apis/ws';
 
 /**
@@ -29,9 +28,12 @@ export class VertexClient {
   }
 
   /**
-   * Whether the current Vertex client is initialized with an on-chain signer
+   * Sets the linked signer for the client. Set to null to revert to the chain signer.
+   * @param linkedSigner
    */
-  hasChainSigner() {
-    return isSigner(this.context.signerOrProvider);
+  setLinkedSigner(linkedSigner: ValidVertexSigner | null) {
+    // This is a bit ugly, but works for now
+    this.context.linkedSigner = linkedSigner ?? undefined;
+    this.context.engineClient.setLinkedSigner(linkedSigner);
   }
 }

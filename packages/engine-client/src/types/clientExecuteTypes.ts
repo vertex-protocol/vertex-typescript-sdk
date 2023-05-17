@@ -1,5 +1,6 @@
 import {
   BurnLpParams,
+  LinkSignerParams,
   LiquidateSubaccountParams,
   MintLpParams,
   OrderCancellationParams,
@@ -18,13 +19,14 @@ export type SignatureParams =
   | {
       // Endpoint address for all executes except order placement
       verifyingAddr: string;
+      // Defaults to the chain ID of the engine signer
       chainId?: number;
     }
   | {
       signature: string;
     };
 
-export type WithoutNonce<T extends { nonce: unknown }> = Omit<T, 'nonce'>;
+type WithoutNonce<T extends { nonce: unknown }> = Omit<T, 'nonce'>;
 
 type WithSpotLeverage<T> = T & {
   spotLeverage?: boolean;
@@ -34,13 +36,11 @@ export type WithSignature<T> = T & {
   signature: string;
 };
 
-export type WithBaseEngineExecuteParams<T> = T &
-  SignatureParams & {
+// Params associated with all engine executes
+export type WithBaseEngineExecuteParams<T> = SignatureParams &
+  Omit<T, 'nonce'> & {
     nonce?: string;
   };
-
-export type EngineWithdrawCollateralParams =
-  WithSpotLeverage<WithdrawCollateralParams>;
 
 export type EngineMintLpParams = WithSpotLeverage<MintLpParams>;
 
@@ -56,24 +56,24 @@ export type EngineExecutePlaceOrderParams = WithBaseEngineExecuteParams<{
 export type EngineExecuteLiquidateSubaccountParams =
   WithBaseEngineExecuteParams<LiquidateSubaccountParams>;
 
-export type EngineExecuteMintLpParams = WithBaseEngineExecuteParams<
-  WithoutNonce<EngineMintLpParams>
->;
+export type EngineExecuteMintLpParams =
+  WithBaseEngineExecuteParams<EngineMintLpParams>;
 
-export type EngineExecuteBurnLpParams = WithBaseEngineExecuteParams<
-  WithoutNonce<BurnLpParams>
->;
+export type EngineExecuteBurnLpParams =
+  WithBaseEngineExecuteParams<BurnLpParams>;
 
 export type EngineExecuteWithdrawCollateralParams = WithBaseEngineExecuteParams<
-  WithoutNonce<WithSpotLeverage<EngineWithdrawCollateralParams>>
+  WithSpotLeverage<WithdrawCollateralParams>
 >;
 
-export type EngineExecuteCancelOrdersParams = WithBaseEngineExecuteParams<
-  WithoutNonce<OrderCancellationParams>
->;
+export type EngineExecuteCancelOrdersParams =
+  WithBaseEngineExecuteParams<OrderCancellationParams>;
 
 export type EngineExecuteCancelProductOrdersParams =
-  WithBaseEngineExecuteParams<WithoutNonce<ProductOrdersCancellationParams>>;
+  WithBaseEngineExecuteParams<ProductOrdersCancellationParams>;
+
+export type EngineExecuteLinkSignerParams =
+  WithBaseEngineExecuteParams<LinkSignerParams>;
 
 export interface EngineExecuteRequestParamsByType {
   liquidate_subaccount: EngineExecuteLiquidateSubaccountParams;
@@ -83,6 +83,7 @@ export interface EngineExecuteRequestParamsByType {
   place_order: EngineExecutePlaceOrderParams;
   cancel_orders: EngineExecuteCancelOrdersParams;
   cancel_product_orders: EngineExecuteCancelProductOrdersParams;
+  link_signer: EngineExecuteLinkSignerParams;
 }
 
 export type EngineExecuteRequestParamsType =

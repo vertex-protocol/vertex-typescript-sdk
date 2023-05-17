@@ -7,10 +7,7 @@ import {
 } from '@vertex-protocol/contracts';
 import { BaseSpotAPI } from './BaseSpotAPI';
 import { ApproveAllowanceParams } from './types';
-import {
-  EngineWithdrawCollateralParams,
-  WithoutNonce,
-} from '@vertex-protocol/engine-client';
+import { EngineExecuteWithdrawCollateralParams } from '@vertex-protocol/engine-client';
 import { WithoutSubaccountOwner } from '../types';
 
 export class SpotExecuteAPI extends BaseSpotAPI {
@@ -24,14 +21,11 @@ export class SpotExecuteAPI extends BaseSpotAPI {
   }
 
   async withdraw(
-    params: WithoutSubaccountOwner<
-      WithoutNonce<EngineWithdrawCollateralParams>
-    >,
+    params: WithoutSubaccountOwner<EngineExecuteWithdrawCollateralParams>,
   ) {
     return this.context.engineClient.withdrawCollateral({
-      subaccountOwner: await this.getSignerAddress(),
+      subaccountOwner: await this.getChainSignerAddress(),
       verifyingAddr: this.context.contracts.endpoint.address,
-      chainId: await this.context.engineClient.getSigningChainId(),
       ...params,
     });
   }

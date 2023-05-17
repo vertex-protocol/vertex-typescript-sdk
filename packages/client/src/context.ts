@@ -20,14 +20,16 @@ import {
   IndexerClient,
 } from '@vertex-protocol/indexer-client';
 
-type ValidSigner = TypedDataSigner & Signer;
+export type ValidVertexSigner = TypedDataSigner & Signer;
 
 /**
  * Context required to use the Vertex client.
  */
 export interface VertexClientContext {
   // Must be a signer to use any executions
-  signerOrProvider: ValidSigner | Provider;
+  signerOrProvider: ValidVertexSigner | Provider;
+  // Used to sign engine transactions if provided, instead of signerOrProvider
+  linkedSigner?: ValidVertexSigner;
   contracts: VertexContracts;
   engineClient: EngineClient;
   indexerClient: IndexerClient;
@@ -55,7 +57,7 @@ interface VertexClientContextOpts {
  */
 export type CreateVertexClientContextSignerOpts = Pick<
   VertexClientContext,
-  'signerOrProvider'
+  'signerOrProvider' | 'linkedSigner'
 >;
 
 export type CreateVertexClientContextOpts =
@@ -146,6 +148,7 @@ export async function createClientContext(
     engineClient: new EngineClient({
       url: engineEndpoint,
       signer: validSigner,
+      linkedSigner: signerOpts.linkedSigner,
     }),
     indexerClient: new IndexerClient({
       url: indexerEndpoint,

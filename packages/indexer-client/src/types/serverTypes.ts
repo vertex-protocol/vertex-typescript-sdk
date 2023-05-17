@@ -2,10 +2,10 @@ import {
   IndexerServerCandlestick,
   IndexerServerEvent,
   IndexerServerMatchEvent,
+  IndexerServerOraclePrice,
   IndexerServerOrder,
   IndexerServerProductSnapshot,
   IndexerServerTx,
-  IndexerServerOraclePrice,
 } from './serverModelTypes';
 import { IndexerEventType } from './IndexerEventType';
 
@@ -84,6 +84,10 @@ export interface IndexerServerMatchEventsParams {
   idx?: string;
 }
 
+export interface IndexerServerLinkedSignerParams {
+  subaccount: string;
+}
+
 // Request
 export interface IndexerServerQueryRequestByType {
   summary: IndexerServerSummaryParams;
@@ -97,6 +101,7 @@ export interface IndexerServerQueryRequestByType {
   orders: IndexerServerOrdersParams;
   matches: IndexerServerMatchEventsParams;
   usdc_price: Record<string, never>;
+  linked_signer_rate_limit: IndexerServerLinkedSignerParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -194,6 +199,12 @@ export interface IndexerServerUsdcPriceResponse {
   price_x18: string;
 }
 
+export interface IndexerServerLinkedSignerResponse {
+  remaining_tx: string;
+  wait_time: string;
+  signer: string;
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   summary: IndexerServerSummaryResponse;
@@ -207,4 +218,5 @@ export interface IndexerServerQueryResponseByType {
   orders: IndexerServerOrdersResponse;
   matches: IndexerServerMatchEventsResponse;
   usdc_price: IndexerServerUsdcPriceResponse;
+  linked_signer_rate_limit: IndexerServerLinkedSignerResponse;
 }

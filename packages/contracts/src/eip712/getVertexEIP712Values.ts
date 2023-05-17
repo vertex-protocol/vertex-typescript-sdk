@@ -4,6 +4,7 @@ import {
 } from './signableRequestType';
 import {
   BurnLpParams,
+  LinkSignerParams,
   LiquidateSubaccountParams,
   MintLpParams,
   OrderCancellationParams,
@@ -15,12 +16,13 @@ import { toX18 } from '@vertex-protocol/utils';
 import { BigNumber } from 'ethers';
 import { subaccountToBytes32 } from '../utils';
 import {
-  EIP712ProductOrdersCancellationValues,
   EIP712BurnLpValues,
+  EIP712LinkSignerValues,
   EIP712LiquidateSubaccountValues,
   EIP712MintLpValues,
   EIP712OrderCancellationValues,
   EIP712OrderValues,
+  EIP712ProductOrdersCancellationValues,
   EIP712WithdrawCollateralValues,
   SignableRequestTypeToEIP712Values,
 } from './eip712ValueTypes';
@@ -64,6 +66,10 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
     case 'liquidate_subaccount':
       return getLiquidateSubaccountValues(
         params as LiquidateSubaccountParams,
+      ) as SignableRequestTypeToEIP712Values[TReqType];
+    case 'link_signer':
+      return getLinkSignerValues(
+        params as LinkSignerParams,
       ) as SignableRequestTypeToEIP712Values[TReqType];
   }
   throw Error(`Unknown request type: ${requestType}`);
@@ -164,6 +170,17 @@ function getLiquidateSubaccountValues(
     mode: params.mode,
     healthGroup: params.healthGroup.toString(),
     amount: BigNumber.from(params.amount).toString(),
+    nonce: BigNumber.from(params.nonce).toString(),
+  };
+}
+
+function getLinkSignerValues(params: LinkSignerParams): EIP712LinkSignerValues {
+  return {
+    sender: subaccountToBytes32({
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.subaccountName,
+    }),
+    signer: params.signer,
     nonce: BigNumber.from(params.nonce).toString(),
   };
 }

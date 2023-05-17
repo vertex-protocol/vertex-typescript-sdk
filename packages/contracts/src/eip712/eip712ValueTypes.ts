@@ -1,5 +1,6 @@
 import {
   BurnLpParams,
+  LinkSignerParams,
   LiquidateSubaccountParams,
   MintLpParams,
   OrderCancellationParams,
@@ -39,6 +40,8 @@ export type EIP712OrderCancellationValues =
 export type EIP712ProductOrdersCancellationValues =
   WithEIP712Sender<ProductOrdersCancellationParams>;
 
+export type EIP712LinkSignerValues = WithEIP712Sender<LinkSignerParams>;
+
 /**
  * All possible requests to be signed, to the EIP712 value interface
  */
@@ -50,4 +53,5 @@ export interface SignableRequestTypeToEIP712Values {
   cancel_orders: EIP712OrderCancellationValues;
   cancel_product_orders: EIP712ProductOrdersCancellationValues;
   liquidate_subaccount: EIP712LiquidateSubaccountValues;
+  link_signer: EIP712LinkSignerValues;
 }

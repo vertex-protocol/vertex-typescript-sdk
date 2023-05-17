@@ -3,6 +3,7 @@ import {
   WithSignature,
 } from '@vertex-protocol/engine-client';
 import { BaseVertexAPI } from '../base';
+import { OrderParams } from '@vertex-protocol/contracts';
 
 /**
  * @description Allows you to build execute messages as expected by the server to send over Websocket.
@@ -11,7 +12,7 @@ import { BaseVertexAPI } from '../base';
 export class WebSocketExecuteAPI extends BaseVertexAPI {
   /**
    * Builds ws message for the `liquidate_subaccount` execute action.
-   * @param param LiquidateSubaccount params.
+   * @param params LiquidateSubaccount params.
    * @returns `liquidate_subaccount` execute message
    */
   async buildLiquidateSubaccountMessage(
@@ -24,7 +25,7 @@ export class WebSocketExecuteAPI extends BaseVertexAPI {
 
   /**
    * Builds ws message for the `withdraw_collateral` execute action.
-   * @param param WithdrawCollateral params.
+   * @param params WithdrawCollateral params.
    * @returns `liquidate_subaccount` execute message
    */
   async buildWithdrawCollateralMessage(
@@ -37,7 +38,7 @@ export class WebSocketExecuteAPI extends BaseVertexAPI {
 
   /**
    * Builds ws message for the `mint_lp` execute action.
-   * @param param MintLp params.
+   * @param params MintLp params.
    * @returns `mint_lp` execute message
    */
   async buildMintLpMessage(
@@ -48,7 +49,7 @@ export class WebSocketExecuteAPI extends BaseVertexAPI {
 
   /**
    * Builds ws message for the `burn_lp` execute action.
-   * @param param BurnLp params.
+   * @param params BurnLp params.
    * @returns `burn_lp` execute message
    */
   async buildBurnLpMessage(
@@ -59,26 +60,32 @@ export class WebSocketExecuteAPI extends BaseVertexAPI {
 
   /**
    * Builds ws message for the `place_order` execute action.
-   * @param param PlaceOrder params.
+   * @param params PlaceOrder params.
    * @returns `place_order` execute message
    */
   buildPlaceOrderMessage(
-    params: WithSignature<EngineExecuteRequestParamsByType['place_order']>,
+    params: WithSignature<
+      EngineExecuteRequestParamsByType['place_order'] & {
+        order: OrderParams;
+      }
+    >,
   ) {
-    return this.context.engineClient.payloadBuilder.buildPlaceOrderPayload(
+    return this.context.engineClient.payloadBuilder.buildPlaceOrderPayloadSync(
       params,
     );
   }
 
   /**
    * Builds ws message for the `cancel_orders` execute action.
-   * @param param PlaceOrder params.
+   * @param params PlaceOrder params.
    * @returns `cancel_orders` execute message
    */
   buildCancelOrdersMessage(
-    params: WithSignature<EngineExecuteRequestParamsByType['cancel_orders']>,
+    params: WithSignature<
+      EngineExecuteRequestParamsByType['cancel_orders'] & { nonce: string }
+    >,
   ) {
-    return this.context.engineClient.payloadBuilder.buildCancelOrdersPayload(
+    return this.context.engineClient.payloadBuilder.buildCancelOrdersPayloadSync(
       params,
     );
   }

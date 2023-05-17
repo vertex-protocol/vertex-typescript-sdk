@@ -14,6 +14,8 @@ import {
   GetEngineContractsResponse,
   GetEngineEstimatedSubaccountSummaryParams,
   GetEngineIpCheckResponse,
+  GetEngineLinkedSignerParams,
+  GetEngineLinkedSignerResponse,
   GetEngineMarketLiquidityParams,
   GetEngineMarketLiquidityResponse,
   GetEngineMarketPriceParams,
@@ -383,6 +385,26 @@ export class EngineQueryClient extends EngineBaseClient {
 
     return {
       maxBaseAmount: toBigDecimal(baseResponse.max_base_amount),
+    };
+  }
+
+  /**
+   * Gets the currently linked signer for the subaccount
+   * @param params
+   * @returns
+   */
+  public async getLinkedSigner(
+    params: GetEngineLinkedSignerParams,
+  ): Promise<GetEngineLinkedSignerResponse> {
+    const baseResponse = await this.query('linked_signer', {
+      subaccount: subaccountToHex({
+        subaccountOwner: params.subaccountOwner,
+        subaccountName: params.subaccountName,
+      }),
+    });
+
+    return {
+      signer: baseResponse.linked_signer,
     };
   }
 
