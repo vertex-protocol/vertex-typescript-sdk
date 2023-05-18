@@ -40,6 +40,16 @@ async function main() {
 
   prettyPrint('Oracle Prices', toPrintableObject(oraclePrices));
 
+  const usdcPrice = await client.getQuotePrice();
+
+  prettyPrint('USDC Price', toPrintableObject(usdcPrice));
+
+  const linkedSigner = await client.getLinkedSignerWithRateLimit({
+    subaccount,
+  });
+
+  prettyPrint('Linked Signer', toPrintableObject(linkedSigner));
+
   const rewards = await client.getSubaccountRewards({
     address: subaccount.subaccountOwner,
   });

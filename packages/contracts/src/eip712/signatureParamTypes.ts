@@ -67,3 +67,8 @@ export interface ProductOrdersCancellationParams extends Subaccount {
   productIds: number[];
   nonce: string;
 }
+
+export interface LinkSignerParams extends Subaccount {
+  signer: string;
+  nonce: string;
+}

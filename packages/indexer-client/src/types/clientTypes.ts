@@ -258,3 +258,15 @@ export type GetIndexerMatchEventsResponse = IndexerMatchEvent[];
 export interface GetIndexerQuotePriceResponse {
   price: BigDecimal;
 }
+
+export interface GetIndexerLinkedSignerParams {
+  subaccount: Subaccount;
+}
+
+export interface GetIndexerLinkedSignerResponse {
+  remainingTxs: BigDecimal;
+  // If remainingTxs is 0, this is the time until the next link signer tx can be sent
+  waitTimeUntilNextTx: BigDecimal;
+  // If zero address, none is configured
+  signer: string;
+}

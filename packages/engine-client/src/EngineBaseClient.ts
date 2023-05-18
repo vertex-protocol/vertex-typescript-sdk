@@ -24,6 +24,8 @@ export interface EngineClientOpts {
   url: string;
   // Signer for EIP712 signing, if not provided, execute requests will error
   signer?: TypedDataSigner & Signer;
+  // Linked signer registered through the engine, if provided, execute requests will use this signer
+  linkedSigner?: TypedDataSigner;
 }
 
 // Only 1 key can be defined per execute request
@@ -43,6 +45,15 @@ export class EngineBaseClient {
 
   constructor(opts: EngineClientOpts) {
     this.opts = opts;
+  }
+
+  /**
+   * Sets the linked signer for execute requests
+   *
+   * @param linkedSigner The linkedSigner to use for all signatures. Set to null to revert to the chain signer
+   */
+  public setLinkedSigner(linkedSigner: TypedDataSigner | null) {
+    this.opts.linkedSigner = linkedSigner ?? undefined;
   }
 
   public async getTxNonce(address?: string): Promise<string> {
@@ -155,18 +166,14 @@ export class EngineBaseClient {
     };
   }
 
-  public async getSigningChainId(): Promise<number> {
-    if (!this.opts.signer) {
-      throw Error('No signer provided');
-    }
-    return this.opts.signer.getChainId();
-  }
-
   async getChainIdIfNeeded(params: { chainId?: number }): Promise<number> {
     if (params.chainId) {
       return params.chainId;
     }
-    return await this.getSigningChainId();
+    if (!this.opts.signer) {
+      throw Error('No signer provided');
+    }
+    return this.opts.signer.getChainId();
   }
 
   /**
@@ -174,6 +181,7 @@ export class EngineBaseClient {
    *
    * @param requestType
    * @param verifyingContract
+   * @param chainId
    * @param params
    * @public
    */
@@ -183,14 +191,16 @@ export class EngineBaseClient {
     chainId: number,
     params: SignableRequestTypeToParams[T],
   ) {
-    if (this.opts.signer == null) {
+    // Use the linked signer if provided, otherwise use the default signer provided to the engine
+    const signer = this.opts.linkedSigner ?? this.opts.signer;
+    if (signer == null) {
       throw Error('No signer provided');
     }
     return getSignedTransactionRequest({
       chainId,
       requestParams: params,
       requestType,
-      signer: this.opts.signer,
+      signer,
       verifyingContract,
     });
   }

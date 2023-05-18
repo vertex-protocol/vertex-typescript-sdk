@@ -91,6 +91,10 @@ export interface EngineServerMaxMintLpQueryParams {
   spot_leverage: boolean | null;
 }
 
+export interface EngineServerLinkedSignerParams {
+  subaccount: string;
+}
+
 export interface EngineServerQueryRequestByType {
   contracts: Record<string, never>;
   status: Record<string, never>;
@@ -109,6 +113,7 @@ export interface EngineServerQueryRequestByType {
   max_order_size: EngineServerMaxOrderSizeQueryParams;
   max_withdrawable: EngineServerMaxWithdrawableQueryParams;
   max_lp_mintable: EngineServerMaxMintLpQueryParams;
+  linked_signer: EngineServerLinkedSignerParams;
 }
 
 export type EngineServerQueryRequestType = keyof EngineServerQueryRequestByType;
@@ -235,6 +240,10 @@ export interface EngineServerCheckIpResponse {
   locale: string;
 }
 
+export interface EngineServerLinkedSignerResponse {
+  linked_signer: string;
+}
+
 export interface EngineServerQueryResponseByType {
   contracts: EngineServerContractsResponse;
   status: EngineServerStatusResponse;
@@ -250,6 +259,7 @@ export interface EngineServerQueryResponseByType {
   max_order_size: EngineServerMaxOrderSizeResponse;
   max_withdrawable: EngineServerMaxWithdrawableResponse;
   max_lp_mintable: EngineServerMaxMintLpResponse;
+  linked_signer: EngineServerLinkedSignerResponse;
 }
 
 export interface EngineServerQueryResponse<

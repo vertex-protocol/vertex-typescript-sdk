@@ -1,5 +1,6 @@
 import {
   BurnLpParams,
+  LinkSignerParams,
   LiquidateSubaccountParams,
   MintLpParams,
   OrderCancellationParams,
@@ -19,6 +20,7 @@ export interface SignableRequestTypeToParams {
   cancel_orders: OrderCancellationParams;
   cancel_product_orders: ProductOrdersCancellationParams;
   liquidate_subaccount: LiquidateSubaccountParams;
+  link_signer: LinkSignerParams;
 }
 
 export type SignableRequestType = keyof SignableRequestTypeToParams;

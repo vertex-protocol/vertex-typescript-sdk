@@ -10,7 +10,10 @@ import {
   GetEngineSubaccountSummaryParams,
 } from '@vertex-protocol/engine-client';
 import { GetSubaccountIdParams } from './queryTypes';
-import { GetIndexerSubaccountRewardsParams } from '@vertex-protocol/indexer-client';
+import {
+  GetIndexerLinkedSignerParams,
+  GetIndexerSubaccountRewardsParams,
+} from '@vertex-protocol/indexer-client';
 
 export class SubaccountQueryAPI extends BaseVertexAPI {
   /**
@@ -65,5 +68,15 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
    */
   async getSubaccountTokenRewards(params: GetIndexerSubaccountRewardsParams) {
     return this.context.indexerClient.getSubaccountRewards(params);
+  }
+
+  /**
+   * Retrieves the current signer and link signer rate limit from the indexer
+   * @param params
+   */
+  async getSubaccountLinkedSignerWithRateLimit(
+    params: GetIndexerLinkedSignerParams,
+  ) {
+    return this.context.indexerClient.getLinkedSignerWithRateLimit(params);
   }
 }

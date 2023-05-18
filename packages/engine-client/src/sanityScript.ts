@@ -1,5 +1,6 @@
-import { BigNumber, ethers, Wallet } from 'ethers';
+import { ethers, Wallet } from 'ethers';
 import {
+  createDeterministicLinkedSignerPrivateKey,
   depositCollateral,
   Endpoint__factory,
   IClearinghouse__factory,
@@ -13,6 +14,7 @@ import {
   nowInSeconds,
   toBigDecimal,
   toFixedPoint,
+  toPrintableObject,
 } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
 import { EngineOrderParams } from './types';
@@ -74,16 +76,6 @@ async function main() {
   console.log(
     `subaccountFromHex (out): ${subaccountFromHexOut.subaccountOwner}; ${subaccountFromHexOut.subaccountName}`,
   );
-  let subaccountId;
-  while (true) {
-    subaccountId = BigNumber.from(
-      await endpoint.getSubaccountId(subaccountBytes32),
-    );
-    if (!subaccountId.isZero()) {
-      break;
-    }
-  }
-  console.log('Subaccount ID', subaccountId.toString());
   console.log('Querying subaccount');
   const subaccountInfo = await client.getSubaccountSummary({
     subaccountOwner: signer.address,
@@ -100,7 +92,7 @@ async function main() {
     subaccountName: 'default',
     amount: toFixedPoint(-0.01),
     expiration: getExpiration() + 100000,
-    price: 28000,
+    price: 28900,
   };
   const placeResult = await client.placeOrder({
     verifyingAddr: orderbookAddr,
@@ -192,6 +184,43 @@ async function main() {
     'Max withdrawable after cancel order',
     JSON.stringify(maxWithdrawableAfterCancel, null, 2),
   );
+  const linkedSignerWalletPrivKey =
+    await createDeterministicLinkedSignerPrivateKey({
+      chainId,
+      endpointAddress: endpointAddr,
+      signer,
+      subaccountOwner: signer.address,
+      subaccountName: 'default',
+    });
+  const linkedSignerWallet = new Wallet(
+    linkedSignerWalletPrivKey,
+    signer.provider,
+  );
+  console.log(
+    "Linked signer's wallet",
+    linkedSignerWallet.address,
+    linkedSignerWallet.privateKey,
+  );
+  const linkSignerResult = await client.linkSigner({
+    chainId,
+    signer: subaccountToHex({
+      subaccountOwner: linkedSignerWallet.address,
+      subaccountName: '',
+    }),
+    subaccountOwner: signer.address,
+    subaccountName: 'default',
+    verifyingAddr: endpointAddr,
+  });
+  console.log('Done linking signer', linkSignerResult);
+  const linkedSignerQueryResponse = await client.getLinkedSigner({
+    subaccountOwner: signer.address,
+    subaccountName: 'default',
+  });
+  console.log(
+    'Linked signer, setting engine client to use the new signer',
+    toPrintableObject(linkedSignerQueryResponse),
+  );
+  client.setLinkedSigner(linkedSignerWallet);
   const mintSpotLpResult = await client.mintLp({
     subaccountOwner: signer.address,
     subaccountName: 'default',
@@ -230,6 +259,10 @@ async function main() {
     verifyingAddr: endpointAddr,
     chainId,
   });
+
+  // Delay for rate limit
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
   console.log('Done burning spot lp', burnSpotLpResult);
   const burnPerpLpResult = await client.burnLp({
     subaccountOwner: signer.address,
@@ -240,6 +273,22 @@ async function main() {
     chainId,
   });
   console.log('Done burning perp lp', burnPerpLpResult);
+  // Revoke signer
+  const revokeSignerResult = await client.linkSigner({
+    chainId,
+    signer: subaccountToHex({
+      subaccountOwner: ethers.constants.AddressZero,
+      subaccountName: '',
+    }),
+    subaccountOwner: signer.address,
+    subaccountName: 'default',
+    verifyingAddr: endpointAddr,
+  });
+  client.setLinkedSigner(null);
+  console.log('Done revoking signer', revokeSignerResult);
+
+  // Delay for rate limit
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   // places order for multiple products
   for (const productId of [1, 2]) {
