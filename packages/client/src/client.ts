@@ -1,4 +1,8 @@
-import { ValidVertexSigner, VertexClientContext } from './context';
+import {
+  createClientContext,
+  ValidVertexSigner,
+  VertexClientContext,
+} from './context';
 import { MarketAPI } from './apis/market';
 import { SubaccountAPI } from './apis/subaccount';
 import { SpotAPI } from './apis/spot';
@@ -10,21 +14,15 @@ import { WebsocketAPI } from './apis/ws';
  * Usually not instantiated directly. Instead, use {@link createVertexClient:CLIENT}.
  */
 export class VertexClient {
-  readonly context: VertexClientContext;
-  readonly market: MarketAPI;
-  readonly subaccount: SubaccountAPI;
-  readonly spot: SpotAPI;
-  readonly perp: PerpAPI;
-  readonly ws: WebsocketAPI;
+  context!: VertexClientContext;
+  market!: MarketAPI;
+  subaccount!: SubaccountAPI;
+  spot!: SpotAPI;
+  perp!: PerpAPI;
+  ws!: WebsocketAPI;
 
   constructor(context: VertexClientContext) {
-    this.context = context;
-
-    this.market = new MarketAPI(context);
-    this.subaccount = new SubaccountAPI(context);
-    this.spot = new SpotAPI(context);
-    this.perp = new PerpAPI(context);
-    this.ws = new WebsocketAPI(context);
+    this.setupFromContext(context);
   }
 
   /**
@@ -35,5 +33,41 @@ export class VertexClient {
     // This is a bit ugly, but works for now
     this.context.linkedSigner = linkedSigner ?? undefined;
     this.context.engineClient.setLinkedSigner(linkedSigner);
+  }
+
+  /**
+   * Sets the signer or provider for the client. Will cause a full reload of the current context.
+   * @param signerOrProvider
+   */
+  async setSignerOrProvider(
+    signerOrProvider: VertexClientContext['signerOrProvider'],
+  ) {
+    const newContext = await createClientContext(
+      {
+        contracts: {
+          querierAddress: this.context.contracts.querier.address,
+          spotEngineAddress: this.context.contracts.spotEngine.address,
+          perpEngineAddress: this.context.contracts.perpEngine.address,
+          clearinghouseAddress: this.context.contracts.clearinghouse.address,
+          endpointAddress: this.context.contracts.endpoint.address,
+        },
+        engineEndpoint: this.context.engineClient.opts.url,
+        indexerEndpoint: this.context.indexerClient.opts.url,
+      },
+      {
+        signerOrProvider,
+        linkedSigner: this.context.linkedSigner,
+      },
+    );
+    this.setupFromContext(newContext);
+  }
+
+  private setupFromContext(context: VertexClientContext) {
+    this.context = context;
+    this.market = new MarketAPI(context);
+    this.subaccount = new SubaccountAPI(context);
+    this.spot = new SpotAPI(context);
+    this.perp = new PerpAPI(context);
+    this.ws = new WebsocketAPI(context);
   }
 }
