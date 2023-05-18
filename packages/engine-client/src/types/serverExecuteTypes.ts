@@ -10,12 +10,7 @@ import {
   OrderParams,
   SignedTx,
 } from '@vertex-protocol/contracts';
-import { Bytes } from 'ethers/lib/utils';
 import { RequireExactlyOne } from '@vertex-protocol/utils';
-
-type ByteFieldsToHex<T> = {
-  [K in keyof T]: T[K] extends Bytes ? string : T[K];
-};
 
 export interface EngineServerExecutionResult {
   status: 'success' | 'failure';
@@ -26,7 +21,7 @@ export interface EngineServerExecutionResult {
 
 export interface EngineServerPlaceOrderParams {
   product_id: number;
-  order: ByteFieldsToHex<EIP712OrderValues>;
+  order: EIP712OrderValues;
   // Bytes
   signature: string;
   // Engine defaults this to true
@@ -38,31 +33,26 @@ type WithSpotLeverage<T> = T & {
 };
 
 export interface EngineServerExecuteRequestByType {
-  liquidate_subaccount: SignedTx<
-    ByteFieldsToHex<EIP712LiquidateSubaccountValues>
-  >;
+  liquidate_subaccount: SignedTx<EIP712LiquidateSubaccountValues>;
   withdraw_collateral: WithSpotLeverage<
-    SignedTx<ByteFieldsToHex<EIP712WithdrawCollateralValues>>
+    SignedTx<EIP712WithdrawCollateralValues>
   >;
-  mint_lp: WithSpotLeverage<SignedTx<ByteFieldsToHex<EIP712MintLpValues>>>;
-  burn_lp: SignedTx<ByteFieldsToHex<EIP712BurnLpValues>>;
+  mint_lp: WithSpotLeverage<SignedTx<EIP712MintLpValues>>;
+  burn_lp: SignedTx<EIP712BurnLpValues>;
   place_order: EngineServerPlaceOrderParams;
   cancel_orders: SignedTx<
-    Omit<ByteFieldsToHex<EIP712OrderCancellationValues>, 'productIds'> & {
+    Omit<EIP712OrderCancellationValues, 'productIds'> & {
       // number[] is technically assignable to "Bytes", so we need to override the ByteFieldsToHex result here
       productIds: number[];
     }
   >;
   cancel_product_orders: SignedTx<
-    Omit<
-      ByteFieldsToHex<EIP712ProductOrdersCancellationValues>,
-      'productIds'
-    > & {
+    Omit<EIP712ProductOrdersCancellationValues, 'productIds'> & {
       // number[] is technically assignable to "Bytes", so we need to override the ByteFieldsToHex result here
       productIds: number[];
     }
   >;
-  link_signer: SignedTx<ByteFieldsToHex<EIP712LinkSignerValues>>;
+  link_signer: SignedTx<EIP712LinkSignerValues>;
 }
 
 export type EngineServerExecuteRequestType =

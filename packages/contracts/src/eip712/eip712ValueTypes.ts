@@ -8,12 +8,12 @@ import {
   ProductOrdersCancellationParams,
   WithdrawCollateralParams,
 } from './signatureParamTypes';
-import { Bytes } from 'ethers/lib/utils';
 
 type WithEIP712Sender<
   T extends { subaccountOwner: string; subaccountName: string },
 > = Omit<T, 'subaccountOwner' | 'subaccountName'> & {
-  sender: Bytes;
+  // Hex encoded bytes32
+  sender: string;
 };
 
 export type EIP712WithdrawCollateralValues =
@@ -27,7 +27,8 @@ export type EIP712LiquidateSubaccountValues = Omit<
   WithEIP712Sender<LiquidateSubaccountParams>,
   'liquidateeOwner' | 'liquidateeName'
 > & {
-  liquidatee: Bytes;
+  // Hex encoded bytes32
+  liquidatee: string;
 };
 
 export type EIP712OrderValues = Omit<WithEIP712Sender<OrderParams>, 'price'> & {

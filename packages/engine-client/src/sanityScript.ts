@@ -36,10 +36,12 @@ async function main() {
     signer,
   });
   const clearinghouseAddr = '0x0165878A594ca255338adfa4d48449f69242Eb8F';
-  const quoteAddr = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-  const quote = await MockERC20__factory.connect(quoteAddr, signer);
   const clearinghouse = await IClearinghouse__factory.connect(
     clearinghouseAddr,
+    signer,
+  );
+  const quote = await MockERC20__factory.connect(
+    await clearinghouse.getQuote(),
     signer,
   );
   const endpointAddr = await clearinghouse.getEndpoint();
@@ -317,6 +319,9 @@ async function main() {
     });
 
     console.log('Subaccount Orders after place', subaccountOrdersAfterPlace);
+
+    // Delay for rate limit
+    await new Promise((resolve) => setTimeout(resolve, 5000));
   }
 
   // cancels orders for all products

@@ -14,7 +14,7 @@ import {
 } from './signatureParamTypes';
 import { toX18 } from '@vertex-protocol/utils';
 import { BigNumber } from 'ethers';
-import { subaccountToBytes32 } from '../utils';
+import { subaccountToHex } from '../utils';
 import {
   EIP712BurnLpValues,
   EIP712LinkSignerValues,
@@ -79,7 +79,7 @@ function getWithdrawCollateralValues(
   params: WithdrawCollateralParams,
 ): EIP712WithdrawCollateralValues {
   return {
-    sender: subaccountToBytes32({
+    sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
@@ -91,7 +91,7 @@ function getWithdrawCollateralValues(
 
 function getMintLpValues(params: MintLpParams): EIP712MintLpValues {
   return {
-    sender: subaccountToBytes32({
+    sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
@@ -105,7 +105,7 @@ function getMintLpValues(params: MintLpParams): EIP712MintLpValues {
 
 function getBurnLpValues(params: BurnLpParams): EIP712BurnLpValues {
   return {
-    sender: subaccountToBytes32({
+    sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
@@ -117,7 +117,7 @@ function getBurnLpValues(params: BurnLpParams): EIP712BurnLpValues {
 
 function getOrderValues(params: OrderParams): EIP712OrderValues {
   return {
-    sender: subaccountToBytes32({
+    sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
@@ -132,7 +132,7 @@ function getOrderCancellationValues(
   params: OrderCancellationParams,
 ): EIP712OrderCancellationValues {
   return {
-    sender: subaccountToBytes32({
+    sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
@@ -146,7 +146,7 @@ function getProductOrdersCancellationValues(
   params: ProductOrdersCancellationParams,
 ): EIP712ProductOrdersCancellationValues {
   return {
-    sender: subaccountToBytes32({
+    sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
@@ -159,11 +159,11 @@ function getLiquidateSubaccountValues(
   params: LiquidateSubaccountParams,
 ): EIP712LiquidateSubaccountValues {
   return {
-    sender: subaccountToBytes32({
+    sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
-    liquidatee: subaccountToBytes32({
+    liquidatee: subaccountToHex({
       subaccountOwner: params.liquidateeOwner,
       subaccountName: params.liquidateeName,
     }),
@@ -176,7 +176,7 @@ function getLiquidateSubaccountValues(
 
 function getLinkSignerValues(params: LinkSignerParams): EIP712LinkSignerValues {
   return {
-    sender: subaccountToBytes32({
+    sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
