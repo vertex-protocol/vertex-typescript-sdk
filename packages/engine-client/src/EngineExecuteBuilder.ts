@@ -74,10 +74,7 @@ export class EngineExecuteBuilder {
     const tx = getVertexEIP712Values('withdraw_collateral', paramsWithNonce);
     return {
       signature,
-      tx: {
-        ...tx,
-        sender: hexlify(tx.sender),
-      },
+      tx,
       spot_leverage: clientParams.spotLeverage ?? null,
     };
   }
@@ -101,10 +98,7 @@ export class EngineExecuteBuilder {
 
     return {
       signature,
-      tx: {
-        ...tx,
-        sender: hexlify(tx.sender),
-      },
+      tx,
       spot_leverage: clientParams.spotLeverage ?? null,
     };
   }
@@ -128,10 +122,7 @@ export class EngineExecuteBuilder {
 
     return {
       signature,
-      tx: {
-        ...tx,
-        sender: hexlify(tx.sender),
-      },
+      tx,
     };
   }
 
@@ -228,10 +219,7 @@ export class EngineExecuteBuilder {
     const tx = getVertexEIP712Values('cancel_orders', clientParams);
 
     return {
-      tx: {
-        ...tx,
-        sender: hexlify(tx.sender),
-      },
+      tx,
       signature: clientParams.signature,
     };
   }
@@ -254,10 +242,7 @@ export class EngineExecuteBuilder {
     );
 
     return {
-      tx: {
-        ...tx,
-        sender: hexlify(tx.sender),
-      },
+      tx,
       signature,
     };
   }
@@ -281,10 +266,7 @@ export class EngineExecuteBuilder {
     );
 
     return {
-      tx: {
-        ...tx,
-        sender: hexlify(tx.sender),
-      },
+      tx,
       signature,
     };
   }
