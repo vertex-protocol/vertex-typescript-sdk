@@ -76,7 +76,7 @@ export function subaccountNameToBytes12(name: string): SubaccountNameBytes12 {
 /**
  * When interacting with the engine, we need to send a hex string representation
  * of the bytes32 of a subaccount for serialization reasons. This util
- * converts a subaccount object (owner + name) to such hex represenation.
+ * converts a subaccount object (owner + name) to such hex representation.
  * @param subaccount subaccount object (owner + name)
  * @returns hex string representation of a subaccount
  */
@@ -85,7 +85,7 @@ export function subaccountToHex(subaccount: Subaccount): string {
 }
 
 /**
- * Converts a hex string represenation of a bytes32 subaccount to a subaccount object (owner + name)
+ * Converts a hex string representation of a bytes32 subaccount to a subaccount object (owner + name)
  * @param subaccount hex string representation of a bytes32 subaccount.
  * @returns subaccount object (owner + name)
  */
