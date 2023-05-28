@@ -95,7 +95,11 @@ export function calcSubaccountLeverage(summary: SubaccountSummaryResponse) {
     if (balance.productId === QUOTE_PRODUCT_ID) {
       return toBigDecimal(0);
     }
-    return balance.amount.abs().times(balance.oraclePrice);
+    const balanceValue =
+      balance.type === ProductEngineType.SPOT
+        ? calcSpotBalanceValue(balance)
+        : calcPerpBalanceValue(balance);
+    return balanceValue.plus(calcLpBalanceValue(balance));
   });
   return numerator.dividedBy(unweightedHealth);
 }
