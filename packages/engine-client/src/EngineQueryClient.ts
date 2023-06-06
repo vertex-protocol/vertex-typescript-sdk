@@ -385,6 +385,7 @@ export class EngineQueryClient extends EngineBaseClient {
 
     return {
       maxBaseAmount: toBigDecimal(baseResponse.max_base_amount),
+      maxQuoteAmount: toBigDecimal(baseResponse.max_quote_amount),
     };
   }
 

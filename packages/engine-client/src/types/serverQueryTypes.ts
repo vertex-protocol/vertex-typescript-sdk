@@ -231,6 +231,7 @@ export type EngineServerTimeResponse = number;
 
 export interface EngineServerMaxMintLpResponse {
   max_base_amount: string;
+  max_quote_amount: string;
 }
 
 export interface EngineServerCheckIpResponse {

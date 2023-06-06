@@ -188,6 +188,7 @@ export interface GetEngineMaxMintLpAmountParams extends Subaccount {
 
 export interface GetEngineMaxMintLpAmountResponse {
   maxBaseAmount: BigDecimal;
+  maxQuoteAmount: BigDecimal;
 }
 
 export type GetEngineIpCheckResponse = EngineServerCheckIpResponse;
