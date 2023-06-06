@@ -1,3 +1,14 @@
+import { subaccountToHex } from '@vertex-protocol/contracts';
+import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
+import axios, { AxiosResponse } from 'axios';
+import {
+  mapIndexerEvent,
+  mapIndexerEventWithTx,
+  mapIndexerMatchEventBalances,
+  mapIndexerOrder,
+  mapIndexerRewardEpoch,
+  mapIndexerServerProduct,
+} from './dataMappers';
 import {
   Candlestick,
   GetIndexerCandlesticksParams,
@@ -32,17 +43,6 @@ import {
   IndexerServerQueryResponseByType,
   IndexerSummaryBalance,
 } from './types';
-import axios, { AxiosResponse } from 'axios';
-import { subaccountToHex } from '@vertex-protocol/contracts';
-import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
-import {
-  mapIndexerEvent,
-  mapIndexerEventWithTx,
-  mapIndexerMatchEventBalances,
-  mapIndexerOrder,
-  mapIndexerRewardEpoch,
-  mapIndexerServerProduct,
-} from './dataMappers';
 
 export interface IndexerClientOpts {
   // Server URL
@@ -309,7 +309,7 @@ export class IndexerBaseClient {
 
     // Same as logic in `getEvents`
     let lastTxIdx = 0;
-    return baseResponse.matches.map((matchEvent, index): IndexerMatchEvent => {
+    return baseResponse.matches.map((matchEvent): IndexerMatchEvent => {
       if (
         baseResponse.txs[lastTxIdx].submission_idx !== matchEvent.submission_idx
       ) {
@@ -363,6 +363,7 @@ export class IndexerBaseClient {
       subaccount: subaccountToHex(params.subaccount),
     });
     return {
+      totalTxLimit: toBigDecimal(baseResponse.total_tx_limit),
       remainingTxs: toBigDecimal(baseResponse.remaining_tx),
       signer: baseResponse.signer,
       waitTimeUntilNextTx: toBigDecimal(baseResponse.wait_time),
