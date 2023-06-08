@@ -97,8 +97,8 @@ export function calcSubaccountLeverage(summary: SubaccountSummaryResponse) {
     }
     const balanceValue =
       balance.type === ProductEngineType.SPOT
-        ? calcSpotBalanceValue(balance)
-        : calcPerpBalanceValue(balance);
+        ? calcSpotBalanceValue(balance).abs()
+        : calcPerpBalanceNotionalValue(balance);
     return balanceValue.plus(calcLpBalanceValue(balance));
   });
   return numerator.dividedBy(unweightedHealth);
