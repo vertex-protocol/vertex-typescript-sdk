@@ -2,11 +2,13 @@ import {
   IndexerEvent,
   IndexerEventWithTx,
   IndexerGlobalRewardsForProduct,
+  IndexerMatchEventBalances,
   IndexerOrder,
   IndexerPerpBalance,
   IndexerRewardEpoch,
   IndexerServerBalance,
   IndexerServerEvent,
+  IndexerServerMatchEventBalances,
   IndexerServerOrder,
   IndexerServerProduct,
   IndexerServerRewardEpoch,
@@ -129,6 +131,17 @@ export function mapIndexerEventWithTx(
   return {
     timestamp: toBigDecimal(tx.timestamp),
     ...mapIndexerEvent(event),
+  };
+}
+
+export function mapIndexerMatchEventBalances(
+  eventBalances: IndexerServerMatchEventBalances,
+): IndexerMatchEventBalances {
+  return {
+    base: mapIndexerServerBalance(eventBalances.base),
+    quote: eventBalances.quote
+      ? (mapIndexerServerBalance(eventBalances.quote) as IndexerSpotBalance)
+      : undefined,
   };
 }
 

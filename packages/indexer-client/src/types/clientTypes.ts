@@ -239,6 +239,12 @@ export interface GetIndexerMatchEventsParams {
   startCursor?: string;
 }
 
+// There are 2 balance states per match event if the match is in a spot market, but only one if the match is in a perp market
+export interface IndexerMatchEventBalances {
+  base: IndexerSpotBalance | IndexerPerpBalance;
+  quote?: IndexerSpotBalance;
+}
+
 export interface IndexerMatchEvent {
   productId: number;
   digest: string;
@@ -251,6 +257,8 @@ export interface IndexerMatchEvent {
   cumulativeFee: BigDecimal;
   submissionIndex: string;
   timestamp: BigDecimal;
+  preBalances: IndexerMatchEventBalances;
+  postBalances: IndexerMatchEventBalances;
 }
 
 export type GetIndexerMatchEventsResponse = IndexerMatchEvent[];

@@ -91,6 +91,14 @@ export interface IndexerServerMatchEvent {
   cumulative_base_filled: string;
   cumulative_quote_filled: string;
   submission_idx: string;
+  pre_balance: IndexerServerMatchEventBalances;
+  post_balance: IndexerServerMatchEventBalances;
+}
+
+export interface IndexerServerMatchEventBalances {
+  base: IndexerServerBalance;
+  // Quote is defined if 0 is included in `product_ids` and the match event is a spot event
+  quote?: IndexerServerBalance;
 }
 
 export interface IndexerServerOraclePrice {
