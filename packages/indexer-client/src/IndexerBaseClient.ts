@@ -38,6 +38,7 @@ import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import {
   mapIndexerEvent,
   mapIndexerEventWithTx,
+  mapIndexerMatchEventBalances,
   mapIndexerOrder,
   mapIndexerRewardEpoch,
   mapIndexerServerProduct,
@@ -336,6 +337,8 @@ export class IndexerBaseClient {
         order: matchEvent.order,
         submissionIndex: matchEvent.submission_idx,
         timestamp: toBigDecimal(timestamp),
+        preBalances: mapIndexerMatchEventBalances(matchEvent.pre_balance),
+        postBalances: mapIndexerMatchEventBalances(matchEvent.post_balance),
       };
     });
   }

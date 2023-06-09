@@ -97,8 +97,8 @@ async function main() {
   const matchEvents = await client.getPaginatedSubaccountMatchEvents({
     subaccountName: subaccount.subaccountName,
     subaccountOwner: subaccount.subaccountOwner,
-    productIds: [1, 2, 3],
-    limit: 1,
+    productIds: [0, 1, 2, 3, 4],
+    limit: 10,
   });
 
   prettyPrint('Match events', matchEvents);
