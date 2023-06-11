@@ -263,9 +263,22 @@ export interface EngineServerQueryResponseByType {
   linked_signer: EngineServerLinkedSignerResponse;
 }
 
-export interface EngineServerQueryResponse<
+export interface EngineServerQuerySuccessResponse<
   TQueryType extends keyof EngineServerQueryResponseByType = EngineServerQueryRequestType,
 > {
-  status: 'success' | 'failure';
+  status: 'success';
   data: EngineServerQueryResponseByType[TQueryType];
 }
+
+export interface EngineServerQueryFailureResponse {
+  status: 'failure';
+  // Error message
+  data: string;
+  error_code: number;
+}
+
+export type EngineServerQueryResponse<
+  TQueryType extends keyof EngineServerQueryResponseByType = EngineServerQueryRequestType,
+> =
+  | EngineServerQuerySuccessResponse<TQueryType>
+  | EngineServerQueryFailureResponse;

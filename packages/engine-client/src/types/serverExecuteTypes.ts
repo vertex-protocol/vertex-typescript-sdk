@@ -12,12 +12,21 @@ import {
 } from '@vertex-protocol/contracts';
 import { RequireExactlyOne } from '@vertex-protocol/utils';
 
-export interface EngineServerExecutionResult {
-  status: 'success' | 'failure';
-  error?: {
-    message: string; // Revert message, defaulting to "" if none
-  };
+export interface EngineServerExecuteSuccessResult {
+  status: 'success';
+  signature: string;
 }
+
+export interface EngineServerExecuteFailureResult {
+  status: 'failure';
+  signature: string;
+  error: string;
+  error_code: number;
+}
+
+export type EngineServerExecuteResult =
+  | EngineServerExecuteSuccessResult
+  | EngineServerExecuteFailureResult;
 
 export interface EngineServerPlaceOrderParams {
   product_id: number;

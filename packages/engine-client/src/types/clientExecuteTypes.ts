@@ -9,7 +9,7 @@ import {
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import { RequireExactlyOne } from '@vertex-protocol/utils';
-import { EngineServerExecutionResult } from './serverExecuteTypes';
+import { EngineServerExecuteResult } from './serverExecuteTypes';
 
 /**
  * Either verifying address or signature must be provided;
@@ -92,7 +92,6 @@ export type EngineExecuteRequestParamsType =
 export type EngineExecuteRequestParams =
   RequireExactlyOne<EngineExecuteRequestParamsType>;
 
-export interface EngineExecutePlaceOrderResult
-  extends EngineServerExecutionResult {
+export type EngineExecutePlaceOrderResult = EngineServerExecuteResult & {
   orderParams: OrderParams;
-}
+};
