@@ -1,3 +1,4 @@
+import { IndexerEventType } from './IndexerEventType';
 import {
   IndexerServerCandlestick,
   IndexerServerEvent,
@@ -7,7 +8,6 @@ import {
   IndexerServerProductSnapshot,
   IndexerServerTx,
 } from './serverModelTypes';
-import { IndexerEventType } from './IndexerEventType';
 
 /**
  * Params
@@ -200,6 +200,7 @@ export interface IndexerServerUsdcPriceResponse {
 }
 
 export interface IndexerServerLinkedSignerResponse {
+  total_tx_limit: string;
   remaining_tx: string;
   wait_time: string;
   signer: string;

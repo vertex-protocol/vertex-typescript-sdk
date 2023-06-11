@@ -1,4 +1,3 @@
-import { BigDecimal } from '@vertex-protocol/utils';
 import {
   EIP712OrderValues,
   Market,
@@ -10,6 +9,7 @@ import {
   SpotMarket,
   Subaccount,
 } from '@vertex-protocol/contracts';
+import { BigDecimal } from '@vertex-protocol/utils';
 import { CandlestickPeriod } from './CandlestickPeriod';
 import { IndexerEventType } from './IndexerEventType';
 
@@ -272,6 +272,7 @@ export interface GetIndexerLinkedSignerParams {
 }
 
 export interface GetIndexerLinkedSignerResponse {
+  totalTxLimit: BigDecimal;
   remainingTxs: BigDecimal;
   // If remainingTxs is 0, this is the time until the next link signer tx can be sent
   waitTimeUntilNextTx: BigDecimal;
