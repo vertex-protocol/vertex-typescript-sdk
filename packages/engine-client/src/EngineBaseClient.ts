@@ -1,7 +1,7 @@
 import {
   EngineServerExecuteRequestByType,
   EngineServerExecuteRequestType,
-  EngineServerExecutionResult,
+  EngineServerExecuteResult,
   EngineServerQueryRequest,
   EngineServerQueryRequestByType,
   EngineServerQueryRequestType,
@@ -31,7 +31,7 @@ export interface EngineClientOpts {
 // Only 1 key can be defined per execute request
 type EngineExecuteRequestBody = Partial<EngineServerExecuteRequestByType>;
 
-type EngineExecuteRequestResponse = EngineServerExecutionResult;
+type EngineExecuteRequestResponse = EngineServerExecuteResult;
 
 type EngineQueryRequestResponse<
   T extends EngineServerQueryRequestType = EngineServerQueryRequestType,
