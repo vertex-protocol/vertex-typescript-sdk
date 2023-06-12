@@ -3,7 +3,7 @@
 Monorepo for the Vertex TS SDK. The Vertex SDK is a collection of utilities
 for interacting with the Vertex API and contracts.
 
-[SDK Docs](https://vertex-protocol.github.io/vertex-sdk)
+[SDK Docs](https://vertex-protocol.github.io/vertex-typescript-sdk/index.html)
 
 ## Packages
 
