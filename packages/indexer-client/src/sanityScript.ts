@@ -17,7 +17,7 @@ async function main() {
 
   const summary = await client.getSubaccountSummary({
     subaccount,
-    timestamp: nowInSeconds(),
+    timestamp: [nowInSeconds(), nowInSeconds() - 60 * 60 * 24],
   });
 
   prettyPrint('Summary', summary);
