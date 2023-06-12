@@ -44,7 +44,8 @@ export interface IndexerBalanceTrackedVars {
 
 export interface GetIndexerSummaryParams {
   subaccount: Subaccount;
-  timestamp: number;
+  // A series of timestamps for which to return a summary of the subaccount
+  timestamp: number[];
 }
 
 export interface IndexerSummaryBalance {
@@ -53,7 +54,16 @@ export interface IndexerSummaryBalance {
   trackedVars: IndexerBalanceTrackedVars;
 }
 
-export type GetIndexerSummaryResponse = IndexerSummaryBalance[];
+export interface IndexerSubaccountSummary {
+  timestamp: BigDecimal;
+  balances: IndexerSummaryBalance[];
+}
+
+// Map of timestamp requested -> summary for that time
+export type GetIndexerSummaryResponse = Record<
+  string,
+  IndexerSubaccountSummary
+>;
 
 export interface GetIndexerSubaccountRewardsParams {
   address: string;

@@ -14,7 +14,7 @@ import {
  */
 export interface IndexerServerSummaryParams {
   subaccount: string;
-  timestamp: number;
+  timestamp: number[];
 }
 
 export interface IndexerServerRewardsParams {
@@ -111,7 +111,8 @@ export type IndexerServerQueryRequestType =
  * Responses
  */
 export interface IndexerServerSummaryResponse {
-  events: IndexerServerEvent[];
+  // Map of timestamp requested -> latest events corresponding to each product
+  events: Record<string, IndexerServerEvent[]>;
 }
 
 export interface IndexerServerSubaccountRewardsForProduct {

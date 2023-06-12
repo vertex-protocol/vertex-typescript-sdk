@@ -77,14 +77,27 @@ export class IndexerBaseClient {
       timestamp: params.timestamp,
     });
 
-    return baseResponse.events.map((event): IndexerSummaryBalance => {
-      const mappedEvent = mapIndexerEvent(event);
-      return {
-        productId: mappedEvent.productId,
-        state: mappedEvent.state,
-        trackedVars: mappedEvent.trackedVars,
+    const response: GetIndexerSummaryResponse = {};
+
+    Object.entries(baseResponse.events).forEach(([timestamp, events]) => {
+      const balances: IndexerSummaryBalance[] = events.map(
+        (event): IndexerSummaryBalance => {
+          const mappedEvent = mapIndexerEvent(event);
+          return {
+            productId: mappedEvent.productId,
+            state: mappedEvent.state,
+            trackedVars: mappedEvent.trackedVars,
+          };
+        },
+      );
+
+      response[timestamp] = {
+        timestamp: toBigDecimal(timestamp),
+        balances,
       };
     });
+
+    return response;
   }
 
   /**
