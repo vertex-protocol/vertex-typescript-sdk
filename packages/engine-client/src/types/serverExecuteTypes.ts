@@ -15,6 +15,7 @@ import { RequireExactlyOne } from '@vertex-protocol/utils';
 export interface EngineServerExecuteSuccessResult {
   status: 'success';
   signature: string;
+  request_type: string;
 }
 
 export interface EngineServerExecuteFailureResult {
@@ -22,6 +23,7 @@ export interface EngineServerExecuteFailureResult {
   signature: string;
   error: string;
   error_code: number;
+  request_type: string;
 }
 
 export type EngineServerExecuteResult =
