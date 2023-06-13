@@ -13,18 +13,18 @@ import {
 import { RequireExactlyOne } from '@vertex-protocol/utils';
 import { EngineServerGetOrderResponse } from './serverQueryTypes';
 
-export interface EngineServerCancelProductOrdersResponse {
+export interface EngineServerCancelOrdersResponse {
   cancelled_orders: EngineServerGetOrderResponse[];
 }
 
 export interface EngineServerExecuteResponseDataByType {
-  cancel_product_orders: EngineServerCancelProductOrdersResponse;
   liquidate_subaccount: null;
   withdraw_collateral: null;
   mint_lp: null;
   burn_lp: null;
   place_order: null;
-  cancel_orders: null;
+  cancel_product_orders: EngineServerCancelOrdersResponse;
+  cancel_orders: EngineServerCancelOrdersResponse;
   link_signer: null;
 }
 
