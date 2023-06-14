@@ -109,8 +109,11 @@ export class EngineBaseClient {
     const response = await axios.get<EngineQueryRequestResponse>(requestUrl);
 
     this.checkResponseStatus(response);
-    const success_response =
-      this.checkQueryServerStatus<TRequestType>(response);
+    this.checkServerStatus(response);
+
+    const success_response = response as AxiosResponse<
+      EngineServerQuerySuccessResponse<TRequestType>
+    >;
 
     return success_response.data
       .data as EngineServerQueryResponseByType[TRequestType];
@@ -150,7 +153,7 @@ export class EngineBaseClient {
     );
 
     this.checkResponseStatus(response);
-    this.checkExecuteServerStatus(response);
+    this.checkServerStatus(response);
 
     return response.data;
   }
@@ -217,24 +220,13 @@ export class EngineBaseClient {
     }
   }
 
-  private checkExecuteServerStatus(
-    response: AxiosResponse<EngineExecuteRequestResponse>,
+  private checkServerStatus(
+    response: AxiosResponse<
+      EngineExecuteRequestResponse | EngineQueryRequestResponse
+    >,
   ) {
     if (response.data.status !== 'success') {
       throw response.data;
     }
-  }
-
-  private checkQueryServerStatus<
-    TRequestType extends EngineServerQueryRequestType,
-  >(
-    response: AxiosResponse<EngineQueryRequestResponse>,
-  ): AxiosResponse<EngineServerQuerySuccessResponse<TRequestType>> {
-    if (response.data.status !== 'success') {
-      throw response.data;
-    }
-    return response as AxiosResponse<
-      EngineServerQuerySuccessResponse<TRequestType>
-    >;
   }
 }
