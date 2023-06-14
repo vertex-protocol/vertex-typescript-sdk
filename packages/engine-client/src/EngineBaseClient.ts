@@ -217,7 +217,7 @@ export class EngineBaseClient {
     }
   }
 
-  private checkExecuteServerStatus<TRequestType>(
+  private checkExecuteServerStatus(
     response: AxiosResponse<EngineExecuteRequestResponse>,
   ) {
     if (response.data.status !== 'success') {
