@@ -2,11 +2,13 @@ import {
   EngineServerExecuteRequestByType,
   EngineServerExecuteRequestType,
   EngineServerExecuteResult,
+  EngineServerExecuteSuccessResult,
   EngineServerQueryRequest,
   EngineServerQueryRequestByType,
   EngineServerQueryRequestType,
   EngineServerQueryResponse,
   EngineServerQueryResponseByType,
+  EngineServerQuerySuccessResponse,
   GetEngineNoncesParams,
   GetEngineNoncesResponse,
 } from './types';
@@ -107,9 +109,11 @@ export class EngineBaseClient {
     const response = await axios.get<EngineQueryRequestResponse>(requestUrl);
 
     this.checkResponseStatus(response);
-    this.checkServerStatus(response);
+    const success_response =
+      this.checkQueryServerStatus<TRequestType>(response);
 
-    return response.data.data as EngineServerQueryResponseByType[TRequestType];
+    return success_response.data
+      .data as EngineServerQueryResponseByType[TRequestType];
   }
 
   /**
@@ -146,7 +150,7 @@ export class EngineBaseClient {
     );
 
     this.checkResponseStatus(response);
-    this.checkServerStatus(response);
+    this.checkExecuteServerStatus(response);
 
     return response.data;
   }
@@ -213,13 +217,24 @@ export class EngineBaseClient {
     }
   }
 
-  private checkServerStatus(
-    response: AxiosResponse<
-      EngineExecuteRequestResponse | EngineQueryRequestResponse
-    >,
+  private checkExecuteServerStatus<TRequestType>(
+    response: AxiosResponse<EngineExecuteRequestResponse>,
   ) {
     if (response.data.status !== 'success') {
       throw response.data;
     }
+  }
+
+  private checkQueryServerStatus<
+    TRequestType extends EngineServerQueryRequestType,
+  >(
+    response: AxiosResponse<EngineQueryRequestResponse>,
+  ): AxiosResponse<EngineServerQuerySuccessResponse<TRequestType>> {
+    if (response.data.status !== 'success') {
+      throw response.data;
+    }
+    return response as AxiosResponse<
+      EngineServerQuerySuccessResponse<TRequestType>
+    >;
   }
 }

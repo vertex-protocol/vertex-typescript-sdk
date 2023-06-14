@@ -272,8 +272,7 @@ export interface EngineServerQuerySuccessResponse<
 
 export interface EngineServerQueryFailureResponse {
   status: 'failure';
-  // Error message
-  data: string;
+  error: string;
   error_code: number;
 }
 
