@@ -110,7 +110,7 @@ export class EngineBaseClient {
     this.checkResponseStatus(response);
     this.checkServerStatus(response);
 
-    //checkServerStatus throws on failure responses
+    // checkServerStatus throws on failure responses so the cast to the success response is acceptable here
     const successResponse = response as AxiosResponse<
       EngineServerQuerySuccessResponse<TRequestType>
     >;
