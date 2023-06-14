@@ -110,11 +110,12 @@ export class EngineBaseClient {
     this.checkResponseStatus(response);
     this.checkServerStatus(response);
 
-    const success_response = response as AxiosResponse<
+    //checkServerStatus throws on failure responses
+    const successResponse = response as AxiosResponse<
       EngineServerQuerySuccessResponse<TRequestType>
     >;
 
-    return success_response.data
+    return successResponse.data
       .data as EngineServerQueryResponseByType[TRequestType];
   }
 
