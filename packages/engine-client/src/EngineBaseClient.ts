@@ -7,6 +7,7 @@ import {
   EngineServerQueryRequestType,
   EngineServerQueryResponse,
   EngineServerQueryResponseByType,
+  EngineServerQuerySuccessResponse,
   GetEngineNoncesParams,
   GetEngineNoncesResponse,
 } from './types';
@@ -109,7 +110,13 @@ export class EngineBaseClient {
     this.checkResponseStatus(response);
     this.checkServerStatus(response);
 
-    return response.data.data as EngineServerQueryResponseByType[TRequestType];
+    // checkServerStatus throws on failure responses so the cast to the success response is acceptable here
+    const successResponse = response as AxiosResponse<
+      EngineServerQuerySuccessResponse<TRequestType>
+    >;
+
+    return successResponse.data
+      .data as EngineServerQueryResponseByType[TRequestType];
   }
 
   /**
