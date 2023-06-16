@@ -15,6 +15,7 @@ export interface RunContext {
   provider: Provider;
   endpoints: {
     engine: string;
+    trigger: string;
     indexer: string;
   };
   contracts: VertexDeploymentAddresses;

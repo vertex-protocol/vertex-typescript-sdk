@@ -1,5 +1,5 @@
 {
-  "name": "@vertex-protocol/client",
+  "name": "@vertex-protocol/trigger-client",
   "version": "0.1.0-alpha.109",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
@@ -24,9 +24,8 @@
   "dependencies": {
     "@vertex-protocol/contracts": "^0.1.0-alpha.109",
     "@vertex-protocol/engine-client": "^0.1.0-alpha.109",
-    "@vertex-protocol/indexer-client": "^0.1.0-alpha.109",
-    "@vertex-protocol/trigger-client": "^0.1.0-alpha.109",
     "@vertex-protocol/utils": "^0.1.0-alpha.109",
+    "axios": "^1.3.4",
     "ts-mixer": "^6.0.3"
   },
   "peerDependencies": {
@@ -38,7 +37,7 @@
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
-    "displayName": "Vertex Client"
+    "displayName": "Vertex Trigger Server Utils"
   },
-  "gitHead": "6d0f498829ddaf01a11d2f46f960811428b370f5"
+  "gitHead": "275f2a56565baa5c01ad2b28b8c0a0dfe64237e3"
 }

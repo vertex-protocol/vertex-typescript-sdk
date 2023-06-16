@@ -85,7 +85,6 @@ export interface EngineOrder extends Subaccount {
   expiration: BigDecimal;
   nonce: string;
   digest: string;
-  // Raw order params for cancellation
   orderParams: OrderParams;
   placementTime: number;
 }

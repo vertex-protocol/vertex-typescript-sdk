@@ -1,6 +1,6 @@
 import { BigNumber, BigNumberish } from 'ethers';
 import { fromBn, toBn } from 'evm-bn';
-import { toBigDecimal } from './bigNumber';
+import { BigDecimalish, toBigDecimal } from './bigNumber';
 import { BigDecimal } from './bigDecimal';
 
 /**
@@ -8,7 +8,7 @@ import { BigDecimal } from './bigDecimal';
  *
  * @param val
  */
-export function toX18(val: BigNumberish | BigDecimal): BigNumber {
+export function toX18(val: BigDecimalish): BigNumber {
   return toFixedPoint(val, 18);
 }
 
@@ -42,10 +42,7 @@ export function fromFixedPoint(val: BigNumberish, decimals = 18): BigDecimal {
  * @param val
  * @param decimals Number of decimals to include in the fixed point representation
  */
-export function toFixedPoint(
-  val: BigNumberish | BigDecimal,
-  decimals = 18,
-): BigNumber {
+export function toFixedPoint(val: BigDecimalish, decimals = 18): BigNumber {
   const valToParse = val instanceof BigDecimal ? val.toFixed() : val.toString();
   return toBn(valToParse, decimals ? decimals : 18);
 }

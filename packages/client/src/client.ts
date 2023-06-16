@@ -30,6 +30,7 @@ export class VertexClient {
     // This is a bit ugly, but works for now
     this.context.linkedSigner = linkedSigner ?? undefined;
     this.context.engineClient.setLinkedSigner(linkedSigner);
+    this.context.triggerClient.setLinkedSigner(linkedSigner);
   }
 
   /**
@@ -50,9 +51,11 @@ export class VertexClient {
         },
         engineEndpoint: this.context.engineClient.opts.url,
         indexerEndpoint: this.context.indexerClient.opts.url,
+        triggerEndpoint: this.context.triggerClient.opts.url,
       },
       {
         signerOrProvider,
+        // No need to call setLinkedSigner as this property doesn't change
         linkedSigner: this.context.linkedSigner,
       },
     );

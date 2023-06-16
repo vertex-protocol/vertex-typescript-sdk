@@ -7,7 +7,33 @@ export function getOrderNonce(
   recvTimeMillis: number = Date.now() + 90 * 1000,
   randomInt: number = Math.floor(Math.random() * 1000),
 ): string {
-  return ((BigInt(recvTimeMillis) << 20n) + BigInt(randomInt)).toString();
+  return getOrderNonceBigInt(recvTimeMillis, randomInt).toString();
+}
+
+/**
+ * Generates a trigger order nonce based on recvTime in milliseconds, defaulting to Date.now() + 90 seconds
+ * Trigger order nonces require that the first bit is set to 1, this differentiates it from a regular order nonce
+ *
+ * @param recvTimeMillis
+ * @param randomInt
+ */
+export function getTriggerOrderNonce(
+  recvTimeMillis: number = Date.now() + 90 * 1000,
+  randomInt: number = Math.floor(Math.random() * 1000),
+): string {
+  const regularOrderNonce = getOrderNonceBigInt(recvTimeMillis, randomInt);
+  const triggerOrderNonce = regularOrderNonce | (1n << 63n);
+
+  return triggerOrderNonce.toString();
+}
+
+/**
+ * Determines if a nonce is a trigger order nonce
+ */
+export function isTriggerOrderNonce(orderNonce: string): boolean {
+  const nonceBigInt = BigInt(orderNonce);
+  // Check if the 63rd bit is set to 1
+  return Boolean(nonceBigInt & (1n << 63n));
 }
 
 /**
@@ -16,6 +42,15 @@ export function getOrderNonce(
  * @param orderNonce
  */
 export function getRecvTimeFromOrderNonce(orderNonce: string): number {
-  const bigIntRecvTime = BigInt(orderNonce) >> 20n;
+  // We need to trim the first (63rd) bit, which is set to 1 for trigger orders
+  const orderNonceBitMasked = BigInt(orderNonce) & ~(1n << 63n);
+  const bigIntRecvTime = orderNonceBitMasked >> 20n;
   return Number(bigIntRecvTime.toString());
+}
+
+function getOrderNonceBigInt(
+  recvTimeMillis: number,
+  randomInt: number,
+): bigint {
+  return (BigInt(recvTimeMillis) << 20n) + BigInt(randomInt);
 }

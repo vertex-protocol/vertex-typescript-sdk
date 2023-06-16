@@ -2,6 +2,7 @@ import {
   BurnLpParams,
   LinkSignerParams,
   LiquidateSubaccountParams,
+  ListTriggerOrdersParams,
   MintLpParams,
   OrderCancellationParams,
   OrderParams,
@@ -17,6 +18,7 @@ export interface SignableRequestTypeToParams {
   mint_lp: MintLpParams;
   burn_lp: BurnLpParams;
   place_order: OrderParams;
+  list_trigger_orders: ListTriggerOrdersParams;
   cancel_orders: OrderCancellationParams;
   cancel_product_orders: ProductOrdersCancellationParams;
   liquidate_subaccount: LiquidateSubaccountParams;

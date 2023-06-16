@@ -18,6 +18,7 @@ import {
   GetIndexerOrdersResponse,
   GetIndexerProductSnapshotsParams,
 } from '@vertex-protocol/indexer-client';
+import { GetTriggerOrdersParams } from './types';
 
 export class MarketQueryAPI extends BaseVertexAPI {
   /**
@@ -47,6 +48,17 @@ export class MarketQueryAPI extends BaseVertexAPI {
    */
   async getOpenSubaccountOrders(params: GetEngineSubaccountOrdersParams) {
     return this.context.engineClient.getSubaccountOrders(params);
+  }
+
+  /**
+   * @description Queries the offchain trigger service to list trigger orders. Requires a signature
+   * @param params
+   */
+  async getTriggerOrders(params: GetTriggerOrdersParams) {
+    return this.context.triggerClient.listTriggerOrders({
+      ...params,
+      verifyingAddr: this.context.contracts.endpoint.address,
+    });
   }
 
   /**

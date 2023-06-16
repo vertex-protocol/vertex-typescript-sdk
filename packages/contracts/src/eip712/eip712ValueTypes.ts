@@ -2,6 +2,7 @@ import {
   BurnLpParams,
   LinkSignerParams,
   LiquidateSubaccountParams,
+  ListTriggerOrdersParams,
   MintLpParams,
   OrderCancellationParams,
   OrderParams,
@@ -35,6 +36,9 @@ export type EIP712OrderValues = Omit<WithEIP712Sender<OrderParams>, 'price'> & {
   priceX18: string;
 };
 
+export type EIP712ListTriggerOrdersValues =
+  WithEIP712Sender<ListTriggerOrdersParams>;
+
 export type EIP712OrderCancellationValues =
   WithEIP712Sender<OrderCancellationParams>;
 
@@ -51,6 +55,7 @@ export interface SignableRequestTypeToEIP712Values {
   mint_lp: EIP712MintLpValues;
   burn_lp: EIP712BurnLpValues;
   place_order: EIP712OrderValues;
+  list_trigger_orders: EIP712ListTriggerOrdersValues;
   cancel_orders: EIP712OrderCancellationValues;
   cancel_product_orders: EIP712ProductOrdersCancellationValues;
   liquidate_subaccount: EIP712LiquidateSubaccountValues;

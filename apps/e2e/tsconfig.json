@@ -10,5 +10,22 @@
   ],
   "exclude": [
     "node_modules"
+  ],
+  "references": [
+    {
+      "path": "../../packages/engine-client"
+    },
+    {
+      "path": "../../packages/indexer-client"
+    },
+    {
+      "path": "../../packages/trigger-client"
+    },
+    {
+      "path": "../../packages/contracts"
+    },
+    {
+      "path": "../../packages/utils"
+    }
   ]
 }
