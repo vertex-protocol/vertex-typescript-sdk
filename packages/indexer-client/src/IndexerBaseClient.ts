@@ -258,6 +258,7 @@ export class IndexerBaseClient {
       product_ids: params.productIds,
       event_types: params.eventTypes,
       max_time: params.maxTimestampInclusive,
+      desc: params.desc,
       limit: serverLimit,
       idx: params.startCursor,
     });

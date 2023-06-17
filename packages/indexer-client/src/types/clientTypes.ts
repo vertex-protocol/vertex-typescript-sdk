@@ -186,6 +186,8 @@ export interface GetIndexerEventsParams {
   productIds?: number[];
   eventTypes?: IndexerEventType[];
   maxTimestampInclusive?: number;
+  // Descending order for idx (time), defaults to true
+  desc?: boolean;
   limit?: {
     type: GetIndexerEventsLimitType;
     value: number;

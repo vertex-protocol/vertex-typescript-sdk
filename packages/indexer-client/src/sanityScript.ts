@@ -94,6 +94,18 @@ async function main() {
 
   prettyPrint('Raw Events', events);
 
+  const eventsAsc = await client.getEvents({
+    eventTypes: ['match_orders'],
+    limit: {
+      type: 'events',
+      value: 1,
+    },
+    desc: false,
+    subaccount,
+  });
+
+  prettyPrint('Raw Events Asc', eventsAsc);
+
   const matchEvents = await client.getPaginatedSubaccountMatchEvents({
     subaccountName: subaccount.subaccountName,
     subaccountOwner: subaccount.subaccountOwner,
