@@ -3,6 +3,7 @@ import {
   createDeterministicLinkedSignerPrivateKey,
   depositCollateral,
   Endpoint__factory,
+  getOrderNonce,
   IClearinghouse__factory,
   MockERC20__factory,
   subaccountFromBytes32,
@@ -18,7 +19,6 @@ import {
 } from '@vertex-protocol/utils';
 import { EngineClient } from './EngineClient';
 import { EngineOrderParams } from './types';
-import { getOrderNonce } from './utils';
 
 function getExpiration() {
   return nowInSeconds() + 1000;

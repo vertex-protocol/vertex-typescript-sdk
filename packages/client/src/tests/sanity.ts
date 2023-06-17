@@ -1,9 +1,11 @@
 import { Wallet } from 'ethers';
 import { toFixedPoint } from '@vertex-protocol/utils';
 import { PlaceOrderParams } from '../apis/market';
-import { getExpirationTimestamp } from '@vertex-protocol/contracts';
+import {
+  getExpirationTimestamp,
+  getOrderNonce,
+} from '@vertex-protocol/contracts';
 import { getProductMetadataByProductId } from '../utils';
-import { getOrderNonce } from '@vertex-protocol/engine-client';
 import { VertexClient } from '../client';
 
 export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {

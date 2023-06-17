@@ -1,13 +1,10 @@
-import {
-  createClientContext,
-  ValidVertexSigner,
-  VertexClientContext,
-} from './context';
+import { createClientContext, VertexClientContext } from './context';
 import { MarketAPI } from './apis/market';
 import { SubaccountAPI } from './apis/subaccount';
 import { SpotAPI } from './apis/spot';
 import { PerpAPI } from './apis/perp';
 import { WebsocketAPI } from './apis/ws';
+import { ValidVertexSigner } from '@vertex-protocol/contracts';
 
 /**
  * Client for querying and executing against Vertex Clearinghouse.

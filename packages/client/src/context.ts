@@ -5,12 +5,12 @@ import {
   IPerpEngine__factory,
   ISpotEngine__factory,
   ProductEngineType,
+  ValidVertexSigner,
   VERTEX_DEPLOYMENTS,
   VertexContracts,
 } from '@vertex-protocol/contracts';
 import { Signer } from 'ethers';
 import { Provider } from '@ethersproject/providers';
-import { TypedDataSigner } from '@ethersproject/abstract-signer';
 import {
   ENGINE_CLIENT_ENDPOINTS,
   EngineClient,
@@ -19,8 +19,6 @@ import {
   INDEXER_CLIENT_ENDPOINTS,
   IndexerClient,
 } from '@vertex-protocol/indexer-client';
-
-export type ValidVertexSigner = TypedDataSigner & Signer;
 
 /**
  * Context required to use the Vertex client.
@@ -133,7 +131,7 @@ export async function createClientContext(
     (await clearinghouse.getEngineByType(ProductEngineType.PERP));
 
   const validSigner = Signer.isSigner(signerOrProvider)
-    ? (signerOrProvider as TypedDataSigner & Signer)
+    ? (signerOrProvider as ValidVertexSigner)
     : undefined;
 
   return {

@@ -3,5 +3,6 @@ export * from './productTypeFilter';
 export * from './subaccountInfo';
 export * from './balanceValue';
 export * from './orderExpiration';
+export * from './orderNonce';
 export * from './bytes32';
 export * from './createDeterministicLinkedSignerPrivateKey';
