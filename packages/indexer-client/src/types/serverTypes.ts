@@ -53,6 +53,8 @@ export interface IndexerServerEventsParams {
   subaccount?: string;
   product_ids?: number[];
   event_types?: IndexerEventType[];
+  // Descending order for idx (time), defaults to true
+  desc?: boolean;
   // submission_idx for pagination, inclusive
   idx?: string;
   max_time?: number;
