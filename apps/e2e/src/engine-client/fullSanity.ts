@@ -1,4 +1,5 @@
-import { ethers, Wallet } from 'ethers';
+import { RunContext } from '../utils/types';
+import { EngineOrderParams } from '@vertex-protocol/engine-client';
 import {
   createDeterministicLinkedSignerPrivateKey,
   depositCollateral,
@@ -11,31 +12,22 @@ import {
   subaccountToBytes32,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
-import {
-  nowInSeconds,
-  toBigDecimal,
-  toFixedPoint,
-  toPrintableObject,
-} from '@vertex-protocol/utils';
-import { EngineClient } from './EngineClient';
-import { EngineOrderParams } from './types';
+import { toBigDecimal, toFixedPoint } from '@vertex-protocol/utils';
+import { ethers, Wallet } from 'ethers';
+import { runWithContext } from '../utils/runWithContext';
+import { getExpiration } from '../utils/getExpiration';
+import { prettyPrint } from '../utils/prettyPrint';
 
-function getExpiration() {
-  return nowInSeconds() + 1000;
-}
-
-async function main() {
-  // Hardhat deployers
-  const signer = new Wallet(
-    '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
-    new ethers.providers.JsonRpcProvider(),
-  );
+async function fullSanity(context: RunContext) {
+  const signer = context.getWallet();
   const chainId = await signer.getChainId();
+
   const client = new EngineClient({
-    url: 'http://localhost:80/api',
+    url: context.endpoints.engine,
     signer,
   });
-  const clearinghouseAddr = '0x0165878A594ca255338adfa4d48449f69242Eb8F';
+
+  const clearinghouseAddr = context.contracts.clearinghouse;
   const clearinghouse = await IClearinghouse__factory.connect(
     clearinghouseAddr,
     signer,
@@ -83,9 +75,9 @@ async function main() {
     subaccountOwner: signer.address,
     subaccountName: 'default',
   });
-  console.log('Subaccount info', JSON.stringify(subaccountInfo, null, 2));
+  prettyPrint('Subaccount info', subaccountInfo);
   const products = await client.getAllMarkets();
-  console.log('All products', JSON.stringify(products, null, 2));
+  prettyPrint('All products', products);
   console.log('Placing order');
   const productId = 1;
   const orderbookAddr = await clearinghouse.getOrderbook(productId);
@@ -93,7 +85,7 @@ async function main() {
     subaccountOwner: signer.address,
     subaccountName: 'default',
     amount: toFixedPoint(-0.01),
-    expiration: getExpiration() + 100000,
+    expiration: getExpiration(),
     price: 28900,
   };
   const placeResult = await client.placeOrder({
@@ -108,27 +100,27 @@ async function main() {
     orderbookAddr,
     chainId,
   );
-  console.log('Done placing spot order', placeResult);
+  prettyPrint('Done placing spot order', placeResult);
   const subaccountOrders = await client.getSubaccountOrders({
     productId: 2,
     subaccountName: 'default',
     subaccountOwner: signer.address,
   });
-  console.log('Subaccount orders', subaccountOrders);
+  prettyPrint('Subaccount orders', subaccountOrders);
   const marketLiquidity = await client.getMarketLiquidity({
     depth: 10,
     productId,
   });
-  console.log('Market liquidity', JSON.stringify(marketLiquidity, null, 2));
+  prettyPrint('Market liquidity', marketLiquidity);
   const marketPrice = await client.getMarketPrice({
     productId,
   });
-  console.log('Market price', JSON.stringify(marketPrice, null, 2));
+  prettyPrint('Market price', marketPrice);
   const feeRates = await client.getSubaccountFeeRates({
     subaccountName: 'default',
     subaccountOwner: signer.address,
   });
-  console.log('Fee rates', JSON.stringify(feeRates, null, 2));
+  prettyPrint('Fee rates', feeRates);
   const maxOrderSize = await client.getMaxOrderSize({
     subaccountOwner: signer.address,
     subaccountName: 'default',
@@ -136,28 +128,28 @@ async function main() {
     price: toBigDecimal(28000),
     side: 'long',
   });
-  console.log('Max order size', JSON.stringify(maxOrderSize, null, 2));
+  prettyPrint('Max order size', maxOrderSize);
   const maxWithdrawable = await client.getMaxWithdrawable({
     subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 0,
   });
-  console.log('Max withdrawable', JSON.stringify(maxWithdrawable, null, 2));
+  prettyPrint('Max withdrawable', maxWithdrawable);
   const maxWithdrawableNoSpotLeverage = await client.getMaxWithdrawable({
     subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 0,
     spotLeverage: false,
   });
-  console.log(
+  prettyPrint(
     'Max withdrawable no spot leverage',
-    JSON.stringify(maxWithdrawableNoSpotLeverage, null, 2),
+    maxWithdrawableNoSpotLeverage,
   );
   const queriedOrder = await client.getOrder({
     digest: orderDigest,
     productId,
   });
-  console.log('Queried order', JSON.stringify(queriedOrder, null, 2));
+  prettyPrint('Queried order', queriedOrder);
   console.log('Cancelling order');
   const cancelResult = await client.cancelOrders({
     subaccountName: 'default',
@@ -167,25 +159,19 @@ async function main() {
     verifyingAddr: endpointAddr,
     chainId,
   });
-  console.log('Done cancelling order', cancelResult);
+  prettyPrint('Done cancelling order', cancelResult);
   const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
     productId,
     subaccountOwner: signer.address,
     subaccountName: 'default',
   });
-  console.log(
-    'Subaccount orders after cancellation',
-    JSON.stringify(subaccountOrdersAfterCancel),
-  );
+  prettyPrint('Subaccount orders after cancel', subaccountOrdersAfterCancel);
   const maxWithdrawableAfterCancel = await client.getMaxWithdrawable({
     subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 0,
   });
-  console.log(
-    'Max withdrawable after cancel order',
-    JSON.stringify(maxWithdrawableAfterCancel, null, 2),
-  );
+  prettyPrint('Max withdrawable after cancel', maxWithdrawableAfterCancel);
   const linkedSignerWalletPrivKey =
     await createDeterministicLinkedSignerPrivateKey({
       chainId,
@@ -213,14 +199,14 @@ async function main() {
     subaccountName: 'default',
     verifyingAddr: endpointAddr,
   });
-  console.log('Done linking signer', linkSignerResult);
+  prettyPrint('Done linking signer', linkSignerResult);
   const linkedSignerQueryResponse = await client.getLinkedSigner({
     subaccountOwner: signer.address,
     subaccountName: 'default',
   });
-  console.log(
+  prettyPrint(
     'Linked signer, setting engine client to use the new signer',
-    toPrintableObject(linkedSignerQueryResponse),
+    linkedSignerQueryResponse,
   );
   client.setLinkedSigner(linkedSignerWallet);
   const mintSpotLpResult = await client.mintLp({
@@ -233,7 +219,7 @@ async function main() {
     verifyingAddr: endpointAddr,
     chainId,
   });
-  console.log('Done minting spot lp', mintSpotLpResult);
+  prettyPrint('Done minting spot lp', mintSpotLpResult);
   const mintPerpLpResult = await client.mintLp({
     subaccountOwner: signer.address,
     subaccountName: 'default',
@@ -244,15 +230,12 @@ async function main() {
     verifyingAddr: endpointAddr,
     chainId,
   });
-  console.log('Done minting perp lp', mintPerpLpResult);
+  prettyPrint('Done minting perp lp', mintPerpLpResult);
   const subaccountInfoAfterMintingLp = await client.getSubaccountSummary({
     subaccountOwner: signer.address,
     subaccountName: 'default',
   });
-  console.log(
-    'Subaccount info after LP mint',
-    JSON.stringify(subaccountInfoAfterMintingLp, null, 2),
-  );
+  prettyPrint('Subaccount info after LP mint', subaccountInfoAfterMintingLp);
   const burnSpotLpResult = await client.burnLp({
     subaccountOwner: signer.address,
     subaccountName: 'default',
@@ -265,7 +248,7 @@ async function main() {
   // Delay for rate limit
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  console.log('Done burning spot lp', burnSpotLpResult);
+  prettyPrint('Done burning spot lp', burnSpotLpResult);
   const burnPerpLpResult = await client.burnLp({
     subaccountOwner: signer.address,
     subaccountName: 'default',
@@ -274,7 +257,7 @@ async function main() {
     verifyingAddr: endpointAddr,
     chainId,
   });
-  console.log('Done burning perp lp', burnPerpLpResult);
+  prettyPrint('Done burning perp lp', burnPerpLpResult);
   // Revoke signer
   const revokeSignerResult = await client.linkSigner({
     chainId,
@@ -287,7 +270,7 @@ async function main() {
     verifyingAddr: endpointAddr,
   });
   client.setLinkedSigner(null);
-  console.log('Done revoking signer', revokeSignerResult);
+  prettyPrint('Done revoking signer', revokeSignerResult);
 
   // Delay for rate limit
   await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -310,7 +293,7 @@ async function main() {
       nonce: getOrderNonce(),
       chainId,
     });
-    console.log('Done placing order', placeResult);
+    prettyPrint('Done placing order', placeResult);
 
     const subaccountOrdersAfterPlace = await client.getSubaccountOrders({
       productId,
@@ -318,7 +301,7 @@ async function main() {
       subaccountName: 'default',
     });
 
-    console.log('Subaccount Orders after place', subaccountOrdersAfterPlace);
+    prettyPrint('Subaccount Orders after place', subaccountOrdersAfterPlace);
 
     // Delay for rate limit
     await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -332,7 +315,7 @@ async function main() {
     verifyingAddr: endpointAddr,
     chainId,
   });
-  console.log('Cancel Product Orders', cancelProductOrdersRes);
+  prettyPrint('Cancel Product Orders', cancelProductOrdersRes);
 
   for (const productId of [1, 2]) {
     const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
@@ -341,7 +324,7 @@ async function main() {
       subaccountName: 'default',
     });
 
-    console.log(
+    prettyPrint(
       `Subaccount Orders after cancel for product ${productId}`,
       subaccountOrdersAfterCancel,
     );
@@ -355,15 +338,12 @@ async function main() {
     verifyingAddr: endpointAddr,
     chainId,
   });
-  console.log('Done withdrawing collateral, result', withdrawResult);
+  prettyPrint('Done withdrawing collateral, result', withdrawResult);
   const subaccountInfoAtEnd = await client.getSubaccountSummary({
     subaccountOwner: signer.address,
     subaccountName: 'default',
   });
-  console.log(
-    'Subaccount info after withdraw collateral',
-    JSON.stringify(subaccountInfoAtEnd, null, 2),
-  );
+  prettyPrint('Subaccount info after withdraw collateral', subaccountInfoAtEnd);
 }
 
-main().catch((e) => console.log(e));
+runWithContext(fullSanity);

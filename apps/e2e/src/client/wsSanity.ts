@@ -1,10 +1,16 @@
-import { Wallet } from 'ethers';
+import { RunContext } from '../utils/types';
+import { getOrderNonce } from '@vertex-protocol/engine-client';
+import { subaccountToHex } from '@vertex-protocol/contracts';
 import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
-import { PlaceOrderParams } from '../apis/market';
-import { getOrderNonce, subaccountToHex } from '@vertex-protocol/contracts';
-import { VertexClient } from '../client';
+import { runWithContext } from '../utils/runWithContext';
+import { createVertexClient, PlaceOrderParams } from '@vertex-protocol/client';
 
-export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
+async function wsSanity(context: RunContext) {
+  const signer = context.getWallet();
+  const vertexClient = await createVertexClient(context.env.chainEnv, {
+    signerOrProvider: signer,
+  });
+
   const chainId = await signer.getChainId();
 
   const orderParams: PlaceOrderParams['order'] = {
@@ -177,3 +183,5 @@ export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {
     )}`,
   );
 }
+
+runWithContext(wsSanity);

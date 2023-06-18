@@ -1,15 +1,19 @@
-import { Wallet } from 'ethers';
+import { RunContext } from '../utils/types';
+import { getOrderNonce } from '@vertex-protocol/engine-client';
+import { getExpirationTimestamp } from '@vertex-protocol/contracts';
 import { toFixedPoint } from '@vertex-protocol/utils';
-import { PlaceOrderParams } from '../apis/market';
+import { runWithContext } from '../utils/runWithContext';
 import {
-  getExpirationTimestamp,
-  getOrderNonce,
-} from '@vertex-protocol/contracts';
-import { getProductMetadataByProductId } from '../utils';
-import { VertexClient } from '../client';
+  createVertexClient,
+  getProductMetadataByProductId,
+  PlaceOrderParams,
+} from '@vertex-protocol/client';
 
-export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
-  console.log('Running full sanity...');
+async function fullSanity(context: RunContext) {
+  const signer = context.getWallet();
+  const vertexClient = await createVertexClient(context.env.chainEnv, {
+    signerOrProvider: signer,
+  });
 
   const chainId = await signer.getChainId();
 
@@ -142,3 +146,5 @@ export async function fullSanity(signer: Wallet, vertexClient: VertexClient) {
 
   console.log(`Engine time: ${engineTime}`);
 }
+
+runWithContext(fullSanity);

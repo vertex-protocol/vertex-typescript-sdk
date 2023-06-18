@@ -1,13 +1,16 @@
+import { RunContext } from '../utils/types';
 import { Subaccount } from '@vertex-protocol/contracts';
-import { nowInSeconds, toPrintableObject } from '@vertex-protocol/utils';
+import { nowInSeconds } from '@vertex-protocol/utils';
+import { runWithContext } from '../utils/runWithContext';
+import {
+  CandlestickPeriod,
+  IndexerClient,
+} from '@vertex-protocol/indexer-client';
+import { prettyPrint } from '../utils/prettyPrint';
 
-import { INDEXER_CLIENT_ENDPOINTS } from './endpoints';
-import { IndexerClient } from './IndexerClient';
-import { CandlestickPeriod } from './types';
-
-async function main() {
+async function fullSanity(context: RunContext) {
   const client = new IndexerClient({
-    url: INDEXER_CLIENT_ENDPOINTS.testnet,
+    url: context.endpoints.indexer,
   });
 
   const subaccount: Subaccount = {
@@ -32,29 +35,29 @@ async function main() {
     productId: 2,
   });
 
-  prettyPrint('Perp prices', toPrintableObject(price));
+  prettyPrint('Perp prices', price);
 
   const oraclePrices = await client.getOraclePrices({
     productIds: [1, 2, 3, 4],
   });
 
-  prettyPrint('Oracle Prices', toPrintableObject(oraclePrices));
+  prettyPrint('Oracle Prices', oraclePrices);
 
   const usdcPrice = await client.getQuotePrice();
 
-  prettyPrint('USDC Price', toPrintableObject(usdcPrice));
+  prettyPrint('USDC Price', usdcPrice);
 
   const linkedSigner = await client.getLinkedSignerWithRateLimit({
     subaccount,
   });
 
-  prettyPrint('Linked Signer', toPrintableObject(linkedSigner));
+  prettyPrint('Linked Signer', linkedSigner);
 
   const rewards = await client.getSubaccountRewards({
     address: subaccount.subaccountOwner,
   });
 
-  prettyPrint('Rewards', toPrintableObject(rewards));
+  prettyPrint('Rewards', rewards);
 
   const productSnapshots = await client.getProductSnapshots({
     limit: 2,
@@ -164,12 +167,4 @@ async function main() {
   prettyPrint('Paginated LP events', lpEvents);
 }
 
-main().catch((e) => console.log(e));
-
-/**
- * Util for pretty printing JSON
- */
-function prettyPrint(label: string, obj: unknown) {
-  console.log(label);
-  console.log(JSON.stringify(toPrintableObject(obj), null, 2));
-}
+runWithContext(fullSanity);
