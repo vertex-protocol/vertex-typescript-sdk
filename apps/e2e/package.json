@@ -1,0 +1,22 @@
+{
+  "name": "vertex-sdk-e2e",
+  "version": "0.1.0",
+  "author": "Frank Jia <frank@vertexprotocol.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "source": "./src/index.ts",
+  "repository": "https://github.com/vertex-protocol/vertex-sdk",
+  "scripts": {
+    "sanity": "ts-node ./src/test.ts"
+  },
+  "dependencies": {
+    "@vertex-protocol/client": "^0.1.0-alpha.106",
+    "@vertex-protocol/engine-client": "^0.1.0-alpha.106",
+    "@vertex-protocol/indexer-client": "^0.1.0-alpha.106",
+    "@vertex-protocol/contracts": "^0.1.0-alpha.106",
+    "@vertex-protocol/utils": "^0.1.0-alpha.106",
+    "ethers": "^5.7.2"
+  }
+}
