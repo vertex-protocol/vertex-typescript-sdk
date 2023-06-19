@@ -15,8 +15,7 @@
   "scripts": {
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
-    "dev": "tsc -w",
-    "sanity": "ts-node ./src/tests/index.ts"
+    "dev": "tsc -w"
   },
   "files": [
     "dist",

@@ -1,4 +1,5 @@
 import {
+  ChainEnv,
   Endpoint__factory,
   FQuerier__factory,
   IClearinghouse__factory,
@@ -58,10 +59,7 @@ export type CreateVertexClientContextSignerOpts = Pick<
   'signerOrProvider' | 'linkedSigner'
 >;
 
-export type CreateVertexClientContextOpts =
-  | VertexClientContextOpts
-  | 'testnet'
-  | 'mainnet';
+export type CreateVertexClientContextOpts = VertexClientContextOpts | ChainEnv;
 
 /**
  * Utility function to create client context from options
@@ -87,7 +85,8 @@ export async function createClientContext(
           engineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
           indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.testnet,
         };
-      } else if (opts === 'mainnet') {
+      }
+      if (opts === 'mainnet') {
         return {
           contracts: {
             querierAddress: VERTEX_DEPLOYMENTS.mainnet.querier,
@@ -99,9 +98,21 @@ export async function createClientContext(
           engineEndpoint: ENGINE_CLIENT_ENDPOINTS.mainnet,
           indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.mainnet,
         };
-      } else {
-        return opts;
       }
+      if (opts === 'local') {
+        return {
+          contracts: {
+            querierAddress: VERTEX_DEPLOYMENTS.local.querier,
+            spotEngineAddress: VERTEX_DEPLOYMENTS.local.spotEngine,
+            perpEngineAddress: VERTEX_DEPLOYMENTS.local.perpEngine,
+            clearinghouseAddress: VERTEX_DEPLOYMENTS.local.clearinghouse,
+            endpointAddress: VERTEX_DEPLOYMENTS.local.endpoint,
+          },
+          engineEndpoint: ENGINE_CLIENT_ENDPOINTS.local,
+          indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.local,
+        };
+      }
+      return opts;
     })();
   const { signerOrProvider } = signerOpts;
 

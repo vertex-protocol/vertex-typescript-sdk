@@ -1,6 +1,7 @@
+*.env
+
 .DS_store
 .idea/
-packages/contracts/.env
 
 *.tsbuildinfo
 dist/
@@ -43,5 +44,3 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 .next
-
-packages/contracts/src/common/deployments/deployment.localhost.json
