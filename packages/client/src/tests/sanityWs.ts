@@ -1,8 +1,7 @@
 import { Wallet } from 'ethers';
 import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
 import { PlaceOrderParams } from '../apis/market';
-import { subaccountToHex } from '@vertex-protocol/contracts';
-import { getOrderNonce } from '@vertex-protocol/engine-client';
+import { getOrderNonce, subaccountToHex } from '@vertex-protocol/contracts';
 import { VertexClient } from '../client';
 
 export async function wsSanity(signer: Wallet, vertexClient: VertexClient) {

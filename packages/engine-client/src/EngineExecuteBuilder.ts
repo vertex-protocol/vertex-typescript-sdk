@@ -1,4 +1,5 @@
 import {
+  getOrderNonce,
   getVertexEIP712Values,
   OrderParams,
   SignableRequestType,
@@ -14,7 +15,6 @@ import {
   WithBaseEngineExecuteParams,
   WithSignature,
 } from './types';
-import { getOrderNonce } from './utils';
 
 /**
  * @description Builds execute payloads as expected by the server.

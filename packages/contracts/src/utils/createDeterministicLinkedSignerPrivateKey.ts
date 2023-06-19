@@ -1,11 +1,10 @@
 import { Subaccount } from '../common';
-import { TypedDataSigner } from '@ethersproject/abstract-signer';
-import { getVertexEIP712Domain } from '../eip712';
+import { getVertexEIP712Domain, ValidVertexSigner } from '../eip712';
 import { subaccountToHex } from './bytes32';
 import { keccak256 } from 'ethers/lib/utils';
 
 interface Params extends Subaccount {
-  signer: TypedDataSigner;
+  signer: ValidVertexSigner;
   chainId: number;
   endpointAddress: string;
 }

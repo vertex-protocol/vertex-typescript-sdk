@@ -18,6 +18,7 @@ import {
 } from './types';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import {
+  getRecvTimeFromOrderNonce,
   Market,
   parseRawExpirationTimestamp,
   PerpMarket,
@@ -25,7 +26,6 @@ import {
   SpotMarket,
 } from '@vertex-protocol/contracts';
 import {
-  getRecvTimeFromOrderNonce,
   mapEngineServerPerpProduct,
   mapEngineServerSpotProduct,
 } from '@vertex-protocol/engine-client';

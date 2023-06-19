@@ -15,18 +15,17 @@ import {
   getSignedTransactionRequest,
   SignableRequestType,
   SignableRequestTypeToParams,
+  ValidVertexSigner,
 } from '@vertex-protocol/contracts';
 import axios, { AxiosResponse } from 'axios';
-import { TypedDataSigner } from '@ethersproject/abstract-signer';
-import { Signer } from 'ethers';
 
 export interface EngineClientOpts {
   // Server URL
   url: string;
   // Signer for EIP712 signing, if not provided, execute requests will error
-  signer?: TypedDataSigner & Signer;
+  signer?: ValidVertexSigner;
   // Linked signer registered through the engine, if provided, execute requests will use this signer
-  linkedSigner?: TypedDataSigner;
+  linkedSigner?: ValidVertexSigner;
 }
 
 // Only 1 key can be defined per execute request
@@ -53,7 +52,7 @@ export class EngineBaseClient {
    *
    * @param linkedSigner The linkedSigner to use for all signatures. Set to null to revert to the chain signer
    */
-  public setLinkedSigner(linkedSigner: TypedDataSigner | null) {
+  public setLinkedSigner(linkedSigner: ValidVertexSigner | null) {
     this.opts.linkedSigner = linkedSigner ?? undefined;
   }
 
