@@ -1,16 +1,21 @@
 import { BigNumberish } from 'ethers';
 
-export interface ApproveAllowanceParams {
-  productId: number;
+export type ProductIdOrTokenAddress =
+  | {
+      productId: number;
+    }
+  | {
+      tokenAddress: string;
+    };
+
+type TokenQueryParams = {
+  address: string;
+} & ProductIdOrTokenAddress;
+
+export type ApproveAllowanceParams = ProductIdOrTokenAddress & {
   amount: BigNumberish;
-}
+};
 
-export interface GetTokenWalletBalanceParams {
-  productId: number;
-  address: string;
-}
+export type GetTokenWalletBalanceParams = TokenQueryParams;
 
-export interface GetTokenAllowanceParams {
-  productId: number;
-  address: string;
-}
+export type GetTokenAllowanceParams = TokenQueryParams;

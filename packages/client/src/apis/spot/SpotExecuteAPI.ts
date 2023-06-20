@@ -34,7 +34,7 @@ export class SpotExecuteAPI extends BaseSpotAPI {
     return approveDepositAllowance({
       amount: params.amount,
       endpoint: this.context.contracts.endpoint,
-      tokenContract: await this.getTokenContractForProduct(params.productId),
+      tokenContract: await this.getTokenContractForProduct(params),
     });
   }
 
