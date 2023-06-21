@@ -1,4 +1,10 @@
-import { arrayify, hexlify, toUtf8Bytes, toUtf8String } from 'ethers/lib/utils';
+import {
+  Bytes,
+  arrayify,
+  hexlify,
+  toUtf8Bytes,
+  toUtf8String,
+} from 'ethers/lib/utils';
 import {
   Subaccount,
   SubaccountBytes32,
@@ -65,12 +71,7 @@ export function subaccountFromBytes32(bytes: SubaccountBytes32): Subaccount {
  * @returns bytes12 representation of a subaccount name.
  */
 export function subaccountNameToBytes12(name: string): SubaccountNameBytes12 {
-  const bytes = toUtf8Bytes(name);
-  const buffer = new Uint8Array(12);
-  for (let i = 0; i < bytes.length; i++) {
-    buffer[i] = bytes[i];
-  }
-  return buffer;
+  return toBytes(name, 12);
 }
 
 /**
@@ -91,4 +92,13 @@ export function subaccountToHex(subaccount: Subaccount): string {
  */
 export function subaccountFromHex(subaccount: string): Subaccount {
   return subaccountFromBytes32(arrayify(subaccount));
+}
+
+export function toBytes(input: string, bytesLen: number): Bytes {
+  const bytes = toUtf8Bytes(input);
+  const buffer = new Uint8Array(bytesLen);
+  for (let i = 0; i < bytes.length; i++) {
+    buffer[i] = bytes[i];
+  }
+  return buffer;
 }
