@@ -21,7 +21,6 @@ export async function depositCollateral({
   amount,
   referralCode,
 }: WithContract<'endpoint', ExecuteDepositCollateralParams>) {
-  console.log('depositing collateral with referral:', referralCode);
   if (referralCode) {
     return endpoint.depositCollateralWithReferral(
       subaccountNameToBytes12(subaccountName),
