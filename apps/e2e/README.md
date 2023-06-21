@@ -2,4 +2,4 @@
 
 ## Setup
 
-Copy `.env.local` into `.env` and fill out any appropriate values
+Copy `.env.example` into `.env` and fill out any appropriate values

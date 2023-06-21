@@ -1,6 +1,6 @@
 import { WithContract } from '../common';
 import { BigNumberish } from 'ethers';
-import { subaccountNameToBytes12, toBytes } from '../utils';
+import { subaccountNameToBytes12, bytesToStr, strToBytes } from '../utils';
 
 export interface ExecuteDepositCollateralParams {
   subaccountName: string;
@@ -21,12 +21,13 @@ export async function depositCollateral({
   amount,
   referralCode,
 }: WithContract<'endpoint', ExecuteDepositCollateralParams>) {
+  console.log('depositing collateral with referral:', referralCode);
   if (referralCode) {
     return endpoint.depositCollateralWithReferral(
       subaccountNameToBytes12(subaccountName),
       productId,
       amount,
-      toBytes(referralCode, 32),
+      strToBytes(referralCode, 32),
     );
   } else {
     return endpoint.depositCollateral(

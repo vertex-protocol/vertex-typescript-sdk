@@ -58,8 +58,7 @@ export function subaccountFromBytes32(bytes: SubaccountBytes32): Subaccount {
 
   return {
     subaccountOwner: hexlify(address),
-    // toUtf8String will replace zero bytes with \0, so strip them out here
-    subaccountName: toUtf8String(name).replace(/\0/g, ''),
+    subaccountName: bytesToStr(name),
   };
 }
 
@@ -71,7 +70,7 @@ export function subaccountFromBytes32(bytes: SubaccountBytes32): Subaccount {
  * @returns bytes12 representation of a subaccount name.
  */
 export function subaccountNameToBytes12(name: string): SubaccountNameBytes12 {
-  return toBytes(name, 12);
+  return strToBytes(name, 12);
 }
 
 /**
@@ -94,11 +93,16 @@ export function subaccountFromHex(subaccount: string): Subaccount {
   return subaccountFromBytes32(arrayify(subaccount));
 }
 
-export function toBytes(input: string, bytesLen: number): Bytes {
+export function strToBytes(input: string, bytesLen: number): Bytes {
   const bytes = toUtf8Bytes(input);
   const buffer = new Uint8Array(bytesLen);
   for (let i = 0; i < bytes.length; i++) {
     buffer[i] = bytes[i];
   }
   return buffer;
+}
+
+export function bytesToStr(input: Bytes): string {
+  // toUtf8String will replace zero bytes with \0, so strip them out here
+  return toUtf8String(input).replace(/\0/g, '');
 }
