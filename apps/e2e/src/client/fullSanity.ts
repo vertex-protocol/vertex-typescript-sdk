@@ -1,6 +1,8 @@
 import { RunContext } from '../utils/types';
-import { getOrderNonce } from '@vertex-protocol/engine-client';
-import { getExpirationTimestamp } from '@vertex-protocol/contracts';
+import {
+  getExpirationTimestamp,
+  getOrderNonce,
+} from '@vertex-protocol/contracts';
 import { toFixedPoint } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 import {

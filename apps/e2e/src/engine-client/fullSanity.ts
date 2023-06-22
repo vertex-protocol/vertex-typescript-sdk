@@ -1,5 +1,8 @@
 import { RunContext } from '../utils/types';
-import { EngineOrderParams } from '@vertex-protocol/engine-client';
+import {
+  EngineClient,
+  EngineOrderParams,
+} from '@vertex-protocol/engine-client';
 import {
   createDeterministicLinkedSignerPrivateKey,
   depositCollateral,

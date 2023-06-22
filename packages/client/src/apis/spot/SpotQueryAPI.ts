@@ -17,10 +17,10 @@ export class SpotQueryAPI extends BaseSpotAPI {
    * Helper to get current token balance in the user's wallet (i.e. not in a Vertex subaccount)
    */
   async getTokenWalletBalance({
-    productId,
     address,
+    ...rest
   }: GetTokenWalletBalanceParams): Promise<BigNumber> {
-    const token = await this.getTokenContractForProduct(productId);
+    const token = await this.getTokenContractForProduct(rest);
     return token.balanceOf(address);
   }
 
@@ -28,10 +28,10 @@ export class SpotQueryAPI extends BaseSpotAPI {
    * Helper to get current token allowance
    */
   async getTokenAllowance({
-    productId,
     address,
+    ...rest
   }: GetTokenAllowanceParams): Promise<BigDecimal> {
-    const token = await this.getTokenContractForProduct(productId);
+    const token = await this.getTokenContractForProduct(rest);
     return toBigDecimal(
       await token.allowance(address, this.context.contracts.endpoint.address),
     );
