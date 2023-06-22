@@ -21,18 +21,15 @@ export async function depositCollateral({
   amount,
   referralCode,
 }: WithContract<'endpoint', ExecuteDepositCollateralParams>) {
+  const bytesSubaccountName = subaccountNameToBytes12(subaccountName);
   if (referralCode) {
     return endpoint.depositCollateralWithReferral(
-      subaccountNameToBytes12(subaccountName),
+      bytesSubaccountName,
       productId,
       amount,
       strToBytes(referralCode, 32),
     );
   } else {
-    return endpoint.depositCollateral(
-      subaccountNameToBytes12(subaccountName),
-      productId,
-      amount,
-    );
+    return endpoint.depositCollateral(bytesSubaccountName, productId, amount);
   }
 }
