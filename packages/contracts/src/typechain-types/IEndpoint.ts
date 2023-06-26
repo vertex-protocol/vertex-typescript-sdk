@@ -42,6 +42,7 @@ export declare namespace IEndpoint {
 export interface IEndpointInterface extends utils.Interface {
   functions: {
     "depositCollateral(bytes12,uint32,uint128)": FunctionFragment;
+    "depositCollateralWithReferral(bytes12,uint32,uint128,bytes32)": FunctionFragment;
     "getNonce(address)": FunctionFragment;
     "getNumSubaccounts()": FunctionFragment;
     "getPriceX18(uint32)": FunctionFragment;
@@ -58,6 +59,7 @@ export interface IEndpointInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "depositCollateral"
+      | "depositCollateralWithReferral"
       | "getNonce"
       | "getNumSubaccounts"
       | "getPriceX18"
@@ -77,6 +79,15 @@ export interface IEndpointInterface extends utils.Interface {
       PromiseOrValue<BytesLike>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositCollateralWithReferral",
+    values: [
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>
     ]
   ): string;
   encodeFunctionData(
@@ -125,6 +136,10 @@ export interface IEndpointInterface extends utils.Interface {
     functionFragment: "depositCollateral",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositCollateralWithReferral",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getNumSubaccounts",
@@ -161,10 +176,12 @@ export interface IEndpointInterface extends utils.Interface {
   events: {
     "SubmitSlowModeTransaction(uint64,address,bytes)": EventFragment;
     "SubmitTransactions()": EventFragment;
+    "UserReferral(address,bytes32)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "SubmitSlowModeTransaction"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SubmitTransactions"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UserReferral"): EventFragment;
 }
 
 export interface SubmitSlowModeTransactionEventObject {
@@ -188,6 +205,17 @@ export type SubmitTransactionsEvent = TypedEvent<
 
 export type SubmitTransactionsEventFilter =
   TypedEventFilter<SubmitTransactionsEvent>;
+
+export interface UserReferralEventObject {
+  invitee: string;
+  referralCode: string;
+}
+export type UserReferralEvent = TypedEvent<
+  [string, string],
+  UserReferralEventObject
+>;
+
+export type UserReferralEventFilter = TypedEventFilter<UserReferralEvent>;
 
 export interface IEndpoint extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -220,6 +248,14 @@ export interface IEndpoint extends BaseContract {
       subaccountName: PromiseOrValue<BytesLike>,
       productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    depositCollateralWithReferral(
+      subaccountName: PromiseOrValue<BytesLike>,
+      productId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      referralCode: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -281,6 +317,14 @@ export interface IEndpoint extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  depositCollateralWithReferral(
+    subaccountName: PromiseOrValue<BytesLike>,
+    productId: PromiseOrValue<BigNumberish>,
+    amount: PromiseOrValue<BigNumberish>,
+    referralCode: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   getNonce(
     sender: PromiseOrValue<string>,
     overrides?: CallOverrides
@@ -336,6 +380,14 @@ export interface IEndpoint extends BaseContract {
       subaccountName: PromiseOrValue<BytesLike>,
       productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    depositCollateralWithReferral(
+      subaccountName: PromiseOrValue<BytesLike>,
+      productId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      referralCode: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -402,6 +454,12 @@ export interface IEndpoint extends BaseContract {
 
     "SubmitTransactions()"(): SubmitTransactionsEventFilter;
     SubmitTransactions(): SubmitTransactionsEventFilter;
+
+    "UserReferral(address,bytes32)"(
+      invitee?: null,
+      referralCode?: null
+    ): UserReferralEventFilter;
+    UserReferral(invitee?: null, referralCode?: null): UserReferralEventFilter;
   };
 
   estimateGas: {
@@ -409,6 +467,14 @@ export interface IEndpoint extends BaseContract {
       subaccountName: PromiseOrValue<BytesLike>,
       productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    depositCollateralWithReferral(
+      subaccountName: PromiseOrValue<BytesLike>,
+      productId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      referralCode: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -468,6 +534,14 @@ export interface IEndpoint extends BaseContract {
       subaccountName: PromiseOrValue<BytesLike>,
       productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    depositCollateralWithReferral(
+      subaccountName: PromiseOrValue<BytesLike>,
+      productId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      referralCode: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

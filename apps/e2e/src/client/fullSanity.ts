@@ -1,5 +1,6 @@
 import { RunContext } from '../utils/types';
 import {
+  bytesToStr,
   getExpirationTimestamp,
   getOrderNonce,
 } from '@vertex-protocol/contracts';
@@ -10,6 +11,7 @@ import {
   getProductMetadataByProductId,
   PlaceOrderParams,
 } from '@vertex-protocol/client';
+import { arrayify } from 'ethers/lib/utils';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -29,7 +31,7 @@ async function fullSanity(context: RunContext) {
 
   console.log('Approving allowance...');
   const approveTx = await vertexClient.spot.approveAllowance({
-    amount: toFixedPoint(10000, 6),
+    amount: toFixedPoint(20000, 6),
     productId: 0,
   });
   await approveTx.wait();
@@ -41,6 +43,20 @@ async function fullSanity(context: RunContext) {
     amount: toFixedPoint(10000, 6),
   });
   await depositTx.wait();
+
+  console.log('Depositing tokens with referral code...');
+  const depositWithReferralTx = await vertexClient.spot.deposit({
+    subaccountName: 'default',
+    productId: 0,
+    amount: toFixedPoint(10000, 6),
+    referralCode: 'FullSanity',
+  });
+  await depositTx.wait();
+
+  const referralCode =
+    await vertexClient.context.contracts.endpoint.referralCodes(signer.address);
+
+  console.log('Referral code:', bytesToStr(arrayify(referralCode)));
 
   console.log('Placing order...');
   const orderNonce = getOrderNonce();
