@@ -135,7 +135,9 @@ export interface IPerpEngineInterface extends utils.Interface {
     "mintLp(uint32,bytes32,int128,int128,int128)": FunctionFragment;
     "settlePnl(bytes32,uint256)": FunctionFragment;
     "socializeSubaccount(bytes32,int128)": FunctionFragment;
-    "swapLp(uint32,bytes32,int128,int128,int128,int128)": FunctionFragment;
+    "swapLp(uint32,int128,int128)": FunctionFragment;
+    "swapLp(uint32,int128,int128,int128,int128)": FunctionFragment;
+    "updateProduct(bytes)": FunctionFragment;
     "updateStates(uint128,int128[])": FunctionFragment;
   };
 
@@ -161,7 +163,9 @@ export interface IPerpEngineInterface extends utils.Interface {
       | "mintLp"
       | "settlePnl"
       | "socializeSubaccount"
-      | "swapLp"
+      | "swapLp(uint32,int128,int128)"
+      | "swapLp(uint32,int128,int128,int128,int128)"
+      | "updateProduct"
       | "updateStates"
   ): FunctionFragment;
 
@@ -266,15 +270,26 @@ export interface IPerpEngineInterface extends utils.Interface {
     values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "swapLp",
+    functionFragment: "swapLp(uint32,int128,int128)",
     values: [
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "swapLp(uint32,int128,int128,int128,int128)",
+    values: [
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateProduct",
+    values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "updateStates",
@@ -340,7 +355,18 @@ export interface IPerpEngineInterface extends utils.Interface {
     functionFragment: "socializeSubaccount",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "swapLp", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "swapLp(uint32,int128,int128)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "swapLp(uint32,int128,int128,int128,int128)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateProduct",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "updateStates",
     data: BytesLike
@@ -348,19 +374,9 @@ export interface IPerpEngineInterface extends utils.Interface {
 
   events: {
     "AddProduct(uint32)": EventFragment;
-    "BurnLp(uint32,bytes32,int128,int128,int128)": EventFragment;
-    "MintLp(uint32,bytes32,int128,int128,int128)": EventFragment;
-    "ProductUpdate(uint32)": EventFragment;
-    "SettlePnl(bytes32,uint32,int128)": EventFragment;
-    "SocializeProduct(uint32,int128)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AddProduct"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "BurnLp"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "MintLp"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ProductUpdate"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SettlePnl"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SocializeProduct"): EventFragment;
 }
 
 export interface AddProductEventObject {
@@ -369,65 +385,6 @@ export interface AddProductEventObject {
 export type AddProductEvent = TypedEvent<[number], AddProductEventObject>;
 
 export type AddProductEventFilter = TypedEventFilter<AddProductEvent>;
-
-export interface BurnLpEventObject {
-  productId: number;
-  subaccount: string;
-  lpAmount: BigNumber;
-  baseAmount: BigNumber;
-  quoteAmount: BigNumber;
-}
-export type BurnLpEvent = TypedEvent<
-  [number, string, BigNumber, BigNumber, BigNumber],
-  BurnLpEventObject
->;
-
-export type BurnLpEventFilter = TypedEventFilter<BurnLpEvent>;
-
-export interface MintLpEventObject {
-  productId: number;
-  subaccount: string;
-  lpAmount: BigNumber;
-  baseAmount: BigNumber;
-  quoteAmount: BigNumber;
-}
-export type MintLpEvent = TypedEvent<
-  [number, string, BigNumber, BigNumber, BigNumber],
-  MintLpEventObject
->;
-
-export type MintLpEventFilter = TypedEventFilter<MintLpEvent>;
-
-export interface ProductUpdateEventObject {
-  productId: number;
-}
-export type ProductUpdateEvent = TypedEvent<[number], ProductUpdateEventObject>;
-
-export type ProductUpdateEventFilter = TypedEventFilter<ProductUpdateEvent>;
-
-export interface SettlePnlEventObject {
-  subaccount: string;
-  productId: number;
-  amount: BigNumber;
-}
-export type SettlePnlEvent = TypedEvent<
-  [string, number, BigNumber],
-  SettlePnlEventObject
->;
-
-export type SettlePnlEventFilter = TypedEventFilter<SettlePnlEvent>;
-
-export interface SocializeProductEventObject {
-  productId: number;
-  amountSocialized: BigNumber;
-}
-export type SocializeProductEvent = TypedEvent<
-  [number, BigNumber],
-  SocializeProductEventObject
->;
-
-export type SocializeProductEventFilter =
-  TypedEventFilter<SocializeProductEvent>;
 
 export interface IPerpEngine extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -593,13 +550,24 @@ export interface IPerpEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    swapLp(
+    "swapLp(uint32,int128,int128)"(
       productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
+      baseDelta: PromiseOrValue<BigNumberish>,
+      quoteDelta: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "swapLp(uint32,int128,int128,int128,int128)"(
+      productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
       priceX18: PromiseOrValue<BigNumberish>,
       sizeIncrement: PromiseOrValue<BigNumberish>,
       lpSpreadX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    updateProduct(
+      txn: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -745,13 +713,24 @@ export interface IPerpEngine extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  swapLp(
+  "swapLp(uint32,int128,int128)"(
     productId: PromiseOrValue<BigNumberish>,
-    subaccount: PromiseOrValue<BytesLike>,
+    baseDelta: PromiseOrValue<BigNumberish>,
+    quoteDelta: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "swapLp(uint32,int128,int128,int128,int128)"(
+    productId: PromiseOrValue<BigNumberish>,
     amount: PromiseOrValue<BigNumberish>,
     priceX18: PromiseOrValue<BigNumberish>,
     sizeIncrement: PromiseOrValue<BigNumberish>,
     lpSpreadX18: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  updateProduct(
+    txn: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -899,15 +878,26 @@ export interface IPerpEngine extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    swapLp(
+    "swapLp(uint32,int128,int128)"(
       productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
+      baseDelta: PromiseOrValue<BigNumberish>,
+      quoteDelta: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber, BigNumber]>;
+
+    "swapLp(uint32,int128,int128,int128,int128)"(
+      productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
       priceX18: PromiseOrValue<BigNumberish>,
       sizeIncrement: PromiseOrValue<BigNumberish>,
       lpSpreadX18: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber]>;
+
+    updateProduct(
+      txn: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     updateStates(
       dt: PromiseOrValue<BigNumberish>,
@@ -919,63 +909,6 @@ export interface IPerpEngine extends BaseContract {
   filters: {
     "AddProduct(uint32)"(productId?: null): AddProductEventFilter;
     AddProduct(productId?: null): AddProductEventFilter;
-
-    "BurnLp(uint32,bytes32,int128,int128,int128)"(
-      productId?: PromiseOrValue<BigNumberish> | null,
-      subaccount?: PromiseOrValue<BytesLike> | null,
-      lpAmount?: null,
-      baseAmount?: null,
-      quoteAmount?: null
-    ): BurnLpEventFilter;
-    BurnLp(
-      productId?: PromiseOrValue<BigNumberish> | null,
-      subaccount?: PromiseOrValue<BytesLike> | null,
-      lpAmount?: null,
-      baseAmount?: null,
-      quoteAmount?: null
-    ): BurnLpEventFilter;
-
-    "MintLp(uint32,bytes32,int128,int128,int128)"(
-      productId?: PromiseOrValue<BigNumberish> | null,
-      subaccount?: PromiseOrValue<BytesLike> | null,
-      lpAmount?: null,
-      baseAmount?: null,
-      quoteAmount?: null
-    ): MintLpEventFilter;
-    MintLp(
-      productId?: PromiseOrValue<BigNumberish> | null,
-      subaccount?: PromiseOrValue<BytesLike> | null,
-      lpAmount?: null,
-      baseAmount?: null,
-      quoteAmount?: null
-    ): MintLpEventFilter;
-
-    "ProductUpdate(uint32)"(
-      productId?: PromiseOrValue<BigNumberish> | null
-    ): ProductUpdateEventFilter;
-    ProductUpdate(
-      productId?: PromiseOrValue<BigNumberish> | null
-    ): ProductUpdateEventFilter;
-
-    "SettlePnl(bytes32,uint32,int128)"(
-      subaccount?: PromiseOrValue<BytesLike> | null,
-      productId?: null,
-      amount?: null
-    ): SettlePnlEventFilter;
-    SettlePnl(
-      subaccount?: PromiseOrValue<BytesLike> | null,
-      productId?: null,
-      amount?: null
-    ): SettlePnlEventFilter;
-
-    "SocializeProduct(uint32,int128)"(
-      productId?: PromiseOrValue<BigNumberish> | null,
-      amountSocialized?: null
-    ): SocializeProductEventFilter;
-    SocializeProduct(
-      productId?: PromiseOrValue<BigNumberish> | null,
-      amountSocialized?: null
-    ): SocializeProductEventFilter;
   };
 
   estimateGas: {
@@ -1091,13 +1024,24 @@ export interface IPerpEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    swapLp(
+    "swapLp(uint32,int128,int128)"(
       productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
+      baseDelta: PromiseOrValue<BigNumberish>,
+      quoteDelta: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "swapLp(uint32,int128,int128,int128,int128)"(
+      productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
       priceX18: PromiseOrValue<BigNumberish>,
       sizeIncrement: PromiseOrValue<BigNumberish>,
       lpSpreadX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    updateProduct(
+      txn: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1221,13 +1165,24 @@ export interface IPerpEngine extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    swapLp(
+    "swapLp(uint32,int128,int128)"(
       productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
+      baseDelta: PromiseOrValue<BigNumberish>,
+      quoteDelta: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "swapLp(uint32,int128,int128,int128,int128)"(
+      productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
       priceX18: PromiseOrValue<BigNumberish>,
       sizeIncrement: PromiseOrValue<BigNumberish>,
       lpSpreadX18: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateProduct(
+      txn: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

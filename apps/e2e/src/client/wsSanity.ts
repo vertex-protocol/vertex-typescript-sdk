@@ -1,6 +1,5 @@
 import { RunContext } from '../utils/types';
-import { getOrderNonce } from '@vertex-protocol/engine-client';
-import { subaccountToHex } from '@vertex-protocol/contracts';
+import { subaccountToHex, getOrderNonce } from '@vertex-protocol/contracts';
 import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 import { createVertexClient, PlaceOrderParams } from '@vertex-protocol/client';

@@ -42,6 +42,14 @@ export declare namespace IEndpoint {
     nonce: BigNumber;
   };
 
+  export type ClaimSequencerFeesStruct = {
+    subaccount: PromiseOrValue<BytesLike>;
+  };
+
+  export type ClaimSequencerFeesStructOutput = [string] & {
+    subaccount: string;
+  };
+
   export type DepositCollateralStruct = {
     sender: PromiseOrValue<BytesLike>;
     productId: PromiseOrValue<BigNumberish>;
@@ -140,6 +148,25 @@ export declare namespace IEndpoint {
     productIds: BigNumber[];
   };
 
+  export type UpdateFeeRatesStruct = {
+    user: PromiseOrValue<string>;
+    productId: PromiseOrValue<BigNumberish>;
+    makerRateX18: PromiseOrValue<BigNumberish>;
+    takerRateX18: PromiseOrValue<BigNumberish>;
+  };
+
+  export type UpdateFeeRatesStructOutput = [
+    string,
+    number,
+    BigNumber,
+    BigNumber
+  ] & {
+    user: string;
+    productId: number;
+    makerRateX18: BigNumber;
+    takerRateX18: BigNumber;
+  };
+
   export type WithdrawCollateralStruct = {
     sender: PromiseOrValue<BytesLike>;
     productId: PromiseOrValue<BigNumberish>;
@@ -157,40 +184,6 @@ export declare namespace IEndpoint {
     productId: number;
     amount: BigNumber;
     nonce: BigNumber;
-  };
-}
-
-export declare namespace IClearinghouseState {
-  export type HealthGroupStruct = {
-    spotId: PromiseOrValue<BigNumberish>;
-    perpId: PromiseOrValue<BigNumberish>;
-  };
-
-  export type HealthGroupStructOutput = [number, number] & {
-    spotId: number;
-    perpId: number;
-  };
-
-  export type RiskStoreStruct = {
-    longWeightInitial: PromiseOrValue<BigNumberish>;
-    shortWeightInitial: PromiseOrValue<BigNumberish>;
-    longWeightMaintenance: PromiseOrValue<BigNumberish>;
-    shortWeightMaintenance: PromiseOrValue<BigNumberish>;
-    largePositionPenalty: PromiseOrValue<BigNumberish>;
-  };
-
-  export type RiskStoreStructOutput = [
-    number,
-    number,
-    number,
-    number,
-    number
-  ] & {
-    longWeightInitial: number;
-    shortWeightInitial: number;
-    longWeightMaintenance: number;
-    shortWeightMaintenance: number;
-    largePositionPenalty: number;
   };
 }
 
@@ -218,18 +211,43 @@ export declare namespace RiskHelper {
   };
 }
 
+export declare namespace IClearinghouseState {
+  export type RiskStoreStruct = {
+    longWeightInitial: PromiseOrValue<BigNumberish>;
+    shortWeightInitial: PromiseOrValue<BigNumberish>;
+    longWeightMaintenance: PromiseOrValue<BigNumberish>;
+    shortWeightMaintenance: PromiseOrValue<BigNumberish>;
+    largePositionPenalty: PromiseOrValue<BigNumberish>;
+  };
+
+  export type RiskStoreStructOutput = [
+    number,
+    number,
+    number,
+    number,
+    number
+  ] & {
+    longWeightInitial: number;
+    shortWeightInitial: number;
+    longWeightMaintenance: number;
+    shortWeightMaintenance: number;
+    largePositionPenalty: number;
+  };
+}
+
 export interface IClearinghouseInterface extends utils.Interface {
   functions: {
     "addEngine(address,uint8)": FunctionFragment;
     "burnLp((bytes32,uint32,uint128,uint64))": FunctionFragment;
+    "claimSequencerFees((bytes32),int128[])": FunctionFragment;
     "depositCollateral((bytes32,uint32,uint128))": FunctionFragment;
     "depositInsurance((uint128))": FunctionFragment;
     "getEndpoint()": FunctionFragment;
     "getEngineByProduct(uint32)": FunctionFragment;
     "getEngineByType(uint8)": FunctionFragment;
     "getHealth(bytes32,uint8)": FunctionFragment;
-    "getHealthGroups()": FunctionFragment;
     "getInsurance()": FunctionFragment;
+    "getMaxHealthGroup()": FunctionFragment;
     "getNumProducts()": FunctionFragment;
     "getOraclePriceX18(uint32)": FunctionFragment;
     "getOraclePricesX18(uint32)": FunctionFragment;
@@ -244,6 +262,7 @@ export interface IClearinghouseInterface extends utils.Interface {
     "rebate((bytes32[],int128[]))": FunctionFragment;
     "registerProductForId(address,(int32,int32,int32,int32,int32),uint32)": FunctionFragment;
     "settlePnl((bytes32[],uint256[]))": FunctionFragment;
+    "updateFeeRates((address,uint32,int64,int64))": FunctionFragment;
     "withdrawCollateral((bytes32,uint32,uint128,uint64))": FunctionFragment;
   };
 
@@ -251,14 +270,15 @@ export interface IClearinghouseInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "addEngine"
       | "burnLp"
+      | "claimSequencerFees"
       | "depositCollateral"
       | "depositInsurance"
       | "getEndpoint"
       | "getEngineByProduct"
       | "getEngineByType"
       | "getHealth"
-      | "getHealthGroups"
       | "getInsurance"
+      | "getMaxHealthGroup"
       | "getNumProducts"
       | "getOraclePriceX18"
       | "getOraclePricesX18"
@@ -273,6 +293,7 @@ export interface IClearinghouseInterface extends utils.Interface {
       | "rebate"
       | "registerProductForId"
       | "settlePnl"
+      | "updateFeeRates"
       | "withdrawCollateral"
   ): FunctionFragment;
 
@@ -283,6 +304,10 @@ export interface IClearinghouseInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "burnLp",
     values: [IEndpoint.BurnLpStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "claimSequencerFees",
+    values: [IEndpoint.ClaimSequencerFeesStruct, PromiseOrValue<BigNumberish>[]]
   ): string;
   encodeFunctionData(
     functionFragment: "depositCollateral",
@@ -309,11 +334,11 @@ export interface IClearinghouseInterface extends utils.Interface {
     values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getHealthGroups",
+    functionFragment: "getInsurance",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getInsurance",
+    functionFragment: "getMaxHealthGroup",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -374,12 +399,20 @@ export interface IClearinghouseInterface extends utils.Interface {
     values: [IEndpoint.SettlePnlStruct]
   ): string;
   encodeFunctionData(
+    functionFragment: "updateFeeRates",
+    values: [IEndpoint.UpdateFeeRatesStruct]
+  ): string;
+  encodeFunctionData(
     functionFragment: "withdrawCollateral",
     values: [IEndpoint.WithdrawCollateralStruct]
   ): string;
 
   decodeFunctionResult(functionFragment: "addEngine", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burnLp", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "claimSequencerFees",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "depositCollateral",
     data: BytesLike
@@ -402,11 +435,11 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getHealth", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getHealthGroups",
+    functionFragment: "getInsurance",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getInsurance",
+    functionFragment: "getMaxHealthGroup",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -447,6 +480,10 @@ export interface IClearinghouseInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "settlePnl", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "updateFeeRates",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "withdrawCollateral",
     data: BytesLike
@@ -543,6 +580,12 @@ export interface IClearinghouse extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    claimSequencerFees(
+      tx: IEndpoint.ClaimSequencerFeesStruct,
+      fees: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     depositCollateral(
       tx: IEndpoint.DepositCollateralStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -573,11 +616,9 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    getHealthGroups(
-      overrides?: CallOverrides
-    ): Promise<[IClearinghouseState.HealthGroupStructOutput[]]>;
-
     getInsurance(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getMaxHealthGroup(overrides?: CallOverrides): Promise<[number]>;
 
     getNumProducts(overrides?: CallOverrides): Promise<[number]>;
 
@@ -642,6 +683,11 @@ export interface IClearinghouse extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    updateFeeRates(
+      tx: IEndpoint.UpdateFeeRatesStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     withdrawCollateral(
       tx: IEndpoint.WithdrawCollateralStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -656,6 +702,12 @@ export interface IClearinghouse extends BaseContract {
 
   burnLp(
     tx: IEndpoint.BurnLpStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  claimSequencerFees(
+    tx: IEndpoint.ClaimSequencerFeesStruct,
+    fees: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -687,11 +739,9 @@ export interface IClearinghouse extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  getHealthGroups(
-    overrides?: CallOverrides
-  ): Promise<IClearinghouseState.HealthGroupStructOutput[]>;
-
   getInsurance(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getMaxHealthGroup(overrides?: CallOverrides): Promise<number>;
 
   getNumProducts(overrides?: CallOverrides): Promise<number>;
 
@@ -756,6 +806,11 @@ export interface IClearinghouse extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  updateFeeRates(
+    tx: IEndpoint.UpdateFeeRatesStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   withdrawCollateral(
     tx: IEndpoint.WithdrawCollateralStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -770,6 +825,12 @@ export interface IClearinghouse extends BaseContract {
 
     burnLp(
       tx: IEndpoint.BurnLpStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    claimSequencerFees(
+      tx: IEndpoint.ClaimSequencerFeesStruct,
+      fees: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -801,11 +862,9 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getHealthGroups(
-      overrides?: CallOverrides
-    ): Promise<IClearinghouseState.HealthGroupStructOutput[]>;
-
     getInsurance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getMaxHealthGroup(overrides?: CallOverrides): Promise<number>;
 
     getNumProducts(overrides?: CallOverrides): Promise<number>;
 
@@ -865,6 +924,11 @@ export interface IClearinghouse extends BaseContract {
 
     settlePnl(
       tx: IEndpoint.SettlePnlStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateFeeRates(
+      tx: IEndpoint.UpdateFeeRatesStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -929,6 +993,12 @@ export interface IClearinghouse extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    claimSequencerFees(
+      tx: IEndpoint.ClaimSequencerFeesStruct,
+      fees: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     depositCollateral(
       tx: IEndpoint.DepositCollateralStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -957,9 +1027,9 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getHealthGroups(overrides?: CallOverrides): Promise<BigNumber>;
-
     getInsurance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getMaxHealthGroup(overrides?: CallOverrides): Promise<BigNumber>;
 
     getNumProducts(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1024,6 +1094,11 @@ export interface IClearinghouse extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    updateFeeRates(
+      tx: IEndpoint.UpdateFeeRatesStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     withdrawCollateral(
       tx: IEndpoint.WithdrawCollateralStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1039,6 +1114,12 @@ export interface IClearinghouse extends BaseContract {
 
     burnLp(
       tx: IEndpoint.BurnLpStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    claimSequencerFees(
+      tx: IEndpoint.ClaimSequencerFeesStruct,
+      fees: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1070,9 +1151,9 @@ export interface IClearinghouse extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getHealthGroups(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     getInsurance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getMaxHealthGroup(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getNumProducts(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1136,6 +1217,11 @@ export interface IClearinghouse extends BaseContract {
 
     settlePnl(
       tx: IEndpoint.SettlePnlStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateFeeRates(
+      tx: IEndpoint.UpdateFeeRatesStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

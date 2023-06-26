@@ -271,6 +271,16 @@
             "type": "uint32"
           },
           {
+            "internalType": "int128",
+            "name": "baseDelta",
+            "type": "int128"
+          },
+          {
+            "internalType": "int128",
+            "name": "quoteDelta",
+            "type": "int128"
+          },
+          {
             "components": [
               {
                 "components": [
@@ -318,6 +328,11 @@
         "internalType": "struct IEndpoint.MatchOrderAMM",
         "name": "tx",
         "type": "tuple"
+      },
+      {
+        "internalType": "address",
+        "name": "takerLinkedSigner",
+        "type": "address"
       }
     ],
     "name": "matchOrderAMM",
@@ -330,105 +345,122 @@
       {
         "components": [
           {
-            "internalType": "uint32",
-            "name": "productId",
-            "type": "uint32"
-          },
-          {
-            "internalType": "bool",
-            "name": "amm",
-            "type": "bool"
-          },
-          {
             "components": [
+              {
+                "internalType": "uint32",
+                "name": "productId",
+                "type": "uint32"
+              },
+              {
+                "internalType": "bool",
+                "name": "amm",
+                "type": "bool"
+              },
               {
                 "components": [
                   {
-                    "internalType": "bytes32",
-                    "name": "sender",
-                    "type": "bytes32"
+                    "components": [
+                      {
+                        "internalType": "bytes32",
+                        "name": "sender",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "int128",
+                        "name": "priceX18",
+                        "type": "int128"
+                      },
+                      {
+                        "internalType": "int128",
+                        "name": "amount",
+                        "type": "int128"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "expiration",
+                        "type": "uint64"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "nonce",
+                        "type": "uint64"
+                      }
+                    ],
+                    "internalType": "struct IEndpoint.Order",
+                    "name": "order",
+                    "type": "tuple"
                   },
                   {
-                    "internalType": "int128",
-                    "name": "priceX18",
-                    "type": "int128"
-                  },
-                  {
-                    "internalType": "int128",
-                    "name": "amount",
-                    "type": "int128"
-                  },
-                  {
-                    "internalType": "uint64",
-                    "name": "expiration",
-                    "type": "uint64"
-                  },
-                  {
-                    "internalType": "uint64",
-                    "name": "nonce",
-                    "type": "uint64"
+                    "internalType": "bytes",
+                    "name": "signature",
+                    "type": "bytes"
                   }
                 ],
-                "internalType": "struct IEndpoint.Order",
-                "name": "order",
+                "internalType": "struct IEndpoint.SignedOrder",
+                "name": "taker",
                 "type": "tuple"
               },
-              {
-                "internalType": "bytes",
-                "name": "signature",
-                "type": "bytes"
-              }
-            ],
-            "internalType": "struct IEndpoint.SignedOrder",
-            "name": "taker",
-            "type": "tuple"
-          },
-          {
-            "components": [
               {
                 "components": [
                   {
-                    "internalType": "bytes32",
-                    "name": "sender",
-                    "type": "bytes32"
+                    "components": [
+                      {
+                        "internalType": "bytes32",
+                        "name": "sender",
+                        "type": "bytes32"
+                      },
+                      {
+                        "internalType": "int128",
+                        "name": "priceX18",
+                        "type": "int128"
+                      },
+                      {
+                        "internalType": "int128",
+                        "name": "amount",
+                        "type": "int128"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "expiration",
+                        "type": "uint64"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "nonce",
+                        "type": "uint64"
+                      }
+                    ],
+                    "internalType": "struct IEndpoint.Order",
+                    "name": "order",
+                    "type": "tuple"
                   },
                   {
-                    "internalType": "int128",
-                    "name": "priceX18",
-                    "type": "int128"
-                  },
-                  {
-                    "internalType": "int128",
-                    "name": "amount",
-                    "type": "int128"
-                  },
-                  {
-                    "internalType": "uint64",
-                    "name": "expiration",
-                    "type": "uint64"
-                  },
-                  {
-                    "internalType": "uint64",
-                    "name": "nonce",
-                    "type": "uint64"
+                    "internalType": "bytes",
+                    "name": "signature",
+                    "type": "bytes"
                   }
                 ],
-                "internalType": "struct IEndpoint.Order",
-                "name": "order",
+                "internalType": "struct IEndpoint.SignedOrder",
+                "name": "maker",
                 "type": "tuple"
-              },
-              {
-                "internalType": "bytes",
-                "name": "signature",
-                "type": "bytes"
               }
             ],
-            "internalType": "struct IEndpoint.SignedOrder",
-            "name": "maker",
+            "internalType": "struct IEndpoint.MatchOrders",
+            "name": "matchOrders",
             "type": "tuple"
+          },
+          {
+            "internalType": "address",
+            "name": "takerLinkedSigner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "makerLinkedSigner",
+            "type": "address"
           }
         ],
-        "internalType": "struct IEndpoint.MatchOrders",
+        "internalType": "struct IEndpoint.MatchOrdersWithSigner",
         "name": "tx",
         "type": "tuple"
       }
