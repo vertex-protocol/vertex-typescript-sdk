@@ -1,6 +1,6 @@
 {
   "name": "vertex-sdk-e2e",
-  "version": "0.1.0-alpha.107",
+  "version": "0.1.0-alpha.108",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
   "license": "ISC",
@@ -15,11 +15,11 @@
     "indexer/full-sanity": "ts-node ./src/indexer-client/fullSanity.ts"
   },
   "dependencies": {
-    "@vertex-protocol/client": "^0.1.0-alpha.107",
-    "@vertex-protocol/contracts": "^0.1.0-alpha.107",
-    "@vertex-protocol/engine-client": "^0.1.0-alpha.107",
-    "@vertex-protocol/indexer-client": "^0.1.0-alpha.107",
-    "@vertex-protocol/utils": "^0.1.0-alpha.107",
+    "@vertex-protocol/client": "^0.1.0-alpha.108",
+    "@vertex-protocol/contracts": "^0.1.0-alpha.108",
+    "@vertex-protocol/engine-client": "^0.1.0-alpha.108",
+    "@vertex-protocol/indexer-client": "^0.1.0-alpha.108",
+    "@vertex-protocol/utils": "^0.1.0-alpha.108",
     "dotenv": "^16.3.1",
     "ethers": "^5.7.2"
   }
