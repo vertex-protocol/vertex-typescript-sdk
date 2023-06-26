@@ -22,5 +22,6 @@
     "@vertex-protocol/utils": "^0.1.0-alpha.108",
     "dotenv": "^16.3.1",
     "ethers": "^5.7.2"
-  }
+  },
+  "gitHead": "3882b0e6e19a70666731699b47043fe7a57fff53"
 }
