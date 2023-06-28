@@ -30,6 +30,8 @@ import {
   GetIndexerProductSnapshotsParams,
   GetIndexerProductSnapshotsResponse,
   GetIndexerQuotePriceResponse,
+  GetIndexerReferralCodeParams,
+  GetIndexerReferralCodeResponse,
   GetIndexerSubaccountRewardsParams,
   GetIndexerSummaryParams,
   GetIndexerSummaryResponse,
@@ -115,6 +117,24 @@ export class IndexerBaseClient {
     return {
       epochs: baseResponse.rewards.map(mapIndexerRewardEpoch),
       updateTime: toBigDecimal(baseResponse.update_time),
+    };
+  }
+
+  /**
+   * Retrieves referral code for an address
+   *
+   * @param params
+   */
+  async getReferralCode(
+    params: GetIndexerReferralCodeParams,
+  ): Promise<GetIndexerReferralCodeResponse> {
+    const baseResponse = await this.query('referral_code', {
+      address: params.address,
+    });
+
+    return {
+      referrer: baseResponse.referrer,
+      referralCode: baseResponse.referral_code,
     };
   }
 

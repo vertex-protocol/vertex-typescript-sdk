@@ -59,6 +59,12 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Rewards', rewards);
 
+  const referralCode = await client.getReferralCode({
+    address: subaccount.subaccountOwner,
+  });
+
+  prettyPrint('Referral code', referralCode);
+
   const productSnapshots = await client.getProductSnapshots({
     limit: 2,
     maxTimestampInclusive: nowInSeconds(),

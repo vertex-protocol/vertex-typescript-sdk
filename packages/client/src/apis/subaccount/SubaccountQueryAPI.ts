@@ -12,6 +12,7 @@ import {
 import { GetSubaccountIdParams } from './queryTypes';
 import {
   GetIndexerLinkedSignerParams,
+  GetIndexerReferralCodeParams,
   GetIndexerSubaccountRewardsParams,
 } from '@vertex-protocol/indexer-client';
 
@@ -78,5 +79,13 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
     params: GetIndexerLinkedSignerParams,
   ) {
     return this.context.indexerClient.getLinkedSignerWithRateLimit(params);
+  }
+
+  /**
+   * Retrieves referral code for an address
+   * @param params
+   */
+  async getReferralCode(params: GetIndexerReferralCodeParams) {
+    return this.context.indexerClient.getReferralCode(params);
   }
 }
