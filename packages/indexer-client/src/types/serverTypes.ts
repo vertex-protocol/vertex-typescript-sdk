@@ -166,7 +166,6 @@ export interface IndexerServerRewardsResponse {
 }
 
 export interface IndexerServerReferralCodeResponse {
-  referrer: string;
   referral_code: string;
 }
 
