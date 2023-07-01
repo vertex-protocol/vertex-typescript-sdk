@@ -1,4 +1,7 @@
-import { subaccountToHex } from '@vertex-protocol/contracts';
+import {
+  subaccountToBytes32,
+  subaccountToHex,
+} from '@vertex-protocol/contracts';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import axios, { AxiosResponse } from 'axios';
 import {
@@ -129,11 +132,13 @@ export class IndexerBaseClient {
     params: GetIndexerReferralCodeParams,
   ): Promise<GetIndexerReferralCodeResponse> {
     const baseResponse = await this.query('referral_code', {
-      address: params.address,
+      subaccount: subaccountToHex({
+        subaccountOwner: params.subaccount.subaccountOwner,
+        subaccountName: params.subaccount.subaccountName,
+      }),
     });
 
     return {
-      referrer: baseResponse.referrer,
       referralCode: baseResponse.referral_code,
     };
   }

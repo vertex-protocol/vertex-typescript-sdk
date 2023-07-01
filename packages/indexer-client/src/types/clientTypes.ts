@@ -70,7 +70,7 @@ export interface GetIndexerSubaccountRewardsParams {
 }
 
 export interface GetIndexerReferralCodeParams {
-  address: string;
+  subaccount: Subaccount;
 }
 
 export interface IndexerSubaccountRewardsForProduct {
@@ -113,7 +113,6 @@ export interface GetSubaccountIndexerRewardsResponse {
 }
 
 export interface GetIndexerReferralCodeResponse {
-  referrer: string;
   referralCode: string;
 }
 

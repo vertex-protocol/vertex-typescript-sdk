@@ -43,7 +43,7 @@ export interface EndpointInterface extends utils.Interface {
   functions: {
     "clearinghouse()": FunctionFragment;
     "depositCollateral(bytes12,uint32,uint128)": FunctionFragment;
-    "depositCollateralWithReferral(bytes12,uint32,uint128,bytes32)": FunctionFragment;
+    "depositCollateralWithReferral(bytes12,uint32,uint128,string)": FunctionFragment;
     "executeSlowModeTransactions(uint32)": FunctionFragment;
     "getBook(uint32)": FunctionFragment;
     "getLinkedSigner(bytes32)": FunctionFragment;
@@ -133,7 +133,7 @@ export interface EndpointInterface extends utils.Interface {
       PromiseOrValue<BytesLike>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>
+      PromiseOrValue<string>
     ]
   ): string;
   encodeFunctionData(
@@ -489,7 +489,7 @@ export interface Endpoint extends BaseContract {
       subaccountName: PromiseOrValue<BytesLike>,
       productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      referralCode: PromiseOrValue<BytesLike>,
+      referralCode: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -658,7 +658,7 @@ export interface Endpoint extends BaseContract {
     subaccountName: PromiseOrValue<BytesLike>,
     productId: PromiseOrValue<BigNumberish>,
     amount: PromiseOrValue<BigNumberish>,
-    referralCode: PromiseOrValue<BytesLike>,
+    referralCode: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -827,7 +827,7 @@ export interface Endpoint extends BaseContract {
       subaccountName: PromiseOrValue<BytesLike>,
       productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      referralCode: PromiseOrValue<BytesLike>,
+      referralCode: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1029,7 +1029,7 @@ export interface Endpoint extends BaseContract {
       subaccountName: PromiseOrValue<BytesLike>,
       productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      referralCode: PromiseOrValue<BytesLike>,
+      referralCode: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1185,7 +1185,7 @@ export interface Endpoint extends BaseContract {
       subaccountName: PromiseOrValue<BytesLike>,
       productId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      referralCode: PromiseOrValue<BytesLike>,
+      referralCode: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

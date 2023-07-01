@@ -22,7 +22,7 @@ export interface IndexerServerRewardsParams {
 }
 
 export interface IndexerServerReferralCodeParams {
-  address: string;
+  subaccount: string;
 }
 
 export interface IndexerServerFundingRateParams {

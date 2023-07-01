@@ -24,7 +24,7 @@ async function fullSanity(context: RunContext) {
   console.log('Minting tokens...');
   const mintTx = await vertexClient.spot._mintMockERC20({
     // 10 tokens
-    amount: toFixedPoint(10, 6),
+    amount: toFixedPoint(20000, 6),
     productId: 0,
   });
   await mintTx.wait();
@@ -36,6 +36,20 @@ async function fullSanity(context: RunContext) {
   });
   await approveTx.wait();
 
+  console.log('Depositing tokens with referral code...');
+  const depositWithReferralTx = await vertexClient.spot.deposit({
+    subaccountName: 'default',
+    productId: 0,
+    amount: toFixedPoint(10000, 6),
+    referralCode: 'Blk23MeZU3',
+  });
+  await depositWithReferralTx.wait();
+
+  const referralCode =
+    await vertexClient.context.contracts.endpoint.referralCodes(signer.address);
+
+  console.log('Referral code:', referralCode);
+
   console.log('Depositing tokens...');
   const depositTx = await vertexClient.spot.deposit({
     subaccountName: 'default',
@@ -43,20 +57,6 @@ async function fullSanity(context: RunContext) {
     amount: toFixedPoint(10000, 6),
   });
   await depositTx.wait();
-
-  console.log('Depositing tokens with referral code...');
-  const depositWithReferralTx = await vertexClient.spot.deposit({
-    subaccountName: 'default',
-    productId: 0,
-    amount: toFixedPoint(10000, 6),
-    referralCode: 'FullSanity',
-  });
-  await depositTx.wait();
-
-  const referralCode =
-    await vertexClient.context.contracts.endpoint.referralCodes(signer.address);
-
-  console.log('Referral code:', bytesToStr(arrayify(referralCode)));
 
   console.log('Placing order...');
   const orderNonce = getOrderNonce();
