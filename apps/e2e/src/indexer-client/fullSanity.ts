@@ -15,7 +15,7 @@ async function fullSanity(context: RunContext) {
 
   const subaccount: Subaccount = {
     subaccountName: 'default',
-    subaccountOwner: '0xEAe27Ae6412147Ed6d5692Fd91709DaD6dbfc342',
+    subaccountOwner: context.getWallet().address,
   };
 
   const summary = await client.getSubaccountSummary({
@@ -58,6 +58,12 @@ async function fullSanity(context: RunContext) {
   });
 
   prettyPrint('Rewards', rewards);
+
+  const referralCode = await client.getReferralCode({
+    subaccount,
+  });
+
+  prettyPrint('Referral code', referralCode);
 
   const productSnapshots = await client.getProductSnapshots({
     limit: 2,

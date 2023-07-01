@@ -98,9 +98,9 @@ const _abi = [
         type: "uint128",
       },
       {
-        internalType: "bytes32",
+        internalType: "string",
         name: "referralCode",
-        type: "bytes32",
+        type: "string",
       },
     ],
     name: "depositCollateralWithReferral",
