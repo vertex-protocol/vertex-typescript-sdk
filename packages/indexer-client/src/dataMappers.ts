@@ -166,6 +166,7 @@ export function mapIndexerRewardEpoch(
           takerFee: toBigDecimal(reward.taker_fee),
           takerTokens: toBigDecimal(reward.taker_tokens),
           takerVolume: toBigDecimal(reward.taker_volume),
+          takerReferralTokens: toBigDecimal(reward.taker_referral_tokens),
           uptime: reward.uptime,
         };
       },

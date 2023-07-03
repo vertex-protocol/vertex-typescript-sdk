@@ -23,7 +23,7 @@ async function fullSanity(context: RunContext) {
 
   console.log('Minting tokens...');
   const mintTx = await vertexClient.spot._mintMockERC20({
-    // 10 tokens
+    // 20000 tokens
     amount: toFixedPoint(20000, 6),
     productId: 0,
   });

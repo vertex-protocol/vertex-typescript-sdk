@@ -84,6 +84,7 @@ export interface IndexerSubaccountRewardsForProduct {
   takerFee: BigDecimal;
   makerTokens: BigDecimal;
   takerTokens: BigDecimal;
+  takerReferralTokens: BigDecimal;
   rebates: BigDecimal;
 }
 
@@ -111,6 +112,7 @@ export interface IndexerRewardEpoch {
 export interface GetSubaccountIndexerRewardsResponse {
   epochs: IndexerRewardEpoch[];
   updateTime: BigDecimal;
+  totalReferrals: number;
 }
 
 export interface GetIndexerReferralCodeResponse {

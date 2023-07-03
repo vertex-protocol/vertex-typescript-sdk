@@ -120,6 +120,7 @@ export class IndexerBaseClient {
     return {
       epochs: baseResponse.rewards.map(mapIndexerRewardEpoch),
       updateTime: toBigDecimal(baseResponse.update_time),
+      totalReferrals: Number(baseResponse.total_referrals),
     };
   }
 
