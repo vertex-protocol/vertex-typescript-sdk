@@ -99,6 +99,7 @@ export interface IndexerRewardEpoch {
   epoch: number;
   startTime: BigDecimal;
   period: BigDecimal;
+  addresses: number;
   addressRewards: IndexerSubaccountRewardsForProduct[];
   globalRewards: IndexerGlobalRewardsForProduct[];
 }
