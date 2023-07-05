@@ -49,6 +49,13 @@ export function getVertexEIP712Types(
           { name: 'nonce', type: 'uint64' },
         ],
       };
+    case 'list_trigger_orders':
+      return {
+        ListTriggerOrders: [
+          { name: 'sender', type: 'bytes32' },
+          { name: 'recvTime', type: 'uint64' },
+        ],
+      };
     case 'cancel_orders':
       return {
         Cancellation: [

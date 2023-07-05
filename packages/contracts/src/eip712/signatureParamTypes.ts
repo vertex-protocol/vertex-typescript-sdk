@@ -44,10 +44,7 @@ export interface LiquidateSubaccountParams extends Subaccount {
 }
 
 export interface OrderParams extends Subaccount {
-  /**
-   * IOC/FOK not currently supported
-   * Number -> Expiration time in seconds
-   */
+  // Expiration time in seconds, with order type encoded if relevant
   expiration: BigNumberish;
   // Limit price
   price: BigNumberish;
@@ -55,6 +52,10 @@ export interface OrderParams extends Subaccount {
   amount: BigNumberish;
   // A unique nonce to identify the order
   nonce: string;
+}
+
+export interface ListTriggerOrdersParams extends Subaccount {
+  recvTime: BigNumberish;
 }
 
 export interface OrderCancellationParams extends Subaccount {

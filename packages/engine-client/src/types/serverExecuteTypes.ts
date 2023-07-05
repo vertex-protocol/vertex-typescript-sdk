@@ -15,7 +15,7 @@ import { RequireExactlyOne } from '@vertex-protocol/utils';
 export interface EngineServerExecuteSuccessResult {
   status: 'success';
   signature: string;
-  request_type: EngineServerExecuteRequestTypeResult;
+  request_type: EngineServerExecuteResultRequestType;
 }
 
 export interface EngineServerExecuteFailureResult {
@@ -23,14 +23,14 @@ export interface EngineServerExecuteFailureResult {
   signature: string;
   error: string;
   error_code: number;
-  request_type: EngineServerExecuteRequestTypeResult;
+  request_type: EngineServerExecuteResultRequestType;
 }
 
 export type EngineServerExecuteResult =
   | EngineServerExecuteSuccessResult
   | EngineServerExecuteFailureResult;
 
-type EngineServerExecuteRequestTypeResult = {
+type EngineServerExecuteResultRequestType = {
   [K in keyof EngineServerExecuteRequestByType]: `execute_${K}`;
 }[keyof EngineServerExecuteRequestByType];
 

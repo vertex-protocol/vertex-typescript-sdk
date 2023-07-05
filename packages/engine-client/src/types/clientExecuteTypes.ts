@@ -8,7 +8,6 @@ import {
   ProductOrdersCancellationParams,
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
-import { RequireExactlyOne } from '@vertex-protocol/utils';
 import { EngineServerExecuteResult } from './serverExecuteTypes';
 
 /**
@@ -85,12 +84,6 @@ export interface EngineExecuteRequestParamsByType {
   cancel_product_orders: EngineExecuteCancelProductOrdersParams;
   link_signer: EngineExecuteLinkSignerParams;
 }
-
-export type EngineExecuteRequestParamsType =
-  keyof EngineExecuteRequestParamsByType;
-
-export type EngineExecuteRequestParams =
-  RequireExactlyOne<EngineExecuteRequestParamsType>;
 
 export type EngineExecutePlaceOrderResult = EngineServerExecuteResult & {
   orderParams: OrderParams;

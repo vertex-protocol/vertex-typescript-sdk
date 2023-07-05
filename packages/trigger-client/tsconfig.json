@@ -13,19 +13,13 @@
   ],
   "references": [
     {
-      "path": "../engine-client"
-    },
-    {
-      "path": "../indexer-client"
-    },
-    {
-      "path": "../trigger-client"
+      "path": "../utils"
     },
     {
       "path": "../contracts"
     },
     {
-      "path": "../utils"
+      "path": "../engine-client"
     }
   ]
 }

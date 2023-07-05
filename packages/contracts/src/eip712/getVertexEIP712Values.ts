@@ -6,6 +6,7 @@ import {
   BurnLpParams,
   LinkSignerParams,
   LiquidateSubaccountParams,
+  ListTriggerOrdersParams,
   MintLpParams,
   OrderCancellationParams,
   OrderParams,
@@ -19,6 +20,7 @@ import {
   EIP712BurnLpValues,
   EIP712LinkSignerValues,
   EIP712LiquidateSubaccountValues,
+  EIP712ListTriggerOrdersValues,
   EIP712MintLpValues,
   EIP712OrderCancellationValues,
   EIP712OrderValues,
@@ -38,41 +40,44 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
   params: SignableRequestTypeToParams[TReqType],
 ): SignableRequestTypeToEIP712Values[TReqType] {
   // Typescript does not yet support type narrowing + generic lookup types, hence the hacks here
+  let values: SignableRequestTypeToEIP712Values[keyof SignableRequestTypeToEIP712Values];
   switch (requestType) {
     case 'withdraw_collateral':
-      return getWithdrawCollateralValues(
-        params as WithdrawCollateralParams,
-      ) as SignableRequestTypeToEIP712Values[TReqType];
+      values = getWithdrawCollateralValues(params as WithdrawCollateralParams);
+      break;
     case 'mint_lp':
-      return getMintLpValues(
-        params as MintLpParams,
-      ) as SignableRequestTypeToEIP712Values[TReqType];
+      values = getMintLpValues(params as MintLpParams);
+      break;
     case 'burn_lp':
-      return getBurnLpValues(
-        params as BurnLpParams,
-      ) as SignableRequestTypeToEIP712Values[TReqType];
+      values = getBurnLpValues(params as BurnLpParams);
+      break;
     case 'place_order':
-      return getOrderValues(
-        params as OrderParams,
-      ) as SignableRequestTypeToEIP712Values[TReqType];
+      values = getOrderValues(params as OrderParams);
+      break;
+    case 'list_trigger_orders':
+      values = getListTriggerOrdersValues(params as ListTriggerOrdersParams);
+      break;
     case 'cancel_orders':
-      return getOrderCancellationValues(
-        params as OrderCancellationParams,
-      ) as SignableRequestTypeToEIP712Values[TReqType];
+      values = getOrderCancellationValues(params as OrderCancellationParams);
+      break;
     case 'cancel_product_orders':
-      return getProductOrdersCancellationValues(
+      values = getProductOrdersCancellationValues(
         params as ProductOrdersCancellationParams,
-      ) as SignableRequestTypeToEIP712Values[TReqType];
+      );
+      break;
     case 'liquidate_subaccount':
-      return getLiquidateSubaccountValues(
+      values = getLiquidateSubaccountValues(
         params as LiquidateSubaccountParams,
-      ) as SignableRequestTypeToEIP712Values[TReqType];
+      );
+      break;
     case 'link_signer':
-      return getLinkSignerValues(
-        params as LinkSignerParams,
-      ) as SignableRequestTypeToEIP712Values[TReqType];
+      values = getLinkSignerValues(params as LinkSignerParams);
+      break;
+    default:
+      throw Error(`Unknown request type: ${requestType}`);
   }
-  throw Error(`Unknown request type: ${requestType}`);
+
+  return values as SignableRequestTypeToEIP712Values[TReqType];
 }
 
 function getWithdrawCollateralValues(
@@ -125,6 +130,18 @@ function getOrderValues(params: OrderParams): EIP712OrderValues {
     amount: BigNumber.from(params.amount).toString(),
     expiration: BigNumber.from(params.expiration).toString(),
     nonce: BigNumber.from(params.nonce).toString(),
+  };
+}
+
+function getListTriggerOrdersValues(
+  params: ListTriggerOrdersParams,
+): EIP712ListTriggerOrdersValues {
+  return {
+    recvTime: BigNumber.from(params.recvTime).toString(),
+    sender: subaccountToHex({
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.subaccountName,
+    }),
   };
 }
 

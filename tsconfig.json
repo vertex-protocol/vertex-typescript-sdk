@@ -16,13 +16,5 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2020"
-  },
-  "references": [
-    {
-      "path": "packages/contracts"
-    },
-    {
-      "path": "packages/utils"
-    }
-  ]
+  }
 }

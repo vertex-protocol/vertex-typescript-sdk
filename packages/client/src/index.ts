@@ -13,3 +13,4 @@ export * from '@vertex-protocol/utils';
 export * from '@vertex-protocol/contracts';
 export * from '@vertex-protocol/engine-client';
 export * from '@vertex-protocol/indexer-client';
+export * from '@vertex-protocol/trigger-client';
