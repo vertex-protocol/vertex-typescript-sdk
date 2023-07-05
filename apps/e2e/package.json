@@ -1,6 +1,6 @@
 {
   "name": "vertex-sdk-e2e",
-  "version": "0.1.0-alpha.110",
+  "version": "0.1.0-alpha.111",
   "private": true,
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -17,12 +17,12 @@
     "trigger/full-sanity": "ts-node ./src/trigger-client/fullSanity.ts"
   },
   "dependencies": {
-    "@vertex-protocol/client": "^0.1.0-alpha.110",
-    "@vertex-protocol/contracts": "^0.1.0-alpha.110",
-    "@vertex-protocol/engine-client": "^0.1.0-alpha.110",
-    "@vertex-protocol/indexer-client": "^0.1.0-alpha.110",
-    "@vertex-protocol/trigger-client": "^0.1.0-alpha.110",
-    "@vertex-protocol/utils": "^0.1.0-alpha.110",
+    "@vertex-protocol/client": "^0.1.0-alpha.111",
+    "@vertex-protocol/contracts": "^0.1.0-alpha.111",
+    "@vertex-protocol/engine-client": "^0.1.0-alpha.111",
+    "@vertex-protocol/indexer-client": "^0.1.0-alpha.111",
+    "@vertex-protocol/trigger-client": "^0.1.0-alpha.111",
+    "@vertex-protocol/utils": "^0.1.0-alpha.111",
     "dotenv": "^16.3.1",
     "ethers": "^5.7.2"
   },
