@@ -148,6 +148,7 @@ export interface IndexerServerRewardEpoch {
   epoch: number;
   start_time: string;
   period: string;
+  num_eligible_addresses: number;
   // Per product ID
   address_rewards: IndexerServerSubaccountRewardsForProduct[];
   global_rewards: IndexerServerGlobalRewardsForProduct[];
