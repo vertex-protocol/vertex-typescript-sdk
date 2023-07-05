@@ -152,7 +152,7 @@ export function mapIndexerRewardEpoch(
     epoch: epoch.epoch,
     period: toBigDecimal(epoch.period),
     startTime: toBigDecimal(epoch.start_time),
-    addresses: epoch.addresses,
+    numEligibleAddresses: epoch.num_eligible_addresses,
     addressRewards: epoch.address_rewards.map(
       (reward): IndexerSubaccountRewardsForProduct => {
         return {
