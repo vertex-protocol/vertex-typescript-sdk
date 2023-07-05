@@ -1,6 +1,7 @@
 {
   "name": "vertex-sdk-e2e",
   "version": "0.1.0-alpha.110",
+  "private": true,
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
   "license": "ISC",
