@@ -116,7 +116,7 @@ export interface GetSubaccountIndexerRewardsResponse {
 }
 
 export interface GetIndexerReferralCodeResponse {
-  referralCode: string;
+  referralCode: string | null;
 }
 
 export interface GetIndexerPerpPricesParams {

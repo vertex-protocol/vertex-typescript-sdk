@@ -167,7 +167,7 @@ export interface IndexerServerRewardsResponse {
 }
 
 export interface IndexerServerReferralCodeResponse {
-  referral_code: string;
+  referral_code: string | null;
 }
 
 export interface IndexerServerFundingRateResponse {
