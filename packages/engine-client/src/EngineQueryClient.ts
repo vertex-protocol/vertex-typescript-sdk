@@ -20,6 +20,8 @@ import {
   GetEngineMarketLiquidityResponse,
   GetEngineMarketPriceParams,
   GetEngineMarketPriceResponse,
+  GetEngineMarketPricesParams,
+  GetEngineMarketPricesResponse,
   GetEngineMaxMintLpAmountParams,
   GetEngineMaxMintLpAmountResponse,
   GetEngineMaxOrderSizeParams,
@@ -28,6 +30,8 @@ import {
   GetEngineMaxWithdrawableResponse,
   GetEngineOrderParams,
   GetEngineOrderResponse,
+  GetEngineOrdersParams,
+  GetEngineOrdersResponse,
   GetEngineSubaccountFeeRatesParams,
   GetEngineSubaccountFeeRatesResponse,
   GetEngineSubaccountOrdersParams,
@@ -251,6 +255,39 @@ export class EngineQueryClient extends EngineBaseClient {
   }
 
   /**
+   * Get all subaccount orders from the engine, for multiple products
+   * @param params
+   */
+  async getOrders(
+    params: GetEngineOrdersParams,
+  ): Promise<GetEngineOrdersResponse> {
+    const baseResponse = await this.query('orders', {
+      sender: subaccountToHex({
+        subaccountOwner: params.subaccountOwner,
+        subaccountName: params.subaccountName,
+      }),
+      product_ids: params.productIds,
+    });
+
+    const subaccount = subaccountFromHex(baseResponse.sender);
+
+    return {
+      subaccountName: subaccount.subaccountName,
+      subaccountOwner: subaccount.subaccountOwner,
+      productOrders: baseResponse.product_orders.map(
+        (orders): GetEngineSubaccountOrdersResponse => {
+          return {
+            orders: orders.orders.map(mapEngineServerOrder),
+            productId: orders.product_id,
+            subaccountOwner: subaccount.subaccountOwner,
+            subaccountName: subaccount.subaccountName,
+          };
+        },
+      ),
+    };
+  }
+
+  /**
    * Gets maker & taker fee rates for order fees
    * @params params
    */
@@ -323,6 +360,29 @@ export class EngineQueryClient extends EngineBaseClient {
       ask: fromX18(baseResponse.ask_x18),
       bid: fromX18(baseResponse.bid_x18),
       productId: baseResponse.product_id,
+    };
+  }
+
+  /**
+   * Retrieves the latest prices for provided markets
+   * @param params
+   */
+  async getMarketPrices(
+    params: GetEngineMarketPricesParams,
+  ): Promise<GetEngineMarketPricesResponse> {
+    const baseResponse = await this.query('market_prices', {
+      product_ids: params.productIds,
+    });
+    return {
+      marketPrices: baseResponse.market_prices.map(
+        (marketPrice): GetEngineMarketPriceResponse => {
+          return {
+            ask: fromX18(marketPrice.ask_x18),
+            bid: fromX18(marketPrice.bid_x18),
+            productId: marketPrice.product_id,
+          };
+        },
+      ),
     };
   }
 

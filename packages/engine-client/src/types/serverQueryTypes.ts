@@ -43,6 +43,10 @@ export interface EngineServerMarketPriceQueryParams {
   product_id: number;
 }
 
+export interface EngineServerMarketPricesQueryParams {
+  product_ids: number[];
+}
+
 export interface EngineServerGetOrderQueryParams {
   product_id: number;
   digest: string;
@@ -52,6 +56,11 @@ export interface EngineServerValidateOrderQueryParams {
   product_id: number;
   // Bytes for order, does not need to be signed
   order: string;
+}
+
+export interface EngineServerOrdersQueryParams {
+  sender: string;
+  product_ids: number[];
 }
 
 export interface EngineServerSubaccountOrdersQueryParams {
@@ -105,7 +114,9 @@ export interface EngineServerQueryRequestByType {
     txns?: string;
   };
   market_price: EngineServerMarketPriceQueryParams;
+  market_prices: EngineServerMarketPricesQueryParams;
   order: EngineServerGetOrderQueryParams;
+  orders: EngineServerOrdersQueryParams;
   validate_order: EngineServerValidateOrderQueryParams;
   fee_rates: EngineServerSubaccountFeeRatesParams;
   subaccount_orders: EngineServerSubaccountOrdersQueryParams;
@@ -185,6 +196,11 @@ export interface EngineServerSubaccountOrdersResponse {
   orders: EngineServerGetOrderResponse[];
 }
 
+export interface EngineServerOrdersResponse {
+  sender: string;
+  product_orders: EngineServerSubaccountOrdersResponse[];
+}
+
 export interface EngineServerSubaccountFeeRatesResponse {
   liquidation_sequencer_fee: string;
   health_check_sequencer_fee: string;
@@ -199,6 +215,10 @@ export interface EngineServerMarketPriceResponse {
   product_id: number;
   bid_x18: string;
   ask_x18: string;
+}
+
+export interface EngineServerMarketPricesResponse {
+  market_prices: EngineServerMarketPriceResponse[];
 }
 
 export interface EngineServerGetOrderResponse {
@@ -252,11 +272,13 @@ export interface EngineServerQueryResponseByType {
   subaccount_info: EngineServerSubaccountInfoResponse;
   all_products: EngineServerAllProductsResponse;
   order: EngineServerGetOrderResponse;
+  orders: EngineServerOrdersResponse;
   validate_order: EngineServerValidateOrderResponse;
   subaccount_orders: EngineServerSubaccountOrdersResponse;
   fee_rates: EngineServerSubaccountFeeRatesResponse;
   market_liquidity: EngineServerMarketLiquidityResponse;
   market_price: EngineServerMarketPriceResponse;
+  market_prices: EngineServerMarketPricesResponse;
   max_order_size: EngineServerMaxOrderSizeResponse;
   max_withdrawable: EngineServerMaxWithdrawableResponse;
   max_lp_mintable: EngineServerMaxMintLpResponse;

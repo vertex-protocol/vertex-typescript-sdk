@@ -109,6 +109,8 @@ async function fullSanity(context: RunContext) {
 
   // Fetches state from offchain sequencer
   await vertexClient.market.getAllEngineMarkets();
+  await vertexClient.market.getLatestMarketPrices({ productIds: [1, 2, 3] });
+
   // Fetches state from Arbitrum
   await vertexClient.market.getAllMarkets();
   await vertexClient.market.getLatestMarketPrice({ productId: 3 });
@@ -133,7 +135,11 @@ async function fullSanity(context: RunContext) {
     subaccountName: 'default',
     productId: 3,
   });
-
+  await vertexClient.market.getOpenOrders({
+    subaccountOwner: await signer.getAddress(),
+    subaccountName: 'default',
+    productIds: [1, 2, 3],
+  });
   await vertexClient.spot.withdraw({
     subaccountName: 'default',
     productId: 0,

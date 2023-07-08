@@ -117,6 +117,14 @@ export interface GetEngineSubaccountOrdersResponse extends Subaccount {
   orders: EngineOrder[];
 }
 
+export interface GetEngineOrdersParams extends Subaccount {
+  productIds: number[];
+}
+
+export interface GetEngineOrdersResponse extends Subaccount {
+  productOrders: GetEngineSubaccountOrdersResponse[];
+}
+
 export type GetEngineSubaccountFeeRatesParams = Subaccount;
 
 export interface SubaccountOrderFeeRates {
@@ -157,6 +165,14 @@ export interface GetEngineMarketPriceResponse {
   productId: number;
   bid: BigDecimal;
   ask: BigDecimal;
+}
+
+export interface GetEngineMarketPricesParams {
+  productIds: number[];
+}
+
+export interface GetEngineMarketPricesResponse {
+  marketPrices: GetEngineMarketPriceResponse[];
 }
 
 export interface GetEngineMaxOrderSizeParams extends Subaccount {
