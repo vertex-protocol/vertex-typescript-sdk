@@ -39,6 +39,25 @@ const _abi = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "invitee",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "referralCode",
+        type: "bytes32",
+      },
+    ],
+    name: "UserReferral",
+    type: "event",
+  },
+  {
     inputs: [
       {
         internalType: "bytes12",
@@ -57,6 +76,34 @@ const _abi = [
       },
     ],
     name: "depositCollateral",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes12",
+        name: "subaccountName",
+        type: "bytes12",
+      },
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "uint128",
+        name: "amount",
+        type: "uint128",
+      },
+      {
+        internalType: "string",
+        name: "referralCode",
+        type: "string",
+      },
+    ],
+    name: "depositCollateralWithReferral",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

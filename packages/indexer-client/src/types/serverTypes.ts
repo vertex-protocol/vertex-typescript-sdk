@@ -21,6 +21,10 @@ export interface IndexerServerRewardsParams {
   address: string;
 }
 
+export interface IndexerServerReferralCodeParams {
+  subaccount: string;
+}
+
 export interface IndexerServerFundingRateParams {
   product_id: number;
 }
@@ -94,6 +98,7 @@ export interface IndexerServerLinkedSignerParams {
 export interface IndexerServerQueryRequestByType {
   summary: IndexerServerSummaryParams;
   rewards: IndexerServerRewardsParams;
+  referral_code: IndexerServerReferralCodeParams;
   funding_rate: IndexerServerFundingRateParams;
   price: IndexerServerPriceParams;
   oracle_price: IndexerServerOraclePricesParams;
@@ -129,6 +134,7 @@ export interface IndexerServerSubaccountRewardsForProduct {
   // Already include adjustment for decimals
   maker_tokens: string;
   taker_tokens: string;
+  taker_referral_tokens: string;
   rebates: string;
 }
 
@@ -157,6 +163,11 @@ export interface IndexerServerRewardEpoch {
 export interface IndexerServerRewardsResponse {
   rewards: IndexerServerRewardEpoch[];
   update_time: string;
+  total_referrals: string;
+}
+
+export interface IndexerServerReferralCodeResponse {
+  referral_code: string | null;
 }
 
 export interface IndexerServerFundingRateResponse {
@@ -214,6 +225,7 @@ export interface IndexerServerLinkedSignerResponse {
 export interface IndexerServerQueryResponseByType {
   summary: IndexerServerSummaryResponse;
   rewards: IndexerServerRewardsResponse;
+  referral_code: IndexerServerReferralCodeResponse;
   funding_rate: IndexerServerFundingRateResponse;
   price: IndexerServerPriceResponse;
   oracle_price: IndexerServerOraclePricesResponse;

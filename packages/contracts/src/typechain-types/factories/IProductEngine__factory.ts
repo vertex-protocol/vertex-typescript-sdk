@@ -24,112 +24,6 @@ const _abi = [
     type: "event",
   },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "subaccount",
-        type: "bytes32",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "lpAmount",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "baseAmount",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "quoteAmount",
-        type: "int128",
-      },
-    ],
-    name: "BurnLp",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "subaccount",
-        type: "bytes32",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "lpAmount",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "baseAmount",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "quoteAmount",
-        type: "int128",
-      },
-    ],
-    name: "MintLp",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-    ],
-    name: "ProductUpdate",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "amountSocialized",
-        type: "int128",
-      },
-    ],
-    name: "SocializeProduct",
-    type: "event",
-  },
-  {
     inputs: [
       {
         components: [
@@ -354,9 +248,38 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "bytes32",
-        name: "subaccount",
-        type: "bytes32",
+        internalType: "int128",
+        name: "baseDelta",
+        type: "int128",
+      },
+      {
+        internalType: "int128",
+        name: "quoteDelta",
+        type: "int128",
+      },
+    ],
+    name: "swapLp",
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
       },
       {
         internalType: "int128",
@@ -392,6 +315,19 @@ const _abi = [
         type: "int128",
       },
     ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes",
+        name: "txn",
+        type: "bytes",
+      },
+    ],
+    name: "updateProduct",
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },

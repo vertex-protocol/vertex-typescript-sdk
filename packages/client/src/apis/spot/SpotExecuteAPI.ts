@@ -17,6 +17,7 @@ export class SpotExecuteAPI extends BaseSpotAPI {
       subaccountName: params.subaccountName,
       productId: params.productId,
       amount: params.amount,
+      referralCode: params.referralCode,
     });
   }
 

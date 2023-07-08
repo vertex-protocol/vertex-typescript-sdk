@@ -62,13 +62,22 @@ export declare namespace IEndpoint {
 
   export type MatchOrderAMMStruct = {
     productId: PromiseOrValue<BigNumberish>;
+    baseDelta: PromiseOrValue<BigNumberish>;
+    quoteDelta: PromiseOrValue<BigNumberish>;
     taker: IEndpoint.SignedOrderStruct;
   };
 
   export type MatchOrderAMMStructOutput = [
     number,
+    BigNumber,
+    BigNumber,
     IEndpoint.SignedOrderStructOutput
-  ] & { productId: number; taker: IEndpoint.SignedOrderStructOutput };
+  ] & {
+    productId: number;
+    baseDelta: BigNumber;
+    quoteDelta: BigNumber;
+    taker: IEndpoint.SignedOrderStructOutput;
+  };
 
   export type MatchOrdersStruct = {
     productId: PromiseOrValue<BigNumberish>;
@@ -87,6 +96,22 @@ export declare namespace IEndpoint {
     amm: boolean;
     taker: IEndpoint.SignedOrderStructOutput;
     maker: IEndpoint.SignedOrderStructOutput;
+  };
+
+  export type MatchOrdersWithSignerStruct = {
+    matchOrders: IEndpoint.MatchOrdersStruct;
+    takerLinkedSigner: PromiseOrValue<string>;
+    makerLinkedSigner: PromiseOrValue<string>;
+  };
+
+  export type MatchOrdersWithSignerStructOutput = [
+    IEndpoint.MatchOrdersStructOutput,
+    string,
+    string
+  ] & {
+    matchOrders: IEndpoint.MatchOrdersStructOutput;
+    takerLinkedSigner: string;
+    makerLinkedSigner: string;
   };
 
   export type SwapAMMStruct = {
@@ -140,8 +165,8 @@ export interface IOffchainBookInterface extends utils.Interface {
     "getMinSize()": FunctionFragment;
     "getVersion()": FunctionFragment;
     "initialize(address,address,address,address,address,uint32,int128,int128,int128,int128)": FunctionFragment;
-    "matchOrderAMM((uint32,((bytes32,int128,int128,uint64,uint64),bytes)))": FunctionFragment;
-    "matchOrders((uint32,bool,((bytes32,int128,int128,uint64,uint64),bytes),((bytes32,int128,int128,uint64,uint64),bytes)))": FunctionFragment;
+    "matchOrderAMM((uint32,int128,int128,((bytes32,int128,int128,uint64,uint64),bytes)),address)": FunctionFragment;
+    "matchOrders(((uint32,bool,((bytes32,int128,int128,uint64,uint64),bytes),((bytes32,int128,int128,uint64,uint64),bytes)),address,address))": FunctionFragment;
     "modifyConfig(int128,int128,int128,int128)": FunctionFragment;
     "swapAMM((bytes32,uint32,int128,int128))": FunctionFragment;
   };
@@ -196,11 +221,11 @@ export interface IOffchainBookInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "matchOrderAMM",
-    values: [IEndpoint.MatchOrderAMMStruct]
+    values: [IEndpoint.MatchOrderAMMStruct, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "matchOrders",
-    values: [IEndpoint.MatchOrdersStruct]
+    values: [IEndpoint.MatchOrdersWithSignerStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "modifyConfig",
@@ -343,11 +368,12 @@ export interface IOffchainBook extends BaseContract {
 
     matchOrderAMM(
       tx: IEndpoint.MatchOrderAMMStruct,
+      takerLinkedSigner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     matchOrders(
-      tx: IEndpoint.MatchOrdersStruct,
+      tx: IEndpoint.MatchOrdersWithSignerStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -404,11 +430,12 @@ export interface IOffchainBook extends BaseContract {
 
   matchOrderAMM(
     tx: IEndpoint.MatchOrderAMMStruct,
+    takerLinkedSigner: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   matchOrders(
-    tx: IEndpoint.MatchOrdersStruct,
+    tx: IEndpoint.MatchOrdersWithSignerStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -459,11 +486,12 @@ export interface IOffchainBook extends BaseContract {
 
     matchOrderAMM(
       tx: IEndpoint.MatchOrderAMMStruct,
+      takerLinkedSigner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     matchOrders(
-      tx: IEndpoint.MatchOrdersStruct,
+      tx: IEndpoint.MatchOrdersWithSignerStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -546,11 +574,12 @@ export interface IOffchainBook extends BaseContract {
 
     matchOrderAMM(
       tx: IEndpoint.MatchOrderAMMStruct,
+      takerLinkedSigner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     matchOrders(
-      tx: IEndpoint.MatchOrdersStruct,
+      tx: IEndpoint.MatchOrdersWithSignerStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -606,11 +635,12 @@ export interface IOffchainBook extends BaseContract {
 
     matchOrderAMM(
       tx: IEndpoint.MatchOrderAMMStruct,
+      takerLinkedSigner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     matchOrders(
-      tx: IEndpoint.MatchOrdersStruct,
+      tx: IEndpoint.MatchOrdersWithSignerStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

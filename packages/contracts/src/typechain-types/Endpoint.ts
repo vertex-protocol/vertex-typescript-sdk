@@ -43,8 +43,10 @@ export interface EndpointInterface extends utils.Interface {
   functions: {
     "clearinghouse()": FunctionFragment;
     "depositCollateral(bytes12,uint32,uint128)": FunctionFragment;
+    "depositCollateralWithReferral(bytes12,uint32,uint128,string)": FunctionFragment;
     "executeSlowModeTransactions(uint32)": FunctionFragment;
     "getBook(uint32)": FunctionFragment;
+    "getLinkedSigner(bytes32)": FunctionFragment;
     "getNonce(address)": FunctionFragment;
     "getNumSubaccounts()": FunctionFragment;
     "getPriceX18(uint32)": FunctionFragment;
@@ -58,26 +60,31 @@ export interface EndpointInterface extends utils.Interface {
     "nSubmissions()": FunctionFragment;
     "owner()": FunctionFragment;
     "processSlowModeTransaction(address,bytes)": FunctionFragment;
+    "referralCodes(address)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "requireSubaccount(bytes32)": FunctionFragment;
+    "sequencerFee(uint32)": FunctionFragment;
+    "sequencerFees()": FunctionFragment;
     "setBook(uint32,address)": FunctionFragment;
     "setSequencer(address)": FunctionFragment;
     "slowModeConfig()": FunctionFragment;
+    "slowModeFees()": FunctionFragment;
     "slowModeTxs(uint64)": FunctionFragment;
     "submitSlowModeTransaction(bytes)": FunctionFragment;
     "submitTransactions(bytes[])": FunctionFragment;
     "submitTransactionsChecked(uint64,bytes[])": FunctionFragment;
     "submitTransactionsCheckedWithGasLimit(uint64,bytes[],uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "tryReturnFunds(bytes)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "clearinghouse"
       | "depositCollateral"
+      | "depositCollateralWithReferral"
       | "executeSlowModeTransactions"
       | "getBook"
+      | "getLinkedSigner"
       | "getNonce"
       | "getNumSubaccounts"
       | "getPriceX18"
@@ -91,18 +98,21 @@ export interface EndpointInterface extends utils.Interface {
       | "nSubmissions"
       | "owner"
       | "processSlowModeTransaction"
+      | "referralCodes"
       | "renounceOwnership"
       | "requireSubaccount"
+      | "sequencerFee"
+      | "sequencerFees"
       | "setBook"
       | "setSequencer"
       | "slowModeConfig"
+      | "slowModeFees"
       | "slowModeTxs"
       | "submitSlowModeTransaction"
       | "submitTransactions"
       | "submitTransactionsChecked"
       | "submitTransactionsCheckedWithGasLimit"
       | "transferOwnership"
-      | "tryReturnFunds"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -118,12 +128,25 @@ export interface EndpointInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "depositCollateralWithReferral",
+    values: [
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "executeSlowModeTransactions",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getBook",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getLinkedSigner",
+    values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "getNonce",
@@ -179,12 +202,24 @@ export interface EndpointInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
+    functionFragment: "referralCodes",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "requireSubaccount",
     values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "sequencerFee",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "sequencerFees",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "setBook",
@@ -196,6 +231,10 @@ export interface EndpointInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "slowModeConfig",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "slowModeFees",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -226,10 +265,6 @@ export interface EndpointInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "tryReturnFunds",
-    values: [PromiseOrValue<BytesLike>]
-  ): string;
 
   decodeFunctionResult(
     functionFragment: "clearinghouse",
@@ -240,10 +275,18 @@ export interface EndpointInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "depositCollateralWithReferral",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "executeSlowModeTransactions",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getBook", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getLinkedSigner",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getNumSubaccounts",
@@ -282,11 +325,23 @@ export interface EndpointInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "referralCodes",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "requireSubaccount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "sequencerFee",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "sequencerFees",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setBook", data: BytesLike): Result;
@@ -296,6 +351,10 @@ export interface EndpointInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "slowModeConfig",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "slowModeFees",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -322,22 +381,20 @@ export interface EndpointInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "tryReturnFunds",
-    data: BytesLike
-  ): Result;
 
   events: {
     "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "SubmitSlowModeTransaction(uint64,address,bytes)": EventFragment;
     "SubmitTransactions()": EventFragment;
+    "UserReferral(address,bytes32)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SubmitSlowModeTransaction"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SubmitTransactions"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UserReferral"): EventFragment;
 }
 
 export interface InitializedEventObject {
@@ -381,6 +438,17 @@ export type SubmitTransactionsEvent = TypedEvent<
 export type SubmitTransactionsEventFilter =
   TypedEventFilter<SubmitTransactionsEvent>;
 
+export interface UserReferralEventObject {
+  invitee: string;
+  referralCode: string;
+}
+export type UserReferralEvent = TypedEvent<
+  [string, string],
+  UserReferralEventObject
+>;
+
+export type UserReferralEventFilter = TypedEventFilter<UserReferralEvent>;
+
 export interface Endpoint extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
@@ -417,6 +485,14 @@ export interface Endpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    depositCollateralWithReferral(
+      subaccountName: PromiseOrValue<BytesLike>,
+      productId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      referralCode: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     executeSlowModeTransactions(
       count: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -424,6 +500,11 @@ export interface Endpoint extends BaseContract {
 
     getBook(
       productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    getLinkedSigner(
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
@@ -480,6 +561,11 @@ export interface Endpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    referralCodes(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -488,6 +574,13 @@ export interface Endpoint extends BaseContract {
       subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[void]>;
+
+    sequencerFee(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    sequencerFees(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     setBook(
       productId: PromiseOrValue<BigNumberish>,
@@ -509,6 +602,8 @@ export interface Endpoint extends BaseContract {
         txUpTo: BigNumber;
       }
     >;
+
+    slowModeFees(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     slowModeTxs(
       arg0: PromiseOrValue<BigNumberish>,
@@ -548,11 +643,6 @@ export interface Endpoint extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    tryReturnFunds(
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
   };
 
   clearinghouse(overrides?: CallOverrides): Promise<string>;
@@ -564,6 +654,14 @@ export interface Endpoint extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  depositCollateralWithReferral(
+    subaccountName: PromiseOrValue<BytesLike>,
+    productId: PromiseOrValue<BigNumberish>,
+    amount: PromiseOrValue<BigNumberish>,
+    referralCode: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   executeSlowModeTransactions(
     count: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -571,6 +669,11 @@ export interface Endpoint extends BaseContract {
 
   getBook(
     productId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  getLinkedSigner(
+    subaccount: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<string>;
 
@@ -627,6 +730,11 @@ export interface Endpoint extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  referralCodes(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
   renounceOwnership(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -635,6 +743,13 @@ export interface Endpoint extends BaseContract {
     subaccount: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<void>;
+
+  sequencerFee(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  sequencerFees(overrides?: CallOverrides): Promise<BigNumber>;
 
   setBook(
     productId: PromiseOrValue<BigNumberish>,
@@ -656,6 +771,8 @@ export interface Endpoint extends BaseContract {
       txUpTo: BigNumber;
     }
   >;
+
+  slowModeFees(overrides?: CallOverrides): Promise<BigNumber>;
 
   slowModeTxs(
     arg0: PromiseOrValue<BigNumberish>,
@@ -696,11 +813,6 @@ export interface Endpoint extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  tryReturnFunds(
-    transaction: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   callStatic: {
     clearinghouse(overrides?: CallOverrides): Promise<string>;
 
@@ -711,6 +823,14 @@ export interface Endpoint extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    depositCollateralWithReferral(
+      subaccountName: PromiseOrValue<BytesLike>,
+      productId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      referralCode: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     executeSlowModeTransactions(
       count: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -718,6 +838,11 @@ export interface Endpoint extends BaseContract {
 
     getBook(
       productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    getLinkedSigner(
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<string>;
 
@@ -774,12 +899,24 @@ export interface Endpoint extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    referralCodes(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
     requireSubaccount(
       subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    sequencerFee(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    sequencerFees(overrides?: CallOverrides): Promise<BigNumber>;
 
     setBook(
       productId: PromiseOrValue<BigNumberish>,
@@ -801,6 +938,8 @@ export interface Endpoint extends BaseContract {
         txUpTo: BigNumber;
       }
     >;
+
+    slowModeFees(overrides?: CallOverrides): Promise<BigNumber>;
 
     slowModeTxs(
       arg0: PromiseOrValue<BigNumberish>,
@@ -840,11 +979,6 @@ export interface Endpoint extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    tryReturnFunds(
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
   };
 
   filters: {
@@ -873,6 +1007,12 @@ export interface Endpoint extends BaseContract {
 
     "SubmitTransactions()"(): SubmitTransactionsEventFilter;
     SubmitTransactions(): SubmitTransactionsEventFilter;
+
+    "UserReferral(address,bytes32)"(
+      invitee?: null,
+      referralCode?: null
+    ): UserReferralEventFilter;
+    UserReferral(invitee?: null, referralCode?: null): UserReferralEventFilter;
   };
 
   estimateGas: {
@@ -885,6 +1025,14 @@ export interface Endpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    depositCollateralWithReferral(
+      subaccountName: PromiseOrValue<BytesLike>,
+      productId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      referralCode: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     executeSlowModeTransactions(
       count: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -892,6 +1040,11 @@ export interface Endpoint extends BaseContract {
 
     getBook(
       productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getLinkedSigner(
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -948,6 +1101,11 @@ export interface Endpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    referralCodes(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -956,6 +1114,13 @@ export interface Endpoint extends BaseContract {
       subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    sequencerFee(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    sequencerFees(overrides?: CallOverrides): Promise<BigNumber>;
 
     setBook(
       productId: PromiseOrValue<BigNumberish>,
@@ -969,6 +1134,8 @@ export interface Endpoint extends BaseContract {
     ): Promise<BigNumber>;
 
     slowModeConfig(overrides?: CallOverrides): Promise<BigNumber>;
+
+    slowModeFees(overrides?: CallOverrides): Promise<BigNumber>;
 
     slowModeTxs(
       arg0: PromiseOrValue<BigNumberish>,
@@ -1002,11 +1169,6 @@ export interface Endpoint extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
-
-    tryReturnFunds(
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -1019,6 +1181,14 @@ export interface Endpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    depositCollateralWithReferral(
+      subaccountName: PromiseOrValue<BytesLike>,
+      productId: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
+      referralCode: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     executeSlowModeTransactions(
       count: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1026,6 +1196,11 @@ export interface Endpoint extends BaseContract {
 
     getBook(
       productId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getLinkedSigner(
+      subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1082,6 +1257,11 @@ export interface Endpoint extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    referralCodes(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -1090,6 +1270,13 @@ export interface Endpoint extends BaseContract {
       subaccount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    sequencerFee(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    sequencerFees(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     setBook(
       productId: PromiseOrValue<BigNumberish>,
@@ -1103,6 +1290,8 @@ export interface Endpoint extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     slowModeConfig(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    slowModeFees(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     slowModeTxs(
       arg0: PromiseOrValue<BigNumberish>,
@@ -1134,11 +1323,6 @@ export interface Endpoint extends BaseContract {
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    tryReturnFunds(
-      transaction: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

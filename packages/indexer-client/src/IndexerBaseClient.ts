@@ -1,4 +1,7 @@
-import { subaccountToHex } from '@vertex-protocol/contracts';
+import {
+  subaccountToBytes32,
+  subaccountToHex,
+} from '@vertex-protocol/contracts';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import axios, { AxiosResponse } from 'axios';
 import {
@@ -30,6 +33,8 @@ import {
   GetIndexerProductSnapshotsParams,
   GetIndexerProductSnapshotsResponse,
   GetIndexerQuotePriceResponse,
+  GetIndexerReferralCodeParams,
+  GetIndexerReferralCodeResponse,
   GetIndexerSubaccountRewardsParams,
   GetIndexerSummaryParams,
   GetIndexerSummaryResponse,
@@ -115,6 +120,27 @@ export class IndexerBaseClient {
     return {
       epochs: baseResponse.rewards.map(mapIndexerRewardEpoch),
       updateTime: toBigDecimal(baseResponse.update_time),
+      totalReferrals: Number(baseResponse.total_referrals),
+    };
+  }
+
+  /**
+   * Retrieves referral code for an address
+   *
+   * @param params
+   */
+  async getReferralCode(
+    params: GetIndexerReferralCodeParams,
+  ): Promise<GetIndexerReferralCodeResponse> {
+    const baseResponse = await this.query('referral_code', {
+      subaccount: subaccountToHex({
+        subaccountOwner: params.subaccount.subaccountOwner,
+        subaccountName: params.subaccount.subaccountName,
+      }),
+    });
+
+    return {
+      referralCode: baseResponse.referral_code,
     };
   }
 

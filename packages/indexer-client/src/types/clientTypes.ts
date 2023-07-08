@@ -69,6 +69,10 @@ export interface GetIndexerSubaccountRewardsParams {
   address: string;
 }
 
+export interface GetIndexerReferralCodeParams {
+  subaccount: Subaccount;
+}
+
 export interface IndexerSubaccountRewardsForProduct {
   productId: number;
   qScore: BigDecimal;
@@ -80,6 +84,7 @@ export interface IndexerSubaccountRewardsForProduct {
   takerFee: BigDecimal;
   makerTokens: BigDecimal;
   takerTokens: BigDecimal;
+  takerReferralTokens: BigDecimal;
   rebates: BigDecimal;
 }
 
@@ -107,6 +112,11 @@ export interface IndexerRewardEpoch {
 export interface GetSubaccountIndexerRewardsResponse {
   epochs: IndexerRewardEpoch[];
   updateTime: BigDecimal;
+  totalReferrals: number;
+}
+
+export interface GetIndexerReferralCodeResponse {
+  referralCode: string | null;
 }
 
 export interface GetIndexerPerpPricesParams {

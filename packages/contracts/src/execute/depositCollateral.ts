@@ -6,6 +6,7 @@ export interface ExecuteDepositCollateralParams {
   subaccountName: string;
   productId: number;
   amount: BigNumberish;
+  referralCode?: string;
 }
 
 /**
@@ -18,10 +19,17 @@ export async function depositCollateral({
   subaccountName,
   productId,
   amount,
+  referralCode,
 }: WithContract<'endpoint', ExecuteDepositCollateralParams>) {
-  return endpoint.depositCollateral(
-    subaccountNameToBytes12(subaccountName),
-    productId,
-    amount,
-  );
+  const bytesSubaccountName = subaccountNameToBytes12(subaccountName);
+  if (referralCode) {
+    return endpoint.depositCollateralWithReferral(
+      bytesSubaccountName,
+      productId,
+      amount,
+      referralCode,
+    );
+  } else {
+    return endpoint.depositCollateral(bytesSubaccountName, productId, amount);
+  }
 }

@@ -1,5 +1,6 @@
 import { RunContext } from '../utils/types';
 import {
+  bytesToStr,
   getExpirationTimestamp,
   getOrderNonce,
 } from '@vertex-protocol/contracts';
@@ -10,6 +11,7 @@ import {
   getProductMetadataByProductId,
   PlaceOrderParams,
 } from '@vertex-protocol/client';
+import { arrayify } from 'ethers/lib/utils';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -21,18 +23,32 @@ async function fullSanity(context: RunContext) {
 
   console.log('Minting tokens...');
   const mintTx = await vertexClient.spot._mintMockERC20({
-    // 10 tokens
-    amount: toFixedPoint(10, 6),
+    // 20000 tokens
+    amount: toFixedPoint(20000, 6),
     productId: 0,
   });
   await mintTx.wait();
 
   console.log('Approving allowance...');
   const approveTx = await vertexClient.spot.approveAllowance({
-    amount: toFixedPoint(10000, 6),
+    amount: toFixedPoint(20000, 6),
     productId: 0,
   });
   await approveTx.wait();
+
+  console.log('Depositing tokens with referral code...');
+  const depositWithReferralTx = await vertexClient.spot.deposit({
+    subaccountName: 'default',
+    productId: 0,
+    amount: toFixedPoint(10000, 6),
+    referralCode: 'Blk23MeZU3',
+  });
+  await depositWithReferralTx.wait();
+
+  const referralCode =
+    await vertexClient.context.contracts.endpoint.referralCodes(signer.address);
+
+  console.log('Referral code:', referralCode);
 
   console.log('Depositing tokens...');
   const depositTx = await vertexClient.spot.deposit({
