@@ -30,8 +30,7 @@ import {
   GetEngineMaxWithdrawableResponse,
   GetEngineOrderParams,
   GetEngineOrderResponse,
-  GetEngineOrdersParams,
-  GetEngineOrdersResponse,
+  GetEngineSubaccountProductOrdersResponse,
   GetEngineSubaccountFeeRatesParams,
   GetEngineSubaccountFeeRatesResponse,
   GetEngineSubaccountOrdersParams,
@@ -43,6 +42,7 @@ import {
   ValidateEngineOrderParams,
   ValidateEngineOrderResponse,
   ValidateSignedEngineOrderParams,
+  GetEngineSubaccountProductOrdersParams,
 } from './types';
 import {
   mapEngineServerBalanceHealthContributions,
@@ -258,9 +258,9 @@ export class EngineQueryClient extends EngineBaseClient {
    * Get all subaccount orders from the engine, for multiple products
    * @param params
    */
-  async getOrders(
-    params: GetEngineOrdersParams,
-  ): Promise<GetEngineOrdersResponse> {
+  async getSubaccountProductOrders(
+    params: GetEngineSubaccountProductOrdersParams,
+  ): Promise<GetEngineSubaccountProductOrdersResponse> {
     const baseResponse = await this.query('orders', {
       sender: subaccountToHex({
         subaccountOwner: params.subaccountOwner,
@@ -272,8 +272,6 @@ export class EngineQueryClient extends EngineBaseClient {
     const subaccount = subaccountFromHex(baseResponse.sender);
 
     return {
-      subaccountName: subaccount.subaccountName,
-      subaccountOwner: subaccount.subaccountOwner,
       productOrders: baseResponse.product_orders.map(
         (orders): GetEngineSubaccountOrdersResponse => {
           return {
@@ -401,7 +399,8 @@ export class EngineQueryClient extends EngineBaseClient {
         subaccountOwner: params.subaccountOwner,
         subaccountName: params.subaccountName,
       }),
-      spot_leverage: params.spotLeverage ?? null,
+      spot_leverage:
+        params.spotLeverage != null ? String(params.spotLeverage) : null,
     });
 
     return toBigDecimal(baseResponse.max_order_size);
@@ -420,7 +419,8 @@ export class EngineQueryClient extends EngineBaseClient {
         subaccountOwner: params.subaccountOwner,
         subaccountName: params.subaccountName,
       }),
-      spot_leverage: params.spotLeverage ?? null,
+      spot_leverage:
+        params.spotLeverage != null ? String(params.spotLeverage) : null,
     });
 
     return toBigDecimal(baseResponse.max_withdrawable);
@@ -440,7 +440,8 @@ export class EngineQueryClient extends EngineBaseClient {
         subaccountOwner: params.subaccountOwner,
         subaccountName: params.subaccountName,
       }),
-      spot_leverage: params.spotLeverage ?? null,
+      spot_leverage:
+        params.spotLeverage != null ? String(params.spotLeverage) : null,
     });
 
     return {

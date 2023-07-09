@@ -81,7 +81,7 @@ export interface EngineServerMaxWithdrawableQueryParams {
   sender: string;
   product_id: number;
   // If not given, engine defaults to true (leverage/borrow enabled)
-  spot_leverage: boolean | null;
+  spot_leverage: string | null;
 }
 
 export interface EngineServerMaxOrderSizeQueryParams {
@@ -90,14 +90,14 @@ export interface EngineServerMaxOrderSizeQueryParams {
   price_x18: string;
   direction: 'long' | 'short';
   // If not given, engine defaults to true (leverage/borrow enabled)
-  spot_leverage: boolean | null;
+  spot_leverage: string | null;
 }
 
 export interface EngineServerMaxMintLpQueryParams {
   sender: string;
   product_id: number;
   // If not given, engine defaults to true (leverage/borrow enabled)
-  spot_leverage: boolean | null;
+  spot_leverage: string | null;
 }
 
 export interface EngineServerLinkedSignerParams {
@@ -190,15 +190,17 @@ export interface EngineServerMarketLiquidityResponse {
   asks: EngineServerPriceTickLiquidity[];
 }
 
-export interface EngineServerSubaccountOrdersResponse {
+export interface EngineServerSubaccountOrders {
   sender: string;
   product_id: number;
-  orders: EngineServerGetOrderResponse[];
+  orders: EngineServerGetOrder[];
 }
 
-export interface EngineServerOrdersResponse {
+export type EngineServerSubaccountOrdersResponse = EngineServerSubaccountOrders;
+
+export interface EngineServerProductOrdersResponse {
   sender: string;
-  product_orders: EngineServerSubaccountOrdersResponse[];
+  product_orders: EngineServerSubaccountOrders[];
 }
 
 export interface EngineServerSubaccountFeeRatesResponse {
@@ -211,17 +213,19 @@ export interface EngineServerSubaccountFeeRatesResponse {
   maker_fee_rates_x18: string[];
 }
 
-export interface EngineServerMarketPriceResponse {
+export interface EngineServerMarketPrice {
   product_id: number;
   bid_x18: string;
   ask_x18: string;
 }
 
+export type EngineServerMarketPriceResponse = EngineServerMarketPrice;
+
 export interface EngineServerMarketPricesResponse {
-  market_prices: EngineServerMarketPriceResponse[];
+  market_prices: EngineServerMarketPrice[];
 }
 
-export interface EngineServerGetOrderResponse {
+export interface EngineServerGetOrder {
   product_id: number;
   sender: string;
   price_x18: string;
@@ -232,6 +236,8 @@ export interface EngineServerGetOrderResponse {
   digest: string;
   placed_at: number;
 }
+
+export type EngineServerGetOrderResponse = EngineServerGetOrder;
 
 export interface EngineServerValidateOrderResponse {
   product_id: number;
@@ -272,7 +278,7 @@ export interface EngineServerQueryResponseByType {
   subaccount_info: EngineServerSubaccountInfoResponse;
   all_products: EngineServerAllProductsResponse;
   order: EngineServerGetOrderResponse;
-  orders: EngineServerOrdersResponse;
+  orders: EngineServerProductOrdersResponse;
   validate_order: EngineServerValidateOrderResponse;
   subaccount_orders: EngineServerSubaccountOrdersResponse;
   fee_rates: EngineServerSubaccountFeeRatesResponse;

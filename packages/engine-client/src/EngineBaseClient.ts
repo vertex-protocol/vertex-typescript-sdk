@@ -91,21 +91,9 @@ export class EngineBaseClient {
     params: EngineServerQueryRequestByType[TRequestType],
   ): Promise<EngineServerQueryResponseByType[TRequestType]> {
     const request = this.getQueryRequest(requestType, params);
-    const requestBody: Record<string, any> = {};
-    Object.keys(request).forEach((key) => {
-      const value = request[key as keyof typeof request];
-      // Remove null values and stringify
-      if (value != null) {
-        if (typeof value == 'boolean') {
-          requestBody[key] = String(value);
-        } else {
-          requestBody[key] = value;
-        }
-      }
-    });
     const response = await axios.post<EngineQueryRequestResponse>(
       `${this.opts.url}/query`,
-      requestBody,
+      request,
     );
 
     this.checkResponseStatus(response);

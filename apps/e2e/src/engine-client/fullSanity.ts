@@ -157,10 +157,10 @@ async function fullSanity(context: RunContext) {
     productId,
   });
   prettyPrint('Queried order', queriedOrder);
-  const queriedOrders = await client.getOrders({
+  const queriedOrders = await client.getSubaccountProductOrders({
     subaccountOwner: signer.address,
     subaccountName: 'default',
-    productIds: [productId, 2, 3],
+    productIds: [productId],
   });
   prettyPrint('Queried orders', queriedOrders);
 

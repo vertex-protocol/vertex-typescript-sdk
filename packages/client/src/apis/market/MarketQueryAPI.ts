@@ -9,7 +9,7 @@ import {
   GetEngineMarketPricesParams,
   GetEngineMaxMintLpAmountParams,
   GetEngineMaxOrderSizeParams,
-  GetEngineOrdersParams,
+  GetEngineSubaccountProductOrdersParams,
   GetEngineSubaccountOrdersParams,
   ValidateEngineOrderParams,
 } from '@vertex-protocol/engine-client';
@@ -56,8 +56,10 @@ export class MarketQueryAPI extends BaseVertexAPI {
    * @description Queries the offchain engine to retrieve status of any open orders for the given subaccount for multiple products
    * @param params
    */
-  async getOpenOrders(params: GetEngineOrdersParams) {
-    return this.context.engineClient.getOrders(params);
+  async getOpenSubaccountProductOrders(
+    params: GetEngineSubaccountProductOrdersParams,
+  ) {
+    return this.context.engineClient.getSubaccountProductOrders(params);
   }
 
   /**
