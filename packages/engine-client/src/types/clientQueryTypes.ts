@@ -163,18 +163,20 @@ export interface GetEngineMarketPriceParams {
   productId: number;
 }
 
-export interface GetEngineMarketPriceResponse {
+export interface GetEngineMarketPrice {
   productId: number;
   bid: BigDecimal;
   ask: BigDecimal;
 }
+
+export type GetEngineMarketPriceResponse = GetEngineMarketPrice;
 
 export interface GetEngineMarketPricesParams {
   productIds: number[];
 }
 
 export interface GetEngineMarketPricesResponse {
-  marketPrices: GetEngineMarketPriceResponse[];
+  marketPrices: GetEngineMarketPrice[];
 }
 
 export interface GetEngineMaxOrderSizeParams extends Subaccount {
