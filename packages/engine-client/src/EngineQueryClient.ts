@@ -43,6 +43,7 @@ import {
   ValidateEngineOrderResponse,
   ValidateSignedEngineOrderParams,
   GetEngineSubaccountProductOrdersParams,
+  GetEngineMarketPrice,
 } from './types';
 import {
   mapEngineServerBalanceHealthContributions,
@@ -373,7 +374,7 @@ export class EngineQueryClient extends EngineBaseClient {
     });
     return {
       marketPrices: baseResponse.market_prices.map(
-        (marketPrice): GetEngineMarketPriceResponse => {
+        (marketPrice): GetEngineMarketPrice => {
           return {
             ask: fromX18(marketPrice.ask_x18),
             bid: fromX18(marketPrice.bid_x18),
