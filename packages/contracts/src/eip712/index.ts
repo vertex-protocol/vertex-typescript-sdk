@@ -6,4 +6,3 @@ export * from './orderDigest';
 export * from './signableRequestType';
 export * from './signatureParamTypes';
 export * from './eip712ValueTypes';
-export * from './ValidVertexSigner';

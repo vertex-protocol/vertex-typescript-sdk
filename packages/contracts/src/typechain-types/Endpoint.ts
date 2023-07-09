@@ -3,82 +3,41 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumber,
   BigNumberish,
   BytesLike,
-  CallOverrides,
-  ContractTransaction,
-  Overrides,
-  PopulatedTransaction,
-  Signer,
-  utils,
-} from "ethers";
-import type {
   FunctionFragment,
   Result,
+  Interface,
   EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  AddressLike,
+  ContractRunner,
+  ContractMethod,
+  Listener,
+} from "ethers";
 import type {
-  TypedEventFilter,
-  TypedEvent,
+  TypedContractEvent,
+  TypedDeferredTopicFilter,
+  TypedEventLog,
+  TypedLogDescription,
   TypedListener,
-  OnEvent,
-  PromiseOrValue,
+  TypedContractMethod,
 } from "./common";
 
 export declare namespace IEndpoint {
   export type PricesStruct = {
-    spotPriceX18: PromiseOrValue<BigNumberish>;
-    perpPriceX18: PromiseOrValue<BigNumberish>;
+    spotPriceX18: BigNumberish;
+    perpPriceX18: BigNumberish;
   };
 
-  export type PricesStructOutput = [BigNumber, BigNumber] & {
-    spotPriceX18: BigNumber;
-    perpPriceX18: BigNumber;
-  };
+  export type PricesStructOutput = [
+    spotPriceX18: bigint,
+    perpPriceX18: bigint
+  ] & { spotPriceX18: bigint; perpPriceX18: bigint };
 }
 
-export interface EndpointInterface extends utils.Interface {
-  functions: {
-    "clearinghouse()": FunctionFragment;
-    "depositCollateral(bytes12,uint32,uint128)": FunctionFragment;
-    "depositCollateralWithReferral(bytes12,uint32,uint128,string)": FunctionFragment;
-    "executeSlowModeTransactions(uint32)": FunctionFragment;
-    "getBook(uint32)": FunctionFragment;
-    "getLinkedSigner(bytes32)": FunctionFragment;
-    "getNonce(address)": FunctionFragment;
-    "getNumSubaccounts()": FunctionFragment;
-    "getPriceX18(uint32)": FunctionFragment;
-    "getPricesX18(uint32)": FunctionFragment;
-    "getSequencer()": FunctionFragment;
-    "getSubaccountById(uint64)": FunctionFragment;
-    "getSubaccountId(bytes32)": FunctionFragment;
-    "getTime()": FunctionFragment;
-    "getVersion()": FunctionFragment;
-    "initialize(address,address,address,uint64,uint128,int128[])": FunctionFragment;
-    "nSubmissions()": FunctionFragment;
-    "owner()": FunctionFragment;
-    "processSlowModeTransaction(address,bytes)": FunctionFragment;
-    "referralCodes(address)": FunctionFragment;
-    "renounceOwnership()": FunctionFragment;
-    "requireSubaccount(bytes32)": FunctionFragment;
-    "sequencerFee(uint32)": FunctionFragment;
-    "sequencerFees()": FunctionFragment;
-    "setBook(uint32,address)": FunctionFragment;
-    "setSequencer(address)": FunctionFragment;
-    "slowModeConfig()": FunctionFragment;
-    "slowModeFees()": FunctionFragment;
-    "slowModeTxs(uint64)": FunctionFragment;
-    "submitSlowModeTransaction(bytes)": FunctionFragment;
-    "submitTransactions(bytes[])": FunctionFragment;
-    "submitTransactionsChecked(uint64,bytes[])": FunctionFragment;
-    "submitTransactionsCheckedWithGasLimit(uint64,bytes[],uint256)": FunctionFragment;
-    "transferOwnership(address)": FunctionFragment;
-  };
-
+export interface EndpointInterface extends Interface {
   getFunction(
-    nameOrSignatureOrTopic:
+    nameOrSignature:
       | "clearinghouse"
       | "depositCollateral"
       | "depositCollateralWithReferral"
@@ -115,42 +74,42 @@ export interface EndpointInterface extends utils.Interface {
       | "transferOwnership"
   ): FunctionFragment;
 
+  getEvent(
+    nameOrSignatureOrTopic:
+      | "Initialized"
+      | "OwnershipTransferred"
+      | "SubmitSlowModeTransaction"
+      | "SubmitTransactions"
+      | "UserReferral"
+  ): EventFragment;
+
   encodeFunctionData(
     functionFragment: "clearinghouse",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "depositCollateral",
-    values: [
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [BytesLike, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "depositCollateralWithReferral",
-    values: [
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>
-    ]
+    values: [BytesLike, BigNumberish, BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "executeSlowModeTransactions",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getBook",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getLinkedSigner",
-    values: [PromiseOrValue<BytesLike>]
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getNonce",
-    values: [PromiseOrValue<string>]
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getNumSubaccounts",
@@ -158,11 +117,11 @@ export interface EndpointInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getPriceX18",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getPricesX18",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getSequencer",
@@ -170,11 +129,11 @@ export interface EndpointInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getSubaccountById",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getSubaccountId",
-    values: [PromiseOrValue<BytesLike>]
+    values: [BytesLike]
   ): string;
   encodeFunctionData(functionFragment: "getTime", values?: undefined): string;
   encodeFunctionData(
@@ -184,12 +143,12 @@ export interface EndpointInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "initialize",
     values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>[]
+      AddressLike,
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish[]
     ]
   ): string;
   encodeFunctionData(
@@ -199,11 +158,11 @@ export interface EndpointInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "processSlowModeTransaction",
-    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
+    values: [AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "referralCodes",
-    values: [PromiseOrValue<string>]
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
@@ -211,11 +170,11 @@ export interface EndpointInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "requireSubaccount",
-    values: [PromiseOrValue<BytesLike>]
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "sequencerFee",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "sequencerFees",
@@ -223,11 +182,11 @@ export interface EndpointInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "setBook",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+    values: [BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "setSequencer",
-    values: [PromiseOrValue<string>]
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "slowModeConfig",
@@ -239,31 +198,27 @@ export interface EndpointInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "slowModeTxs",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "submitSlowModeTransaction",
-    values: [PromiseOrValue<BytesLike>]
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "submitTransactions",
-    values: [PromiseOrValue<BytesLike>[]]
+    values: [BytesLike[]]
   ): string;
   encodeFunctionData(
     functionFragment: "submitTransactionsChecked",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>[]]
+    values: [BigNumberish, BytesLike[]]
   ): string;
   encodeFunctionData(
     functionFragment: "submitTransactionsCheckedWithGasLimit",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>[],
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [BigNumberish, BytesLike[], BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
-    values: [PromiseOrValue<string>]
+    values: [AddressLike]
   ): string;
 
   decodeFunctionResult(
@@ -381,949 +336,546 @@ export interface EndpointInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
-
-  events: {
-    "Initialized(uint8)": EventFragment;
-    "OwnershipTransferred(address,address)": EventFragment;
-    "SubmitSlowModeTransaction(uint64,address,bytes)": EventFragment;
-    "SubmitTransactions()": EventFragment;
-    "UserReferral(address,bytes32)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SubmitSlowModeTransaction"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SubmitTransactions"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "UserReferral"): EventFragment;
 }
 
-export interface InitializedEventObject {
-  version: number;
+export namespace InitializedEvent {
+  export type InputTuple = [version: BigNumberish];
+  export type OutputTuple = [version: bigint];
+  export interface OutputObject {
+    version: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
-export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
 
-export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
-
-export interface OwnershipTransferredEventObject {
-  previousOwner: string;
-  newOwner: string;
+export namespace OwnershipTransferredEvent {
+  export type InputTuple = [previousOwner: AddressLike, newOwner: AddressLike];
+  export type OutputTuple = [previousOwner: string, newOwner: string];
+  export interface OutputObject {
+    previousOwner: string;
+    newOwner: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
-export type OwnershipTransferredEvent = TypedEvent<
-  [string, string],
-  OwnershipTransferredEventObject
->;
 
-export type OwnershipTransferredEventFilter =
-  TypedEventFilter<OwnershipTransferredEvent>;
-
-export interface SubmitSlowModeTransactionEventObject {
-  executableAt: BigNumber;
-  sender: string;
-  tx: string;
+export namespace SubmitSlowModeTransactionEvent {
+  export type InputTuple = [
+    executableAt: BigNumberish,
+    sender: AddressLike,
+    tx: BytesLike
+  ];
+  export type OutputTuple = [executableAt: bigint, sender: string, tx: string];
+  export interface OutputObject {
+    executableAt: bigint;
+    sender: string;
+    tx: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
-export type SubmitSlowModeTransactionEvent = TypedEvent<
-  [BigNumber, string, string],
-  SubmitSlowModeTransactionEventObject
->;
 
-export type SubmitSlowModeTransactionEventFilter =
-  TypedEventFilter<SubmitSlowModeTransactionEvent>;
-
-export interface SubmitTransactionsEventObject {}
-export type SubmitTransactionsEvent = TypedEvent<
-  [],
-  SubmitTransactionsEventObject
->;
-
-export type SubmitTransactionsEventFilter =
-  TypedEventFilter<SubmitTransactionsEvent>;
-
-export interface UserReferralEventObject {
-  invitee: string;
-  referralCode: string;
+export namespace SubmitTransactionsEvent {
+  export type InputTuple = [];
+  export type OutputTuple = [];
+  export interface OutputObject {}
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
-export type UserReferralEvent = TypedEvent<
-  [string, string],
-  UserReferralEventObject
->;
 
-export type UserReferralEventFilter = TypedEventFilter<UserReferralEvent>;
+export namespace UserReferralEvent {
+  export type InputTuple = [invitee: AddressLike, referralCode: BytesLike];
+  export type OutputTuple = [invitee: string, referralCode: string];
+  export interface OutputObject {
+    invitee: string;
+    referralCode: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
 
 export interface Endpoint extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(runner?: ContractRunner | null): Endpoint;
+  waitForDeployment(): Promise<this>;
 
   interface: EndpointInterface;
 
-  queryFilter<TEvent extends TypedEvent>(
-    event: TypedEventFilter<TEvent>,
+  queryFilter<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
+  queryFilter<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    fromBlockOrBlockhash?: string | number | undefined,
+    toBlock?: string | number | undefined
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  on<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  on<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-  functions: {
-    clearinghouse(overrides?: CallOverrides): Promise<[string]>;
+  once<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  once<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-    depositCollateral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  listeners<TCEvent extends TypedContractEvent>(
+    event: TCEvent
+  ): Promise<Array<TypedListener<TCEvent>>>;
+  listeners(eventName?: string): Promise<Array<Listener>>;
+  removeAllListeners<TCEvent extends TypedContractEvent>(
+    event?: TCEvent
+  ): Promise<this>;
 
-    depositCollateralWithReferral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      referralCode: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  clearinghouse: TypedContractMethod<[], [string], "view">;
 
-    executeSlowModeTransactions(
-      count: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  depositCollateral: TypedContractMethod<
+    [subaccountName: BytesLike, productId: BigNumberish, amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
 
-    getBook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+  depositCollateralWithReferral: TypedContractMethod<
+    [
+      subaccountName: BytesLike,
+      productId: BigNumberish,
+      amount: BigNumberish,
+      referralCode: string
+    ],
+    [void],
+    "nonpayable"
+  >;
 
-    getLinkedSigner(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+  executeSlowModeTransactions: TypedContractMethod<
+    [count: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
 
-    getNonce(
-      sender: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+  getBook: TypedContractMethod<[productId: BigNumberish], [string], "view">;
 
-    getNumSubaccounts(overrides?: CallOverrides): Promise<[BigNumber]>;
+  getLinkedSigner: TypedContractMethod<
+    [subaccount: BytesLike],
+    [string],
+    "view"
+  >;
 
-    getPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { priceX18: BigNumber }>;
+  getNonce: TypedContractMethod<[sender: AddressLike], [bigint], "view">;
 
-    getPricesX18(
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[IEndpoint.PricesStructOutput]>;
+  getNumSubaccounts: TypedContractMethod<[], [bigint], "view">;
 
-    getSequencer(overrides?: CallOverrides): Promise<[string]>;
+  getPriceX18: TypedContractMethod<[productId: BigNumberish], [bigint], "view">;
 
-    getSubaccountById(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+  getPricesX18: TypedContractMethod<
+    [healthGroup: BigNumberish],
+    [IEndpoint.PricesStructOutput],
+    "view"
+  >;
 
-    getSubaccountId(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+  getSequencer: TypedContractMethod<[], [string], "view">;
 
-    getTime(overrides?: CallOverrides): Promise<[BigNumber]>;
+  getSubaccountById: TypedContractMethod<
+    [subaccountId: BigNumberish],
+    [string],
+    "view"
+  >;
 
-    getVersion(overrides?: CallOverrides): Promise<[BigNumber]>;
+  getSubaccountId: TypedContractMethod<
+    [subaccount: BytesLike],
+    [bigint],
+    "view"
+  >;
 
-    initialize(
-      _sanctions: PromiseOrValue<string>,
-      _sequencer: PromiseOrValue<string>,
-      _clearinghouse: PromiseOrValue<string>,
-      slowModeTimeout: PromiseOrValue<BigNumberish>,
-      _time: PromiseOrValue<BigNumberish>,
-      _prices: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  getTime: TypedContractMethod<[], [bigint], "view">;
 
-    nSubmissions(overrides?: CallOverrides): Promise<[BigNumber]>;
+  getVersion: TypedContractMethod<[], [bigint], "view">;
 
-    owner(overrides?: CallOverrides): Promise<[string]>;
+  initialize: TypedContractMethod<
+    [
+      _sanctions: AddressLike,
+      _sequencer: AddressLike,
+      _clearinghouse: AddressLike,
+      slowModeTimeout: BigNumberish,
+      _time: BigNumberish,
+      _prices: BigNumberish[]
+    ],
+    [void],
+    "nonpayable"
+  >;
 
-    processSlowModeTransaction(
-      sender: PromiseOrValue<string>,
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  nSubmissions: TypedContractMethod<[], [bigint], "view">;
 
-    referralCodes(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+  owner: TypedContractMethod<[], [string], "view">;
 
-    renounceOwnership(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  processSlowModeTransaction: TypedContractMethod<
+    [sender: AddressLike, transaction: BytesLike],
+    [void],
+    "nonpayable"
+  >;
 
-    requireSubaccount(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
+  referralCodes: TypedContractMethod<[arg0: AddressLike], [string], "view">;
 
-    sequencerFee(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+  renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
 
-    sequencerFees(overrides?: CallOverrides): Promise<[BigNumber]>;
+  requireSubaccount: TypedContractMethod<
+    [subaccount: BytesLike],
+    [void],
+    "view"
+  >;
 
-    setBook(
-      productId: PromiseOrValue<BigNumberish>,
-      book: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  sequencerFee: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
 
-    setSequencer(
-      _sequencer: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  sequencerFees: TypedContractMethod<[], [bigint], "view">;
 
-    slowModeConfig(
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, BigNumber, BigNumber] & {
-        timeout: BigNumber;
-        txCount: BigNumber;
-        txUpTo: BigNumber;
+  setBook: TypedContractMethod<
+    [productId: BigNumberish, book: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  setSequencer: TypedContractMethod<
+    [_sequencer: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  slowModeConfig: TypedContractMethod<
+    [],
+    [
+      [bigint, bigint, bigint] & {
+        timeout: bigint;
+        txCount: bigint;
+        txUpTo: bigint;
       }
-    >;
+    ],
+    "view"
+  >;
 
-    slowModeFees(overrides?: CallOverrides): Promise<[BigNumber]>;
+  slowModeFees: TypedContractMethod<[], [bigint], "view">;
 
-    slowModeTxs(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, string, string] & {
-        executableAt: BigNumber;
+  slowModeTxs: TypedContractMethod<
+    [arg0: BigNumberish],
+    [
+      [bigint, string, string] & {
+        executableAt: bigint;
         sender: string;
         tx: string;
       }
-    >;
-
-    submitSlowModeTransaction(
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    submitTransactions(
-      transactions: PromiseOrValue<BytesLike>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    submitTransactionsChecked(
-      idx: PromiseOrValue<BigNumberish>,
-      transactions: PromiseOrValue<BytesLike>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    submitTransactionsCheckedWithGasLimit(
-      idx: PromiseOrValue<BigNumberish>,
-      transactions: PromiseOrValue<BytesLike>[],
-      gasLimit: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    transferOwnership(
-      newOwner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-  };
-
-  clearinghouse(overrides?: CallOverrides): Promise<string>;
-
-  depositCollateral(
-    subaccountName: PromiseOrValue<BytesLike>,
-    productId: PromiseOrValue<BigNumberish>,
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  depositCollateralWithReferral(
-    subaccountName: PromiseOrValue<BytesLike>,
-    productId: PromiseOrValue<BigNumberish>,
-    amount: PromiseOrValue<BigNumberish>,
-    referralCode: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  executeSlowModeTransactions(
-    count: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  getBook(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  getLinkedSigner(
-    subaccount: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  getNonce(
-    sender: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getNumSubaccounts(overrides?: CallOverrides): Promise<BigNumber>;
-
-  getPriceX18(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getPricesX18(
-    healthGroup: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<IEndpoint.PricesStructOutput>;
-
-  getSequencer(overrides?: CallOverrides): Promise<string>;
-
-  getSubaccountById(
-    subaccountId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  getSubaccountId(
-    subaccount: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getTime(overrides?: CallOverrides): Promise<BigNumber>;
-
-  getVersion(overrides?: CallOverrides): Promise<BigNumber>;
-
-  initialize(
-    _sanctions: PromiseOrValue<string>,
-    _sequencer: PromiseOrValue<string>,
-    _clearinghouse: PromiseOrValue<string>,
-    slowModeTimeout: PromiseOrValue<BigNumberish>,
-    _time: PromiseOrValue<BigNumberish>,
-    _prices: PromiseOrValue<BigNumberish>[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  nSubmissions(overrides?: CallOverrides): Promise<BigNumber>;
-
-  owner(overrides?: CallOverrides): Promise<string>;
-
-  processSlowModeTransaction(
-    sender: PromiseOrValue<string>,
-    transaction: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  referralCodes(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  renounceOwnership(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  requireSubaccount(
-    subaccount: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  sequencerFee(
-    arg0: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  sequencerFees(overrides?: CallOverrides): Promise<BigNumber>;
-
-  setBook(
-    productId: PromiseOrValue<BigNumberish>,
-    book: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  setSequencer(
-    _sequencer: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  slowModeConfig(
-    overrides?: CallOverrides
-  ): Promise<
-    [BigNumber, BigNumber, BigNumber] & {
-      timeout: BigNumber;
-      txCount: BigNumber;
-      txUpTo: BigNumber;
-    }
+    ],
+    "view"
   >;
 
-  slowModeFees(overrides?: CallOverrides): Promise<BigNumber>;
-
-  slowModeTxs(
-    arg0: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<
-    [BigNumber, string, string] & {
-      executableAt: BigNumber;
-      sender: string;
-      tx: string;
-    }
+  submitSlowModeTransaction: TypedContractMethod<
+    [transaction: BytesLike],
+    [void],
+    "nonpayable"
   >;
 
-  submitSlowModeTransaction(
-    transaction: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  submitTransactions: TypedContractMethod<
+    [transactions: BytesLike[]],
+    [void],
+    "nonpayable"
+  >;
 
-  submitTransactions(
-    transactions: PromiseOrValue<BytesLike>[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  submitTransactionsChecked: TypedContractMethod<
+    [idx: BigNumberish, transactions: BytesLike[]],
+    [void],
+    "nonpayable"
+  >;
 
-  submitTransactionsChecked(
-    idx: PromiseOrValue<BigNumberish>,
-    transactions: PromiseOrValue<BytesLike>[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  submitTransactionsCheckedWithGasLimit: TypedContractMethod<
+    [idx: BigNumberish, transactions: BytesLike[], gasLimit: BigNumberish],
+    [[bigint, bigint]],
+    "nonpayable"
+  >;
 
-  submitTransactionsCheckedWithGasLimit(
-    idx: PromiseOrValue<BigNumberish>,
-    transactions: PromiseOrValue<BytesLike>[],
-    gasLimit: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  transferOwnership: TypedContractMethod<
+    [newOwner: AddressLike],
+    [void],
+    "nonpayable"
+  >;
 
-  transferOwnership(
-    newOwner: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  getFunction<T extends ContractMethod = ContractMethod>(
+    key: string | FunctionFragment
+  ): T;
 
-  callStatic: {
-    clearinghouse(overrides?: CallOverrides): Promise<string>;
-
-    depositCollateral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    depositCollateralWithReferral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      referralCode: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    executeSlowModeTransactions(
-      count: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    getBook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    getLinkedSigner(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    getNonce(
-      sender: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getNumSubaccounts(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getPricesX18(
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<IEndpoint.PricesStructOutput>;
-
-    getSequencer(overrides?: CallOverrides): Promise<string>;
-
-    getSubaccountById(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    getSubaccountId(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getTime(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getVersion(overrides?: CallOverrides): Promise<BigNumber>;
-
-    initialize(
-      _sanctions: PromiseOrValue<string>,
-      _sequencer: PromiseOrValue<string>,
-      _clearinghouse: PromiseOrValue<string>,
-      slowModeTimeout: PromiseOrValue<BigNumberish>,
-      _time: PromiseOrValue<BigNumberish>,
-      _prices: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    nSubmissions(overrides?: CallOverrides): Promise<BigNumber>;
-
-    owner(overrides?: CallOverrides): Promise<string>;
-
-    processSlowModeTransaction(
-      sender: PromiseOrValue<string>,
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    referralCodes(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    renounceOwnership(overrides?: CallOverrides): Promise<void>;
-
-    requireSubaccount(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    sequencerFee(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    sequencerFees(overrides?: CallOverrides): Promise<BigNumber>;
-
-    setBook(
-      productId: PromiseOrValue<BigNumberish>,
-      book: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setSequencer(
-      _sequencer: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    slowModeConfig(
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, BigNumber, BigNumber] & {
-        timeout: BigNumber;
-        txCount: BigNumber;
-        txUpTo: BigNumber;
+  getFunction(
+    nameOrSignature: "clearinghouse"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "depositCollateral"
+  ): TypedContractMethod<
+    [subaccountName: BytesLike, productId: BigNumberish, amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "depositCollateralWithReferral"
+  ): TypedContractMethod<
+    [
+      subaccountName: BytesLike,
+      productId: BigNumberish,
+      amount: BigNumberish,
+      referralCode: string
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "executeSlowModeTransactions"
+  ): TypedContractMethod<[count: BigNumberish], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "getBook"
+  ): TypedContractMethod<[productId: BigNumberish], [string], "view">;
+  getFunction(
+    nameOrSignature: "getLinkedSigner"
+  ): TypedContractMethod<[subaccount: BytesLike], [string], "view">;
+  getFunction(
+    nameOrSignature: "getNonce"
+  ): TypedContractMethod<[sender: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getNumSubaccounts"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getPriceX18"
+  ): TypedContractMethod<[productId: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getPricesX18"
+  ): TypedContractMethod<
+    [healthGroup: BigNumberish],
+    [IEndpoint.PricesStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getSequencer"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "getSubaccountById"
+  ): TypedContractMethod<[subaccountId: BigNumberish], [string], "view">;
+  getFunction(
+    nameOrSignature: "getSubaccountId"
+  ): TypedContractMethod<[subaccount: BytesLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getTime"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getVersion"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "initialize"
+  ): TypedContractMethod<
+    [
+      _sanctions: AddressLike,
+      _sequencer: AddressLike,
+      _clearinghouse: AddressLike,
+      slowModeTimeout: BigNumberish,
+      _time: BigNumberish,
+      _prices: BigNumberish[]
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "nSubmissions"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "owner"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "processSlowModeTransaction"
+  ): TypedContractMethod<
+    [sender: AddressLike, transaction: BytesLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "referralCodes"
+  ): TypedContractMethod<[arg0: AddressLike], [string], "view">;
+  getFunction(
+    nameOrSignature: "renounceOwnership"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "requireSubaccount"
+  ): TypedContractMethod<[subaccount: BytesLike], [void], "view">;
+  getFunction(
+    nameOrSignature: "sequencerFee"
+  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "sequencerFees"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "setBook"
+  ): TypedContractMethod<
+    [productId: BigNumberish, book: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "setSequencer"
+  ): TypedContractMethod<[_sequencer: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "slowModeConfig"
+  ): TypedContractMethod<
+    [],
+    [
+      [bigint, bigint, bigint] & {
+        timeout: bigint;
+        txCount: bigint;
+        txUpTo: bigint;
       }
-    >;
-
-    slowModeFees(overrides?: CallOverrides): Promise<BigNumber>;
-
-    slowModeTxs(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, string, string] & {
-        executableAt: BigNumber;
+    ],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "slowModeFees"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "slowModeTxs"
+  ): TypedContractMethod<
+    [arg0: BigNumberish],
+    [
+      [bigint, string, string] & {
+        executableAt: bigint;
         sender: string;
         tx: string;
       }
-    >;
+    ],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "submitSlowModeTransaction"
+  ): TypedContractMethod<[transaction: BytesLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "submitTransactions"
+  ): TypedContractMethod<[transactions: BytesLike[]], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "submitTransactionsChecked"
+  ): TypedContractMethod<
+    [idx: BigNumberish, transactions: BytesLike[]],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "submitTransactionsCheckedWithGasLimit"
+  ): TypedContractMethod<
+    [idx: BigNumberish, transactions: BytesLike[], gasLimit: BigNumberish],
+    [[bigint, bigint]],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "transferOwnership"
+  ): TypedContractMethod<[newOwner: AddressLike], [void], "nonpayable">;
 
-    submitSlowModeTransaction(
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    submitTransactions(
-      transactions: PromiseOrValue<BytesLike>[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    submitTransactionsChecked(
-      idx: PromiseOrValue<BigNumberish>,
-      transactions: PromiseOrValue<BytesLike>[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    submitTransactionsCheckedWithGasLimit(
-      idx: PromiseOrValue<BigNumberish>,
-      transactions: PromiseOrValue<BytesLike>[],
-      gasLimit: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber]>;
-
-    transferOwnership(
-      newOwner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-  };
+  getEvent(
+    key: "Initialized"
+  ): TypedContractEvent<
+    InitializedEvent.InputTuple,
+    InitializedEvent.OutputTuple,
+    InitializedEvent.OutputObject
+  >;
+  getEvent(
+    key: "OwnershipTransferred"
+  ): TypedContractEvent<
+    OwnershipTransferredEvent.InputTuple,
+    OwnershipTransferredEvent.OutputTuple,
+    OwnershipTransferredEvent.OutputObject
+  >;
+  getEvent(
+    key: "SubmitSlowModeTransaction"
+  ): TypedContractEvent<
+    SubmitSlowModeTransactionEvent.InputTuple,
+    SubmitSlowModeTransactionEvent.OutputTuple,
+    SubmitSlowModeTransactionEvent.OutputObject
+  >;
+  getEvent(
+    key: "SubmitTransactions"
+  ): TypedContractEvent<
+    SubmitTransactionsEvent.InputTuple,
+    SubmitTransactionsEvent.OutputTuple,
+    SubmitTransactionsEvent.OutputObject
+  >;
+  getEvent(
+    key: "UserReferral"
+  ): TypedContractEvent<
+    UserReferralEvent.InputTuple,
+    UserReferralEvent.OutputTuple,
+    UserReferralEvent.OutputObject
+  >;
 
   filters: {
-    "Initialized(uint8)"(version?: null): InitializedEventFilter;
-    Initialized(version?: null): InitializedEventFilter;
-
-    "OwnershipTransferred(address,address)"(
-      previousOwner?: PromiseOrValue<string> | null,
-      newOwner?: PromiseOrValue<string> | null
-    ): OwnershipTransferredEventFilter;
-    OwnershipTransferred(
-      previousOwner?: PromiseOrValue<string> | null,
-      newOwner?: PromiseOrValue<string> | null
-    ): OwnershipTransferredEventFilter;
-
-    "SubmitSlowModeTransaction(uint64,address,bytes)"(
-      executableAt?: null,
-      sender?: null,
-      tx?: null
-    ): SubmitSlowModeTransactionEventFilter;
-    SubmitSlowModeTransaction(
-      executableAt?: null,
-      sender?: null,
-      tx?: null
-    ): SubmitSlowModeTransactionEventFilter;
-
-    "SubmitTransactions()"(): SubmitTransactionsEventFilter;
-    SubmitTransactions(): SubmitTransactionsEventFilter;
-
-    "UserReferral(address,bytes32)"(
-      invitee?: null,
-      referralCode?: null
-    ): UserReferralEventFilter;
-    UserReferral(invitee?: null, referralCode?: null): UserReferralEventFilter;
-  };
-
-  estimateGas: {
-    clearinghouse(overrides?: CallOverrides): Promise<BigNumber>;
-
-    depositCollateral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    depositCollateralWithReferral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      referralCode: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    executeSlowModeTransactions(
-      count: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    getBook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getLinkedSigner(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getNonce(
-      sender: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getNumSubaccounts(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getPricesX18(
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getSequencer(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getSubaccountById(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getSubaccountId(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getTime(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getVersion(overrides?: CallOverrides): Promise<BigNumber>;
-
-    initialize(
-      _sanctions: PromiseOrValue<string>,
-      _sequencer: PromiseOrValue<string>,
-      _clearinghouse: PromiseOrValue<string>,
-      slowModeTimeout: PromiseOrValue<BigNumberish>,
-      _time: PromiseOrValue<BigNumberish>,
-      _prices: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    nSubmissions(overrides?: CallOverrides): Promise<BigNumber>;
-
-    owner(overrides?: CallOverrides): Promise<BigNumber>;
-
-    processSlowModeTransaction(
-      sender: PromiseOrValue<string>,
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    referralCodes(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    renounceOwnership(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    requireSubaccount(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    sequencerFee(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    sequencerFees(overrides?: CallOverrides): Promise<BigNumber>;
-
-    setBook(
-      productId: PromiseOrValue<BigNumberish>,
-      book: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    setSequencer(
-      _sequencer: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    slowModeConfig(overrides?: CallOverrides): Promise<BigNumber>;
-
-    slowModeFees(overrides?: CallOverrides): Promise<BigNumber>;
-
-    slowModeTxs(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    submitSlowModeTransaction(
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    submitTransactions(
-      transactions: PromiseOrValue<BytesLike>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    submitTransactionsChecked(
-      idx: PromiseOrValue<BigNumberish>,
-      transactions: PromiseOrValue<BytesLike>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    submitTransactionsCheckedWithGasLimit(
-      idx: PromiseOrValue<BigNumberish>,
-      transactions: PromiseOrValue<BytesLike>[],
-      gasLimit: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    transferOwnership(
-      newOwner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-  };
-
-  populateTransaction: {
-    clearinghouse(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    depositCollateral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    depositCollateralWithReferral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      referralCode: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    executeSlowModeTransactions(
-      count: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    getBook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getLinkedSigner(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getNonce(
-      sender: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getNumSubaccounts(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getPricesX18(
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getSequencer(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getSubaccountById(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getSubaccountId(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getTime(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getVersion(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    initialize(
-      _sanctions: PromiseOrValue<string>,
-      _sequencer: PromiseOrValue<string>,
-      _clearinghouse: PromiseOrValue<string>,
-      slowModeTimeout: PromiseOrValue<BigNumberish>,
-      _time: PromiseOrValue<BigNumberish>,
-      _prices: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    nSubmissions(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    processSlowModeTransaction(
-      sender: PromiseOrValue<string>,
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    referralCodes(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    renounceOwnership(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    requireSubaccount(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    sequencerFee(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    sequencerFees(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    setBook(
-      productId: PromiseOrValue<BigNumberish>,
-      book: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setSequencer(
-      _sequencer: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    slowModeConfig(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    slowModeFees(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    slowModeTxs(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    submitSlowModeTransaction(
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    submitTransactions(
-      transactions: PromiseOrValue<BytesLike>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    submitTransactionsChecked(
-      idx: PromiseOrValue<BigNumberish>,
-      transactions: PromiseOrValue<BytesLike>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    submitTransactionsCheckedWithGasLimit(
-      idx: PromiseOrValue<BigNumberish>,
-      transactions: PromiseOrValue<BytesLike>[],
-      gasLimit: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    transferOwnership(
-      newOwner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    "Initialized(uint8)": TypedContractEvent<
+      InitializedEvent.InputTuple,
+      InitializedEvent.OutputTuple,
+      InitializedEvent.OutputObject
+    >;
+    Initialized: TypedContractEvent<
+      InitializedEvent.InputTuple,
+      InitializedEvent.OutputTuple,
+      InitializedEvent.OutputObject
+    >;
+
+    "OwnershipTransferred(address,address)": TypedContractEvent<
+      OwnershipTransferredEvent.InputTuple,
+      OwnershipTransferredEvent.OutputTuple,
+      OwnershipTransferredEvent.OutputObject
+    >;
+    OwnershipTransferred: TypedContractEvent<
+      OwnershipTransferredEvent.InputTuple,
+      OwnershipTransferredEvent.OutputTuple,
+      OwnershipTransferredEvent.OutputObject
+    >;
+
+    "SubmitSlowModeTransaction(uint64,address,bytes)": TypedContractEvent<
+      SubmitSlowModeTransactionEvent.InputTuple,
+      SubmitSlowModeTransactionEvent.OutputTuple,
+      SubmitSlowModeTransactionEvent.OutputObject
+    >;
+    SubmitSlowModeTransaction: TypedContractEvent<
+      SubmitSlowModeTransactionEvent.InputTuple,
+      SubmitSlowModeTransactionEvent.OutputTuple,
+      SubmitSlowModeTransactionEvent.OutputObject
+    >;
+
+    "SubmitTransactions()": TypedContractEvent<
+      SubmitTransactionsEvent.InputTuple,
+      SubmitTransactionsEvent.OutputTuple,
+      SubmitTransactionsEvent.OutputObject
+    >;
+    SubmitTransactions: TypedContractEvent<
+      SubmitTransactionsEvent.InputTuple,
+      SubmitTransactionsEvent.OutputTuple,
+      SubmitTransactionsEvent.OutputObject
+    >;
+
+    "UserReferral(address,bytes32)": TypedContractEvent<
+      UserReferralEvent.InputTuple,
+      UserReferralEvent.OutputTuple,
+      UserReferralEvent.OutputObject
+    >;
+    UserReferral: TypedContractEvent<
+      UserReferralEvent.InputTuple,
+      UserReferralEvent.OutputTuple,
+      UserReferralEvent.OutputObject
+    >;
   };
 }

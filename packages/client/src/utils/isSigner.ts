@@ -1,5 +1,4 @@
-import { Signer } from 'ethers';
-import { Provider } from '@ethersproject/providers';
+import { Provider, Signer } from 'ethers';
 
 export function isSigner(
   signerOrProvider: Signer | Provider,

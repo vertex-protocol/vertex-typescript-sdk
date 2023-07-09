@@ -14,7 +14,6 @@ import {
   WithdrawCollateralParams,
 } from './signatureParamTypes';
 import { toX18 } from '@vertex-protocol/utils';
-import { BigNumber } from 'ethers';
 import { subaccountToHex } from '../utils';
 import {
   EIP712BurnLpValues,
@@ -31,6 +30,8 @@ import {
 
 /**
  * Returns the EIP712 compatible values for signing.
+ *
+ * Note: We use the string representation of bigint to be compatible with JSON.stringify
  *
  * @param requestType
  * @param params
@@ -89,8 +90,8 @@ function getWithdrawCollateralValues(
       subaccountName: params.subaccountName,
     }),
     productId: params.productId,
-    amount: BigNumber.from(params.amount).toString(),
-    nonce: BigNumber.from(params.nonce).toString(),
+    amount: BigInt(params.amount).toString(),
+    nonce: BigInt(params.nonce).toString(),
   };
 }
 
@@ -104,7 +105,7 @@ function getMintLpValues(params: MintLpParams): EIP712MintLpValues {
     amountBase: params.amountBase.toString(),
     quoteAmountLow: params.quoteAmountLow.toString(),
     quoteAmountHigh: params.quoteAmountHigh.toString(),
-    nonce: BigNumber.from(params.nonce).toString(),
+    nonce: BigInt(params.nonce).toString(),
   };
 }
 
@@ -116,7 +117,7 @@ function getBurnLpValues(params: BurnLpParams): EIP712BurnLpValues {
     }),
     productId: params.productId,
     amount: params.amount.toString(),
-    nonce: BigNumber.from(params.nonce).toString(),
+    nonce: BigInt(params.nonce).toString(),
   };
 }
 
@@ -127,9 +128,9 @@ function getOrderValues(params: OrderParams): EIP712OrderValues {
       subaccountName: params.subaccountName,
     }),
     priceX18: toX18(params.price).toString(),
-    amount: BigNumber.from(params.amount).toString(),
-    expiration: BigNumber.from(params.expiration).toString(),
-    nonce: BigNumber.from(params.nonce).toString(),
+    amount: BigInt(params.amount).toString(),
+    expiration: BigInt(params.expiration).toString(),
+    nonce: BigInt(params.nonce).toString(),
   };
 }
 
@@ -137,7 +138,7 @@ function getListTriggerOrdersValues(
   params: ListTriggerOrdersParams,
 ): EIP712ListTriggerOrdersValues {
   return {
-    recvTime: BigNumber.from(params.recvTime).toString(),
+    recvTime: BigInt(params.recvTime).toString(),
     sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
@@ -155,7 +156,7 @@ function getOrderCancellationValues(
     }),
     productIds: params.productIds,
     digests: params.digests,
-    nonce: BigNumber.from(params.nonce).toString(),
+    nonce: BigInt(params.nonce).toString(),
   };
 }
 
@@ -168,7 +169,7 @@ function getProductOrdersCancellationValues(
       subaccountName: params.subaccountName,
     }),
     productIds: params.productIds,
-    nonce: BigNumber.from(params.nonce).toString(),
+    nonce: BigInt(params.nonce).toString(),
   };
 }
 
@@ -186,8 +187,8 @@ function getLiquidateSubaccountValues(
     }),
     mode: params.mode,
     healthGroup: params.healthGroup.toString(),
-    amount: BigNumber.from(params.amount).toString(),
-    nonce: BigNumber.from(params.nonce).toString(),
+    amount: BigInt(params.amount).toString(),
+    nonce: BigInt(params.nonce).toString(),
   };
 }
 
@@ -198,6 +199,6 @@ function getLinkSignerValues(params: LinkSignerParams): EIP712LinkSignerValues {
       subaccountName: params.subaccountName,
     }),
     signer: params.signer,
-    nonce: BigNumber.from(params.nonce).toString(),
+    nonce: BigInt(params.nonce).toString(),
   };
 }

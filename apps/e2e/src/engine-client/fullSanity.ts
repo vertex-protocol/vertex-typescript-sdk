@@ -7,6 +7,7 @@ import {
   createDeterministicLinkedSignerPrivateKey,
   depositCollateral,
   Endpoint__factory,
+  getChainIdFromSigner,
   getOrderNonce,
   IClearinghouse__factory,
   MockERC20__factory,
@@ -16,14 +17,14 @@ import {
   subaccountToHex,
 } from '@vertex-protocol/contracts';
 import { toBigDecimal, toFixedPoint } from '@vertex-protocol/utils';
-import { ethers, Wallet } from 'ethers';
+import { Wallet, ZeroAddress } from 'ethers';
 import { runWithContext } from '../utils/runWithContext';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
-  const chainId = await signer.getChainId();
+  const chainId = await getChainIdFromSigner(signer);
 
   const client = new EngineClient({
     url: context.endpoints.engine,
@@ -89,7 +90,7 @@ async function fullSanity(context: RunContext) {
     subaccountName: 'default',
     amount: toFixedPoint(-0.01),
     expiration: getExpiration(),
-    price: 28900,
+    price: 35000,
   };
   const placeResult = await client.placeOrder({
     verifyingAddr: orderbookAddr,
@@ -276,7 +277,7 @@ async function fullSanity(context: RunContext) {
   const revokeSignerResult = await client.linkSigner({
     chainId,
     signer: subaccountToHex({
-      subaccountOwner: ethers.constants.AddressZero,
+      subaccountOwner: ZeroAddress,
       subaccountName: '',
     }),
     subaccountOwner: signer.address,

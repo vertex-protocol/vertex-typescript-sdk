@@ -3,69 +3,50 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumber,
   BigNumberish,
   BytesLike,
-  CallOverrides,
-  ContractTransaction,
-  Overrides,
-  PopulatedTransaction,
-  Signer,
-  utils,
-} from "ethers";
-import type {
   FunctionFragment,
   Result,
+  Interface,
   EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  AddressLike,
+  ContractRunner,
+  ContractMethod,
+  Listener,
+} from "ethers";
 import type {
-  TypedEventFilter,
-  TypedEvent,
+  TypedContractEvent,
+  TypedDeferredTopicFilter,
+  TypedEventLog,
+  TypedLogDescription,
   TypedListener,
-  OnEvent,
-  PromiseOrValue,
+  TypedContractMethod,
 } from "./common";
 
 export declare namespace IProductEngine {
   export type ProductDeltaStruct = {
-    productId: PromiseOrValue<BigNumberish>;
-    subaccount: PromiseOrValue<BytesLike>;
-    amountDelta: PromiseOrValue<BigNumberish>;
-    vQuoteDelta: PromiseOrValue<BigNumberish>;
+    productId: BigNumberish;
+    subaccount: BytesLike;
+    amountDelta: BigNumberish;
+    vQuoteDelta: BigNumberish;
   };
 
   export type ProductDeltaStructOutput = [
-    number,
-    string,
-    BigNumber,
-    BigNumber
+    productId: bigint,
+    subaccount: string,
+    amountDelta: bigint,
+    vQuoteDelta: bigint
   ] & {
-    productId: number;
+    productId: bigint;
     subaccount: string;
-    amountDelta: BigNumber;
-    vQuoteDelta: BigNumber;
+    amountDelta: bigint;
+    vQuoteDelta: bigint;
   };
 }
 
-export interface IProductEngineInterface extends utils.Interface {
-  functions: {
-    "applyDeltas((uint32,bytes32,int128,int128)[])": FunctionFragment;
-    "burnLp(uint32,bytes32,int128)": FunctionFragment;
-    "decomposeLps(bytes32,bytes32,address)": FunctionFragment;
-    "getClearinghouse()": FunctionFragment;
-    "getEngineType()": FunctionFragment;
-    "getOrderbook(uint32)": FunctionFragment;
-    "getProductIds()": FunctionFragment;
-    "initialize(address,address,address,address,address)": FunctionFragment;
-    "mintLp(uint32,bytes32,int128,int128,int128)": FunctionFragment;
-    "swapLp(uint32,int128,int128)": FunctionFragment;
-    "swapLp(uint32,int128,int128,int128,int128)": FunctionFragment;
-    "updateProduct(bytes)": FunctionFragment;
-  };
-
+export interface IProductEngineInterface extends Interface {
   getFunction(
-    nameOrSignatureOrTopic:
+    nameOrSignature:
       | "applyDeltas"
       | "burnLp"
       | "decomposeLps"
@@ -80,25 +61,19 @@ export interface IProductEngineInterface extends utils.Interface {
       | "updateProduct"
   ): FunctionFragment;
 
+  getEvent(nameOrSignatureOrTopic: "AddProduct"): EventFragment;
+
   encodeFunctionData(
     functionFragment: "applyDeltas",
     values: [IProductEngine.ProductDeltaStruct[]]
   ): string;
   encodeFunctionData(
     functionFragment: "burnLp",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [BigNumberish, BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "decomposeLps",
-    values: [
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<string>
-    ]
+    values: [BytesLike, BytesLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getClearinghouse",
@@ -110,7 +85,7 @@ export interface IProductEngineInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getOrderbook",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getProductIds",
@@ -118,45 +93,29 @@ export interface IProductEngineInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>
-    ]
+    values: [AddressLike, AddressLike, AddressLike, AddressLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "mintLp",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [BigNumberish, BytesLike, BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "swapLp(uint32,int128,int128)",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "swapLp(uint32,int128,int128,int128,int128)",
     values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish
     ]
   ): string;
   encodeFunctionData(
     functionFragment: "updateProduct",
-    values: [PromiseOrValue<BytesLike>]
+    values: [BytesLike]
   ): string;
 
   decodeFunctionResult(
@@ -198,402 +157,250 @@ export interface IProductEngineInterface extends utils.Interface {
     functionFragment: "updateProduct",
     data: BytesLike
   ): Result;
-
-  events: {
-    "AddProduct(uint32)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "AddProduct"): EventFragment;
 }
 
-export interface AddProductEventObject {
-  productId: number;
+export namespace AddProductEvent {
+  export type InputTuple = [productId: BigNumberish];
+  export type OutputTuple = [productId: bigint];
+  export interface OutputObject {
+    productId: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
-export type AddProductEvent = TypedEvent<[number], AddProductEventObject>;
-
-export type AddProductEventFilter = TypedEventFilter<AddProductEvent>;
 
 export interface IProductEngine extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(runner?: ContractRunner | null): IProductEngine;
+  waitForDeployment(): Promise<this>;
 
   interface: IProductEngineInterface;
 
-  queryFilter<TEvent extends TypedEvent>(
-    event: TypedEventFilter<TEvent>,
+  queryFilter<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
+  queryFilter<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    fromBlockOrBlockhash?: string | number | undefined,
+    toBlock?: string | number | undefined
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  on<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  on<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-  functions: {
-    applyDeltas(
-      deltas: IProductEngine.ProductDeltaStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  once<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  once<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-    burnLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountLp: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  listeners<TCEvent extends TypedContractEvent>(
+    event: TCEvent
+  ): Promise<Array<TypedListener<TCEvent>>>;
+  listeners(eventName?: string): Promise<Array<Listener>>;
+  removeAllListeners<TCEvent extends TypedContractEvent>(
+    event?: TCEvent
+  ): Promise<this>;
 
-    decomposeLps(
-      liquidatee: PromiseOrValue<BytesLike>,
-      liquidator: PromiseOrValue<BytesLike>,
-      feeCalculator: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  applyDeltas: TypedContractMethod<
+    [deltas: IProductEngine.ProductDeltaStruct[]],
+    [void],
+    "nonpayable"
+  >;
 
-    getClearinghouse(overrides?: CallOverrides): Promise<[string]>;
+  burnLp: TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
+    [bigint],
+    "nonpayable"
+  >;
 
-    getEngineType(overrides?: CallOverrides): Promise<[number]>;
+  decomposeLps: TypedContractMethod<
+    [liquidatee: BytesLike, liquidator: BytesLike, feeCalculator: AddressLike],
+    [bigint],
+    "nonpayable"
+  >;
 
-    getOrderbook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+  getClearinghouse: TypedContractMethod<[], [string], "view">;
 
-    getProductIds(overrides?: CallOverrides): Promise<[number[]]>;
+  getEngineType: TypedContractMethod<[], [bigint], "view">;
 
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      _quote: PromiseOrValue<string>,
-      _endpoint: PromiseOrValue<string>,
-      _admin: PromiseOrValue<string>,
-      _fees: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  getOrderbook: TypedContractMethod<
+    [productId: BigNumberish],
+    [string],
+    "view"
+  >;
 
-    mintLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountBase: PromiseOrValue<BigNumberish>,
-      quoteAmountLow: PromiseOrValue<BigNumberish>,
-      quoteAmountHigh: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  getProductIds: TypedContractMethod<[], [bigint[]], "view">;
 
-    "swapLp(uint32,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      baseDelta: PromiseOrValue<BigNumberish>,
-      quoteDelta: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  initialize: TypedContractMethod<
+    [
+      _clearinghouse: AddressLike,
+      _quote: AddressLike,
+      _endpoint: AddressLike,
+      _admin: AddressLike,
+      _fees: AddressLike
+    ],
+    [void],
+    "nonpayable"
+  >;
 
-    "swapLp(uint32,int128,int128,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      priceX18: PromiseOrValue<BigNumberish>,
-      sizeIncrement: PromiseOrValue<BigNumberish>,
-      lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  mintLp: TypedContractMethod<
+    [
+      productId: BigNumberish,
+      subaccount: BytesLike,
+      amountBase: BigNumberish,
+      quoteAmountLow: BigNumberish,
+      quoteAmountHigh: BigNumberish
+    ],
+    [void],
+    "nonpayable"
+  >;
 
-    updateProduct(
-      txn: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-  };
+  "swapLp(uint32,int128,int128)": TypedContractMethod<
+    [
+      productId: BigNumberish,
+      baseDelta: BigNumberish,
+      quoteDelta: BigNumberish
+    ],
+    [[bigint, bigint]],
+    "nonpayable"
+  >;
 
-  applyDeltas(
-    deltas: IProductEngine.ProductDeltaStruct[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  "swapLp(uint32,int128,int128,int128,int128)": TypedContractMethod<
+    [
+      productId: BigNumberish,
+      amount: BigNumberish,
+      priceX18: BigNumberish,
+      sizeIncrement: BigNumberish,
+      lpSpreadX18: BigNumberish
+    ],
+    [[bigint, bigint]],
+    "nonpayable"
+  >;
 
-  burnLp(
-    productId: PromiseOrValue<BigNumberish>,
-    subaccount: PromiseOrValue<BytesLike>,
-    amountLp: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  updateProduct: TypedContractMethod<[txn: BytesLike], [void], "nonpayable">;
 
-  decomposeLps(
-    liquidatee: PromiseOrValue<BytesLike>,
-    liquidator: PromiseOrValue<BytesLike>,
-    feeCalculator: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  getFunction<T extends ContractMethod = ContractMethod>(
+    key: string | FunctionFragment
+  ): T;
 
-  getClearinghouse(overrides?: CallOverrides): Promise<string>;
+  getFunction(
+    nameOrSignature: "applyDeltas"
+  ): TypedContractMethod<
+    [deltas: IProductEngine.ProductDeltaStruct[]],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "burnLp"
+  ): TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
+    [bigint],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "decomposeLps"
+  ): TypedContractMethod<
+    [liquidatee: BytesLike, liquidator: BytesLike, feeCalculator: AddressLike],
+    [bigint],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "getClearinghouse"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "getEngineType"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getOrderbook"
+  ): TypedContractMethod<[productId: BigNumberish], [string], "view">;
+  getFunction(
+    nameOrSignature: "getProductIds"
+  ): TypedContractMethod<[], [bigint[]], "view">;
+  getFunction(
+    nameOrSignature: "initialize"
+  ): TypedContractMethod<
+    [
+      _clearinghouse: AddressLike,
+      _quote: AddressLike,
+      _endpoint: AddressLike,
+      _admin: AddressLike,
+      _fees: AddressLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "mintLp"
+  ): TypedContractMethod<
+    [
+      productId: BigNumberish,
+      subaccount: BytesLike,
+      amountBase: BigNumberish,
+      quoteAmountLow: BigNumberish,
+      quoteAmountHigh: BigNumberish
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "swapLp(uint32,int128,int128)"
+  ): TypedContractMethod<
+    [
+      productId: BigNumberish,
+      baseDelta: BigNumberish,
+      quoteDelta: BigNumberish
+    ],
+    [[bigint, bigint]],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "swapLp(uint32,int128,int128,int128,int128)"
+  ): TypedContractMethod<
+    [
+      productId: BigNumberish,
+      amount: BigNumberish,
+      priceX18: BigNumberish,
+      sizeIncrement: BigNumberish,
+      lpSpreadX18: BigNumberish
+    ],
+    [[bigint, bigint]],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "updateProduct"
+  ): TypedContractMethod<[txn: BytesLike], [void], "nonpayable">;
 
-  getEngineType(overrides?: CallOverrides): Promise<number>;
-
-  getOrderbook(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  getProductIds(overrides?: CallOverrides): Promise<number[]>;
-
-  initialize(
-    _clearinghouse: PromiseOrValue<string>,
-    _quote: PromiseOrValue<string>,
-    _endpoint: PromiseOrValue<string>,
-    _admin: PromiseOrValue<string>,
-    _fees: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  mintLp(
-    productId: PromiseOrValue<BigNumberish>,
-    subaccount: PromiseOrValue<BytesLike>,
-    amountBase: PromiseOrValue<BigNumberish>,
-    quoteAmountLow: PromiseOrValue<BigNumberish>,
-    quoteAmountHigh: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  "swapLp(uint32,int128,int128)"(
-    productId: PromiseOrValue<BigNumberish>,
-    baseDelta: PromiseOrValue<BigNumberish>,
-    quoteDelta: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  "swapLp(uint32,int128,int128,int128,int128)"(
-    productId: PromiseOrValue<BigNumberish>,
-    amount: PromiseOrValue<BigNumberish>,
-    priceX18: PromiseOrValue<BigNumberish>,
-    sizeIncrement: PromiseOrValue<BigNumberish>,
-    lpSpreadX18: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  updateProduct(
-    txn: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  callStatic: {
-    applyDeltas(
-      deltas: IProductEngine.ProductDeltaStruct[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    burnLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountLp: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    decomposeLps(
-      liquidatee: PromiseOrValue<BytesLike>,
-      liquidator: PromiseOrValue<BytesLike>,
-      feeCalculator: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getClearinghouse(overrides?: CallOverrides): Promise<string>;
-
-    getEngineType(overrides?: CallOverrides): Promise<number>;
-
-    getOrderbook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    getProductIds(overrides?: CallOverrides): Promise<number[]>;
-
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      _quote: PromiseOrValue<string>,
-      _endpoint: PromiseOrValue<string>,
-      _admin: PromiseOrValue<string>,
-      _fees: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    mintLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountBase: PromiseOrValue<BigNumberish>,
-      quoteAmountLow: PromiseOrValue<BigNumberish>,
-      quoteAmountHigh: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "swapLp(uint32,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      baseDelta: PromiseOrValue<BigNumberish>,
-      quoteDelta: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber]>;
-
-    "swapLp(uint32,int128,int128,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      priceX18: PromiseOrValue<BigNumberish>,
-      sizeIncrement: PromiseOrValue<BigNumberish>,
-      lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber]>;
-
-    updateProduct(
-      txn: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-  };
+  getEvent(
+    key: "AddProduct"
+  ): TypedContractEvent<
+    AddProductEvent.InputTuple,
+    AddProductEvent.OutputTuple,
+    AddProductEvent.OutputObject
+  >;
 
   filters: {
-    "AddProduct(uint32)"(productId?: null): AddProductEventFilter;
-    AddProduct(productId?: null): AddProductEventFilter;
-  };
-
-  estimateGas: {
-    applyDeltas(
-      deltas: IProductEngine.ProductDeltaStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    burnLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountLp: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    decomposeLps(
-      liquidatee: PromiseOrValue<BytesLike>,
-      liquidator: PromiseOrValue<BytesLike>,
-      feeCalculator: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    getClearinghouse(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getEngineType(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getOrderbook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getProductIds(overrides?: CallOverrides): Promise<BigNumber>;
-
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      _quote: PromiseOrValue<string>,
-      _endpoint: PromiseOrValue<string>,
-      _admin: PromiseOrValue<string>,
-      _fees: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    mintLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountBase: PromiseOrValue<BigNumberish>,
-      quoteAmountLow: PromiseOrValue<BigNumberish>,
-      quoteAmountHigh: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    "swapLp(uint32,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      baseDelta: PromiseOrValue<BigNumberish>,
-      quoteDelta: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    "swapLp(uint32,int128,int128,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      priceX18: PromiseOrValue<BigNumberish>,
-      sizeIncrement: PromiseOrValue<BigNumberish>,
-      lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    updateProduct(
-      txn: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-  };
-
-  populateTransaction: {
-    applyDeltas(
-      deltas: IProductEngine.ProductDeltaStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    burnLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountLp: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    decomposeLps(
-      liquidatee: PromiseOrValue<BytesLike>,
-      liquidator: PromiseOrValue<BytesLike>,
-      feeCalculator: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    getClearinghouse(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getEngineType(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getOrderbook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getProductIds(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      _quote: PromiseOrValue<string>,
-      _endpoint: PromiseOrValue<string>,
-      _admin: PromiseOrValue<string>,
-      _fees: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    mintLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountBase: PromiseOrValue<BigNumberish>,
-      quoteAmountLow: PromiseOrValue<BigNumberish>,
-      quoteAmountHigh: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    "swapLp(uint32,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      baseDelta: PromiseOrValue<BigNumberish>,
-      quoteDelta: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    "swapLp(uint32,int128,int128,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      priceX18: PromiseOrValue<BigNumberish>,
-      sizeIncrement: PromiseOrValue<BigNumberish>,
-      lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    updateProduct(
-      txn: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    "AddProduct(uint32)": TypedContractEvent<
+      AddProductEvent.InputTuple,
+      AddProductEvent.OutputTuple,
+      AddProductEvent.OutputObject
+    >;
+    AddProduct: TypedContractEvent<
+      AddProductEvent.InputTuple,
+      AddProductEvent.OutputTuple,
+      AddProductEvent.OutputObject
+    >;
   };
 }

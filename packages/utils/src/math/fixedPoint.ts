@@ -1,14 +1,12 @@
-import { BigNumber, BigNumberish } from 'ethers';
-import { fromBn, toBn } from 'evm-bn';
-import { BigDecimalish, toBigDecimal } from './bigNumber';
-import { BigDecimal } from './bigDecimal';
+import { BigNumberish } from 'ethers';
+import { BigDecimal, BigDecimalish, toBigDecimal } from './bigDecimal';
 
 /**
  * Converts a value to X18 fixed point representation
  *
  * @param val
  */
-export function toX18(val: BigDecimalish): BigNumber {
+export function toX18(val: BigDecimalish): bigint {
   return toFixedPoint(val, 18);
 }
 
@@ -30,19 +28,23 @@ export function fromX18(val: BigNumberish): BigDecimal {
  * @param decimals number of fixed point decimal places in `val`
  */
 export function fromFixedPoint(val: BigNumberish, decimals = 18): BigDecimal {
-  return toBigDecimal(fromBn(BigNumber.from(val), decimals ? decimals : 18));
+  return toBigDecimal(val).div(toBigDecimal(10).pow(decimals));
 }
 
 /**
  * Convert a float number representation to a fixed point decimal.
  * Defaults to 18, which is X18 in contracts
- * ex. toFixedPoint(3.14, 2) => BN("314").
+ * ex. toFixedPoint(3.14, 2) => bigint("314").
  *
- * @see https://github.com/paulrberg/evm-bn
  * @param val
  * @param decimals Number of decimals to include in the fixed point representation
  */
-export function toFixedPoint(val: BigDecimalish, decimals = 18): BigNumber {
-  const valToParse = val instanceof BigDecimal ? val.toFixed() : val.toString();
-  return toBn(valToParse, decimals ? decimals : 18);
+export function toFixedPoint(val: BigDecimalish, decimals = 18): bigint {
+  const bigDecimalVal = val instanceof BigDecimal ? val : toBigDecimal(val);
+  // toFixed is required here to avoid exponential notation
+  const valToParse = bigDecimalVal
+    .times(toBigDecimal(10).pow(decimals))
+    .toFixed();
+
+  return BigInt(valToParse);
 }

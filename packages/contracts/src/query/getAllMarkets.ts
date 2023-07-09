@@ -16,7 +16,7 @@ export async function getAllMarkets({
 
   contractData.spotProducts.forEach((productInfo) => {
     markets.push({
-      productId: productInfo.productId,
+      productId: Number(productInfo.productId),
       type: ProductEngineType.SPOT,
       product: mapContractSpotProduct(productInfo),
       minSize: toBigDecimal(productInfo.bookInfo.minSize),
@@ -27,7 +27,7 @@ export async function getAllMarkets({
 
   contractData.perpProducts.forEach((productInfo) => {
     markets.push({
-      productId: productInfo.productId,
+      productId: Number(productInfo.productId),
       type: ProductEngineType.PERP,
       product: mapContractPerpProduct(productInfo),
       minSize: toBigDecimal(productInfo.bookInfo.minSize),

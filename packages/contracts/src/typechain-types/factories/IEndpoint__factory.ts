@@ -2,8 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import { Contract, Interface, type ContractRunner } from "ethers";
 import type { IEndpoint, IEndpointInterface } from "../IEndpoint";
 
 const _abi = [
@@ -308,12 +307,9 @@ const _abi = [
 export class IEndpoint__factory {
   static readonly abi = _abi;
   static createInterface(): IEndpointInterface {
-    return new utils.Interface(_abi) as IEndpointInterface;
+    return new Interface(_abi) as IEndpointInterface;
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): IEndpoint {
-    return new Contract(address, _abi, signerOrProvider) as IEndpoint;
+  static connect(address: string, runner?: ContractRunner | null): IEndpoint {
+    return new Contract(address, _abi, runner) as unknown as IEndpoint;
   }
 }

@@ -6,12 +6,11 @@ import {
   IPerpEngine__factory,
   ISpotEngine__factory,
   ProductEngineType,
-  ValidVertexSigner,
   VERTEX_DEPLOYMENTS,
   VertexContracts,
+  VertexDeploymentAddresses,
 } from '@vertex-protocol/contracts';
-import { Signer } from 'ethers';
-import { Provider } from '@ethersproject/providers';
+import { Provider, Signer } from 'ethers';
 import {
   ENGINE_CLIENT_ENDPOINTS,
   EngineClient,
@@ -24,16 +23,18 @@ import {
   TRIGGER_CLIENT_ENDPOINTS,
   TriggerClient,
 } from '@vertex-protocol/trigger-client';
+import { isSigner } from './utils';
 
 /**
  * Context required to use the Vertex client.
  */
 export interface VertexClientContext {
   // Must be a signer to use any executions
-  signerOrProvider: ValidVertexSigner | Provider;
+  signerOrProvider: Signer | Provider;
   // Used to sign engine transactions if provided, instead of signerOrProvider
-  linkedSigner?: ValidVertexSigner;
+  linkedSigner?: Signer;
   contracts: VertexContracts;
+  contractAddresses: VertexDeploymentAddresses;
   engineClient: EngineClient;
   indexerClient: IndexerClient;
   triggerClient: TriggerClient;
@@ -150,8 +151,8 @@ export async function createClientContext(
     contracts.perpEngineAddress ??
     (await clearinghouse.getEngineByType(ProductEngineType.PERP));
 
-  const validSigner = Signer.isSigner(signerOrProvider)
-    ? (signerOrProvider as ValidVertexSigner)
+  const validSigner = isSigner(signerOrProvider)
+    ? (signerOrProvider as Signer)
     : undefined;
 
   return {
@@ -163,6 +164,13 @@ export async function createClientContext(
       endpoint,
       spotEngine: ISpotEngine__factory.connect(spotAddress, signerOrProvider),
       perpEngine: IPerpEngine__factory.connect(perpAddress, signerOrProvider),
+    },
+    contractAddresses: {
+      querier: contracts.querierAddress,
+      clearinghouse: clearinghouseAddress,
+      endpoint: endpointContractAddress,
+      spotEngine: spotAddress,
+      perpEngine: perpAddress,
     },
     engineClient: new EngineClient({
       url: engineEndpoint,

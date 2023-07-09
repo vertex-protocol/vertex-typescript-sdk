@@ -9,6 +9,7 @@ import {
   EngineOrderParams,
   EngineServerExecuteResult,
 } from '@vertex-protocol/engine-client';
+import { BigNumberish } from 'ethers';
 
 type WithOptionalNonce<T> = Omit<T, 'nonce'> & { nonce?: string };
 
@@ -37,7 +38,7 @@ interface SignatureParams {
   // Orderbook address for placement, endpoint address for cancellation & listing
   verifyingAddr: string;
   // Defaults to the chain ID of the engine signer
-  chainId?: number;
+  chainId?: BigNumberish;
 }
 
 /**

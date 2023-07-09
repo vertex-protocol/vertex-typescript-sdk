@@ -20,6 +20,10 @@ export class BaseVertexAPI {
     return (await this.getChainSigner()).getAddress();
   }
 
+  protected getEndpointAddress() {
+    return this.context.contractAddresses.endpoint;
+  }
+
   protected async getOrderbookAddress(productId: number) {
     return this.context.engineClient.getOrderbookAddress(productId);
   }

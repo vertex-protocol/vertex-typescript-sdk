@@ -1,5 +1,9 @@
 import { RunContext } from '../utils/types';
-import { subaccountToHex, getOrderNonce } from '@vertex-protocol/contracts';
+import {
+  getChainIdFromSigner,
+  getOrderNonce,
+  subaccountToHex,
+} from '@vertex-protocol/contracts';
 import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 import { createVertexClient, PlaceOrderParams } from '@vertex-protocol/client';
@@ -10,7 +14,7 @@ async function wsSanity(context: RunContext) {
     signerOrProvider: signer,
   });
 
-  const chainId = await signer.getChainId();
+  const chainId = await getChainIdFromSigner(signer);
 
   const orderParams: PlaceOrderParams['order'] = {
     subaccountName: 'default',
@@ -19,7 +23,7 @@ async function wsSanity(context: RunContext) {
     expiration: nowInSeconds() + 60,
     // Limit price
     price: 28000,
-    amount: toFixedPoint(0.01),
+    amount: toFixedPoint(0.01).toString(),
   };
 
   const verifyingAddr = (await vertexClient.context.engineClient.getContracts())

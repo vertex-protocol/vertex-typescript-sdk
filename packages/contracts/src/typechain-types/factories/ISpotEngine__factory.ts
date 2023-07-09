@@ -2,8 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import { Contract, Interface, type ContractRunner } from "ethers";
 import type { ISpotEngine, ISpotEngineInterface } from "../ISpotEngine";
 
 const _abi = [
@@ -794,12 +793,9 @@ const _abi = [
 export class ISpotEngine__factory {
   static readonly abi = _abi;
   static createInterface(): ISpotEngineInterface {
-    return new utils.Interface(_abi) as ISpotEngineInterface;
+    return new Interface(_abi) as ISpotEngineInterface;
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): ISpotEngine {
-    return new Contract(address, _abi, signerOrProvider) as ISpotEngine;
+  static connect(address: string, runner?: ContractRunner | null): ISpotEngine {
+    return new Contract(address, _abi, runner) as unknown as ISpotEngine;
   }
 }

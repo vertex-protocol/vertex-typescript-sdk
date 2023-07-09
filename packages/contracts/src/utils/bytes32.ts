@@ -1,15 +1,10 @@
 import {
   Bytes,
-  arrayify,
-  hexlify,
-  toUtf8Bytes,
-  toUtf8String,
-} from 'ethers/lib/utils';
-import {
   Subaccount,
   SubaccountBytes32,
   SubaccountNameBytes12,
 } from '../common';
+import { getBytes, hexlify, toUtf8Bytes, toUtf8String } from 'ethers';
 
 /**
  * Converts a subaccount object (owner + name) to it's bytes32 representation.
@@ -17,7 +12,7 @@ import {
  * @returns bytes32 representation of a subaccount
  */
 export function subaccountToBytes32(subaccount: Subaccount): SubaccountBytes32 {
-  const address = arrayify(subaccount.subaccountOwner);
+  const address = getBytes(subaccount.subaccountOwner);
   const name = toUtf8Bytes(subaccount.subaccountName);
 
   if (address.length != 20) {
@@ -90,7 +85,7 @@ export function subaccountToHex(subaccount: Subaccount): string {
  * @returns subaccount object (owner + name)
  */
 export function subaccountFromHex(subaccount: string): Subaccount {
-  return subaccountFromBytes32(arrayify(subaccount));
+  return subaccountFromBytes32(getBytes(subaccount));
 }
 
 export function strToBytes(input: string, bytesLen: number): Bytes {

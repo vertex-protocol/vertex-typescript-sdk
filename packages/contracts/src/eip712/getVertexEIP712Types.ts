@@ -1,5 +1,5 @@
 import { SignableRequestType } from './signableRequestType';
-import { TypedDataField } from '@ethersproject/abstract-signer';
+import { TypedDataField } from 'ethers';
 
 /**
  * Return the EIP712 types for a given request

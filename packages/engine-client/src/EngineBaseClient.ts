@@ -12,20 +12,21 @@ import {
   GetEngineNoncesResponse,
 } from './types';
 import {
+  getChainIdFromSigner,
   getSignedTransactionRequest,
   SignableRequestType,
   SignableRequestTypeToParams,
-  ValidVertexSigner,
 } from '@vertex-protocol/contracts';
 import axios, { AxiosResponse } from 'axios';
+import { BigNumberish, Signer } from 'ethers';
 
 export interface EngineClientOpts {
   // Server URL
   url: string;
   // Signer for EIP712 signing, if not provided, execute requests will error
-  signer?: ValidVertexSigner;
+  signer?: Signer;
   // Linked signer registered through the engine, if provided, execute requests will use this signer
-  linkedSigner?: ValidVertexSigner;
+  linkedSigner?: Signer;
 }
 
 // Only 1 key can be defined per execute request
@@ -52,7 +53,7 @@ export class EngineBaseClient {
    *
    * @param linkedSigner The linkedSigner to use for all signatures. Set to null to revert to the chain signer
    */
-  public setLinkedSigner(linkedSigner: ValidVertexSigner | null) {
+  public setLinkedSigner(linkedSigner: Signer | null) {
     this.opts.linkedSigner = linkedSigner ?? undefined;
   }
 
@@ -162,14 +163,18 @@ export class EngineBaseClient {
     };
   }
 
-  async getChainIdIfNeeded(params: { chainId?: number }): Promise<number> {
+  async getChainIdIfNeeded(params: {
+    chainId?: BigNumberish;
+  }): Promise<BigNumberish> {
     if (params.chainId) {
       return params.chainId;
     }
-    if (!this.opts.signer) {
+    const signer = this.opts.signer;
+    if (!signer) {
       throw Error('No signer provided');
     }
-    return this.opts.signer.getChainId();
+
+    return getChainIdFromSigner(signer);
   }
 
   /**
@@ -184,7 +189,7 @@ export class EngineBaseClient {
   public async sign<T extends SignableRequestType>(
     requestType: T,
     verifyingContract: string,
-    chainId: number,
+    chainId: BigNumberish,
     params: SignableRequestTypeToParams[T],
   ) {
     // Use the linked signer if provided, otherwise use the default signer provided to the engine

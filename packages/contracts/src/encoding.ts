@@ -4,12 +4,12 @@ import {
   WithdrawCollateralParams,
 } from './eip712';
 import { toX18 } from '@vertex-protocol/utils';
-import { defaultAbiCoder } from 'ethers/lib/utils';
+import { AbiCoder } from 'ethers';
 
 export function encodeSignedWithdrawCollateralTx(
   signed: SignedTx<WithdrawCollateralParams>,
 ) {
-  return defaultAbiCoder.encode(
+  return AbiCoder.defaultAbiCoder().encode(
     [
       'tuple(tuple(address sender, string subaccountName, uint32 productId, uint128 amount, uint64 nonce), bytes signature)',
     ],
@@ -29,7 +29,7 @@ export function encodeSignedWithdrawCollateralTx(
 }
 
 export function encodeSignedOrder(signed: SignedOrderParams) {
-  return defaultAbiCoder.encode(
+  return AbiCoder.defaultAbiCoder().encode(
     [
       'tuple(tuple(address sender, string subaccountName, int128 priceX18, int128 amount, uint64 expiration, uint64 nonce) order, bytes signature)',
     ],

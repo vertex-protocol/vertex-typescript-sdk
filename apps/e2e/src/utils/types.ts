@@ -1,5 +1,4 @@
-import { Provider } from '@ethersproject/providers';
-import { Wallet } from 'ethers';
+import { Provider, Wallet } from 'ethers';
 import { VertexDeploymentAddresses } from '@vertex-protocol/contracts';
 
 export type ChainEnv = 'local' | 'testnet' | 'mainnet';

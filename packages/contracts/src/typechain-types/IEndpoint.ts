@@ -3,61 +3,41 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumber,
   BigNumberish,
   BytesLike,
-  CallOverrides,
-  ContractTransaction,
-  Overrides,
-  PopulatedTransaction,
-  Signer,
-  utils,
-} from "ethers";
-import type {
   FunctionFragment,
   Result,
+  Interface,
   EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  AddressLike,
+  ContractRunner,
+  ContractMethod,
+  Listener,
+} from "ethers";
 import type {
-  TypedEventFilter,
-  TypedEvent,
+  TypedContractEvent,
+  TypedDeferredTopicFilter,
+  TypedEventLog,
+  TypedLogDescription,
   TypedListener,
-  OnEvent,
-  PromiseOrValue,
+  TypedContractMethod,
 } from "./common";
 
 export declare namespace IEndpoint {
   export type PricesStruct = {
-    spotPriceX18: PromiseOrValue<BigNumberish>;
-    perpPriceX18: PromiseOrValue<BigNumberish>;
+    spotPriceX18: BigNumberish;
+    perpPriceX18: BigNumberish;
   };
 
-  export type PricesStructOutput = [BigNumber, BigNumber] & {
-    spotPriceX18: BigNumber;
-    perpPriceX18: BigNumber;
-  };
+  export type PricesStructOutput = [
+    spotPriceX18: bigint,
+    perpPriceX18: bigint
+  ] & { spotPriceX18: bigint; perpPriceX18: bigint };
 }
 
-export interface IEndpointInterface extends utils.Interface {
-  functions: {
-    "depositCollateral(bytes12,uint32,uint128)": FunctionFragment;
-    "depositCollateralWithReferral(bytes12,uint32,uint128,string)": FunctionFragment;
-    "getNonce(address)": FunctionFragment;
-    "getNumSubaccounts()": FunctionFragment;
-    "getPriceX18(uint32)": FunctionFragment;
-    "getPricesX18(uint32)": FunctionFragment;
-    "getSubaccountById(uint64)": FunctionFragment;
-    "getSubaccountId(bytes32)": FunctionFragment;
-    "getTime()": FunctionFragment;
-    "getVersion()": FunctionFragment;
-    "setBook(uint32,address)": FunctionFragment;
-    "submitSlowModeTransaction(bytes)": FunctionFragment;
-    "submitTransactionsChecked(uint64,bytes[])": FunctionFragment;
-  };
-
+export interface IEndpointInterface extends Interface {
   getFunction(
-    nameOrSignatureOrTopic:
+    nameOrSignature:
       | "depositCollateral"
       | "depositCollateralWithReferral"
       | "getNonce"
@@ -73,26 +53,24 @@ export interface IEndpointInterface extends utils.Interface {
       | "submitTransactionsChecked"
   ): FunctionFragment;
 
+  getEvent(
+    nameOrSignatureOrTopic:
+      | "SubmitSlowModeTransaction"
+      | "SubmitTransactions"
+      | "UserReferral"
+  ): EventFragment;
+
   encodeFunctionData(
     functionFragment: "depositCollateral",
-    values: [
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [BytesLike, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "depositCollateralWithReferral",
-    values: [
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>
-    ]
+    values: [BytesLike, BigNumberish, BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "getNonce",
-    values: [PromiseOrValue<string>]
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getNumSubaccounts",
@@ -100,19 +78,19 @@ export interface IEndpointInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getPriceX18",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getPricesX18",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getSubaccountById",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getSubaccountId",
-    values: [PromiseOrValue<BytesLike>]
+    values: [BytesLike]
   ): string;
   encodeFunctionData(functionFragment: "getTime", values?: undefined): string;
   encodeFunctionData(
@@ -121,15 +99,15 @@ export interface IEndpointInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "setBook",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+    values: [BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "submitSlowModeTransaction",
-    values: [PromiseOrValue<BytesLike>]
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "submitTransactionsChecked",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>[]]
+    values: [BigNumberish, BytesLike[]]
   ): string;
 
   decodeFunctionResult(
@@ -172,427 +150,278 @@ export interface IEndpointInterface extends utils.Interface {
     functionFragment: "submitTransactionsChecked",
     data: BytesLike
   ): Result;
-
-  events: {
-    "SubmitSlowModeTransaction(uint64,address,bytes)": EventFragment;
-    "SubmitTransactions()": EventFragment;
-    "UserReferral(address,bytes32)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "SubmitSlowModeTransaction"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SubmitTransactions"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "UserReferral"): EventFragment;
 }
 
-export interface SubmitSlowModeTransactionEventObject {
-  executableAt: BigNumber;
-  sender: string;
-  tx: string;
+export namespace SubmitSlowModeTransactionEvent {
+  export type InputTuple = [
+    executableAt: BigNumberish,
+    sender: AddressLike,
+    tx: BytesLike
+  ];
+  export type OutputTuple = [executableAt: bigint, sender: string, tx: string];
+  export interface OutputObject {
+    executableAt: bigint;
+    sender: string;
+    tx: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
-export type SubmitSlowModeTransactionEvent = TypedEvent<
-  [BigNumber, string, string],
-  SubmitSlowModeTransactionEventObject
->;
 
-export type SubmitSlowModeTransactionEventFilter =
-  TypedEventFilter<SubmitSlowModeTransactionEvent>;
-
-export interface SubmitTransactionsEventObject {}
-export type SubmitTransactionsEvent = TypedEvent<
-  [],
-  SubmitTransactionsEventObject
->;
-
-export type SubmitTransactionsEventFilter =
-  TypedEventFilter<SubmitTransactionsEvent>;
-
-export interface UserReferralEventObject {
-  invitee: string;
-  referralCode: string;
+export namespace SubmitTransactionsEvent {
+  export type InputTuple = [];
+  export type OutputTuple = [];
+  export interface OutputObject {}
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
-export type UserReferralEvent = TypedEvent<
-  [string, string],
-  UserReferralEventObject
->;
 
-export type UserReferralEventFilter = TypedEventFilter<UserReferralEvent>;
+export namespace UserReferralEvent {
+  export type InputTuple = [invitee: AddressLike, referralCode: BytesLike];
+  export type OutputTuple = [invitee: string, referralCode: string];
+  export interface OutputObject {
+    invitee: string;
+    referralCode: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
 
 export interface IEndpoint extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(runner?: ContractRunner | null): IEndpoint;
+  waitForDeployment(): Promise<this>;
 
   interface: IEndpointInterface;
 
-  queryFilter<TEvent extends TypedEvent>(
-    event: TypedEventFilter<TEvent>,
+  queryFilter<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
+  queryFilter<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    fromBlockOrBlockhash?: string | number | undefined,
+    toBlock?: string | number | undefined
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  on<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  on<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-  functions: {
-    depositCollateral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  once<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  once<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-    depositCollateralWithReferral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      referralCode: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  listeners<TCEvent extends TypedContractEvent>(
+    event: TCEvent
+  ): Promise<Array<TypedListener<TCEvent>>>;
+  listeners(eventName?: string): Promise<Array<Listener>>;
+  removeAllListeners<TCEvent extends TypedContractEvent>(
+    event?: TCEvent
+  ): Promise<this>;
 
-    getNonce(
-      sender: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+  depositCollateral: TypedContractMethod<
+    [subaccountName: BytesLike, productId: BigNumberish, amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
 
-    getNumSubaccounts(overrides?: CallOverrides): Promise<[BigNumber]>;
+  depositCollateralWithReferral: TypedContractMethod<
+    [
+      subaccountName: BytesLike,
+      productId: BigNumberish,
+      amount: BigNumberish,
+      referralCode: string
+    ],
+    [void],
+    "nonpayable"
+  >;
 
-    getPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+  getNonce: TypedContractMethod<[sender: AddressLike], [bigint], "view">;
 
-    getPricesX18(
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[IEndpoint.PricesStructOutput]>;
+  getNumSubaccounts: TypedContractMethod<[], [bigint], "view">;
 
-    getSubaccountById(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+  getPriceX18: TypedContractMethod<[productId: BigNumberish], [bigint], "view">;
 
-    getSubaccountId(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+  getPricesX18: TypedContractMethod<
+    [healthGroup: BigNumberish],
+    [IEndpoint.PricesStructOutput],
+    "view"
+  >;
 
-    getTime(overrides?: CallOverrides): Promise<[BigNumber]>;
+  getSubaccountById: TypedContractMethod<
+    [subaccountId: BigNumberish],
+    [string],
+    "view"
+  >;
 
-    getVersion(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  getSubaccountId: TypedContractMethod<
+    [subaccount: BytesLike],
+    [bigint],
+    "view"
+  >;
 
-    setBook(
-      productId: PromiseOrValue<BigNumberish>,
-      book: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  getTime: TypedContractMethod<[], [bigint], "view">;
 
-    submitSlowModeTransaction(
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  getVersion: TypedContractMethod<[], [bigint], "nonpayable">;
 
-    submitTransactionsChecked(
-      idx: PromiseOrValue<BigNumberish>,
-      transactions: PromiseOrValue<BytesLike>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-  };
+  setBook: TypedContractMethod<
+    [productId: BigNumberish, book: AddressLike],
+    [void],
+    "nonpayable"
+  >;
 
-  depositCollateral(
-    subaccountName: PromiseOrValue<BytesLike>,
-    productId: PromiseOrValue<BigNumberish>,
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  submitSlowModeTransaction: TypedContractMethod<
+    [transaction: BytesLike],
+    [void],
+    "nonpayable"
+  >;
 
-  depositCollateralWithReferral(
-    subaccountName: PromiseOrValue<BytesLike>,
-    productId: PromiseOrValue<BigNumberish>,
-    amount: PromiseOrValue<BigNumberish>,
-    referralCode: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  submitTransactionsChecked: TypedContractMethod<
+    [idx: BigNumberish, transactions: BytesLike[]],
+    [void],
+    "nonpayable"
+  >;
 
-  getNonce(
-    sender: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  getFunction<T extends ContractMethod = ContractMethod>(
+    key: string | FunctionFragment
+  ): T;
 
-  getNumSubaccounts(overrides?: CallOverrides): Promise<BigNumber>;
+  getFunction(
+    nameOrSignature: "depositCollateral"
+  ): TypedContractMethod<
+    [subaccountName: BytesLike, productId: BigNumberish, amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "depositCollateralWithReferral"
+  ): TypedContractMethod<
+    [
+      subaccountName: BytesLike,
+      productId: BigNumberish,
+      amount: BigNumberish,
+      referralCode: string
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "getNonce"
+  ): TypedContractMethod<[sender: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getNumSubaccounts"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getPriceX18"
+  ): TypedContractMethod<[productId: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getPricesX18"
+  ): TypedContractMethod<
+    [healthGroup: BigNumberish],
+    [IEndpoint.PricesStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getSubaccountById"
+  ): TypedContractMethod<[subaccountId: BigNumberish], [string], "view">;
+  getFunction(
+    nameOrSignature: "getSubaccountId"
+  ): TypedContractMethod<[subaccount: BytesLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getTime"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getVersion"
+  ): TypedContractMethod<[], [bigint], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setBook"
+  ): TypedContractMethod<
+    [productId: BigNumberish, book: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "submitSlowModeTransaction"
+  ): TypedContractMethod<[transaction: BytesLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "submitTransactionsChecked"
+  ): TypedContractMethod<
+    [idx: BigNumberish, transactions: BytesLike[]],
+    [void],
+    "nonpayable"
+  >;
 
-  getPriceX18(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getPricesX18(
-    healthGroup: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<IEndpoint.PricesStructOutput>;
-
-  getSubaccountById(
-    subaccountId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  getSubaccountId(
-    subaccount: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getTime(overrides?: CallOverrides): Promise<BigNumber>;
-
-  getVersion(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  setBook(
-    productId: PromiseOrValue<BigNumberish>,
-    book: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  submitSlowModeTransaction(
-    transaction: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  submitTransactionsChecked(
-    idx: PromiseOrValue<BigNumberish>,
-    transactions: PromiseOrValue<BytesLike>[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  callStatic: {
-    depositCollateral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    depositCollateralWithReferral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      referralCode: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    getNonce(
-      sender: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getNumSubaccounts(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getPricesX18(
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<IEndpoint.PricesStructOutput>;
-
-    getSubaccountById(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    getSubaccountId(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getTime(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getVersion(overrides?: CallOverrides): Promise<BigNumber>;
-
-    setBook(
-      productId: PromiseOrValue<BigNumberish>,
-      book: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    submitSlowModeTransaction(
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    submitTransactionsChecked(
-      idx: PromiseOrValue<BigNumberish>,
-      transactions: PromiseOrValue<BytesLike>[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-  };
+  getEvent(
+    key: "SubmitSlowModeTransaction"
+  ): TypedContractEvent<
+    SubmitSlowModeTransactionEvent.InputTuple,
+    SubmitSlowModeTransactionEvent.OutputTuple,
+    SubmitSlowModeTransactionEvent.OutputObject
+  >;
+  getEvent(
+    key: "SubmitTransactions"
+  ): TypedContractEvent<
+    SubmitTransactionsEvent.InputTuple,
+    SubmitTransactionsEvent.OutputTuple,
+    SubmitTransactionsEvent.OutputObject
+  >;
+  getEvent(
+    key: "UserReferral"
+  ): TypedContractEvent<
+    UserReferralEvent.InputTuple,
+    UserReferralEvent.OutputTuple,
+    UserReferralEvent.OutputObject
+  >;
 
   filters: {
-    "SubmitSlowModeTransaction(uint64,address,bytes)"(
-      executableAt?: null,
-      sender?: null,
-      tx?: null
-    ): SubmitSlowModeTransactionEventFilter;
-    SubmitSlowModeTransaction(
-      executableAt?: null,
-      sender?: null,
-      tx?: null
-    ): SubmitSlowModeTransactionEventFilter;
+    "SubmitSlowModeTransaction(uint64,address,bytes)": TypedContractEvent<
+      SubmitSlowModeTransactionEvent.InputTuple,
+      SubmitSlowModeTransactionEvent.OutputTuple,
+      SubmitSlowModeTransactionEvent.OutputObject
+    >;
+    SubmitSlowModeTransaction: TypedContractEvent<
+      SubmitSlowModeTransactionEvent.InputTuple,
+      SubmitSlowModeTransactionEvent.OutputTuple,
+      SubmitSlowModeTransactionEvent.OutputObject
+    >;
 
-    "SubmitTransactions()"(): SubmitTransactionsEventFilter;
-    SubmitTransactions(): SubmitTransactionsEventFilter;
+    "SubmitTransactions()": TypedContractEvent<
+      SubmitTransactionsEvent.InputTuple,
+      SubmitTransactionsEvent.OutputTuple,
+      SubmitTransactionsEvent.OutputObject
+    >;
+    SubmitTransactions: TypedContractEvent<
+      SubmitTransactionsEvent.InputTuple,
+      SubmitTransactionsEvent.OutputTuple,
+      SubmitTransactionsEvent.OutputObject
+    >;
 
-    "UserReferral(address,bytes32)"(
-      invitee?: null,
-      referralCode?: null
-    ): UserReferralEventFilter;
-    UserReferral(invitee?: null, referralCode?: null): UserReferralEventFilter;
-  };
-
-  estimateGas: {
-    depositCollateral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    depositCollateralWithReferral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      referralCode: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    getNonce(
-      sender: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getNumSubaccounts(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getPricesX18(
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getSubaccountById(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getSubaccountId(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getTime(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getVersion(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    setBook(
-      productId: PromiseOrValue<BigNumberish>,
-      book: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    submitSlowModeTransaction(
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    submitTransactionsChecked(
-      idx: PromiseOrValue<BigNumberish>,
-      transactions: PromiseOrValue<BytesLike>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-  };
-
-  populateTransaction: {
-    depositCollateral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    depositCollateralWithReferral(
-      subaccountName: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      referralCode: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    getNonce(
-      sender: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getNumSubaccounts(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getPriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getPricesX18(
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getSubaccountById(
-      subaccountId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getSubaccountId(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getTime(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getVersion(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setBook(
-      productId: PromiseOrValue<BigNumberish>,
-      book: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    submitSlowModeTransaction(
-      transaction: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    submitTransactionsChecked(
-      idx: PromiseOrValue<BigNumberish>,
-      transactions: PromiseOrValue<BytesLike>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    "UserReferral(address,bytes32)": TypedContractEvent<
+      UserReferralEvent.InputTuple,
+      UserReferralEvent.OutputTuple,
+      UserReferralEvent.OutputObject
+    >;
+    UserReferral: TypedContractEvent<
+      UserReferralEvent.InputTuple,
+      UserReferralEvent.OutputTuple,
+      UserReferralEvent.OutputObject
+    >;
   };
 }

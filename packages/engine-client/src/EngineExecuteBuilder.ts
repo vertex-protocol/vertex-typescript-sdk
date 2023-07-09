@@ -5,7 +5,6 @@ import {
   SignableRequestType,
   SignableRequestTypeToParams,
 } from '@vertex-protocol/contracts';
-import { hexlify } from 'ethers/lib/utils';
 import { EngineBaseClient } from './EngineBaseClient';
 import {
   EngineExecuteRequestParamsByType,
@@ -15,6 +14,7 @@ import {
   WithBaseEngineExecuteParams,
   WithSignature,
 } from './types';
+import { hexlify } from 'ethers';
 
 /**
  * @description Builds execute payloads as expected by the server.

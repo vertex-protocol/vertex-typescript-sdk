@@ -2,8 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import { Contract, Interface, type ContractRunner } from "ethers";
 import type { IOffchainBook, IOffchainBookInterface } from "../IOffchainBook";
 
 const _abi = [
@@ -546,12 +545,12 @@ const _abi = [
 export class IOffchainBook__factory {
   static readonly abi = _abi;
   static createInterface(): IOffchainBookInterface {
-    return new utils.Interface(_abi) as IOffchainBookInterface;
+    return new Interface(_abi) as IOffchainBookInterface;
   }
   static connect(
     address: string,
-    signerOrProvider: Signer | Provider
+    runner?: ContractRunner | null
   ): IOffchainBook {
-    return new Contract(address, _abi, signerOrProvider) as IOffchainBook;
+    return new Contract(address, _abi, runner) as unknown as IOffchainBook;
   }
 }

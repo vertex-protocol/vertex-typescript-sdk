@@ -4,7 +4,7 @@ import { SubaccountAPI } from './apis/subaccount';
 import { SpotAPI } from './apis/spot';
 import { PerpAPI } from './apis/perp';
 import { WebsocketAPI } from './apis/ws';
-import { ValidVertexSigner } from '@vertex-protocol/contracts';
+import { Signer } from 'ethers';
 
 /**
  * Client for querying and executing against Vertex Clearinghouse.
@@ -26,7 +26,7 @@ export class VertexClient {
    * Sets the linked signer for the client. Set to null to revert to the chain signer.
    * @param linkedSigner
    */
-  setLinkedSigner(linkedSigner: ValidVertexSigner | null) {
+  setLinkedSigner(linkedSigner: Signer | null) {
     // This is a bit ugly, but works for now
     this.context.linkedSigner = linkedSigner ?? undefined;
     this.context.engineClient.setLinkedSigner(linkedSigner);
@@ -43,11 +43,14 @@ export class VertexClient {
     const newContext = await createClientContext(
       {
         contracts: {
-          querierAddress: this.context.contracts.querier.address,
-          spotEngineAddress: this.context.contracts.spotEngine.address,
-          perpEngineAddress: this.context.contracts.perpEngine.address,
-          clearinghouseAddress: this.context.contracts.clearinghouse.address,
-          endpointAddress: this.context.contracts.endpoint.address,
+          querierAddress: await this.context.contracts.querier.getAddress(),
+          spotEngineAddress:
+            await this.context.contracts.spotEngine.getAddress(),
+          perpEngineAddress:
+            await this.context.contracts.perpEngine.getAddress(),
+          clearinghouseAddress:
+            await this.context.contracts.clearinghouse.getAddress(),
+          endpointAddress: await this.context.contracts.endpoint.getAddress(),
         },
         engineEndpoint: this.context.engineClient.opts.url,
         indexerEndpoint: this.context.indexerClient.opts.url,

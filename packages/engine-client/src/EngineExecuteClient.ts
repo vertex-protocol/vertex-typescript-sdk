@@ -5,6 +5,7 @@ import {
 import { EngineExecuteBuilder } from './EngineExecuteBuilder';
 import { EngineBaseClient, EngineClientOpts } from './EngineBaseClient';
 import { getOrderDigest, OrderParams } from '@vertex-protocol/contracts';
+import { BigNumberish } from 'ethers';
 
 export class EngineExecuteClient extends EngineBaseClient {
   readonly payloadBuilder: EngineExecuteBuilder;
@@ -86,7 +87,7 @@ export class EngineExecuteClient extends EngineBaseClient {
   getOrderDigest(
     order: OrderParams,
     verifyingAddr: string,
-    chainId: number,
+    chainId: BigNumberish,
   ): string {
     return getOrderDigest({
       chainId,
