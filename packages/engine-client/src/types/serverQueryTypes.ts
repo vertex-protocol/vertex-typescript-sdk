@@ -193,7 +193,7 @@ export interface EngineServerMarketLiquidityResponse {
 export interface EngineServerSubaccountOrders {
   sender: string;
   product_id: number;
-  orders: EngineServerGetOrder[];
+  orders: EngineServerOrder[];
 }
 
 export type EngineServerSubaccountOrdersResponse = EngineServerSubaccountOrders;
@@ -225,7 +225,7 @@ export interface EngineServerMarketPricesResponse {
   market_prices: EngineServerMarketPrice[];
 }
 
-export interface EngineServerGetOrder {
+export interface EngineServerOrder {
   product_id: number;
   sender: string;
   price_x18: string;
@@ -237,7 +237,7 @@ export interface EngineServerGetOrder {
   placed_at: number;
 }
 
-export type EngineServerGetOrderResponse = EngineServerGetOrder;
+export type EngineServerGetOrderResponse = EngineServerOrder;
 
 export interface EngineServerValidateOrderResponse {
   product_id: number;

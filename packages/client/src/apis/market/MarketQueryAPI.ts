@@ -56,10 +56,10 @@ export class MarketQueryAPI extends BaseVertexAPI {
    * @description Queries the offchain engine to retrieve status of any open orders for the given subaccount for multiple products
    * @param params
    */
-  async getOpenSubaccountProductOrders(
+  async getOpenSubaccountMultiProductOrders(
     params: GetEngineSubaccountProductOrdersParams,
   ) {
-    return this.context.engineClient.getSubaccountProductOrders(params);
+    return this.context.engineClient.getSubaccountMultiProductOrders(params);
   }
 
   /**

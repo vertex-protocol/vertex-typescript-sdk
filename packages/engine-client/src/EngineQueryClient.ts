@@ -43,7 +43,8 @@ import {
   ValidateEngineOrderResponse,
   ValidateSignedEngineOrderParams,
   GetEngineSubaccountProductOrdersParams,
-  GetEngineMarketPrice,
+  EngineMarketPrice,
+  EngineServerMarketPrice,
 } from './types';
 import {
   mapEngineServerBalanceHealthContributions,
@@ -259,7 +260,7 @@ export class EngineQueryClient extends EngineBaseClient {
    * Get all subaccount orders from the engine, for multiple products
    * @param params
    */
-  async getSubaccountProductOrders(
+  async getSubaccountMultiProductOrders(
     params: GetEngineSubaccountProductOrdersParams,
   ): Promise<GetEngineSubaccountProductOrdersResponse> {
     const baseResponse = await this.query('orders', {
@@ -355,11 +356,7 @@ export class EngineQueryClient extends EngineBaseClient {
     const baseResponse = await this.query('market_price', {
       product_id: params.productId,
     });
-    return {
-      ask: fromX18(baseResponse.ask_x18),
-      bid: fromX18(baseResponse.bid_x18),
-      productId: baseResponse.product_id,
-    };
+    return mapEngineMarketPrice(baseResponse);
   }
 
   /**
@@ -373,15 +370,7 @@ export class EngineQueryClient extends EngineBaseClient {
       product_ids: params.productIds,
     });
     return {
-      marketPrices: baseResponse.market_prices.map(
-        (marketPrice): GetEngineMarketPrice => {
-          return {
-            ask: fromX18(marketPrice.ask_x18),
-            bid: fromX18(marketPrice.bid_x18),
-            productId: marketPrice.product_id,
-          };
-        },
-      ),
+      marketPrices: baseResponse.market_prices.map(mapEngineMarketPrice),
     };
   }
 
@@ -557,5 +546,15 @@ function mapSubaccountSummary(
         liabilities: toBigDecimal(baseResponse.healths[2].liabilities),
       },
     },
+  };
+}
+
+function mapEngineMarketPrice(
+  baseResponse: EngineServerMarketPrice,
+): EngineMarketPrice {
+  return {
+    ask: fromX18(baseResponse.ask_x18),
+    bid: fromX18(baseResponse.bid_x18),
+    productId: baseResponse.product_id,
   };
 }
