@@ -119,6 +119,10 @@ async function fullSanity(context: RunContext) {
     productId,
   });
   prettyPrint('Market price', marketPrice);
+  const marketPrices = await client.getMarketPrices({
+    productIds: [productId, 2, 3],
+  });
+  prettyPrint('Market prices', marketPrices);
   const feeRates = await client.getSubaccountFeeRates({
     subaccountName: 'default',
     subaccountOwner: signer.address,
@@ -153,6 +157,13 @@ async function fullSanity(context: RunContext) {
     productId,
   });
   prettyPrint('Queried order', queriedOrder);
+  const queriedOrders = await client.getSubaccountProductOrders({
+    subaccountOwner: signer.address,
+    subaccountName: 'default',
+    productIds: [productId],
+  });
+  prettyPrint('Queried orders', queriedOrders);
+
   console.log('Cancelling order');
   const cancelResult = await client.cancelOrders({
     subaccountName: 'default',

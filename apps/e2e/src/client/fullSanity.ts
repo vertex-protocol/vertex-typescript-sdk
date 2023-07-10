@@ -11,7 +11,6 @@ import {
   getProductMetadataByProductId,
   PlaceOrderParams,
 } from '@vertex-protocol/client';
-import { arrayify } from 'ethers/lib/utils';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -109,6 +108,8 @@ async function fullSanity(context: RunContext) {
 
   // Fetches state from offchain sequencer
   await vertexClient.market.getAllEngineMarkets();
+  await vertexClient.market.getLatestMarketPrices({ productIds: [1, 2, 3] });
+
   // Fetches state from Arbitrum
   await vertexClient.market.getAllMarkets();
   await vertexClient.market.getLatestMarketPrice({ productId: 3 });
@@ -118,34 +119,39 @@ async function fullSanity(context: RunContext) {
     depth: 100,
   });
 
-  // State from engine
+  // Subaccount state from engine
   await vertexClient.subaccount.getEngineSubaccountSummary({
     subaccountOwner: await signer.getAddress(),
     subaccountName: 'default',
   });
-  // State from Arbitrum
+  // Subaccount state from Arbitrum
   await vertexClient.subaccount.getSubaccountSummary({
     subaccountOwner: await signer.getAddress(),
     subaccountName: 'default',
   });
+
   await vertexClient.market.getOpenSubaccountOrders({
     subaccountOwner: await signer.getAddress(),
     subaccountName: 'default',
     productId: 3,
   });
-
+  await vertexClient.market.getOpenSubaccountProductOrders({
+    subaccountOwner: await signer.getAddress(),
+    subaccountName: 'default',
+    productIds: [1, 2, 3],
+  });
   await vertexClient.spot.withdraw({
     subaccountName: 'default',
     productId: 0,
     amount: toFixedPoint(1000, 6),
   });
 
-  console.log('Products metatada (spot)');
+  console.log('Products metadata (spot)');
   const spotProductId = 1;
   console.log(getProductMetadataByProductId('testnet', spotProductId));
   console.log(getProductMetadataByProductId('mainnet', spotProductId));
 
-  console.log('Products metatada (perp)');
+  console.log('Products metadata (perp)');
   const perpProductId = 2;
   console.log(getProductMetadataByProductId('testnet', perpProductId));
   console.log(getProductMetadataByProductId('mainnet', perpProductId));

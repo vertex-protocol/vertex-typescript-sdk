@@ -43,6 +43,10 @@ export interface EngineServerMarketPriceQueryParams {
   product_id: number;
 }
 
+export interface EngineServerMarketPricesQueryParams {
+  product_ids: number[];
+}
+
 export interface EngineServerGetOrderQueryParams {
   product_id: number;
   digest: string;
@@ -52,6 +56,11 @@ export interface EngineServerValidateOrderQueryParams {
   product_id: number;
   // Bytes for order, does not need to be signed
   order: string;
+}
+
+export interface EngineServerOrdersQueryParams {
+  sender: string;
+  product_ids: number[];
 }
 
 export interface EngineServerSubaccountOrdersQueryParams {
@@ -72,7 +81,7 @@ export interface EngineServerMaxWithdrawableQueryParams {
   sender: string;
   product_id: number;
   // If not given, engine defaults to true (leverage/borrow enabled)
-  spot_leverage: boolean | null;
+  spot_leverage: string | null;
 }
 
 export interface EngineServerMaxOrderSizeQueryParams {
@@ -81,14 +90,14 @@ export interface EngineServerMaxOrderSizeQueryParams {
   price_x18: string;
   direction: 'long' | 'short';
   // If not given, engine defaults to true (leverage/borrow enabled)
-  spot_leverage: boolean | null;
+  spot_leverage: string | null;
 }
 
 export interface EngineServerMaxMintLpQueryParams {
   sender: string;
   product_id: number;
   // If not given, engine defaults to true (leverage/borrow enabled)
-  spot_leverage: boolean | null;
+  spot_leverage: string | null;
 }
 
 export interface EngineServerLinkedSignerParams {
@@ -105,7 +114,9 @@ export interface EngineServerQueryRequestByType {
     txns?: string;
   };
   market_price: EngineServerMarketPriceQueryParams;
+  market_prices: EngineServerMarketPricesQueryParams;
   order: EngineServerGetOrderQueryParams;
+  orders: EngineServerOrdersQueryParams;
   validate_order: EngineServerValidateOrderQueryParams;
   fee_rates: EngineServerSubaccountFeeRatesParams;
   subaccount_orders: EngineServerSubaccountOrdersQueryParams;
@@ -179,10 +190,17 @@ export interface EngineServerMarketLiquidityResponse {
   asks: EngineServerPriceTickLiquidity[];
 }
 
-export interface EngineServerSubaccountOrdersResponse {
+export interface EngineServerSubaccountOrders {
   sender: string;
   product_id: number;
-  orders: EngineServerGetOrderResponse[];
+  orders: EngineServerOrder[];
+}
+
+export type EngineServerSubaccountOrdersResponse = EngineServerSubaccountOrders;
+
+export interface EngineServerProductOrdersResponse {
+  sender: string;
+  product_orders: EngineServerSubaccountOrders[];
 }
 
 export interface EngineServerSubaccountFeeRatesResponse {
@@ -195,13 +213,19 @@ export interface EngineServerSubaccountFeeRatesResponse {
   maker_fee_rates_x18: string[];
 }
 
-export interface EngineServerMarketPriceResponse {
+export interface EngineServerMarketPrice {
   product_id: number;
   bid_x18: string;
   ask_x18: string;
 }
 
-export interface EngineServerGetOrderResponse {
+export type EngineServerMarketPriceResponse = EngineServerMarketPrice;
+
+export interface EngineServerMarketPricesResponse {
+  market_prices: EngineServerMarketPrice[];
+}
+
+export interface EngineServerOrder {
   product_id: number;
   sender: string;
   price_x18: string;
@@ -212,6 +236,8 @@ export interface EngineServerGetOrderResponse {
   digest: string;
   placed_at: number;
 }
+
+export type EngineServerGetOrderResponse = EngineServerOrder;
 
 export interface EngineServerValidateOrderResponse {
   product_id: number;
@@ -252,11 +278,13 @@ export interface EngineServerQueryResponseByType {
   subaccount_info: EngineServerSubaccountInfoResponse;
   all_products: EngineServerAllProductsResponse;
   order: EngineServerGetOrderResponse;
+  orders: EngineServerProductOrdersResponse;
   validate_order: EngineServerValidateOrderResponse;
   subaccount_orders: EngineServerSubaccountOrdersResponse;
   fee_rates: EngineServerSubaccountFeeRatesResponse;
   market_liquidity: EngineServerMarketLiquidityResponse;
   market_price: EngineServerMarketPriceResponse;
+  market_prices: EngineServerMarketPricesResponse;
   max_order_size: EngineServerMaxOrderSizeResponse;
   max_withdrawable: EngineServerMaxWithdrawableResponse;
   max_lp_mintable: EngineServerMaxMintLpResponse;

@@ -91,20 +91,10 @@ export class EngineBaseClient {
     params: EngineServerQueryRequestByType[TRequestType],
   ): Promise<EngineServerQueryResponseByType[TRequestType]> {
     const request = this.getQueryRequest(requestType, params);
-    const queryParams: Record<string, string | number> = {};
-    Object.keys(request).forEach((key) => {
-      const value = request[key as keyof typeof request];
-      // Remove null values and stringify
-      if (value != null) {
-        queryParams[key] = String(value);
-      }
-    });
-
-    const queryString = Object.keys(queryParams)
-      .map((key) => `${key}=${queryParams[key]}`)
-      .join('&');
-    const requestUrl = `${this.opts.url}/query?${queryString}`;
-    const response = await axios.get<EngineQueryRequestResponse>(requestUrl);
+    const response = await axios.post<EngineQueryRequestResponse>(
+      `${this.opts.url}/query`,
+      request,
+    );
 
     this.checkResponseStatus(response);
     this.checkServerStatus(response);

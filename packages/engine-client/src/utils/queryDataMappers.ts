@@ -1,10 +1,14 @@
 import {
+  EngineMarketPrice,
   EngineOrder,
   EnginePriceTickLiquidity,
   EngineServerGetOrderResponse,
+  EngineServerMarketPrice,
   EngineServerPerpProduct,
   EngineServerPriceTickLiquidity,
   EngineServerSpotProduct,
+  EngineServerSubaccountInfoResponse,
+  GetEngineSubaccountSummaryResponse,
 } from '../types';
 import { fromX18, toBigDecimal, toEthersBN } from '@vertex-protocol/utils';
 import {
@@ -131,5 +135,79 @@ export function mapEngineServerBalanceHealthContributions(
     initial: toBigDecimal(healthContributionsForBalance[0]),
     maintenance: toBigDecimal(healthContributionsForBalance[1]),
     unweighted: toBigDecimal(healthContributionsForBalance[2]),
+  };
+}
+
+export function mapSubaccountSummary(
+  baseResponse: EngineServerSubaccountInfoResponse,
+): GetEngineSubaccountSummaryResponse {
+  const balances: GetEngineSubaccountSummaryResponse['balances'] = [];
+
+  baseResponse.spot_balances.forEach((spotBalance) => {
+    const product = baseResponse.spot_products.find(
+      (product) => product.product_id === spotBalance.product_id,
+    );
+    if (!product) {
+      throw Error(`Could not find product ${spotBalance.product_id}`);
+    }
+
+    balances.push({
+      amount: toBigDecimal(spotBalance.balance.amount),
+      lpAmount: toBigDecimal(spotBalance.lp_balance.amount),
+      healthContributions: mapEngineServerBalanceHealthContributions(
+        baseResponse.health_contributions[spotBalance.product_id],
+      ),
+      ...mapEngineServerSpotProduct(product).product,
+    });
+  });
+
+  baseResponse.perp_balances.forEach((perpBalance) => {
+    const product = baseResponse.perp_products.find(
+      (product) => product.product_id === perpBalance.product_id,
+    );
+    if (!product) {
+      throw Error(`Could not find product ${perpBalance.product_id}`);
+    }
+
+    balances.push({
+      amount: toBigDecimal(perpBalance.balance.amount),
+      lpAmount: toBigDecimal(perpBalance.lp_balance.amount),
+      vQuoteBalance: toBigDecimal(perpBalance.balance.v_quote_balance),
+      healthContributions: mapEngineServerBalanceHealthContributions(
+        baseResponse.health_contributions[perpBalance.product_id],
+      ),
+      ...mapEngineServerPerpProduct(product).product,
+    });
+  });
+
+  return {
+    balances: balances,
+    health: {
+      initial: {
+        health: toBigDecimal(baseResponse.healths[0].health),
+        assets: toBigDecimal(baseResponse.healths[0].assets),
+        liabilities: toBigDecimal(baseResponse.healths[0].liabilities),
+      },
+      maintenance: {
+        health: toBigDecimal(baseResponse.healths[1].health),
+        assets: toBigDecimal(baseResponse.healths[1].assets),
+        liabilities: toBigDecimal(baseResponse.healths[1].liabilities),
+      },
+      unweighted: {
+        health: toBigDecimal(baseResponse.healths[2].health),
+        assets: toBigDecimal(baseResponse.healths[2].assets),
+        liabilities: toBigDecimal(baseResponse.healths[2].liabilities),
+      },
+    },
+  };
+}
+
+export function mapEngineMarketPrice(
+  baseResponse: EngineServerMarketPrice,
+): EngineMarketPrice {
+  return {
+    ask: fromX18(baseResponse.ask_x18),
+    bid: fromX18(baseResponse.bid_x18),
+    productId: baseResponse.product_id,
   };
 }
