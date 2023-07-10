@@ -112,19 +112,19 @@ export interface GetEngineSubaccountOrdersParams extends Subaccount {
   productId: number;
 }
 
-export interface GetEngineSubaccountOrders extends Subaccount {
+export interface EngineSubaccountOrders extends Subaccount {
   productId: number;
   orders: EngineOrder[];
 }
 
-export type GetEngineSubaccountOrdersResponse = GetEngineSubaccountOrders;
+export type GetEngineSubaccountOrdersResponse = EngineSubaccountOrders;
 
 export interface GetEngineSubaccountProductOrdersParams extends Subaccount {
   productIds: number[];
 }
 
 export interface GetEngineSubaccountProductOrdersResponse {
-  productOrders: GetEngineSubaccountOrders[];
+  productOrders: EngineSubaccountOrders[];
 }
 
 export type GetEngineSubaccountFeeRatesParams = Subaccount;

@@ -274,16 +274,14 @@ export class EngineQueryClient extends EngineBaseClient {
     const subaccount = subaccountFromHex(baseResponse.sender);
 
     return {
-      productOrders: baseResponse.product_orders.map(
-        (orders): GetEngineSubaccountOrdersResponse => {
-          return {
-            orders: orders.orders.map(mapEngineServerOrder),
-            productId: orders.product_id,
-            subaccountOwner: subaccount.subaccountOwner,
-            subaccountName: subaccount.subaccountName,
-          };
-        },
-      ),
+      productOrders: baseResponse.product_orders.map((orders) => {
+        return {
+          orders: orders.orders.map(mapEngineServerOrder),
+          productId: orders.product_id,
+          subaccountOwner: subaccount.subaccountOwner,
+          subaccountName: subaccount.subaccountName,
+        };
+      }),
     };
   }
 
