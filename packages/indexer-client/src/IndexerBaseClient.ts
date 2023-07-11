@@ -31,6 +31,8 @@ import {
   GetIndexerPerpPricesResponse,
   GetIndexerProductSnapshotsParams,
   GetIndexerProductSnapshotsResponse,
+  GetIndexerMultiProductSnapshotsParams,
+  GetIndexerMultiProductSnapshotsResponse,
   GetIndexerQuotePriceResponse,
   GetIndexerReferralCodeParams,
   GetIndexerReferralCodeResponse,
@@ -47,6 +49,7 @@ import {
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
   IndexerSummaryBalance,
+  IndexerProductSnapshot,
 } from './types';
 
 export interface IndexerClientOpts {
@@ -249,6 +252,36 @@ export class IndexerBaseClient {
         timestamp: toBigDecimal(tx.timestamp),
       };
     });
+  }
+
+  /**
+   * Retrieves historical snapshots for multiple products
+   * @param params
+   */
+  async getMultiProductSnapshots(
+    params: GetIndexerMultiProductSnapshotsParams,
+  ): Promise<GetIndexerMultiProductSnapshotsResponse> {
+    const baseResponse = await this.query('product_snapshots', {
+      product_ids: params.productIds,
+      idxs: params.idxs,
+    });
+
+    const response: GetIndexerMultiProductSnapshotsResponse = {};
+
+    Object.entries(baseResponse).forEach(([idx, snapshots]) => {
+      const productSnapshots: IndexerProductSnapshot[] = snapshots.map(
+        (snapshot) => {
+          return {
+            ...mapIndexerServerProduct(snapshot.product),
+            submissionIndex: snapshot.submission_idx,
+          };
+        },
+      );
+
+      response[idx] = productSnapshots;
+    });
+
+    return response;
   }
 
   /**

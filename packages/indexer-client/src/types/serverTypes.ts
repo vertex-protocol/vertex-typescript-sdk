@@ -55,6 +55,11 @@ export interface IndexerServerProductsParams {
   idx?: string;
 }
 
+export interface IndexerServerMultiProductsParams {
+  product_ids: number[];
+  idxs: number[];
+}
+
 export interface IndexerServerEventsParams {
   subaccount?: string;
   product_ids?: number[];
@@ -112,6 +117,7 @@ export interface IndexerServerQueryRequestByType {
   oracle_price: IndexerServerOraclePricesParams;
   candlesticks: IndexerServerCandlesticksParams;
   products: IndexerServerProductsParams;
+  product_snapshots: IndexerServerMultiProductsParams;
   events: IndexerServerEventsParams;
   orders: IndexerServerOrdersParams;
   matches: IndexerServerMatchEventsParams;
@@ -205,6 +211,12 @@ export interface IndexerServerProductsResponse {
   txs: IndexerServerTx[];
 }
 
+// Map of idxs requested -> IndexerServerProductSnapshot[] for that idx
+export type IndexerServerMultiProductsResponse = Record<
+  number,
+  IndexerServerProductSnapshot[]
+>;
+
 export interface IndexerServerEventsResponse {
   events: IndexerServerEvent[];
   txs: IndexerServerTx[];
@@ -244,6 +256,7 @@ export interface IndexerServerQueryResponseByType {
   oracle_price: IndexerServerOraclePricesResponse;
   candlesticks: IndexerServerCandlesticksResponse;
   products: IndexerServerProductsResponse;
+  product_snapshots: IndexerServerMultiProductsResponse;
   events: IndexerServerEventsResponse;
   orders: IndexerServerOrdersResponse;
   matches: IndexerServerMatchEventsResponse;

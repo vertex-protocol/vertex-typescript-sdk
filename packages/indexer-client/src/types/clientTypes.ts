@@ -183,10 +183,24 @@ export interface GetIndexerProductSnapshotsParams {
   limit: number;
 }
 
-export type GetIndexerProductSnapshotsResponse = (Market & {
-  timestamp: BigDecimal;
+export interface IndexerProductSnapshot extends Market {
   submissionIndex: string;
+}
+
+export type GetIndexerProductSnapshotsResponse = (IndexerProductSnapshot & {
+  timestamp: BigDecimal;
 })[];
+
+export interface GetIndexerMultiProductSnapshotsParams {
+  productIds: number[];
+  idxs: number[];
+}
+
+// Map of idxs requested -> IndexerProductSnapshot[] for that idx
+export type GetIndexerMultiProductSnapshotsResponse = Record<
+  string,
+  IndexerProductSnapshot[]
+>;
 
 // There can be multiple events per tx, this allows a limit depending on usecase
 export type GetIndexerEventsLimitType = 'events' | 'txs';

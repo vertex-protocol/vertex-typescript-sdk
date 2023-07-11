@@ -81,6 +81,13 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Market snapshots', marketSnapshots);
 
+  const multiProductSnapshots = await client.getMultiProductSnapshots({
+    productIds: [1, 2, 3],
+    idxs: [100, 200, 300],
+  });
+
+  prettyPrint('Multiple product snapshots', multiProductSnapshots);
+
   const candlesticks = await client.getCandlesticks({
     limit: 2,
     maxTimeInclusive: nowInSeconds(),
