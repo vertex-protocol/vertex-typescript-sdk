@@ -24,7 +24,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">MarketExecuteAPI</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/6d0f4988/packages/client/src/apis/market/MarketExecuteAPI.ts#L12">client/src/apis/market/MarketExecuteAPI.ts:12</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/13f16910/packages/client/src/apis/market/MarketExecuteAPI.ts#L17">client/src/apis/market/MarketExecuteAPI.ts:17</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -45,6 +45,9 @@
 <a href="Vertex_Client.Internal.MarketExecuteAPI.html#placeOrder" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>place<wbr/>Order</span></a>
 <a href="Vertex_Client.Internal.MarketExecuteAPI.html#cancelOrders" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>cancel<wbr/>Orders</span></a>
 <a href="Vertex_Client.Internal.MarketExecuteAPI.html#cancelProductOrders" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>cancel<wbr/>Product<wbr/>Orders</span></a>
+<a href="Vertex_Client.Internal.MarketExecuteAPI.html#placeTriggerOrder" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>place<wbr/>Trigger<wbr/>Order</span></a>
+<a href="Vertex_Client.Internal.MarketExecuteAPI.html#cancelTriggerOrders" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>cancel<wbr/>Trigger<wbr/>Orders</span></a>
+<a href="Vertex_Client.Internal.MarketExecuteAPI.html#cancelTriggerProductOrders" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>cancel<wbr/>Trigger<wbr/>Product<wbr/>Orders</span></a>
 </div></section></div></details></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
@@ -53,7 +56,7 @@
 <div class="tsd-signature">context<span class="tsd-signature-symbol">:</span> <a href="../interfaces/Vertex_Client.VertexClientContext.html" class="tsd-signature-type" data-tsd-kind="Interface">VertexClientContext</a></div><aside class="tsd-sources">
 <p>Inherited from <a href="Vertex_Client.Internal.BaseVertexAPI.html">BaseVertexAPI</a>.<a href="Vertex_Client.Internal.BaseVertexAPI.html#context">context</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/6d0f4988/packages/client/src/apis/base.ts#L6">client/src/apis/base.ts:6</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/13f16910/packages/client/src/apis/base.ts#L6">client/src/apis/base.ts:6</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Constructors</h2>
 <section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a id="constructor" class="tsd-anchor"></a>
@@ -69,7 +72,7 @@
 <h4 class="tsd-returns-title">Returns <a href="Vertex_Client.Internal.MarketExecuteAPI.html" class="tsd-signature-type" data-tsd-kind="Class">MarketExecuteAPI</a></h4><aside class="tsd-sources">
 <p>Inherited from <a href="Vertex_Client.Internal.BaseVertexAPI.html">BaseVertexAPI</a>.<a href="Vertex_Client.Internal.BaseVertexAPI.html#constructor">constructor</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/6d0f4988/packages/client/src/apis/base.ts#L8">client/src/apis/base.ts:8</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/13f16910/packages/client/src/apis/base.ts#L8">client/src/apis/base.ts:8</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="mintLp" class="tsd-anchor"></a>
@@ -86,7 +89,7 @@
 <h5>params: <a href="../types/Vertex_Client.Internal.WithoutSubaccountOwner.html" class="tsd-signature-type" data-tsd-kind="Type alias">WithoutSubaccountOwner</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineExecuteMintLpParams</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineServerExecuteResult</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/6d0f4988/packages/client/src/apis/market/MarketExecuteAPI.ts#L17">client/src/apis/market/MarketExecuteAPI.ts:17</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/13f16910/packages/client/src/apis/market/MarketExecuteAPI.ts#L22">client/src/apis/market/MarketExecuteAPI.ts:22</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="burnLp" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>burn<wbr/>Lp</span><a href="#burnLp" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -101,7 +104,7 @@
 <h5>params: <a href="../types/Vertex_Client.Internal.WithoutSubaccountOwner.html" class="tsd-signature-type" data-tsd-kind="Type alias">WithoutSubaccountOwner</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineExecuteBurnLpParams</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineServerExecuteResult</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/6d0f4988/packages/client/src/apis/market/MarketExecuteAPI.ts#L31">client/src/apis/market/MarketExecuteAPI.ts:31</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/13f16910/packages/client/src/apis/market/MarketExecuteAPI.ts#L36">client/src/apis/market/MarketExecuteAPI.ts:36</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="placeOrder" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>place<wbr/>Order</span><a href="#placeOrder" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -116,7 +119,7 @@
 <h5>params: <a href="../types/Vertex_Client.PlaceOrderParams.html" class="tsd-signature-type" data-tsd-kind="Type alias">PlaceOrderParams</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineExecutePlaceOrderResult</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/6d0f4988/packages/client/src/apis/market/MarketExecuteAPI.ts#L45">client/src/apis/market/MarketExecuteAPI.ts:45</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/13f16910/packages/client/src/apis/market/MarketExecuteAPI.ts#L50">client/src/apis/market/MarketExecuteAPI.ts:50</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="cancelOrders" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>cancel<wbr/>Orders</span><a href="#cancelOrders" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -131,7 +134,7 @@
 <h5>params: <a href="../types/Vertex_Client.Internal.WithoutSubaccountOwner.html" class="tsd-signature-type" data-tsd-kind="Type alias">WithoutSubaccountOwner</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineExecuteCancelOrdersParams</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineServerExecuteResult</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/6d0f4988/packages/client/src/apis/market/MarketExecuteAPI.ts#L66">client/src/apis/market/MarketExecuteAPI.ts:66</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/13f16910/packages/client/src/apis/market/MarketExecuteAPI.ts#L70">client/src/apis/market/MarketExecuteAPI.ts:70</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="cancelProductOrders" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>cancel<wbr/>Product<wbr/>Orders</span><a href="#cancelProductOrders" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -146,7 +149,52 @@
 <h5>params: <a href="../types/Vertex_Client.Internal.WithoutSubaccountOwner.html" class="tsd-signature-type" data-tsd-kind="Type alias">WithoutSubaccountOwner</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineExecuteCancelProductOrdersParams</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineServerExecuteResult</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/6d0f4988/packages/client/src/apis/market/MarketExecuteAPI.ts#L82">client/src/apis/market/MarketExecuteAPI.ts:82</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/13f16910/packages/client/src/apis/market/MarketExecuteAPI.ts#L86">client/src/apis/market/MarketExecuteAPI.ts:86</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="placeTriggerOrder" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>place<wbr/>Trigger<wbr/>Order</span><a href="#placeTriggerOrder" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="placeTriggerOrder.placeTriggerOrder-1">place<wbr/>Trigger<wbr/>Order<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="../types/Vertex_Client.PlaceTriggerOrderParams.html" class="tsd-signature-type" data-tsd-kind="Type alias">PlaceTriggerOrderParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineServerExecuteResult</span><span class="tsd-signature-symbol">&gt;</span><a href="#placeTriggerOrder.placeTriggerOrder-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Places a trigger order through the trigger service</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>params: <a href="../types/Vertex_Client.PlaceTriggerOrderParams.html" class="tsd-signature-type" data-tsd-kind="Type alias">PlaceTriggerOrderParams</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineServerExecuteResult</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/13f16910/packages/client/src/apis/market/MarketExecuteAPI.ts#L102">client/src/apis/market/MarketExecuteAPI.ts:102</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="cancelTriggerOrders" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>cancel<wbr/>Trigger<wbr/>Orders</span><a href="#cancelTriggerOrders" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="cancelTriggerOrders.cancelTriggerOrders-1">cancel<wbr/>Trigger<wbr/>Orders<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="../types/Vertex_Client.CancelTriggerOrdersParams.html" class="tsd-signature-type" data-tsd-kind="Type alias">CancelTriggerOrdersParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineServerExecuteResult</span><span class="tsd-signature-symbol">&gt;</span><a href="#cancelTriggerOrders.cancelTriggerOrders-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Cancels all trigger orders for provided digests through the trigger service.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>params: <a href="../types/Vertex_Client.CancelTriggerOrdersParams.html" class="tsd-signature-type" data-tsd-kind="Type alias">CancelTriggerOrdersParams</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineServerExecuteResult</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/13f16910/packages/client/src/apis/market/MarketExecuteAPI.ts#L122">client/src/apis/market/MarketExecuteAPI.ts:122</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="cancelTriggerProductOrders" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>cancel<wbr/>Trigger<wbr/>Product<wbr/>Orders</span><a href="#cancelTriggerProductOrders" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="cancelTriggerProductOrders.cancelTriggerProductOrders-1">cancel<wbr/>Trigger<wbr/>Product<wbr/>Orders<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="../types/Vertex_Client.CancelTriggerProductOrdersParams.html" class="tsd-signature-type" data-tsd-kind="Type alias">CancelTriggerProductOrdersParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineServerExecuteResult</span><span class="tsd-signature-symbol">&gt;</span><a href="#cancelTriggerProductOrders.cancelTriggerProductOrders-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Cancels all trigger orders for provided products through the trigger service.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>params: <a href="../types/Vertex_Client.CancelTriggerProductOrdersParams.html" class="tsd-signature-type" data-tsd-kind="Type alias">CancelTriggerProductOrdersParams</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EngineServerExecuteResult</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/vertex-protocol/vertex-sdk/blob/13f16910/packages/client/src/apis/market/MarketExecuteAPI.ts#L138">client/src/apis/market/MarketExecuteAPI.ts:138</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -177,6 +225,9 @@
 <li class="tsd-kind-module"><a href="../modules/Vertex_Indexer_Server_Utils.html">Vertex <wbr/>Indexer <wbr/>Server <wbr/>Utils</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/Vertex_Indexer_Server_Utils.Internal.html">Internal</a></li></ul></li>
+<li class="tsd-kind-module"><a href="../modules/Vertex_Trigger_Server_Utils.html">Vertex <wbr/>Trigger <wbr/>Server <wbr/>Utils</a>
+<ul>
+<li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/Vertex_Trigger_Server_Utils.Internal.html">Internal</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/Vertex_Utils.html">Vertex <wbr/>Utils</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/Vertex_Utils.Internal.html">Internal</a></li></ul></li></ul></li></ul></div></details></nav>
@@ -190,7 +241,10 @@
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vertex_Client.Internal.MarketExecuteAPI.html#burnLp" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>burn<wbr/>Lp</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vertex_Client.Internal.MarketExecuteAPI.html#placeOrder" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>place<wbr/>Order</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Vertex_Client.Internal.MarketExecuteAPI.html#cancelOrders" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>cancel<wbr/>Orders</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class"><a href="Vertex_Client.Internal.MarketExecuteAPI.html#cancelProductOrders" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>cancel<wbr/>Product<wbr/>Orders</a></li></ul></li></ul></nav></div></div>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="Vertex_Client.Internal.MarketExecuteAPI.html#cancelProductOrders" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>cancel<wbr/>Product<wbr/>Orders</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="Vertex_Client.Internal.MarketExecuteAPI.html#placeTriggerOrder" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>place<wbr/>Trigger<wbr/>Order</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="Vertex_Client.Internal.MarketExecuteAPI.html#cancelTriggerOrders" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>cancel<wbr/>Trigger<wbr/>Orders</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="Vertex_Client.Internal.MarketExecuteAPI.html#cancelTriggerProductOrders" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>cancel<wbr/>Trigger<wbr/>Product<wbr/>Orders</a></li></ul></li></ul></nav></div></div>
 <div class="container tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
 <div class="overlay"></div><script src="../assets/main.js"></script></body></html>
