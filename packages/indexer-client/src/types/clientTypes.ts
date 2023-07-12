@@ -123,13 +123,25 @@ export interface GetIndexerPerpPricesParams {
   productId: number;
 }
 
-export interface GetIndexerPerpPricesResponse {
+export interface IndexerPerpPrices {
   productId: number;
   indexPrice: BigDecimal;
   markPrice: BigDecimal;
   // Seconds
   updateTime: BigDecimal;
 }
+
+export type GetIndexerPerpPricesResponse = IndexerPerpPrices;
+
+export interface GetIndexerMultiProductPerpPricesParams {
+  productIds: number[];
+}
+
+// Map of productId -> IndexerPerpPrices
+export type GetIndexerMultiProductPerpPricesResponse = Record<
+  string,
+  IndexerPerpPrices
+>;
 
 export interface GetIndexerOraclePricesParams {
   productIds: number[];

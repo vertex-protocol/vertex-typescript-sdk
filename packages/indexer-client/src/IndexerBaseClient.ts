@@ -6,6 +6,7 @@ import {
   mapIndexerEventWithTx,
   mapIndexerMatchEventBalances,
   mapIndexerOrder,
+  mapIndexerPerpPrices,
   mapIndexerRewardEpoch,
   mapIndexerServerProduct,
 } from './dataMappers';
@@ -50,6 +51,8 @@ import {
   IndexerServerQueryResponseByType,
   IndexerSummaryBalance,
   IndexerProductSnapshot,
+  GetIndexerMultiProductPerpPricesParams,
+  GetIndexerMultiProductPerpPricesResponse,
 } from './types';
 
 export interface IndexerClientOpts {
@@ -176,12 +179,27 @@ export class IndexerBaseClient {
       product_id: params.productId,
     });
 
-    return {
-      indexPrice: fromX18(baseResponse.index_price_x18),
-      markPrice: fromX18(baseResponse.mark_price_x18),
-      updateTime: toBigDecimal(baseResponse.update_time),
-      productId: baseResponse.product_id,
-    };
+    return mapIndexerPerpPrices(baseResponse);
+  }
+
+  /**
+   * Retrieves latest mark/index price for multiple perp products
+   * @param params
+   */
+  async getMultiProductPerpPrices(
+    params: GetIndexerMultiProductPerpPricesParams,
+  ): Promise<GetIndexerMultiProductPerpPricesResponse> {
+    const baseResponse = await this.query('perp_prices', {
+      product_ids: params.productIds,
+    });
+
+    const response: GetIndexerMultiProductPerpPricesResponse = {};
+
+    Object.entries(baseResponse).forEach(([productId, perpPrices]) => {
+      response[productId] = mapIndexerPerpPrices(perpPrices);
+    });
+
+    return response;
   }
 
   /**

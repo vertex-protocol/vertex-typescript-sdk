@@ -35,6 +35,10 @@ export interface IndexerServerPriceParams {
   product_id: number;
 }
 
+export interface IndexerServerPerpPricesParams {
+  product_ids: number[];
+}
+
 export interface IndexerServerOraclePricesParams {
   product_ids: number[];
 }
@@ -114,6 +118,7 @@ export interface IndexerServerQueryRequestByType {
   referral_code: IndexerServerReferralCodeParams;
   funding_rate: IndexerServerFundingRateParams;
   price: IndexerServerPriceParams;
+  perp_prices: IndexerServerPerpPricesParams;
   oracle_price: IndexerServerOraclePricesParams;
   candlesticks: IndexerServerCandlesticksParams;
   products: IndexerServerProductsParams;
@@ -191,12 +196,20 @@ export interface IndexerServerFundingRateResponse {
   update_time: number;
 }
 
-export interface IndexerServerPriceResponse {
+export interface IndexerServerPerpPrices {
   product_id: number;
   index_price_x18: string;
   mark_price_x18: string;
   update_time: number;
 }
+
+export type IndexerServerPriceResponse = IndexerServerPerpPrices;
+
+// Map of productId -> IndexerServerPerpPrices
+export type IndexerServerPerpPricesResponse = Record<
+  string,
+  IndexerServerPerpPrices
+>;
 
 export interface IndexerServerOraclePricesResponse {
   prices: IndexerServerOraclePrice[];
@@ -253,6 +266,7 @@ export interface IndexerServerQueryResponseByType {
   referral_code: IndexerServerReferralCodeResponse;
   funding_rate: IndexerServerFundingRateResponse;
   price: IndexerServerPriceResponse;
+  perp_prices: IndexerServerPerpPricesResponse;
   oracle_price: IndexerServerOraclePricesResponse;
   candlesticks: IndexerServerCandlesticksResponse;
   products: IndexerServerProductsResponse;
