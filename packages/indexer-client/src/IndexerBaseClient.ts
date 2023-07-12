@@ -50,10 +50,8 @@ import {
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
   IndexerSummaryBalance,
-  IndexerProductSnapshot,
   GetIndexerMultiProductPerpPricesParams,
   GetIndexerMultiProductPerpPricesResponse,
-  IndexerServerProductSnapshot,
 } from './types';
 
 export interface IndexerClientOpts {
@@ -194,13 +192,7 @@ export class IndexerBaseClient {
       product_ids: params.productIds,
     });
 
-    const response: GetIndexerMultiProductPerpPricesResponse = {};
-
-    Object.entries(baseResponse).forEach(([productId, perpPrices]) => {
-      response[Number(productId)] = mapIndexerPerpPrices(perpPrices);
-    });
-
-    return response;
+    return mapValues(baseResponse, mapIndexerPerpPrices);
   }
 
   /**
@@ -283,16 +275,12 @@ export class IndexerBaseClient {
       max_time: params.maxTimestampInclusive,
     });
 
-    const response: GetIndexerMultiProductSnapshotsResponse = {};
-
-    Object.entries(baseResponse).forEach(([productId, snapshot]) => {
-      response[Number(productId)] = {
-        ...mapIndexerServerProduct(snapshot.product),
-        submissionIndex: snapshot.submission_idx,
+    return mapValues(baseResponse, (value) => {
+      return {
+        ...mapIndexerServerProduct(value.product),
+        submissionIndex: value.submission_idx,
       };
     });
-
-    return response;
   }
 
   /**
