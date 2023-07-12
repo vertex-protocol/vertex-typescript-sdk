@@ -53,6 +53,7 @@ import {
   IndexerProductSnapshot,
   GetIndexerMultiProductPerpPricesParams,
   GetIndexerMultiProductPerpPricesResponse,
+  IndexerServerProductSnapshot,
 } from './types';
 
 export interface IndexerClientOpts {
@@ -262,7 +263,7 @@ export class IndexerBaseClient {
       idx: params.startCursor,
     });
 
-    return baseResponse.products.map((product, _) => {
+    return baseResponse.products.map((product) => {
       return {
         ...mapIndexerServerProduct(product.product),
         submissionIndex: product.submission_idx,
