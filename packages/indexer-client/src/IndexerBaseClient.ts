@@ -263,22 +263,16 @@ export class IndexerBaseClient {
   ): Promise<GetIndexerMultiProductSnapshotsResponse> {
     const baseResponse = await this.query('product_snapshots', {
       product_ids: params.productIds,
-      idxs: params.idxs,
+      max_time: params.maxTimestampInclusive,
     });
 
     const response: GetIndexerMultiProductSnapshotsResponse = {};
 
-    Object.entries(baseResponse).forEach(([idx, snapshots]) => {
-      const productSnapshots: IndexerProductSnapshot[] = snapshots.map(
-        (snapshot) => {
-          return {
-            ...mapIndexerServerProduct(snapshot.product),
-            submissionIndex: snapshot.submission_idx,
-          };
-        },
-      );
-
-      response[idx] = productSnapshots;
+    Object.entries(baseResponse).forEach(([productId, snapshot]) => {
+      response[productId] = {
+        ...mapIndexerServerProduct(snapshot.product),
+        submissionIndex: snapshot.submission_idx,
+      };
     });
 
     return response;

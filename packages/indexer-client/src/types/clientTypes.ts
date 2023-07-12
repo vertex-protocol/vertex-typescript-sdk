@@ -193,13 +193,13 @@ export type GetIndexerProductSnapshotsResponse = (IndexerProductSnapshot & {
 
 export interface GetIndexerMultiProductSnapshotsParams {
   productIds: number[];
-  idxs: number[];
+  maxTimestampInclusive?: number;
 }
 
-// Map of idxs requested -> IndexerProductSnapshot[] for that idx
+// Map of productId -> IndexerProductSnapshot
 export type GetIndexerMultiProductSnapshotsResponse = Record<
   string,
-  IndexerProductSnapshot[]
+  IndexerProductSnapshot
 >;
 
 // There can be multiple events per tx, this allows a limit depending on usecase
