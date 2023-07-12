@@ -196,7 +196,7 @@ export class IndexerBaseClient {
     const response: GetIndexerMultiProductPerpPricesResponse = {};
 
     Object.entries(baseResponse).forEach(([productId, perpPrices]) => {
-      response[productId] = mapIndexerPerpPrices(perpPrices);
+      response[Number(productId)] = mapIndexerPerpPrices(perpPrices);
     });
 
     return response;
@@ -262,12 +262,10 @@ export class IndexerBaseClient {
       idx: params.startCursor,
     });
 
-    return baseResponse.products.map((product, index) => {
-      const tx = baseResponse.txs[index];
+    return baseResponse.products.map((product, _) => {
       return {
         ...mapIndexerServerProduct(product.product),
         submissionIndex: product.submission_idx,
-        timestamp: toBigDecimal(tx.timestamp),
       };
     });
   }
@@ -287,7 +285,7 @@ export class IndexerBaseClient {
     const response: GetIndexerMultiProductSnapshotsResponse = {};
 
     Object.entries(baseResponse).forEach(([productId, snapshot]) => {
-      response[productId] = {
+      response[Number(productId)] = {
         ...mapIndexerServerProduct(snapshot.product),
         submissionIndex: snapshot.submission_idx,
       };

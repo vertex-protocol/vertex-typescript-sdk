@@ -139,7 +139,7 @@ export interface GetIndexerMultiProductPerpPricesParams {
 
 // Map of productId -> IndexerPerpPrices
 export type GetIndexerMultiProductPerpPricesResponse = Record<
-  string,
+  number,
   IndexerPerpPrices
 >;
 
@@ -199,9 +199,7 @@ export interface IndexerProductSnapshot extends Market {
   submissionIndex: string;
 }
 
-export type GetIndexerProductSnapshotsResponse = (IndexerProductSnapshot & {
-  timestamp: BigDecimal;
-})[];
+export type GetIndexerProductSnapshotsResponse = IndexerProductSnapshot[];
 
 export interface GetIndexerMultiProductSnapshotsParams {
   productIds: number[];
@@ -210,7 +208,7 @@ export interface GetIndexerMultiProductSnapshotsParams {
 
 // Map of productId -> IndexerProductSnapshot
 export type GetIndexerMultiProductSnapshotsResponse = Record<
-  string,
+  number,
   IndexerProductSnapshot
 >;
 
