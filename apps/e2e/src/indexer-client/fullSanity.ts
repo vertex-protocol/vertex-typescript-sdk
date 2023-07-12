@@ -37,6 +37,12 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Perp prices', price);
 
+  const perpPrices = await client.getMultiProductPerpPrices({
+    productIds: [2, 4, 6],
+  });
+
+  prettyPrint('Multiple products perp prices', perpPrices);
+
   const oraclePrices = await client.getOraclePrices({
     productIds: [1, 2, 3, 4],
   });
@@ -80,6 +86,12 @@ async function fullSanity(context: RunContext) {
   });
 
   prettyPrint('Market snapshots', marketSnapshots);
+
+  const multiProductSnapshots = await client.getMultiProductSnapshots({
+    productIds: [1, 2, 3],
+  });
+
+  prettyPrint('Multiple products snapshots', multiProductSnapshots);
 
   const candlesticks = await client.getCandlesticks({
     limit: 2,

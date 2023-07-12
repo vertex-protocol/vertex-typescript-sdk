@@ -1,12 +1,25 @@
 import { BaseVertexAPI } from '../base';
-import { GetIndexerPerpPricesParams } from '@vertex-protocol/indexer-client';
+import {
+  GetIndexerMultiProductPerpPricesParams,
+  GetIndexerPerpPricesParams,
+} from '@vertex-protocol/indexer-client';
 
 export class PerpQueryAPI extends BaseVertexAPI {
   /**
    * Gets the latest index & mark price for a perp product
    * @param params
    */
-  async getPrices(params: GetIndexerPerpPricesParams) {
+  async getPerpPrices(params: GetIndexerPerpPricesParams) {
     return this.context.indexerClient.getPerpPrices(params);
+  }
+
+  /**
+   * Gets the latest index & mark price for multiple perp products
+   * @param params
+   */
+  async getMultiProductPerpPrices(
+    params: GetIndexerMultiProductPerpPricesParams,
+  ) {
+    return this.context.indexerClient.getMultiProductPerpPrices(params);
   }
 }

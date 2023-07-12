@@ -135,7 +135,7 @@ async function fullSanity(context: RunContext) {
     subaccountName: 'default',
     productId: 3,
   });
-  await vertexClient.market.getOpenSubaccountProductOrders({
+  await vertexClient.market.getOpenSubaccountMultiProductOrders({
     subaccountOwner: await signer.getAddress(),
     subaccountName: 'default',
     productIds: [1, 2, 3],

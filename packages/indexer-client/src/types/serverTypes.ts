@@ -35,6 +35,10 @@ export interface IndexerServerPriceParams {
   product_id: number;
 }
 
+export interface IndexerServerPerpPricesParams {
+  product_ids: number[];
+}
+
 export interface IndexerServerOraclePricesParams {
   product_ids: number[];
 }
@@ -53,6 +57,11 @@ export interface IndexerServerProductsParams {
   limit: number;
   // submission_idx for pagination, inclusive
   idx?: string;
+}
+
+export interface IndexerServerMultiProductsParams {
+  product_ids: number[];
+  max_time?: number;
 }
 
 export interface IndexerServerEventsParams {
@@ -109,9 +118,11 @@ export interface IndexerServerQueryRequestByType {
   referral_code: IndexerServerReferralCodeParams;
   funding_rate: IndexerServerFundingRateParams;
   price: IndexerServerPriceParams;
+  perp_prices: IndexerServerPerpPricesParams;
   oracle_price: IndexerServerOraclePricesParams;
   candlesticks: IndexerServerCandlesticksParams;
   products: IndexerServerProductsParams;
+  product_snapshots: IndexerServerMultiProductsParams;
   events: IndexerServerEventsParams;
   orders: IndexerServerOrdersParams;
   matches: IndexerServerMatchEventsParams;
@@ -185,12 +196,20 @@ export interface IndexerServerFundingRateResponse {
   update_time: number;
 }
 
-export interface IndexerServerPriceResponse {
+export interface IndexerServerPerpPrices {
   product_id: number;
   index_price_x18: string;
   mark_price_x18: string;
   update_time: number;
 }
+
+export type IndexerServerPriceResponse = IndexerServerPerpPrices;
+
+// Map of productId -> IndexerServerPerpPrices
+export type IndexerServerPerpPricesResponse = Record<
+  string,
+  IndexerServerPerpPrices
+>;
 
 export interface IndexerServerOraclePricesResponse {
   prices: IndexerServerOraclePrice[];
@@ -204,6 +223,12 @@ export interface IndexerServerProductsResponse {
   products: IndexerServerProductSnapshot[];
   txs: IndexerServerTx[];
 }
+
+// Map of productId -> IndexerServerProductSnapshot
+export type IndexerServerMultiProductsResponse = Record<
+  string,
+  IndexerServerProductSnapshot
+>;
 
 export interface IndexerServerEventsResponse {
   events: IndexerServerEvent[];
@@ -241,9 +266,11 @@ export interface IndexerServerQueryResponseByType {
   referral_code: IndexerServerReferralCodeResponse;
   funding_rate: IndexerServerFundingRateResponse;
   price: IndexerServerPriceResponse;
+  perp_prices: IndexerServerPerpPricesResponse;
   oracle_price: IndexerServerOraclePricesResponse;
   candlesticks: IndexerServerCandlesticksResponse;
   products: IndexerServerProductsResponse;
+  product_snapshots: IndexerServerMultiProductsResponse;
   events: IndexerServerEventsResponse;
   orders: IndexerServerOrdersResponse;
   matches: IndexerServerMatchEventsResponse;

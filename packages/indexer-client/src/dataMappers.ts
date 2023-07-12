@@ -5,11 +5,13 @@ import {
   IndexerMatchEventBalances,
   IndexerOrder,
   IndexerPerpBalance,
+  IndexerPerpPrices,
   IndexerRewardEpoch,
   IndexerServerBalance,
   IndexerServerEvent,
   IndexerServerMatchEventBalances,
   IndexerServerOrder,
+  IndexerServerPerpPrices,
   IndexerServerProduct,
   IndexerServerRewardEpoch,
   IndexerServerTx,
@@ -186,5 +188,16 @@ export function mapIndexerRewardEpoch(
         };
       },
     ),
+  };
+}
+
+export function mapIndexerPerpPrices(
+  perpPrices: IndexerServerPerpPrices,
+): IndexerPerpPrices {
+  return {
+    indexPrice: fromX18(perpPrices.index_price_x18),
+    markPrice: fromX18(perpPrices.mark_price_x18),
+    updateTime: toBigDecimal(perpPrices.update_time),
+    productId: perpPrices.product_id,
   };
 }

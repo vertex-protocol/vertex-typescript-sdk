@@ -123,13 +123,25 @@ export interface GetIndexerPerpPricesParams {
   productId: number;
 }
 
-export interface GetIndexerPerpPricesResponse {
+export interface IndexerPerpPrices {
   productId: number;
   indexPrice: BigDecimal;
   markPrice: BigDecimal;
   // Seconds
   updateTime: BigDecimal;
 }
+
+export type GetIndexerPerpPricesResponse = IndexerPerpPrices;
+
+export interface GetIndexerMultiProductPerpPricesParams {
+  productIds: number[];
+}
+
+// Map of productId -> IndexerPerpPrices
+export type GetIndexerMultiProductPerpPricesResponse = Record<
+  number,
+  IndexerPerpPrices
+>;
 
 export interface GetIndexerOraclePricesParams {
   productIds: number[];
@@ -183,10 +195,22 @@ export interface GetIndexerProductSnapshotsParams {
   limit: number;
 }
 
-export type GetIndexerProductSnapshotsResponse = (Market & {
-  timestamp: BigDecimal;
+export interface IndexerProductSnapshot extends Market {
   submissionIndex: string;
-})[];
+}
+
+export type GetIndexerProductSnapshotsResponse = IndexerProductSnapshot[];
+
+export interface GetIndexerMultiProductSnapshotsParams {
+  productIds: number[];
+  maxTimestampInclusive?: number;
+}
+
+// Map of productId -> IndexerProductSnapshot
+export type GetIndexerMultiProductSnapshotsResponse = Record<
+  number,
+  IndexerProductSnapshot
+>;
 
 // There can be multiple events per tx, this allows a limit depending on usecase
 export type GetIndexerEventsLimitType = 'events' | 'txs';

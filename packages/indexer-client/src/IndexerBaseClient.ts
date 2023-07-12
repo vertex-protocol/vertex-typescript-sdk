@@ -6,6 +6,7 @@ import {
   mapIndexerEventWithTx,
   mapIndexerMatchEventBalances,
   mapIndexerOrder,
+  mapIndexerPerpPrices,
   mapIndexerRewardEpoch,
   mapIndexerServerProduct,
 } from './dataMappers';
@@ -31,6 +32,8 @@ import {
   GetIndexerPerpPricesResponse,
   GetIndexerProductSnapshotsParams,
   GetIndexerProductSnapshotsResponse,
+  GetIndexerMultiProductSnapshotsParams,
+  GetIndexerMultiProductSnapshotsResponse,
   GetIndexerQuotePriceResponse,
   GetIndexerReferralCodeParams,
   GetIndexerReferralCodeResponse,
@@ -47,6 +50,8 @@ import {
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
   IndexerSummaryBalance,
+  GetIndexerMultiProductPerpPricesParams,
+  GetIndexerMultiProductPerpPricesResponse,
 } from './types';
 
 export interface IndexerClientOpts {
@@ -173,12 +178,21 @@ export class IndexerBaseClient {
       product_id: params.productId,
     });
 
-    return {
-      indexPrice: fromX18(baseResponse.index_price_x18),
-      markPrice: fromX18(baseResponse.mark_price_x18),
-      updateTime: toBigDecimal(baseResponse.update_time),
-      productId: baseResponse.product_id,
-    };
+    return mapIndexerPerpPrices(baseResponse);
+  }
+
+  /**
+   * Retrieves latest mark/index price for multiple perp products
+   * @param params
+   */
+  async getMultiProductPerpPrices(
+    params: GetIndexerMultiProductPerpPricesParams,
+  ): Promise<GetIndexerMultiProductPerpPricesResponse> {
+    const baseResponse = await this.query('perp_prices', {
+      product_ids: params.productIds,
+    });
+
+    return mapValues(baseResponse, mapIndexerPerpPrices);
   }
 
   /**
@@ -241,12 +255,30 @@ export class IndexerBaseClient {
       idx: params.startCursor,
     });
 
-    return baseResponse.products.map((product, index) => {
-      const tx = baseResponse.txs[index];
+    return baseResponse.products.map((product) => {
       return {
         ...mapIndexerServerProduct(product.product),
         submissionIndex: product.submission_idx,
-        timestamp: toBigDecimal(tx.timestamp),
+      };
+    });
+  }
+
+  /**
+   * Retrieves historical snapshots for multiple products
+   * @param params
+   */
+  async getMultiProductSnapshots(
+    params: GetIndexerMultiProductSnapshotsParams,
+  ): Promise<GetIndexerMultiProductSnapshotsResponse> {
+    const baseResponse = await this.query('product_snapshots', {
+      product_ids: params.productIds,
+      max_time: params.maxTimestampInclusive,
+    });
+
+    return mapValues(baseResponse, (value) => {
+      return {
+        ...mapIndexerServerProduct(value.product),
+        submissionIndex: value.submission_idx,
       };
     });
   }
