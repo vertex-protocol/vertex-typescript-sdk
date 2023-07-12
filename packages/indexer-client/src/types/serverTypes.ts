@@ -2,6 +2,8 @@ import { IndexerEventType } from './IndexerEventType';
 import {
   IndexerServerCandlestick,
   IndexerServerEvent,
+  IndexerServerMarketSnapshot,
+  IndexerServerMarketSnapshotInterval,
   IndexerServerMatchEvent,
   IndexerServerOraclePrice,
   IndexerServerOrder,
@@ -94,6 +96,12 @@ export interface IndexerServerLinkedSignerParams {
   subaccount: string;
 }
 
+export interface IndexerServerMarketSnapshotsParams {
+  interval: IndexerServerMarketSnapshotInterval;
+  // Defaults to all
+  product_ids?: number[];
+}
+
 // Request
 export interface IndexerServerQueryRequestByType {
   summary: IndexerServerSummaryParams;
@@ -109,6 +117,7 @@ export interface IndexerServerQueryRequestByType {
   matches: IndexerServerMatchEventsParams;
   usdc_price: Record<string, never>;
   linked_signer_rate_limit: IndexerServerLinkedSignerParams;
+  market_snapshots: IndexerServerMarketSnapshotsParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -221,6 +230,10 @@ export interface IndexerServerLinkedSignerResponse {
   signer: string;
 }
 
+export interface IndexerServerMarketSnapshotsResponse {
+  snapshots: IndexerServerMarketSnapshot[];
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   summary: IndexerServerSummaryResponse;
@@ -236,4 +249,5 @@ export interface IndexerServerQueryResponseByType {
   matches: IndexerServerMatchEventsResponse;
   usdc_price: IndexerServerUsdcPriceResponse;
   linked_signer_rate_limit: IndexerServerLinkedSignerResponse;
+  market_snapshots: IndexerServerMarketSnapshotsResponse;
 }

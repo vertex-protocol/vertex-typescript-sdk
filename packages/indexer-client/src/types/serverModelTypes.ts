@@ -106,3 +106,30 @@ export interface IndexerServerOraclePrice {
   oracle_price_x18: string;
   update_time: number;
 }
+
+export interface IndexerServerMarketSnapshotInterval {
+  count: number;
+  // Currently accepts any granularity, time distance (in seconds) between data points
+  granularity: number;
+  max_time?: string;
+}
+
+export interface IndexerServerMarketSnapshot {
+  timestamp: string;
+  cumulative_users: string;
+  daily_active_users: string;
+  // Keyed by product ID -> decimal value in string (i.e. no decimal adjustment) necessary
+  // Backend serializes hashmaps with string keys
+  cumulative_volumes: Record<string, string>;
+  cumulative_taker_fees: Record<string, string>;
+  cumulative_sequencer_fees: Record<string, string>;
+  cumulative_maker_fees: Record<string, string>;
+  cumulative_trades: Record<string, string>;
+  cumulative_liquidation_amounts: Record<string, string>;
+  open_interests: Record<string, string>;
+  total_deposits: Record<string, string>;
+  total_borrows: Record<string, string>;
+  funding_rates: Record<string, string>;
+  deposit_rates: Record<string, string>;
+  borrow_rates: Record<string, string>;
+}

@@ -16,6 +16,7 @@ import {
 import {
   GetIndexerCandlesticksParams,
   GetIndexerFundingRateParams,
+  GetIndexerMarketSnapshotsParams,
   GetIndexerOrdersParams,
   GetIndexerOrdersResponse,
   GetIndexerProductSnapshotsParams,
@@ -145,11 +146,20 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Retrieves the historical snapshots for a product for the indexer
+   * @description Retrieves the historical snapshots for a product from the indexer
    *
    * @param params
    */
   async getProductSnapshots(params: GetIndexerProductSnapshotsParams) {
     return this.context.indexerClient.getProductSnapshots(params);
+  }
+
+  /**
+   * @description Retrieves the historical snapshots for a market from the indexer
+   *
+   * @param params
+   */
+  async getMarketSnapshots(params: GetIndexerMarketSnapshotsParams) {
+    return this.context.indexerClient.getMarketSnapshots(params);
   }
 }

@@ -302,3 +302,33 @@ export interface GetIndexerLinkedSignerResponse {
   // If zero address, none is configured
   signer: string;
 }
+
+export interface GetIndexerMarketSnapshotsParams {
+  // Defaults to all
+  productIds?: number[];
+  // Currently accepts all integers, in seconds
+  granularity: number;
+  // Seconds
+  maxTimeInclusive?: number;
+  limit: number;
+}
+
+export interface IndexerMarketSnapshot {
+  timestamp: BigDecimal;
+  cumulativeUsers: BigDecimal;
+  dailyActiveUsers: BigDecimal;
+  cumulativeVolumes: Record<number, BigDecimal>;
+  cumulativeTakerFees: Record<number, BigDecimal>;
+  cumulativeSequencerFees: Record<number, BigDecimal>;
+  cumulativeMakerFees: Record<number, BigDecimal>;
+  cumulativeTrades: Record<number, BigDecimal>;
+  cumulativeLiquidationAmounts: Record<number, BigDecimal>;
+  openInterests: Record<number, BigDecimal>;
+  totalDeposits: Record<number, BigDecimal>;
+  totalBorrows: Record<number, BigDecimal>;
+  fundingRates: Record<number, BigDecimal>;
+  depositRates: Record<number, BigDecimal>;
+  borrowRates: Record<number, BigDecimal>;
+}
+
+export type GetIndexerMarketSnapshotsResponse = IndexerMarketSnapshot[];

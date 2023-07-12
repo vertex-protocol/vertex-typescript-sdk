@@ -1,6 +1,6 @@
 import { RunContext } from '../utils/types';
 import { Subaccount } from '@vertex-protocol/contracts';
-import { nowInSeconds } from '@vertex-protocol/utils';
+import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 import {
   CandlestickPeriod,
@@ -72,6 +72,14 @@ async function fullSanity(context: RunContext) {
   });
 
   prettyPrint('Product snapshots', productSnapshots);
+
+  const marketSnapshots = await client.getMarketSnapshots({
+    granularity: TimeInSeconds.HOUR,
+    limit: 1,
+    productIds: [1, 2, 3, 4],
+  });
+
+  prettyPrint('Market snapshots', marketSnapshots);
 
   const candlesticks = await client.getCandlesticks({
     limit: 2,

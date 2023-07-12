@@ -1,8 +1,5 @@
-import {
-  subaccountToBytes32,
-  subaccountToHex,
-} from '@vertex-protocol/contracts';
-import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
+import { subaccountToHex } from '@vertex-protocol/contracts';
+import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
 import axios, { AxiosResponse } from 'axios';
 import {
   mapIndexerEvent,
@@ -22,6 +19,8 @@ import {
   GetIndexerFundingRateResponse,
   GetIndexerLinkedSignerParams,
   GetIndexerLinkedSignerResponse,
+  GetIndexerMarketSnapshotsParams,
+  GetIndexerMarketSnapshotsResponse,
   GetIndexerMatchEventsParams,
   GetIndexerMatchEventsResponse,
   GetIndexerOraclePricesParams,
@@ -40,6 +39,7 @@ import {
   GetIndexerSummaryResponse,
   GetSubaccountIndexerRewardsResponse,
   IndexerEventWithTx,
+  IndexerMarketSnapshot,
   IndexerMatchEvent,
   IndexerOraclePrice,
   IndexerServerEventsParams,
@@ -408,6 +408,58 @@ export class IndexerBaseClient {
       signer: baseResponse.signer,
       waitTimeUntilNextTx: toBigDecimal(baseResponse.wait_time),
     };
+  }
+
+  /**
+   * Retrieve historical market snapshots
+   * @param params
+   */
+  async getMarketSnapshots(
+    params: GetIndexerMarketSnapshotsParams,
+  ): Promise<GetIndexerMarketSnapshotsResponse> {
+    const baseResponse = await this.query('market_snapshots', {
+      interval: {
+        granularity: params.granularity,
+        max_time: params.maxTimeInclusive?.toString(),
+        count: params.limit,
+      },
+      product_ids: params.productIds,
+    });
+
+    return baseResponse.snapshots.map((snapshot): IndexerMarketSnapshot => {
+      return {
+        timestamp: toBigDecimal(snapshot.timestamp),
+        cumulativeUsers: toBigDecimal(snapshot.cumulative_users),
+        dailyActiveUsers: toBigDecimal(snapshot.daily_active_users),
+        borrowRates: mapValues(snapshot.borrow_rates, toBigDecimal),
+        cumulativeLiquidationAmounts: mapValues(
+          snapshot.cumulative_liquidation_amounts,
+          toBigDecimal,
+        ),
+        cumulativeMakerFees: mapValues(
+          snapshot.cumulative_maker_fees,
+          toBigDecimal,
+        ),
+        cumulativeSequencerFees: mapValues(
+          snapshot.cumulative_sequencer_fees,
+          toBigDecimal,
+        ),
+        cumulativeTakerFees: mapValues(
+          snapshot.cumulative_sequencer_fees,
+          toBigDecimal,
+        ),
+        cumulativeTrades: mapValues(
+          snapshot.cumulative_sequencer_fees,
+          toBigDecimal,
+        ),
+        cumulativeVolumes: mapValues(snapshot.cumulative_volumes, toBigDecimal),
+        depositRates: mapValues(snapshot.deposit_rates, toBigDecimal),
+        fundingRates: mapValues(snapshot.funding_rates, toBigDecimal),
+        openInterests: mapValues(snapshot.open_interests, toBigDecimal),
+        totalBorrows: mapValues(snapshot.total_borrows, toBigDecimal),
+        totalDeposits: mapValues(snapshot.total_deposits, toBigDecimal),
+      };
+    });
   }
 
   protected async query<TRequestType extends IndexerServerQueryRequestType>(
