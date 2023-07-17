@@ -272,7 +272,8 @@ export interface IndexerOrder {
   baseFilled: BigDecimal;
   // Includes fee
   quoteFilled: BigDecimal;
-  fee: BigDecimal;
+  // Includes sequencer fee
+  totalFee: BigDecimal;
 }
 
 export type GetIndexerOrdersResponse = IndexerOrder[];
@@ -298,7 +299,9 @@ export interface IndexerMatchEvent {
   order: EIP712OrderValues;
   baseFilled: BigDecimal;
   quoteFilled: BigDecimal;
-  fee: BigDecimal;
+  // Includes sequencer fee
+  totalFee: BigDecimal;
+  sequencerFee: BigDecimal;
   cumulativeBaseFilled: BigDecimal;
   cumulativeQuoteFilled: BigDecimal;
   cumulativeFee: BigDecimal;

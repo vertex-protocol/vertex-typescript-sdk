@@ -78,6 +78,7 @@ export interface IndexerServerOrder {
   base_filled: string;
   // Includes fee
   quote_filled: string;
+  // Includes sequencer fee
   fee: string;
 }
 
@@ -85,8 +86,11 @@ export interface IndexerServerMatchEvent {
   digest: string;
   order: EIP712OrderValues;
   base_filled: string;
+  // Includes fee
   quote_filled: string;
+  // Includes sequencer fee
   fee: string;
+  sequencer_fee: string;
   cumulative_fee: string;
   cumulative_base_filled: string;
   cumulative_quote_filled: string;

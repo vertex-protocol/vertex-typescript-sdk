@@ -24,6 +24,10 @@ import {
   GetIndexerMarketSnapshotsResponse,
   GetIndexerMatchEventsParams,
   GetIndexerMatchEventsResponse,
+  GetIndexerMultiProductPerpPricesParams,
+  GetIndexerMultiProductPerpPricesResponse,
+  GetIndexerMultiProductSnapshotsParams,
+  GetIndexerMultiProductSnapshotsResponse,
   GetIndexerOraclePricesParams,
   GetIndexerOraclePricesResponse,
   GetIndexerOrdersParams,
@@ -32,8 +36,6 @@ import {
   GetIndexerPerpPricesResponse,
   GetIndexerProductSnapshotsParams,
   GetIndexerProductSnapshotsResponse,
-  GetIndexerMultiProductSnapshotsParams,
-  GetIndexerMultiProductSnapshotsResponse,
   GetIndexerQuotePriceResponse,
   GetIndexerReferralCodeParams,
   GetIndexerReferralCodeResponse,
@@ -50,8 +52,6 @@ import {
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
   IndexerSummaryBalance,
-  GetIndexerMultiProductPerpPricesParams,
-  GetIndexerMultiProductPerpPricesResponse,
 } from './types';
 
 export interface IndexerClientOpts {
@@ -399,7 +399,8 @@ export class IndexerBaseClient {
 
       return {
         productId,
-        fee: toBigDecimal(matchEvent.fee),
+        totalFee: toBigDecimal(matchEvent.fee),
+        sequencerFee: toBigDecimal(matchEvent.sequencer_fee),
         baseFilled: toBigDecimal(matchEvent.base_filled),
         quoteFilled: toBigDecimal(matchEvent.quote_filled),
         cumulativeFee: toBigDecimal(matchEvent.cumulative_fee),

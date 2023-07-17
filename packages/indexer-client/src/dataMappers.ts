@@ -76,7 +76,7 @@ export function mapIndexerOrder(order: IndexerServerOrder): IndexerOrder {
     submissionIndex: order.submission_idx,
     baseFilled: toBigDecimal(order.base_filled),
     quoteFilled: toBigDecimal(order.quote_filled),
-    fee: toBigDecimal(order.fee),
+    totalFee: toBigDecimal(order.fee),
   };
 }
 
