@@ -98,13 +98,13 @@ async function fullSanity(context: RunContext) {
   console.log(`Order digest: ${digest}`);
 
   console.log(`Cancelling order`);
-  await vertexClient.market.cancelOrders({
+  const cancelResult = await vertexClient.market.cancelOrders({
     digests: [digest],
     productIds: [3],
     subaccountName: 'default',
   });
 
-  console.log(`Order cancelled`);
+  console.log(`Cancel order result: ${JSON.stringify(cancelResult, null, 2)}`);
 
   // Fetches state from offchain sequencer
   await vertexClient.market.getAllEngineMarkets();
