@@ -26,7 +26,7 @@ export class SpotExecuteAPI extends BaseSpotAPI {
   ) {
     return this.context.engineClient.withdrawCollateral({
       subaccountOwner: await this.getChainSignerAddress(),
-      verifyingAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.getEndpointAddress(),
       ...params,
     });
   }
@@ -47,6 +47,6 @@ export class SpotExecuteAPI extends BaseSpotAPI {
       config.token,
       this.context.signerOrProvider,
     );
-    return erc20.mint(erc20.signer.getAddress(), params.amount);
+    return erc20.mint(await this.getChainSignerAddress(), params.amount);
   }
 }

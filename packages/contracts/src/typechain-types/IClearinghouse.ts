@@ -3,271 +3,230 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumber,
   BigNumberish,
   BytesLike,
-  CallOverrides,
-  ContractTransaction,
-  Overrides,
-  PopulatedTransaction,
-  Signer,
-  utils,
-} from "ethers";
-import type {
   FunctionFragment,
   Result,
+  Interface,
   EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  AddressLike,
+  ContractRunner,
+  ContractMethod,
+  Listener,
+} from "ethers";
 import type {
-  TypedEventFilter,
-  TypedEvent,
+  TypedContractEvent,
+  TypedDeferredTopicFilter,
+  TypedEventLog,
+  TypedLogDescription,
   TypedListener,
-  OnEvent,
-  PromiseOrValue,
+  TypedContractMethod,
 } from "./common";
 
 export declare namespace IEndpoint {
   export type BurnLpStruct = {
-    sender: PromiseOrValue<BytesLike>;
-    productId: PromiseOrValue<BigNumberish>;
-    amount: PromiseOrValue<BigNumberish>;
-    nonce: PromiseOrValue<BigNumberish>;
+    sender: BytesLike;
+    productId: BigNumberish;
+    amount: BigNumberish;
+    nonce: BigNumberish;
   };
 
-  export type BurnLpStructOutput = [string, number, BigNumber, BigNumber] & {
-    sender: string;
-    productId: number;
-    amount: BigNumber;
-    nonce: BigNumber;
-  };
+  export type BurnLpStructOutput = [
+    sender: string,
+    productId: bigint,
+    amount: bigint,
+    nonce: bigint
+  ] & { sender: string; productId: bigint; amount: bigint; nonce: bigint };
 
-  export type ClaimSequencerFeesStruct = {
-    subaccount: PromiseOrValue<BytesLike>;
-  };
+  export type ClaimSequencerFeesStruct = { subaccount: BytesLike };
 
-  export type ClaimSequencerFeesStructOutput = [string] & {
+  export type ClaimSequencerFeesStructOutput = [subaccount: string] & {
     subaccount: string;
   };
 
   export type DepositCollateralStruct = {
-    sender: PromiseOrValue<BytesLike>;
-    productId: PromiseOrValue<BigNumberish>;
-    amount: PromiseOrValue<BigNumberish>;
+    sender: BytesLike;
+    productId: BigNumberish;
+    amount: BigNumberish;
   };
 
-  export type DepositCollateralStructOutput = [string, number, BigNumber] & {
-    sender: string;
-    productId: number;
-    amount: BigNumber;
-  };
+  export type DepositCollateralStructOutput = [
+    sender: string,
+    productId: bigint,
+    amount: bigint
+  ] & { sender: string; productId: bigint; amount: bigint };
 
-  export type DepositInsuranceStruct = { amount: PromiseOrValue<BigNumberish> };
+  export type DepositInsuranceStruct = { amount: BigNumberish };
 
-  export type DepositInsuranceStructOutput = [BigNumber] & {
-    amount: BigNumber;
+  export type DepositInsuranceStructOutput = [amount: bigint] & {
+    amount: bigint;
   };
 
   export type PricesStruct = {
-    spotPriceX18: PromiseOrValue<BigNumberish>;
-    perpPriceX18: PromiseOrValue<BigNumberish>;
+    spotPriceX18: BigNumberish;
+    perpPriceX18: BigNumberish;
   };
 
-  export type PricesStructOutput = [BigNumber, BigNumber] & {
-    spotPriceX18: BigNumber;
-    perpPriceX18: BigNumber;
-  };
+  export type PricesStructOutput = [
+    spotPriceX18: bigint,
+    perpPriceX18: bigint
+  ] & { spotPriceX18: bigint; perpPriceX18: bigint };
 
   export type LiquidateSubaccountStruct = {
-    sender: PromiseOrValue<BytesLike>;
-    liquidatee: PromiseOrValue<BytesLike>;
-    mode: PromiseOrValue<BigNumberish>;
-    healthGroup: PromiseOrValue<BigNumberish>;
-    amount: PromiseOrValue<BigNumberish>;
-    nonce: PromiseOrValue<BigNumberish>;
+    sender: BytesLike;
+    liquidatee: BytesLike;
+    mode: BigNumberish;
+    healthGroup: BigNumberish;
+    amount: BigNumberish;
+    nonce: BigNumberish;
   };
 
   export type LiquidateSubaccountStructOutput = [
-    string,
-    string,
-    number,
-    number,
-    BigNumber,
-    BigNumber
+    sender: string,
+    liquidatee: string,
+    mode: bigint,
+    healthGroup: bigint,
+    amount: bigint,
+    nonce: bigint
   ] & {
     sender: string;
     liquidatee: string;
-    mode: number;
-    healthGroup: number;
-    amount: BigNumber;
-    nonce: BigNumber;
+    mode: bigint;
+    healthGroup: bigint;
+    amount: bigint;
+    nonce: bigint;
   };
 
   export type MintLpStruct = {
-    sender: PromiseOrValue<BytesLike>;
-    productId: PromiseOrValue<BigNumberish>;
-    amountBase: PromiseOrValue<BigNumberish>;
-    quoteAmountLow: PromiseOrValue<BigNumberish>;
-    quoteAmountHigh: PromiseOrValue<BigNumberish>;
-    nonce: PromiseOrValue<BigNumberish>;
+    sender: BytesLike;
+    productId: BigNumberish;
+    amountBase: BigNumberish;
+    quoteAmountLow: BigNumberish;
+    quoteAmountHigh: BigNumberish;
+    nonce: BigNumberish;
   };
 
   export type MintLpStructOutput = [
-    string,
-    number,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
+    sender: string,
+    productId: bigint,
+    amountBase: bigint,
+    quoteAmountLow: bigint,
+    quoteAmountHigh: bigint,
+    nonce: bigint
   ] & {
     sender: string;
-    productId: number;
-    amountBase: BigNumber;
-    quoteAmountLow: BigNumber;
-    quoteAmountHigh: BigNumber;
-    nonce: BigNumber;
+    productId: bigint;
+    amountBase: bigint;
+    quoteAmountLow: bigint;
+    quoteAmountHigh: bigint;
+    nonce: bigint;
   };
 
   export type RebateStruct = {
-    subaccounts: PromiseOrValue<BytesLike>[];
-    amounts: PromiseOrValue<BigNumberish>[];
+    subaccounts: BytesLike[];
+    amounts: BigNumberish[];
   };
 
-  export type RebateStructOutput = [string[], BigNumber[]] & {
-    subaccounts: string[];
-    amounts: BigNumber[];
-  };
+  export type RebateStructOutput = [
+    subaccounts: string[],
+    amounts: bigint[]
+  ] & { subaccounts: string[]; amounts: bigint[] };
 
   export type SettlePnlStruct = {
-    subaccounts: PromiseOrValue<BytesLike>[];
-    productIds: PromiseOrValue<BigNumberish>[];
+    subaccounts: BytesLike[];
+    productIds: BigNumberish[];
   };
 
-  export type SettlePnlStructOutput = [string[], BigNumber[]] & {
-    subaccounts: string[];
-    productIds: BigNumber[];
-  };
+  export type SettlePnlStructOutput = [
+    subaccounts: string[],
+    productIds: bigint[]
+  ] & { subaccounts: string[]; productIds: bigint[] };
 
   export type UpdateFeeRatesStruct = {
-    user: PromiseOrValue<string>;
-    productId: PromiseOrValue<BigNumberish>;
-    makerRateX18: PromiseOrValue<BigNumberish>;
-    takerRateX18: PromiseOrValue<BigNumberish>;
+    user: AddressLike;
+    productId: BigNumberish;
+    makerRateX18: BigNumberish;
+    takerRateX18: BigNumberish;
   };
 
   export type UpdateFeeRatesStructOutput = [
-    string,
-    number,
-    BigNumber,
-    BigNumber
+    user: string,
+    productId: bigint,
+    makerRateX18: bigint,
+    takerRateX18: bigint
   ] & {
     user: string;
-    productId: number;
-    makerRateX18: BigNumber;
-    takerRateX18: BigNumber;
+    productId: bigint;
+    makerRateX18: bigint;
+    takerRateX18: bigint;
   };
 
   export type WithdrawCollateralStruct = {
-    sender: PromiseOrValue<BytesLike>;
-    productId: PromiseOrValue<BigNumberish>;
-    amount: PromiseOrValue<BigNumberish>;
-    nonce: PromiseOrValue<BigNumberish>;
+    sender: BytesLike;
+    productId: BigNumberish;
+    amount: BigNumberish;
+    nonce: BigNumberish;
   };
 
   export type WithdrawCollateralStructOutput = [
-    string,
-    number,
-    BigNumber,
-    BigNumber
-  ] & {
-    sender: string;
-    productId: number;
-    amount: BigNumber;
-    nonce: BigNumber;
-  };
+    sender: string,
+    productId: bigint,
+    amount: bigint,
+    nonce: bigint
+  ] & { sender: string; productId: bigint; amount: bigint; nonce: bigint };
 }
 
 export declare namespace RiskHelper {
   export type RiskStruct = {
-    longWeightInitialX18: PromiseOrValue<BigNumberish>;
-    shortWeightInitialX18: PromiseOrValue<BigNumberish>;
-    longWeightMaintenanceX18: PromiseOrValue<BigNumberish>;
-    shortWeightMaintenanceX18: PromiseOrValue<BigNumberish>;
-    largePositionPenaltyX18: PromiseOrValue<BigNumberish>;
+    longWeightInitialX18: BigNumberish;
+    shortWeightInitialX18: BigNumberish;
+    longWeightMaintenanceX18: BigNumberish;
+    shortWeightMaintenanceX18: BigNumberish;
+    largePositionPenaltyX18: BigNumberish;
   };
 
   export type RiskStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
+    longWeightInitialX18: bigint,
+    shortWeightInitialX18: bigint,
+    longWeightMaintenanceX18: bigint,
+    shortWeightMaintenanceX18: bigint,
+    largePositionPenaltyX18: bigint
   ] & {
-    longWeightInitialX18: BigNumber;
-    shortWeightInitialX18: BigNumber;
-    longWeightMaintenanceX18: BigNumber;
-    shortWeightMaintenanceX18: BigNumber;
-    largePositionPenaltyX18: BigNumber;
+    longWeightInitialX18: bigint;
+    shortWeightInitialX18: bigint;
+    longWeightMaintenanceX18: bigint;
+    shortWeightMaintenanceX18: bigint;
+    largePositionPenaltyX18: bigint;
   };
 }
 
 export declare namespace IClearinghouseState {
   export type RiskStoreStruct = {
-    longWeightInitial: PromiseOrValue<BigNumberish>;
-    shortWeightInitial: PromiseOrValue<BigNumberish>;
-    longWeightMaintenance: PromiseOrValue<BigNumberish>;
-    shortWeightMaintenance: PromiseOrValue<BigNumberish>;
-    largePositionPenalty: PromiseOrValue<BigNumberish>;
+    longWeightInitial: BigNumberish;
+    shortWeightInitial: BigNumberish;
+    longWeightMaintenance: BigNumberish;
+    shortWeightMaintenance: BigNumberish;
+    largePositionPenalty: BigNumberish;
   };
 
   export type RiskStoreStructOutput = [
-    number,
-    number,
-    number,
-    number,
-    number
+    longWeightInitial: bigint,
+    shortWeightInitial: bigint,
+    longWeightMaintenance: bigint,
+    shortWeightMaintenance: bigint,
+    largePositionPenalty: bigint
   ] & {
-    longWeightInitial: number;
-    shortWeightInitial: number;
-    longWeightMaintenance: number;
-    shortWeightMaintenance: number;
-    largePositionPenalty: number;
+    longWeightInitial: bigint;
+    shortWeightInitial: bigint;
+    longWeightMaintenance: bigint;
+    shortWeightMaintenance: bigint;
+    largePositionPenalty: bigint;
   };
 }
 
-export interface IClearinghouseInterface extends utils.Interface {
-  functions: {
-    "addEngine(address,uint8)": FunctionFragment;
-    "burnLp((bytes32,uint32,uint128,uint64))": FunctionFragment;
-    "claimSequencerFees((bytes32),int128[])": FunctionFragment;
-    "depositCollateral((bytes32,uint32,uint128))": FunctionFragment;
-    "depositInsurance((uint128))": FunctionFragment;
-    "getEndpoint()": FunctionFragment;
-    "getEngineByProduct(uint32)": FunctionFragment;
-    "getEngineByType(uint8)": FunctionFragment;
-    "getHealth(bytes32,uint8)": FunctionFragment;
-    "getInsurance()": FunctionFragment;
-    "getMaxHealthGroup()": FunctionFragment;
-    "getNumProducts()": FunctionFragment;
-    "getOraclePriceX18(uint32)": FunctionFragment;
-    "getOraclePricesX18(uint32)": FunctionFragment;
-    "getOrderbook(uint32)": FunctionFragment;
-    "getQuote()": FunctionFragment;
-    "getRisk(uint32)": FunctionFragment;
-    "getSupportedEngines()": FunctionFragment;
-    "getVersion()": FunctionFragment;
-    "liquidateSubaccount((bytes32,bytes32,uint8,uint32,int128,uint64))": FunctionFragment;
-    "mintLp((bytes32,uint32,uint128,uint128,uint128,uint64))": FunctionFragment;
-    "modifyProductConfig(uint32,(int32,int32,int32,int32,int32))": FunctionFragment;
-    "rebate((bytes32[],int128[]))": FunctionFragment;
-    "registerProductForId(address,(int32,int32,int32,int32,int32),uint32)": FunctionFragment;
-    "settlePnl((bytes32[],uint256[]))": FunctionFragment;
-    "updateFeeRates((address,uint32,int64,int64))": FunctionFragment;
-    "withdrawCollateral((bytes32,uint32,uint128,uint64))": FunctionFragment;
-  };
-
+export interface IClearinghouseInterface extends Interface {
   getFunction(
-    nameOrSignatureOrTopic:
+    nameOrSignature:
       | "addEngine"
       | "burnLp"
       | "claimSequencerFees"
@@ -297,9 +256,16 @@ export interface IClearinghouseInterface extends utils.Interface {
       | "withdrawCollateral"
   ): FunctionFragment;
 
+  getEvent(
+    nameOrSignatureOrTopic:
+      | "ClearinghouseInitialized"
+      | "Liquidation"
+      | "ModifyCollateral"
+  ): EventFragment;
+
   encodeFunctionData(
     functionFragment: "addEngine",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "burnLp",
@@ -307,7 +273,7 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "claimSequencerFees",
-    values: [IEndpoint.ClaimSequencerFeesStruct, PromiseOrValue<BigNumberish>[]]
+    values: [IEndpoint.ClaimSequencerFeesStruct, BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "depositCollateral",
@@ -323,15 +289,15 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getEngineByProduct",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getEngineByType",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getHealth",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
+    values: [BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getInsurance",
@@ -347,20 +313,20 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getOraclePriceX18",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getOraclePricesX18",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getOrderbook",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "getQuote", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getRisk",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getSupportedEngines",
@@ -380,7 +346,7 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "modifyProductConfig",
-    values: [PromiseOrValue<BigNumberish>, IClearinghouseState.RiskStoreStruct]
+    values: [BigNumberish, IClearinghouseState.RiskStoreStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "rebate",
@@ -388,11 +354,7 @@ export interface IClearinghouseInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "registerProductForId",
-    values: [
-      PromiseOrValue<string>,
-      IClearinghouseState.RiskStoreStruct,
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [AddressLike, IClearinghouseState.RiskStoreStruct, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "settlePnl",
@@ -488,746 +450,455 @@ export interface IClearinghouseInterface extends utils.Interface {
     functionFragment: "withdrawCollateral",
     data: BytesLike
   ): Result;
-
-  events: {
-    "ClearinghouseInitialized(address,address,address)": EventFragment;
-    "Liquidation(bytes32,bytes32,uint8,uint32,int128,int128,int128)": EventFragment;
-    "ModifyCollateral(int128,bytes32,uint32)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "ClearinghouseInitialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Liquidation"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ModifyCollateral"): EventFragment;
 }
 
-export interface ClearinghouseInitializedEventObject {
-  endpoint: string;
-  quote: string;
-  fees: string;
+export namespace ClearinghouseInitializedEvent {
+  export type InputTuple = [
+    endpoint: AddressLike,
+    quote: AddressLike,
+    fees: AddressLike
+  ];
+  export type OutputTuple = [endpoint: string, quote: string, fees: string];
+  export interface OutputObject {
+    endpoint: string;
+    quote: string;
+    fees: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
-export type ClearinghouseInitializedEvent = TypedEvent<
-  [string, string, string],
-  ClearinghouseInitializedEventObject
->;
 
-export type ClearinghouseInitializedEventFilter =
-  TypedEventFilter<ClearinghouseInitializedEvent>;
-
-export interface LiquidationEventObject {
-  liquidatorSubaccount: string;
-  liquidateeSubaccount: string;
-  mode: number;
-  healthGroup: number;
-  amount: BigNumber;
-  amountQuote: BigNumber;
-  insuranceCover: BigNumber;
+export namespace LiquidationEvent {
+  export type InputTuple = [
+    liquidatorSubaccount: BytesLike,
+    liquidateeSubaccount: BytesLike,
+    mode: BigNumberish,
+    healthGroup: BigNumberish,
+    amount: BigNumberish,
+    amountQuote: BigNumberish,
+    insuranceCover: BigNumberish
+  ];
+  export type OutputTuple = [
+    liquidatorSubaccount: string,
+    liquidateeSubaccount: string,
+    mode: bigint,
+    healthGroup: bigint,
+    amount: bigint,
+    amountQuote: bigint,
+    insuranceCover: bigint
+  ];
+  export interface OutputObject {
+    liquidatorSubaccount: string;
+    liquidateeSubaccount: string;
+    mode: bigint;
+    healthGroup: bigint;
+    amount: bigint;
+    amountQuote: bigint;
+    insuranceCover: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
-export type LiquidationEvent = TypedEvent<
-  [string, string, number, number, BigNumber, BigNumber, BigNumber],
-  LiquidationEventObject
->;
 
-export type LiquidationEventFilter = TypedEventFilter<LiquidationEvent>;
-
-export interface ModifyCollateralEventObject {
-  amount: BigNumber;
-  subaccount: string;
-  productId: number;
+export namespace ModifyCollateralEvent {
+  export type InputTuple = [
+    amount: BigNumberish,
+    subaccount: BytesLike,
+    productId: BigNumberish
+  ];
+  export type OutputTuple = [
+    amount: bigint,
+    subaccount: string,
+    productId: bigint
+  ];
+  export interface OutputObject {
+    amount: bigint;
+    subaccount: string;
+    productId: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
-export type ModifyCollateralEvent = TypedEvent<
-  [BigNumber, string, number],
-  ModifyCollateralEventObject
->;
-
-export type ModifyCollateralEventFilter =
-  TypedEventFilter<ModifyCollateralEvent>;
 
 export interface IClearinghouse extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(runner?: ContractRunner | null): IClearinghouse;
+  waitForDeployment(): Promise<this>;
 
   interface: IClearinghouseInterface;
 
-  queryFilter<TEvent extends TypedEvent>(
-    event: TypedEventFilter<TEvent>,
+  queryFilter<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
+  queryFilter<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    fromBlockOrBlockhash?: string | number | undefined,
+    toBlock?: string | number | undefined
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  on<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  on<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-  functions: {
-    addEngine(
-      engine: PromiseOrValue<string>,
-      engineType: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  once<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  once<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-    burnLp(
-      tx: IEndpoint.BurnLpStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  listeners<TCEvent extends TypedContractEvent>(
+    event: TCEvent
+  ): Promise<Array<TypedListener<TCEvent>>>;
+  listeners(eventName?: string): Promise<Array<Listener>>;
+  removeAllListeners<TCEvent extends TypedContractEvent>(
+    event?: TCEvent
+  ): Promise<this>;
 
-    claimSequencerFees(
-      tx: IEndpoint.ClaimSequencerFeesStruct,
-      fees: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  addEngine: TypedContractMethod<
+    [engine: AddressLike, engineType: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
 
-    depositCollateral(
-      tx: IEndpoint.DepositCollateralStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  burnLp: TypedContractMethod<
+    [tx: IEndpoint.BurnLpStruct],
+    [void],
+    "nonpayable"
+  >;
 
-    depositInsurance(
-      tx: IEndpoint.DepositInsuranceStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  claimSequencerFees: TypedContractMethod<
+    [tx: IEndpoint.ClaimSequencerFeesStruct, fees: BigNumberish[]],
+    [void],
+    "nonpayable"
+  >;
 
-    getEndpoint(
-      overrides?: CallOverrides
-    ): Promise<[string] & { endpoint: string }>;
+  depositCollateral: TypedContractMethod<
+    [tx: IEndpoint.DepositCollateralStruct],
+    [void],
+    "nonpayable"
+  >;
 
-    getEngineByProduct(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+  depositInsurance: TypedContractMethod<
+    [tx: IEndpoint.DepositInsuranceStruct],
+    [void],
+    "nonpayable"
+  >;
 
-    getEngineByType(
-      engineType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+  getEndpoint: TypedContractMethod<[], [string], "view">;
 
-    getHealth(
-      subaccount: PromiseOrValue<BytesLike>,
-      healthType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+  getEngineByProduct: TypedContractMethod<
+    [productId: BigNumberish],
+    [string],
+    "view"
+  >;
 
-    getInsurance(overrides?: CallOverrides): Promise<[BigNumber]>;
+  getEngineByType: TypedContractMethod<
+    [engineType: BigNumberish],
+    [string],
+    "view"
+  >;
 
-    getMaxHealthGroup(overrides?: CallOverrides): Promise<[number]>;
+  getHealth: TypedContractMethod<
+    [subaccount: BytesLike, healthType: BigNumberish],
+    [bigint],
+    "view"
+  >;
 
-    getNumProducts(overrides?: CallOverrides): Promise<[number]>;
+  getInsurance: TypedContractMethod<[], [bigint], "view">;
 
-    getOraclePriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+  getMaxHealthGroup: TypedContractMethod<[], [bigint], "view">;
 
-    getOraclePricesX18(
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[IEndpoint.PricesStructOutput]>;
+  getNumProducts: TypedContractMethod<[], [bigint], "view">;
 
-    getOrderbook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+  getOraclePriceX18: TypedContractMethod<
+    [productId: BigNumberish],
+    [bigint],
+    "view"
+  >;
 
-    getQuote(overrides?: CallOverrides): Promise<[string]>;
+  getOraclePricesX18: TypedContractMethod<
+    [healthGroup: BigNumberish],
+    [IEndpoint.PricesStructOutput],
+    "view"
+  >;
 
-    getRisk(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[RiskHelper.RiskStructOutput]>;
+  getOrderbook: TypedContractMethod<
+    [productId: BigNumberish],
+    [string],
+    "view"
+  >;
 
-    getSupportedEngines(overrides?: CallOverrides): Promise<[number[]]>;
+  getQuote: TypedContractMethod<[], [string], "view">;
 
-    getVersion(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  getRisk: TypedContractMethod<
+    [productId: BigNumberish],
+    [RiskHelper.RiskStructOutput],
+    "view"
+  >;
 
-    liquidateSubaccount(
-      tx: IEndpoint.LiquidateSubaccountStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  getSupportedEngines: TypedContractMethod<[], [bigint[]], "view">;
 
-    mintLp(
-      tx: IEndpoint.MintLpStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  getVersion: TypedContractMethod<[], [bigint], "nonpayable">;
 
-    modifyProductConfig(
-      productId: PromiseOrValue<BigNumberish>,
+  liquidateSubaccount: TypedContractMethod<
+    [tx: IEndpoint.LiquidateSubaccountStruct],
+    [void],
+    "nonpayable"
+  >;
+
+  mintLp: TypedContractMethod<
+    [tx: IEndpoint.MintLpStruct],
+    [void],
+    "nonpayable"
+  >;
+
+  modifyProductConfig: TypedContractMethod<
+    [productId: BigNumberish, riskStore: IClearinghouseState.RiskStoreStruct],
+    [void],
+    "nonpayable"
+  >;
+
+  rebate: TypedContractMethod<
+    [tx: IEndpoint.RebateStruct],
+    [void],
+    "nonpayable"
+  >;
+
+  registerProductForId: TypedContractMethod<
+    [
+      book: AddressLike,
       riskStore: IClearinghouseState.RiskStoreStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+      healthGroup: BigNumberish
+    ],
+    [bigint],
+    "nonpayable"
+  >;
 
-    rebate(
-      tx: IEndpoint.RebateStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  settlePnl: TypedContractMethod<
+    [tx: IEndpoint.SettlePnlStruct],
+    [void],
+    "nonpayable"
+  >;
 
-    registerProductForId(
-      book: PromiseOrValue<string>,
+  updateFeeRates: TypedContractMethod<
+    [tx: IEndpoint.UpdateFeeRatesStruct],
+    [void],
+    "nonpayable"
+  >;
+
+  withdrawCollateral: TypedContractMethod<
+    [tx: IEndpoint.WithdrawCollateralStruct],
+    [void],
+    "nonpayable"
+  >;
+
+  getFunction<T extends ContractMethod = ContractMethod>(
+    key: string | FunctionFragment
+  ): T;
+
+  getFunction(
+    nameOrSignature: "addEngine"
+  ): TypedContractMethod<
+    [engine: AddressLike, engineType: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "burnLp"
+  ): TypedContractMethod<[tx: IEndpoint.BurnLpStruct], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "claimSequencerFees"
+  ): TypedContractMethod<
+    [tx: IEndpoint.ClaimSequencerFeesStruct, fees: BigNumberish[]],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "depositCollateral"
+  ): TypedContractMethod<
+    [tx: IEndpoint.DepositCollateralStruct],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "depositInsurance"
+  ): TypedContractMethod<
+    [tx: IEndpoint.DepositInsuranceStruct],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "getEndpoint"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "getEngineByProduct"
+  ): TypedContractMethod<[productId: BigNumberish], [string], "view">;
+  getFunction(
+    nameOrSignature: "getEngineByType"
+  ): TypedContractMethod<[engineType: BigNumberish], [string], "view">;
+  getFunction(
+    nameOrSignature: "getHealth"
+  ): TypedContractMethod<
+    [subaccount: BytesLike, healthType: BigNumberish],
+    [bigint],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getInsurance"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getMaxHealthGroup"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getNumProducts"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getOraclePriceX18"
+  ): TypedContractMethod<[productId: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getOraclePricesX18"
+  ): TypedContractMethod<
+    [healthGroup: BigNumberish],
+    [IEndpoint.PricesStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getOrderbook"
+  ): TypedContractMethod<[productId: BigNumberish], [string], "view">;
+  getFunction(
+    nameOrSignature: "getQuote"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "getRisk"
+  ): TypedContractMethod<
+    [productId: BigNumberish],
+    [RiskHelper.RiskStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getSupportedEngines"
+  ): TypedContractMethod<[], [bigint[]], "view">;
+  getFunction(
+    nameOrSignature: "getVersion"
+  ): TypedContractMethod<[], [bigint], "nonpayable">;
+  getFunction(
+    nameOrSignature: "liquidateSubaccount"
+  ): TypedContractMethod<
+    [tx: IEndpoint.LiquidateSubaccountStruct],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "mintLp"
+  ): TypedContractMethod<[tx: IEndpoint.MintLpStruct], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "modifyProductConfig"
+  ): TypedContractMethod<
+    [productId: BigNumberish, riskStore: IClearinghouseState.RiskStoreStruct],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "rebate"
+  ): TypedContractMethod<[tx: IEndpoint.RebateStruct], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "registerProductForId"
+  ): TypedContractMethod<
+    [
+      book: AddressLike,
       riskStore: IClearinghouseState.RiskStoreStruct,
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+      healthGroup: BigNumberish
+    ],
+    [bigint],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "settlePnl"
+  ): TypedContractMethod<[tx: IEndpoint.SettlePnlStruct], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "updateFeeRates"
+  ): TypedContractMethod<
+    [tx: IEndpoint.UpdateFeeRatesStruct],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "withdrawCollateral"
+  ): TypedContractMethod<
+    [tx: IEndpoint.WithdrawCollateralStruct],
+    [void],
+    "nonpayable"
+  >;
 
-    settlePnl(
-      tx: IEndpoint.SettlePnlStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    updateFeeRates(
-      tx: IEndpoint.UpdateFeeRatesStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    withdrawCollateral(
-      tx: IEndpoint.WithdrawCollateralStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-  };
-
-  addEngine(
-    engine: PromiseOrValue<string>,
-    engineType: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  burnLp(
-    tx: IEndpoint.BurnLpStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  claimSequencerFees(
-    tx: IEndpoint.ClaimSequencerFeesStruct,
-    fees: PromiseOrValue<BigNumberish>[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  depositCollateral(
-    tx: IEndpoint.DepositCollateralStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  depositInsurance(
-    tx: IEndpoint.DepositInsuranceStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  getEndpoint(overrides?: CallOverrides): Promise<string>;
-
-  getEngineByProduct(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  getEngineByType(
-    engineType: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  getHealth(
-    subaccount: PromiseOrValue<BytesLike>,
-    healthType: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getInsurance(overrides?: CallOverrides): Promise<BigNumber>;
-
-  getMaxHealthGroup(overrides?: CallOverrides): Promise<number>;
-
-  getNumProducts(overrides?: CallOverrides): Promise<number>;
-
-  getOraclePriceX18(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getOraclePricesX18(
-    healthGroup: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<IEndpoint.PricesStructOutput>;
-
-  getOrderbook(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  getQuote(overrides?: CallOverrides): Promise<string>;
-
-  getRisk(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<RiskHelper.RiskStructOutput>;
-
-  getSupportedEngines(overrides?: CallOverrides): Promise<number[]>;
-
-  getVersion(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  liquidateSubaccount(
-    tx: IEndpoint.LiquidateSubaccountStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  mintLp(
-    tx: IEndpoint.MintLpStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  modifyProductConfig(
-    productId: PromiseOrValue<BigNumberish>,
-    riskStore: IClearinghouseState.RiskStoreStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  rebate(
-    tx: IEndpoint.RebateStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  registerProductForId(
-    book: PromiseOrValue<string>,
-    riskStore: IClearinghouseState.RiskStoreStruct,
-    healthGroup: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  settlePnl(
-    tx: IEndpoint.SettlePnlStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  updateFeeRates(
-    tx: IEndpoint.UpdateFeeRatesStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  withdrawCollateral(
-    tx: IEndpoint.WithdrawCollateralStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  callStatic: {
-    addEngine(
-      engine: PromiseOrValue<string>,
-      engineType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    burnLp(
-      tx: IEndpoint.BurnLpStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    claimSequencerFees(
-      tx: IEndpoint.ClaimSequencerFeesStruct,
-      fees: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    depositCollateral(
-      tx: IEndpoint.DepositCollateralStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    depositInsurance(
-      tx: IEndpoint.DepositInsuranceStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    getEndpoint(overrides?: CallOverrides): Promise<string>;
-
-    getEngineByProduct(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    getEngineByType(
-      engineType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    getHealth(
-      subaccount: PromiseOrValue<BytesLike>,
-      healthType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getInsurance(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getMaxHealthGroup(overrides?: CallOverrides): Promise<number>;
-
-    getNumProducts(overrides?: CallOverrides): Promise<number>;
-
-    getOraclePriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getOraclePricesX18(
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<IEndpoint.PricesStructOutput>;
-
-    getOrderbook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    getQuote(overrides?: CallOverrides): Promise<string>;
-
-    getRisk(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<RiskHelper.RiskStructOutput>;
-
-    getSupportedEngines(overrides?: CallOverrides): Promise<number[]>;
-
-    getVersion(overrides?: CallOverrides): Promise<BigNumber>;
-
-    liquidateSubaccount(
-      tx: IEndpoint.LiquidateSubaccountStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    mintLp(
-      tx: IEndpoint.MintLpStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    modifyProductConfig(
-      productId: PromiseOrValue<BigNumberish>,
-      riskStore: IClearinghouseState.RiskStoreStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    rebate(
-      tx: IEndpoint.RebateStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    registerProductForId(
-      book: PromiseOrValue<string>,
-      riskStore: IClearinghouseState.RiskStoreStruct,
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<number>;
-
-    settlePnl(
-      tx: IEndpoint.SettlePnlStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    updateFeeRates(
-      tx: IEndpoint.UpdateFeeRatesStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    withdrawCollateral(
-      tx: IEndpoint.WithdrawCollateralStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
-  };
+  getEvent(
+    key: "ClearinghouseInitialized"
+  ): TypedContractEvent<
+    ClearinghouseInitializedEvent.InputTuple,
+    ClearinghouseInitializedEvent.OutputTuple,
+    ClearinghouseInitializedEvent.OutputObject
+  >;
+  getEvent(
+    key: "Liquidation"
+  ): TypedContractEvent<
+    LiquidationEvent.InputTuple,
+    LiquidationEvent.OutputTuple,
+    LiquidationEvent.OutputObject
+  >;
+  getEvent(
+    key: "ModifyCollateral"
+  ): TypedContractEvent<
+    ModifyCollateralEvent.InputTuple,
+    ModifyCollateralEvent.OutputTuple,
+    ModifyCollateralEvent.OutputObject
+  >;
 
   filters: {
-    "ClearinghouseInitialized(address,address,address)"(
-      endpoint?: null,
-      quote?: null,
-      fees?: null
-    ): ClearinghouseInitializedEventFilter;
-    ClearinghouseInitialized(
-      endpoint?: null,
-      quote?: null,
-      fees?: null
-    ): ClearinghouseInitializedEventFilter;
+    "ClearinghouseInitialized(address,address,address)": TypedContractEvent<
+      ClearinghouseInitializedEvent.InputTuple,
+      ClearinghouseInitializedEvent.OutputTuple,
+      ClearinghouseInitializedEvent.OutputObject
+    >;
+    ClearinghouseInitialized: TypedContractEvent<
+      ClearinghouseInitializedEvent.InputTuple,
+      ClearinghouseInitializedEvent.OutputTuple,
+      ClearinghouseInitializedEvent.OutputObject
+    >;
 
-    "Liquidation(bytes32,bytes32,uint8,uint32,int128,int128,int128)"(
-      liquidatorSubaccount?: PromiseOrValue<BytesLike> | null,
-      liquidateeSubaccount?: PromiseOrValue<BytesLike> | null,
-      mode?: PromiseOrValue<BigNumberish> | null,
-      healthGroup?: null,
-      amount?: null,
-      amountQuote?: null,
-      insuranceCover?: null
-    ): LiquidationEventFilter;
-    Liquidation(
-      liquidatorSubaccount?: PromiseOrValue<BytesLike> | null,
-      liquidateeSubaccount?: PromiseOrValue<BytesLike> | null,
-      mode?: PromiseOrValue<BigNumberish> | null,
-      healthGroup?: null,
-      amount?: null,
-      amountQuote?: null,
-      insuranceCover?: null
-    ): LiquidationEventFilter;
+    "Liquidation(bytes32,bytes32,uint8,uint32,int128,int128,int128)": TypedContractEvent<
+      LiquidationEvent.InputTuple,
+      LiquidationEvent.OutputTuple,
+      LiquidationEvent.OutputObject
+    >;
+    Liquidation: TypedContractEvent<
+      LiquidationEvent.InputTuple,
+      LiquidationEvent.OutputTuple,
+      LiquidationEvent.OutputObject
+    >;
 
-    "ModifyCollateral(int128,bytes32,uint32)"(
-      amount?: null,
-      subaccount?: PromiseOrValue<BytesLike> | null,
-      productId?: null
-    ): ModifyCollateralEventFilter;
-    ModifyCollateral(
-      amount?: null,
-      subaccount?: PromiseOrValue<BytesLike> | null,
-      productId?: null
-    ): ModifyCollateralEventFilter;
-  };
-
-  estimateGas: {
-    addEngine(
-      engine: PromiseOrValue<string>,
-      engineType: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    burnLp(
-      tx: IEndpoint.BurnLpStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    claimSequencerFees(
-      tx: IEndpoint.ClaimSequencerFeesStruct,
-      fees: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    depositCollateral(
-      tx: IEndpoint.DepositCollateralStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    depositInsurance(
-      tx: IEndpoint.DepositInsuranceStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    getEndpoint(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getEngineByProduct(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getEngineByType(
-      engineType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getHealth(
-      subaccount: PromiseOrValue<BytesLike>,
-      healthType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getInsurance(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getMaxHealthGroup(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getNumProducts(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getOraclePriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getOraclePricesX18(
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getOrderbook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getQuote(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getRisk(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getSupportedEngines(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getVersion(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    liquidateSubaccount(
-      tx: IEndpoint.LiquidateSubaccountStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    mintLp(
-      tx: IEndpoint.MintLpStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    modifyProductConfig(
-      productId: PromiseOrValue<BigNumberish>,
-      riskStore: IClearinghouseState.RiskStoreStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    rebate(
-      tx: IEndpoint.RebateStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    registerProductForId(
-      book: PromiseOrValue<string>,
-      riskStore: IClearinghouseState.RiskStoreStruct,
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    settlePnl(
-      tx: IEndpoint.SettlePnlStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    updateFeeRates(
-      tx: IEndpoint.UpdateFeeRatesStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    withdrawCollateral(
-      tx: IEndpoint.WithdrawCollateralStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-  };
-
-  populateTransaction: {
-    addEngine(
-      engine: PromiseOrValue<string>,
-      engineType: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    burnLp(
-      tx: IEndpoint.BurnLpStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    claimSequencerFees(
-      tx: IEndpoint.ClaimSequencerFeesStruct,
-      fees: PromiseOrValue<BigNumberish>[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    depositCollateral(
-      tx: IEndpoint.DepositCollateralStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    depositInsurance(
-      tx: IEndpoint.DepositInsuranceStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    getEndpoint(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getEngineByProduct(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getEngineByType(
-      engineType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getHealth(
-      subaccount: PromiseOrValue<BytesLike>,
-      healthType: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getInsurance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getMaxHealthGroup(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getNumProducts(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getOraclePriceX18(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getOraclePricesX18(
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getOrderbook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getQuote(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getRisk(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getSupportedEngines(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getVersion(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    liquidateSubaccount(
-      tx: IEndpoint.LiquidateSubaccountStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    mintLp(
-      tx: IEndpoint.MintLpStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    modifyProductConfig(
-      productId: PromiseOrValue<BigNumberish>,
-      riskStore: IClearinghouseState.RiskStoreStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    rebate(
-      tx: IEndpoint.RebateStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    registerProductForId(
-      book: PromiseOrValue<string>,
-      riskStore: IClearinghouseState.RiskStoreStruct,
-      healthGroup: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    settlePnl(
-      tx: IEndpoint.SettlePnlStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    updateFeeRates(
-      tx: IEndpoint.UpdateFeeRatesStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    withdrawCollateral(
-      tx: IEndpoint.WithdrawCollateralStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    "ModifyCollateral(int128,bytes32,uint32)": TypedContractEvent<
+      ModifyCollateralEvent.InputTuple,
+      ModifyCollateralEvent.OutputTuple,
+      ModifyCollateralEvent.OutputObject
+    >;
+    ModifyCollateral: TypedContractEvent<
+      ModifyCollateralEvent.InputTuple,
+      ModifyCollateralEvent.OutputTuple,
+      ModifyCollateralEvent.OutputObject
+    >;
   };
 }

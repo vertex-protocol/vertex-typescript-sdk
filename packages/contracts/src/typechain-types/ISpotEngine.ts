@@ -3,153 +3,123 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumber,
   BigNumberish,
   BytesLike,
-  CallOverrides,
-  ContractTransaction,
-  Overrides,
-  PopulatedTransaction,
-  Signer,
-  utils,
-} from "ethers";
-import type {
   FunctionFragment,
   Result,
+  Interface,
   EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  AddressLike,
+  ContractRunner,
+  ContractMethod,
+  Listener,
+} from "ethers";
 import type {
-  TypedEventFilter,
-  TypedEvent,
+  TypedContractEvent,
+  TypedDeferredTopicFilter,
+  TypedEventLog,
+  TypedLogDescription,
   TypedListener,
-  OnEvent,
-  PromiseOrValue,
+  TypedContractMethod,
 } from "./common";
 
 export declare namespace IProductEngine {
   export type ProductDeltaStruct = {
-    productId: PromiseOrValue<BigNumberish>;
-    subaccount: PromiseOrValue<BytesLike>;
-    amountDelta: PromiseOrValue<BigNumberish>;
-    vQuoteDelta: PromiseOrValue<BigNumberish>;
+    productId: BigNumberish;
+    subaccount: BytesLike;
+    amountDelta: BigNumberish;
+    vQuoteDelta: BigNumberish;
   };
 
   export type ProductDeltaStructOutput = [
-    number,
-    string,
-    BigNumber,
-    BigNumber
+    productId: bigint,
+    subaccount: string,
+    amountDelta: bigint,
+    vQuoteDelta: bigint
   ] & {
-    productId: number;
+    productId: bigint;
     subaccount: string;
-    amountDelta: BigNumber;
-    vQuoteDelta: BigNumber;
+    amountDelta: bigint;
+    vQuoteDelta: bigint;
   };
 }
 
 export declare namespace ISpotEngine {
   export type BalanceStruct = {
-    amount: PromiseOrValue<BigNumberish>;
-    lastCumulativeMultiplierX18: PromiseOrValue<BigNumberish>;
+    amount: BigNumberish;
+    lastCumulativeMultiplierX18: BigNumberish;
   };
 
-  export type BalanceStructOutput = [BigNumber, BigNumber] & {
-    amount: BigNumber;
-    lastCumulativeMultiplierX18: BigNumber;
-  };
+  export type BalanceStructOutput = [
+    amount: bigint,
+    lastCumulativeMultiplierX18: bigint
+  ] & { amount: bigint; lastCumulativeMultiplierX18: bigint };
 
-  export type LpBalanceStruct = { amount: PromiseOrValue<BigNumberish> };
+  export type LpBalanceStruct = { amount: BigNumberish };
 
-  export type LpBalanceStructOutput = [BigNumber] & { amount: BigNumber };
+  export type LpBalanceStructOutput = [amount: bigint] & { amount: bigint };
 
   export type ConfigStruct = {
-    token: PromiseOrValue<string>;
-    interestInflectionUtilX18: PromiseOrValue<BigNumberish>;
-    interestFloorX18: PromiseOrValue<BigNumberish>;
-    interestSmallCapX18: PromiseOrValue<BigNumberish>;
-    interestLargeCapX18: PromiseOrValue<BigNumberish>;
+    token: AddressLike;
+    interestInflectionUtilX18: BigNumberish;
+    interestFloorX18: BigNumberish;
+    interestSmallCapX18: BigNumberish;
+    interestLargeCapX18: BigNumberish;
   };
 
   export type ConfigStructOutput = [
-    string,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
+    token: string,
+    interestInflectionUtilX18: bigint,
+    interestFloorX18: bigint,
+    interestSmallCapX18: bigint,
+    interestLargeCapX18: bigint
   ] & {
     token: string;
-    interestInflectionUtilX18: BigNumber;
-    interestFloorX18: BigNumber;
-    interestSmallCapX18: BigNumber;
-    interestLargeCapX18: BigNumber;
+    interestInflectionUtilX18: bigint;
+    interestFloorX18: bigint;
+    interestSmallCapX18: bigint;
+    interestLargeCapX18: bigint;
   };
 
   export type LpStateStruct = {
-    supply: PromiseOrValue<BigNumberish>;
+    supply: BigNumberish;
     quote: ISpotEngine.BalanceStruct;
     base: ISpotEngine.BalanceStruct;
   };
 
   export type LpStateStructOutput = [
-    BigNumber,
-    ISpotEngine.BalanceStructOutput,
-    ISpotEngine.BalanceStructOutput
+    supply: bigint,
+    quote: ISpotEngine.BalanceStructOutput,
+    base: ISpotEngine.BalanceStructOutput
   ] & {
-    supply: BigNumber;
+    supply: bigint;
     quote: ISpotEngine.BalanceStructOutput;
     base: ISpotEngine.BalanceStructOutput;
   };
 
   export type StateStruct = {
-    cumulativeDepositsMultiplierX18: PromiseOrValue<BigNumberish>;
-    cumulativeBorrowsMultiplierX18: PromiseOrValue<BigNumberish>;
-    totalDepositsNormalized: PromiseOrValue<BigNumberish>;
-    totalBorrowsNormalized: PromiseOrValue<BigNumberish>;
+    cumulativeDepositsMultiplierX18: BigNumberish;
+    cumulativeBorrowsMultiplierX18: BigNumberish;
+    totalDepositsNormalized: BigNumberish;
+    totalBorrowsNormalized: BigNumberish;
   };
 
   export type StateStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
+    cumulativeDepositsMultiplierX18: bigint,
+    cumulativeBorrowsMultiplierX18: bigint,
+    totalDepositsNormalized: bigint,
+    totalBorrowsNormalized: bigint
   ] & {
-    cumulativeDepositsMultiplierX18: BigNumber;
-    cumulativeBorrowsMultiplierX18: BigNumber;
-    totalDepositsNormalized: BigNumber;
-    totalBorrowsNormalized: BigNumber;
+    cumulativeDepositsMultiplierX18: bigint;
+    cumulativeBorrowsMultiplierX18: bigint;
+    totalDepositsNormalized: bigint;
+    totalBorrowsNormalized: bigint;
   };
 }
 
-export interface ISpotEngineInterface extends utils.Interface {
-  functions: {
-    "applyDeltas((uint32,bytes32,int128,int128)[])": FunctionFragment;
-    "burnLp(uint32,bytes32,int128)": FunctionFragment;
-    "decomposeLps(bytes32,bytes32,address)": FunctionFragment;
-    "getBalance(uint32,bytes32)": FunctionFragment;
-    "getBalances(uint32,bytes32)": FunctionFragment;
-    "getClearinghouse()": FunctionFragment;
-    "getConfig(uint32)": FunctionFragment;
-    "getEngineType()": FunctionFragment;
-    "getLpState(uint32)": FunctionFragment;
-    "getOrderbook(uint32)": FunctionFragment;
-    "getProductIds()": FunctionFragment;
-    "getStateAndBalance(uint32,bytes32)": FunctionFragment;
-    "getStatesAndBalances(uint32,bytes32)": FunctionFragment;
-    "getWithdrawFee(uint32)": FunctionFragment;
-    "hasBalance(uint32,bytes32)": FunctionFragment;
-    "initialize(address,address,address,address,address)": FunctionFragment;
-    "manualAssert(int128[],int128[])": FunctionFragment;
-    "mintLp(uint32,bytes32,int128,int128,int128)": FunctionFragment;
-    "socializeSubaccount(bytes32)": FunctionFragment;
-    "swapLp(uint32,int128,int128)": FunctionFragment;
-    "swapLp(uint32,int128,int128,int128,int128)": FunctionFragment;
-    "updateProduct(bytes)": FunctionFragment;
-    "updateStates(uint128)": FunctionFragment;
-  };
-
+export interface ISpotEngineInterface extends Interface {
   getFunction(
-    nameOrSignatureOrTopic:
+    nameOrSignature:
       | "applyDeltas"
       | "burnLp"
       | "decomposeLps"
@@ -175,33 +145,27 @@ export interface ISpotEngineInterface extends utils.Interface {
       | "updateStates"
   ): FunctionFragment;
 
+  getEvent(nameOrSignatureOrTopic: "AddProduct"): EventFragment;
+
   encodeFunctionData(
     functionFragment: "applyDeltas",
     values: [IProductEngine.ProductDeltaStruct[]]
   ): string;
   encodeFunctionData(
     functionFragment: "burnLp",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [BigNumberish, BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "decomposeLps",
-    values: [
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<string>
-    ]
+    values: [BytesLike, BytesLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getBalance",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getBalances",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getClearinghouse",
@@ -209,7 +173,7 @@ export interface ISpotEngineInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getConfig",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getEngineType",
@@ -217,11 +181,11 @@ export interface ISpotEngineInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getLpState",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getOrderbook",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getProductIds",
@@ -229,73 +193,57 @@ export interface ISpotEngineInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getStateAndBalance",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getStatesAndBalances",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getWithdrawFee",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "hasBalance",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>
-    ]
+    values: [AddressLike, AddressLike, AddressLike, AddressLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "manualAssert",
-    values: [PromiseOrValue<BigNumberish>[], PromiseOrValue<BigNumberish>[]]
+    values: [BigNumberish[], BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "mintLp",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [BigNumberish, BytesLike, BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "socializeSubaccount",
-    values: [PromiseOrValue<BytesLike>]
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "swapLp(uint32,int128,int128)",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "swapLp(uint32,int128,int128,int128,int128)",
     values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish
     ]
   ): string;
   encodeFunctionData(
     functionFragment: "updateProduct",
-    values: [PromiseOrValue<BytesLike>]
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "updateStates",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
 
   decodeFunctionResult(
@@ -369,738 +317,391 @@ export interface ISpotEngineInterface extends utils.Interface {
     functionFragment: "updateStates",
     data: BytesLike
   ): Result;
-
-  events: {
-    "AddProduct(uint32)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "AddProduct"): EventFragment;
 }
 
-export interface AddProductEventObject {
-  productId: number;
+export namespace AddProductEvent {
+  export type InputTuple = [productId: BigNumberish];
+  export type OutputTuple = [productId: bigint];
+  export interface OutputObject {
+    productId: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
-export type AddProductEvent = TypedEvent<[number], AddProductEventObject>;
-
-export type AddProductEventFilter = TypedEventFilter<AddProductEvent>;
 
 export interface ISpotEngine extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(runner?: ContractRunner | null): ISpotEngine;
+  waitForDeployment(): Promise<this>;
 
   interface: ISpotEngineInterface;
 
-  queryFilter<TEvent extends TypedEvent>(
-    event: TypedEventFilter<TEvent>,
+  queryFilter<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
+  queryFilter<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    fromBlockOrBlockhash?: string | number | undefined,
+    toBlock?: string | number | undefined
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  on<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  on<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-  functions: {
-    applyDeltas(
-      deltas: IProductEngine.ProductDeltaStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  once<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  once<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-    burnLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountLp: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  listeners<TCEvent extends TypedContractEvent>(
+    event: TCEvent
+  ): Promise<Array<TypedListener<TCEvent>>>;
+  listeners(eventName?: string): Promise<Array<Listener>>;
+  removeAllListeners<TCEvent extends TypedContractEvent>(
+    event?: TCEvent
+  ): Promise<this>;
 
-    decomposeLps(
-      liquidatee: PromiseOrValue<BytesLike>,
-      liquidator: PromiseOrValue<BytesLike>,
-      feeCalculator: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    getBalance(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<[ISpotEngine.BalanceStructOutput]>;
-
-    getBalances(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<
-      [ISpotEngine.LpBalanceStructOutput, ISpotEngine.BalanceStructOutput]
-    >;
-
-    getClearinghouse(overrides?: CallOverrides): Promise<[string]>;
-
-    getConfig(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[ISpotEngine.ConfigStructOutput]>;
-
-    getEngineType(overrides?: CallOverrides): Promise<[number]>;
-
-    getLpState(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[ISpotEngine.LpStateStructOutput]>;
-
-    getOrderbook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    getProductIds(overrides?: CallOverrides): Promise<[number[]]>;
-
-    getStateAndBalance(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<
-      [ISpotEngine.StateStructOutput, ISpotEngine.BalanceStructOutput]
-    >;
-
-    getStatesAndBalances(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<
-      [
-        ISpotEngine.LpStateStructOutput,
-        ISpotEngine.LpBalanceStructOutput,
-        ISpotEngine.StateStructOutput,
-        ISpotEngine.BalanceStructOutput
-      ]
-    >;
-
-    getWithdrawFee(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    hasBalance(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      _quote: PromiseOrValue<string>,
-      _endpoint: PromiseOrValue<string>,
-      _admin: PromiseOrValue<string>,
-      _fees: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    manualAssert(
-      totalDeposits: PromiseOrValue<BigNumberish>[],
-      totalBorrows: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    mintLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountBase: PromiseOrValue<BigNumberish>,
-      quoteAmountLow: PromiseOrValue<BigNumberish>,
-      quoteAmountHigh: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    socializeSubaccount(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    "swapLp(uint32,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      baseDelta: PromiseOrValue<BigNumberish>,
-      quoteDelta: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    "swapLp(uint32,int128,int128,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      priceX18: PromiseOrValue<BigNumberish>,
-      sizeIncrement: PromiseOrValue<BigNumberish>,
-      lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    updateProduct(
-      txn: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    updateStates(
-      dt: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-  };
-
-  applyDeltas(
-    deltas: IProductEngine.ProductDeltaStruct[],
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  burnLp(
-    productId: PromiseOrValue<BigNumberish>,
-    subaccount: PromiseOrValue<BytesLike>,
-    amountLp: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  decomposeLps(
-    liquidatee: PromiseOrValue<BytesLike>,
-    liquidator: PromiseOrValue<BytesLike>,
-    feeCalculator: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  getBalance(
-    productId: PromiseOrValue<BigNumberish>,
-    subaccount: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
-  ): Promise<ISpotEngine.BalanceStructOutput>;
-
-  getBalances(
-    productId: PromiseOrValue<BigNumberish>,
-    subaccount: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
-  ): Promise<
-    [ISpotEngine.LpBalanceStructOutput, ISpotEngine.BalanceStructOutput]
+  applyDeltas: TypedContractMethod<
+    [deltas: IProductEngine.ProductDeltaStruct[]],
+    [void],
+    "nonpayable"
   >;
 
-  getClearinghouse(overrides?: CallOverrides): Promise<string>;
+  burnLp: TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
+    [bigint],
+    "nonpayable"
+  >;
 
-  getConfig(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<ISpotEngine.ConfigStructOutput>;
+  decomposeLps: TypedContractMethod<
+    [liquidatee: BytesLike, liquidator: BytesLike, feeCalculator: AddressLike],
+    [bigint],
+    "nonpayable"
+  >;
 
-  getEngineType(overrides?: CallOverrides): Promise<number>;
+  getBalance: TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike],
+    [ISpotEngine.BalanceStructOutput],
+    "view"
+  >;
 
-  getLpState(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<ISpotEngine.LpStateStructOutput>;
+  getBalances: TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike],
+    [[ISpotEngine.LpBalanceStructOutput, ISpotEngine.BalanceStructOutput]],
+    "view"
+  >;
 
-  getOrderbook(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<string>;
+  getClearinghouse: TypedContractMethod<[], [string], "view">;
 
-  getProductIds(overrides?: CallOverrides): Promise<number[]>;
+  getConfig: TypedContractMethod<
+    [productId: BigNumberish],
+    [ISpotEngine.ConfigStructOutput],
+    "view"
+  >;
 
-  getStateAndBalance(
-    productId: PromiseOrValue<BigNumberish>,
-    subaccount: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
-  ): Promise<[ISpotEngine.StateStructOutput, ISpotEngine.BalanceStructOutput]>;
+  getEngineType: TypedContractMethod<[], [bigint], "view">;
 
-  getStatesAndBalances(
-    productId: PromiseOrValue<BigNumberish>,
-    subaccount: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
-  ): Promise<
+  getLpState: TypedContractMethod<
+    [productId: BigNumberish],
+    [ISpotEngine.LpStateStructOutput],
+    "view"
+  >;
+
+  getOrderbook: TypedContractMethod<
+    [productId: BigNumberish],
+    [string],
+    "view"
+  >;
+
+  getProductIds: TypedContractMethod<[], [bigint[]], "view">;
+
+  getStateAndBalance: TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike],
+    [[ISpotEngine.StateStructOutput, ISpotEngine.BalanceStructOutput]],
+    "view"
+  >;
+
+  getStatesAndBalances: TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike],
     [
-      ISpotEngine.LpStateStructOutput,
-      ISpotEngine.LpBalanceStructOutput,
-      ISpotEngine.StateStructOutput,
-      ISpotEngine.BalanceStructOutput
-    ]
-  >;
-
-  getWithdrawFee(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  hasBalance(
-    productId: PromiseOrValue<BigNumberish>,
-    subaccount: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  initialize(
-    _clearinghouse: PromiseOrValue<string>,
-    _quote: PromiseOrValue<string>,
-    _endpoint: PromiseOrValue<string>,
-    _admin: PromiseOrValue<string>,
-    _fees: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  manualAssert(
-    totalDeposits: PromiseOrValue<BigNumberish>[],
-    totalBorrows: PromiseOrValue<BigNumberish>[],
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  mintLp(
-    productId: PromiseOrValue<BigNumberish>,
-    subaccount: PromiseOrValue<BytesLike>,
-    amountBase: PromiseOrValue<BigNumberish>,
-    quoteAmountLow: PromiseOrValue<BigNumberish>,
-    quoteAmountHigh: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  socializeSubaccount(
-    subaccount: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  "swapLp(uint32,int128,int128)"(
-    productId: PromiseOrValue<BigNumberish>,
-    baseDelta: PromiseOrValue<BigNumberish>,
-    quoteDelta: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  "swapLp(uint32,int128,int128,int128,int128)"(
-    productId: PromiseOrValue<BigNumberish>,
-    amount: PromiseOrValue<BigNumberish>,
-    priceX18: PromiseOrValue<BigNumberish>,
-    sizeIncrement: PromiseOrValue<BigNumberish>,
-    lpSpreadX18: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  updateProduct(
-    txn: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  updateStates(
-    dt: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  callStatic: {
-    applyDeltas(
-      deltas: IProductEngine.ProductDeltaStruct[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    burnLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountLp: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    decomposeLps(
-      liquidatee: PromiseOrValue<BytesLike>,
-      liquidator: PromiseOrValue<BytesLike>,
-      feeCalculator: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getBalance(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<ISpotEngine.BalanceStructOutput>;
-
-    getBalances(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<
-      [ISpotEngine.LpBalanceStructOutput, ISpotEngine.BalanceStructOutput]
-    >;
-
-    getClearinghouse(overrides?: CallOverrides): Promise<string>;
-
-    getConfig(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<ISpotEngine.ConfigStructOutput>;
-
-    getEngineType(overrides?: CallOverrides): Promise<number>;
-
-    getLpState(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<ISpotEngine.LpStateStructOutput>;
-
-    getOrderbook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    getProductIds(overrides?: CallOverrides): Promise<number[]>;
-
-    getStateAndBalance(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<
-      [ISpotEngine.StateStructOutput, ISpotEngine.BalanceStructOutput]
-    >;
-
-    getStatesAndBalances(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<
       [
         ISpotEngine.LpStateStructOutput,
         ISpotEngine.LpBalanceStructOutput,
         ISpotEngine.StateStructOutput,
         ISpotEngine.BalanceStructOutput
       ]
-    >;
+    ],
+    "view"
+  >;
 
-    getWithdrawFee(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+  getWithdrawFee: TypedContractMethod<
+    [productId: BigNumberish],
+    [bigint],
+    "view"
+  >;
 
-    hasBalance(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+  hasBalance: TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike],
+    [boolean],
+    "view"
+  >;
 
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      _quote: PromiseOrValue<string>,
-      _endpoint: PromiseOrValue<string>,
-      _admin: PromiseOrValue<string>,
-      _fees: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+  initialize: TypedContractMethod<
+    [
+      _clearinghouse: AddressLike,
+      _quote: AddressLike,
+      _endpoint: AddressLike,
+      _admin: AddressLike,
+      _fees: AddressLike
+    ],
+    [void],
+    "nonpayable"
+  >;
 
-    manualAssert(
-      totalDeposits: PromiseOrValue<BigNumberish>[],
-      totalBorrows: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<void>;
+  manualAssert: TypedContractMethod<
+    [totalDeposits: BigNumberish[], totalBorrows: BigNumberish[]],
+    [void],
+    "view"
+  >;
 
-    mintLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountBase: PromiseOrValue<BigNumberish>,
-      quoteAmountLow: PromiseOrValue<BigNumberish>,
-      quoteAmountHigh: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+  mintLp: TypedContractMethod<
+    [
+      productId: BigNumberish,
+      subaccount: BytesLike,
+      amountBase: BigNumberish,
+      quoteAmountLow: BigNumberish,
+      quoteAmountHigh: BigNumberish
+    ],
+    [void],
+    "nonpayable"
+  >;
 
-    socializeSubaccount(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+  socializeSubaccount: TypedContractMethod<
+    [subaccount: BytesLike],
+    [void],
+    "nonpayable"
+  >;
 
-    "swapLp(uint32,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      baseDelta: PromiseOrValue<BigNumberish>,
-      quoteDelta: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber]>;
+  "swapLp(uint32,int128,int128)": TypedContractMethod<
+    [
+      productId: BigNumberish,
+      baseDelta: BigNumberish,
+      quoteDelta: BigNumberish
+    ],
+    [[bigint, bigint]],
+    "nonpayable"
+  >;
 
-    "swapLp(uint32,int128,int128,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      priceX18: PromiseOrValue<BigNumberish>,
-      sizeIncrement: PromiseOrValue<BigNumberish>,
-      lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber]>;
+  "swapLp(uint32,int128,int128,int128,int128)": TypedContractMethod<
+    [
+      productId: BigNumberish,
+      amount: BigNumberish,
+      priceX18: BigNumberish,
+      sizeIncrement: BigNumberish,
+      lpSpreadX18: BigNumberish
+    ],
+    [[bigint, bigint]],
+    "nonpayable"
+  >;
 
-    updateProduct(
-      txn: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+  updateProduct: TypedContractMethod<[txn: BytesLike], [void], "nonpayable">;
 
-    updateStates(
-      dt: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-  };
+  updateStates: TypedContractMethod<[dt: BigNumberish], [void], "nonpayable">;
+
+  getFunction<T extends ContractMethod = ContractMethod>(
+    key: string | FunctionFragment
+  ): T;
+
+  getFunction(
+    nameOrSignature: "applyDeltas"
+  ): TypedContractMethod<
+    [deltas: IProductEngine.ProductDeltaStruct[]],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "burnLp"
+  ): TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
+    [bigint],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "decomposeLps"
+  ): TypedContractMethod<
+    [liquidatee: BytesLike, liquidator: BytesLike, feeCalculator: AddressLike],
+    [bigint],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "getBalance"
+  ): TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike],
+    [ISpotEngine.BalanceStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getBalances"
+  ): TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike],
+    [[ISpotEngine.LpBalanceStructOutput, ISpotEngine.BalanceStructOutput]],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getClearinghouse"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "getConfig"
+  ): TypedContractMethod<
+    [productId: BigNumberish],
+    [ISpotEngine.ConfigStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getEngineType"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getLpState"
+  ): TypedContractMethod<
+    [productId: BigNumberish],
+    [ISpotEngine.LpStateStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getOrderbook"
+  ): TypedContractMethod<[productId: BigNumberish], [string], "view">;
+  getFunction(
+    nameOrSignature: "getProductIds"
+  ): TypedContractMethod<[], [bigint[]], "view">;
+  getFunction(
+    nameOrSignature: "getStateAndBalance"
+  ): TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike],
+    [[ISpotEngine.StateStructOutput, ISpotEngine.BalanceStructOutput]],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getStatesAndBalances"
+  ): TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike],
+    [
+      [
+        ISpotEngine.LpStateStructOutput,
+        ISpotEngine.LpBalanceStructOutput,
+        ISpotEngine.StateStructOutput,
+        ISpotEngine.BalanceStructOutput
+      ]
+    ],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getWithdrawFee"
+  ): TypedContractMethod<[productId: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "hasBalance"
+  ): TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike],
+    [boolean],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "initialize"
+  ): TypedContractMethod<
+    [
+      _clearinghouse: AddressLike,
+      _quote: AddressLike,
+      _endpoint: AddressLike,
+      _admin: AddressLike,
+      _fees: AddressLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "manualAssert"
+  ): TypedContractMethod<
+    [totalDeposits: BigNumberish[], totalBorrows: BigNumberish[]],
+    [void],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "mintLp"
+  ): TypedContractMethod<
+    [
+      productId: BigNumberish,
+      subaccount: BytesLike,
+      amountBase: BigNumberish,
+      quoteAmountLow: BigNumberish,
+      quoteAmountHigh: BigNumberish
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "socializeSubaccount"
+  ): TypedContractMethod<[subaccount: BytesLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "swapLp(uint32,int128,int128)"
+  ): TypedContractMethod<
+    [
+      productId: BigNumberish,
+      baseDelta: BigNumberish,
+      quoteDelta: BigNumberish
+    ],
+    [[bigint, bigint]],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "swapLp(uint32,int128,int128,int128,int128)"
+  ): TypedContractMethod<
+    [
+      productId: BigNumberish,
+      amount: BigNumberish,
+      priceX18: BigNumberish,
+      sizeIncrement: BigNumberish,
+      lpSpreadX18: BigNumberish
+    ],
+    [[bigint, bigint]],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "updateProduct"
+  ): TypedContractMethod<[txn: BytesLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "updateStates"
+  ): TypedContractMethod<[dt: BigNumberish], [void], "nonpayable">;
+
+  getEvent(
+    key: "AddProduct"
+  ): TypedContractEvent<
+    AddProductEvent.InputTuple,
+    AddProductEvent.OutputTuple,
+    AddProductEvent.OutputObject
+  >;
 
   filters: {
-    "AddProduct(uint32)"(productId?: null): AddProductEventFilter;
-    AddProduct(productId?: null): AddProductEventFilter;
-  };
-
-  estimateGas: {
-    applyDeltas(
-      deltas: IProductEngine.ProductDeltaStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    burnLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountLp: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    decomposeLps(
-      liquidatee: PromiseOrValue<BytesLike>,
-      liquidator: PromiseOrValue<BytesLike>,
-      feeCalculator: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    getBalance(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getBalances(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getClearinghouse(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getConfig(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getEngineType(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getLpState(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getOrderbook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getProductIds(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getStateAndBalance(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getStatesAndBalances(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getWithdrawFee(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    hasBalance(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      _quote: PromiseOrValue<string>,
-      _endpoint: PromiseOrValue<string>,
-      _admin: PromiseOrValue<string>,
-      _fees: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    manualAssert(
-      totalDeposits: PromiseOrValue<BigNumberish>[],
-      totalBorrows: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    mintLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountBase: PromiseOrValue<BigNumberish>,
-      quoteAmountLow: PromiseOrValue<BigNumberish>,
-      quoteAmountHigh: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    socializeSubaccount(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    "swapLp(uint32,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      baseDelta: PromiseOrValue<BigNumberish>,
-      quoteDelta: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    "swapLp(uint32,int128,int128,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      priceX18: PromiseOrValue<BigNumberish>,
-      sizeIncrement: PromiseOrValue<BigNumberish>,
-      lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    updateProduct(
-      txn: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    updateStates(
-      dt: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-  };
-
-  populateTransaction: {
-    applyDeltas(
-      deltas: IProductEngine.ProductDeltaStruct[],
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    burnLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountLp: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    decomposeLps(
-      liquidatee: PromiseOrValue<BytesLike>,
-      liquidator: PromiseOrValue<BytesLike>,
-      feeCalculator: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    getBalance(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getBalances(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getClearinghouse(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getConfig(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getEngineType(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getLpState(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getOrderbook(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getProductIds(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getStateAndBalance(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getStatesAndBalances(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getWithdrawFee(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    hasBalance(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      _quote: PromiseOrValue<string>,
-      _endpoint: PromiseOrValue<string>,
-      _admin: PromiseOrValue<string>,
-      _fees: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    manualAssert(
-      totalDeposits: PromiseOrValue<BigNumberish>[],
-      totalBorrows: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    mintLp(
-      productId: PromiseOrValue<BigNumberish>,
-      subaccount: PromiseOrValue<BytesLike>,
-      amountBase: PromiseOrValue<BigNumberish>,
-      quoteAmountLow: PromiseOrValue<BigNumberish>,
-      quoteAmountHigh: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    socializeSubaccount(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    "swapLp(uint32,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      baseDelta: PromiseOrValue<BigNumberish>,
-      quoteDelta: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    "swapLp(uint32,int128,int128,int128,int128)"(
-      productId: PromiseOrValue<BigNumberish>,
-      amount: PromiseOrValue<BigNumberish>,
-      priceX18: PromiseOrValue<BigNumberish>,
-      sizeIncrement: PromiseOrValue<BigNumberish>,
-      lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    updateProduct(
-      txn: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    updateStates(
-      dt: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    "AddProduct(uint32)": TypedContractEvent<
+      AddProductEvent.InputTuple,
+      AddProductEvent.OutputTuple,
+      AddProductEvent.OutputObject
+    >;
+    AddProduct: TypedContractEvent<
+      AddProductEvent.InputTuple,
+      AddProductEvent.OutputTuple,
+      AddProductEvent.OutputObject
+    >;
   };
 }

@@ -1,4 +1,6 @@
-import { BigNumberish, Bytes } from 'ethers';
+import { BigNumberish } from 'ethers';
+
+import { Bytes } from './bytes';
 
 export interface MintMockERC20Params {
   productId: BigNumberish;

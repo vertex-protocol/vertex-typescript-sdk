@@ -16,7 +16,7 @@
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "dev": "tsc -w",
-    "generate-types": "typechain --target ethers-v5 --out-dir 'src/typechain-types' './abis/*.json'"
+    "generate-types": "typechain --target ethers-v6 --out-dir 'src/typechain-types' './abis/*.json'"
   },
   "files": [
     "dist",
@@ -27,13 +27,13 @@
     "@vertex-protocol/utils": "^0.1.0-alpha.114"
   },
   "peerDependencies": {
-    "ethers": "^5.7.2"
+    "ethers": "^6.6.2"
   },
   "devDependencies": {
-    "@typechain/ethers-v5": "^10.2.0",
+    "@typechain/ethers-v6": "^0.4.0",
     "env-cmd": "^10.1.0",
-    "ethers": "^5.7.2",
-    "typechain": "^8.1.1"
+    "ethers": "^6.6.2",
+    "typechain": "^8.2.0"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",

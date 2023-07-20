@@ -9,6 +9,7 @@ import {
   ProductOrdersCancellationParams,
   WithdrawCollateralParams,
 } from './signatureParamTypes';
+import { BigNumberish } from 'ethers';
 
 type WithEIP712Sender<
   T extends { subaccountOwner: string; subaccountName: string },
@@ -33,7 +34,7 @@ export type EIP712LiquidateSubaccountValues = Omit<
 };
 
 export type EIP712OrderValues = Omit<WithEIP712Sender<OrderParams>, 'price'> & {
-  priceX18: string;
+  priceX18: BigNumberish;
 };
 
 export type EIP712ListTriggerOrdersValues =

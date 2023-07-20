@@ -1,7 +1,6 @@
 import { RunContext } from '../utils/types';
 import {
-  bytesToStr,
-  getExpirationTimestamp,
+  getChainIdFromSigner,
   getOrderNonce,
 } from '@vertex-protocol/contracts';
 import { toFixedPoint } from '@vertex-protocol/utils';
@@ -11,6 +10,7 @@ import {
   getProductMetadataByProductId,
   PlaceOrderParams,
 } from '@vertex-protocol/client';
+import { getExpiration } from '../utils/getExpiration';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -18,7 +18,7 @@ async function fullSanity(context: RunContext) {
     signerOrProvider: signer,
   });
 
-  const chainId = await signer.getChainId();
+  const chainId = await getChainIdFromSigner(signer);
 
   console.log('Minting tokens...');
   const mintTx = await vertexClient.spot._mintMockERC20({
@@ -45,7 +45,9 @@ async function fullSanity(context: RunContext) {
   await depositWithReferralTx.wait();
 
   const referralCode =
-    await vertexClient.context.contracts.endpoint.referralCodes(signer.address);
+    await vertexClient.context.contracts.endpoint.referralCodes(
+      await signer.getAddress(),
+    );
 
   console.log('Referral code:', referralCode);
 
@@ -62,10 +64,10 @@ async function fullSanity(context: RunContext) {
 
   const orderParams: PlaceOrderParams['order'] = {
     subaccountName: 'default',
-    expiration: getExpirationTimestamp('post_only', Date.now() / 1000 + 60),
+    expiration: getExpiration('post_only', 60).toString(),
     // Limit price
     price: 2000,
-    amount: toFixedPoint(-3.5),
+    amount: toFixedPoint(-3.5).toString(),
   };
 
   const orderResult = await vertexClient.market.placeOrder({

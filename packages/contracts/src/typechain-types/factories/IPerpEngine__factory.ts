@@ -2,8 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import { Contract, Interface, type ContractRunner } from "ethers";
 import type { IPerpEngine, IPerpEngineInterface } from "../IPerpEngine";
 
 const _abi = [
@@ -912,12 +911,9 @@ const _abi = [
 export class IPerpEngine__factory {
   static readonly abi = _abi;
   static createInterface(): IPerpEngineInterface {
-    return new utils.Interface(_abi) as IPerpEngineInterface;
+    return new Interface(_abi) as IPerpEngineInterface;
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): IPerpEngine {
-    return new Contract(address, _abi, signerOrProvider) as IPerpEngine;
+  static connect(address: string, runner?: ContractRunner | null): IPerpEngine {
+    return new Contract(address, _abi, runner) as unknown as IPerpEngine;
   }
 }

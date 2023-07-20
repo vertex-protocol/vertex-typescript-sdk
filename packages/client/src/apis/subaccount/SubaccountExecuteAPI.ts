@@ -6,6 +6,7 @@ import {
 } from '@vertex-protocol/engine-client';
 import {
   createDeterministicLinkedSignerPrivateKey,
+  getChainIdFromSigner,
   Subaccount,
 } from '@vertex-protocol/contracts';
 import { Wallet } from 'ethers';
@@ -21,7 +22,7 @@ export class SubaccountExecuteAPI extends BaseVertexAPI {
   ) {
     return this.context.engineClient.liquidateSubaccount({
       subaccountOwner: await this.getChainSignerAddress(),
-      verifyingAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.getEndpointAddress(),
       ...params,
     });
   }
@@ -36,7 +37,7 @@ export class SubaccountExecuteAPI extends BaseVertexAPI {
   ) {
     return this.context.engineClient.linkSigner({
       subaccountOwner: await this.getChainSignerAddress(),
-      verifyingAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.getEndpointAddress(),
       ...params,
     });
   }
@@ -48,12 +49,13 @@ export class SubaccountExecuteAPI extends BaseVertexAPI {
     params: Pick<Subaccount, 'subaccountName'>,
   ) {
     const chainSigner = await this.getChainSigner();
-    const chainId = await chainSigner.getChainId();
+
+    const chainId = await getChainIdFromSigner(chainSigner);
     const address = await chainSigner.getAddress();
     const privateKey = await createDeterministicLinkedSignerPrivateKey({
       chainId,
       signer: chainSigner,
-      endpointAddress: this.context.contracts.endpoint.address,
+      endpointAddress: this.getEndpointAddress(),
       subaccountOwner: address,
       subaccountName: params.subaccountName,
     });

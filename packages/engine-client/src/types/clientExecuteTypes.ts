@@ -9,6 +9,7 @@ import {
   WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import { EngineServerExecuteResult } from './serverExecuteTypes';
+import { BigNumberish } from 'ethers';
 
 /**
  * Either verifying address or signature must be provided;
@@ -19,7 +20,7 @@ export type SignatureParams =
       // Endpoint address for all executes except order placement
       verifyingAddr: string;
       // Defaults to the chain ID of the engine signer
-      chainId?: number;
+      chainId?: BigNumberish;
     }
   | {
       signature: string;

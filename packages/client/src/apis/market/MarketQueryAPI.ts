@@ -9,8 +9,8 @@ import {
   GetEngineMarketPricesParams,
   GetEngineMaxMintLpAmountParams,
   GetEngineMaxOrderSizeParams,
-  GetEngineSubaccountProductOrdersParams,
   GetEngineSubaccountOrdersParams,
+  GetEngineSubaccountProductOrdersParams,
   ValidateEngineOrderParams,
 } from '@vertex-protocol/engine-client';
 import {
@@ -71,7 +71,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   async getTriggerOrders(params: GetTriggerOrdersParams) {
     return this.context.triggerClient.listTriggerOrders({
       ...params,
-      verifyingAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.getEndpointAddress(),
     });
   }
 

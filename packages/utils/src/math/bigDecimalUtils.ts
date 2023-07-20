@@ -1,5 +1,4 @@
-import { BigDecimal } from './bigDecimal';
-import { toBigDecimal } from './bigNumber';
+import { BigDecimal, toBigDecimal } from './bigDecimal';
 
 /**
  * Util function to sum BigDecimal values, inspired by Lodash

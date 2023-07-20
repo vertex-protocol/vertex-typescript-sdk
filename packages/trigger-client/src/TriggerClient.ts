@@ -14,6 +14,7 @@ import {
 } from './types';
 import axios, { AxiosResponse } from 'axios';
 import {
+  getChainIdFromSigner,
   getOrderNonce,
   getSignedTransactionRequest,
   getTriggerOrderNonce,
@@ -24,17 +25,17 @@ import {
   ProductOrdersCancellationParams,
   SignableRequestType,
   SignableRequestTypeToParams,
-  ValidVertexSigner,
 } from '@vertex-protocol/contracts';
 import { mapServerOrderInfo, mapTriggerCriteria } from './dataMappers';
+import { BigNumberish, Signer } from 'ethers';
 
 export interface TriggerClientOpts {
   // Server URL
   url: string;
   // Signer for EIP712 signing, if not provided, requests that require signatures will error
-  signer?: ValidVertexSigner;
+  signer?: Signer;
   // Linked signer registered through the engine, if provided, execute requests will use this signer
-  linkedSigner?: ValidVertexSigner;
+  linkedSigner?: Signer;
 }
 
 /**
@@ -52,7 +53,7 @@ export class TriggerClient {
    *
    * @param linkedSigner The linkedSigner to use for all signatures. Set to null to revert to the chain signer
    */
-  public setLinkedSigner(linkedSigner: ValidVertexSigner | null) {
+  public setLinkedSigner(linkedSigner: Signer | null) {
     this.opts.linkedSigner = linkedSigner ?? undefined;
   }
 
@@ -191,7 +192,7 @@ export class TriggerClient {
   protected async sign<T extends SignableRequestType>(
     requestType: T,
     verifyingContract: string,
-    chainId: number,
+    chainId: BigNumberish,
     params: SignableRequestTypeToParams[T],
   ) {
     // Use the linked signer if provided, otherwise use the default signer provided to the engine
@@ -209,15 +210,16 @@ export class TriggerClient {
   }
 
   protected async getChainIdIfNeeded(params: {
-    chainId?: number;
-  }): Promise<number> {
+    chainId?: BigNumberish;
+  }): Promise<BigNumberish> {
     if (params.chainId) {
       return params.chainId;
     }
-    if (!this.opts.signer) {
+    const signer = this.opts.signer;
+    if (!signer) {
       throw Error('No signer provided');
     }
-    return this.opts.signer.getChainId();
+    return getChainIdFromSigner(signer);
   }
 
   protected async execute<TRequestType extends TriggerServerExecuteRequestType>(

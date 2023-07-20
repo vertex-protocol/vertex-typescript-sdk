@@ -3,96 +3,92 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumber,
   BigNumberish,
   BytesLike,
-  CallOverrides,
-  ContractTransaction,
-  Overrides,
-  PopulatedTransaction,
-  Signer,
-  utils,
-} from "ethers";
-import type {
   FunctionFragment,
   Result,
+  Interface,
   EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  AddressLike,
+  ContractRunner,
+  ContractMethod,
+  Listener,
+} from "ethers";
 import type {
-  TypedEventFilter,
-  TypedEvent,
+  TypedContractEvent,
+  TypedDeferredTopicFilter,
+  TypedEventLog,
+  TypedLogDescription,
   TypedListener,
-  OnEvent,
-  PromiseOrValue,
+  TypedContractMethod,
 } from "./common";
 
 export declare namespace IEndpoint {
   export type OrderStruct = {
-    sender: PromiseOrValue<BytesLike>;
-    priceX18: PromiseOrValue<BigNumberish>;
-    amount: PromiseOrValue<BigNumberish>;
-    expiration: PromiseOrValue<BigNumberish>;
-    nonce: PromiseOrValue<BigNumberish>;
+    sender: BytesLike;
+    priceX18: BigNumberish;
+    amount: BigNumberish;
+    expiration: BigNumberish;
+    nonce: BigNumberish;
   };
 
   export type OrderStructOutput = [
-    string,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
+    sender: string,
+    priceX18: bigint,
+    amount: bigint,
+    expiration: bigint,
+    nonce: bigint
   ] & {
     sender: string;
-    priceX18: BigNumber;
-    amount: BigNumber;
-    expiration: BigNumber;
-    nonce: BigNumber;
+    priceX18: bigint;
+    amount: bigint;
+    expiration: bigint;
+    nonce: bigint;
   };
 
   export type SignedOrderStruct = {
     order: IEndpoint.OrderStruct;
-    signature: PromiseOrValue<BytesLike>;
+    signature: BytesLike;
   };
 
   export type SignedOrderStructOutput = [
-    IEndpoint.OrderStructOutput,
-    string
+    order: IEndpoint.OrderStructOutput,
+    signature: string
   ] & { order: IEndpoint.OrderStructOutput; signature: string };
 
   export type MatchOrderAMMStruct = {
-    productId: PromiseOrValue<BigNumberish>;
-    baseDelta: PromiseOrValue<BigNumberish>;
-    quoteDelta: PromiseOrValue<BigNumberish>;
+    productId: BigNumberish;
+    baseDelta: BigNumberish;
+    quoteDelta: BigNumberish;
     taker: IEndpoint.SignedOrderStruct;
   };
 
   export type MatchOrderAMMStructOutput = [
-    number,
-    BigNumber,
-    BigNumber,
-    IEndpoint.SignedOrderStructOutput
+    productId: bigint,
+    baseDelta: bigint,
+    quoteDelta: bigint,
+    taker: IEndpoint.SignedOrderStructOutput
   ] & {
-    productId: number;
-    baseDelta: BigNumber;
-    quoteDelta: BigNumber;
+    productId: bigint;
+    baseDelta: bigint;
+    quoteDelta: bigint;
     taker: IEndpoint.SignedOrderStructOutput;
   };
 
   export type MatchOrdersStruct = {
-    productId: PromiseOrValue<BigNumberish>;
-    amm: PromiseOrValue<boolean>;
+    productId: BigNumberish;
+    amm: boolean;
     taker: IEndpoint.SignedOrderStruct;
     maker: IEndpoint.SignedOrderStruct;
   };
 
   export type MatchOrdersStructOutput = [
-    number,
-    boolean,
-    IEndpoint.SignedOrderStructOutput,
-    IEndpoint.SignedOrderStructOutput
+    productId: bigint,
+    amm: boolean,
+    taker: IEndpoint.SignedOrderStructOutput,
+    maker: IEndpoint.SignedOrderStructOutput
   ] & {
-    productId: number;
+    productId: bigint;
     amm: boolean;
     taker: IEndpoint.SignedOrderStructOutput;
     maker: IEndpoint.SignedOrderStructOutput;
@@ -100,14 +96,14 @@ export declare namespace IEndpoint {
 
   export type MatchOrdersWithSignerStruct = {
     matchOrders: IEndpoint.MatchOrdersStruct;
-    takerLinkedSigner: PromiseOrValue<string>;
-    makerLinkedSigner: PromiseOrValue<string>;
+    takerLinkedSigner: AddressLike;
+    makerLinkedSigner: AddressLike;
   };
 
   export type MatchOrdersWithSignerStructOutput = [
-    IEndpoint.MatchOrdersStructOutput,
-    string,
-    string
+    matchOrders: IEndpoint.MatchOrdersStructOutput,
+    takerLinkedSigner: string,
+    makerLinkedSigner: string
   ] & {
     matchOrders: IEndpoint.MatchOrdersStructOutput;
     takerLinkedSigner: string;
@@ -115,64 +111,50 @@ export declare namespace IEndpoint {
   };
 
   export type SwapAMMStruct = {
-    sender: PromiseOrValue<BytesLike>;
-    productId: PromiseOrValue<BigNumberish>;
-    amount: PromiseOrValue<BigNumberish>;
-    priceX18: PromiseOrValue<BigNumberish>;
+    sender: BytesLike;
+    productId: BigNumberish;
+    amount: BigNumberish;
+    priceX18: BigNumberish;
   };
 
-  export type SwapAMMStructOutput = [string, number, BigNumber, BigNumber] & {
-    sender: string;
-    productId: number;
-    amount: BigNumber;
-    priceX18: BigNumber;
-  };
+  export type SwapAMMStructOutput = [
+    sender: string,
+    productId: bigint,
+    amount: bigint,
+    priceX18: bigint
+  ] & { sender: string; productId: bigint; amount: bigint; priceX18: bigint };
 }
 
 export declare namespace IOffchainBook {
   export type MarketStruct = {
-    productId: PromiseOrValue<BigNumberish>;
-    sizeIncrement: PromiseOrValue<BigNumberish>;
-    priceIncrementX18: PromiseOrValue<BigNumberish>;
-    lpSpreadX18: PromiseOrValue<BigNumberish>;
-    collectedFees: PromiseOrValue<BigNumberish>;
-    sequencerFees: PromiseOrValue<BigNumberish>;
+    productId: BigNumberish;
+    sizeIncrement: BigNumberish;
+    priceIncrementX18: BigNumberish;
+    lpSpreadX18: BigNumberish;
+    collectedFees: BigNumberish;
+    sequencerFees: BigNumberish;
   };
 
   export type MarketStructOutput = [
-    number,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
+    productId: bigint,
+    sizeIncrement: bigint,
+    priceIncrementX18: bigint,
+    lpSpreadX18: bigint,
+    collectedFees: bigint,
+    sequencerFees: bigint
   ] & {
-    productId: number;
-    sizeIncrement: BigNumber;
-    priceIncrementX18: BigNumber;
-    lpSpreadX18: BigNumber;
-    collectedFees: BigNumber;
-    sequencerFees: BigNumber;
+    productId: bigint;
+    sizeIncrement: bigint;
+    priceIncrementX18: bigint;
+    lpSpreadX18: bigint;
+    collectedFees: bigint;
+    sequencerFees: bigint;
   };
 }
 
-export interface IOffchainBookInterface extends utils.Interface {
-  functions: {
-    "claimSequencerFee()": FunctionFragment;
-    "dumpFees()": FunctionFragment;
-    "getDigest((bytes32,int128,int128,uint64,uint64))": FunctionFragment;
-    "getMarket()": FunctionFragment;
-    "getMinSize()": FunctionFragment;
-    "getVersion()": FunctionFragment;
-    "initialize(address,address,address,address,address,uint32,int128,int128,int128,int128)": FunctionFragment;
-    "matchOrderAMM((uint32,int128,int128,((bytes32,int128,int128,uint64,uint64),bytes)),address)": FunctionFragment;
-    "matchOrders(((uint32,bool,((bytes32,int128,int128,uint64,uint64),bytes),((bytes32,int128,int128,uint64,uint64),bytes)),address,address))": FunctionFragment;
-    "modifyConfig(int128,int128,int128,int128)": FunctionFragment;
-    "swapAMM((bytes32,uint32,int128,int128))": FunctionFragment;
-  };
-
+export interface IOffchainBookInterface extends Interface {
   getFunction(
-    nameOrSignatureOrTopic:
+    nameOrSignature:
       | "claimSequencerFee"
       | "dumpFees"
       | "getDigest"
@@ -185,6 +167,8 @@ export interface IOffchainBookInterface extends utils.Interface {
       | "modifyConfig"
       | "swapAMM"
   ): FunctionFragment;
+
+  getEvent(nameOrSignatureOrTopic: "FillOrder"): EventFragment;
 
   encodeFunctionData(
     functionFragment: "claimSequencerFee",
@@ -207,21 +191,21 @@ export interface IOffchainBookInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "initialize",
     values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
+      AddressLike,
+      AddressLike,
+      AddressLike,
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish
     ]
   ): string;
   encodeFunctionData(
     functionFragment: "matchOrderAMM",
-    values: [IEndpoint.MatchOrderAMMStruct, PromiseOrValue<string>]
+    values: [IEndpoint.MatchOrderAMMStruct, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "matchOrders",
@@ -229,12 +213,7 @@ export interface IOffchainBookInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "modifyConfig",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [BigNumberish, BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "swapAMM",
@@ -264,397 +243,248 @@ export interface IOffchainBookInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "swapAMM", data: BytesLike): Result;
-
-  events: {
-    "FillOrder(bytes32,bytes32,int128,int128,uint64,uint64,bool,int128,int128,int128)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "FillOrder"): EventFragment;
 }
 
-export interface FillOrderEventObject {
-  digest: string;
-  subaccount: string;
-  priceX18: BigNumber;
-  amount: BigNumber;
-  expiration: BigNumber;
-  nonce: BigNumber;
-  isTaker: boolean;
-  feeAmount: BigNumber;
-  baseDelta: BigNumber;
-  quoteDelta: BigNumber;
+export namespace FillOrderEvent {
+  export type InputTuple = [
+    digest: BytesLike,
+    subaccount: BytesLike,
+    priceX18: BigNumberish,
+    amount: BigNumberish,
+    expiration: BigNumberish,
+    nonce: BigNumberish,
+    isTaker: boolean,
+    feeAmount: BigNumberish,
+    baseDelta: BigNumberish,
+    quoteDelta: BigNumberish
+  ];
+  export type OutputTuple = [
+    digest: string,
+    subaccount: string,
+    priceX18: bigint,
+    amount: bigint,
+    expiration: bigint,
+    nonce: bigint,
+    isTaker: boolean,
+    feeAmount: bigint,
+    baseDelta: bigint,
+    quoteDelta: bigint
+  ];
+  export interface OutputObject {
+    digest: string;
+    subaccount: string;
+    priceX18: bigint;
+    amount: bigint;
+    expiration: bigint;
+    nonce: bigint;
+    isTaker: boolean;
+    feeAmount: bigint;
+    baseDelta: bigint;
+    quoteDelta: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
-export type FillOrderEvent = TypedEvent<
-  [
-    string,
-    string,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    boolean,
-    BigNumber,
-    BigNumber,
-    BigNumber
-  ],
-  FillOrderEventObject
->;
-
-export type FillOrderEventFilter = TypedEventFilter<FillOrderEvent>;
 
 export interface IOffchainBook extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(runner?: ContractRunner | null): IOffchainBook;
+  waitForDeployment(): Promise<this>;
 
   interface: IOffchainBookInterface;
 
-  queryFilter<TEvent extends TypedEvent>(
-    event: TypedEventFilter<TEvent>,
+  queryFilter<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
+  queryFilter<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    fromBlockOrBlockhash?: string | number | undefined,
+    toBlock?: string | number | undefined
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  on<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  on<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-  functions: {
-    claimSequencerFee(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  once<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  once<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-    dumpFees(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  listeners<TCEvent extends TypedContractEvent>(
+    event: TCEvent
+  ): Promise<Array<TypedListener<TCEvent>>>;
+  listeners(eventName?: string): Promise<Array<Listener>>;
+  removeAllListeners<TCEvent extends TypedContractEvent>(
+    event?: TCEvent
+  ): Promise<this>;
 
-    getDigest(
-      order: IEndpoint.OrderStruct,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+  claimSequencerFee: TypedContractMethod<[], [bigint], "nonpayable">;
 
-    getMarket(
-      overrides?: CallOverrides
-    ): Promise<[IOffchainBook.MarketStructOutput]>;
+  dumpFees: TypedContractMethod<[], [void], "nonpayable">;
 
-    getMinSize(overrides?: CallOverrides): Promise<[BigNumber]>;
+  getDigest: TypedContractMethod<
+    [order: IEndpoint.OrderStruct],
+    [string],
+    "view"
+  >;
 
-    getVersion(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  getMarket: TypedContractMethod<
+    [],
+    [IOffchainBook.MarketStructOutput],
+    "view"
+  >;
 
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      _engine: PromiseOrValue<string>,
-      _endpoint: PromiseOrValue<string>,
-      _admin: PromiseOrValue<string>,
-      _fees: PromiseOrValue<string>,
-      _productId: PromiseOrValue<BigNumberish>,
-      _sizeIncrement: PromiseOrValue<BigNumberish>,
-      _priceIncrementX18: PromiseOrValue<BigNumberish>,
-      _minSize: PromiseOrValue<BigNumberish>,
-      _lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  getMinSize: TypedContractMethod<[], [bigint], "view">;
 
-    matchOrderAMM(
-      tx: IEndpoint.MatchOrderAMMStruct,
-      takerLinkedSigner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  getVersion: TypedContractMethod<[], [bigint], "nonpayable">;
 
-    matchOrders(
-      tx: IEndpoint.MatchOrdersWithSignerStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  initialize: TypedContractMethod<
+    [
+      _clearinghouse: AddressLike,
+      _engine: AddressLike,
+      _endpoint: AddressLike,
+      _admin: AddressLike,
+      _fees: AddressLike,
+      _productId: BigNumberish,
+      _sizeIncrement: BigNumberish,
+      _priceIncrementX18: BigNumberish,
+      _minSize: BigNumberish,
+      _lpSpreadX18: BigNumberish
+    ],
+    [void],
+    "nonpayable"
+  >;
 
-    modifyConfig(
-      _sizeIncrement: PromiseOrValue<BigNumberish>,
-      _priceIncrementX18: PromiseOrValue<BigNumberish>,
-      _minSize: PromiseOrValue<BigNumberish>,
-      _lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+  matchOrderAMM: TypedContractMethod<
+    [tx: IEndpoint.MatchOrderAMMStruct, takerLinkedSigner: AddressLike],
+    [void],
+    "nonpayable"
+  >;
 
-    swapAMM(
-      tx: IEndpoint.SwapAMMStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-  };
+  matchOrders: TypedContractMethod<
+    [tx: IEndpoint.MatchOrdersWithSignerStruct],
+    [void],
+    "nonpayable"
+  >;
 
-  claimSequencerFee(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  modifyConfig: TypedContractMethod<
+    [
+      _sizeIncrement: BigNumberish,
+      _priceIncrementX18: BigNumberish,
+      _minSize: BigNumberish,
+      _lpSpreadX18: BigNumberish
+    ],
+    [void],
+    "nonpayable"
+  >;
 
-  dumpFees(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  swapAMM: TypedContractMethod<
+    [tx: IEndpoint.SwapAMMStruct],
+    [void],
+    "nonpayable"
+  >;
 
-  getDigest(
-    order: IEndpoint.OrderStruct,
-    overrides?: CallOverrides
-  ): Promise<string>;
+  getFunction<T extends ContractMethod = ContractMethod>(
+    key: string | FunctionFragment
+  ): T;
 
-  getMarket(
-    overrides?: CallOverrides
-  ): Promise<IOffchainBook.MarketStructOutput>;
+  getFunction(
+    nameOrSignature: "claimSequencerFee"
+  ): TypedContractMethod<[], [bigint], "nonpayable">;
+  getFunction(
+    nameOrSignature: "dumpFees"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "getDigest"
+  ): TypedContractMethod<[order: IEndpoint.OrderStruct], [string], "view">;
+  getFunction(
+    nameOrSignature: "getMarket"
+  ): TypedContractMethod<[], [IOffchainBook.MarketStructOutput], "view">;
+  getFunction(
+    nameOrSignature: "getMinSize"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getVersion"
+  ): TypedContractMethod<[], [bigint], "nonpayable">;
+  getFunction(
+    nameOrSignature: "initialize"
+  ): TypedContractMethod<
+    [
+      _clearinghouse: AddressLike,
+      _engine: AddressLike,
+      _endpoint: AddressLike,
+      _admin: AddressLike,
+      _fees: AddressLike,
+      _productId: BigNumberish,
+      _sizeIncrement: BigNumberish,
+      _priceIncrementX18: BigNumberish,
+      _minSize: BigNumberish,
+      _lpSpreadX18: BigNumberish
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "matchOrderAMM"
+  ): TypedContractMethod<
+    [tx: IEndpoint.MatchOrderAMMStruct, takerLinkedSigner: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "matchOrders"
+  ): TypedContractMethod<
+    [tx: IEndpoint.MatchOrdersWithSignerStruct],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "modifyConfig"
+  ): TypedContractMethod<
+    [
+      _sizeIncrement: BigNumberish,
+      _priceIncrementX18: BigNumberish,
+      _minSize: BigNumberish,
+      _lpSpreadX18: BigNumberish
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "swapAMM"
+  ): TypedContractMethod<[tx: IEndpoint.SwapAMMStruct], [void], "nonpayable">;
 
-  getMinSize(overrides?: CallOverrides): Promise<BigNumber>;
-
-  getVersion(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  initialize(
-    _clearinghouse: PromiseOrValue<string>,
-    _engine: PromiseOrValue<string>,
-    _endpoint: PromiseOrValue<string>,
-    _admin: PromiseOrValue<string>,
-    _fees: PromiseOrValue<string>,
-    _productId: PromiseOrValue<BigNumberish>,
-    _sizeIncrement: PromiseOrValue<BigNumberish>,
-    _priceIncrementX18: PromiseOrValue<BigNumberish>,
-    _minSize: PromiseOrValue<BigNumberish>,
-    _lpSpreadX18: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  matchOrderAMM(
-    tx: IEndpoint.MatchOrderAMMStruct,
-    takerLinkedSigner: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  matchOrders(
-    tx: IEndpoint.MatchOrdersWithSignerStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  modifyConfig(
-    _sizeIncrement: PromiseOrValue<BigNumberish>,
-    _priceIncrementX18: PromiseOrValue<BigNumberish>,
-    _minSize: PromiseOrValue<BigNumberish>,
-    _lpSpreadX18: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  swapAMM(
-    tx: IEndpoint.SwapAMMStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  callStatic: {
-    claimSequencerFee(overrides?: CallOverrides): Promise<BigNumber>;
-
-    dumpFees(overrides?: CallOverrides): Promise<void>;
-
-    getDigest(
-      order: IEndpoint.OrderStruct,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    getMarket(
-      overrides?: CallOverrides
-    ): Promise<IOffchainBook.MarketStructOutput>;
-
-    getMinSize(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getVersion(overrides?: CallOverrides): Promise<BigNumber>;
-
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      _engine: PromiseOrValue<string>,
-      _endpoint: PromiseOrValue<string>,
-      _admin: PromiseOrValue<string>,
-      _fees: PromiseOrValue<string>,
-      _productId: PromiseOrValue<BigNumberish>,
-      _sizeIncrement: PromiseOrValue<BigNumberish>,
-      _priceIncrementX18: PromiseOrValue<BigNumberish>,
-      _minSize: PromiseOrValue<BigNumberish>,
-      _lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    matchOrderAMM(
-      tx: IEndpoint.MatchOrderAMMStruct,
-      takerLinkedSigner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    matchOrders(
-      tx: IEndpoint.MatchOrdersWithSignerStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    modifyConfig(
-      _sizeIncrement: PromiseOrValue<BigNumberish>,
-      _priceIncrementX18: PromiseOrValue<BigNumberish>,
-      _minSize: PromiseOrValue<BigNumberish>,
-      _lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    swapAMM(
-      tx: IEndpoint.SwapAMMStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
-  };
+  getEvent(
+    key: "FillOrder"
+  ): TypedContractEvent<
+    FillOrderEvent.InputTuple,
+    FillOrderEvent.OutputTuple,
+    FillOrderEvent.OutputObject
+  >;
 
   filters: {
-    "FillOrder(bytes32,bytes32,int128,int128,uint64,uint64,bool,int128,int128,int128)"(
-      digest?: PromiseOrValue<BytesLike> | null,
-      subaccount?: PromiseOrValue<BytesLike> | null,
-      priceX18?: null,
-      amount?: null,
-      expiration?: null,
-      nonce?: null,
-      isTaker?: null,
-      feeAmount?: null,
-      baseDelta?: null,
-      quoteDelta?: null
-    ): FillOrderEventFilter;
-    FillOrder(
-      digest?: PromiseOrValue<BytesLike> | null,
-      subaccount?: PromiseOrValue<BytesLike> | null,
-      priceX18?: null,
-      amount?: null,
-      expiration?: null,
-      nonce?: null,
-      isTaker?: null,
-      feeAmount?: null,
-      baseDelta?: null,
-      quoteDelta?: null
-    ): FillOrderEventFilter;
-  };
-
-  estimateGas: {
-    claimSequencerFee(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    dumpFees(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    getDigest(
-      order: IEndpoint.OrderStruct,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getMarket(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getMinSize(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getVersion(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      _engine: PromiseOrValue<string>,
-      _endpoint: PromiseOrValue<string>,
-      _admin: PromiseOrValue<string>,
-      _fees: PromiseOrValue<string>,
-      _productId: PromiseOrValue<BigNumberish>,
-      _sizeIncrement: PromiseOrValue<BigNumberish>,
-      _priceIncrementX18: PromiseOrValue<BigNumberish>,
-      _minSize: PromiseOrValue<BigNumberish>,
-      _lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    matchOrderAMM(
-      tx: IEndpoint.MatchOrderAMMStruct,
-      takerLinkedSigner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    matchOrders(
-      tx: IEndpoint.MatchOrdersWithSignerStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    modifyConfig(
-      _sizeIncrement: PromiseOrValue<BigNumberish>,
-      _priceIncrementX18: PromiseOrValue<BigNumberish>,
-      _minSize: PromiseOrValue<BigNumberish>,
-      _lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    swapAMM(
-      tx: IEndpoint.SwapAMMStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-  };
-
-  populateTransaction: {
-    claimSequencerFee(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    dumpFees(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    getDigest(
-      order: IEndpoint.OrderStruct,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getMarket(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getMinSize(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getVersion(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      _engine: PromiseOrValue<string>,
-      _endpoint: PromiseOrValue<string>,
-      _admin: PromiseOrValue<string>,
-      _fees: PromiseOrValue<string>,
-      _productId: PromiseOrValue<BigNumberish>,
-      _sizeIncrement: PromiseOrValue<BigNumberish>,
-      _priceIncrementX18: PromiseOrValue<BigNumberish>,
-      _minSize: PromiseOrValue<BigNumberish>,
-      _lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    matchOrderAMM(
-      tx: IEndpoint.MatchOrderAMMStruct,
-      takerLinkedSigner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    matchOrders(
-      tx: IEndpoint.MatchOrdersWithSignerStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    modifyConfig(
-      _sizeIncrement: PromiseOrValue<BigNumberish>,
-      _priceIncrementX18: PromiseOrValue<BigNumberish>,
-      _minSize: PromiseOrValue<BigNumberish>,
-      _lpSpreadX18: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    swapAMM(
-      tx: IEndpoint.SwapAMMStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    "FillOrder(bytes32,bytes32,int128,int128,uint64,uint64,bool,int128,int128,int128)": TypedContractEvent<
+      FillOrderEvent.InputTuple,
+      FillOrderEvent.OutputTuple,
+      FillOrderEvent.OutputObject
+    >;
+    FillOrder: TypedContractEvent<
+      FillOrderEvent.InputTuple,
+      FillOrderEvent.OutputTuple,
+      FillOrderEvent.OutputObject
+    >;
   };
 }

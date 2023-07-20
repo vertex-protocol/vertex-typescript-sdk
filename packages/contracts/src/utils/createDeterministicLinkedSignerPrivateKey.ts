@@ -1,11 +1,11 @@
 import { Subaccount } from '../common';
-import { getVertexEIP712Domain, ValidVertexSigner } from '../eip712';
+import { getVertexEIP712Domain } from '../eip712';
 import { subaccountToHex } from './bytes32';
-import { keccak256 } from 'ethers/lib/utils';
+import { BigNumberish, keccak256, Signer } from 'ethers';
 
 interface Params extends Subaccount {
-  signer: ValidVertexSigner;
-  chainId: number;
+  signer: Signer;
+  chainId: BigNumberish;
   endpointAddress: string;
 }
 
@@ -22,7 +22,7 @@ export async function createDeterministicLinkedSignerPrivateKey(
   const { chainId, endpointAddress, signer, subaccountName, subaccountOwner } =
     params;
 
-  const signedMessage = await signer._signTypedData(
+  const signedMessage = await signer.signTypedData(
     getVertexEIP712Domain(endpointAddress, chainId),
     {
       CreateLinkedSignerWallet: [{ name: 'subaccount', type: 'bytes32' }],

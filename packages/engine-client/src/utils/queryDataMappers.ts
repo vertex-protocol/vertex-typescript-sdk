@@ -10,7 +10,7 @@ import {
   EngineServerSubaccountInfoResponse,
   GetEngineSubaccountSummaryResponse,
 } from '../types';
-import { fromX18, toBigDecimal, toEthersBN } from '@vertex-protocol/utils';
+import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import {
   BalanceHealthContributions,
   calcTotalBorrowed,
@@ -71,12 +71,12 @@ export function mapEngineServerSpotProduct(
       productId: product.product_id,
       type: ProductEngineType.SPOT,
       totalBorrowed: calcTotalBorrowed(
-        toEthersBN(product.state.total_borrows_normalized),
-        toEthersBN(product.state.cumulative_borrows_multiplier_x18),
+        product.state.total_borrows_normalized,
+        product.state.cumulative_borrows_multiplier_x18,
       ),
       totalDeposited: calcTotalDeposited(
-        toEthersBN(product.state.total_deposits_normalized),
-        toEthersBN(product.state.cumulative_deposits_multiplier_x18),
+        product.state.total_deposits_normalized,
+        product.state.cumulative_deposits_multiplier_x18,
       ),
       oraclePrice: fromX18(product.oracle_price_x18),
       interestFloor: fromX18(product.config.interest_floor_x18),

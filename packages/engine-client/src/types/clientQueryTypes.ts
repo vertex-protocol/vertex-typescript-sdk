@@ -13,6 +13,7 @@ import {
   EngineServerNoncesParams,
   EngineServerTimeResponse,
 } from './serverQueryTypes';
+import { BigNumberish } from 'ethers';
 
 export type GetEngineSubaccountSummaryParams = GetSubaccountSummaryParams;
 
@@ -49,7 +50,7 @@ export interface SubaccountProductDeltaTx {
 }
 
 export interface GetEngineContractsResponse {
-  chainId: string;
+  chainId: BigNumberish;
   endpointAddr: string;
   orderbookAddrs: string[];
 }
@@ -99,7 +100,7 @@ export interface ValidateSignedEngineOrderParams {
 export interface ValidateEngineOrderParams {
   productId: number;
   orderbookAddr: string;
-  chainId: number;
+  chainId: BigNumberish;
   order: OrderParams;
 }
 

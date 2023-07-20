@@ -23,7 +23,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
     const sender = await this.getChainSignerAddress();
 
     return this.context.engineClient.mintLp({
-      verifyingAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.getEndpointAddress(),
       subaccountOwner: sender,
       ...params,
     });
@@ -37,7 +37,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
     const sender = await this.getChainSignerAddress();
 
     return this.context.engineClient.burnLp({
-      verifyingAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.getEndpointAddress(),
       subaccountOwner: sender,
       ...params,
     });
@@ -74,7 +74,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
 
     return this.context.engineClient.cancelOrders({
       subaccountOwner: sender,
-      verifyingAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.getEndpointAddress(),
       ...params,
     });
   }
@@ -90,7 +90,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
 
     return this.context.engineClient.cancelProductOrders({
       subaccountOwner: sender,
-      verifyingAddr: this.context.contracts.endpoint.address,
+      verifyingAddr: this.getEndpointAddress(),
       ...params,
     });
   }
@@ -126,7 +126,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
       subaccountOwner: sender,
       verifyingAddr: params.verifyingAddr
         ? params.verifyingAddr
-        : this.context.contracts.endpoint.address,
+        : this.getEndpointAddress(),
       ...params,
     });
   }
@@ -142,7 +142,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
       subaccountOwner: sender,
       verifyingAddr: params.verifyingAddr
         ? params.verifyingAddr
-        : this.context.contracts.endpoint.address,
+        : this.getEndpointAddress(),
       ...params,
     });
   }

@@ -3,149 +3,147 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumber,
   BigNumberish,
   BytesLike,
-  CallOverrides,
-  ContractTransaction,
-  Overrides,
-  PopulatedTransaction,
-  Signer,
-  utils,
+  FunctionFragment,
+  Result,
+  Interface,
+  AddressLike,
+  ContractRunner,
+  ContractMethod,
+  Listener,
 } from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
 import type {
-  TypedEventFilter,
-  TypedEvent,
+  TypedContractEvent,
+  TypedDeferredTopicFilter,
+  TypedEventLog,
   TypedListener,
-  OnEvent,
-  PromiseOrValue,
+  TypedContractMethod,
 } from "./common";
 
 export declare namespace RiskHelper {
   export type RiskStruct = {
-    longWeightInitialX18: PromiseOrValue<BigNumberish>;
-    shortWeightInitialX18: PromiseOrValue<BigNumberish>;
-    longWeightMaintenanceX18: PromiseOrValue<BigNumberish>;
-    shortWeightMaintenanceX18: PromiseOrValue<BigNumberish>;
-    largePositionPenaltyX18: PromiseOrValue<BigNumberish>;
+    longWeightInitialX18: BigNumberish;
+    shortWeightInitialX18: BigNumberish;
+    longWeightMaintenanceX18: BigNumberish;
+    shortWeightMaintenanceX18: BigNumberish;
+    largePositionPenaltyX18: BigNumberish;
   };
 
   export type RiskStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
+    longWeightInitialX18: bigint,
+    shortWeightInitialX18: bigint,
+    longWeightMaintenanceX18: bigint,
+    shortWeightMaintenanceX18: bigint,
+    largePositionPenaltyX18: bigint
   ] & {
-    longWeightInitialX18: BigNumber;
-    shortWeightInitialX18: BigNumber;
-    longWeightMaintenanceX18: BigNumber;
-    shortWeightMaintenanceX18: BigNumber;
-    largePositionPenaltyX18: BigNumber;
+    longWeightInitialX18: bigint;
+    shortWeightInitialX18: bigint;
+    longWeightMaintenanceX18: bigint;
+    shortWeightMaintenanceX18: bigint;
+    largePositionPenaltyX18: bigint;
   };
 }
 
 export declare namespace ISpotEngine {
   export type ConfigStruct = {
-    token: PromiseOrValue<string>;
-    interestInflectionUtilX18: PromiseOrValue<BigNumberish>;
-    interestFloorX18: PromiseOrValue<BigNumberish>;
-    interestSmallCapX18: PromiseOrValue<BigNumberish>;
-    interestLargeCapX18: PromiseOrValue<BigNumberish>;
+    token: AddressLike;
+    interestInflectionUtilX18: BigNumberish;
+    interestFloorX18: BigNumberish;
+    interestSmallCapX18: BigNumberish;
+    interestLargeCapX18: BigNumberish;
   };
 
   export type ConfigStructOutput = [
-    string,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
+    token: string,
+    interestInflectionUtilX18: bigint,
+    interestFloorX18: bigint,
+    interestSmallCapX18: bigint,
+    interestLargeCapX18: bigint
   ] & {
     token: string;
-    interestInflectionUtilX18: BigNumber;
-    interestFloorX18: BigNumber;
-    interestSmallCapX18: BigNumber;
-    interestLargeCapX18: BigNumber;
+    interestInflectionUtilX18: bigint;
+    interestFloorX18: bigint;
+    interestSmallCapX18: bigint;
+    interestLargeCapX18: bigint;
   };
 
   export type StateStruct = {
-    cumulativeDepositsMultiplierX18: PromiseOrValue<BigNumberish>;
-    cumulativeBorrowsMultiplierX18: PromiseOrValue<BigNumberish>;
-    totalDepositsNormalized: PromiseOrValue<BigNumberish>;
-    totalBorrowsNormalized: PromiseOrValue<BigNumberish>;
+    cumulativeDepositsMultiplierX18: BigNumberish;
+    cumulativeBorrowsMultiplierX18: BigNumberish;
+    totalDepositsNormalized: BigNumberish;
+    totalBorrowsNormalized: BigNumberish;
   };
 
   export type StateStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
+    cumulativeDepositsMultiplierX18: bigint,
+    cumulativeBorrowsMultiplierX18: bigint,
+    totalDepositsNormalized: bigint,
+    totalBorrowsNormalized: bigint
   ] & {
-    cumulativeDepositsMultiplierX18: BigNumber;
-    cumulativeBorrowsMultiplierX18: BigNumber;
-    totalDepositsNormalized: BigNumber;
-    totalBorrowsNormalized: BigNumber;
+    cumulativeDepositsMultiplierX18: bigint;
+    cumulativeBorrowsMultiplierX18: bigint;
+    totalDepositsNormalized: bigint;
+    totalBorrowsNormalized: bigint;
   };
 
   export type BalanceStruct = {
-    amount: PromiseOrValue<BigNumberish>;
-    lastCumulativeMultiplierX18: PromiseOrValue<BigNumberish>;
+    amount: BigNumberish;
+    lastCumulativeMultiplierX18: BigNumberish;
   };
 
-  export type BalanceStructOutput = [BigNumber, BigNumber] & {
-    amount: BigNumber;
-    lastCumulativeMultiplierX18: BigNumber;
-  };
+  export type BalanceStructOutput = [
+    amount: bigint,
+    lastCumulativeMultiplierX18: bigint
+  ] & { amount: bigint; lastCumulativeMultiplierX18: bigint };
 
   export type LpStateStruct = {
-    supply: PromiseOrValue<BigNumberish>;
+    supply: BigNumberish;
     quote: ISpotEngine.BalanceStruct;
     base: ISpotEngine.BalanceStruct;
   };
 
   export type LpStateStructOutput = [
-    BigNumber,
-    ISpotEngine.BalanceStructOutput,
-    ISpotEngine.BalanceStructOutput
+    supply: bigint,
+    quote: ISpotEngine.BalanceStructOutput,
+    base: ISpotEngine.BalanceStructOutput
   ] & {
-    supply: BigNumber;
+    supply: bigint;
     quote: ISpotEngine.BalanceStructOutput;
     base: ISpotEngine.BalanceStructOutput;
   };
 
-  export type LpBalanceStruct = { amount: PromiseOrValue<BigNumberish> };
+  export type LpBalanceStruct = { amount: BigNumberish };
 
-  export type LpBalanceStructOutput = [BigNumber] & { amount: BigNumber };
+  export type LpBalanceStructOutput = [amount: bigint] & { amount: bigint };
 }
 
 export declare namespace FQuerier {
   export type BookInfoStruct = {
-    sizeIncrement: PromiseOrValue<BigNumberish>;
-    priceIncrementX18: PromiseOrValue<BigNumberish>;
-    minSize: PromiseOrValue<BigNumberish>;
-    collectedFees: PromiseOrValue<BigNumberish>;
-    lpSpreadX18: PromiseOrValue<BigNumberish>;
+    sizeIncrement: BigNumberish;
+    priceIncrementX18: BigNumberish;
+    minSize: BigNumberish;
+    collectedFees: BigNumberish;
+    lpSpreadX18: BigNumberish;
   };
 
   export type BookInfoStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
+    sizeIncrement: bigint,
+    priceIncrementX18: bigint,
+    minSize: bigint,
+    collectedFees: bigint,
+    lpSpreadX18: bigint
   ] & {
-    sizeIncrement: BigNumber;
-    priceIncrementX18: BigNumber;
-    minSize: BigNumber;
-    collectedFees: BigNumber;
-    lpSpreadX18: BigNumber;
+    sizeIncrement: bigint;
+    priceIncrementX18: bigint;
+    minSize: bigint;
+    collectedFees: bigint;
+    lpSpreadX18: bigint;
   };
 
   export type SpotProductStruct = {
-    productId: PromiseOrValue<BigNumberish>;
-    oraclePriceX18: PromiseOrValue<BigNumberish>;
+    productId: BigNumberish;
+    oraclePriceX18: BigNumberish;
     risk: RiskHelper.RiskStruct;
     config: ISpotEngine.ConfigStruct;
     state: ISpotEngine.StateStruct;
@@ -154,16 +152,16 @@ export declare namespace FQuerier {
   };
 
   export type SpotProductStructOutput = [
-    number,
-    BigNumber,
-    RiskHelper.RiskStructOutput,
-    ISpotEngine.ConfigStructOutput,
-    ISpotEngine.StateStructOutput,
-    ISpotEngine.LpStateStructOutput,
-    FQuerier.BookInfoStructOutput
+    productId: bigint,
+    oraclePriceX18: bigint,
+    risk: RiskHelper.RiskStructOutput,
+    config: ISpotEngine.ConfigStructOutput,
+    state: ISpotEngine.StateStructOutput,
+    lpState: ISpotEngine.LpStateStructOutput,
+    bookInfo: FQuerier.BookInfoStructOutput
   ] & {
-    productId: number;
-    oraclePriceX18: BigNumber;
+    productId: bigint;
+    oraclePriceX18: bigint;
     risk: RiskHelper.RiskStructOutput;
     config: ISpotEngine.ConfigStructOutput;
     state: ISpotEngine.StateStructOutput;
@@ -172,8 +170,8 @@ export declare namespace FQuerier {
   };
 
   export type PerpProductStruct = {
-    productId: PromiseOrValue<BigNumberish>;
-    oraclePriceX18: PromiseOrValue<BigNumberish>;
+    productId: BigNumberish;
+    oraclePriceX18: BigNumberish;
     risk: RiskHelper.RiskStruct;
     state: IPerpEngine.StateStruct;
     lpState: IPerpEngine.LpStateStruct;
@@ -181,15 +179,15 @@ export declare namespace FQuerier {
   };
 
   export type PerpProductStructOutput = [
-    number,
-    BigNumber,
-    RiskHelper.RiskStructOutput,
-    IPerpEngine.StateStructOutput,
-    IPerpEngine.LpStateStructOutput,
-    FQuerier.BookInfoStructOutput
+    productId: bigint,
+    oraclePriceX18: bigint,
+    risk: RiskHelper.RiskStructOutput,
+    state: IPerpEngine.StateStructOutput,
+    lpState: IPerpEngine.LpStateStructOutput,
+    bookInfo: FQuerier.BookInfoStructOutput
   ] & {
-    productId: number;
-    oraclePriceX18: BigNumber;
+    productId: bigint;
+    oraclePriceX18: bigint;
     risk: RiskHelper.RiskStructOutput;
     state: IPerpEngine.StateStructOutput;
     lpState: IPerpEngine.LpStateStructOutput;
@@ -202,64 +200,64 @@ export declare namespace FQuerier {
   };
 
   export type ProductInfoStructOutput = [
-    FQuerier.SpotProductStructOutput[],
-    FQuerier.PerpProductStructOutput[]
+    spotProducts: FQuerier.SpotProductStructOutput[],
+    perpProducts: FQuerier.PerpProductStructOutput[]
   ] & {
     spotProducts: FQuerier.SpotProductStructOutput[];
     perpProducts: FQuerier.PerpProductStructOutput[];
   };
 
   export type PerpBalanceStruct = {
-    productId: PromiseOrValue<BigNumberish>;
+    productId: BigNumberish;
     lpBalance: IPerpEngine.LpBalanceStruct;
     balance: IPerpEngine.BalanceStruct;
   };
 
   export type PerpBalanceStructOutput = [
-    number,
-    IPerpEngine.LpBalanceStructOutput,
-    IPerpEngine.BalanceStructOutput
+    productId: bigint,
+    lpBalance: IPerpEngine.LpBalanceStructOutput,
+    balance: IPerpEngine.BalanceStructOutput
   ] & {
-    productId: number;
+    productId: bigint;
     lpBalance: IPerpEngine.LpBalanceStructOutput;
     balance: IPerpEngine.BalanceStructOutput;
   };
 
   export type SpotBalanceStruct = {
-    productId: PromiseOrValue<BigNumberish>;
+    productId: BigNumberish;
     lpBalance: ISpotEngine.LpBalanceStruct;
     balance: ISpotEngine.BalanceStruct;
   };
 
   export type SpotBalanceStructOutput = [
-    number,
-    ISpotEngine.LpBalanceStructOutput,
-    ISpotEngine.BalanceStructOutput
+    productId: bigint,
+    lpBalance: ISpotEngine.LpBalanceStructOutput,
+    balance: ISpotEngine.BalanceStructOutput
   ] & {
-    productId: number;
+    productId: bigint;
     lpBalance: ISpotEngine.LpBalanceStructOutput;
     balance: ISpotEngine.BalanceStructOutput;
   };
 
   export type HealthInfoStruct = {
-    assets: PromiseOrValue<BigNumberish>;
-    liabilities: PromiseOrValue<BigNumberish>;
-    health: PromiseOrValue<BigNumberish>;
+    assets: BigNumberish;
+    liabilities: BigNumberish;
+    health: BigNumberish;
   };
 
-  export type HealthInfoStructOutput = [BigNumber, BigNumber, BigNumber] & {
-    assets: BigNumber;
-    liabilities: BigNumber;
-    health: BigNumber;
-  };
+  export type HealthInfoStructOutput = [
+    assets: bigint,
+    liabilities: bigint,
+    health: bigint
+  ] & { assets: bigint; liabilities: bigint; health: bigint };
 
   export type SubaccountInfoStruct = {
-    subaccount: PromiseOrValue<BytesLike>;
-    exists: PromiseOrValue<boolean>;
+    subaccount: BytesLike;
+    exists: boolean;
     healths: FQuerier.HealthInfoStruct[];
-    healthContributions: PromiseOrValue<BigNumberish>[][];
-    spotCount: PromiseOrValue<BigNumberish>;
-    perpCount: PromiseOrValue<BigNumberish>;
+    healthContributions: BigNumberish[][];
+    spotCount: BigNumberish;
+    perpCount: BigNumberish;
     spotBalances: FQuerier.SpotBalanceStruct[];
     perpBalances: FQuerier.PerpBalanceStruct[];
     spotProducts: FQuerier.SpotProductStruct[];
@@ -267,23 +265,23 @@ export declare namespace FQuerier {
   };
 
   export type SubaccountInfoStructOutput = [
-    string,
-    boolean,
-    FQuerier.HealthInfoStructOutput[],
-    BigNumber[][],
-    number,
-    number,
-    FQuerier.SpotBalanceStructOutput[],
-    FQuerier.PerpBalanceStructOutput[],
-    FQuerier.SpotProductStructOutput[],
-    FQuerier.PerpProductStructOutput[]
+    subaccount: string,
+    exists: boolean,
+    healths: FQuerier.HealthInfoStructOutput[],
+    healthContributions: bigint[][],
+    spotCount: bigint,
+    perpCount: bigint,
+    spotBalances: FQuerier.SpotBalanceStructOutput[],
+    perpBalances: FQuerier.PerpBalanceStructOutput[],
+    spotProducts: FQuerier.SpotProductStructOutput[],
+    perpProducts: FQuerier.PerpProductStructOutput[]
   ] & {
     subaccount: string;
     exists: boolean;
     healths: FQuerier.HealthInfoStructOutput[];
-    healthContributions: BigNumber[][];
-    spotCount: number;
-    perpCount: number;
+    healthContributions: bigint[][];
+    spotCount: bigint;
+    perpCount: bigint;
     spotBalances: FQuerier.SpotBalanceStructOutput[];
     perpBalances: FQuerier.PerpBalanceStructOutput[];
     spotProducts: FQuerier.SpotProductStructOutput[];
@@ -293,89 +291,76 @@ export declare namespace FQuerier {
 
 export declare namespace IPerpEngine {
   export type StateStruct = {
-    cumulativeFundingLongX18: PromiseOrValue<BigNumberish>;
-    cumulativeFundingShortX18: PromiseOrValue<BigNumberish>;
-    availableSettle: PromiseOrValue<BigNumberish>;
-    openInterest: PromiseOrValue<BigNumberish>;
+    cumulativeFundingLongX18: BigNumberish;
+    cumulativeFundingShortX18: BigNumberish;
+    availableSettle: BigNumberish;
+    openInterest: BigNumberish;
   };
 
   export type StateStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
+    cumulativeFundingLongX18: bigint,
+    cumulativeFundingShortX18: bigint,
+    availableSettle: bigint,
+    openInterest: bigint
   ] & {
-    cumulativeFundingLongX18: BigNumber;
-    cumulativeFundingShortX18: BigNumber;
-    availableSettle: BigNumber;
-    openInterest: BigNumber;
+    cumulativeFundingLongX18: bigint;
+    cumulativeFundingShortX18: bigint;
+    availableSettle: bigint;
+    openInterest: bigint;
   };
 
   export type LpStateStruct = {
-    supply: PromiseOrValue<BigNumberish>;
-    lastCumulativeFundingX18: PromiseOrValue<BigNumberish>;
-    cumulativeFundingPerLpX18: PromiseOrValue<BigNumberish>;
-    base: PromiseOrValue<BigNumberish>;
-    quote: PromiseOrValue<BigNumberish>;
+    supply: BigNumberish;
+    lastCumulativeFundingX18: BigNumberish;
+    cumulativeFundingPerLpX18: BigNumberish;
+    base: BigNumberish;
+    quote: BigNumberish;
   };
 
   export type LpStateStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
+    supply: bigint,
+    lastCumulativeFundingX18: bigint,
+    cumulativeFundingPerLpX18: bigint,
+    base: bigint,
+    quote: bigint
   ] & {
-    supply: BigNumber;
-    lastCumulativeFundingX18: BigNumber;
-    cumulativeFundingPerLpX18: BigNumber;
-    base: BigNumber;
-    quote: BigNumber;
+    supply: bigint;
+    lastCumulativeFundingX18: bigint;
+    cumulativeFundingPerLpX18: bigint;
+    base: bigint;
+    quote: bigint;
   };
 
   export type LpBalanceStruct = {
-    amount: PromiseOrValue<BigNumberish>;
-    lastCumulativeFundingX18: PromiseOrValue<BigNumberish>;
+    amount: BigNumberish;
+    lastCumulativeFundingX18: BigNumberish;
   };
 
-  export type LpBalanceStructOutput = [BigNumber, BigNumber] & {
-    amount: BigNumber;
-    lastCumulativeFundingX18: BigNumber;
-  };
+  export type LpBalanceStructOutput = [
+    amount: bigint,
+    lastCumulativeFundingX18: bigint
+  ] & { amount: bigint; lastCumulativeFundingX18: bigint };
 
   export type BalanceStruct = {
-    amount: PromiseOrValue<BigNumberish>;
-    vQuoteBalance: PromiseOrValue<BigNumberish>;
-    lastCumulativeFundingX18: PromiseOrValue<BigNumberish>;
+    amount: BigNumberish;
+    vQuoteBalance: BigNumberish;
+    lastCumulativeFundingX18: BigNumberish;
   };
 
-  export type BalanceStructOutput = [BigNumber, BigNumber, BigNumber] & {
-    amount: BigNumber;
-    vQuoteBalance: BigNumber;
-    lastCumulativeFundingX18: BigNumber;
+  export type BalanceStructOutput = [
+    amount: bigint,
+    vQuoteBalance: bigint,
+    lastCumulativeFundingX18: bigint
+  ] & {
+    amount: bigint;
+    vQuoteBalance: bigint;
+    lastCumulativeFundingX18: bigint;
   };
 }
 
-export interface FQuerierInterface extends utils.Interface {
-  functions: {
-    "getAllProducts()": FunctionFragment;
-    "getBookInfo(uint32,address)": FunctionFragment;
-    "getClearinghouse()": FunctionFragment;
-    "getPerpBalance(bytes32,uint32)": FunctionFragment;
-    "getPerpBalances(bytes32,uint32[])": FunctionFragment;
-    "getPerpProduct(uint32)": FunctionFragment;
-    "getPerpProducts(uint32[])": FunctionFragment;
-    "getSpotBalance(bytes32,uint32)": FunctionFragment;
-    "getSpotBalances(bytes32,uint32[])": FunctionFragment;
-    "getSpotProduct(uint32)": FunctionFragment;
-    "getSpotProducts(uint32[])": FunctionFragment;
-    "getSubaccountInfo(bytes32)": FunctionFragment;
-    "getVersion()": FunctionFragment;
-    "initialize(address)": FunctionFragment;
-  };
-
+export interface FQuerierInterface extends Interface {
   getFunction(
-    nameOrSignatureOrTopic:
+    nameOrSignature:
       | "getAllProducts"
       | "getBookInfo"
       | "getClearinghouse"
@@ -398,7 +383,7 @@ export interface FQuerierInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getBookInfo",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+    values: [BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getClearinghouse",
@@ -406,39 +391,39 @@ export interface FQuerierInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getPerpBalance",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
+    values: [BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getPerpBalances",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>[]]
+    values: [BytesLike, BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "getPerpProduct",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getPerpProducts",
-    values: [PromiseOrValue<BigNumberish>[]]
+    values: [BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "getSpotBalance",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
+    values: [BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getSpotBalances",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>[]]
+    values: [BytesLike, BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "getSpotProduct",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getSpotProducts",
-    values: [PromiseOrValue<BigNumberish>[]]
+    values: [BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "getSubaccountInfo",
-    values: [PromiseOrValue<BytesLike>]
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getVersion",
@@ -446,7 +431,7 @@ export interface FQuerierInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [PromiseOrValue<string>]
+    values: [AddressLike]
   ): string;
 
   decodeFunctionResult(
@@ -499,399 +484,213 @@ export interface FQuerierInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getVersion", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
-
-  events: {};
 }
 
 export interface FQuerier extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(runner?: ContractRunner | null): FQuerier;
+  waitForDeployment(): Promise<this>;
 
   interface: FQuerierInterface;
 
-  queryFilter<TEvent extends TypedEvent>(
-    event: TypedEventFilter<TEvent>,
+  queryFilter<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
+  queryFilter<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    fromBlockOrBlockhash?: string | number | undefined,
+    toBlock?: string | number | undefined
+  ): Promise<Array<TypedEventLog<TCEvent>>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  on<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  on<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-  functions: {
-    getAllProducts(
-      overrides?: CallOverrides
-    ): Promise<[FQuerier.ProductInfoStructOutput]>;
+  once<TCEvent extends TypedContractEvent>(
+    event: TCEvent,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
+  once<TCEvent extends TypedContractEvent>(
+    filter: TypedDeferredTopicFilter<TCEvent>,
+    listener: TypedListener<TCEvent>
+  ): Promise<this>;
 
-    getBookInfo(
-      productId: PromiseOrValue<BigNumberish>,
-      engine: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<
-      [FQuerier.BookInfoStructOutput] & {
-        bookInfo: FQuerier.BookInfoStructOutput;
-      }
-    >;
+  listeners<TCEvent extends TypedContractEvent>(
+    event: TCEvent
+  ): Promise<Array<TypedListener<TCEvent>>>;
+  listeners(eventName?: string): Promise<Array<Listener>>;
+  removeAllListeners<TCEvent extends TypedContractEvent>(
+    event?: TCEvent
+  ): Promise<this>;
 
-    getClearinghouse(overrides?: CallOverrides): Promise<[string]>;
+  getAllProducts: TypedContractMethod<
+    [],
+    [FQuerier.ProductInfoStructOutput],
+    "view"
+  >;
 
-    getPerpBalance(
-      subaccount: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[FQuerier.PerpBalanceStructOutput]>;
+  getBookInfo: TypedContractMethod<
+    [productId: BigNumberish, engine: AddressLike],
+    [FQuerier.BookInfoStructOutput],
+    "view"
+  >;
 
-    getPerpBalances(
-      subaccount: PromiseOrValue<BytesLike>,
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<
-      [FQuerier.PerpBalanceStructOutput[]] & {
-        perpBalances: FQuerier.PerpBalanceStructOutput[];
-      }
-    >;
+  getClearinghouse: TypedContractMethod<[], [string], "view">;
 
-    getPerpProduct(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[FQuerier.PerpProductStructOutput]>;
+  getPerpBalance: TypedContractMethod<
+    [subaccount: BytesLike, productId: BigNumberish],
+    [FQuerier.PerpBalanceStructOutput],
+    "view"
+  >;
 
-    getPerpProducts(
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<
-      [FQuerier.PerpProductStructOutput[]] & {
-        perpProducts: FQuerier.PerpProductStructOutput[];
-      }
-    >;
+  getPerpBalances: TypedContractMethod<
+    [subaccount: BytesLike, productIds: BigNumberish[]],
+    [FQuerier.PerpBalanceStructOutput[]],
+    "view"
+  >;
 
-    getSpotBalance(
-      subaccount: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[FQuerier.SpotBalanceStructOutput]>;
+  getPerpProduct: TypedContractMethod<
+    [productId: BigNumberish],
+    [FQuerier.PerpProductStructOutput],
+    "view"
+  >;
 
-    getSpotBalances(
-      subaccount: PromiseOrValue<BytesLike>,
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<
-      [FQuerier.SpotBalanceStructOutput[]] & {
-        spotBalances: FQuerier.SpotBalanceStructOutput[];
-      }
-    >;
+  getPerpProducts: TypedContractMethod<
+    [productIds: BigNumberish[]],
+    [FQuerier.PerpProductStructOutput[]],
+    "view"
+  >;
 
-    getSpotProduct(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[FQuerier.SpotProductStructOutput]>;
+  getSpotBalance: TypedContractMethod<
+    [subaccount: BytesLike, productId: BigNumberish],
+    [FQuerier.SpotBalanceStructOutput],
+    "view"
+  >;
 
-    getSpotProducts(
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<
-      [FQuerier.SpotProductStructOutput[]] & {
-        spotProducts: FQuerier.SpotProductStructOutput[];
-      }
-    >;
+  getSpotBalances: TypedContractMethod<
+    [subaccount: BytesLike, productIds: BigNumberish[]],
+    [FQuerier.SpotBalanceStructOutput[]],
+    "view"
+  >;
 
-    getSubaccountInfo(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<[FQuerier.SubaccountInfoStructOutput]>;
+  getSpotProduct: TypedContractMethod<
+    [productId: BigNumberish],
+    [FQuerier.SpotProductStructOutput],
+    "view"
+  >;
 
-    getVersion(overrides?: CallOverrides): Promise<[BigNumber]>;
+  getSpotProducts: TypedContractMethod<
+    [productIds: BigNumberish[]],
+    [FQuerier.SpotProductStructOutput[]],
+    "view"
+  >;
 
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-  };
+  getSubaccountInfo: TypedContractMethod<
+    [subaccount: BytesLike],
+    [FQuerier.SubaccountInfoStructOutput],
+    "view"
+  >;
 
-  getAllProducts(
-    overrides?: CallOverrides
-  ): Promise<FQuerier.ProductInfoStructOutput>;
+  getVersion: TypedContractMethod<[], [bigint], "view">;
 
-  getBookInfo(
-    productId: PromiseOrValue<BigNumberish>,
-    engine: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<FQuerier.BookInfoStructOutput>;
+  initialize: TypedContractMethod<
+    [_clearinghouse: AddressLike],
+    [void],
+    "nonpayable"
+  >;
 
-  getClearinghouse(overrides?: CallOverrides): Promise<string>;
+  getFunction<T extends ContractMethod = ContractMethod>(
+    key: string | FunctionFragment
+  ): T;
 
-  getPerpBalance(
-    subaccount: PromiseOrValue<BytesLike>,
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<FQuerier.PerpBalanceStructOutput>;
-
-  getPerpBalances(
-    subaccount: PromiseOrValue<BytesLike>,
-    productIds: PromiseOrValue<BigNumberish>[],
-    overrides?: CallOverrides
-  ): Promise<FQuerier.PerpBalanceStructOutput[]>;
-
-  getPerpProduct(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<FQuerier.PerpProductStructOutput>;
-
-  getPerpProducts(
-    productIds: PromiseOrValue<BigNumberish>[],
-    overrides?: CallOverrides
-  ): Promise<FQuerier.PerpProductStructOutput[]>;
-
-  getSpotBalance(
-    subaccount: PromiseOrValue<BytesLike>,
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<FQuerier.SpotBalanceStructOutput>;
-
-  getSpotBalances(
-    subaccount: PromiseOrValue<BytesLike>,
-    productIds: PromiseOrValue<BigNumberish>[],
-    overrides?: CallOverrides
-  ): Promise<FQuerier.SpotBalanceStructOutput[]>;
-
-  getSpotProduct(
-    productId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<FQuerier.SpotProductStructOutput>;
-
-  getSpotProducts(
-    productIds: PromiseOrValue<BigNumberish>[],
-    overrides?: CallOverrides
-  ): Promise<FQuerier.SpotProductStructOutput[]>;
-
-  getSubaccountInfo(
-    subaccount: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
-  ): Promise<FQuerier.SubaccountInfoStructOutput>;
-
-  getVersion(overrides?: CallOverrides): Promise<BigNumber>;
-
-  initialize(
-    _clearinghouse: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  callStatic: {
-    getAllProducts(
-      overrides?: CallOverrides
-    ): Promise<FQuerier.ProductInfoStructOutput>;
-
-    getBookInfo(
-      productId: PromiseOrValue<BigNumberish>,
-      engine: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<FQuerier.BookInfoStructOutput>;
-
-    getClearinghouse(overrides?: CallOverrides): Promise<string>;
-
-    getPerpBalance(
-      subaccount: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<FQuerier.PerpBalanceStructOutput>;
-
-    getPerpBalances(
-      subaccount: PromiseOrValue<BytesLike>,
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<FQuerier.PerpBalanceStructOutput[]>;
-
-    getPerpProduct(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<FQuerier.PerpProductStructOutput>;
-
-    getPerpProducts(
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<FQuerier.PerpProductStructOutput[]>;
-
-    getSpotBalance(
-      subaccount: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<FQuerier.SpotBalanceStructOutput>;
-
-    getSpotBalances(
-      subaccount: PromiseOrValue<BytesLike>,
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<FQuerier.SpotBalanceStructOutput[]>;
-
-    getSpotProduct(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<FQuerier.SpotProductStructOutput>;
-
-    getSpotProducts(
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<FQuerier.SpotProductStructOutput[]>;
-
-    getSubaccountInfo(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<FQuerier.SubaccountInfoStructOutput>;
-
-    getVersion(overrides?: CallOverrides): Promise<BigNumber>;
-
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-  };
+  getFunction(
+    nameOrSignature: "getAllProducts"
+  ): TypedContractMethod<[], [FQuerier.ProductInfoStructOutput], "view">;
+  getFunction(
+    nameOrSignature: "getBookInfo"
+  ): TypedContractMethod<
+    [productId: BigNumberish, engine: AddressLike],
+    [FQuerier.BookInfoStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getClearinghouse"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "getPerpBalance"
+  ): TypedContractMethod<
+    [subaccount: BytesLike, productId: BigNumberish],
+    [FQuerier.PerpBalanceStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getPerpBalances"
+  ): TypedContractMethod<
+    [subaccount: BytesLike, productIds: BigNumberish[]],
+    [FQuerier.PerpBalanceStructOutput[]],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getPerpProduct"
+  ): TypedContractMethod<
+    [productId: BigNumberish],
+    [FQuerier.PerpProductStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getPerpProducts"
+  ): TypedContractMethod<
+    [productIds: BigNumberish[]],
+    [FQuerier.PerpProductStructOutput[]],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getSpotBalance"
+  ): TypedContractMethod<
+    [subaccount: BytesLike, productId: BigNumberish],
+    [FQuerier.SpotBalanceStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getSpotBalances"
+  ): TypedContractMethod<
+    [subaccount: BytesLike, productIds: BigNumberish[]],
+    [FQuerier.SpotBalanceStructOutput[]],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getSpotProduct"
+  ): TypedContractMethod<
+    [productId: BigNumberish],
+    [FQuerier.SpotProductStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getSpotProducts"
+  ): TypedContractMethod<
+    [productIds: BigNumberish[]],
+    [FQuerier.SpotProductStructOutput[]],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getSubaccountInfo"
+  ): TypedContractMethod<
+    [subaccount: BytesLike],
+    [FQuerier.SubaccountInfoStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getVersion"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "initialize"
+  ): TypedContractMethod<[_clearinghouse: AddressLike], [void], "nonpayable">;
 
   filters: {};
-
-  estimateGas: {
-    getAllProducts(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getBookInfo(
-      productId: PromiseOrValue<BigNumberish>,
-      engine: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getClearinghouse(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getPerpBalance(
-      subaccount: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getPerpBalances(
-      subaccount: PromiseOrValue<BytesLike>,
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getPerpProduct(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getPerpProducts(
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getSpotBalance(
-      subaccount: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getSpotBalances(
-      subaccount: PromiseOrValue<BytesLike>,
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getSpotProduct(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getSpotProducts(
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getSubaccountInfo(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getVersion(overrides?: CallOverrides): Promise<BigNumber>;
-
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-  };
-
-  populateTransaction: {
-    getAllProducts(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getBookInfo(
-      productId: PromiseOrValue<BigNumberish>,
-      engine: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getClearinghouse(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getPerpBalance(
-      subaccount: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getPerpBalances(
-      subaccount: PromiseOrValue<BytesLike>,
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getPerpProduct(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getPerpProducts(
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getSpotBalance(
-      subaccount: PromiseOrValue<BytesLike>,
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getSpotBalances(
-      subaccount: PromiseOrValue<BytesLike>,
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getSpotProduct(
-      productId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getSpotProducts(
-      productIds: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getSubaccountInfo(
-      subaccount: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getVersion(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    initialize(
-      _clearinghouse: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-  };
 }

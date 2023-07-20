@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers';
 import { BaseSpotAPI } from './BaseSpotAPI';
 import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
 import { GetEngineMaxWithdrawableParams } from '@vertex-protocol/engine-client';
@@ -19,7 +18,7 @@ export class SpotQueryAPI extends BaseSpotAPI {
   async getTokenWalletBalance({
     address,
     ...rest
-  }: GetTokenWalletBalanceParams): Promise<BigNumber> {
+  }: GetTokenWalletBalanceParams): Promise<bigint> {
     const token = await this.getTokenContractForProduct(rest);
     return token.balanceOf(address);
   }
@@ -33,7 +32,7 @@ export class SpotQueryAPI extends BaseSpotAPI {
   }: GetTokenAllowanceParams): Promise<BigDecimal> {
     const token = await this.getTokenContractForProduct(rest);
     return toBigDecimal(
-      await token.allowance(address, this.context.contracts.endpoint.address),
+      await token.allowance(address, this.getEndpointAddress()),
     );
   }
 }

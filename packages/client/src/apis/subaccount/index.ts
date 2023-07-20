@@ -1,7 +1,10 @@
 import { Mixin } from 'ts-mixer';
 import { SubaccountExecuteAPI } from './SubaccountExecuteAPI';
 import { SubaccountQueryAPI } from './SubaccountQueryAPI';
-import { createDeterministicLinkedSignerPrivateKey } from '@vertex-protocol/contracts';
+import {
+  createDeterministicLinkedSignerPrivateKey,
+  getChainIdFromSigner,
+} from '@vertex-protocol/contracts';
 import { Wallet } from 'ethers';
 
 export * from './queryTypes';
@@ -18,8 +21,8 @@ export class SubaccountAPI extends Mixin(
     const signer = await this.getChainSigner();
 
     const privateKey = await createDeterministicLinkedSignerPrivateKey({
-      chainId: await signer.getChainId(),
-      endpointAddress: this.context.contracts.endpoint.address,
+      chainId: await getChainIdFromSigner(signer),
+      endpointAddress: this.getEndpointAddress(),
       signer,
       subaccountName,
       subaccountOwner: await signer.getAddress(),

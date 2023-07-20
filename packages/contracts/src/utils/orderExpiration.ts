@@ -1,4 +1,4 @@
-import { BigNumber, BigNumberish } from 'ethers';
+import { BigNumberish } from 'ethers';
 
 // All valid "special" order expiration types
 export type OrderExpirationType = 'default' | 'ioc' | 'fok' | 'post_only';
@@ -21,10 +21,8 @@ const EXPIRATION_TYPE_TO_MS2B: Record<OrderExpirationType, bigint> = {
 export function getExpirationTimestamp(
   type: OrderExpirationType,
   expiration: number,
-): BigNumber {
-  const bigIntVal =
-    BigInt(expiration.toFixed(0)) | (EXPIRATION_TYPE_TO_MS2B[type] << 62n);
-  return BigNumber.from(bigIntVal);
+): bigint {
+  return BigInt(expiration.toFixed(0)) | (EXPIRATION_TYPE_TO_MS2B[type] << 62n);
 }
 
 /**
@@ -36,7 +34,7 @@ export function parseRawExpirationTimestamp(rawExpiration: BigNumberish): {
   type: OrderExpirationType;
   expiration: number;
 } {
-  const bigIntRawExpiration = BigInt(BigNumber.from(rawExpiration).toString());
+  const bigIntRawExpiration = BigInt(rawExpiration);
   const largestTwoBits = bigIntRawExpiration >> 62n;
 
   const expirationType = (() => {

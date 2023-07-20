@@ -5,3 +5,4 @@ export * from './healthTypes';
 export * from './utilExecuteTypes';
 export * from './subaccountTypes';
 export * from './ChainEnv';
+export { Bytes } from './bytes';

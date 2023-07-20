@@ -3,6 +3,7 @@ import { EngineOrderParams } from '@vertex-protocol/engine-client';
 import {
   depositCollateral,
   Endpoint__factory,
+  getChainIdFromSigner,
   getOrderDigest,
   getTriggerOrderNonce,
   IClearinghouse__factory,
@@ -10,14 +11,16 @@ import {
 } from '@vertex-protocol/contracts';
 import { toFixedPoint, toX18 } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
-import { TriggerClient } from '@vertex-protocol/trigger-client/dist/TriggerClient';
+import {
+  TriggerClient,
+  TriggerExecutePlaceOrderParams,
+} from '@vertex-protocol/trigger-client';
 import { getExpiration } from '../utils/getExpiration';
-import { TriggerExecutePlaceOrderParams } from '@vertex-protocol/trigger-client';
 import { prettyPrint } from '../utils/prettyPrint';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
-  const chainId = await signer.getChainId();
+  const chainId = await getChainIdFromSigner(signer);
 
   const client = new TriggerClient({
     url: context.endpoints.trigger,
@@ -32,10 +35,8 @@ async function fullSanity(context: RunContext) {
     await clearinghouse.getQuote(),
     signer,
   );
-  const endpoint = await Endpoint__factory.connect(
-    context.contracts.endpoint,
-    signer,
-  );
+  const endpointAddr = context.contracts.endpoint;
+  const endpoint = await Endpoint__factory.connect(endpointAddr, signer);
 
   const depositAmount = toFixedPoint(10000, 6);
 
@@ -123,7 +124,7 @@ async function fullSanity(context: RunContext) {
     productIds: [ethProductId, btcPerpProductId],
     subaccountName,
     subaccountOwner,
-    verifyingAddr: endpoint.address,
+    verifyingAddr: endpointAddr,
   });
 
   prettyPrint('Pending list orders result', pendingListOrdersResult);
@@ -134,7 +135,7 @@ async function fullSanity(context: RunContext) {
     productIds: [ethProductId],
     subaccountName,
     subaccountOwner,
-    verifyingAddr: endpoint.address,
+    verifyingAddr: endpointAddr,
   });
 
   prettyPrint('Cancel via digest result', cancelViaDigestResult);
@@ -144,7 +145,7 @@ async function fullSanity(context: RunContext) {
     productIds: [ethProductId, btcPerpProductId],
     subaccountName,
     subaccountOwner,
-    verifyingAddr: endpoint.address,
+    verifyingAddr: endpointAddr,
   });
 
   prettyPrint('Cancel via product result', cancelViaProductResult);
@@ -155,7 +156,7 @@ async function fullSanity(context: RunContext) {
     productIds: [ethProductId, btcPerpProductId],
     subaccountName,
     subaccountOwner,
-    verifyingAddr: endpoint.address,
+    verifyingAddr: endpointAddr,
   });
 
   prettyPrint('Non-pending list orders result', nonPendingListOrdersResult);

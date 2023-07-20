@@ -15,5 +15,5 @@ export async function approveDepositAllowance({
   amount,
   tokenContract,
 }: WithContract<'endpoint', ApproveDepositAllowanceParams>) {
-  return tokenContract.approve(endpoint.address, amount);
+  return tokenContract.approve(await endpoint.getAddress(), amount);
 }

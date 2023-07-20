@@ -30,10 +30,10 @@
     "ts-mixer": "^6.0.3"
   },
   "peerDependencies": {
-    "ethers": "^5.7.2"
+    "ethers": "^6.6.2"
   },
   "devDependencies": {
-    "ethers": "^5.7.2"
+    "ethers": "^6.6.2"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",

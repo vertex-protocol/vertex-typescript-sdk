@@ -7,13 +7,12 @@ import {
 } from '../common';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import { calcTotalBorrowed, calcTotalDeposited } from '../utils';
-import { BigNumber } from 'ethers';
 
 export function mapContractSpotProduct(
   product: FQuerier.SpotProductStructOutput,
 ): SpotProduct {
   return {
-    productId: product.productId,
+    productId: Number(product.productId),
     type: ProductEngineType.SPOT,
     tokenAddr: product.config.token,
     interestSmallCap: fromX18(product.config.interestSmallCapX18),
@@ -44,7 +43,7 @@ export function mapContractPerpProduct(
   product: FQuerier.PerpProductStructOutput,
 ): PerpProduct {
   return {
-    productId: product.productId,
+    productId: Number(product.productId),
     type: ProductEngineType.PERP,
     shortWeightInitial: fromX18(product.risk.shortWeightInitialX18),
     shortWeightMaintenance: fromX18(product.risk.shortWeightMaintenanceX18),
@@ -60,7 +59,7 @@ export function mapContractPerpProduct(
 }
 
 export function mapHealthContributions(
-  contributionsForProduct: BigNumber[],
+  contributionsForProduct: bigint[],
 ): BalanceHealthContributions {
   // Initial, maint, unweighted
   return {
