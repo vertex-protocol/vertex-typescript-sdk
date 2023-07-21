@@ -11,9 +11,28 @@ import {
   SignedTx,
 } from '@vertex-protocol/contracts';
 import { RequireExactlyOne } from '@vertex-protocol/utils';
+import { EngineServerGetOrderResponse } from './serverQueryTypes';
 
-export interface EngineServerExecuteSuccessResult {
+export interface EngineServerCancelOrdersResponse {
+  cancelled_orders: EngineServerGetOrderResponse[];
+}
+
+export interface EngineServerExecuteResponseDataByType {
+  liquidate_subaccount: null;
+  withdraw_collateral: null;
+  mint_lp: null;
+  burn_lp: null;
+  place_order: null;
+  cancel_product_orders: EngineServerCancelOrdersResponse;
+  cancel_orders: EngineServerCancelOrdersResponse;
+  link_signer: null;
+}
+
+export interface EngineServerExecuteSuccessResult<
+  TExecuteType extends keyof EngineServerExecuteResponseDataByType = EngineServerExecuteRequestType,
+> {
   status: 'success';
+  data: EngineServerExecuteResponseDataByType[TExecuteType];
   signature: string;
   request_type: EngineServerExecuteResultRequestType;
 }
