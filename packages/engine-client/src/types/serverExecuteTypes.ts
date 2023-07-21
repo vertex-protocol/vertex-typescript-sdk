@@ -32,7 +32,7 @@ export interface EngineServerExecuteSuccessResult<
   TExecuteType extends keyof EngineServerExecuteResponseDataByType = EngineServerExecuteRequestType,
 > {
   status: 'success';
-  data?: EngineServerExecuteResponseDataByType[TExecuteType];
+  data: EngineServerExecuteResponseDataByType[TExecuteType];
   signature: string;
   request_type: EngineServerExecuteResultRequestType;
 }
