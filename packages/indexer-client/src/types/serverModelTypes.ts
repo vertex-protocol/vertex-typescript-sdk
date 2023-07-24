@@ -95,6 +95,8 @@ export interface IndexerServerMatchEvent {
   cumulative_base_filled: string;
   cumulative_quote_filled: string;
   submission_idx: string;
+  net_entry_unrealized: string;
+  net_entry_cumulative: string;
   pre_balance: IndexerServerMatchEventBalances;
   post_balance: IndexerServerMatchEventBalances;
 }

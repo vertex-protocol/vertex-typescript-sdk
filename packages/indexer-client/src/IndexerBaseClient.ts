@@ -410,6 +410,10 @@ export class IndexerBaseClient {
         order: matchEvent.order,
         submissionIndex: matchEvent.submission_idx,
         timestamp: toBigDecimal(timestamp),
+        preEventTrackedVars: {
+          netEntryUnrealized: toBigDecimal(matchEvent.net_entry_unrealized),
+          netEntryCumulative: toBigDecimal(matchEvent.net_entry_cumulative),
+        },
         preBalances: mapIndexerMatchEventBalances(matchEvent.pre_balance),
         postBalances: mapIndexerMatchEventBalances(matchEvent.post_balance),
       };

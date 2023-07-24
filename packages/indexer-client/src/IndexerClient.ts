@@ -358,6 +358,7 @@ export class IndexerClient extends IndexerBaseClient {
       meta: {
         hasMore,
         // We want the NEXT available cursor, so we use the first event after the truncation cutoff
+        // If len(events) === len(truncatedEvents), there are no more entries and this is undefined
         nextCursor: events[truncatedEvents.length]?.submissionIndex,
       },
     };

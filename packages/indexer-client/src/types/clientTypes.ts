@@ -307,6 +307,11 @@ export interface IndexerMatchEvent {
   cumulativeFee: BigDecimal;
   submissionIndex: string;
   timestamp: BigDecimal;
+  // Tracked vars for the balance BEFORE this match event occurred
+  preEventTrackedVars: Pick<
+    IndexerBalanceTrackedVars,
+    'netEntryCumulative' | 'netEntryUnrealized'
+  >;
   preBalances: IndexerMatchEventBalances;
   postBalances: IndexerMatchEventBalances;
 }
