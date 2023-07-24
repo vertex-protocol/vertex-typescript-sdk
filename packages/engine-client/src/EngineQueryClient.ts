@@ -9,10 +9,10 @@ import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
 import {
   EngineServerStatusResponse,
   EngineServerSubaccountInfoQueryParams,
-  EngineServerSubaccountInfoResponse,
   GetEngineAllMarketsResponse,
   GetEngineContractsResponse,
   GetEngineEstimatedSubaccountSummaryParams,
+  GetEngineHealthGroupsResponse,
   GetEngineIpCheckResponse,
   GetEngineLinkedSignerParams,
   GetEngineLinkedSignerResponse,
@@ -30,11 +30,12 @@ import {
   GetEngineMaxWithdrawableResponse,
   GetEngineOrderParams,
   GetEngineOrderResponse,
-  GetEngineSubaccountProductOrdersResponse,
   GetEngineSubaccountFeeRatesParams,
   GetEngineSubaccountFeeRatesResponse,
   GetEngineSubaccountOrdersParams,
   GetEngineSubaccountOrdersResponse,
+  GetEngineSubaccountProductOrdersParams,
+  GetEngineSubaccountProductOrdersResponse,
   GetEngineSubaccountSummaryParams,
   GetEngineSubaccountSummaryResponse,
   GetEngineTimeResponse,
@@ -42,13 +43,9 @@ import {
   ValidateEngineOrderParams,
   ValidateEngineOrderResponse,
   ValidateSignedEngineOrderParams,
-  GetEngineSubaccountProductOrdersParams,
-  EngineMarketPrice,
-  EngineServerMarketPrice,
 } from './types';
 import {
   mapEngineMarketPrice,
-  mapEngineServerBalanceHealthContributions,
   mapEngineServerOrder,
   mapEngineServerPerpProduct,
   mapEngineServerSpotProduct,
@@ -173,6 +170,24 @@ export class EngineQueryClient extends EngineBaseClient {
     });
 
     return markets;
+  }
+
+  /**
+   * Retrieves all health groups (linked spot & perp products) from the engine
+   */
+  async getHealthGroups(): Promise<GetEngineHealthGroupsResponse> {
+    const baseResponse = await this.query('health_groups', {});
+
+    return {
+      healthGroups: baseResponse.health_groups.map(
+        ([spotProductId, perpProductId]) => {
+          return {
+            spotProductId,
+            perpProductId,
+          };
+        },
+      ),
+    };
   }
 
   /**

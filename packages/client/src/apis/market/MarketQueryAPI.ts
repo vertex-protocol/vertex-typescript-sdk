@@ -40,6 +40,13 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
+   * @description Retrieve all spread health groups
+   */
+  async getHealthGroups() {
+    return this.context.engineClient.getHealthGroups();
+  }
+
+  /**
    * @description Queries engine to determine if the order can be submitted within health requirements
    */
   async validateOrderParams(params: ValidateEngineOrderParams) {
