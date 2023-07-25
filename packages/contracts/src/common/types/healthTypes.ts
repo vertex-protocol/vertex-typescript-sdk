@@ -9,3 +9,9 @@ export interface HealthStatus {
 }
 
 export type HealthStatusByType = Record<HealthType, HealthStatus>;
+
+// Represents a "linked" pair of spot & perp product IDs used for spread health calculations
+export interface HealthGroup {
+  spotProductId: number;
+  perpProductId: number;
+}

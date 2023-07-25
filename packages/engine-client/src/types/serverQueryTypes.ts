@@ -109,6 +109,7 @@ export interface EngineServerQueryRequestByType {
   status: Record<string, never>;
   nonces: EngineServerNoncesParams;
   all_products: Record<string, never>;
+  health_groups: Record<string, never>;
   subaccount_info: Omit<EngineServerSubaccountInfoQueryParams, 'txns'> & {
     // JSON serialized txns
     txns?: string;
@@ -177,6 +178,10 @@ export interface EngineServerSubaccountInfoResponse {
 export interface EngineServerAllProductsResponse {
   spot_products: EngineServerSpotProduct[];
   perp_products: EngineServerPerpProduct[];
+}
+
+export interface EngineServerHealthGroupsResponse {
+  health_groups: [spotProductId: number, perpProductId: number][];
 }
 
 // Price, liquidity pairs
@@ -277,6 +282,7 @@ export interface EngineServerQueryResponseByType {
   nonces: EngineServerNoncesResponse;
   subaccount_info: EngineServerSubaccountInfoResponse;
   all_products: EngineServerAllProductsResponse;
+  health_groups: EngineServerHealthGroupsResponse;
   order: EngineServerGetOrderResponse;
   orders: EngineServerProductOrdersResponse;
   validate_order: EngineServerValidateOrderResponse;

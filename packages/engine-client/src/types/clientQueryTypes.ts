@@ -2,6 +2,7 @@ import {
   BalanceSide,
   GetAllMarketsResponse,
   GetSubaccountSummaryParams,
+  HealthGroup,
   OrderParams,
   SignedOrderParams,
   Subaccount,
@@ -70,6 +71,10 @@ export interface GetEngineNoncesResponse {
 export type GetEngineSubaccountSummaryResponse = SubaccountSummaryResponse;
 
 export type GetEngineAllMarketsResponse = GetAllMarketsResponse;
+
+export interface GetEngineHealthGroupsResponse {
+  healthGroups: HealthGroup[];
+}
 
 export interface GetEngineOrderParams {
   productId: number;

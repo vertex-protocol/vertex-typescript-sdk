@@ -44,6 +44,7 @@ async function fullSanity(context: RunContext) {
   const endpoint = await Endpoint__factory.connect(endpointAddr, signer);
   await (await quote.mint(signer.address, toFixedPoint(10000, 6))).wait();
   await (await quote.approve(endpointAddr, toFixedPoint(10000, 6))).wait();
+
   // Deposit collateral
   const depositTx = await depositCollateral({
     amount: toFixedPoint(10000, 6),
@@ -53,8 +54,10 @@ async function fullSanity(context: RunContext) {
   });
   await depositTx.wait();
   console.log('Done depositing collateral');
+
   // Wait for slow mode
   await new Promise((resolve) => setTimeout(resolve, 5000));
+
   console.log(`subaccount (in): ${signer.address}; default`);
   const subaccountBytes32 = subaccountToBytes32({
     subaccountOwner: signer.address,
@@ -74,14 +77,20 @@ async function fullSanity(context: RunContext) {
   console.log(
     `subaccountFromHex (out): ${subaccountFromHexOut.subaccountOwner}; ${subaccountFromHexOut.subaccountName}`,
   );
+
   console.log('Querying subaccount');
   const subaccountInfo = await client.getSubaccountSummary({
     subaccountOwner: signer.address,
     subaccountName: 'default',
   });
   prettyPrint('Subaccount info', subaccountInfo);
+
   const products = await client.getAllMarkets();
   prettyPrint('All products', products);
+
+  const healthGroups = await client.getHealthGroups();
+  prettyPrint('Health groups', healthGroups);
+
   console.log('Placing order');
   const productId = 1;
   const orderbookAddr = await clearinghouse.getOrderbook(productId);
@@ -105,30 +114,36 @@ async function fullSanity(context: RunContext) {
     chainId,
   );
   prettyPrint('Done placing spot order', placeResult);
+
   const subaccountOrders = await client.getSubaccountOrders({
     productId: 2,
     subaccountName: 'default',
     subaccountOwner: signer.address,
   });
   prettyPrint('Subaccount orders', subaccountOrders);
+
   const marketLiquidity = await client.getMarketLiquidity({
     depth: 10,
     productId,
   });
   prettyPrint('Market liquidity', marketLiquidity);
+
   const marketPrice = await client.getMarketPrice({
     productId,
   });
   prettyPrint('Market price', marketPrice);
+
   const marketPrices = await client.getMarketPrices({
     productIds: [productId, 2, 3],
   });
   prettyPrint('Market prices', marketPrices);
+
   const feeRates = await client.getSubaccountFeeRates({
     subaccountName: 'default',
     subaccountOwner: signer.address,
   });
   prettyPrint('Fee rates', feeRates);
+
   const maxOrderSize = await client.getMaxOrderSize({
     subaccountOwner: signer.address,
     subaccountName: 'default',
@@ -137,12 +152,14 @@ async function fullSanity(context: RunContext) {
     side: 'long',
   });
   prettyPrint('Max order size', maxOrderSize);
+
   const maxWithdrawable = await client.getMaxWithdrawable({
     subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 0,
   });
   prettyPrint('Max withdrawable', maxWithdrawable);
+
   const maxWithdrawableNoSpotLeverage = await client.getMaxWithdrawable({
     subaccountOwner: signer.address,
     subaccountName: 'default',
@@ -153,11 +170,13 @@ async function fullSanity(context: RunContext) {
     'Max withdrawable no spot leverage',
     maxWithdrawableNoSpotLeverage,
   );
+
   const queriedOrder = await client.getOrder({
     digest: orderDigest,
     productId,
   });
   prettyPrint('Queried order', queriedOrder);
+
   const queriedOrders = await client.getSubaccountMultiProductOrders({
     subaccountOwner: signer.address,
     subaccountName: 'default',
@@ -175,18 +194,21 @@ async function fullSanity(context: RunContext) {
     chainId,
   });
   prettyPrint('Done cancelling order', cancelResult);
+
   const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
     productId,
     subaccountOwner: signer.address,
     subaccountName: 'default',
   });
   prettyPrint('Subaccount orders after cancel', subaccountOrdersAfterCancel);
+
   const maxWithdrawableAfterCancel = await client.getMaxWithdrawable({
     subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 0,
   });
   prettyPrint('Max withdrawable after cancel', maxWithdrawableAfterCancel);
+
   const linkedSignerWalletPrivKey =
     await createDeterministicLinkedSignerPrivateKey({
       chainId,
@@ -204,6 +226,7 @@ async function fullSanity(context: RunContext) {
     linkedSignerWallet.address,
     linkedSignerWallet.privateKey,
   );
+
   const linkSignerResult = await client.linkSigner({
     chainId,
     signer: subaccountToHex({
@@ -215,6 +238,7 @@ async function fullSanity(context: RunContext) {
     verifyingAddr: endpointAddr,
   });
   prettyPrint('Done linking signer', linkSignerResult);
+
   const linkedSignerQueryResponse = await client.getLinkedSigner({
     subaccountOwner: signer.address,
     subaccountName: 'default',
@@ -223,7 +247,9 @@ async function fullSanity(context: RunContext) {
     'Linked signer, setting engine client to use the new signer',
     linkedSignerQueryResponse,
   );
+
   client.setLinkedSigner(linkedSignerWallet);
+
   const mintSpotLpResult = await client.mintLp({
     subaccountOwner: signer.address,
     subaccountName: 'default',
@@ -235,6 +261,7 @@ async function fullSanity(context: RunContext) {
     chainId,
   });
   prettyPrint('Done minting spot lp', mintSpotLpResult);
+
   const mintPerpLpResult = await client.mintLp({
     subaccountOwner: signer.address,
     subaccountName: 'default',
@@ -246,11 +273,13 @@ async function fullSanity(context: RunContext) {
     chainId,
   });
   prettyPrint('Done minting perp lp', mintPerpLpResult);
+
   const subaccountInfoAfterMintingLp = await client.getSubaccountSummary({
     subaccountOwner: signer.address,
     subaccountName: 'default',
   });
   prettyPrint('Subaccount info after LP mint', subaccountInfoAfterMintingLp);
+
   const burnSpotLpResult = await client.burnLp({
     subaccountOwner: signer.address,
     subaccountName: 'default',
@@ -259,11 +288,10 @@ async function fullSanity(context: RunContext) {
     verifyingAddr: endpointAddr,
     chainId,
   });
-
   // Delay for rate limit
   await new Promise((resolve) => setTimeout(resolve, 5000));
-
   prettyPrint('Done burning spot lp', burnSpotLpResult);
+
   const burnPerpLpResult = await client.burnLp({
     subaccountOwner: signer.address,
     subaccountName: 'default',
@@ -273,6 +301,7 @@ async function fullSanity(context: RunContext) {
     chainId,
   });
   prettyPrint('Done burning perp lp', burnPerpLpResult);
+
   // Revoke signer
   const revokeSignerResult = await client.linkSigner({
     chainId,
@@ -354,6 +383,7 @@ async function fullSanity(context: RunContext) {
     chainId,
   });
   prettyPrint('Done withdrawing collateral, result', withdrawResult);
+
   const subaccountInfoAtEnd = await client.getSubaccountSummary({
     subaccountOwner: signer.address,
     subaccountName: 'default',
