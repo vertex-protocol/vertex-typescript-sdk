@@ -95,8 +95,6 @@ export interface EngineSymbol {
   takerFeeRate: BigDecimal;
   longWeightInitial: BigDecimal;
   longWeightMaintenance: BigDecimal;
-  shortWeightInitial: BigDecimal;
-  shortWeightMaintenance: BigDecimal;
 }
 
 export type GetEngineAllMarketsResponse = GetAllMarketsResponse;
