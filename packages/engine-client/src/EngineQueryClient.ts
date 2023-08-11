@@ -2,8 +2,6 @@ import { EngineBaseClient } from './EngineBaseClient';
 import {
   encodeSignedOrder,
   MarketWithProduct,
-  ProductEngineType,
-  productEngineTypeToString,
   subaccountFromHex,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
@@ -54,11 +52,12 @@ import {
   mapEngineServerPerpProduct,
   mapEngineServerSpotProduct,
   mapEngineServerTickLiquidity,
-  mapEngineSymbols,
   mapSubaccountSummary,
+  mapEngineSeverSymbols,
 } from './utils/queryDataMappers';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import axios from 'axios';
+import { mapProductEngineType } from './utils/productEngineTypeMappers';
 
 export class EngineQueryClient extends EngineBaseClient {
   /**
@@ -168,15 +167,13 @@ export class EngineQueryClient extends EngineBaseClient {
   async getSymbols(
     params: GetEngineSymbolsParams,
   ): Promise<EngineSymbolsResponse> {
-    let productType;
-    if (params.productType !== undefined) {
-      productType = productEngineTypeToString(params.productType);
-    }
     const baseResponse = await this.query('symbols', {
       product_ids: params.productIds,
-      product_type: productType,
+      product_type: params.productType
+        ? mapProductEngineType(params.productType)
+        : undefined,
     });
-    return mapEngineSymbols(baseResponse);
+    return mapEngineSeverSymbols(baseResponse);
   }
 
   /**

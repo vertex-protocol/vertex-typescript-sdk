@@ -8,7 +8,6 @@ import {
   EngineServerPriceTickLiquidity,
   EngineServerSpotProduct,
   EngineServerSubaccountInfoResponse,
-  EngineServerSymbol,
   EngineServerSymbolsResponse,
   EngineSymbol,
   EngineSymbolsResponse,
@@ -22,9 +21,12 @@ import {
   PerpMarket,
   ProductEngineType,
   SpotMarket,
-  stringToProductEngineType,
   subaccountFromHex,
 } from '@vertex-protocol/contracts';
+import {
+  mapProductEngineServerType,
+  mapProductEngineType,
+} from './productEngineTypeMappers';
 
 export function mapEngineServerTickLiquidity(
   tick: EngineServerPriceTickLiquidity,
@@ -207,14 +209,14 @@ export function mapSubaccountSummary(
   };
 }
 
-export function mapEngineSymbols(
+export function mapEngineSeverSymbols(
   baseResponse: EngineServerSymbolsResponse,
 ): EngineSymbolsResponse {
   const symbols: Record<string, EngineSymbol> = {};
 
   Object.values(baseResponse.symbols).forEach((value) => {
     symbols[value.symbol] = {
-      type: stringToProductEngineType(value.type),
+      type: mapProductEngineServerType(value.type),
       productId: value.product_id,
       symbol: value.symbol,
       priceIncrement: fromX18(value.price_increment_x18),

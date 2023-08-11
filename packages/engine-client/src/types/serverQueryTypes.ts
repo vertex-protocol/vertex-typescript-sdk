@@ -40,8 +40,10 @@ export interface EngineServerSubaccountInfoQueryParams {
   >;
 }
 
+export type ProductEngineServerType = 'perp' | 'spot';
+
 export interface EngineServerSymbolsQueryParams {
-  product_type?: 'spot' | 'perp';
+  product_type?: ProductEngineServerType;
   product_ids?: number[];
 }
 
@@ -183,7 +185,7 @@ export interface EngineServerSubaccountInfoResponse {
 }
 
 export interface EngineServerSymbol {
-  type: 'spot' | 'perp';
+  type: ProductEngineServerType;
   product_id: number;
   symbol: string;
   price_increment_x18: string;
