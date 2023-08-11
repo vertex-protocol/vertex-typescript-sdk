@@ -12,6 +12,7 @@ import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import {
   EngineServerCheckIpResponse,
   EngineServerNoncesParams,
+  EngineServerSymbolsResponse,
   EngineServerTimeResponse,
 } from './serverQueryTypes';
 import { BigNumberish } from 'ethers';
@@ -69,6 +70,32 @@ export interface GetEngineNoncesResponse {
 }
 
 export type GetEngineSubaccountSummaryResponse = SubaccountSummaryResponse;
+
+export interface GetEngineSymbolsParams {
+  productType?: 'spot' | 'perp';
+  productIds?: number[];
+}
+
+export type GetEngineSymbolsResponse = EngineSymbolsResponse;
+
+export interface EngineSymbolsResponse {
+  symbols: Record<string, EngineSymbol>;
+}
+
+export interface EngineSymbol {
+  type: 'spot' | 'perp';
+  productId: number;
+  symbol: string;
+  priceIncrement: string;
+  sizeIncrement: string;
+  minSize: string;
+  initialMargin: string;
+  maintenanceMargin: string;
+  minDepth: string;
+  maxSpreadRate: string;
+  makerFeeRate: string;
+  takerFeeRate: string;
+}
 
 export type GetEngineAllMarketsResponse = GetAllMarketsResponse;
 

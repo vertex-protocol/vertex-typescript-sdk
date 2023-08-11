@@ -8,6 +8,10 @@ import {
   EngineServerPriceTickLiquidity,
   EngineServerSpotProduct,
   EngineServerSubaccountInfoResponse,
+  EngineServerSymbol,
+  EngineServerSymbolsResponse,
+  EngineSymbol,
+  EngineSymbolsResponse,
   GetEngineSubaccountSummaryResponse,
 } from '../types';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
@@ -199,6 +203,33 @@ export function mapSubaccountSummary(
         liabilities: toBigDecimal(baseResponse.healths[2].liabilities),
       },
     },
+  };
+}
+
+export function mapEngineSymbols(
+  baseResponse: EngineServerSymbolsResponse,
+): EngineSymbolsResponse {
+  const symbols: Record<string, EngineSymbol> = {};
+
+  Object.entries(baseResponse.symbols).forEach(([key, value]) => {
+    symbols[key] = {
+      type: value.type,
+      productId: value.product_id,
+      symbol: value.symbol,
+      priceIncrement: value.price_increment_x18,
+      sizeIncrement: value.size_increment,
+      minSize: value.min_size,
+      initialMargin: value.initial_margin_x18,
+      maintenanceMargin: value.maintenance_margin_x18,
+      minDepth: value.min_depth_x18,
+      maxSpreadRate: value.max_spread_rate_x18,
+      makerFeeRate: value.maker_fee_rate_x18,
+      takerFeeRate: value.taker_fee_rate_x18,
+    };
+  });
+
+  return {
+    symbols,
   };
 }
 
