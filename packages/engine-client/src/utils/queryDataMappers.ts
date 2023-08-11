@@ -213,18 +213,19 @@ export function mapEngineSymbols(
 
   Object.entries(baseResponse.symbols).forEach(([key, value]) => {
     symbols[key] = {
-      type: value.type,
+      type:
+        value.type == 'spot' ? ProductEngineType.SPOT : ProductEngineType.PERP,
       productId: value.product_id,
       symbol: value.symbol,
-      priceIncrement: value.price_increment_x18,
-      sizeIncrement: value.size_increment,
-      minSize: value.min_size,
-      initialMargin: value.initial_margin_x18,
-      maintenanceMargin: value.maintenance_margin_x18,
-      minDepth: value.min_depth_x18,
-      maxSpreadRate: value.max_spread_rate_x18,
-      makerFeeRate: value.maker_fee_rate_x18,
-      takerFeeRate: value.taker_fee_rate_x18,
+      priceIncrement: fromX18(value.price_increment_x18),
+      sizeIncrement: fromX18(value.size_increment),
+      minSize: fromX18(value.min_size),
+      initialMargin: fromX18(value.initial_margin_x18),
+      maintenanceMargin: fromX18(value.maintenance_margin_x18),
+      minDepth: fromX18(value.min_depth_x18),
+      maxSpreadRate: fromX18(value.max_spread_rate_x18),
+      makerFeeRate: fromX18(value.maker_fee_rate_x18),
+      takerFeeRate: fromX18(value.taker_fee_rate_x18),
     };
   });
 

@@ -9,6 +9,7 @@ import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
 import {
   EngineServerStatusResponse,
   EngineServerSubaccountInfoQueryParams,
+  EngineSymbolsResponse,
   GetEngineAllMarketsResponse,
   GetEngineContractsResponse,
   GetEngineEstimatedSubaccountSummaryParams,
@@ -39,7 +40,6 @@ import {
   GetEngineSubaccountSummaryParams,
   GetEngineSubaccountSummaryResponse,
   GetEngineSymbolsParams,
-  GetEngineSymbolsResponse,
   GetEngineTimeResponse,
   SubaccountOrderFeeRates,
   ValidateEngineOrderParams,
@@ -165,7 +165,7 @@ export class EngineQueryClient extends EngineBaseClient {
    */
   async getSymbols(
     params: GetEngineSymbolsParams,
-  ): Promise<GetEngineSymbolsResponse> {
+  ): Promise<EngineSymbolsResponse> {
     const baseResponse = await this.query('symbols', {
       product_ids: params.productIds,
       product_type: params.productType,

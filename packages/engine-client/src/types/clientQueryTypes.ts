@@ -4,6 +4,7 @@ import {
   GetSubaccountSummaryParams,
   HealthGroup,
   OrderParams,
+  ProductEngineType,
   SignedOrderParams,
   Subaccount,
   SubaccountSummaryResponse,
@@ -76,25 +77,24 @@ export interface GetEngineSymbolsParams {
   productIds?: number[];
 }
 
-export type GetEngineSymbolsResponse = EngineSymbolsResponse;
-
 export interface EngineSymbolsResponse {
+  // mapping of product symbol to symbols info
   symbols: Record<string, EngineSymbol>;
 }
 
 export interface EngineSymbol {
-  type: 'spot' | 'perp';
+  type: ProductEngineType;
   productId: number;
   symbol: string;
-  priceIncrement: string;
-  sizeIncrement: string;
-  minSize: string;
-  initialMargin: string;
-  maintenanceMargin: string;
-  minDepth: string;
-  maxSpreadRate: string;
-  makerFeeRate: string;
-  takerFeeRate: string;
+  priceIncrement: BigDecimal;
+  sizeIncrement: BigDecimal;
+  minSize: BigDecimal;
+  initialMargin: BigDecimal;
+  maintenanceMargin: BigDecimal;
+  minDepth: BigDecimal;
+  maxSpreadRate: BigDecimal;
+  makerFeeRate: BigDecimal;
+  takerFeeRate: BigDecimal;
 }
 
 export type GetEngineAllMarketsResponse = GetAllMarketsResponse;
