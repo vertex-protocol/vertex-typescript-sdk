@@ -73,7 +73,7 @@ export interface GetEngineNoncesResponse {
 export type GetEngineSubaccountSummaryResponse = SubaccountSummaryResponse;
 
 export interface GetEngineSymbolsParams {
-  productType?: 'spot' | 'perp';
+  productType?: ProductEngineType;
   productIds?: number[];
 }
 
@@ -89,12 +89,14 @@ export interface EngineSymbol {
   priceIncrement: BigDecimal;
   sizeIncrement: BigDecimal;
   minSize: BigDecimal;
-  initialMargin: BigDecimal;
-  maintenanceMargin: BigDecimal;
   minDepth: BigDecimal;
   maxSpreadRate: BigDecimal;
   makerFeeRate: BigDecimal;
   takerFeeRate: BigDecimal;
+  longWeightInitial: BigDecimal;
+  longWeightMaintenance: BigDecimal;
+  shortWeightInitial: BigDecimal;
+  shortWeightMaintenance: BigDecimal;
 }
 
 export type GetEngineAllMarketsResponse = GetAllMarketsResponse;

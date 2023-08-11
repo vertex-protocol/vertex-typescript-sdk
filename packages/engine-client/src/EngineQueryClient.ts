@@ -2,6 +2,8 @@ import { EngineBaseClient } from './EngineBaseClient';
 import {
   encodeSignedOrder,
   MarketWithProduct,
+  ProductEngineType,
+  productEngineTypeToString,
   subaccountFromHex,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
@@ -166,9 +168,13 @@ export class EngineQueryClient extends EngineBaseClient {
   async getSymbols(
     params: GetEngineSymbolsParams,
   ): Promise<EngineSymbolsResponse> {
+    let productType;
+    if (params.productType !== undefined) {
+      productType = productEngineTypeToString(params.productType);
+    }
     const baseResponse = await this.query('symbols', {
       product_ids: params.productIds,
-      product_type: params.productType,
+      product_type: productType,
     });
     return mapEngineSymbols(baseResponse);
   }

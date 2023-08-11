@@ -26,6 +26,32 @@ export function toProductEngineType(val: number): ProductEngineType {
   }
 }
 
+export function productEngineTypeToString(
+  productEngineType: ProductEngineType,
+): 'spot' | 'perp' {
+  switch (productEngineType) {
+    case ProductEngineType.SPOT:
+      return 'spot';
+    case ProductEngineType.PERP:
+      return 'perp';
+  }
+}
+
+export function stringToProductEngineType(
+  stringType: string,
+): ProductEngineType {
+  switch (stringType) {
+    case 'spot':
+      return ProductEngineType.SPOT;
+    case 'perp':
+      return ProductEngineType.PERP;
+    default:
+      throw new Error(
+        `Invalid product type ${stringType}. Must be 'spot' or 'perp'`,
+      );
+  }
+}
+
 /**
  * Shared properties across products
  */

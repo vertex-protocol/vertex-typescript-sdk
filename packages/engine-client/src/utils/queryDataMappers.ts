@@ -22,6 +22,7 @@ import {
   PerpMarket,
   ProductEngineType,
   SpotMarket,
+  stringToProductEngineType,
   subaccountFromHex,
 } from '@vertex-protocol/contracts';
 
@@ -211,21 +212,22 @@ export function mapEngineSymbols(
 ): EngineSymbolsResponse {
   const symbols: Record<string, EngineSymbol> = {};
 
-  Object.entries(baseResponse.symbols).forEach(([key, value]) => {
-    symbols[key] = {
-      type:
-        value.type == 'spot' ? ProductEngineType.SPOT : ProductEngineType.PERP,
+  Object.values(baseResponse.symbols).forEach((value) => {
+    symbols[value.symbol] = {
+      type: stringToProductEngineType(value.type),
       productId: value.product_id,
       symbol: value.symbol,
       priceIncrement: fromX18(value.price_increment_x18),
       sizeIncrement: fromX18(value.size_increment),
       minSize: fromX18(value.min_size),
-      initialMargin: fromX18(value.initial_margin_x18),
-      maintenanceMargin: fromX18(value.maintenance_margin_x18),
       minDepth: fromX18(value.min_depth_x18),
       maxSpreadRate: fromX18(value.max_spread_rate_x18),
       makerFeeRate: fromX18(value.maker_fee_rate_x18),
       takerFeeRate: fromX18(value.taker_fee_rate_x18),
+      longWeightInitial: fromX18(value.long_weight_initial_x18),
+      longWeightMaintenance: fromX18(value.long_weight_maintenance_x18),
+      shortWeightInitial: fromX18(value.short_weight_initial_x18),
+      shortWeightMaintenance: fromX18(value.short_weight_maintenance_x18),
     };
   });
 
