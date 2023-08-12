@@ -101,3 +101,5 @@ export interface EngineServerPerpBalance {
   balance: EngineServerPerpBalanceData;
   lp_balance: EngineServerPerpLpBalanceData;
 }
+
+export type EngineServerProductType = 'perp' | 'spot';

@@ -6,14 +6,16 @@ import {
   EngineServerMarketPrice,
   EngineServerPerpProduct,
   EngineServerPriceTickLiquidity,
+  EngineServerProductType,
   EngineServerSpotProduct,
   EngineServerSubaccountInfoResponse,
+  EngineServerSymbol,
   EngineServerSymbolsResponse,
   EngineSymbol,
   EngineSymbolsResponse,
   GetEngineSubaccountSummaryResponse,
 } from '../types';
-import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
+import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
 import {
   BalanceHealthContributions,
   calcTotalBorrowed,
@@ -24,7 +26,7 @@ import {
   subaccountFromHex,
 } from '@vertex-protocol/contracts';
 import {
-  mapProductEngineServerType,
+  mapEngineServerProductType,
   mapProductEngineType,
 } from './productEngineTypeMappers';
 
@@ -209,30 +211,37 @@ export function mapSubaccountSummary(
   };
 }
 
-export function mapEngineSeverSymbols(
+export function mapEngineServerSymbols(
   baseResponse: EngineServerSymbolsResponse,
 ): EngineSymbolsResponse {
-  const symbols: Record<string, EngineSymbol> = {};
-
-  Object.values(baseResponse.symbols).forEach((value) => {
-    symbols[value.symbol] = {
-      type: mapProductEngineServerType(value.type),
-      productId: value.product_id,
-      symbol: value.symbol,
-      priceIncrement: fromX18(value.price_increment_x18),
-      sizeIncrement: fromX18(value.size_increment),
-      minSize: fromX18(value.min_size),
-      minDepth: fromX18(value.min_depth_x18),
-      maxSpreadRate: fromX18(value.max_spread_rate_x18),
-      makerFeeRate: fromX18(value.maker_fee_rate_x18),
-      takerFeeRate: fromX18(value.taker_fee_rate_x18),
-      longWeightInitial: fromX18(value.long_weight_initial_x18),
-      longWeightMaintenance: fromX18(value.long_weight_maintenance_x18),
-    };
-  });
+  const symbols: Record<string, EngineSymbol> = mapValues(
+    baseResponse.symbols,
+    mapEngineServerSymbol,
+  );
 
   return {
     symbols,
+  };
+}
+
+export function mapEngineServerSymbol(
+  engineServerSymbol: EngineServerSymbol,
+): EngineSymbol {
+  return {
+    type: mapEngineServerProductType(engineServerSymbol.type),
+    productId: engineServerSymbol.product_id,
+    symbol: engineServerSymbol.symbol,
+    priceIncrement: fromX18(engineServerSymbol.price_increment_x18),
+    sizeIncrement: toBigDecimal(engineServerSymbol.size_increment),
+    minSize: toBigDecimal(engineServerSymbol.min_size),
+    minDepth: fromX18(engineServerSymbol.min_depth_x18),
+    maxSpreadRate: fromX18(engineServerSymbol.max_spread_rate_x18),
+    makerFeeRate: fromX18(engineServerSymbol.maker_fee_rate_x18),
+    takerFeeRate: fromX18(engineServerSymbol.taker_fee_rate_x18),
+    longWeightInitial: fromX18(engineServerSymbol.long_weight_initial_x18),
+    longWeightMaintenance: fromX18(
+      engineServerSymbol.long_weight_maintenance_x18,
+    ),
   };
 }
 

@@ -51,9 +51,9 @@ import {
   mapEngineServerOrder,
   mapEngineServerPerpProduct,
   mapEngineServerSpotProduct,
+  mapEngineServerSymbols,
   mapEngineServerTickLiquidity,
   mapSubaccountSummary,
-  mapEngineSeverSymbols,
 } from './utils/queryDataMappers';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import axios from 'axios';
@@ -173,7 +173,7 @@ export class EngineQueryClient extends EngineBaseClient {
         ? mapProductEngineType(params.productType)
         : undefined,
     });
-    return mapEngineSeverSymbols(baseResponse);
+    return mapEngineServerSymbols(baseResponse);
   }
 
   /**

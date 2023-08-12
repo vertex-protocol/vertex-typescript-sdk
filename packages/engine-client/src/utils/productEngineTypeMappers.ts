@@ -1,9 +1,9 @@
 import { ProductEngineType } from '@vertex-protocol/contracts';
-import { ProductEngineServerType } from '../types';
+import { EngineServerProductType } from '../types';
 
 export function mapProductEngineType(
   productEngineType: ProductEngineType,
-): ProductEngineServerType {
+): EngineServerProductType {
   switch (productEngineType) {
     case ProductEngineType.SPOT:
       return 'spot';
@@ -12,8 +12,8 @@ export function mapProductEngineType(
   }
 }
 
-export function mapProductEngineServerType(
-  productEngineServerType: ProductEngineServerType,
+export function mapEngineServerProductType(
+  productEngineServerType: EngineServerProductType,
 ): ProductEngineType {
   switch (productEngineServerType) {
     case 'spot':

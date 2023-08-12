@@ -1,7 +1,7 @@
-import { GetEngineSymbolsParams } from './clientQueryTypes';
 import {
   EngineServerPerpBalance,
   EngineServerPerpProduct,
+  EngineServerProductType,
   EngineServerSpotBalance,
   EngineServerSpotProduct,
 } from './serverQueryModelTypes';
@@ -40,10 +40,8 @@ export interface EngineServerSubaccountInfoQueryParams {
   >;
 }
 
-export type ProductEngineServerType = 'perp' | 'spot';
-
 export interface EngineServerSymbolsQueryParams {
-  product_type?: ProductEngineServerType;
+  product_type?: EngineServerProductType;
   product_ids?: number[];
 }
 
@@ -185,7 +183,7 @@ export interface EngineServerSubaccountInfoResponse {
 }
 
 export interface EngineServerSymbol {
-  type: ProductEngineServerType;
+  type: EngineServerProductType;
   product_id: number;
   symbol: string;
   price_increment_x18: string;
