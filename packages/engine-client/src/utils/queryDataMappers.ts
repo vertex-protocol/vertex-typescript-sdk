@@ -6,11 +6,16 @@ import {
   EngineServerMarketPrice,
   EngineServerPerpProduct,
   EngineServerPriceTickLiquidity,
+  EngineServerProductType,
   EngineServerSpotProduct,
   EngineServerSubaccountInfoResponse,
+  EngineServerSymbol,
+  EngineServerSymbolsResponse,
+  EngineSymbol,
+  EngineSymbolsResponse,
   GetEngineSubaccountSummaryResponse,
 } from '../types';
-import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
+import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
 import {
   BalanceHealthContributions,
   calcTotalBorrowed,
@@ -20,6 +25,10 @@ import {
   SpotMarket,
   subaccountFromHex,
 } from '@vertex-protocol/contracts';
+import {
+  mapEngineServerProductType,
+  mapProductEngineType,
+} from './productEngineTypeMappers';
 
 export function mapEngineServerTickLiquidity(
   tick: EngineServerPriceTickLiquidity,
@@ -199,6 +208,40 @@ export function mapSubaccountSummary(
         liabilities: toBigDecimal(baseResponse.healths[2].liabilities),
       },
     },
+  };
+}
+
+export function mapEngineServerSymbols(
+  baseResponse: EngineServerSymbolsResponse,
+): EngineSymbolsResponse {
+  const symbols: Record<string, EngineSymbol> = mapValues(
+    baseResponse.symbols,
+    mapEngineServerSymbol,
+  );
+
+  return {
+    symbols,
+  };
+}
+
+export function mapEngineServerSymbol(
+  engineServerSymbol: EngineServerSymbol,
+): EngineSymbol {
+  return {
+    type: mapEngineServerProductType(engineServerSymbol.type),
+    productId: engineServerSymbol.product_id,
+    symbol: engineServerSymbol.symbol,
+    priceIncrement: fromX18(engineServerSymbol.price_increment_x18),
+    sizeIncrement: toBigDecimal(engineServerSymbol.size_increment),
+    minSize: toBigDecimal(engineServerSymbol.min_size),
+    minDepth: fromX18(engineServerSymbol.min_depth_x18),
+    maxSpreadRate: fromX18(engineServerSymbol.max_spread_rate_x18),
+    makerFeeRate: fromX18(engineServerSymbol.maker_fee_rate_x18),
+    takerFeeRate: fromX18(engineServerSymbol.taker_fee_rate_x18),
+    longWeightInitial: fromX18(engineServerSymbol.long_weight_initial_x18),
+    longWeightMaintenance: fromX18(
+      engineServerSymbol.long_weight_maintenance_x18,
+    ),
   };
 }
 

@@ -9,6 +9,7 @@ import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
 import {
   EngineServerStatusResponse,
   EngineServerSubaccountInfoQueryParams,
+  EngineSymbolsResponse,
   GetEngineAllMarketsResponse,
   GetEngineContractsResponse,
   GetEngineEstimatedSubaccountSummaryParams,
@@ -38,6 +39,7 @@ import {
   GetEngineSubaccountProductOrdersResponse,
   GetEngineSubaccountSummaryParams,
   GetEngineSubaccountSummaryResponse,
+  GetEngineSymbolsParams,
   GetEngineTimeResponse,
   SubaccountOrderFeeRates,
   ValidateEngineOrderParams,
@@ -49,11 +51,13 @@ import {
   mapEngineServerOrder,
   mapEngineServerPerpProduct,
   mapEngineServerSpotProduct,
+  mapEngineServerSymbols,
   mapEngineServerTickLiquidity,
   mapSubaccountSummary,
 } from './utils/queryDataMappers';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import axios from 'axios';
+import { mapProductEngineType } from './utils/productEngineTypeMappers';
 
 export class EngineQueryClient extends EngineBaseClient {
   /**
@@ -153,6 +157,23 @@ export class EngineQueryClient extends EngineBaseClient {
     });
 
     return mapSubaccountSummary(baseResponse);
+  }
+
+  /**
+   * Retrieves symbols and product info
+   *
+   * @param params
+   */
+  async getSymbols(
+    params: GetEngineSymbolsParams,
+  ): Promise<EngineSymbolsResponse> {
+    const baseResponse = await this.query('symbols', {
+      product_ids: params.productIds,
+      product_type: params.productType
+        ? mapProductEngineType(params.productType)
+        : undefined,
+    });
+    return mapEngineServerSymbols(baseResponse);
   }
 
   /**

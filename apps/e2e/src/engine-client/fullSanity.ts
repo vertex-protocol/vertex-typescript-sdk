@@ -85,6 +85,9 @@ async function fullSanity(context: RunContext) {
   });
   prettyPrint('Subaccount info', subaccountInfo);
 
+  const symbols = await client.getSymbols({});
+  prettyPrint('Symbols', symbols);
+
   const products = await client.getAllMarkets();
   prettyPrint('All products', products);
 

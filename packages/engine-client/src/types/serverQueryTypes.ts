@@ -1,6 +1,7 @@
 import {
   EngineServerPerpBalance,
   EngineServerPerpProduct,
+  EngineServerProductType,
   EngineServerSpotBalance,
   EngineServerSpotProduct,
 } from './serverQueryModelTypes';
@@ -37,6 +38,11 @@ export interface EngineServerSubaccountInfoQueryParams {
         };
       }
   >;
+}
+
+export interface EngineServerSymbolsQueryParams {
+  product_type?: EngineServerProductType;
+  product_ids?: number[];
 }
 
 export interface EngineServerMarketPriceQueryParams {
@@ -108,6 +114,7 @@ export interface EngineServerQueryRequestByType {
   contracts: Record<string, never>;
   status: Record<string, never>;
   nonces: EngineServerNoncesParams;
+  symbols: EngineServerSymbolsQueryParams;
   all_products: Record<string, never>;
   health_groups: Record<string, never>;
   subaccount_info: Omit<EngineServerSubaccountInfoQueryParams, 'txns'> & {
@@ -173,6 +180,25 @@ export interface EngineServerSubaccountInfoResponse {
   perp_balances: EngineServerPerpBalance[];
   spot_products: EngineServerSpotProduct[];
   perp_products: EngineServerPerpProduct[];
+}
+
+export interface EngineServerSymbol {
+  type: EngineServerProductType;
+  product_id: number;
+  symbol: string;
+  price_increment_x18: string;
+  size_increment: string;
+  min_size: string;
+  min_depth_x18: string;
+  max_spread_rate_x18: string;
+  maker_fee_rate_x18: string;
+  taker_fee_rate_x18: string;
+  long_weight_initial_x18: string;
+  long_weight_maintenance_x18: string;
+}
+
+export interface EngineServerSymbolsResponse {
+  symbols: Record<string, EngineServerSymbol>;
 }
 
 export interface EngineServerAllProductsResponse {
@@ -281,6 +307,7 @@ export interface EngineServerQueryResponseByType {
   status: EngineServerStatusResponse;
   nonces: EngineServerNoncesResponse;
   subaccount_info: EngineServerSubaccountInfoResponse;
+  symbols: EngineServerSymbolsResponse;
   all_products: EngineServerAllProductsResponse;
   health_groups: EngineServerHealthGroupsResponse;
   order: EngineServerGetOrderResponse;

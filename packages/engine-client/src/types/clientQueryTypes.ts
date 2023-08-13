@@ -4,6 +4,7 @@ import {
   GetSubaccountSummaryParams,
   HealthGroup,
   OrderParams,
+  ProductEngineType,
   SignedOrderParams,
   Subaccount,
   SubaccountSummaryResponse,
@@ -12,6 +13,7 @@ import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import {
   EngineServerCheckIpResponse,
   EngineServerNoncesParams,
+  EngineServerSymbolsResponse,
   EngineServerTimeResponse,
 } from './serverQueryTypes';
 import { BigNumberish } from 'ethers';
@@ -69,6 +71,31 @@ export interface GetEngineNoncesResponse {
 }
 
 export type GetEngineSubaccountSummaryResponse = SubaccountSummaryResponse;
+
+export interface GetEngineSymbolsParams {
+  productType?: ProductEngineType;
+  productIds?: number[];
+}
+
+export interface EngineSymbolsResponse {
+  // mapping of product symbol to symbols info
+  symbols: Record<string, EngineSymbol>;
+}
+
+export interface EngineSymbol {
+  type: ProductEngineType;
+  productId: number;
+  symbol: string;
+  priceIncrement: BigDecimal;
+  sizeIncrement: BigDecimal;
+  minSize: BigDecimal;
+  minDepth: BigDecimal;
+  maxSpreadRate: BigDecimal;
+  makerFeeRate: BigDecimal;
+  takerFeeRate: BigDecimal;
+  longWeightInitial: BigDecimal;
+  longWeightMaintenance: BigDecimal;
+}
 
 export type GetEngineAllMarketsResponse = GetAllMarketsResponse;
 
