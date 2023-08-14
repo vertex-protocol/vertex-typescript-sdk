@@ -7,6 +7,7 @@ import {
   IndexerOrder,
   IndexerPerpBalance,
   IndexerPerpPrices,
+  IndexerProductPayment,
   IndexerRewardEpoch,
   IndexerServerBalance,
   IndexerServerEvent,
@@ -15,6 +16,7 @@ import {
   IndexerServerOrder,
   IndexerServerPerpPrices,
   IndexerServerProduct,
+  IndexerServerProductPayment,
   IndexerServerRewardEpoch,
   IndexerServerTx,
   IndexerSpotBalance,
@@ -146,6 +148,17 @@ export function mapIndexerMatchEventBalances(
     quote: eventBalances.quote
       ? (mapIndexerServerBalance(eventBalances.quote) as IndexerSpotBalance)
       : undefined,
+  };
+}
+
+export function mapIndexerProductPayment(
+  payment: IndexerServerProductPayment,
+): IndexerProductPayment {
+  return {
+    submissionIndex: payment.idx,
+    timestamp: toBigDecimal(payment.timestamp),
+    amount: toBigDecimal(payment.amount),
+    productId: payment.product_id,
   };
 }
 

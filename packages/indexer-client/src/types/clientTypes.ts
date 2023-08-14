@@ -201,6 +201,7 @@ export interface Candlestick {
 export type GetIndexerCandlesticksResponse = Candlestick[];
 
 export interface GetIndexerProductSnapshotsParams {
+  // Max submission index, inclusive
   startCursor?: string;
   productId: number;
   maxTimestampInclusive?: number;
@@ -228,6 +229,7 @@ export type GetIndexerMultiProductSnapshotsResponse = Record<
 export type GetIndexerEventsLimitType = 'events' | 'txs';
 
 export interface GetIndexerEventsParams {
+  // Max submission index, inclusive
   startCursor?: string;
   subaccount?: Subaccount;
   productIds?: number[];
@@ -257,6 +259,7 @@ export interface IndexerEventWithTx extends IndexerEvent {
 export type GetIndexerEventsResponse = IndexerEventWithTx[];
 
 export interface GetIndexerOrdersParams {
+  // Max submission index, inclusive
   startCursor?: string;
   subaccount?: Subaccount;
   minTimestampInclusive?: number;
@@ -296,6 +299,7 @@ export interface GetIndexerMatchEventsParams {
   productIds?: number[];
   maxTimestampInclusive?: number;
   limit: number;
+  // Max submission index, inclusive
   startCursor?: string;
 }
 
@@ -376,3 +380,24 @@ export interface IndexerMarketSnapshot {
 }
 
 export type GetIndexerMarketSnapshotsResponse = IndexerMarketSnapshot[];
+
+export interface GetIndexerInterestFundingPaymentsParams {
+  subaccount: Subaccount;
+  productIds: number[];
+  limit: number;
+  // Max submission index, inclusive
+  startCursor?: string;
+}
+
+export interface IndexerProductPayment {
+  productId: number;
+  submissionIndex: string;
+  timestamp: BigDecimal;
+  amount: BigDecimal;
+}
+
+export interface GetIndexerInterestFundingPaymentsResponse {
+  interestPayments: IndexerProductPayment[];
+  fundingPayments: IndexerProductPayment[];
+  nextCursor: string | null;
+}

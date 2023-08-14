@@ -7,6 +7,7 @@ import {
   IndexerServerMatchEvent,
   IndexerServerOraclePrice,
   IndexerServerOrder,
+  IndexerServerProductPayment,
   IndexerServerProductSnapshot,
   IndexerServerTx,
 } from './serverModelTypes';
@@ -115,6 +116,14 @@ export interface IndexerServerMarketSnapshotsParams {
   product_ids?: number[];
 }
 
+export interface IndexerServerInterestFundingParams {
+  subaccount: string;
+  product_ids: number[];
+  // If not given, defaults to latest
+  max_idx?: string;
+  limit: number;
+}
+
 // Request
 export interface IndexerServerQueryRequestByType {
   summary: IndexerServerSummaryParams;
@@ -134,6 +143,7 @@ export interface IndexerServerQueryRequestByType {
   usdc_price: Record<string, never>;
   linked_signer_rate_limit: IndexerServerLinkedSignerParams;
   market_snapshots: IndexerServerMarketSnapshotsParams;
+  interest_and_funding: IndexerServerInterestFundingParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -272,6 +282,12 @@ export interface IndexerServerMarketSnapshotsResponse {
   snapshots: IndexerServerMarketSnapshot[];
 }
 
+export interface IndexerServerInterestFundingResponse {
+  interest_payments: IndexerServerProductPayment[];
+  funding_payments: IndexerServerProductPayment[];
+  next_idx: string;
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   summary: IndexerServerSummaryResponse;
@@ -291,4 +307,5 @@ export interface IndexerServerQueryResponseByType {
   usdc_price: IndexerServerUsdcPriceResponse;
   linked_signer_rate_limit: IndexerServerLinkedSignerResponse;
   market_snapshots: IndexerServerMarketSnapshotsResponse;
+  interest_and_funding: IndexerServerInterestFundingResponse;
 }

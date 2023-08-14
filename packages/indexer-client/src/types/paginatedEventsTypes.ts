@@ -1,6 +1,8 @@
 import { Subaccount } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import {
+  GetIndexerInterestFundingPaymentsParams,
+  GetIndexerInterestFundingPaymentsResponse,
   IndexerEventPerpStateSnapshot,
   IndexerEventSpotStateSnapshot,
   IndexerMatchEvent,
@@ -122,3 +124,12 @@ export interface IndexerSettlementEvent extends BaseIndexerPaginatedEvent {
 
 export type GetIndexerSubaccountSettlementEventsResponse =
   PaginatedIndexerEventsResponse<IndexerSettlementEvent>;
+
+export type GetIndexerSubaccountFundingPaymentsParams =
+  BaseSubaccountPaginationParams &
+    Pick<GetIndexerInterestFundingPaymentsParams, 'productIds' | 'startCursor'>;
+
+export interface GetIndexerPaginatedInterestFundingPaymentsResponse
+  extends GetIndexerInterestFundingPaymentsResponse {
+  meta: IndexerPaginationMeta;
+}
