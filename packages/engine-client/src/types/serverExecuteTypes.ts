@@ -33,10 +33,10 @@ export interface EngineServerExecuteResponseDataByType {
 }
 
 export interface EngineServerExecuteSuccessResult<
-  TExecuteType extends keyof EngineServerExecuteResponseDataByType = EngineServerExecuteRequestType,
+  T extends EngineServerExecuteRequestType = EngineServerExecuteRequestType,
 > {
   status: 'success';
-  data: EngineServerExecuteResponseDataByType[TExecuteType];
+  data: EngineServerExecuteResponseDataByType[T];
   signature: string;
   request_type: EngineServerExecuteResultRequestType;
 }
@@ -49,9 +49,9 @@ export interface EngineServerExecuteFailureResult {
   request_type: EngineServerExecuteResultRequestType;
 }
 
-export type EngineServerExecuteResult =
-  | EngineServerExecuteSuccessResult
-  | EngineServerExecuteFailureResult;
+export type EngineServerExecuteResult<
+  T extends EngineServerExecuteRequestType = EngineServerExecuteRequestType,
+> = EngineServerExecuteSuccessResult<T> | EngineServerExecuteFailureResult;
 
 type EngineServerExecuteResultRequestType = {
   [K in keyof EngineServerExecuteRequestByType]: `execute_${K}`;
