@@ -160,12 +160,24 @@ export interface GetIndexerFundingRateParams {
   productId: number;
 }
 
-export interface GetIndexerFundingRateResponse {
+export interface IndexerFundingRate {
   productId: number;
   fundingRate: BigDecimal;
   // Seconds
   updateTime: BigDecimal;
 }
+
+export type GetIndexerFundingRateResponse = IndexerFundingRate;
+
+export interface GetIndexerMultiProductFundingRatesParams {
+  productIds: number[];
+}
+
+// Map of productId -> IndexerFundingRate
+export type GetIndexerMultiProductFundingRatesResponse = Record<
+  number,
+  IndexerFundingRate
+>;
 
 export interface GetIndexerCandlesticksParams {
   productId: number;

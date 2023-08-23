@@ -31,6 +31,10 @@ export interface IndexerServerFundingRateParams {
   product_id: number;
 }
 
+export interface IndexerServerFundingRatesParams {
+  product_ids: number[];
+}
+
 export interface IndexerServerPriceParams {
   product_id: number;
 }
@@ -117,6 +121,7 @@ export interface IndexerServerQueryRequestByType {
   rewards: IndexerServerRewardsParams;
   referral_code: IndexerServerReferralCodeParams;
   funding_rate: IndexerServerFundingRateParams;
+  funding_rates: IndexerServerFundingRatesParams;
   price: IndexerServerPriceParams;
   perp_prices: IndexerServerPerpPricesParams;
   oracle_price: IndexerServerOraclePricesParams;
@@ -190,11 +195,19 @@ export interface IndexerServerReferralCodeResponse {
   referral_code: string | null;
 }
 
-export interface IndexerServerFundingRateResponse {
+export interface IndexerServerFundingRate {
   product_id: number;
   funding_rate_x18: string;
   update_time: number;
 }
+
+export type IndexerServerFundingRateResponse = IndexerServerFundingRate;
+
+// Map of productId -> IndexerServerFundingRate
+export type IndexerServerFundingRatesResponse = Record<
+  string,
+  IndexerServerFundingRate
+>;
 
 export interface IndexerServerPerpPrices {
   product_id: number;
@@ -265,6 +278,7 @@ export interface IndexerServerQueryResponseByType {
   rewards: IndexerServerRewardsResponse;
   referral_code: IndexerServerReferralCodeResponse;
   funding_rate: IndexerServerFundingRateResponse;
+  funding_rates: IndexerServerFundingRatesResponse;
   price: IndexerServerPriceResponse;
   perp_prices: IndexerServerPerpPricesResponse;
   oracle_price: IndexerServerOraclePricesResponse;

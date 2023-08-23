@@ -17,6 +17,7 @@ import {
   GetIndexerCandlesticksParams,
   GetIndexerFundingRateParams,
   GetIndexerMarketSnapshotsParams,
+  GetIndexerMultiProductFundingRatesParams,
   GetIndexerMultiProductSnapshotsParams,
   GetIndexerOrdersParams,
   GetIndexerOrdersResponse,
@@ -145,12 +146,23 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Retrieves the latest funding rate for perp products
+   * @description Retrieves the latest funding rate for a perp product
    *
    * @param params
    */
   async getFundingRate(params: GetIndexerFundingRateParams) {
     return this.context.indexerClient.getFundingRate(params);
+  }
+
+  /**
+   * @description Retrieves the latest funding rate for multiple perp products
+   *
+   * @param params
+   */
+  async getMultiProductFundingRates(
+    params: GetIndexerMultiProductFundingRatesParams,
+  ) {
+    return this.context.indexerClient.getMultiProductFundingRates(params);
   }
 
   /**
