@@ -31,7 +31,7 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Funding rate', fundingRate.fundingRate.toString());
 
-  const fundingRates = await client.getMultiProductFundingRate({
+  const fundingRates = await client.getMultiProductFundingRates({
     productIds: [2, 4],
   });
 

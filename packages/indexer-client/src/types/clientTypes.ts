@@ -169,12 +169,12 @@ export interface IndexerFundingRate {
 
 export type GetIndexerFundingRateResponse = IndexerFundingRate;
 
-export interface GetIndexerMultiProductFundingRateParams {
+export interface GetIndexerMultiProductFundingRatesParams {
   productIds: number[];
 }
 
 // Map of productId -> IndexerFundingRate
-export type GetIndexerMultiProductFundingRateResponse = Record<
+export type GetIndexerMultiProductFundingRatesResponse = Record<
   number,
   IndexerFundingRate
 >;

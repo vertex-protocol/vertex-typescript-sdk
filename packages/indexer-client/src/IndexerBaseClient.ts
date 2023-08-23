@@ -25,8 +25,8 @@ import {
   GetIndexerMarketSnapshotsResponse,
   GetIndexerMatchEventsParams,
   GetIndexerMatchEventsResponse,
-  GetIndexerMultiProductFundingRateParams,
-  GetIndexerMultiProductFundingRateResponse,
+  GetIndexerMultiProductFundingRatesParams,
+  GetIndexerMultiProductFundingRatesResponse,
   GetIndexerMultiProductPerpPricesParams,
   GetIndexerMultiProductPerpPricesResponse,
   GetIndexerMultiProductSnapshotsParams,
@@ -170,9 +170,9 @@ export class IndexerBaseClient {
    * Retrieves funding rate for multiple products, where 1 = 100%
    * @param params
    */
-  async getMultiProductFundingRate(
-    params: GetIndexerMultiProductFundingRateParams,
-  ): Promise<GetIndexerMultiProductFundingRateResponse> {
+  async getMultiProductFundingRates(
+    params: GetIndexerMultiProductFundingRatesParams,
+  ): Promise<GetIndexerMultiProductFundingRatesResponse> {
     const baseResponse = await this.query('funding_rates', {
       product_ids: params.productIds,
     });

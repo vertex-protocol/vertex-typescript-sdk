@@ -17,7 +17,7 @@ import {
   GetIndexerCandlesticksParams,
   GetIndexerFundingRateParams,
   GetIndexerMarketSnapshotsParams,
-  GetIndexerMultiProductFundingRateParams,
+  GetIndexerMultiProductFundingRatesParams,
   GetIndexerMultiProductSnapshotsParams,
   GetIndexerOrdersParams,
   GetIndexerOrdersResponse,
@@ -159,10 +159,10 @@ export class MarketQueryAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async getMultiProductFundingRate(
-    params: GetIndexerMultiProductFundingRateParams,
+  async getMultiProductFundingRates(
+    params: GetIndexerMultiProductFundingRatesParams,
   ) {
-    return this.context.indexerClient.getMultiProductFundingRate(params);
+    return this.context.indexerClient.getMultiProductFundingRates(params);
   }
 
   /**
