@@ -4,6 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 import {
   mapIndexerEvent,
   mapIndexerEventWithTx,
+  mapIndexerFundingRate,
   mapIndexerMatchEventBalances,
   mapIndexerOrder,
   mapIndexerPerpPrices,
@@ -24,6 +25,8 @@ import {
   GetIndexerMarketSnapshotsResponse,
   GetIndexerMatchEventsParams,
   GetIndexerMatchEventsResponse,
+  GetIndexerMultiProductFundingRateParams,
+  GetIndexerMultiProductFundingRateResponse,
   GetIndexerMultiProductPerpPricesParams,
   GetIndexerMultiProductPerpPricesResponse,
   GetIndexerMultiProductSnapshotsParams,
@@ -160,11 +163,21 @@ export class IndexerBaseClient {
       product_id: params.productId,
     });
 
-    return {
-      fundingRate: fromX18(baseResponse.funding_rate_x18),
-      updateTime: toBigDecimal(baseResponse.update_time),
-      productId: baseResponse.product_id,
-    };
+    return mapIndexerFundingRate(baseResponse);
+  }
+
+  /**
+   * Retrieves funding rate for multiple products, where 1 = 100%
+   * @param params
+   */
+  async getMultiProductFundingRate(
+    params: GetIndexerMultiProductFundingRateParams,
+  ): Promise<GetIndexerMultiProductFundingRateResponse> {
+    const baseResponse = await this.query('funding_rates', {
+      product_ids: params.productIds,
+    });
+
+    return mapValues(baseResponse, mapIndexerFundingRate);
   }
 
   /**

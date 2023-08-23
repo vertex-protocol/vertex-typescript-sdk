@@ -1,6 +1,7 @@
 import {
   IndexerEvent,
   IndexerEventWithTx,
+  IndexerFundingRate,
   IndexerGlobalRewardsForProduct,
   IndexerMatchEventBalances,
   IndexerOrder,
@@ -9,6 +10,7 @@ import {
   IndexerRewardEpoch,
   IndexerServerBalance,
   IndexerServerEvent,
+  IndexerServerFundingRate,
   IndexerServerMatchEventBalances,
   IndexerServerOrder,
   IndexerServerPerpPrices,
@@ -199,5 +201,15 @@ export function mapIndexerPerpPrices(
     markPrice: fromX18(perpPrices.mark_price_x18),
     updateTime: toBigDecimal(perpPrices.update_time),
     productId: perpPrices.product_id,
+  };
+}
+
+export function mapIndexerFundingRate(
+  fundingRate: IndexerServerFundingRate,
+): IndexerFundingRate {
+  return {
+    fundingRate: fromX18(fundingRate.funding_rate_x18),
+    updateTime: toBigDecimal(fundingRate.update_time),
+    productId: fundingRate.product_id,
   };
 }
