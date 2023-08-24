@@ -278,6 +278,7 @@ export interface IndexerOrder {
   price: BigDecimal;
   // This includes the order type
   rawExpiration: BigDecimal;
+  isReduceOnly: boolean;
   orderType: OrderExpirationType;
   expiration: number;
   nonce: BigDecimal;
