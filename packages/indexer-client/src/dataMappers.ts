@@ -157,7 +157,7 @@ export function mapIndexerProductPayment(
   return {
     submissionIndex: payment.idx,
     timestamp: toBigDecimal(payment.timestamp),
-    amount: toBigDecimal(payment.amount),
+    paymentAmount: toBigDecimal(payment.amount),
     balanceAmount: toBigDecimal(payment.balance_amount),
     oraclePrice: fromX18(payment.price_x18),
     productId: payment.product_id,

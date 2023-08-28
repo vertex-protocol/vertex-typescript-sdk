@@ -393,7 +393,9 @@ export interface IndexerProductPayment {
   productId: number;
   submissionIndex: string;
   timestamp: BigDecimal;
-  amount: BigDecimal;
+  paymentAmount: BigDecimal;
+  // For spots: previous spot balance at the moment of payment (exclusive of `paymentAmount`).
+  // For perps: previous perp balance at the moment of payment + amount of perps locked in LPs (exclusive of `paymentAmount`).
   balanceAmount: BigDecimal;
   oraclePrice: BigDecimal;
 }
