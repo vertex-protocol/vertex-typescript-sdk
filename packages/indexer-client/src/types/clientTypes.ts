@@ -394,6 +394,8 @@ export interface IndexerProductPayment {
   submissionIndex: string;
   timestamp: BigDecimal;
   amount: BigDecimal;
+  balanceAmount: BigDecimal;
+  oraclePrice: BigDecimal;
 }
 
 export interface GetIndexerInterestFundingPaymentsResponse {

@@ -145,4 +145,6 @@ export interface IndexerServerProductPayment {
   idx: string;
   timestamp: string;
   amount: string;
+  balance_amount: string;
+  price_x18: string;
 }
