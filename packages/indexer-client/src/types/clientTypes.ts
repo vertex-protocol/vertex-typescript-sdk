@@ -397,7 +397,7 @@ export interface IndexerProductPayment {
   // For spots: previous spot balance at the moment of payment (exclusive of `paymentAmount`).
   // For perps: previous perp balance at the moment of payment + amount of perps locked in LPs (exclusive of `paymentAmount`).
   balanceAmount: BigDecimal;
-  oraclePrice: BigDecimal;
+  rate: BigDecimal;
 }
 
 export interface GetIndexerInterestFundingPaymentsResponse {

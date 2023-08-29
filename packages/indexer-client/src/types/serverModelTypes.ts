@@ -146,5 +146,5 @@ export interface IndexerServerProductPayment {
   timestamp: string;
   amount: string;
   balance_amount: string;
-  price_x18: string;
+  rate_x18: string;
 }
