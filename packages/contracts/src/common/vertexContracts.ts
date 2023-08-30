@@ -1,9 +1,13 @@
 import {
   Endpoint,
   FQuerier,
+  IAirdrop,
   IClearinghouse,
+  IERC20,
+  ILBA,
   IPerpEngine,
   ISpotEngine,
+  IVesting,
 } from '../typechain-types';
 
 /**
@@ -15,6 +19,10 @@ export interface VertexContracts {
   clearinghouse: IClearinghouse;
   spotEngine: ISpotEngine;
   perpEngine: IPerpEngine;
+  vrtxToken: IERC20;
+  vrtxAirdrop: IAirdrop;
+  vrtxLba: ILBA;
+  vrtxVesting: IVesting;
 }
 
 // Utility types to bundle parameters with contracts

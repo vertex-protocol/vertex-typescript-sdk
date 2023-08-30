@@ -40,17 +40,30 @@ export class VertexClient {
   async setSignerOrProvider(
     signerOrProvider: VertexClientContext['signerOrProvider'],
   ) {
+    const {
+      clearinghouse,
+      endpoint,
+      perpEngine,
+      querier,
+      spotEngine,
+      vrtxAirdrop,
+      vrtxLba,
+      vrtxToken,
+      vrtxVesting,
+    } = this.context.contractAddresses;
+
     const newContext = await createClientContext(
       {
         contracts: {
-          querierAddress: await this.context.contracts.querier.getAddress(),
-          spotEngineAddress:
-            await this.context.contracts.spotEngine.getAddress(),
-          perpEngineAddress:
-            await this.context.contracts.perpEngine.getAddress(),
-          clearinghouseAddress:
-            await this.context.contracts.clearinghouse.getAddress(),
-          endpointAddress: await this.context.contracts.endpoint.getAddress(),
+          querierAddress: querier,
+          spotEngineAddress: spotEngine,
+          perpEngineAddress: perpEngine,
+          clearinghouseAddress: clearinghouse,
+          endpointAddress: endpoint,
+          vrtxTokenAddress: vrtxToken,
+          vrtxAirdropAddress: vrtxAirdrop,
+          vrtxLbaAddress: vrtxLba,
+          vrtxVestingAddress: vrtxVesting,
         },
         engineEndpoint: this.context.engineClient.opts.url,
         indexerEndpoint: this.context.indexerClient.opts.url,
