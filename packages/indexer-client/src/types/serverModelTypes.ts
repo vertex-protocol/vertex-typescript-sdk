@@ -139,3 +139,12 @@ export interface IndexerServerMarketSnapshot {
   deposit_rates: Record<string, string>;
   borrow_rates: Record<string, string>;
 }
+
+export interface IndexerServerProductPayment {
+  product_id: number;
+  idx: string;
+  timestamp: string;
+  amount: string;
+  balance_amount: string;
+  rate_x18: string;
+}

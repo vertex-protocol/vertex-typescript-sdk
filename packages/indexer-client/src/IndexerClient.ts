@@ -7,10 +7,12 @@ import { toBigDecimal } from '@vertex-protocol/utils';
 import { IndexerBaseClient } from './IndexerBaseClient';
 import {
   BaseIndexerPaginatedEvent,
+  GetIndexerPaginatedInterestFundingPaymentsResponse,
   GetIndexerPaginatedOrdersParams,
   GetIndexerPaginatedOrdersResponse,
   GetIndexerSubaccountCollateralEventsParams,
   GetIndexerSubaccountCollateralEventsResponse,
+  GetIndexerSubaccountFundingPaymentsParams,
   GetIndexerSubaccountLiquidationEventsParams,
   GetIndexerSubaccountLiquidationEventsResponse,
   GetIndexerSubaccountLpEventsParams,
@@ -344,6 +346,37 @@ export class IndexerClient extends IndexerBaseClient {
       eventsBySubmissionIdx.values(),
     ) as IndexerLiquidationEvent[];
     return this.getPaginationResponse(events, requestedLimit);
+  }
+
+  /**
+   * Get all interest funding payments for a given subaccount with the standard pagination response
+   * This is a simple wrapper over the underlying `getInterestFundingPayments` function. Very little
+   * additional processing is needed because the endpoint is well structured for pagination
+   *
+   * @param params
+   */
+  async getPaginatedSubaccountInterestFundingPayments(
+    params: GetIndexerSubaccountFundingPaymentsParams,
+  ): Promise<GetIndexerPaginatedInterestFundingPaymentsResponse> {
+    const { limit, productIds, startCursor, subaccountName, subaccountOwner } =
+      params;
+    const baseResponse = await this.getInterestFundingPayments({
+      limit,
+      productIds,
+      startCursor,
+      subaccount: {
+        subaccountName,
+        subaccountOwner,
+      },
+    });
+
+    return {
+      ...baseResponse,
+      meta: {
+        hasMore: baseResponse.nextCursor != null,
+        nextCursor: baseResponse.nextCursor ?? undefined,
+      },
+    };
   }
 
   private getPaginationResponse<T extends BaseIndexerPaginatedEvent>(

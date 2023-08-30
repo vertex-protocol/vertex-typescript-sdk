@@ -150,6 +150,16 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Match events', matchEvents);
 
+  const interestFundingPayments =
+    await client.getPaginatedSubaccountInterestFundingPayments({
+      subaccountName: subaccount.subaccountName,
+      subaccountOwner: subaccount.subaccountOwner,
+      productIds: [0, 1, 2, 3, 4],
+      limit: 10,
+    });
+
+  prettyPrint('Interest & funding payments', interestFundingPayments);
+
   const settlementEvents = await client.getPaginatedSubaccountSettlementEvents({
     limit: 1,
     startCursor: undefined,

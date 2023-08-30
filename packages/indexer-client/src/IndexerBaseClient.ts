@@ -8,6 +8,7 @@ import {
   mapIndexerMatchEventBalances,
   mapIndexerOrder,
   mapIndexerPerpPrices,
+  mapIndexerProductPayment,
   mapIndexerRewardEpoch,
   mapIndexerServerProduct,
 } from './dataMappers';
@@ -19,6 +20,8 @@ import {
   GetIndexerEventsResponse,
   GetIndexerFundingRateParams,
   GetIndexerFundingRateResponse,
+  GetIndexerInterestFundingPaymentsParams,
+  GetIndexerInterestFundingPaymentsResponse,
   GetIndexerLinkedSignerParams,
   GetIndexerLinkedSignerResponse,
   GetIndexerMarketSnapshotsParams,
@@ -431,6 +434,38 @@ export class IndexerBaseClient {
         postBalances: mapIndexerMatchEventBalances(matchEvent.post_balance),
       };
     });
+  }
+
+  /**
+   * Retrieves historical funding & interest payments.
+   * NOTE: `limit` is an upperbound. If a user changes position size such that his position is 0 during each funding/interest tick,
+   *        then the indexer will return fewer than `limit` results per page. However, all events are actually present,
+   *        we'll just need to keep paginating until the next cursor is null.
+   *
+   * @param params
+   */
+  async getInterestFundingPayments(
+    params: GetIndexerInterestFundingPaymentsParams,
+  ): Promise<GetIndexerInterestFundingPaymentsResponse> {
+    const baseResponse = await this.query('interest_and_funding', {
+      subaccount: subaccountToHex({
+        subaccountOwner: params.subaccount.subaccountOwner,
+        subaccountName: params.subaccount.subaccountName,
+      }),
+      product_ids: params.productIds,
+      limit: params.limit,
+      max_idx: params.startCursor,
+    });
+
+    return {
+      fundingPayments: baseResponse.funding_payments.map(
+        mapIndexerProductPayment,
+      ),
+      interestPayments: baseResponse.interest_payments.map(
+        mapIndexerProductPayment,
+      ),
+      nextCursor: baseResponse.next_idx,
+    };
   }
 
   /**
