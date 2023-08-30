@@ -12,7 +12,7 @@ import {
   GetIndexerPaginatedOrdersResponse,
   GetIndexerSubaccountCollateralEventsParams,
   GetIndexerSubaccountCollateralEventsResponse,
-  GetIndexerSubaccountFundingPaymentsParams,
+  GetIndexerSubaccountInterestFundingPaymentsParams,
   GetIndexerSubaccountLiquidationEventsParams,
   GetIndexerSubaccountLiquidationEventsResponse,
   GetIndexerSubaccountLpEventsParams,
@@ -356,7 +356,7 @@ export class IndexerClient extends IndexerBaseClient {
    * @param params
    */
   async getPaginatedSubaccountInterestFundingPayments(
-    params: GetIndexerSubaccountFundingPaymentsParams,
+    params: GetIndexerSubaccountInterestFundingPaymentsParams,
   ): Promise<GetIndexerPaginatedInterestFundingPaymentsResponse> {
     const { limit, productIds, startCursor, subaccountName, subaccountOwner } =
       params;

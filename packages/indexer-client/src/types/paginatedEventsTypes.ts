@@ -125,7 +125,7 @@ export interface IndexerSettlementEvent extends BaseIndexerPaginatedEvent {
 export type GetIndexerSubaccountSettlementEventsResponse =
   PaginatedIndexerEventsResponse<IndexerSettlementEvent>;
 
-export type GetIndexerSubaccountFundingPaymentsParams =
+export type GetIndexerSubaccountInterestFundingPaymentsParams =
   BaseSubaccountPaginationParams &
     Pick<GetIndexerInterestFundingPaymentsParams, 'productIds' | 'startCursor'>;
 
