@@ -1,5 +1,6 @@
 import { BaseVertexAPI } from '../base';
 import {
+  CancelAndPlaceOrderParams,
   CancelTriggerOrdersParams,
   CancelTriggerProductOrdersParams,
   PlaceOrderParams,
@@ -76,6 +77,34 @@ export class MarketExecuteAPI extends BaseVertexAPI {
       subaccountOwner: sender,
       verifyingAddr: this.getEndpointAddress(),
       ...params,
+    });
+  }
+
+  /**
+   * Cancels orders through the engine and places a new one
+   * @param params
+   */
+  async cancelAndPlace(params: CancelAndPlaceOrderParams) {
+    const { productId, order, nonce, spotLeverage } = params.placeOrder;
+    const orderbookAddr = await this.getOrderbookAddress(productId);
+    const sender = await this.getChainSignerAddress();
+
+    return this.context.engineClient.cancelAndPlace({
+      cancelOrders: {
+        subaccountOwner: sender,
+        verifyingAddr: this.getEndpointAddress(),
+        ...params.cancelOrders,
+      },
+      placeOrder: {
+        order: {
+          ...order,
+          subaccountOwner: sender,
+        },
+        verifyingAddr: orderbookAddr,
+        productId,
+        spotLeverage,
+        nonce,
+      },
     });
   }
 

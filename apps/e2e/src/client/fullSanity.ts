@@ -11,6 +11,7 @@ import {
   PlaceOrderParams,
 } from '@vertex-protocol/client';
 import { getExpiration } from '../utils/getExpiration';
+import { prettyPrint } from '../utils/prettyPrint';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -49,7 +50,7 @@ async function fullSanity(context: RunContext) {
       await signer.getAddress(),
     );
 
-  console.log('Referral code:', referralCode);
+  prettyPrint('Referral code', referralCode);
 
   console.log('Depositing tokens...');
   const depositTx = await vertexClient.spot.deposit({
@@ -77,7 +78,7 @@ async function fullSanity(context: RunContext) {
     nonce: orderNonce,
   });
 
-  console.log(`Place order result: ${JSON.stringify(orderResult, null, 2)}`);
+  prettyPrint('Place order result', orderResult);
 
   const subaccountOrders =
     await vertexClient.context.engineClient.getSubaccountOrders({
@@ -86,7 +87,7 @@ async function fullSanity(context: RunContext) {
       subaccountOwner: signer.address,
     });
 
-  console.log('Subaccount orders', JSON.stringify(subaccountOrders));
+  prettyPrint('Subaccount orders', subaccountOrders);
 
   const verifyingAddr =
     await vertexClient.context.engineClient.getOrderbookAddress(3);
@@ -97,7 +98,7 @@ async function fullSanity(context: RunContext) {
     chainId,
   );
 
-  console.log(`Order digest: ${digest}`);
+  prettyPrint('Order digest', digest);
 
   console.log(`Cancelling order`);
   const cancelResult = await vertexClient.market.cancelOrders({
@@ -106,7 +107,37 @@ async function fullSanity(context: RunContext) {
     subaccountName: 'default',
   });
 
-  console.log(`Cancel order result: ${JSON.stringify(cancelResult, null, 2)}`);
+  prettyPrint('Cancel order result', cancelResult);
+
+  const perpOrderResult = await vertexClient.market.placeOrder({
+    order: orderParams,
+    productId: 4,
+    nonce: getOrderNonce(),
+  });
+
+  prettyPrint('Place perp order result', perpOrderResult);
+
+  const perpOrderDigest = vertexClient.context.engineClient.getOrderDigest(
+    perpOrderResult.orderParams,
+    await vertexClient.context.engineClient.getOrderbookAddress(4),
+    chainId,
+  );
+
+  console.log(`Cancelling and placing orders in single request`);
+  const cancelAndPlaceResult = await vertexClient.market.cancelAndPlace({
+    cancelOrders: {
+      digests: [perpOrderDigest],
+      productIds: [4],
+      subaccountName: 'default',
+    },
+    placeOrder: {
+      order: orderParams,
+      productId: 3,
+      nonce: getOrderNonce(),
+    },
+  });
+
+  prettyPrint('Cancel and place order result', cancelAndPlaceResult);
 
   // Fetches state from offchain sequencer
   await vertexClient.market.getAllEngineMarkets();
@@ -148,29 +179,44 @@ async function fullSanity(context: RunContext) {
     amount: toFixedPoint(1000, 6),
   });
 
-  console.log('Products metadata (spot)');
   const spotProductId = 1;
-  console.log(getProductMetadataByProductId('testnet', spotProductId));
-  console.log(getProductMetadataByProductId('mainnet', spotProductId));
+  prettyPrint(
+    'Spot product metadata (testnet)',
+    getProductMetadataByProductId('testnet', spotProductId),
+  );
+  prettyPrint(
+    'Spot product metadata (mainnet)',
+    getProductMetadataByProductId('mainnet', spotProductId),
+  );
 
-  console.log('Products metadata (perp)');
   const perpProductId = 2;
-  console.log(getProductMetadataByProductId('testnet', perpProductId));
-  console.log(getProductMetadataByProductId('mainnet', perpProductId));
+  prettyPrint(
+    'Perp product metadata (testnet)',
+    getProductMetadataByProductId('testnet', perpProductId),
+  );
+  prettyPrint(
+    'Spot product metadata (mainnet)',
+    getProductMetadataByProductId('mainnet', perpProductId),
+  );
 
-  console.log('Invalid product');
   const invalidProductId = 10000;
-  console.log(getProductMetadataByProductId('testnet', invalidProductId));
-  console.log(getProductMetadataByProductId('mainnet', invalidProductId));
+  prettyPrint(
+    'Invalid product metadata (testnet)',
+    getProductMetadataByProductId('testnet', invalidProductId),
+  );
+  prettyPrint(
+    'Spot product metadata (mainnet)',
+    getProductMetadataByProductId('mainnet', invalidProductId),
+  );
 
   const nSubmissions =
     await vertexClient.context.contracts.endpoint.nSubmissions();
 
-  console.log(`nSubmissions: ${nSubmissions}`);
+  prettyPrint('nSubmissions', nSubmissions);
 
   const engineTime = await vertexClient.context.engineClient.getTime();
 
-  console.log(`Engine time: ${engineTime}`);
+  prettyPrint('Engine time', engineTime);
 }
 
 runWithContext(fullSanity);

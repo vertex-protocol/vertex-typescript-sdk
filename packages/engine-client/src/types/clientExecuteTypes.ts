@@ -69,6 +69,11 @@ export type EngineExecuteWithdrawCollateralParams = WithBaseEngineExecuteParams<
 export type EngineExecuteCancelOrdersParams =
   WithBaseEngineExecuteParams<OrderCancellationParams>;
 
+export type EngineExecuteCancelAndPlaceParams = {
+  cancelOrders: EngineExecuteCancelOrdersParams;
+  placeOrder: EngineExecutePlaceOrderParams;
+};
+
 export type EngineExecuteCancelProductOrdersParams =
   WithBaseEngineExecuteParams<ProductOrdersCancellationParams>;
 
@@ -82,6 +87,7 @@ export interface EngineExecuteRequestParamsByType {
   burn_lp: EngineExecuteBurnLpParams;
   place_order: EngineExecutePlaceOrderParams;
   cancel_orders: EngineExecuteCancelOrdersParams;
+  cancel_and_place: EngineExecuteCancelAndPlaceParams;
   cancel_product_orders: EngineExecuteCancelProductOrdersParams;
   link_signer: EngineExecuteLinkSignerParams;
 }
