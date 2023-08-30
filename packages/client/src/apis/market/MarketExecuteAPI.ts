@@ -1,5 +1,6 @@
 import { BaseVertexAPI } from '../base';
 import {
+  CancelAndPlaceOrderParams,
   CancelTriggerOrdersParams,
   CancelTriggerProductOrdersParams,
   PlaceOrderParams,
@@ -7,7 +8,6 @@ import {
 } from './types';
 import {
   EngineExecuteBurnLpParams,
-  EngineExecuteCancelAndPlaceParams,
   EngineExecuteCancelOrdersParams,
   EngineExecuteCancelProductOrdersParams,
   EngineExecuteMintLpParams,
@@ -81,12 +81,10 @@ export class MarketExecuteAPI extends BaseVertexAPI {
   }
 
   /**
-   * Cancels orders through and places a new one through the engine
+   * Cancels orders through the engine and places a new one
    * @param params
    */
-  async cancelAndPlace(
-    params: WithoutSubaccountOwner<EngineExecuteCancelAndPlaceParams>,
-  ) {
+  async cancelAndPlace(params: CancelAndPlaceOrderParams) {
     const { productId, order, nonce } = params.placeOrder;
     const orderbookAddr = await this.getOrderbookAddress(productId);
     const sender = await this.getChainSignerAddress();

@@ -1,5 +1,6 @@
 import {
   EngineExecutePlaceOrderParams,
+  EngineExecuteCancelAndPlaceParams,
   EngineOrderParams,
 } from '@vertex-protocol/engine-client';
 import { WithoutSubaccountOwner } from '../types';
@@ -21,6 +22,13 @@ type OptionalVerifyingAddr<T> = OmitVerifyingAddr<T> & {
 };
 
 export type PlaceOrderParams = ClientOrderParams<EngineExecutePlaceOrderParams>;
+
+export type CancelAndPlaceOrderParams = Omit<
+  WithoutSubaccountOwner<EngineExecuteCancelAndPlaceParams>,
+  'placeOrder'
+> & {
+  placeOrder: PlaceOrderParams;
+};
 
 // Make verifyingAddr optional here to be consistent with engine
 export type PlaceTriggerOrderParams = OptionalVerifyingAddr<

@@ -108,6 +108,42 @@ async function fullSanity(context: RunContext) {
 
   console.log(`Cancel order result: ${JSON.stringify(cancelResult, null, 2)}`);
 
+  const perpOrderResult = await vertexClient.market.placeOrder({
+    order: orderParams,
+    productId: 4,
+    nonce: getOrderNonce(),
+  });
+
+  console.log(
+    `Place perp order result: ${JSON.stringify(perpOrderResult, null, 2)}`,
+  );
+
+  const perpOrderDigest = vertexClient.context.engineClient.getOrderDigest(
+    perpOrderResult.orderParams,
+    await vertexClient.context.engineClient.getOrderbookAddress(4),
+    chainId,
+  );
+
+  console.log(`Cancelling and placing orders in single request`);
+  const cancelAndPlaceResult = await vertexClient.market.cancelAndPlace({
+    digests: [perpOrderDigest],
+    productIds: [4],
+    subaccountName: 'default',
+    placeOrder: {
+      order: orderParams,
+      productId: 3,
+      nonce: getOrderNonce(),
+    },
+  });
+
+  console.log(
+    `Cancel & place order result: ${JSON.stringify(
+      cancelAndPlaceResult,
+      null,
+      2,
+    )}`,
+  );
+
   // Fetches state from offchain sequencer
   await vertexClient.market.getAllEngineMarkets();
   await vertexClient.market.getLatestMarketPrices({ productIds: [1, 2, 3] });
