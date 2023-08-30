@@ -102,7 +102,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
         },
         verifyingAddr: orderbookAddr,
         productId,
-        spotLeverage: spotLeverage,
+        spotLeverage,
         nonce,
       },
     });
