@@ -85,14 +85,16 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * @param params
    */
   async cancelAndPlace(params: CancelAndPlaceOrderParams) {
-    const { productId, order, nonce } = params.placeOrder;
+    const { productId, order, nonce, spotLeverage } = params.placeOrder;
     const orderbookAddr = await this.getOrderbookAddress(productId);
     const sender = await this.getChainSignerAddress();
 
     return this.context.engineClient.cancelAndPlace({
-      subaccountOwner: sender,
-      verifyingAddr: this.getEndpointAddress(),
-      ...params,
+      cancelOrders: {
+        subaccountOwner: sender,
+        verifyingAddr: this.getEndpointAddress(),
+        ...params.cancelOrders,
+      },
       placeOrder: {
         order: {
           ...order,
@@ -100,7 +102,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
         },
         verifyingAddr: orderbookAddr,
         productId,
-        spotLeverage: params.placeOrder.spotLeverage,
+        spotLeverage: spotLeverage,
         nonce,
       },
     });

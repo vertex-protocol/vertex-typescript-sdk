@@ -69,10 +69,10 @@ export type EngineExecuteWithdrawCollateralParams = WithBaseEngineExecuteParams<
 export type EngineExecuteCancelOrdersParams =
   WithBaseEngineExecuteParams<OrderCancellationParams>;
 
-export type EngineExecuteCancelAndPlaceParams =
-  EngineExecuteCancelOrdersParams & {
-    placeOrder: EngineExecutePlaceOrderParams;
-  };
+export type EngineExecuteCancelAndPlaceParams = {
+  cancelOrders: EngineExecuteCancelOrdersParams;
+  placeOrder: EngineExecutePlaceOrderParams;
+};
 
 export type EngineExecuteCancelProductOrdersParams =
   WithBaseEngineExecuteParams<ProductOrdersCancellationParams>;

@@ -126,9 +126,11 @@ async function fullSanity(context: RunContext) {
 
   console.log(`Cancelling and placing orders in single request`);
   const cancelAndPlaceResult = await vertexClient.market.cancelAndPlace({
-    digests: [perpOrderDigest],
-    productIds: [4],
-    subaccountName: 'default',
+    cancelOrders: {
+      digests: [perpOrderDigest],
+      productIds: [4],
+      subaccountName: 'default',
+    },
     placeOrder: {
       order: orderParams,
       productId: 3,

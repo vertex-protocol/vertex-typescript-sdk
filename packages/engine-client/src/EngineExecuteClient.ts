@@ -72,7 +72,7 @@ export class EngineExecuteClient extends EngineBaseClient {
     params: EngineExecuteRequestParamsByType['cancel_and_place'],
   ) {
     const cancelOrdersPayload =
-      await this.payloadBuilder.buildCancelOrdersPayload(params);
+      await this.payloadBuilder.buildCancelOrdersPayload(params.cancelOrders);
     const placeOrderPayload = await this.payloadBuilder.buildPlaceOrderPayload(
       params.placeOrder,
     );
