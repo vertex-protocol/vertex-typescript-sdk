@@ -68,6 +68,21 @@ export class EngineExecuteClient extends EngineBaseClient {
     );
   }
 
+  async cancelAndPlace(
+    params: EngineExecuteRequestParamsByType['cancel_and_place'],
+  ) {
+    const cancelOrdersPayload =
+      await this.payloadBuilder.buildCancelOrdersPayload(params);
+    const placeOrderPayload = await this.payloadBuilder.buildPlaceOrderPayload(
+      params.placeOrder,
+    );
+    return this.execute('cancel_and_place', {
+      cancel_tx: cancelOrdersPayload.tx,
+      cancel_signature: cancelOrdersPayload.signature,
+      place_order: placeOrderPayload.payload,
+    });
+  }
+
   async cancelProductOrders(
     params: EngineExecuteRequestParamsByType['cancel_product_orders'],
   ) {

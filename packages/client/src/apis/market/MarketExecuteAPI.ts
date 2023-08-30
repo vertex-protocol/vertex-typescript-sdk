@@ -7,6 +7,7 @@ import {
 } from './types';
 import {
   EngineExecuteBurnLpParams,
+  EngineExecuteCancelAndPlaceParams,
   EngineExecuteCancelOrdersParams,
   EngineExecuteCancelProductOrdersParams,
   EngineExecuteMintLpParams,
@@ -76,6 +77,34 @@ export class MarketExecuteAPI extends BaseVertexAPI {
       subaccountOwner: sender,
       verifyingAddr: this.getEndpointAddress(),
       ...params,
+    });
+  }
+
+  /**
+   * Cancels orders through and places a new one through the engine
+   * @param params
+   */
+  async cancelAndPlace(
+    params: WithoutSubaccountOwner<EngineExecuteCancelAndPlaceParams>,
+  ) {
+    const { productId, order, nonce } = params.placeOrder;
+    const orderbookAddr = await this.getOrderbookAddress(productId);
+    const sender = await this.getChainSignerAddress();
+
+    return this.context.engineClient.cancelAndPlace({
+      subaccountOwner: sender,
+      verifyingAddr: this.getEndpointAddress(),
+      ...params,
+      placeOrder: {
+        order: {
+          ...order,
+          subaccountOwner: sender,
+        },
+        verifyingAddr: orderbookAddr,
+        productId,
+        spotLeverage: params.placeOrder.spotLeverage,
+        nonce,
+      },
     });
   }
 

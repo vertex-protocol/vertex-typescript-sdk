@@ -29,6 +29,7 @@ export interface EngineServerExecuteResponseDataByType {
   place_order: EngineServerPlaceOrderResponse;
   cancel_product_orders: EngineServerCancelOrdersResponse;
   cancel_orders: EngineServerCancelOrdersResponse;
+  cancel_and_place: EngineServerPlaceOrderResponse;
   link_signer: null;
 }
 
@@ -66,6 +67,22 @@ export interface EngineServerPlaceOrderParams {
   spot_leverage: boolean | null;
 }
 
+export type EngineServerCancelOrdersParams = SignedTx<
+  Omit<EIP712OrderCancellationValues, 'productIds'> & {
+    // number[] is technically assignable to "Bytes", so we need to override the ByteFieldsToHex result here
+    productIds: number[];
+  }
+>;
+
+export type EngineServiceCancelAndPlaceParams = Omit<
+  EngineServerCancelOrdersParams,
+  'tx' | 'signature'
+> & {
+  cancel_tx: EngineServerCancelOrdersParams['tx'];
+  cancel_signature: EngineServerCancelOrdersParams['signature'];
+  place_order: EngineServerPlaceOrderParams;
+};
+
 type WithSpotLeverage<T> = T & {
   spot_leverage: boolean | null;
 };
@@ -78,12 +95,8 @@ export interface EngineServerExecuteRequestByType {
   mint_lp: WithSpotLeverage<SignedTx<EIP712MintLpValues>>;
   burn_lp: SignedTx<EIP712BurnLpValues>;
   place_order: EngineServerPlaceOrderParams;
-  cancel_orders: SignedTx<
-    Omit<EIP712OrderCancellationValues, 'productIds'> & {
-      // number[] is technically assignable to "Bytes", so we need to override the ByteFieldsToHex result here
-      productIds: number[];
-    }
-  >;
+  cancel_orders: EngineServerCancelOrdersParams;
+  cancel_and_place: EngineServiceCancelAndPlaceParams;
   cancel_product_orders: SignedTx<
     Omit<EIP712ProductOrdersCancellationValues, 'productIds'> & {
       // number[] is technically assignable to "Bytes", so we need to override the ByteFieldsToHex result here
