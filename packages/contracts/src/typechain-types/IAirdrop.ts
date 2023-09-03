@@ -8,6 +8,7 @@ import type {
   FunctionFragment,
   Result,
   Interface,
+  AddressLike,
   ContractRunner,
   ContractMethod,
   Listener,
@@ -22,24 +23,51 @@ import type {
 
 export interface IAirdropInterface extends Interface {
   getFunction(
-    nameOrSignature: "claim" | "claimToLBA" | "vest"
+    nameOrSignature:
+      | "claim"
+      | "claimToLBA"
+      | "getClaimed"
+      | "getClaimedLBA"
+      | "getClaimingDeadlines"
+      | "vest"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "claim",
-    values: [BigNumberish, BigNumberish, BytesLike[]]
+    values: [BigNumberish, BigNumberish, BigNumberish, BytesLike[]]
   ): string;
   encodeFunctionData(
     functionFragment: "claimToLBA",
     values: [BigNumberish, BigNumberish, BytesLike[]]
   ): string;
   encodeFunctionData(
+    functionFragment: "getClaimed",
+    values: [BigNumberish, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getClaimedLBA",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getClaimingDeadlines",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "vest",
-    values: [BigNumberish, BigNumberish, BytesLike[]]
+    values: [BigNumberish, BigNumberish, BigNumberish, BytesLike[]]
   ): string;
 
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claimToLBA", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getClaimed", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getClaimedLBA",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getClaimingDeadlines",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "vest", data: BytesLike): Result;
 }
 
@@ -87,19 +115,43 @@ export interface IAirdrop extends BaseContract {
   ): Promise<this>;
 
   claim: TypedContractMethod<
-    [epoch: BigNumberish, amount: BigNumberish, proof: BytesLike[]],
+    [
+      epoch: BigNumberish,
+      amount: BigNumberish,
+      totalAmount: BigNumberish,
+      proof: BytesLike[]
+    ],
     [void],
     "nonpayable"
   >;
 
   claimToLBA: TypedContractMethod<
-    [epoch: BigNumberish, amount: BigNumberish, proof: BytesLike[]],
+    [amount: BigNumberish, totalAmount: BigNumberish, proof: BytesLike[]],
     [void],
     "nonpayable"
   >;
 
+  getClaimed: TypedContractMethod<
+    [epoch: BigNumberish, account: AddressLike],
+    [bigint],
+    "nonpayable"
+  >;
+
+  getClaimedLBA: TypedContractMethod<
+    [account: AddressLike],
+    [bigint],
+    "nonpayable"
+  >;
+
+  getClaimingDeadlines: TypedContractMethod<[], [bigint[]], "nonpayable">;
+
   vest: TypedContractMethod<
-    [epoch: BigNumberish, amount: BigNumberish, proof: BytesLike[]],
+    [
+      epoch: BigNumberish,
+      amount: BigNumberish,
+      totalAmount: BigNumberish,
+      proof: BytesLike[]
+    ],
     [void],
     "nonpayable"
   >;
@@ -111,21 +163,44 @@ export interface IAirdrop extends BaseContract {
   getFunction(
     nameOrSignature: "claim"
   ): TypedContractMethod<
-    [epoch: BigNumberish, amount: BigNumberish, proof: BytesLike[]],
+    [
+      epoch: BigNumberish,
+      amount: BigNumberish,
+      totalAmount: BigNumberish,
+      proof: BytesLike[]
+    ],
     [void],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "claimToLBA"
   ): TypedContractMethod<
-    [epoch: BigNumberish, amount: BigNumberish, proof: BytesLike[]],
+    [amount: BigNumberish, totalAmount: BigNumberish, proof: BytesLike[]],
     [void],
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "getClaimed"
+  ): TypedContractMethod<
+    [epoch: BigNumberish, account: AddressLike],
+    [bigint],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "getClaimedLBA"
+  ): TypedContractMethod<[account: AddressLike], [bigint], "nonpayable">;
+  getFunction(
+    nameOrSignature: "getClaimingDeadlines"
+  ): TypedContractMethod<[], [bigint[]], "nonpayable">;
+  getFunction(
     nameOrSignature: "vest"
   ): TypedContractMethod<
-    [epoch: BigNumberish, amount: BigNumberish, proof: BytesLike[]],
+    [
+      epoch: BigNumberish,
+      amount: BigNumberish,
+      totalAmount: BigNumberish,
+      proof: BytesLike[]
+    ],
     [void],
     "nonpayable"
   >;

@@ -5,6 +5,7 @@ import { SpotAPI } from './apis/spot';
 import { PerpAPI } from './apis/perp';
 import { WebsocketAPI } from './apis/ws';
 import { Signer } from 'ethers';
+import { VrtxTokenAPI } from './apis/vrtxToken';
 
 /**
  * Client for querying and executing against Vertex Clearinghouse.
@@ -16,6 +17,7 @@ export class VertexClient {
   subaccount!: SubaccountAPI;
   spot!: SpotAPI;
   perp!: PerpAPI;
+  vrtxToken!: VrtxTokenAPI;
   ws!: WebsocketAPI;
 
   constructor(context: VertexClientContext) {
@@ -84,6 +86,7 @@ export class VertexClient {
     this.subaccount = new SubaccountAPI(context);
     this.spot = new SpotAPI(context);
     this.perp = new PerpAPI(context);
+    this.vrtxToken = new VrtxTokenAPI(context);
     this.ws = new WebsocketAPI(context);
   }
 }

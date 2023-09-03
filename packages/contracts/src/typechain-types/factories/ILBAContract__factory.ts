@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 import { Contract, Interface, type ContractRunner } from "ethers";
-import type { ILBA, ILBAInterface } from "../ILBA";
+import type { ILBAContract, ILBAContractInterface } from "../ILBAContract";
 
 const _abi = [
   {
@@ -242,12 +242,15 @@ const _abi = [
   },
 ] as const;
 
-export class ILBA__factory {
+export class ILBAContract__factory {
   static readonly abi = _abi;
-  static createInterface(): ILBAInterface {
-    return new Interface(_abi) as ILBAInterface;
+  static createInterface(): ILBAContractInterface {
+    return new Interface(_abi) as ILBAContractInterface;
   }
-  static connect(address: string, runner?: ContractRunner | null): ILBA {
-    return new Contract(address, _abi, runner) as unknown as ILBA;
+  static connect(
+    address: string,
+    runner?: ContractRunner | null
+  ): ILBAContract {
+    return new Contract(address, _abi, runner) as unknown as ILBAContract;
   }
 }

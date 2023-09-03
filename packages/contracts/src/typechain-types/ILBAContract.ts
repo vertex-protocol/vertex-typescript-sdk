@@ -64,7 +64,7 @@ export declare namespace ILBA {
   };
 }
 
-export interface ILBAInterface extends Interface {
+export interface ILBAContractInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "depositUsdc"
@@ -159,11 +159,11 @@ export interface ILBAInterface extends Interface {
   ): Result;
 }
 
-export interface ILBA extends BaseContract {
-  connect(runner?: ContractRunner | null): ILBA;
+export interface ILBAContract extends BaseContract {
+  connect(runner?: ContractRunner | null): ILBAContract;
   waitForDeployment(): Promise<this>;
 
-  interface: ILBAInterface;
+  interface: ILBAContractInterface;
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,

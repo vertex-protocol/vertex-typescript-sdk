@@ -19,6 +19,11 @@ const _abi = [
         type: "uint256",
       },
       {
+        internalType: "uint256",
+        name: "totalAmount",
+        type: "uint256",
+      },
+      {
         internalType: "bytes32[]",
         name: "proof",
         type: "bytes32[]",
@@ -32,13 +37,13 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint32",
-        name: "epoch",
-        type: "uint32",
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
       },
       {
         internalType: "uint256",
-        name: "amount",
+        name: "totalAmount",
         type: "uint256",
       },
       {
@@ -60,8 +65,69 @@ const _abi = [
         type: "uint32",
       },
       {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "getClaimed",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "getClaimedLBA",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getClaimingDeadlines",
+    outputs: [
+      {
+        internalType: "uint64[]",
+        name: "",
+        type: "uint64[]",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "epoch",
+        type: "uint32",
+      },
+      {
         internalType: "uint256",
         name: "amount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "totalAmount",
         type: "uint256",
       },
       {

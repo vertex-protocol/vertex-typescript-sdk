@@ -23,41 +23,16 @@ import type {
   TypedContractMethod,
 } from "./common";
 
-export declare namespace IEndpoint {
-  export type PricesStruct = {
-    spotPriceX18: BigNumberish;
-    perpPriceX18: BigNumberish;
-  };
-
-  export type PricesStructOutput = [
-    spotPriceX18: bigint,
-    perpPriceX18: bigint
-  ] & { spotPriceX18: bigint; perpPriceX18: bigint };
-}
-
 export interface IEndpointInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "depositCollateral"
-      | "depositCollateralWithReferral"
-      | "getNonce"
-      | "getNumSubaccounts"
       | "getPriceX18"
-      | "getPricesX18"
-      | "getSubaccountById"
-      | "getSubaccountId"
-      | "getTime"
-      | "getVersion"
-      | "setBook"
       | "submitSlowModeTransaction"
-      | "submitTransactionsChecked"
   ): FunctionFragment;
 
   getEvent(
-    nameOrSignatureOrTopic:
-      | "SubmitSlowModeTransaction"
-      | "SubmitTransactions"
-      | "UserReferral"
+    nameOrSignatureOrTopic: "SubmitSlowModeTransaction" | "SubmitTransactions"
   ): EventFragment;
 
   encodeFunctionData(
@@ -65,49 +40,12 @@ export interface IEndpointInterface extends Interface {
     values: [BytesLike, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "depositCollateralWithReferral",
-    values: [BytesLike, BigNumberish, BigNumberish, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getNonce",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getNumSubaccounts",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "getPriceX18",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "getPricesX18",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getSubaccountById",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getSubaccountId",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(functionFragment: "getTime", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "getVersion",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setBook",
-    values: [BigNumberish, AddressLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "submitSlowModeTransaction",
     values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "submitTransactionsChecked",
-    values: [BigNumberish, BytesLike[]]
   ): string;
 
   decodeFunctionResult(
@@ -115,39 +53,11 @@ export interface IEndpointInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositCollateralWithReferral",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getNumSubaccounts",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getPriceX18",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getPricesX18",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getSubaccountById",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getSubaccountId",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getTime", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getVersion", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "setBook", data: BytesLike): Result;
-  decodeFunctionResult(
     functionFragment: "submitSlowModeTransaction",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "submitTransactionsChecked",
     data: BytesLike
   ): Result;
 }
@@ -174,19 +84,6 @@ export namespace SubmitTransactionsEvent {
   export type InputTuple = [];
   export type OutputTuple = [];
   export interface OutputObject {}
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace UserReferralEvent {
-  export type InputTuple = [invitee: AddressLike, referralCode: BytesLike];
-  export type OutputTuple = [invitee: string, referralCode: string];
-  export interface OutputObject {
-    invitee: string;
-    referralCode: string;
-  }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
   export type Log = TypedEventLog<Event>;
@@ -242,59 +139,10 @@ export interface IEndpoint extends BaseContract {
     "nonpayable"
   >;
 
-  depositCollateralWithReferral: TypedContractMethod<
-    [
-      subaccountName: BytesLike,
-      productId: BigNumberish,
-      amount: BigNumberish,
-      referralCode: string
-    ],
-    [void],
-    "nonpayable"
-  >;
-
-  getNonce: TypedContractMethod<[sender: AddressLike], [bigint], "view">;
-
-  getNumSubaccounts: TypedContractMethod<[], [bigint], "view">;
-
   getPriceX18: TypedContractMethod<[productId: BigNumberish], [bigint], "view">;
-
-  getPricesX18: TypedContractMethod<
-    [healthGroup: BigNumberish],
-    [IEndpoint.PricesStructOutput],
-    "view"
-  >;
-
-  getSubaccountById: TypedContractMethod<
-    [subaccountId: BigNumberish],
-    [string],
-    "view"
-  >;
-
-  getSubaccountId: TypedContractMethod<
-    [subaccount: BytesLike],
-    [bigint],
-    "view"
-  >;
-
-  getTime: TypedContractMethod<[], [bigint], "view">;
-
-  getVersion: TypedContractMethod<[], [bigint], "nonpayable">;
-
-  setBook: TypedContractMethod<
-    [productId: BigNumberish, book: AddressLike],
-    [void],
-    "nonpayable"
-  >;
 
   submitSlowModeTransaction: TypedContractMethod<
     [transaction: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-
-  submitTransactionsChecked: TypedContractMethod<
-    [idx: BigNumberish, transactions: BytesLike[]],
     [void],
     "nonpayable"
   >;
@@ -311,62 +159,11 @@ export interface IEndpoint extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "depositCollateralWithReferral"
-  ): TypedContractMethod<
-    [
-      subaccountName: BytesLike,
-      productId: BigNumberish,
-      amount: BigNumberish,
-      referralCode: string
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "getNonce"
-  ): TypedContractMethod<[sender: AddressLike], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "getNumSubaccounts"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
     nameOrSignature: "getPriceX18"
   ): TypedContractMethod<[productId: BigNumberish], [bigint], "view">;
   getFunction(
-    nameOrSignature: "getPricesX18"
-  ): TypedContractMethod<
-    [healthGroup: BigNumberish],
-    [IEndpoint.PricesStructOutput],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "getSubaccountById"
-  ): TypedContractMethod<[subaccountId: BigNumberish], [string], "view">;
-  getFunction(
-    nameOrSignature: "getSubaccountId"
-  ): TypedContractMethod<[subaccount: BytesLike], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "getTime"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "getVersion"
-  ): TypedContractMethod<[], [bigint], "nonpayable">;
-  getFunction(
-    nameOrSignature: "setBook"
-  ): TypedContractMethod<
-    [productId: BigNumberish, book: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "submitSlowModeTransaction"
   ): TypedContractMethod<[transaction: BytesLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "submitTransactionsChecked"
-  ): TypedContractMethod<
-    [idx: BigNumberish, transactions: BytesLike[]],
-    [void],
-    "nonpayable"
-  >;
 
   getEvent(
     key: "SubmitSlowModeTransaction"
@@ -381,13 +178,6 @@ export interface IEndpoint extends BaseContract {
     SubmitTransactionsEvent.InputTuple,
     SubmitTransactionsEvent.OutputTuple,
     SubmitTransactionsEvent.OutputObject
-  >;
-  getEvent(
-    key: "UserReferral"
-  ): TypedContractEvent<
-    UserReferralEvent.InputTuple,
-    UserReferralEvent.OutputTuple,
-    UserReferralEvent.OutputObject
   >;
 
   filters: {
@@ -411,17 +201,6 @@ export interface IEndpoint extends BaseContract {
       SubmitTransactionsEvent.InputTuple,
       SubmitTransactionsEvent.OutputTuple,
       SubmitTransactionsEvent.OutputObject
-    >;
-
-    "UserReferral(address,bytes32)": TypedContractEvent<
-      UserReferralEvent.InputTuple,
-      UserReferralEvent.OutputTuple,
-      UserReferralEvent.OutputObject
-    >;
-    UserReferral: TypedContractEvent<
-      UserReferralEvent.InputTuple,
-      UserReferralEvent.OutputTuple,
-      UserReferralEvent.OutputObject
     >;
   };
 }

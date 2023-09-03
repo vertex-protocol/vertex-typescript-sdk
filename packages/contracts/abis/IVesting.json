@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "IVesting",
-  "sourceName": "contracts/LBA/IVesting.sol",
+  "sourceName": "contracts/interfaces/IVesting.sol",
   "abi": [
     {
       "inputs": [],
