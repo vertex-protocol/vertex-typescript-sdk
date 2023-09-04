@@ -60,11 +60,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint32",
-        name: "epoch",
-        type: "uint32",
-      },
-      {
         internalType: "address",
         name: "account",
         type: "address",
@@ -73,12 +68,12 @@ const _abi = [
     name: "getClaimed",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "uint256[]",
         name: "",
-        type: "uint256",
+        type: "uint256[]",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -97,7 +92,7 @@ const _abi = [
         type: "uint256",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -110,7 +105,7 @@ const _abi = [
         type: "uint64[]",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {

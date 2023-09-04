@@ -70,15 +70,15 @@ export interface ILBAInterface extends Interface {
       | "depositUsdc"
       | "depositVrtx"
       | "getConfig"
+      | "getLockedLpBalance"
+      | "getLpBalance"
+      | "getMaxWithdrawableUsdc"
       | "getStage"
       | "getState"
-      | "lockedLpBalance"
-      | "lpBalance"
-      | "maxWithdrawableUsdc"
-      | "vrtxInitialPriceX18"
+      | "getVrtxInitialPriceX18"
+      | "getWithdrawableLpBalance"
       | "withdrawLiquidity"
       | "withdrawUsdc"
-      | "withdrawableLpBalance"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -90,23 +90,27 @@ export interface ILBAInterface extends Interface {
     values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "getConfig", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getLockedLpBalance",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getLpBalance",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getMaxWithdrawableUsdc",
+    values: [AddressLike]
+  ): string;
   encodeFunctionData(functionFragment: "getStage", values?: undefined): string;
   encodeFunctionData(functionFragment: "getState", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "lockedLpBalance",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "lpBalance",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "maxWithdrawableUsdc",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "vrtxInitialPriceX18",
+    functionFragment: "getVrtxInitialPriceX18",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getWithdrawableLpBalance",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawLiquidity",
@@ -115,10 +119,6 @@ export interface ILBAInterface extends Interface {
   encodeFunctionData(
     functionFragment: "withdrawUsdc",
     values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "withdrawableLpBalance",
-    values: [AddressLike]
   ): string;
 
   decodeFunctionResult(
@@ -130,19 +130,26 @@ export interface ILBAInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getConfig", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getLockedLpBalance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getLpBalance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getMaxWithdrawableUsdc",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getStage", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getState", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "lockedLpBalance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "lpBalance", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "maxWithdrawableUsdc",
+    functionFragment: "getVrtxInitialPriceX18",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "vrtxInitialPriceX18",
+    functionFragment: "getWithdrawableLpBalance",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -151,10 +158,6 @@ export interface ILBAInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "withdrawUsdc",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "withdrawableLpBalance",
     data: BytesLike
   ): Result;
 }
@@ -214,27 +217,33 @@ export interface ILBA extends BaseContract {
     "nonpayable"
   >;
 
-  getConfig: TypedContractMethod<[], [ILBA.ConfigStructOutput], "nonpayable">;
+  getConfig: TypedContractMethod<[], [ILBA.ConfigStructOutput], "view">;
+
+  getLockedLpBalance: TypedContractMethod<
+    [account: AddressLike],
+    [bigint],
+    "view"
+  >;
+
+  getLpBalance: TypedContractMethod<[account: AddressLike], [bigint], "view">;
+
+  getMaxWithdrawableUsdc: TypedContractMethod<
+    [account: AddressLike],
+    [bigint],
+    "view"
+  >;
 
   getStage: TypedContractMethod<[], [bigint], "view">;
 
-  getState: TypedContractMethod<[], [ILBA.StateStructOutput], "nonpayable">;
+  getState: TypedContractMethod<[], [ILBA.StateStructOutput], "view">;
 
-  lockedLpBalance: TypedContractMethod<
+  getVrtxInitialPriceX18: TypedContractMethod<[], [bigint], "view">;
+
+  getWithdrawableLpBalance: TypedContractMethod<
     [account: AddressLike],
     [bigint],
     "view"
   >;
-
-  lpBalance: TypedContractMethod<[account: AddressLike], [bigint], "view">;
-
-  maxWithdrawableUsdc: TypedContractMethod<
-    [account: AddressLike],
-    [bigint],
-    "view"
-  >;
-
-  vrtxInitialPriceX18: TypedContractMethod<[], [bigint], "view">;
 
   withdrawLiquidity: TypedContractMethod<
     [lpAmount: BigNumberish],
@@ -246,12 +255,6 @@ export interface ILBA extends BaseContract {
     [amount: BigNumberish],
     [void],
     "nonpayable"
-  >;
-
-  withdrawableLpBalance: TypedContractMethod<
-    [account: AddressLike],
-    [bigint],
-    "view"
   >;
 
   getFunction<T extends ContractMethod = ContractMethod>(
@@ -270,34 +273,34 @@ export interface ILBA extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "getConfig"
-  ): TypedContractMethod<[], [ILBA.ConfigStructOutput], "nonpayable">;
+  ): TypedContractMethod<[], [ILBA.ConfigStructOutput], "view">;
+  getFunction(
+    nameOrSignature: "getLockedLpBalance"
+  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getLpBalance"
+  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getMaxWithdrawableUsdc"
+  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
     nameOrSignature: "getStage"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "getState"
-  ): TypedContractMethod<[], [ILBA.StateStructOutput], "nonpayable">;
+  ): TypedContractMethod<[], [ILBA.StateStructOutput], "view">;
   getFunction(
-    nameOrSignature: "lockedLpBalance"
-  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "lpBalance"
-  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "maxWithdrawableUsdc"
-  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "vrtxInitialPriceX18"
+    nameOrSignature: "getVrtxInitialPriceX18"
   ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getWithdrawableLpBalance"
+  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
     nameOrSignature: "withdrawLiquidity"
   ): TypedContractMethod<[lpAmount: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "withdrawUsdc"
   ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "withdrawableLpBalance"
-  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
 
   filters: {};
 }

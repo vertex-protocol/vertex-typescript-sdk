@@ -23,13 +23,26 @@ import type {
 
 export interface IVestingInterface extends Interface {
   getFunction(
-    nameOrSignature: "claim" | "claimable" | "registerVesting"
+    nameOrSignature:
+      | "claim"
+      | "getClaimable"
+      | "getVestable"
+      | "getVested"
+      | "registerVesting"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "claim", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "claimable",
+    functionFragment: "getClaimable",
     values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getVestable",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getVested",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "registerVesting",
@@ -37,7 +50,15 @@ export interface IVestingInterface extends Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "claimable", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getClaimable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getVestable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getVested", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "registerVesting",
     data: BytesLike
@@ -89,7 +110,19 @@ export interface IVesting extends BaseContract {
 
   claim: TypedContractMethod<[], [void], "nonpayable">;
 
-  claimable: TypedContractMethod<[account: AddressLike], [bigint], "view">;
+  getClaimable: TypedContractMethod<[account: AddressLike], [bigint], "view">;
+
+  getVestable: TypedContractMethod<
+    [vestingScheduleId: BigNumberish],
+    [bigint],
+    "view"
+  >;
+
+  getVested: TypedContractMethod<
+    [vestingScheduleId: BigNumberish],
+    [bigint],
+    "view"
+  >;
 
   registerVesting: TypedContractMethod<
     [account: AddressLike, amount: BigNumberish, period: BigNumberish],
@@ -105,8 +138,14 @@ export interface IVesting extends BaseContract {
     nameOrSignature: "claim"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "claimable"
+    nameOrSignature: "getClaimable"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getVestable"
+  ): TypedContractMethod<[vestingScheduleId: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getVested"
+  ): TypedContractMethod<[vestingScheduleId: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "registerVesting"
   ): TypedContractMethod<

@@ -42,7 +42,7 @@ export interface IAirdropInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getClaimed",
-    values: [BigNumberish, AddressLike]
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getClaimedLBA",
@@ -131,19 +131,11 @@ export interface IAirdrop extends BaseContract {
     "nonpayable"
   >;
 
-  getClaimed: TypedContractMethod<
-    [epoch: BigNumberish, account: AddressLike],
-    [bigint],
-    "nonpayable"
-  >;
+  getClaimed: TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
 
-  getClaimedLBA: TypedContractMethod<
-    [account: AddressLike],
-    [bigint],
-    "nonpayable"
-  >;
+  getClaimedLBA: TypedContractMethod<[account: AddressLike], [bigint], "view">;
 
-  getClaimingDeadlines: TypedContractMethod<[], [bigint[]], "nonpayable">;
+  getClaimingDeadlines: TypedContractMethod<[], [bigint[]], "view">;
 
   vest: TypedContractMethod<
     [
@@ -181,17 +173,13 @@ export interface IAirdrop extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "getClaimed"
-  ): TypedContractMethod<
-    [epoch: BigNumberish, account: AddressLike],
-    [bigint],
-    "nonpayable"
-  >;
+  ): TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
   getFunction(
     nameOrSignature: "getClaimedLBA"
-  ): TypedContractMethod<[account: AddressLike], [bigint], "nonpayable">;
+  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
     nameOrSignature: "getClaimingDeadlines"
-  ): TypedContractMethod<[], [bigint[]], "nonpayable">;
+  ): TypedContractMethod<[], [bigint[]], "view">;
   getFunction(
     nameOrSignature: "vest"
   ): TypedContractMethod<

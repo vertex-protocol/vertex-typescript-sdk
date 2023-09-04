@@ -21,7 +21,45 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "claimable",
+    name: "getClaimable",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint64",
+        name: "vestingScheduleId",
+        type: "uint64",
+      },
+    ],
+    name: "getVestable",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint64",
+        name: "vestingScheduleId",
+        type: "uint64",
+      },
+    ],
+    name: "getVested",
     outputs: [
       {
         internalType: "uint256",
