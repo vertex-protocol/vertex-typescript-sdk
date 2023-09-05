@@ -14,7 +14,6 @@ import {
   GetEngineContractsResponse,
   GetEngineEstimatedSubaccountSummaryParams,
   GetEngineHealthGroupsResponse,
-  GetEngineIpCheckResponse,
   GetEngineLinkedSignerParams,
   GetEngineLinkedSignerResponse,
   GetEngineMarketLiquidityParams,
@@ -40,7 +39,6 @@ import {
   GetEngineSubaccountSummaryParams,
   GetEngineSubaccountSummaryResponse,
   GetEngineSymbolsParams,
-  GetEngineTimeResponse,
   SubaccountOrderFeeRates,
   ValidateEngineOrderParams,
   ValidateEngineOrderResponse,
@@ -56,7 +54,6 @@ import {
   mapSubaccountSummary,
 } from './utils/queryDataMappers';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
-import axios from 'axios';
 import { mapProductEngineType } from './utils/productEngineTypeMappers';
 
 export class EngineQueryClient extends EngineBaseClient {
@@ -488,20 +485,6 @@ export class EngineQueryClient extends EngineBaseClient {
     return {
       signer: baseResponse.linked_signer,
     };
-  }
-
-  /**
-   * Determines whether client IP is blocked from interacting with the engine
-   */
-  async checkIp(): Promise<GetEngineIpCheckResponse> {
-    return axios.get(`${this.opts.url}/ip`).then((res) => res.data);
-  }
-
-  /**
-   * Retrieves current server epoch in milliseconds
-   */
-  async getTime(): Promise<GetEngineTimeResponse> {
-    return axios.get(`${this.opts.url}/time`).then((res) => res.data);
   }
 
   /**

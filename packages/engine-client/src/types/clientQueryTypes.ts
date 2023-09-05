@@ -1,5 +1,6 @@
 import {
   BalanceSide,
+  Bytes,
   GetAllMarketsResponse,
   GetSubaccountSummaryParams,
   HealthGroup,
@@ -13,8 +14,8 @@ import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import {
   EngineServerCheckIpResponse,
   EngineServerNoncesParams,
-  EngineServerSymbolsResponse,
   EngineServerTimeResponse,
+  EngineServerTokenClaimProofParams,
 } from './serverQueryTypes';
 import { BigNumberish } from 'ethers';
 
@@ -251,4 +252,11 @@ export type GetEngineLinkedSignerParams = Subaccount;
 
 export interface GetEngineLinkedSignerResponse {
   signer: string;
+}
+
+export type GetEngineTokenClaimProofParams = EngineServerTokenClaimProofParams;
+
+export interface GetEngineTokenClaimProofResponse {
+  proof: Bytes[];
+  totalAmount: BigDecimal;
 }

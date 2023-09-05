@@ -27,7 +27,6 @@ export interface IAirdropInterface extends Interface {
       | "claim"
       | "claimToLBA"
       | "getClaimed"
-      | "getClaimedLBA"
       | "getClaimingDeadlines"
       | "vest"
   ): FunctionFragment;
@@ -45,10 +44,6 @@ export interface IAirdropInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "getClaimedLBA",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getClaimingDeadlines",
     values?: undefined
   ): string;
@@ -60,10 +55,6 @@ export interface IAirdropInterface extends Interface {
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claimToLBA", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getClaimed", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getClaimedLBA",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "getClaimingDeadlines",
     data: BytesLike
@@ -133,8 +124,6 @@ export interface IAirdrop extends BaseContract {
 
   getClaimed: TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
 
-  getClaimedLBA: TypedContractMethod<[account: AddressLike], [bigint], "view">;
-
   getClaimingDeadlines: TypedContractMethod<[], [bigint[]], "view">;
 
   vest: TypedContractMethod<
@@ -174,9 +163,6 @@ export interface IAirdrop extends BaseContract {
   getFunction(
     nameOrSignature: "getClaimed"
   ): TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
-  getFunction(
-    nameOrSignature: "getClaimedLBA"
-  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
     nameOrSignature: "getClaimingDeadlines"
   ): TypedContractMethod<[], [bigint[]], "view">;

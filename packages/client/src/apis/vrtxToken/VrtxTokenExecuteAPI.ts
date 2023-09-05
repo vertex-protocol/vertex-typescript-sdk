@@ -5,6 +5,7 @@ import {
   VestLiquidTokensParams,
   VrtxTokenAmountParams,
 } from './types';
+import { LBA_AIRDROP_EPOCH } from '@vertex-protocol/contracts';
 
 export class VrtxTokenExecuteAPI extends BaseVertexAPI {
   /**
@@ -12,13 +13,17 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  claimTokensToLba(params: ClaimTokensToLbaParams) {
+  async claimTokensToLba(params: ClaimTokensToLbaParams) {
+    const { totalAmount, proof } =
+      await this.context.engineClient.getTokenClaimProof({
+        epoch: LBA_AIRDROP_EPOCH,
+        address: await this.getChainSignerAddress(),
+      });
+
     return this.context.contracts.vrtxAirdrop.claimToLBA(
       params.amount,
-      // Get total amount
-      '0',
-      // Get proof
-      [],
+      totalAmount.toString(),
+      proof,
     );
   }
 
@@ -61,14 +66,18 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  vestLiquidTokens(params: VestLiquidTokensParams) {
+  async vestLiquidTokens(params: VestLiquidTokensParams) {
+    const { totalAmount, proof } =
+      await this.context.engineClient.getTokenClaimProof({
+        epoch: params.epoch,
+        address: await this.getChainSignerAddress(),
+      });
+
     return this.context.contracts.vrtxAirdrop.vest(
       params.epoch,
       params.amount,
-      // Get total amount
-      '0',
-      // Get proof
-      [],
+      totalAmount.toString(),
+      proof,
     );
   }
 
@@ -77,14 +86,18 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  claimLiquidTokens(params: ClaimLiquidTokensParams) {
+  async claimLiquidTokens(params: ClaimLiquidTokensParams) {
+    const { totalAmount, proof } =
+      await this.context.engineClient.getTokenClaimProof({
+        epoch: 6,
+        address: await this.getChainSignerAddress(),
+      });
+
     return this.context.contracts.vrtxAirdrop.claim(
       params.epoch,
       params.amount,
-      // Get total amount
-      '0',
-      // Get proof
-      [],
+      totalAmount.toString(),
+      proof,
     );
   }
 }

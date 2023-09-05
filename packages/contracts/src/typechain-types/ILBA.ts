@@ -70,6 +70,8 @@ export interface ILBAInterface extends Interface {
       | "depositUsdc"
       | "depositVrtx"
       | "getConfig"
+      | "getDepositedUsdc"
+      | "getDepositedVrtx"
       | "getLockedLpBalance"
       | "getLpBalance"
       | "getMaxWithdrawableUsdc"
@@ -90,6 +92,14 @@ export interface ILBAInterface extends Interface {
     values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "getConfig", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getDepositedUsdc",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getDepositedVrtx",
+    values: [AddressLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "getLockedLpBalance",
     values: [AddressLike]
@@ -130,6 +140,14 @@ export interface ILBAInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getConfig", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getDepositedUsdc",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getDepositedVrtx",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getLockedLpBalance",
     data: BytesLike
@@ -219,6 +237,18 @@ export interface ILBA extends BaseContract {
 
   getConfig: TypedContractMethod<[], [ILBA.ConfigStructOutput], "view">;
 
+  getDepositedUsdc: TypedContractMethod<
+    [account: AddressLike],
+    [bigint],
+    "view"
+  >;
+
+  getDepositedVrtx: TypedContractMethod<
+    [account: AddressLike],
+    [bigint],
+    "view"
+  >;
+
   getLockedLpBalance: TypedContractMethod<
     [account: AddressLike],
     [bigint],
@@ -274,6 +304,12 @@ export interface ILBA extends BaseContract {
   getFunction(
     nameOrSignature: "getConfig"
   ): TypedContractMethod<[], [ILBA.ConfigStructOutput], "view">;
+  getFunction(
+    nameOrSignature: "getDepositedUsdc"
+  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getDepositedVrtx"
+  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
     nameOrSignature: "getLockedLpBalance"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
