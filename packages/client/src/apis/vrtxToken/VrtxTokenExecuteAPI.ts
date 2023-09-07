@@ -22,7 +22,7 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
 
     return this.context.contracts.vrtxAirdrop.claimToLBA(
       params.amount,
-      totalAmount.toString(),
+      totalAmount.toFixed(),
       proof,
     );
   }
@@ -76,7 +76,7 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
     return this.context.contracts.vrtxAirdrop.vest(
       params.epoch,
       params.amount,
-      totalAmount.toString(),
+      totalAmount.toFixed(),
       proof,
     );
   }
@@ -96,8 +96,17 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
     return this.context.contracts.vrtxAirdrop.claim(
       params.epoch,
       params.amount,
-      totalAmount.toString(),
+      totalAmount.toFixed(),
       proof,
+    );
+  }
+
+  /**
+   * Claim VRTX rewards associated with keeping liquidity in the LBA
+   */
+  async claimLbaRewards() {
+    return this.context.contracts.vrtxLba.claimRewards(
+      await this.getChainSignerAddress(),
     );
   }
 }

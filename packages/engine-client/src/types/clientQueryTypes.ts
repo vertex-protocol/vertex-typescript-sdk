@@ -1,6 +1,5 @@
 import {
   BalanceSide,
-  Bytes,
   GetAllMarketsResponse,
   GetSubaccountSummaryParams,
   HealthGroup,
@@ -16,6 +15,7 @@ import {
   EngineServerNoncesParams,
   EngineServerTimeResponse,
   EngineServerTokenClaimProofParams,
+  EngineServerTokenClaimTotalAmountsParams,
 } from './serverQueryTypes';
 import { BigNumberish } from 'ethers';
 
@@ -257,6 +257,14 @@ export interface GetEngineLinkedSignerResponse {
 export type GetEngineTokenClaimProofParams = EngineServerTokenClaimProofParams;
 
 export interface GetEngineTokenClaimProofResponse {
-  proof: Bytes[];
+  proof: string[];
   totalAmount: BigDecimal;
+}
+
+export type GetEngineTokenClaimTotalAmountsParams =
+  EngineServerTokenClaimTotalAmountsParams;
+
+export interface GetEngineTokenClaimTotalAmountsResponse {
+  // Index is the epoch
+  totalAmounts: BigDecimal[];
 }

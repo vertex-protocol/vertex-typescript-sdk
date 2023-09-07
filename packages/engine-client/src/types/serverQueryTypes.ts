@@ -116,6 +116,10 @@ export interface EngineServerTokenClaimProofParams {
   address: string;
 }
 
+export interface EngineServerTokenClaimTotalAmountsParams {
+  address: string;
+}
+
 export interface EngineServerQueryRequestByType {
   contracts: Record<string, never>;
   status: Record<string, never>;
@@ -311,6 +315,11 @@ export interface EngineServerLinkedSignerResponse {
 export interface EngineServerTokenClaimProofResponse {
   total_amount: string;
   proof: string[];
+}
+
+export interface EngineServerTokenClaimTotalAmountsResponse {
+  // Index is the epoch
+  total_amounts: string[];
 }
 
 export interface EngineServerQueryResponseByType {

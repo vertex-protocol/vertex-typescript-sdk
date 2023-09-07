@@ -1,11 +1,12 @@
 {
-  "redeployTokens": true,
-  "startBlock": 0,
-  "endpoint": "0x3aAde2dCD2Df6a8cAc689EE797591b2913658659",
-  "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-  "vrtxToken": "0x38a024C0b412B9d1db8BC398140D00F5Af3093D4",
-  "usdcToken": "0x5fc748f1FEb28d7b76fa1c6B07D8ba2d5535177c",
-  "vrtxAirdrop": "0xB82008565FdC7e44609fA118A4a681E92581e680",
-  "vrtxLba": "0x2a810409872AfC346F9B5b26571Fd6eC42EA4849",
-  "vrtxVesting": "0xb9bEECD1A582768711dE1EE7B0A1d582D9d72a6C"
+  "redeployVrtx": false,
+  "redeployUsdc": false,
+  "startBlock": 39888496,
+  "endpoint": "0x5956D6f55011678b2CAB217cD21626F7668ba6c5",
+  "deployer": "0x3c06e307BA6Ab81E8Ff6661c1559ce8027744AE5",
+  "vrtxToken": "0xA9BDd8B401fB6c94C64833e91E781DB69e85Acf2",
+  "usdcToken": "0x179522635726710Dd7D2035a81d856de4Aa7836c",
+  "vrtxAirdrop": "0xf1cAF1312a37e0f5A17F6f6FB72A2FC7BC034180",
+  "vrtxLba": "0x48C72319c4C94B2c130AD5bEaFffAb1eF413328E",
+  "vrtxVesting": "0xF9b5b951cd9C7813E60CEe70e5aa16dC3A55FDEe"
 }

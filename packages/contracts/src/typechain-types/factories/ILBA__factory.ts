@@ -9,6 +9,19 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "claimRewards",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "amount",
         type: "uint256",
@@ -35,6 +48,25 @@ const _abi = [
     name: "depositVrtx",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "getClaimableRewards",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -209,6 +241,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "totalLpWithdrawn",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "cumulativeRewardsPerShare",
             type: "uint256",
           },
         ],
