@@ -530,13 +530,10 @@ export class IndexerBaseClient {
           toBigDecimal,
         ),
         cumulativeTakerFees: mapValues(
-          snapshot.cumulative_sequencer_fees,
+          snapshot.cumulative_taker_fees,
           toBigDecimal,
         ),
-        cumulativeTrades: mapValues(
-          snapshot.cumulative_sequencer_fees,
-          toBigDecimal,
-        ),
+        cumulativeTrades: mapValues(snapshot.cumulative_trades, toBigDecimal),
         cumulativeVolumes: mapValues(snapshot.cumulative_volumes, toBigDecimal),
         depositRates: mapValues(snapshot.deposit_rates, toBigDecimal),
         fundingRates: mapValues(snapshot.funding_rates, toBigDecimal),
