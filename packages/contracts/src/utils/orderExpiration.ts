@@ -3,6 +3,15 @@ import { BigNumberish } from 'ethers';
 // All valid "special" order expiration types
 export type OrderExpirationType = 'default' | 'ioc' | 'fok' | 'post_only';
 
+// Encodes all aspects of an order expiration number
+export interface OrderExpirationConfig {
+  type: OrderExpirationType;
+  // The expiration timestamp in UNIX seconds
+  expirationTime: number;
+  // If true, the order can only reduce the size of an existing position. Works only with IOC & FOK
+  reduceOnly?: boolean;
+}
+
 // 2 MSBs of u64
 const EXPIRATION_TYPE_TO_MS2B: Record<OrderExpirationType, bigint> = {
   default: 0n,
@@ -15,27 +24,35 @@ const EXPIRATION_TYPE_TO_MS2B: Record<OrderExpirationType, bigint> = {
  * Special order types, such as immediate-or-cancel, are encoded into the expiration field.
  * This is a utility to create the proper timestamp needed
  *
- * @param type The type of expiration
- * @param expiration The expiration timestamp in UNIX seconds
+ * @param config
  */
-export function getExpirationTimestamp(
-  type: OrderExpirationType,
-  expiration: number,
-): bigint {
-  return BigInt(expiration.toFixed(0)) | (EXPIRATION_TYPE_TO_MS2B[type] << 62n);
+export function getExpirationTimestamp(config: OrderExpirationConfig): bigint {
+  const expirationWithType =
+    BigInt(config.expirationTime.toFixed(0)) |
+    (EXPIRATION_TYPE_TO_MS2B[config.type] << 62n);
+
+  if (!config.reduceOnly) {
+    return expirationWithType;
+  }
+
+  // 3rd MSB denotes the boolean value of reduce-only
+  return expirationWithType | (1n << 61n);
 }
 
 /**
- * Parses the expiration timestamp into the expiration type and expiration timestamp in UNIX seconds
+ * Parses the expiration timestamp into its subcomponents:
+ * - expiration type
+ * - expiration timestamp in UNIX seconds
+ * - value of the reduce only flag
  *
  * @param rawExpiration
  */
-export function parseRawExpirationTimestamp(rawExpiration: BigNumberish): {
-  type: OrderExpirationType;
-  expiration: number;
-} {
+export function parseRawExpirationTimestamp(
+  rawExpiration: BigNumberish,
+): Required<OrderExpirationConfig> {
   const bigIntRawExpiration = BigInt(rawExpiration);
   const largestTwoBits = bigIntRawExpiration >> 62n;
+  const reduceOnlyBitValue = (bigIntRawExpiration >> 61n) & 1n;
 
   const expirationType = (() => {
     if (largestTwoBits === EXPIRATION_TYPE_TO_MS2B.default) {
@@ -58,6 +75,7 @@ export function parseRawExpirationTimestamp(rawExpiration: BigNumberish): {
 
   return {
     type: expirationType,
-    expiration: Number(bigIntExpiration.toString()),
+    expirationTime: Number(bigIntExpiration.toString()),
+    reduceOnly: reduceOnlyBitValue === 1n,
   };
 }

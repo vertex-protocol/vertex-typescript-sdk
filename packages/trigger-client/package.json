@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/trigger-client",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -22,9 +22,9 @@
     "src"
   ],
   "dependencies": {
-    "@vertex-protocol/contracts": "^0.2.0",
-    "@vertex-protocol/engine-client": "^0.2.0",
-    "@vertex-protocol/utils": "^0.2.0",
+    "@vertex-protocol/contracts": "^0.4.0",
+    "@vertex-protocol/engine-client": "^0.4.0",
+    "@vertex-protocol/utils": "^0.4.0",
     "axios": "^1.3.4",
     "ts-mixer": "^6.0.3"
   },
@@ -39,5 +39,5 @@
     "readmeFile": "./README.md",
     "displayName": "Vertex Trigger Server Utils"
   },
-  "gitHead": "51a35ca7bdf1e92e7c614f31d4e218aeb75c5549"
+  "gitHead": "b2a1ab9101df79b0338c4ae06831abfd427c6de5"
 }

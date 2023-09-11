@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/contracts",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -24,7 +24,7 @@
     "abis"
   ],
   "dependencies": {
-    "@vertex-protocol/utils": "^0.2.0"
+    "@vertex-protocol/utils": "^0.4.0"
   },
   "peerDependencies": {
     "ethers": "^6.6.2"
@@ -40,5 +40,5 @@
     "readmeFile": "./README.md",
     "displayName": "Vertex Contracts"
   },
-  "gitHead": "51a35ca7bdf1e92e7c614f31d4e218aeb75c5549"
+  "gitHead": "b2a1ab9101df79b0338c4ae06831abfd427c6de5"
 }
