@@ -29,12 +29,12 @@
     "dev": "tsc -w"
   },
   "peerDependencies": {
-    "bignumber.js": "^9.1.1",
-    "ethers": "^6.6.2"
+    "bignumber.js": "^9.1.2",
+    "ethers": "^6.7.1"
   },
   "devDependencies": {
-    "bignumber.js": "^9.1.1",
-    "ethers": "^6.6.2"
+    "bignumber.js": "^9.1.2",
+    "ethers": "^6.7.1"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
