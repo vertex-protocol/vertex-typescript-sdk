@@ -27,12 +27,12 @@
     "@vertex-protocol/utils": "^0.4.0"
   },
   "peerDependencies": {
-    "ethers": "^6.6.2"
+    "ethers": "^6.7.1"
   },
   "devDependencies": {
     "@typechain/ethers-v6": "^0.4.0",
     "env-cmd": "^10.1.0",
-    "ethers": "^6.6.2",
+    "ethers": "^6.7.1",
     "typechain": "^8.2.0"
   },
   "typedoc": {
