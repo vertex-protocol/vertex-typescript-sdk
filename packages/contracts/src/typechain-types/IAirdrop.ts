@@ -26,6 +26,7 @@ export interface IAirdropInterface extends Interface {
     nameOrSignature:
       | "claim"
       | "claimToLBA"
+      | "getBurned"
       | "getClaimed"
       | "getClaimingDeadlines"
       | "vest"
@@ -38,6 +39,10 @@ export interface IAirdropInterface extends Interface {
   encodeFunctionData(
     functionFragment: "claimToLBA",
     values: [BigNumberish, BigNumberish, BytesLike[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getBurned",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getClaimed",
@@ -54,6 +59,7 @@ export interface IAirdropInterface extends Interface {
 
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claimToLBA", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getBurned", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getClaimed", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getClaimingDeadlines",
@@ -122,6 +128,8 @@ export interface IAirdrop extends BaseContract {
     "nonpayable"
   >;
 
+  getBurned: TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
+
   getClaimed: TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
 
   getClaimingDeadlines: TypedContractMethod<[], [bigint[]], "view">;
@@ -160,6 +168,9 @@ export interface IAirdrop extends BaseContract {
     [void],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "getBurned"
+  ): TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
   getFunction(
     nameOrSignature: "getClaimed"
   ): TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
