@@ -43,15 +43,26 @@ export function mapServerTriggerCriteria(
 ): TriggerCriteria {
   if ('price_above' in criteria) {
     return {
-      type: 'price_above',
+      type: 'oracle_price_above',
       triggerPrice: fromX18(criteria.price_above),
     };
-  } else {
+  }
+  if ('price_below' in criteria) {
     return {
-      type: 'price_below',
+      type: 'oracle_price_below',
       triggerPrice: fromX18(criteria.price_below),
     };
   }
+  if ('last_price_above' in criteria) {
+    return {
+      type: 'last_price_above',
+      triggerPrice: fromX18(criteria.last_price_above),
+    };
+  }
+  return {
+    type: 'last_price_below',
+    triggerPrice: fromX18(criteria.last_price_below),
+  };
 }
 
 export function mapServerOrderInfo(

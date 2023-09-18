@@ -13,10 +13,13 @@ import { BigNumberish } from 'ethers';
 
 type WithOptionalNonce<T> = Omit<T, 'nonce'> & { nonce?: string };
 
-export type TriggerCriteriaType = 'price_above' | 'price_below';
+export type TriggerCriteriaType =
+  | 'oracle_price_above'
+  | 'oracle_price_below'
+  | 'last_price_above'
+  | 'last_price_below';
 
 export type TriggerCriteria = {
-  // Trigger when price is above trigger price, and vice versa
   type: TriggerCriteriaType;
   triggerPrice: BigDecimalish;
 };
