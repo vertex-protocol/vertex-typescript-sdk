@@ -399,7 +399,7 @@ export interface IndexerProductPayment {
   // For perps: previous perp balance at the moment of payment + amount of perps locked in LPs (exclusive of `paymentAmount`).
   balanceAmount: BigDecimal;
   // Represents the annually interest rate for spots and annually funding rate for perps.
-  annuallyPaymentRate: BigDecimal;
+  annualPaymentRate: BigDecimal;
   oraclePrice: BigDecimal;
 }
 
