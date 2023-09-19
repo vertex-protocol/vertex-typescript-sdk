@@ -400,6 +400,7 @@ export interface IndexerProductPayment {
   balanceAmount: BigDecimal;
   // Represents the hourly interest rate for spots and hourly funding rate for perps.
   hourlyPaymentRate: BigDecimal;
+  oraclePrice: BigDecimal;
 }
 
 export interface GetIndexerInterestFundingPaymentsResponse {
