@@ -2,7 +2,6 @@ import { BaseVertexAPI } from '../base';
 import {
   ClaimLiquidTokensParams,
   ClaimTokensToLbaParams,
-  VestLiquidTokensParams,
   VrtxTokenAmountParams,
 } from './types';
 import { LBA_AIRDROP_EPOCH } from '@vertex-protocol/contracts';
@@ -25,13 +24,6 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
       totalAmount.toFixed(),
       proof,
     );
-  }
-
-  /**
-   * Claim all available vested tokens
-   */
-  claimVestedTokens() {
-    return this.context.contracts.vrtxVesting.claim();
   }
 
   /**
@@ -62,27 +54,7 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
   }
 
   /**
-   * Submits earned VRTX tokens to be vested
-   *
-   * @param params
-   */
-  async vestLiquidTokens(params: VestLiquidTokensParams) {
-    const { totalAmount, proof } =
-      await this.context.engineClient.getTokenClaimProof({
-        epoch: params.epoch,
-        address: await this.getChainSignerAddress(),
-      });
-
-    return this.context.contracts.vrtxAirdrop.vest(
-      params.epoch,
-      params.amount,
-      totalAmount.toFixed(),
-      proof,
-    );
-  }
-
-  /**
-   * Claim earned VRTX tokens directly without vesting, resulting in a 50% burn
+   * Claim earned VRTX tokens
    *
    * @param params
    */

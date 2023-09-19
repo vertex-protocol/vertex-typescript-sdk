@@ -6,8 +6,6 @@ export interface VrtxTokenAmountParams {
 
 export type ClaimTokensToLbaParams = VrtxTokenAmountParams;
 
-export interface VestLiquidTokensParams extends VrtxTokenAmountParams {
+export interface ClaimLiquidTokensParams extends VrtxTokenAmountParams {
   epoch: number;
 }
-
-export type ClaimLiquidTokensParams = VestLiquidTokensParams;
