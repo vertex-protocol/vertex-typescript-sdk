@@ -160,7 +160,7 @@ export function mapIndexerProductPayment(
     timestamp: toBigDecimal(payment.timestamp),
     paymentAmount: toBigDecimal(payment.amount),
     balanceAmount: toBigDecimal(payment.balance_amount),
-    hourlyPaymentRate: fromX18(payment.rate_x18),
+    annuallyPaymentRate: fromX18(payment.rate_x18),
     oraclePrice: fromX18(payment.oracle_price_x18),
     productId: payment.product_id,
   };
