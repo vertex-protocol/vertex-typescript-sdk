@@ -81,4 +81,18 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
       await this.getChainSignerAddress(),
     );
   }
+
+  /**
+   * Stake VRTX tokens
+   */
+  async stake(params: VrtxTokenAmountParams) {
+    return this.context.contracts.vrtxStaking.stake(params.amount);
+  }
+
+  /**
+   * Unstake VRTX tokens
+   */
+  async unstake(params: VrtxTokenAmountParams) {
+    return this.context.contracts.vrtxStaking.withdraw(params.amount);
+  }
 }

@@ -7,6 +7,7 @@ import {
   ILBA,
   IPerpEngine,
   ISpotEngine,
+  IStaking,
   IVesting,
 } from '../typechain-types';
 
@@ -23,6 +24,7 @@ export interface VertexContracts {
   vrtxAirdrop: IAirdrop;
   vrtxLba: ILBA;
   vrtxVesting: IVesting;
+  vrtxStaking: IStaking;
 }
 
 // Utility types to bundle parameters with contracts

@@ -52,6 +52,7 @@ export class VertexClient {
       vrtxLba,
       vrtxToken,
       vrtxVesting,
+      vrtxStaking,
     } = this.context.contractAddresses;
 
     const newContext = await createClientContext(
@@ -66,6 +67,7 @@ export class VertexClient {
           vrtxAirdropAddress: vrtxAirdrop,
           vrtxLbaAddress: vrtxLba,
           vrtxVestingAddress: vrtxVesting,
+          vrtxStakingAddress: vrtxStaking,
         },
         engineEndpoint: this.context.engineClient.opts.url,
         indexerEndpoint: this.context.indexerClient.opts.url,
