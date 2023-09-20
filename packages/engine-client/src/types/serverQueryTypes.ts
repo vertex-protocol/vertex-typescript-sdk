@@ -110,16 +110,6 @@ export interface EngineServerLinkedSignerParams {
   subaccount: string;
 }
 
-// Talks to web, not engine, so not part of EngineServerQueryRequestByType
-export interface EngineServerTokenClaimProofParams {
-  epoch: number;
-  address: string;
-}
-
-export interface EngineServerTokenClaimTotalAmountsParams {
-  address: string;
-}
-
 export interface EngineServerQueryRequestByType {
   contracts: Record<string, never>;
   status: Record<string, never>;
@@ -310,16 +300,6 @@ export interface EngineServerCheckIpResponse {
 
 export interface EngineServerLinkedSignerResponse {
   linked_signer: string;
-}
-
-export interface EngineServerTokenClaimProofResponse {
-  total_amount: string;
-  proof: string[];
-}
-
-export interface EngineServerTokenClaimTotalAmountsResponse {
-  // Index is the epoch
-  total_amounts: string[];
 }
 
 export interface EngineServerQueryResponseByType {

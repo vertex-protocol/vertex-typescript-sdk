@@ -12,6 +12,10 @@ import {
 import { BigDecimal } from '@vertex-protocol/utils';
 import { CandlestickPeriod } from './CandlestickPeriod';
 import { IndexerEventType } from './IndexerEventType';
+import {
+  IndexerServerTokenClaimProofParams,
+  IndexerServerTokenClaimTotalAmountsParams,
+} from './serverTypes';
 
 export type IndexerSpotBalance = Omit<SpotBalance, 'healthContributions'>;
 
@@ -406,4 +410,20 @@ export interface GetIndexerInterestFundingPaymentsResponse {
   interestPayments: IndexerProductPayment[];
   fundingPayments: IndexerProductPayment[];
   nextCursor: string | null;
+}
+
+export type GetIndexerTokenClaimProofParams =
+  IndexerServerTokenClaimProofParams;
+
+export interface GetIndexerTokenClaimProofResponse {
+  proof: string[];
+  totalAmount: BigDecimal;
+}
+
+export type GetIndexerTokenClaimTotalAmountsParams =
+  IndexerServerTokenClaimTotalAmountsParams;
+
+export interface GetIndexerTokenClaimTotalAmountsResponse {
+  // Index is the epoch
+  totalAmounts: BigDecimal[];
 }

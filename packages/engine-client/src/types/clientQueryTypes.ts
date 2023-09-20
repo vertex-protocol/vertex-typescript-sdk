@@ -14,8 +14,6 @@ import {
   EngineServerCheckIpResponse,
   EngineServerNoncesParams,
   EngineServerTimeResponse,
-  EngineServerTokenClaimProofParams,
-  EngineServerTokenClaimTotalAmountsParams,
 } from './serverQueryTypes';
 import { BigNumberish } from 'ethers';
 
@@ -252,19 +250,4 @@ export type GetEngineLinkedSignerParams = Subaccount;
 
 export interface GetEngineLinkedSignerResponse {
   signer: string;
-}
-
-export type GetEngineTokenClaimProofParams = EngineServerTokenClaimProofParams;
-
-export interface GetEngineTokenClaimProofResponse {
-  proof: string[];
-  totalAmount: BigDecimal;
-}
-
-export type GetEngineTokenClaimTotalAmountsParams =
-  EngineServerTokenClaimTotalAmountsParams;
-
-export interface GetEngineTokenClaimTotalAmountsResponse {
-  // Index is the epoch
-  totalAmounts: BigDecimal[];
 }

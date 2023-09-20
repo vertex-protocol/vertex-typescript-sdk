@@ -14,7 +14,7 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
    */
   async claimTokensToLba(params: ClaimTokensToLbaParams) {
     const { totalAmount, proof } =
-      await this.context.engineClient.getTokenClaimProof({
+      await this.context.indexerClient.getTokenClaimProof({
         epoch: LBA_AIRDROP_EPOCH,
         address: await this.getChainSignerAddress(),
       });
@@ -60,7 +60,7 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
    */
   async claimLiquidTokens(params: ClaimLiquidTokensParams) {
     const { totalAmount, proof } =
-      await this.context.engineClient.getTokenClaimProof({
+      await this.context.indexerClient.getTokenClaimProof({
         epoch: 6,
         address: await this.getChainSignerAddress(),
       });
