@@ -26,10 +26,8 @@ export interface IAirdropInterface extends Interface {
     nameOrSignature:
       | "claim"
       | "claimToLBA"
-      | "getBurned"
       | "getClaimed"
       | "getClaimingDeadlines"
-      | "vest"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -41,10 +39,6 @@ export interface IAirdropInterface extends Interface {
     values: [BigNumberish, BigNumberish, BytesLike[]]
   ): string;
   encodeFunctionData(
-    functionFragment: "getBurned",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getClaimed",
     values: [AddressLike]
   ): string;
@@ -52,20 +46,14 @@ export interface IAirdropInterface extends Interface {
     functionFragment: "getClaimingDeadlines",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "vest",
-    values: [BigNumberish, BigNumberish, BigNumberish, BytesLike[]]
-  ): string;
 
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claimToLBA", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getBurned", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getClaimed", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getClaimingDeadlines",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "vest", data: BytesLike): Result;
 }
 
 export interface IAirdrop extends BaseContract {
@@ -128,22 +116,9 @@ export interface IAirdrop extends BaseContract {
     "nonpayable"
   >;
 
-  getBurned: TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
-
   getClaimed: TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
 
   getClaimingDeadlines: TypedContractMethod<[], [bigint[]], "view">;
-
-  vest: TypedContractMethod<
-    [
-      epoch: BigNumberish,
-      amount: BigNumberish,
-      totalAmount: BigNumberish,
-      proof: BytesLike[]
-    ],
-    [void],
-    "nonpayable"
-  >;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -169,26 +144,11 @@ export interface IAirdrop extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "getBurned"
-  ): TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
-  getFunction(
     nameOrSignature: "getClaimed"
   ): TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
   getFunction(
     nameOrSignature: "getClaimingDeadlines"
   ): TypedContractMethod<[], [bigint[]], "view">;
-  getFunction(
-    nameOrSignature: "vest"
-  ): TypedContractMethod<
-    [
-      epoch: BigNumberish,
-      amount: BigNumberish,
-      totalAmount: BigNumberish,
-      proof: BytesLike[]
-    ],
-    [void],
-    "nonpayable"
-  >;
 
   filters: {};
 }
