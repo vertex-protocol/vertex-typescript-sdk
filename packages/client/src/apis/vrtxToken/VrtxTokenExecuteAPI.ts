@@ -65,9 +65,26 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
         address: await this.getChainSignerAddress(),
       });
 
+    const airdropContract = this.context.contracts.vrtxAirdrop;
+
+    // If no amount is given, then the full amount available is claimed
+    const amountToClaim = await (async () => {
+      if (params.amount) {
+        return params.amount;
+      }
+      const amountsClaimed = await airdropContract.getClaimed(
+        await this.getChainSignerAddress(),
+      );
+      const availableAmount = totalAmount.minus(
+        amountsClaimed[params.epoch].toString(),
+      );
+
+      return availableAmount.toFixed();
+    })();
+
     return this.context.contracts.vrtxAirdrop.claim(
       params.epoch,
-      params.amount,
+      amountToClaim,
       totalAmount.toFixed(),
       proof,
     );

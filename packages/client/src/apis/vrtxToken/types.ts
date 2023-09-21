@@ -6,6 +6,8 @@ export interface VrtxTokenAmountParams {
 
 export type ClaimTokensToLbaParams = VrtxTokenAmountParams;
 
-export interface ClaimLiquidTokensParams extends VrtxTokenAmountParams {
+export interface ClaimLiquidTokensParams
+  // If no amount is given, then the full amount is claimed
+  extends Partial<VrtxTokenAmountParams> {
   epoch: number;
 }
