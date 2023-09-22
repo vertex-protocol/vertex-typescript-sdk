@@ -17,14 +17,14 @@
     "trigger/full-sanity": "ts-node ./src/trigger-client/fullSanity.ts"
   },
   "dependencies": {
-    "@vertex-protocol/client": "0.2.0",
-    "@vertex-protocol/contracts": "0.2.0",
-    "@vertex-protocol/engine-client": "0.2.0",
-    "@vertex-protocol/indexer-client": "0.2.0",
-    "@vertex-protocol/trigger-client": "0.2.0",
-    "@vertex-protocol/utils": "0.2.0",
+    "@vertex-protocol/client": "0.5.0",
+    "@vertex-protocol/contracts": "0.5.0",
+    "@vertex-protocol/engine-client": "0.5.0",
+    "@vertex-protocol/indexer-client": "0.5.0",
+    "@vertex-protocol/trigger-client": "0.5.0",
+    "@vertex-protocol/utils": "0.5.0",
     "dotenv": "^16.3.1",
-    "ethers": "^6.6.2"
+    "ethers": "^6.7.1"
   },
   "gitHead": "6d0f498829ddaf01a11d2f46f960811428b370f5"
 }

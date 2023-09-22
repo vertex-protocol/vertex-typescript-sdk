@@ -80,7 +80,7 @@ async function fullSanity(context: RunContext) {
     productId: ethProductId,
     spotLeverage: true,
     triggerCriteria: {
-      type: 'price_above',
+      type: 'oracle_price_above',
       triggerPrice: 10000,
     },
     verifyingAddr: ethOrderbookAddr,

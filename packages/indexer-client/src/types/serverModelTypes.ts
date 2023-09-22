@@ -147,4 +147,5 @@ export interface IndexerServerProductPayment {
   amount: string;
   balance_amount: string;
   rate_x18: string;
+  oracle_price_x18: string;
 }

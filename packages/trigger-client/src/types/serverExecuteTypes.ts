@@ -7,11 +7,19 @@ import {
 export type TriggerServerExecuteResult = EngineServerExecuteResult;
 
 export type TriggerServerTriggerCriteria =
+  // These trigger on fast oracle price
   | {
       price_above: string;
     }
   | {
       price_below: string;
+    }
+  // These trigger on last trade price
+  | {
+      last_price_above: string;
+    }
+  | {
+      last_price_below: string;
     };
 
 export interface TriggerServerExecutePlaceOrderParams {
