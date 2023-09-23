@@ -1314,62 +1314,6 @@
     "@typescript-eslint/types" "5.57.1"
     eslint-visitor-keys "^3.3.0"
 
-"@vertex-protocol/client@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@vertex-protocol/client/-/client-0.2.0.tgz#c7c23c0fb37050ff5b5f3a89f9728311a4c94c8e"
-  integrity sha512-qIUBoTlFWbUM/Kh0xzzh2eQwLTQqlN3GaeRnCUn4vrp1uen7z379g5NRcJCTFDtGvK46HWOE5CqjOjea7d4p2w==
-  dependencies:
-    "@vertex-protocol/contracts" "^0.2.0"
-    "@vertex-protocol/engine-client" "^0.2.0"
-    "@vertex-protocol/indexer-client" "^0.2.0"
-    "@vertex-protocol/trigger-client" "^0.2.0"
-    "@vertex-protocol/utils" "^0.2.0"
-    ts-mixer "^6.0.3"
-
-"@vertex-protocol/contracts@0.2.0", "@vertex-protocol/contracts@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@vertex-protocol/contracts/-/contracts-0.2.0.tgz#a9a8ed8c0bb16a42359d0601fa71fd86f90912f2"
-  integrity sha512-3QShdMF7ShNS2MdDMP2j9g3n3sjiOOsd5CldNCDsHLKz9Wd16OTDOwVA267zS8eHII3pVUvlR73iIvHfpogo6g==
-  dependencies:
-    "@vertex-protocol/utils" "^0.2.0"
-
-"@vertex-protocol/engine-client@0.2.0", "@vertex-protocol/engine-client@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@vertex-protocol/engine-client/-/engine-client-0.2.0.tgz#466d6213fb57302450860c234e0e3021c9e4efd4"
-  integrity sha512-O7o/jHsyOQBGLtCi+FSljZqzJOGDv8rxeImC9QnhFijdfVxTESHBoO6XcktW5sdvuEE7zu5ZGbiidFtcCSGQzQ==
-  dependencies:
-    "@vertex-protocol/contracts" "^0.2.0"
-    "@vertex-protocol/utils" "^0.2.0"
-    axios "^1.3.4"
-    ts-mixer "^6.0.3"
-
-"@vertex-protocol/indexer-client@0.2.0", "@vertex-protocol/indexer-client@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@vertex-protocol/indexer-client/-/indexer-client-0.2.0.tgz#7c6489a187843877700290d381f8151f7d8b7bfd"
-  integrity sha512-96LdCdIsi6nS5WSsyxW0alVtwLTKqNh+UODMIZNW95aws6OYjqiV7xxcIxV8jlJR5IM/8sq3KAPNtKIB06netA==
-  dependencies:
-    "@vertex-protocol/contracts" "^0.2.0"
-    "@vertex-protocol/engine-client" "^0.2.0"
-    "@vertex-protocol/utils" "^0.2.0"
-    axios "^1.3.4"
-    ts-mixer "^6.0.3"
-
-"@vertex-protocol/trigger-client@0.2.0", "@vertex-protocol/trigger-client@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@vertex-protocol/trigger-client/-/trigger-client-0.2.0.tgz#bc5b00921f8c0046d33b872b565d05726d54bd2d"
-  integrity sha512-bHjzlMdUp+gdXJZ158CCsoRS3lTczazyc/r8pcF1+Ptf8z+weXtVFKNZ47dF4uUvN4FZFUYgMfToCflHCANZIg==
-  dependencies:
-    "@vertex-protocol/contracts" "^0.2.0"
-    "@vertex-protocol/engine-client" "^0.2.0"
-    "@vertex-protocol/utils" "^0.2.0"
-    axios "^1.3.4"
-    ts-mixer "^6.0.3"
-
-"@vertex-protocol/utils@0.2.0", "@vertex-protocol/utils@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@vertex-protocol/utils/-/utils-0.2.0.tgz#241d128ad9253a466f13e4a8f26c248fea5bc7bd"
-  integrity sha512-ctnxu6H103tiuV9UVFuKpyD+hXH24OMujPBQ8d/y+iQgUmV5jMQHbnvzo+zASQ17MOcAzHob5e5thPMfTt+eeA==
-
 "@yarnpkg/lockfile@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"
