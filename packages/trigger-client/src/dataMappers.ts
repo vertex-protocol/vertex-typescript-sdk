@@ -33,9 +33,17 @@ export function mapTriggerServerOrderStatus(
 export function mapTriggerCriteria(
   criteria: TriggerCriteria,
 ): TriggerServerTriggerCriteria {
-  return <TriggerServerTriggerCriteria>{
-    [criteria.type]: toX18(criteria.triggerPrice).toString(),
-  };
+  const priceValue = toX18(criteria.triggerPrice).toString();
+  switch (criteria.type) {
+    case 'oracle_price_above':
+      return { price_above: priceValue };
+    case 'oracle_price_below':
+      return { price_below: priceValue };
+    case 'last_price_above':
+      return { last_price_above: priceValue };
+    case 'last_price_below':
+      return { last_price_below: priceValue };
+  }
 }
 
 export function mapServerTriggerCriteria(
