@@ -292,10 +292,7 @@ export interface EngineServerMaxMintLpResponse {
 }
 
 export interface EngineServerCheckIpResponse {
-  ip: string;
   blocked: boolean;
-  // ISO country code
-  locale: string;
 }
 
 export interface EngineServerLinkedSignerResponse {

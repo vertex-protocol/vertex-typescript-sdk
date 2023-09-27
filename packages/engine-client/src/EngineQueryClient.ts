@@ -494,7 +494,27 @@ export class EngineQueryClient extends EngineBaseClient {
    * Determines whether client IP is blocked from interacting with the engine
    */
   async checkIp(): Promise<GetEngineIpCheckResponse> {
-    return axios.get(`${this.opts.url}/ip`).then((res) => res.data);
+    return axios
+      .get(`${this.opts.url}/ip`, {
+        // We want to allow all status codes, Cloudflare gives back a 403 with JSON data
+        validateStatus: () => true,
+      })
+      .then((res) => {
+        // TODO After full rollout, switch this to just hit time
+        const blocked = (() => {
+          if (res.status === 200 && res.data.blocked) {
+            return true;
+          }
+          // More granular error handling - CF gives "reason" - will be consolidated later
+          return (
+            res.status === 403 && res.data.blocked && res.data.reason === 'ip'
+          );
+        })();
+
+        return {
+          blocked,
+        };
+      });
   }
 
   /**
