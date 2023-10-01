@@ -7,6 +7,7 @@ import {
 } from '@vertex-protocol/contracts';
 import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
 import {
+  EngineServerIpBlockResponse,
   EngineServerStatusResponse,
   EngineServerSubaccountInfoQueryParams,
   EngineSymbolsResponse,
@@ -494,27 +495,28 @@ export class EngineQueryClient extends EngineBaseClient {
    * Determines whether client IP is blocked from interacting with the engine
    */
   async checkIp(): Promise<GetEngineIpCheckResponse> {
-    return axios
-      .get(`${this.opts.url}/ip`, {
-        // We want to allow all status codes, Cloudflare gives back a 403 with JSON data
-        validateStatus: () => true,
-      })
-      .then((res) => {
-        // TODO After full rollout, switch this to just hit time
-        const blocked = (() => {
-          if (res.status === 200 && res.data.blocked) {
-            return true;
-          }
-          // More granular error handling - CF gives "reason" - will be consolidated later
-          return (
-            res.status === 403 && res.data.blocked && res.data.reason === 'ip'
-          );
-        })();
+    return (
+      axios
+        // Use the /time endpoint and listen to 403 responses
+        .get(`${this.opts.url}/time`, {
+          // Allow all statuses
+          validateStatus: () => true,
+        })
+        .then((res) => {
+          const blocked = (() => {
+            if (res.status !== 403) {
+              return false;
+            }
+            const resData: EngineServerIpBlockResponse = res.data;
 
-        return {
-          blocked,
-        };
-      });
+            return resData.blocked && resData.reason === 'ip';
+          })();
+
+          return {
+            blocked,
+          };
+        })
+    );
   }
 
   /**

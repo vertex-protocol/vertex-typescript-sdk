@@ -291,8 +291,9 @@ export interface EngineServerMaxMintLpResponse {
   max_quote_amount: string;
 }
 
-export interface EngineServerCheckIpResponse {
+export interface EngineServerIpBlockResponse {
   blocked: boolean;
+  reason: string;
 }
 
 export interface EngineServerLinkedSignerResponse {
