@@ -11,7 +11,6 @@ import {
 } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import {
-  EngineServerCheckIpResponse,
   EngineServerNoncesParams,
   EngineServerTimeResponse,
 } from './serverQueryTypes';
@@ -242,7 +241,9 @@ export interface GetEngineMaxMintLpAmountResponse {
   maxQuoteAmount: BigDecimal;
 }
 
-export type GetEngineIpCheckResponse = EngineServerCheckIpResponse;
+export interface GetEngineIpCheckResponse {
+  blocked: boolean;
+}
 
 export type GetEngineTimeResponse = EngineServerTimeResponse;
 

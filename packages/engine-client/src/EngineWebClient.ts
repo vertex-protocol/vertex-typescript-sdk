@@ -1,5 +1,9 @@
 import { EngineBaseClient } from './EngineBaseClient';
-import { GetEngineIpCheckResponse, GetEngineTimeResponse } from './types';
+import {
+  EngineServerIpBlockResponse,
+  GetEngineIpCheckResponse,
+  GetEngineTimeResponse,
+} from './types';
 import axios from 'axios';
 
 /**
@@ -11,7 +15,28 @@ export class EngineWebClient extends EngineBaseClient {
    * Determines whether client IP is blocked from interacting with the engine
    */
   async checkIp(): Promise<GetEngineIpCheckResponse> {
-    return axios.get(`${this.opts.url}/ip`).then((res) => res.data);
+    return (
+      axios
+        // Use the /time endpoint and listen to 403 responses
+        .get(`${this.opts.url}/time`, {
+          // Allow all statuses
+          validateStatus: () => true,
+        })
+        .then((res) => {
+          const blocked = (() => {
+            if (res.status !== 403) {
+              return false;
+            }
+            const resData: EngineServerIpBlockResponse = res.data;
+
+            return resData.blocked && resData.reason === 'ip';
+          })();
+
+          return {
+            blocked,
+          };
+        })
+    );
   }
 
   /**

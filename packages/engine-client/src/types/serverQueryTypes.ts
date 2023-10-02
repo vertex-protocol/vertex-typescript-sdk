@@ -291,11 +291,9 @@ export interface EngineServerMaxMintLpResponse {
   max_quote_amount: string;
 }
 
-export interface EngineServerCheckIpResponse {
-  ip: string;
+export interface EngineServerIpBlockResponse {
   blocked: boolean;
-  // ISO country code
-  locale: string;
+  reason: string;
 }
 
 export interface EngineServerLinkedSignerResponse {
