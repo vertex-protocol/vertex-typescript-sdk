@@ -7,13 +7,7 @@ import type { ILBA, ILBAInterface } from "../ILBA";
 
 const _abi = [
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-    ],
+    inputs: [],
     name: "claimRewards",
     outputs: [],
     stateMutability: "nonpayable",
@@ -258,7 +252,7 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "cumulativeRewardsPerShare",
+            name: "cumulativeRewardsPerShareX18",
             type: "uint256",
           },
         ],

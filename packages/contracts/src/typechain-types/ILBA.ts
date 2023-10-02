@@ -49,7 +49,7 @@ export declare namespace ILBA {
     totalUsdcDeposited: BigNumberish;
     totalLpMinted: BigNumberish;
     totalLpWithdrawn: BigNumberish;
-    cumulativeRewardsPerShare: BigNumberish;
+    cumulativeRewardsPerShareX18: BigNumberish;
   };
 
   export type StateStructOutput = [
@@ -57,13 +57,13 @@ export declare namespace ILBA {
     totalUsdcDeposited: bigint,
     totalLpMinted: bigint,
     totalLpWithdrawn: bigint,
-    cumulativeRewardsPerShare: bigint
+    cumulativeRewardsPerShareX18: bigint
   ] & {
     totalVrtxDeposited: bigint;
     totalUsdcDeposited: bigint;
     totalLpMinted: bigint;
     totalLpWithdrawn: bigint;
-    cumulativeRewardsPerShare: bigint;
+    cumulativeRewardsPerShareX18: bigint;
   };
 }
 
@@ -91,7 +91,7 @@ export interface ILBAInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "claimRewards",
-    values: [AddressLike]
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "depositUsdc",
@@ -253,11 +253,7 @@ export interface ILBA extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  claimRewards: TypedContractMethod<
-    [account: AddressLike],
-    [void],
-    "nonpayable"
-  >;
+  claimRewards: TypedContractMethod<[], [void], "nonpayable">;
 
   depositUsdc: TypedContractMethod<
     [amount: BigNumberish],
@@ -341,7 +337,7 @@ export interface ILBA extends BaseContract {
 
   getFunction(
     nameOrSignature: "claimRewards"
-  ): TypedContractMethod<[account: AddressLike], [void], "nonpayable">;
+  ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "depositUsdc"
   ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;

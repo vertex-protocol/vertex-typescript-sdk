@@ -4,13 +4,7 @@
   "sourceName": "contracts/interfaces/ILBA.sol",
   "abi": [
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "account",
-          "type": "address"
-        }
-      ],
+      "inputs": [],
       "name": "claimRewards",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -255,7 +249,7 @@
             },
             {
               "internalType": "uint256",
-              "name": "cumulativeRewardsPerShare",
+              "name": "cumulativeRewardsPerShareX18",
               "type": "uint256"
             }
           ],

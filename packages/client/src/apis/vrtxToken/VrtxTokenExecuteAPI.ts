@@ -94,9 +94,7 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
    * Claim VRTX rewards associated with keeping liquidity in the LBA
    */
   async claimLbaRewards() {
-    return this.context.contracts.vrtxLba.claimRewards(
-      await this.getChainSignerAddress(),
-    );
+    return this.context.contracts.vrtxLba.claimRewards();
   }
 
   /**

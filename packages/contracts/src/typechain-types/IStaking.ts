@@ -28,6 +28,7 @@ export interface IStakingInterface extends Interface {
       | "claimVrtx"
       | "getScore"
       | "getTotalScore"
+      | "getTotalVrtxStaked"
       | "getUsdcClaimable"
       | "getVrtxClaimable"
       | "getVrtxStaked"
@@ -43,6 +44,10 @@ export interface IStakingInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getTotalScore",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTotalVrtxStaked",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -68,6 +73,10 @@ export interface IStakingInterface extends Interface {
   decodeFunctionResult(functionFragment: "getScore", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getTotalScore",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTotalVrtxStaked",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -137,6 +146,8 @@ export interface IStaking extends BaseContract {
 
   getTotalScore: TypedContractMethod<[], [bigint], "view">;
 
+  getTotalVrtxStaked: TypedContractMethod<[], [bigint], "view">;
+
   getUsdcClaimable: TypedContractMethod<
     [account: AddressLike],
     [bigint],
@@ -170,6 +181,9 @@ export interface IStaking extends BaseContract {
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
     nameOrSignature: "getTotalScore"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getTotalVrtxStaked"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "getUsdcClaimable"
