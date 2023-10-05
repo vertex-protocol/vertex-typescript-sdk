@@ -105,9 +105,23 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
   }
 
   /**
-   * Unstake VRTX tokens
+   * Unstake VRTX tokens, unstaked tokens that are unlocked will need to be withdrawn
    */
   async unstake(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxStaking.withdraw(params.amount);
+  }
+
+  /**
+   * Claim unlocked tokens that were previously unstaked
+   */
+  async withdrawUnstakedTokens() {
+    return this.context.contracts.vrtxStaking.claimVrtx();
+  }
+
+  /**
+   * Claim staking rewards (in USDC)
+   */
+  async claimStakingRewards() {
+    return this.context.contracts.vrtxStaking.claimUsdc();
   }
 }
