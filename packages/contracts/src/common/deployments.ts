@@ -3,9 +3,9 @@ import ArbitrumGoerliCoreDeployment from './deployments/core/deployment.arbitrum
 import ArbitrumOneCoreDeployment from './deployments/core/deployment.arbitrumOne.json';
 import LocalCoreDeployment from './deployments/core/deployment.localhost.json';
 
-import ArbitrumGoerliLbaDeployment from './deployments/lba/deployment.arbitrumGoerli.json';
-import ArbitrumOneLbaDeployment from './deployments/lba/deployment.arbitrumOne.json';
-import LocalLbaDeployment from './deployments/lba/deployment.localhost.json';
+import ArbitrumGoerliLbaDeployment from './deployments/vrtx/deployment.arbitrumGoerli.json';
+import ArbitrumOneLbaDeployment from './deployments/vrtx/deployment.arbitrumOne.json';
+import LocalLbaDeployment from './deployments/vrtx/deployment.localhost.json';
 
 import { ChainEnv } from './types';
 

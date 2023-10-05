@@ -28,6 +28,56 @@ const _abi = [
         type: "address",
       },
     ],
+    name: "getLastActionTimes",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint64",
+            name: "lastStakeTime",
+            type: "uint64",
+          },
+          {
+            internalType: "uint64",
+            name: "lastWithdrawTime",
+            type: "uint64",
+          },
+        ],
+        internalType: "struct IStaking.LastActionTimes",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "getRewardsBreakdown",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
     name: "getScore",
     outputs: [
       {

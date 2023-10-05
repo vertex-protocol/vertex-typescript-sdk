@@ -21,11 +21,25 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export declare namespace IStaking {
+  export type LastActionTimesStruct = {
+    lastStakeTime: BigNumberish;
+    lastWithdrawTime: BigNumberish;
+  };
+
+  export type LastActionTimesStructOutput = [
+    lastStakeTime: bigint,
+    lastWithdrawTime: bigint
+  ] & { lastStakeTime: bigint; lastWithdrawTime: bigint };
+}
+
 export interface IStakingInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "claimUsdc"
       | "claimVrtx"
+      | "getLastActionTimes"
+      | "getRewardsBreakdown"
       | "getScore"
       | "getTotalScore"
       | "getTotalVrtxStaked"
@@ -38,6 +52,14 @@ export interface IStakingInterface extends Interface {
 
   encodeFunctionData(functionFragment: "claimUsdc", values?: undefined): string;
   encodeFunctionData(functionFragment: "claimVrtx", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getLastActionTimes",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getRewardsBreakdown",
+    values: [AddressLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "getScore",
     values: [AddressLike]
@@ -70,6 +92,14 @@ export interface IStakingInterface extends Interface {
 
   decodeFunctionResult(functionFragment: "claimUsdc", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claimVrtx", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getLastActionTimes",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getRewardsBreakdown",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getScore", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getTotalScore",
@@ -142,6 +172,18 @@ export interface IStaking extends BaseContract {
 
   claimVrtx: TypedContractMethod<[], [void], "nonpayable">;
 
+  getLastActionTimes: TypedContractMethod<
+    [account: AddressLike],
+    [IStaking.LastActionTimesStructOutput],
+    "view"
+  >;
+
+  getRewardsBreakdown: TypedContractMethod<
+    [account: AddressLike],
+    [bigint[]],
+    "view"
+  >;
+
   getScore: TypedContractMethod<[account: AddressLike], [bigint], "view">;
 
   getTotalScore: TypedContractMethod<[], [bigint], "view">;
@@ -176,6 +218,16 @@ export interface IStaking extends BaseContract {
   getFunction(
     nameOrSignature: "claimVrtx"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "getLastActionTimes"
+  ): TypedContractMethod<
+    [account: AddressLike],
+    [IStaking.LastActionTimesStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getRewardsBreakdown"
+  ): TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
   getFunction(
     nameOrSignature: "getScore"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
