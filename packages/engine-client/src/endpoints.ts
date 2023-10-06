@@ -2,7 +2,7 @@ import { ChainEnv } from '@vertex-protocol/contracts';
 
 export const ENGINE_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   local: 'http://localhost:80',
-  testnet: 'https://test.vertexprotocol-backend.com',
+  testnet: 'https://api.arbitrum-goerli.vertexprotocol.com',
   mainnet: 'https://prod.vertexprotocol-backend.com',
 };
 
