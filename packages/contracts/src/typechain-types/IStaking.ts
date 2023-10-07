@@ -22,6 +22,16 @@ import type {
 } from "./common";
 
 export declare namespace IStaking {
+  export type GlobalRewardsBreakdownStruct = {
+    distributionTime: BigNumberish;
+    rewardsAmount: BigNumberish;
+  };
+
+  export type GlobalRewardsBreakdownStructOutput = [
+    distributionTime: bigint,
+    rewardsAmount: bigint
+  ] & { distributionTime: bigint; rewardsAmount: bigint };
+
   export type LastActionTimesStruct = {
     lastStakeTime: BigNumberish;
     lastWithdrawTime: BigNumberish;
@@ -31,6 +41,16 @@ export declare namespace IStaking {
     lastStakeTime: bigint,
     lastWithdrawTime: bigint
   ] & { lastStakeTime: bigint; lastWithdrawTime: bigint };
+
+  export type WithdrawnVrtxStatesStruct = {
+    vrtxClaimable: BigNumberish;
+    vrtxPendingUnlock: BigNumberish;
+  };
+
+  export type WithdrawnVrtxStatesStructOutput = [
+    vrtxClaimable: bigint,
+    vrtxPendingUnlock: bigint
+  ] & { vrtxClaimable: bigint; vrtxPendingUnlock: bigint };
 }
 
 export interface IStakingInterface extends Interface {
@@ -38,20 +58,25 @@ export interface IStakingInterface extends Interface {
     nameOrSignature:
       | "claimUsdc"
       | "claimVrtx"
+      | "getGlobalRewardsBreakdown"
       | "getLastActionTimes"
       | "getRewardsBreakdown"
       | "getScore"
       | "getTotalScore"
       | "getTotalVrtxStaked"
       | "getUsdcClaimable"
-      | "getVrtxClaimable"
       | "getVrtxStaked"
+      | "getWithdrawnVrtxStates"
       | "stake"
       | "withdraw"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "claimUsdc", values?: undefined): string;
   encodeFunctionData(functionFragment: "claimVrtx", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getGlobalRewardsBreakdown",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "getLastActionTimes",
     values: [AddressLike]
@@ -77,11 +102,11 @@ export interface IStakingInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "getVrtxClaimable",
+    functionFragment: "getVrtxStaked",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "getVrtxStaked",
+    functionFragment: "getWithdrawnVrtxStates",
     values: [AddressLike]
   ): string;
   encodeFunctionData(functionFragment: "stake", values: [BigNumberish]): string;
@@ -92,6 +117,10 @@ export interface IStakingInterface extends Interface {
 
   decodeFunctionResult(functionFragment: "claimUsdc", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claimVrtx", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getGlobalRewardsBreakdown",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getLastActionTimes",
     data: BytesLike
@@ -114,11 +143,11 @@ export interface IStakingInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getVrtxClaimable",
+    functionFragment: "getVrtxStaked",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getVrtxStaked",
+    functionFragment: "getWithdrawnVrtxStates",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
@@ -172,6 +201,12 @@ export interface IStaking extends BaseContract {
 
   claimVrtx: TypedContractMethod<[], [void], "nonpayable">;
 
+  getGlobalRewardsBreakdown: TypedContractMethod<
+    [],
+    [IStaking.GlobalRewardsBreakdownStructOutput[]],
+    "view"
+  >;
+
   getLastActionTimes: TypedContractMethod<
     [account: AddressLike],
     [IStaking.LastActionTimesStructOutput],
@@ -196,13 +231,13 @@ export interface IStaking extends BaseContract {
     "view"
   >;
 
-  getVrtxClaimable: TypedContractMethod<
+  getVrtxStaked: TypedContractMethod<[account: AddressLike], [bigint], "view">;
+
+  getWithdrawnVrtxStates: TypedContractMethod<
     [account: AddressLike],
-    [bigint],
+    [IStaking.WithdrawnVrtxStatesStructOutput],
     "view"
   >;
-
-  getVrtxStaked: TypedContractMethod<[account: AddressLike], [bigint], "view">;
 
   stake: TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
 
@@ -218,6 +253,13 @@ export interface IStaking extends BaseContract {
   getFunction(
     nameOrSignature: "claimVrtx"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "getGlobalRewardsBreakdown"
+  ): TypedContractMethod<
+    [],
+    [IStaking.GlobalRewardsBreakdownStructOutput[]],
+    "view"
+  >;
   getFunction(
     nameOrSignature: "getLastActionTimes"
   ): TypedContractMethod<
@@ -241,11 +283,15 @@ export interface IStaking extends BaseContract {
     nameOrSignature: "getUsdcClaimable"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
-    nameOrSignature: "getVrtxClaimable"
-  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
-  getFunction(
     nameOrSignature: "getVrtxStaked"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getWithdrawnVrtxStates"
+  ): TypedContractMethod<
+    [account: AddressLike],
+    [IStaking.WithdrawnVrtxStatesStructOutput],
+    "view"
+  >;
   getFunction(
     nameOrSignature: "stake"
   ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;

@@ -21,6 +21,31 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getGlobalRewardsBreakdown",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint64",
+            name: "distributionTime",
+            type: "uint64",
+          },
+          {
+            internalType: "uint256",
+            name: "rewardsAmount",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IStaking.GlobalRewardsBreakdown[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -142,7 +167,7 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "getVrtxClaimable",
+    name: "getVrtxStaked",
     outputs: [
       {
         internalType: "uint256",
@@ -161,12 +186,24 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "getVrtxStaked",
+    name: "getWithdrawnVrtxStates",
     outputs: [
       {
-        internalType: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "vrtxClaimable",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "vrtxPendingUnlock",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IStaking.WithdrawnVrtxStates",
         name: "",
-        type: "uint256",
+        type: "tuple",
       },
     ],
     stateMutability: "view",
