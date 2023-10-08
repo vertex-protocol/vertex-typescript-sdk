@@ -1,1 +1,1 @@
-export const LBA_AIRDROP_EPOCH = 7;
+export const LBA_AIRDROP_EPOCH = 6;
