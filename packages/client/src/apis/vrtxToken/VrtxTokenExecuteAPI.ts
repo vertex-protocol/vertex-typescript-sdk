@@ -31,7 +31,7 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  depositLbaUsdc(params: VrtxTokenAmountParams) {
+  async depositLbaUsdc(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxLba.depositUsdc(params.amount);
   }
 
@@ -40,7 +40,7 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  withdrawLbaUsdc(params: VrtxTokenAmountParams) {
+  async withdrawLbaUsdc(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxLba.withdrawUsdc(params.amount);
   }
 
@@ -49,7 +49,7 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  withdrawLbaLiquidity(params: VrtxTokenAmountParams) {
+  async withdrawLbaLiquidity(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxLba.withdrawLiquidity(params.amount);
   }
 
@@ -61,15 +61,14 @@ export class VrtxTokenExecuteAPI extends BaseVertexAPI {
   async claimLiquidTokens(params: ClaimLiquidTokensParams) {
     const { totalAmount, proof } =
       await this.context.indexerClient.getTokenClaimProof({
-        epoch: 6,
+        epoch: LBA_AIRDROP_EPOCH,
         address: await this.getChainSignerAddress(),
       });
 
     const airdropContract = this.context.contracts.vrtxAirdrop;
 
-    // If no amount is given, then the full amount available is claimed
     const amountToClaim = await (async () => {
-      if (params.amount) {
+      if ('amount' in params) {
         return params.amount;
       }
       const amountsClaimed = await airdropContract.getClaimed(
