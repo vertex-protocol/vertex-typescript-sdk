@@ -38,6 +38,25 @@ const _abi = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "invitee",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "referralCode",
+        type: "bytes32",
+      },
+    ],
+    name: "UserReferral",
+    type: "event",
+  },
+  {
     inputs: [
       {
         internalType: "bytes12",
@@ -63,6 +82,66 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "bytes12",
+        name: "subaccountName",
+        type: "bytes12",
+      },
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "uint128",
+        name: "amount",
+        type: "uint128",
+      },
+      {
+        internalType: "string",
+        name: "referralCode",
+        type: "string",
+      },
+    ],
+    name: "depositCollateralWithReferral",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+    ],
+    name: "getNonce",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getNumSubaccounts",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint32",
         name: "productId",
         type: "uint32",
@@ -82,12 +161,143 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint32",
+        name: "healthGroup",
+        type: "uint32",
+      },
+    ],
+    name: "getPricesX18",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "int128",
+            name: "spotPriceX18",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "perpPriceX18",
+            type: "int128",
+          },
+        ],
+        internalType: "struct IEndpoint.Prices",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint64",
+        name: "subaccountId",
+        type: "uint64",
+      },
+    ],
+    name: "getSubaccountById",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
+      },
+    ],
+    name: "getSubaccountId",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTime",
+    outputs: [
+      {
+        internalType: "uint128",
+        name: "",
+        type: "uint128",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getVersion",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "address",
+        name: "book",
+        type: "address",
+      },
+    ],
+    name: "setBook",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes",
         name: "transaction",
         type: "bytes",
       },
     ],
     name: "submitSlowModeTransaction",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint64",
+        name: "idx",
+        type: "uint64",
+      },
+      {
+        internalType: "bytes[]",
+        name: "transactions",
+        type: "bytes[]",
+      },
+    ],
+    name: "submitTransactionsChecked",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
