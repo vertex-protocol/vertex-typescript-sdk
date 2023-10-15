@@ -1,13 +1,14 @@
 {
   "redeployVrtx": false,
   "redeployUsdc": false,
-  "startBlock": 45977951,
+  "startBlock": 48138179,
+  "startTime": 1697378400,
   "endpoint": "0x5956D6f55011678b2CAB217cD21626F7668ba6c5",
   "deployer": "0x3c06e307BA6Ab81E8Ff6661c1559ce8027744AE5",
-  "vrtxToken": "0xA9BDd8B401fB6c94C64833e91E781DB69e85Acf2",
+  "vrtxToken": "0x564f476ac07ad7eccb7ca177da46723f43a244be",
   "usdcToken": "0x179522635726710Dd7D2035a81d856de4Aa7836c",
-  "vrtxAirdrop": "0x33EFC17d142ae54D333Eafa874F5f7255cFa8a3C",
-  "vrtxLba": "0x32d4b13cca22807c7A69d65fB30a13bAcc6F9cfB",
-  "vrtxVesting": "0x0f29A08C06e88D1dF56AE99e085Faf164Ed92981",
-  "vrtxStaking": "0x09F9F988544e81e72644330A8A33bdaE56FB04B7"
+  "vrtxAirdrop": "0xCd57884C9787D29239F307113dbE39201f037eEe",
+  "vrtxLba": "0x02f89eA29117911e754FD5d79c487cD643fe00E9",
+  "vrtxVesting": "0x17efF3Bdc9521b7715aC22d5d95aA0b178a00b1a",
+  "vrtxStaking": "0x5582dc9fad87F0Cc027DBC6c96489A47FC6B3761"
 }

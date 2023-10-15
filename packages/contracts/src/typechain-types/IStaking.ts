@@ -66,6 +66,7 @@ export interface IStakingInterface extends Interface {
       | "getTotalVrtxStaked"
       | "getUsdcClaimable"
       | "getVrtxStaked"
+      | "getWithdrawLockingTime"
       | "getWithdrawnVrtxStates"
       | "stake"
       | "withdraw"
@@ -106,6 +107,10 @@ export interface IStakingInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "getWithdrawLockingTime",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getWithdrawnVrtxStates",
     values: [AddressLike]
   ): string;
@@ -144,6 +149,10 @@ export interface IStakingInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getVrtxStaked",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getWithdrawLockingTime",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -233,6 +242,8 @@ export interface IStaking extends BaseContract {
 
   getVrtxStaked: TypedContractMethod<[account: AddressLike], [bigint], "view">;
 
+  getWithdrawLockingTime: TypedContractMethod<[], [bigint], "view">;
+
   getWithdrawnVrtxStates: TypedContractMethod<
     [account: AddressLike],
     [IStaking.WithdrawnVrtxStatesStructOutput],
@@ -285,6 +296,9 @@ export interface IStaking extends BaseContract {
   getFunction(
     nameOrSignature: "getVrtxStaked"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getWithdrawLockingTime"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "getWithdrawnVrtxStates"
   ): TypedContractMethod<

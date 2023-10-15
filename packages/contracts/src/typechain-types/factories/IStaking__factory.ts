@@ -179,6 +179,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getWithdrawLockingTime",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
