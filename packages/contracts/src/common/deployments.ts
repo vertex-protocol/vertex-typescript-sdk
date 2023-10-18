@@ -22,11 +22,11 @@ export const VERTEX_DEPLOYMENTS: Record<ChainEnv, VertexDeploymentAddresses> = {
     ...ArbitrumGoerliCoreDeployment,
   },
   mainnet: {
-    ...ArbitrumOneCoreDeployment,
     ...ArbitrumOneLbaDeployment,
+    ...ArbitrumOneCoreDeployment,
   },
   local: {
-    ...LocalCoreDeployment,
     ...LocalLbaDeployment,
+    ...LocalCoreDeployment,
   },
 };

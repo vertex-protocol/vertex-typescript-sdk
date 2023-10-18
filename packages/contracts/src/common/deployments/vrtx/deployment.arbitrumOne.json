@@ -2,12 +2,12 @@
   "redeployVrtx": false,
   "redeployUsdc": false,
   "startBlock": 0,
-  "endpoint": "0x",
-  "deployer": "0x",
-  "vrtxToken": "0x",
-  "usdcToken": "0x",
-  "vrtxAirdrop": "0x",
-  "vrtxLba": "0x",
-  "vrtxVesting": "0x",
-  "vrtxStaking": "0x"
+  "endpoint": "0xbbEE07B3e8121227AfCFe1E2B82772246226128e",
+  "deployer": "0xB746472C10f9F128FF9F5029f424cC91bb1D8C3a",
+  "vrtxToken": "0x0000000000000000000000000000000000000000",
+  "usdcToken": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8",
+  "vrtxAirdrop": "0x0000000000000000000000000000000000000000",
+  "vrtxLba": "0x0000000000000000000000000000000000000000",
+  "vrtxVesting": "0x0000000000000000000000000000000000000000",
+  "vrtxStaking": "0x0000000000000000000000000000000000000000"
 }
