@@ -501,6 +501,7 @@ export class EngineQueryClient extends EngineBaseClient {
         .get(`${this.opts.url}/time`, {
           // Allow all statuses
           validateStatus: () => true,
+          withCredentials: true,
         })
         .then((res) => {
           const blocked = (() => {
@@ -523,7 +524,9 @@ export class EngineQueryClient extends EngineBaseClient {
    * Retrieves current server epoch in milliseconds
    */
   async getTime(): Promise<GetEngineTimeResponse> {
-    return axios.get(`${this.opts.url}/time`).then((res) => res.data);
+    return axios
+      .get(`${this.opts.url}/time`, { withCredentials: true })
+      .then((res) => res.data);
   }
 
   /**
