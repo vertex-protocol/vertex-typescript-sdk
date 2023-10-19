@@ -553,7 +553,7 @@ export class IndexerBaseClient {
     };
     const response = await axios.post<
       IndexerServerQueryResponseByType[TRequestType]
-    >(this.opts.url, reqBody);
+    >(this.opts.url, reqBody, { withCredentials: true });
 
     this.checkResponseStatus(response);
 

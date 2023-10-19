@@ -232,6 +232,7 @@ export class TriggerClient {
     const response = await axios.post<TriggerServerExecuteResponse>(
       `${this.opts.url}/execute`,
       reqBody,
+      { withCredentials: true },
     );
 
     this.checkResponseStatus(response);
@@ -251,6 +252,7 @@ export class TriggerClient {
     const response = await axios.post<TriggerServerQueryResponse<TRequestType>>(
       `${this.opts.url}/query`,
       reqBody,
+      { withCredentials: true },
     );
 
     this.checkResponseStatus(response);

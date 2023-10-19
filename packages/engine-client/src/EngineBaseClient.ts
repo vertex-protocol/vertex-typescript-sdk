@@ -95,6 +95,7 @@ export class EngineBaseClient {
     const response = await axios.post<EngineQueryRequestResponse>(
       `${this.opts.url}/query`,
       request,
+      { withCredentials: true },
     );
 
     this.checkResponseStatus(response);
@@ -140,6 +141,7 @@ export class EngineBaseClient {
     const response = await axios.post<EngineExecuteRequestResponse>(
       `${this.opts.url}/execute`,
       reqBody,
+      { withCredentials: true },
     );
 
     this.checkResponseStatus(response);
