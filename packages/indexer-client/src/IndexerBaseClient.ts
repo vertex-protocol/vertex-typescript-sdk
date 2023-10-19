@@ -553,7 +553,12 @@ export class IndexerBaseClient {
     };
     const response = await axios.post<
       IndexerServerQueryResponseByType[TRequestType]
-    >(this.opts.url, reqBody, { withCredentials: true });
+    >(this.opts.url, reqBody, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
     this.checkResponseStatus(response);
 
