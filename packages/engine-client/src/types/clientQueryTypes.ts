@@ -241,10 +241,6 @@ export interface GetEngineMaxMintLpAmountResponse {
   maxQuoteAmount: BigDecimal;
 }
 
-export interface GetEngineIpCheckResponse {
-  blocked: boolean;
-}
-
 export type GetEngineTimeResponse = EngineServerTimeResponse;
 
 export type GetEngineLinkedSignerParams = Subaccount;

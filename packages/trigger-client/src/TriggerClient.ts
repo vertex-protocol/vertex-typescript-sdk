@@ -12,7 +12,7 @@ import {
   TriggerServerQueryResponseByType,
   TriggerServerQuerySuccessResponse,
 } from './types';
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
   getChainIdFromSigner,
   getOrderNonce,
@@ -43,9 +43,11 @@ export interface TriggerClientOpts {
  */
 export class TriggerClient {
   readonly opts: TriggerClientOpts;
+  readonly axiosInstance: AxiosInstance;
 
   constructor(opts: TriggerClientOpts) {
     this.opts = opts;
+    this.axiosInstance = axios.create({ withCredentials: true });
   }
 
   /**
@@ -229,10 +231,11 @@ export class TriggerClient {
     const reqBody = {
       [requestType]: params,
     };
-    const response = await axios.post<TriggerServerExecuteResponse>(
-      `${this.opts.url}/execute`,
-      reqBody,
-    );
+    const response =
+      await this.axiosInstance.post<TriggerServerExecuteResponse>(
+        `${this.opts.url}/execute`,
+        reqBody,
+      );
 
     this.checkResponseStatus(response);
     this.checkServerStatus(response);
@@ -248,10 +251,9 @@ export class TriggerClient {
       type: requestType,
       ...params,
     };
-    const response = await axios.post<TriggerServerQueryResponse<TRequestType>>(
-      `${this.opts.url}/query`,
-      reqBody,
-    );
+    const response = await this.axiosInstance.post<
+      TriggerServerQueryResponse<TRequestType>
+    >(`${this.opts.url}/query`, reqBody);
 
     this.checkResponseStatus(response);
     this.checkServerStatus(response);
