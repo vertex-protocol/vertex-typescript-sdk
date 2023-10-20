@@ -498,10 +498,9 @@ export class EngineQueryClient extends EngineBaseClient {
     return (
       axios
         // Use the /time endpoint and listen to 403 responses
-        .get(`${this.opts.url}/time`, {
+        .get(`${this.opts.url}/ip`, {
           // Allow all statuses
           validateStatus: () => true,
-          withCredentials: true,
         })
         .then((res) => {
           const blocked = (() => {
