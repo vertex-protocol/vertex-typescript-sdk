@@ -501,7 +501,6 @@ export class EngineQueryClient extends EngineBaseClient {
         .get(`${this.opts.url}/time`, {
           // Allow all statuses
           validateStatus: () => true,
-          withCredentials: true,
         })
         .then((res) => {
           const blocked = (() => {
