@@ -17,7 +17,7 @@ import {
   SignableRequestType,
   SignableRequestTypeToParams,
 } from '@vertex-protocol/contracts';
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { BigNumberish, Signer } from 'ethers';
 
 export interface EngineClientOpts {
@@ -43,9 +43,13 @@ type EngineQueryRequestResponse<
  */
 export class EngineBaseClient {
   readonly opts: EngineClientOpts;
+  readonly axiosInstance: AxiosInstance;
 
   constructor(opts: EngineClientOpts) {
     this.opts = opts;
+    this.axiosInstance = axios.create({
+      withCredentials: true,
+    });
   }
 
   /**
@@ -92,10 +96,9 @@ export class EngineBaseClient {
     params: EngineServerQueryRequestByType[TRequestType],
   ): Promise<EngineServerQueryResponseByType[TRequestType]> {
     const request = this.getQueryRequest(requestType, params);
-    const response = await axios.post<EngineQueryRequestResponse>(
+    const response = await this.axiosInstance.post<EngineQueryRequestResponse>(
       `${this.opts.url}/query`,
       request,
-      { withCredentials: true },
     );
 
     this.checkResponseStatus(response);
@@ -138,11 +141,11 @@ export class EngineBaseClient {
     params: EngineServerExecuteRequestByType[TRequestType],
   ): Promise<EngineExecuteRequestResponse> {
     const reqBody = this.getExecuteRequest(requestType, params);
-    const response = await axios.post<EngineExecuteRequestResponse>(
-      `${this.opts.url}/execute`,
-      reqBody,
-      { withCredentials: true },
-    );
+    const response =
+      await this.axiosInstance.post<EngineExecuteRequestResponse>(
+        `${this.opts.url}/execute`,
+        reqBody,
+      );
 
     this.checkResponseStatus(response);
     this.checkServerStatus(response);

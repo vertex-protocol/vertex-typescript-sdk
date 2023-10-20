@@ -1,6 +1,6 @@
 import { subaccountToHex } from '@vertex-protocol/contracts';
 import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
   mapIndexerEvent,
   mapIndexerEventWithTx,
@@ -72,9 +72,13 @@ type IndexerQueryRequestBody = Partial<IndexerServerQueryRequestByType>;
  */
 export class IndexerBaseClient {
   readonly opts: IndexerClientOpts;
+  readonly axiosInstance: AxiosInstance;
 
   constructor(opts: IndexerClientOpts) {
     this.opts = opts;
+    this.axiosInstance = axios.create({
+      withCredentials: true,
+    });
   }
 
   /**
@@ -551,9 +555,9 @@ export class IndexerBaseClient {
     const reqBody: IndexerQueryRequestBody = {
       [requestType]: params,
     };
-    const response = await axios.post<
+    const response = await this.axiosInstance.post<
       IndexerServerQueryResponseByType[TRequestType]
-    >(this.opts.url, reqBody, { withCredentials: true });
+    >(this.opts.url, reqBody);
 
     this.checkResponseStatus(response);
 
