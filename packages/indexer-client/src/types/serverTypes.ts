@@ -124,6 +124,15 @@ export interface IndexerServerInterestFundingParams {
   limit: number;
 }
 
+export interface IndexerServerTokenClaimProofParams {
+  epoch: number;
+  address: string;
+}
+
+export interface IndexerServerTokenClaimTotalAmountsParams {
+  address: string;
+}
+
 // Request
 export interface IndexerServerQueryRequestByType {
   summary: IndexerServerSummaryParams;
@@ -144,6 +153,8 @@ export interface IndexerServerQueryRequestByType {
   linked_signer_rate_limit: IndexerServerLinkedSignerParams;
   market_snapshots: IndexerServerMarketSnapshotsParams;
   interest_and_funding: IndexerServerInterestFundingParams;
+  merkle_proof: IndexerServerTokenClaimProofParams;
+  airdrops: IndexerServerTokenClaimTotalAmountsParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -288,6 +299,16 @@ export interface IndexerServerInterestFundingResponse {
   next_idx: string;
 }
 
+export interface IndexerServerTokenClaimProofResponse {
+  total_amount: string;
+  proof: string[];
+}
+
+export interface IndexerServerTokenClaimTotalAmountsResponse {
+  // Index is the epoch
+  total_amounts: string[];
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   summary: IndexerServerSummaryResponse;
@@ -308,4 +329,6 @@ export interface IndexerServerQueryResponseByType {
   linked_signer_rate_limit: IndexerServerLinkedSignerResponse;
   market_snapshots: IndexerServerMarketSnapshotsResponse;
   interest_and_funding: IndexerServerInterestFundingResponse;
+  merkle_proof: IndexerServerTokenClaimProofResponse;
+  airdrops: IndexerServerTokenClaimTotalAmountsResponse;
 }

@@ -2,9 +2,14 @@ import {
   ChainEnv,
   Endpoint__factory,
   FQuerier__factory,
+  IAirdrop__factory,
   IClearinghouse__factory,
+  IERC20__factory,
+  ILBA__factory,
   IPerpEngine__factory,
   ISpotEngine__factory,
+  IStaking__factory,
+  IVesting__factory,
   ProductEngineType,
   VERTEX_DEPLOYMENTS,
   VertexContracts,
@@ -52,6 +57,12 @@ interface VertexClientContextOpts {
     perpEngineAddress?: string;
     clearinghouseAddress?: string;
     endpointAddress?: string;
+    // VRTX related addresses
+    vrtxTokenAddress: string;
+    vrtxAirdropAddress: string;
+    vrtxLbaAddress: string;
+    vrtxVestingAddress: string;
+    vrtxStakingAddress: string;
   };
   engineEndpoint: string;
   indexerEndpoint: string;
@@ -88,6 +99,11 @@ export async function createClientContext(
             perpEngineAddress: VERTEX_DEPLOYMENTS.testnet.perpEngine,
             clearinghouseAddress: VERTEX_DEPLOYMENTS.testnet.clearinghouse,
             endpointAddress: VERTEX_DEPLOYMENTS.testnet.endpoint,
+            vrtxTokenAddress: VERTEX_DEPLOYMENTS.testnet.vrtxToken,
+            vrtxAirdropAddress: VERTEX_DEPLOYMENTS.testnet.vrtxAirdrop,
+            vrtxLbaAddress: VERTEX_DEPLOYMENTS.testnet.vrtxLba,
+            vrtxVestingAddress: VERTEX_DEPLOYMENTS.testnet.vrtxVesting,
+            vrtxStakingAddress: VERTEX_DEPLOYMENTS.testnet.vrtxStaking,
           },
           engineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
           indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.testnet,
@@ -102,6 +118,11 @@ export async function createClientContext(
             perpEngineAddress: VERTEX_DEPLOYMENTS.mainnet.perpEngine,
             clearinghouseAddress: VERTEX_DEPLOYMENTS.mainnet.clearinghouse,
             endpointAddress: VERTEX_DEPLOYMENTS.mainnet.endpoint,
+            vrtxTokenAddress: VERTEX_DEPLOYMENTS.mainnet.vrtxToken,
+            vrtxAirdropAddress: VERTEX_DEPLOYMENTS.mainnet.vrtxAirdrop,
+            vrtxLbaAddress: VERTEX_DEPLOYMENTS.mainnet.vrtxLba,
+            vrtxVestingAddress: VERTEX_DEPLOYMENTS.mainnet.vrtxVesting,
+            vrtxStakingAddress: VERTEX_DEPLOYMENTS.mainnet.vrtxStaking,
           },
           engineEndpoint: ENGINE_CLIENT_ENDPOINTS.mainnet,
           indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.mainnet,
@@ -116,6 +137,11 @@ export async function createClientContext(
             perpEngineAddress: VERTEX_DEPLOYMENTS.local.perpEngine,
             clearinghouseAddress: VERTEX_DEPLOYMENTS.local.clearinghouse,
             endpointAddress: VERTEX_DEPLOYMENTS.local.endpoint,
+            vrtxTokenAddress: VERTEX_DEPLOYMENTS.local.vrtxToken,
+            vrtxAirdropAddress: VERTEX_DEPLOYMENTS.local.vrtxAirdrop,
+            vrtxLbaAddress: VERTEX_DEPLOYMENTS.local.vrtxLba,
+            vrtxVestingAddress: VERTEX_DEPLOYMENTS.local.vrtxVesting,
+            vrtxStakingAddress: VERTEX_DEPLOYMENTS.local.vrtxStaking,
           },
           engineEndpoint: ENGINE_CLIENT_ENDPOINTS.local,
           indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.local,
@@ -164,6 +190,26 @@ export async function createClientContext(
       endpoint,
       spotEngine: ISpotEngine__factory.connect(spotAddress, signerOrProvider),
       perpEngine: IPerpEngine__factory.connect(perpAddress, signerOrProvider),
+      vrtxToken: IERC20__factory.connect(
+        contracts.vrtxTokenAddress,
+        signerOrProvider,
+      ),
+      vrtxAirdrop: IAirdrop__factory.connect(
+        contracts.vrtxAirdropAddress,
+        signerOrProvider,
+      ),
+      vrtxLba: ILBA__factory.connect(
+        contracts.vrtxLbaAddress,
+        signerOrProvider,
+      ),
+      vrtxVesting: IVesting__factory.connect(
+        contracts.vrtxVestingAddress,
+        signerOrProvider,
+      ),
+      vrtxStaking: IStaking__factory.connect(
+        contracts.vrtxStakingAddress,
+        signerOrProvider,
+      ),
     },
     contractAddresses: {
       querier: contracts.querierAddress,
@@ -171,6 +217,11 @@ export async function createClientContext(
       endpoint: endpointContractAddress,
       spotEngine: spotAddress,
       perpEngine: perpAddress,
+      vrtxToken: contracts.vrtxTokenAddress,
+      vrtxAirdrop: contracts.vrtxAirdropAddress,
+      vrtxLba: contracts.vrtxLbaAddress,
+      vrtxVesting: contracts.vrtxVestingAddress,
+      vrtxStaking: contracts.vrtxStakingAddress,
     },
     engineClient: new EngineClient({
       url: engineEndpoint,

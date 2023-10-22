@@ -5,6 +5,7 @@ import { SpotAPI } from './apis/spot';
 import { PerpAPI } from './apis/perp';
 import { WebsocketAPI } from './apis/ws';
 import { Signer } from 'ethers';
+import { RewardsAPI } from './apis/rewards';
 
 /**
  * Client for querying and executing against Vertex Clearinghouse.
@@ -16,6 +17,7 @@ export class VertexClient {
   subaccount!: SubaccountAPI;
   spot!: SpotAPI;
   perp!: PerpAPI;
+  rewards!: RewardsAPI;
   ws!: WebsocketAPI;
 
   constructor(context: VertexClientContext) {
@@ -40,17 +42,32 @@ export class VertexClient {
   async setSignerOrProvider(
     signerOrProvider: VertexClientContext['signerOrProvider'],
   ) {
+    const {
+      clearinghouse,
+      endpoint,
+      perpEngine,
+      querier,
+      spotEngine,
+      vrtxAirdrop,
+      vrtxLba,
+      vrtxToken,
+      vrtxVesting,
+      vrtxStaking,
+    } = this.context.contractAddresses;
+
     const newContext = await createClientContext(
       {
         contracts: {
-          querierAddress: await this.context.contracts.querier.getAddress(),
-          spotEngineAddress:
-            await this.context.contracts.spotEngine.getAddress(),
-          perpEngineAddress:
-            await this.context.contracts.perpEngine.getAddress(),
-          clearinghouseAddress:
-            await this.context.contracts.clearinghouse.getAddress(),
-          endpointAddress: await this.context.contracts.endpoint.getAddress(),
+          querierAddress: querier,
+          spotEngineAddress: spotEngine,
+          perpEngineAddress: perpEngine,
+          clearinghouseAddress: clearinghouse,
+          endpointAddress: endpoint,
+          vrtxTokenAddress: vrtxToken,
+          vrtxAirdropAddress: vrtxAirdrop,
+          vrtxLbaAddress: vrtxLba,
+          vrtxVestingAddress: vrtxVesting,
+          vrtxStakingAddress: vrtxStaking,
         },
         engineEndpoint: this.context.engineClient.opts.url,
         indexerEndpoint: this.context.indexerClient.opts.url,
@@ -71,6 +88,7 @@ export class VertexClient {
     this.subaccount = new SubaccountAPI(context);
     this.spot = new SpotAPI(context);
     this.perp = new PerpAPI(context);
+    this.rewards = new RewardsAPI(context);
     this.ws = new WebsocketAPI(context);
   }
 }

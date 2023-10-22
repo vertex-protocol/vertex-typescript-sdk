@@ -1,0 +1,14 @@
+{
+  "redeployVrtx": false,
+  "redeployUsdc": false,
+  "startBlock": 48138179,
+  "startTime": 1697378400,
+  "endpoint": "0x5956D6f55011678b2CAB217cD21626F7668ba6c5",
+  "deployer": "0x3c06e307BA6Ab81E8Ff6661c1559ce8027744AE5",
+  "vrtxToken": "0x564f476ac07ad7eccb7ca177da46723f43a244be",
+  "usdcToken": "0x179522635726710Dd7D2035a81d856de4Aa7836c",
+  "vrtxAirdrop": "0xCd57884C9787D29239F307113dbE39201f037eEe",
+  "vrtxLba": "0x02f89eA29117911e754FD5d79c487cD643fe00E9",
+  "vrtxVesting": "0x17efF3Bdc9521b7715aC22d5d95aA0b178a00b1a",
+  "vrtxStaking": "0x5582dc9fad87F0Cc027DBC6c96489A47FC6B3761"
+}

@@ -48,6 +48,10 @@ import {
   GetIndexerSubaccountRewardsParams,
   GetIndexerSummaryParams,
   GetIndexerSummaryResponse,
+  GetIndexerTokenClaimProofParams,
+  GetIndexerTokenClaimProofResponse,
+  GetIndexerTokenClaimTotalAmountsParams,
+  GetIndexerTokenClaimTotalAmountsResponse,
   GetSubaccountIndexerRewardsResponse,
   IndexerEventWithTx,
   IndexerMarketSnapshot,
@@ -546,6 +550,36 @@ export class IndexerBaseClient {
         totalDeposits: mapValues(snapshot.total_deposits, toBigDecimal),
       };
     });
+  }
+
+  /**
+   * Retrieve the token claim proof and total amount claimable for the subaccount for a given epoch and address
+   * @param params
+   */
+  async getTokenClaimProof(
+    params: GetIndexerTokenClaimProofParams,
+  ): Promise<GetIndexerTokenClaimProofResponse> {
+    const baseResponse = await this.query('merkle_proof', params);
+
+    return {
+      proof: baseResponse.proof,
+      totalAmount: toBigDecimal(baseResponse.total_amount),
+    };
+  }
+
+  /**
+   * Retrieve the total amounts claimable for the subaccount for all epochs
+   *
+   * @param params
+   */
+  async getTokenClaimTotalAmounts(
+    params: GetIndexerTokenClaimTotalAmountsParams,
+  ): Promise<GetIndexerTokenClaimTotalAmountsResponse> {
+    const baseResponse = await this.query('airdrops', params);
+
+    return {
+      totalAmounts: baseResponse.total_amounts.map(toBigDecimal),
+    };
   }
 
   protected async query<TRequestType extends IndexerServerQueryRequestType>(
