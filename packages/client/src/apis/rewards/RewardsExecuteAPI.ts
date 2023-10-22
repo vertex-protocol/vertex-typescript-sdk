@@ -6,7 +6,7 @@ import {
 } from './types';
 import { LBA_AIRDROP_EPOCH } from '@vertex-protocol/contracts';
 
-export class VrtxTokenExecuteAPI extends BaseVertexAPI {
+export class RewardsExecuteAPI extends BaseVertexAPI {
   /**
    * Claim VRTX tokens received during the airdrop phase to be deposited into the LBA pool
    *
