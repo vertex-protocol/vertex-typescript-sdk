@@ -15,8 +15,15 @@ import { IndexerEventType } from './IndexerEventType';
 import {
   IndexerServerClaimArbMerkleProofsParams,
   IndexerServerClaimVrtxMerkleProofsParams,
+  IndexerServerListSubaccountsParams,
 } from './serverTypes';
 import { VertexTx } from './VertexTx';
+
+export type ListIndexerSubaccountsParams = IndexerServerListSubaccountsParams;
+
+export type ListIndexerSubaccountsResponse = ({
+  hexId: string;
+} & Subaccount)[];
 
 export type IndexerSpotBalance = Omit<SpotBalance, 'healthContributions'>;
 

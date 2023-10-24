@@ -18,6 +18,15 @@ import {
 /**
  * Params
  */
+
+export interface IndexerServerListSubaccountsParams {
+  // Inclusive, defaults to 0
+  start?: number;
+  // Defaults to 100
+  limit?: number;
+  address?: string;
+}
+
 export interface IndexerServerSummaryParams {
   subaccount: string;
   timestamp: number[];
@@ -141,6 +150,7 @@ export interface IndexerServerClaimArbMerkleProofsParams {
 
 // Request
 export interface IndexerServerQueryRequestByType {
+  subaccounts: IndexerServerListSubaccountsParams;
   summary: IndexerServerSummaryParams;
   rewards: IndexerServerRewardsParams;
   referral_code: IndexerServerReferralCodeParams;
@@ -170,6 +180,15 @@ export type IndexerServerQueryRequestType =
 /**
  * Responses
  */
+
+export interface IndexerServerListSubaccountsResponse {
+  subaccounts: {
+    id: string;
+    // Hex of subaccount bytes
+    subaccount: string;
+  }[];
+}
+
 export interface IndexerServerSummaryResponse {
   // Map of timestamp requested -> latest events corresponding to each product
   events: Record<string, IndexerServerEvent[]>;
@@ -282,6 +301,7 @@ export type IndexerServerClaimArbMerkleProofsResponse =
 
 // Response
 export interface IndexerServerQueryResponseByType {
+  subaccounts: IndexerServerListSubaccountsResponse;
   summary: IndexerServerSummaryResponse;
   rewards: IndexerServerRewardsResponse;
   referral_code: IndexerServerReferralCodeResponse;
