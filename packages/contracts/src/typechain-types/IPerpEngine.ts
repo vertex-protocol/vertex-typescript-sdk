@@ -120,7 +120,6 @@ export interface IPerpEngineInterface extends Interface {
       | "burnLp"
       | "decomposeLps"
       | "getBalance"
-      | "getBalanceAmount"
       | "getBalances"
       | "getClearinghouse"
       | "getEngineType"
@@ -159,10 +158,6 @@ export interface IPerpEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getBalance",
-    values: [BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getBalanceAmount",
     values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
@@ -262,10 +257,6 @@ export interface IPerpEngineInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getBalanceAmount",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "getBalances",
     data: BytesLike
@@ -396,7 +387,7 @@ export interface IPerpEngine extends BaseContract {
 
   burnLp: TypedContractMethod<
     [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
-    [[bigint, bigint]],
+    [bigint],
     "nonpayable"
   >;
 
@@ -409,12 +400,6 @@ export interface IPerpEngine extends BaseContract {
   getBalance: TypedContractMethod<
     [productId: BigNumberish, subaccount: BytesLike],
     [IPerpEngine.BalanceStructOutput],
-    "view"
-  >;
-
-  getBalanceAmount: TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
-    [bigint],
     "view"
   >;
 
@@ -580,7 +565,7 @@ export interface IPerpEngine extends BaseContract {
     nameOrSignature: "burnLp"
   ): TypedContractMethod<
     [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
-    [[bigint, bigint]],
+    [bigint],
     "nonpayable"
   >;
   getFunction(
@@ -595,13 +580,6 @@ export interface IPerpEngine extends BaseContract {
   ): TypedContractMethod<
     [productId: BigNumberish, subaccount: BytesLike],
     [IPerpEngine.BalanceStructOutput],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "getBalanceAmount"
-  ): TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
-    [bigint],
     "view"
   >;
   getFunction(

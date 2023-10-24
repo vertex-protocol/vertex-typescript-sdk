@@ -40,8 +40,52 @@ const _abi = [
   },
   {
     anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint64",
+        name: "executableAt",
+        type: "uint64",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bytes",
+        name: "tx",
+        type: "bytes",
+      },
+    ],
+    name: "SubmitSlowModeTransaction",
+    type: "event",
+  },
+  {
+    anonymous: false,
     inputs: [],
     name: "SubmitTransactions",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "invitee",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "referralCode",
+        type: "bytes32",
+      },
+    ],
+    name: "UserReferral",
     type: "event",
   },
   {
@@ -76,34 +120,6 @@ const _abi = [
       },
     ],
     name: "depositCollateral",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "subaccount",
-        type: "bytes32",
-      },
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-      {
-        internalType: "uint128",
-        name: "amount",
-        type: "uint128",
-      },
-      {
-        internalType: "string",
-        name: "referralCode",
-        type: "string",
-      },
-    ],
-    name: "depositCollateralWithReferral",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -171,12 +187,44 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
+      },
+    ],
+    name: "getLinkedSigner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "sender",
         type: "address",
       },
     ],
     name: "getNonce",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getNumSubaccounts",
     outputs: [
       {
         internalType: "uint64",
@@ -245,6 +293,25 @@ const _abi = [
         internalType: "address",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint64",
+        name: "subaccountId",
+        type: "uint64",
+      },
+    ],
+    name: "getSubaccountById",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
       },
     ],
     stateMutability: "view",
@@ -397,24 +464,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "wallet",
-        type: "address",
-      },
-      {
-        internalType: "bool",
-        name: "transferable",
-        type: "bool",
-      },
-    ],
-    name: "registerTransferableWallet",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "renounceOwnership",
     outputs: [],
@@ -515,6 +564,19 @@ const _abi = [
         internalType: "uint64",
         name: "txUpTo",
         type: "uint64",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "slowModeFees",
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
       },
     ],
     stateMutability: "view",

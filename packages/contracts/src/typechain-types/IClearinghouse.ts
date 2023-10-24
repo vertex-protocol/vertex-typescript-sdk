@@ -38,20 +38,6 @@ export declare namespace IEndpoint {
     nonce: bigint
   ] & { sender: string; productId: bigint; amount: bigint; nonce: bigint };
 
-  export type BurnLpAndTransferStruct = {
-    sender: BytesLike;
-    productId: BigNumberish;
-    amount: BigNumberish;
-    recipient: BytesLike;
-  };
-
-  export type BurnLpAndTransferStructOutput = [
-    sender: string,
-    productId: bigint,
-    amount: bigint,
-    recipient: string
-  ] & { sender: string; productId: bigint; amount: bigint; recipient: string };
-
   export type ClaimSequencerFeesStruct = { subaccount: BytesLike };
 
   export type ClaimSequencerFeesStructOutput = [subaccount: string] & {
@@ -135,6 +121,16 @@ export declare namespace IEndpoint {
     quoteAmountHigh: bigint;
     nonce: bigint;
   };
+
+  export type RebateStruct = {
+    subaccounts: BytesLike[];
+    amounts: BigNumberish[];
+  };
+
+  export type RebateStructOutput = [
+    subaccounts: string[],
+    amounts: bigint[]
+  ] & { subaccounts: string[]; amounts: bigint[] };
 
   export type SettlePnlStruct = {
     subaccounts: BytesLike[];
@@ -233,7 +229,6 @@ export interface IClearinghouseInterface extends Interface {
     nameOrSignature:
       | "addEngine"
       | "burnLp"
-      | "burnLpAndTransfer"
       | "claimSequencerFees"
       | "depositCollateral"
       | "depositInsurance"
@@ -253,8 +248,8 @@ export interface IClearinghouseInterface extends Interface {
       | "getVersion"
       | "liquidateSubaccount"
       | "mintLp"
-      | "mintLpSlowMode"
       | "modifyProductConfig"
+      | "rebate"
       | "registerProductForId"
       | "settlePnl"
       | "updateFeeRates"
@@ -275,10 +270,6 @@ export interface IClearinghouseInterface extends Interface {
   encodeFunctionData(
     functionFragment: "burnLp",
     values: [IEndpoint.BurnLpStruct]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "burnLpAndTransfer",
-    values: [IEndpoint.BurnLpAndTransferStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "claimSequencerFees",
@@ -354,12 +345,12 @@ export interface IClearinghouseInterface extends Interface {
     values: [IEndpoint.MintLpStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "mintLpSlowMode",
-    values: [IEndpoint.MintLpStruct]
-  ): string;
-  encodeFunctionData(
     functionFragment: "modifyProductConfig",
     values: [BigNumberish, IClearinghouseState.RiskStoreStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "rebate",
+    values: [IEndpoint.RebateStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "registerProductForId",
@@ -380,10 +371,6 @@ export interface IClearinghouseInterface extends Interface {
 
   decodeFunctionResult(functionFragment: "addEngine", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burnLp", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "burnLpAndTransfer",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "claimSequencerFees",
     data: BytesLike
@@ -446,13 +433,10 @@ export interface IClearinghouseInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "mintLp", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "mintLpSlowMode",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "modifyProductConfig",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "rebate", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "registerProductForId",
     data: BytesLike
@@ -597,12 +581,6 @@ export interface IClearinghouse extends BaseContract {
     "nonpayable"
   >;
 
-  burnLpAndTransfer: TypedContractMethod<
-    [tx: IEndpoint.BurnLpAndTransferStruct],
-    [void],
-    "nonpayable"
-  >;
-
   claimSequencerFees: TypedContractMethod<
     [tx: IEndpoint.ClaimSequencerFeesStruct, fees: BigNumberish[]],
     [void],
@@ -689,14 +667,14 @@ export interface IClearinghouse extends BaseContract {
     "nonpayable"
   >;
 
-  mintLpSlowMode: TypedContractMethod<
-    [tx: IEndpoint.MintLpStruct],
+  modifyProductConfig: TypedContractMethod<
+    [productId: BigNumberish, riskStore: IClearinghouseState.RiskStoreStruct],
     [void],
     "nonpayable"
   >;
 
-  modifyProductConfig: TypedContractMethod<
-    [productId: BigNumberish, riskStore: IClearinghouseState.RiskStoreStruct],
+  rebate: TypedContractMethod<
+    [tx: IEndpoint.RebateStruct],
     [void],
     "nonpayable"
   >;
@@ -743,13 +721,6 @@ export interface IClearinghouse extends BaseContract {
   getFunction(
     nameOrSignature: "burnLp"
   ): TypedContractMethod<[tx: IEndpoint.BurnLpStruct], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "burnLpAndTransfer"
-  ): TypedContractMethod<
-    [tx: IEndpoint.BurnLpAndTransferStruct],
-    [void],
-    "nonpayable"
-  >;
   getFunction(
     nameOrSignature: "claimSequencerFees"
   ): TypedContractMethod<
@@ -836,15 +807,15 @@ export interface IClearinghouse extends BaseContract {
     nameOrSignature: "mintLp"
   ): TypedContractMethod<[tx: IEndpoint.MintLpStruct], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "mintLpSlowMode"
-  ): TypedContractMethod<[tx: IEndpoint.MintLpStruct], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "modifyProductConfig"
   ): TypedContractMethod<
     [productId: BigNumberish, riskStore: IClearinghouseState.RiskStoreStruct],
     [void],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "rebate"
+  ): TypedContractMethod<[tx: IEndpoint.RebateStruct], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "registerProductForId"
   ): TypedContractMethod<
