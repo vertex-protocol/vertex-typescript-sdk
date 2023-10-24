@@ -101,6 +101,7 @@ export class IndexerBaseClient {
       const subaccount = subaccountFromHex(item.subaccount);
       return {
         hexId: item.subaccount,
+        createdAt: item.created_at,
         ...subaccount,
       };
     });

@@ -180,6 +180,7 @@ export interface IndexerServerListSubaccountsResponse {
     id: string;
     // Hex of subaccount bytes
     subaccount: string;
+    created_at: string;
   }[];
 }
 
