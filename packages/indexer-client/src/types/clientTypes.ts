@@ -22,7 +22,7 @@ export type ListIndexerSubaccountsParams = IndexerServerListSubaccountsParams;
 
 export type ListIndexerSubaccountsResponse = ({
   hexId: string;
-  createdAt: string;
+  createdAt: BigDecimal;
 } & Subaccount)[];
 
 export type IndexerSpotBalance = Omit<SpotBalance, 'healthContributions'>;
