@@ -13,9 +13,16 @@ import { BigDecimal } from '@vertex-protocol/utils';
 import { CandlestickPeriod } from './CandlestickPeriod';
 import { IndexerEventType } from './IndexerEventType';
 import {
+  IndexerServerListSubaccountsParams,
   IndexerServerTokenClaimProofParams,
   IndexerServerTokenClaimTotalAmountsParams,
 } from './serverTypes';
+
+export type ListIndexerSubaccountsParams = IndexerServerListSubaccountsParams;
+
+export type ListIndexerSubaccountsResponse = ({
+  hexId: string;
+} & Subaccount)[];
 
 export type IndexerSpotBalance = Omit<SpotBalance, 'healthContributions'>;
 

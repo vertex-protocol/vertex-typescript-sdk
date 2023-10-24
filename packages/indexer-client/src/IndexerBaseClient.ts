@@ -1,4 +1,4 @@
-import { subaccountToHex } from '@vertex-protocol/contracts';
+import { subaccountFromHex, subaccountToHex } from '@vertex-protocol/contracts';
 import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
@@ -62,6 +62,8 @@ import {
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
   IndexerSummaryBalance,
+  ListIndexerSubaccountsParams,
+  ListIndexerSubaccountsResponse,
 } from './types';
 
 export interface IndexerClientOpts {
@@ -82,6 +84,25 @@ export class IndexerBaseClient {
     this.opts = opts;
     this.axiosInstance = axios.create({
       withCredentials: true,
+    });
+  }
+
+  /**
+   * List all subaccounts
+   *
+   * @param params
+   */
+  async listSubaccounts(
+    params: ListIndexerSubaccountsParams,
+  ): Promise<ListIndexerSubaccountsResponse> {
+    const baseResponse = await this.query('subaccounts', params);
+
+    return baseResponse.subaccounts.map((item) => {
+      const subaccount = subaccountFromHex(item.subaccount);
+      return {
+        hexId: item.subaccount,
+        ...subaccount,
+      };
     });
   }
 

@@ -9,12 +9,22 @@ import {
   IndexerServerOrder,
   IndexerServerProductPayment,
   IndexerServerProductSnapshot,
+  IndexerServerRewardEpoch,
   IndexerServerTx,
 } from './serverModelTypes';
 
 /**
  * Params
  */
+
+export interface IndexerServerListSubaccountsParams {
+  // Inclusive, defaults to 0
+  start?: number;
+  // Defaults to 100
+  limit?: number;
+  address?: string;
+}
+
 export interface IndexerServerSummaryParams {
   subaccount: string;
   timestamp: number[];
@@ -135,6 +145,7 @@ export interface IndexerServerTokenClaimTotalAmountsParams {
 
 // Request
 export interface IndexerServerQueryRequestByType {
+  subaccounts: IndexerServerListSubaccountsParams;
   summary: IndexerServerSummaryParams;
   rewards: IndexerServerRewardsParams;
   referral_code: IndexerServerReferralCodeParams;
@@ -163,47 +174,18 @@ export type IndexerServerQueryRequestType =
 /**
  * Responses
  */
+
+export interface IndexerServerListSubaccountsResponse {
+  subaccounts: {
+    id: string;
+    // Hex of subaccount bytes
+    subaccount: string;
+  }[];
+}
+
 export interface IndexerServerSummaryResponse {
   // Map of timestamp requested -> latest events corresponding to each product
   events: Record<string, IndexerServerEvent[]>;
-}
-
-export interface IndexerServerSubaccountRewardsForProduct {
-  product_id: number;
-  q_score: string;
-  sum_q_min: string;
-  uptime: number;
-  maker_volume: string;
-  taker_volume: string;
-  maker_fee: string;
-  taker_fee: string;
-  // Already include adjustment for decimals
-  maker_tokens: string;
-  taker_tokens: string;
-  taker_referral_tokens: string;
-  rebates: string;
-}
-
-export interface IndexerServerGlobalRewardsForProduct {
-  product_id: number;
-  reward_coefficient: string;
-  q_scores: string;
-  maker_volumes: string;
-  taker_volumes: string;
-  maker_fees: string;
-  taker_fees: string;
-  maker_tokens: string;
-  taker_tokens: string;
-}
-
-export interface IndexerServerRewardEpoch {
-  epoch: number;
-  start_time: string;
-  period: string;
-  num_eligible_addresses: number;
-  // Per product ID
-  address_rewards: IndexerServerSubaccountRewardsForProduct[];
-  global_rewards: IndexerServerGlobalRewardsForProduct[];
 }
 
 export interface IndexerServerRewardsResponse {
@@ -311,6 +293,7 @@ export interface IndexerServerTokenClaimTotalAmountsResponse {
 
 // Response
 export interface IndexerServerQueryResponseByType {
+  subaccounts: IndexerServerListSubaccountsResponse;
   summary: IndexerServerSummaryResponse;
   rewards: IndexerServerRewardsResponse;
   referral_code: IndexerServerReferralCodeResponse;
