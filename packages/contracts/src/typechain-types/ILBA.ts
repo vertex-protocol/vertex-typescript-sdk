@@ -75,6 +75,7 @@ export interface ILBAInterface extends Interface {
       | "depositVrtx"
       | "distributeRewards"
       | "getClaimableRewards"
+      | "getClaimedRewards"
       | "getConfig"
       | "getDepositedUsdc"
       | "getDepositedVrtx"
@@ -107,6 +108,10 @@ export interface ILBAInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getClaimableRewards",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getClaimedRewards",
     values: [AddressLike]
   ): string;
   encodeFunctionData(functionFragment: "getConfig", values?: undefined): string;
@@ -167,6 +172,10 @@ export interface ILBAInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getClaimableRewards",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getClaimedRewards",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getConfig", data: BytesLike): Result;
@@ -279,6 +288,12 @@ export interface ILBA extends BaseContract {
     "view"
   >;
 
+  getClaimedRewards: TypedContractMethod<
+    [account: AddressLike],
+    [bigint],
+    "view"
+  >;
+
   getConfig: TypedContractMethod<[], [ILBA.ConfigStructOutput], "view">;
 
   getDepositedUsdc: TypedContractMethod<
@@ -353,6 +368,9 @@ export interface ILBA extends BaseContract {
   ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "getClaimableRewards"
+  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getClaimedRewards"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
     nameOrSignature: "getConfig"
