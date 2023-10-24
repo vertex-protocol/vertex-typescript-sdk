@@ -8,52 +8,8 @@ import type { IEndpoint, IEndpointInterface } from "../IEndpoint";
 const _abi = [
   {
     anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "uint64",
-        name: "executableAt",
-        type: "uint64",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "sender",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "bytes",
-        name: "tx",
-        type: "bytes",
-      },
-    ],
-    name: "SubmitSlowModeTransaction",
-    type: "event",
-  },
-  {
-    anonymous: false,
     inputs: [],
     name: "SubmitTransactions",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "invitee",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "bytes32",
-        name: "referralCode",
-        type: "bytes32",
-      },
-    ],
-    name: "UserReferral",
     type: "event",
   },
   {
@@ -75,6 +31,34 @@ const _abi = [
       },
     ],
     name: "depositCollateral",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
+      },
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "uint128",
+        name: "amount",
+        type: "uint128",
+      },
+      {
+        internalType: "string",
+        name: "referralCode",
+        type: "string",
+      },
+    ],
+    name: "depositCollateralWithReferral",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -116,19 +100,6 @@ const _abi = [
       },
     ],
     name: "getNonce",
-    outputs: [
-      {
-        internalType: "uint64",
-        name: "",
-        type: "uint64",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getNumSubaccounts",
     outputs: [
       {
         internalType: "uint64",
@@ -184,44 +155,6 @@ const _abi = [
         internalType: "struct IEndpoint.Prices",
         name: "",
         type: "tuple",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "subaccountId",
-        type: "uint64",
-      },
-    ],
-    name: "getSubaccountById",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "subaccount",
-        type: "bytes32",
-      },
-    ],
-    name: "getSubaccountId",
-    outputs: [
-      {
-        internalType: "uint64",
-        name: "",
-        type: "uint64",
       },
     ],
     stateMutability: "view",
