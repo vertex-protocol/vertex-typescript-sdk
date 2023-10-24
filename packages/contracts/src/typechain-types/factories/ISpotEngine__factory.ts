@@ -79,6 +79,11 @@ const _abi = [
         name: "",
         type: "int128",
       },
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
     ],
     stateMutability: "nonpayable",
     type: "function",
@@ -143,6 +148,30 @@ const _abi = [
         internalType: "struct ISpotEngine.Balance",
         name: "",
         type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "bytes32",
+        name: "subaccount",
+        type: "bytes32",
+      },
+    ],
+    name: "getBalanceAmount",
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
       },
     ],
     stateMutability: "view",

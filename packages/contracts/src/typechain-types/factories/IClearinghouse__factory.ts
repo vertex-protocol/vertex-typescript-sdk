@@ -167,6 +167,41 @@ const _abi = [
         components: [
           {
             internalType: "bytes32",
+            name: "sender",
+            type: "bytes32",
+          },
+          {
+            internalType: "uint32",
+            name: "productId",
+            type: "uint32",
+          },
+          {
+            internalType: "uint128",
+            name: "amount",
+            type: "uint128",
+          },
+          {
+            internalType: "bytes32",
+            name: "recipient",
+            type: "bytes32",
+          },
+        ],
+        internalType: "struct IEndpoint.BurnLpAndTransfer",
+        name: "tx",
+        type: "tuple",
+      },
+    ],
+    name: "burnLpAndTransfer",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "bytes32",
             name: "subaccount",
             type: "bytes32",
           },
@@ -234,6 +269,19 @@ const _abi = [
     name: "depositInsurance",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getAllBooks",
+    outputs: [
+      {
+        internalType: "address[]",
+        name: "",
+        type: "address[]",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -597,6 +645,51 @@ const _abi = [
   {
     inputs: [
       {
+        components: [
+          {
+            internalType: "bytes32",
+            name: "sender",
+            type: "bytes32",
+          },
+          {
+            internalType: "uint32",
+            name: "productId",
+            type: "uint32",
+          },
+          {
+            internalType: "uint128",
+            name: "amountBase",
+            type: "uint128",
+          },
+          {
+            internalType: "uint128",
+            name: "quoteAmountLow",
+            type: "uint128",
+          },
+          {
+            internalType: "uint128",
+            name: "quoteAmountHigh",
+            type: "uint128",
+          },
+          {
+            internalType: "uint64",
+            name: "nonce",
+            type: "uint64",
+          },
+        ],
+        internalType: "struct IEndpoint.MintLp",
+        name: "tx",
+        type: "tuple",
+      },
+    ],
+    name: "mintLpSlowMode",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint32",
         name: "productId",
         type: "uint32",
@@ -635,31 +728,6 @@ const _abi = [
       },
     ],
     name: "modifyProductConfig",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        components: [
-          {
-            internalType: "bytes32[]",
-            name: "subaccounts",
-            type: "bytes32[]",
-          },
-          {
-            internalType: "int128[]",
-            name: "amounts",
-            type: "int128[]",
-          },
-        ],
-        internalType: "struct IEndpoint.Rebate",
-        name: "tx",
-        type: "tuple",
-      },
-    ],
-    name: "rebate",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
