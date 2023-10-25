@@ -6,7 +6,6 @@ import {
   EngineServerMarketPrice,
   EngineServerPerpProduct,
   EngineServerPriceTickLiquidity,
-  EngineServerProductType,
   EngineServerSpotProduct,
   EngineServerSubaccountInfoResponse,
   EngineServerSymbol,
@@ -25,10 +24,7 @@ import {
   SpotMarket,
   subaccountFromHex,
 } from '@vertex-protocol/contracts';
-import {
-  mapEngineServerProductType,
-  mapProductEngineType,
-} from './productEngineTypeMappers';
+import { mapEngineServerProductType } from './productEngineTypeMappers';
 
 export function mapEngineServerTickLiquidity(
   tick: EngineServerPriceTickLiquidity,
@@ -191,6 +187,7 @@ export function mapSubaccountSummary(
 
   return {
     balances: balances,
+    exists: baseResponse.exists,
     health: {
       initial: {
         health: toBigDecimal(baseResponse.healths[0].health),

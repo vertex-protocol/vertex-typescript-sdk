@@ -19,6 +19,7 @@ import { subaccountToBytes32 } from '../utils/bytes32';
 export type GetSubaccountSummaryParams = Subaccount;
 
 export interface SubaccountSummaryResponse {
+  exists: boolean;
   balances: BalanceWithProduct[];
   health: HealthStatusByType;
 }
@@ -84,6 +85,7 @@ export async function getSubaccountSummary({
   });
 
   return {
+    exists: subaccountInfo.exists,
     health: {
       initial: {
         health: toBigDecimal(subaccountInfo.healths[0].health),
