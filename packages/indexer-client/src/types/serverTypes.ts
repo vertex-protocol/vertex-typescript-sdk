@@ -1,14 +1,17 @@
 import { IndexerEventType } from './IndexerEventType';
 import {
+  IndexerServerArbRewardsWeek,
   IndexerServerCandlestick,
   IndexerServerEvent,
   IndexerServerMarketSnapshot,
   IndexerServerMarketSnapshotInterval,
   IndexerServerMatchEvent,
+  IndexerServerMerkleProof,
   IndexerServerOraclePrice,
   IndexerServerOrder,
   IndexerServerProductPayment,
   IndexerServerProductSnapshot,
+  IndexerServerRewardsEpoch,
   IndexerServerTx,
 } from './serverModelTypes';
 
@@ -124,12 +127,15 @@ export interface IndexerServerInterestFundingParams {
   limit: number;
 }
 
-export interface IndexerServerTokenClaimProofParams {
-  epoch: number;
+export interface IndexerServerClaimVrtxMerkleProofsParams {
   address: string;
 }
 
-export interface IndexerServerTokenClaimTotalAmountsParams {
+export interface IndexerServerArbRewardsParams {
+  address: string;
+}
+
+export interface IndexerServerClaimArbMerkleProofsParams {
   address: string;
 }
 
@@ -153,8 +159,9 @@ export interface IndexerServerQueryRequestByType {
   linked_signer_rate_limit: IndexerServerLinkedSignerParams;
   market_snapshots: IndexerServerMarketSnapshotsParams;
   interest_and_funding: IndexerServerInterestFundingParams;
-  merkle_proof: IndexerServerTokenClaimProofParams;
-  airdrops: IndexerServerTokenClaimTotalAmountsParams;
+  vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsParams;
+  arb_rewards: IndexerServerArbRewardsParams;
+  arb_merkle_proofs: IndexerServerClaimArbMerkleProofsParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -168,46 +175,8 @@ export interface IndexerServerSummaryResponse {
   events: Record<string, IndexerServerEvent[]>;
 }
 
-export interface IndexerServerSubaccountRewardsForProduct {
-  product_id: number;
-  q_score: string;
-  sum_q_min: string;
-  uptime: number;
-  maker_volume: string;
-  taker_volume: string;
-  maker_fee: string;
-  taker_fee: string;
-  // Already include adjustment for decimals
-  maker_tokens: string;
-  taker_tokens: string;
-  taker_referral_tokens: string;
-  rebates: string;
-}
-
-export interface IndexerServerGlobalRewardsForProduct {
-  product_id: number;
-  reward_coefficient: string;
-  q_scores: string;
-  maker_volumes: string;
-  taker_volumes: string;
-  maker_fees: string;
-  taker_fees: string;
-  maker_tokens: string;
-  taker_tokens: string;
-}
-
-export interface IndexerServerRewardEpoch {
-  epoch: number;
-  start_time: string;
-  period: string;
-  num_eligible_addresses: number;
-  // Per product ID
-  address_rewards: IndexerServerSubaccountRewardsForProduct[];
-  global_rewards: IndexerServerGlobalRewardsForProduct[];
-}
-
 export interface IndexerServerRewardsResponse {
-  rewards: IndexerServerRewardEpoch[];
+  rewards: IndexerServerRewardsEpoch[];
   update_time: string;
   total_referrals: string;
 }
@@ -299,15 +268,17 @@ export interface IndexerServerInterestFundingResponse {
   next_idx: string;
 }
 
-export interface IndexerServerTokenClaimProofResponse {
-  total_amount: string;
-  proof: string[];
+export interface IndexerServerClaimVrtxMerkleProofsResponse {
+  merkle_proofs: IndexerServerMerkleProof[];
 }
 
-export interface IndexerServerTokenClaimTotalAmountsResponse {
-  // Index is the epoch
-  total_amounts: string[];
+export interface IndexerServerArbRewardsResponse {
+  arb_rewards: IndexerServerArbRewardsWeek[];
+  update_time: string;
 }
+
+export type IndexerServerClaimArbMerkleProofsResponse =
+  IndexerServerClaimVrtxMerkleProofsResponse;
 
 // Response
 export interface IndexerServerQueryResponseByType {
@@ -329,6 +300,7 @@ export interface IndexerServerQueryResponseByType {
   linked_signer_rate_limit: IndexerServerLinkedSignerResponse;
   market_snapshots: IndexerServerMarketSnapshotsResponse;
   interest_and_funding: IndexerServerInterestFundingResponse;
-  merkle_proof: IndexerServerTokenClaimProofResponse;
-  airdrops: IndexerServerTokenClaimTotalAmountsResponse;
+  vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsResponse;
+  arb_rewards: IndexerServerArbRewardsResponse;
+  arb_merkle_proofs: IndexerServerClaimArbMerkleProofsResponse;
 }

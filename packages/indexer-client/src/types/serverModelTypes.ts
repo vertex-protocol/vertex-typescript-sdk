@@ -149,3 +149,69 @@ export interface IndexerServerProductPayment {
   rate_x18: string;
   oracle_price_x18: string;
 }
+
+export interface IndexerServerSubaccountRewardsForProduct {
+  product_id: number;
+  q_score: string;
+  sum_q_min: string;
+  uptime: number;
+  maker_volume: string;
+  taker_volume: string;
+  maker_fee: string;
+  taker_fee: string;
+  // Already include adjustment for decimals
+  maker_tokens: string;
+  taker_tokens: string;
+  taker_referral_tokens: string;
+  rebates: string;
+}
+
+export interface IndexerServerGlobalRewardsForProduct {
+  product_id: number;
+  reward_coefficient: string;
+  q_scores: string;
+  maker_volumes: string;
+  taker_volumes: string;
+  maker_fees: string;
+  taker_fees: string;
+  maker_tokens: string;
+  taker_tokens: string;
+}
+
+export interface IndexerServerRewardsEpoch {
+  epoch: number;
+  start_time: string;
+  period: string;
+  num_eligible_addresses: number;
+  // Per product ID
+  address_rewards: IndexerServerSubaccountRewardsForProduct[];
+  global_rewards: IndexerServerGlobalRewardsForProduct[];
+}
+
+export interface IndexerServerSubaccountArbRewardsForProduct {
+  product_id: number;
+  taker_volume: string;
+  taker_fee: string;
+  taker_tokens: string;
+}
+
+export interface IndexerServerGlobalArbRewardsForProduct {
+  product_id: number;
+  taker_volumes: string;
+  taker_fees: string;
+  taker_tokens: string;
+}
+
+export interface IndexerServerArbRewardsWeek {
+  week: number;
+  start_time: string;
+  period: string;
+  // Per product ID
+  address_rewards: IndexerServerSubaccountArbRewardsForProduct[];
+  global_rewards: IndexerServerGlobalArbRewardsForProduct[];
+}
+
+export interface IndexerServerMerkleProof {
+  total_amount: string;
+  proof: string[];
+}

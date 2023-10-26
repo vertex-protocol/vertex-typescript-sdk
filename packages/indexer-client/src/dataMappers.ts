@@ -1,14 +1,17 @@
 import {
+  IndexerArbRewardsWeek,
   IndexerEvent,
   IndexerEventWithTx,
   IndexerFundingRate,
+  IndexerGlobalArbRewardsForProduct,
   IndexerGlobalRewardsForProduct,
   IndexerMatchEventBalances,
   IndexerOrder,
   IndexerPerpBalance,
   IndexerPerpPrices,
   IndexerProductPayment,
-  IndexerRewardEpoch,
+  IndexerRewardsEpoch,
+  IndexerServerArbRewardsWeek,
   IndexerServerBalance,
   IndexerServerEvent,
   IndexerServerFundingRate,
@@ -17,9 +20,10 @@ import {
   IndexerServerPerpPrices,
   IndexerServerProduct,
   IndexerServerProductPayment,
-  IndexerServerRewardEpoch,
+  IndexerServerRewardsEpoch,
   IndexerServerTx,
   IndexerSpotBalance,
+  IndexerSubaccountArbRewardsForProduct,
   IndexerSubaccountRewardsForProduct,
 } from './types';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
@@ -166,9 +170,9 @@ export function mapIndexerProductPayment(
   };
 }
 
-export function mapIndexerRewardEpoch(
-  epoch: IndexerServerRewardEpoch,
-): IndexerRewardEpoch {
+export function mapIndexerRewardsEpoch(
+  epoch: IndexerServerRewardsEpoch,
+): IndexerRewardsEpoch {
   return {
     epoch: epoch.epoch,
     period: toBigDecimal(epoch.period),
@@ -201,6 +205,36 @@ export function mapIndexerRewardEpoch(
           makerVolumes: toBigDecimal(reward.maker_volumes),
           qScores: toBigDecimal(reward.q_scores),
           rewardCoefficient: toBigDecimal(reward.reward_coefficient),
+          takerFees: toBigDecimal(reward.taker_fees),
+          takerTokens: toBigDecimal(reward.taker_tokens),
+          takerVolumes: toBigDecimal(reward.taker_volumes),
+        };
+      },
+    ),
+  };
+}
+
+export function mapIndexerArbRewardsWeek(
+  week: IndexerServerArbRewardsWeek,
+): IndexerArbRewardsWeek {
+  return {
+    week: week.week,
+    period: toBigDecimal(week.period),
+    startTime: toBigDecimal(week.start_time),
+    addressRewards: week.address_rewards.map(
+      (reward): IndexerSubaccountArbRewardsForProduct => {
+        return {
+          productId: reward.product_id,
+          takerFee: toBigDecimal(reward.taker_fee),
+          takerTokens: toBigDecimal(reward.taker_tokens),
+          takerVolume: toBigDecimal(reward.taker_volume),
+        };
+      },
+    ),
+    globalRewards: week.global_rewards.map(
+      (reward): IndexerGlobalArbRewardsForProduct => {
+        return {
+          productId: reward.product_id,
           takerFees: toBigDecimal(reward.taker_fees),
           takerTokens: toBigDecimal(reward.taker_tokens),
           takerVolumes: toBigDecimal(reward.taker_volumes),

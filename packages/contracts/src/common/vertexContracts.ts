@@ -2,6 +2,7 @@ import {
   Endpoint,
   FQuerier,
   IAirdrop,
+  IArbAirdrop,
   IClearinghouse,
   IERC20,
   ILBA,
@@ -20,6 +21,7 @@ export interface VertexContracts {
   clearinghouse: IClearinghouse;
   spotEngine: ISpotEngine;
   perpEngine: IPerpEngine;
+  arbAirdrop: IArbAirdrop;
   vrtxToken: IERC20;
   vrtxAirdrop: IAirdrop;
   vrtxLba: ILBA;

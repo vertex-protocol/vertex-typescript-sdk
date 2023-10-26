@@ -4,6 +4,7 @@
 export type { Endpoint } from "./Endpoint";
 export type { FQuerier } from "./FQuerier";
 export type { IAirdrop } from "./IAirdrop";
+export type { IArbAirdrop } from "./IArbAirdrop";
 export type { IClearinghouse } from "./IClearinghouse";
 export type { IERC20 } from "./IERC20";
 export type { IEndpoint } from "./IEndpoint";
@@ -19,6 +20,7 @@ export * as factories from "./factories";
 export { Endpoint__factory } from "./factories/Endpoint__factory";
 export { FQuerier__factory } from "./factories/FQuerier__factory";
 export { IAirdrop__factory } from "./factories/IAirdrop__factory";
+export { IArbAirdrop__factory } from "./factories/IArbAirdrop__factory";
 export { IClearinghouse__factory } from "./factories/IClearinghouse__factory";
 export { IEndpoint__factory } from "./factories/IEndpoint__factory";
 export { IERC20__factory } from "./factories/IERC20__factory";
