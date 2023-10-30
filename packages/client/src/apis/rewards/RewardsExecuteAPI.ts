@@ -59,9 +59,11 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    * @param params
    */
   async claimLiquidTokens(params: ClaimLiquidTokensParams) {
+    const address = await this.getChainSignerAddress();
+
     const { totalAmount, proof } = (
       await this.context.indexerClient.getClaimVrtxMerkleProofs({
-        address: await this.getChainSignerAddress(),
+        address,
       })
     )[params.epoch];
 
@@ -71,9 +73,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
       if ('amount' in params) {
         return params.amount;
       }
-      const amountsClaimed = await airdropContract.getClaimed(
-        await this.getChainSignerAddress(),
-      );
+      const amountsClaimed = await airdropContract.getClaimed(address);
       const availableAmount = totalAmount.minus(
         amountsClaimed[params.epoch].toString(),
       );
