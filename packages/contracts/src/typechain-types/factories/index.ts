@@ -4,6 +4,7 @@
 export { Endpoint__factory } from "./Endpoint__factory";
 export { FQuerier__factory } from "./FQuerier__factory";
 export { IAirdrop__factory } from "./IAirdrop__factory";
+export { IArbAirdrop__factory } from "./IArbAirdrop__factory";
 export { IClearinghouse__factory } from "./IClearinghouse__factory";
 export { IERC20__factory } from "./IERC20__factory";
 export { IEndpoint__factory } from "./IEndpoint__factory";

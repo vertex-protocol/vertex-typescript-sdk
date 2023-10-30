@@ -3,6 +3,7 @@ import {
   Endpoint__factory,
   FQuerier__factory,
   IAirdrop__factory,
+  IArbAirdrop__factory,
   IClearinghouse__factory,
   IERC20__factory,
   ILBA__factory,
@@ -57,6 +58,7 @@ interface VertexClientContextOpts {
     perpEngineAddress?: string;
     clearinghouseAddress?: string;
     endpointAddress?: string;
+    arbAirdropAddress: string;
     // VRTX related addresses
     vrtxTokenAddress: string;
     vrtxAirdropAddress: string;
@@ -99,6 +101,7 @@ export async function createClientContext(
             perpEngineAddress: VERTEX_DEPLOYMENTS.testnet.perpEngine,
             clearinghouseAddress: VERTEX_DEPLOYMENTS.testnet.clearinghouse,
             endpointAddress: VERTEX_DEPLOYMENTS.testnet.endpoint,
+            arbAirdropAddress: VERTEX_DEPLOYMENTS.testnet.arbAirdrop,
             vrtxTokenAddress: VERTEX_DEPLOYMENTS.testnet.vrtxToken,
             vrtxAirdropAddress: VERTEX_DEPLOYMENTS.testnet.vrtxAirdrop,
             vrtxLbaAddress: VERTEX_DEPLOYMENTS.testnet.vrtxLba,
@@ -118,6 +121,7 @@ export async function createClientContext(
             perpEngineAddress: VERTEX_DEPLOYMENTS.mainnet.perpEngine,
             clearinghouseAddress: VERTEX_DEPLOYMENTS.mainnet.clearinghouse,
             endpointAddress: VERTEX_DEPLOYMENTS.mainnet.endpoint,
+            arbAirdropAddress: VERTEX_DEPLOYMENTS.mainnet.arbAirdrop,
             vrtxTokenAddress: VERTEX_DEPLOYMENTS.mainnet.vrtxToken,
             vrtxAirdropAddress: VERTEX_DEPLOYMENTS.mainnet.vrtxAirdrop,
             vrtxLbaAddress: VERTEX_DEPLOYMENTS.mainnet.vrtxLba,
@@ -137,6 +141,7 @@ export async function createClientContext(
             perpEngineAddress: VERTEX_DEPLOYMENTS.local.perpEngine,
             clearinghouseAddress: VERTEX_DEPLOYMENTS.local.clearinghouse,
             endpointAddress: VERTEX_DEPLOYMENTS.local.endpoint,
+            arbAirdropAddress: VERTEX_DEPLOYMENTS.local.arbAirdrop,
             vrtxTokenAddress: VERTEX_DEPLOYMENTS.local.vrtxToken,
             vrtxAirdropAddress: VERTEX_DEPLOYMENTS.local.vrtxAirdrop,
             vrtxLbaAddress: VERTEX_DEPLOYMENTS.local.vrtxLba,
@@ -190,6 +195,10 @@ export async function createClientContext(
       endpoint,
       spotEngine: ISpotEngine__factory.connect(spotAddress, signerOrProvider),
       perpEngine: IPerpEngine__factory.connect(perpAddress, signerOrProvider),
+      arbAirdrop: IArbAirdrop__factory.connect(
+        contracts.arbAirdropAddress,
+        signerOrProvider,
+      ),
       vrtxToken: IERC20__factory.connect(
         contracts.vrtxTokenAddress,
         signerOrProvider,
@@ -217,6 +226,7 @@ export async function createClientContext(
       endpoint: endpointContractAddress,
       spotEngine: spotAddress,
       perpEngine: perpAddress,
+      arbAirdrop: contracts.arbAirdropAddress,
       vrtxToken: contracts.vrtxTokenAddress,
       vrtxAirdrop: contracts.vrtxAirdropAddress,
       vrtxLba: contracts.vrtxLbaAddress,

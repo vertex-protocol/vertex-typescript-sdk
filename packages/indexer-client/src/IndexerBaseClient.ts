@@ -2,6 +2,7 @@ import { subaccountToHex } from '@vertex-protocol/contracts';
 import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
+  mapIndexerArbRewardsWeek,
   mapIndexerEvent,
   mapIndexerEventWithTx,
   mapIndexerFundingRate,
@@ -9,13 +10,17 @@ import {
   mapIndexerOrder,
   mapIndexerPerpPrices,
   mapIndexerProductPayment,
-  mapIndexerRewardEpoch,
+  mapIndexerRewardsEpoch,
   mapIndexerServerProduct,
 } from './dataMappers';
 import {
   Candlestick,
   GetIndexerCandlesticksParams,
   GetIndexerCandlesticksResponse,
+  GetIndexerClaimArbMerkleProofsParams,
+  GetIndexerClaimArbMerkleProofsResponse,
+  GetIndexerClaimVrtxMerkleProofsParams,
+  GetIndexerClaimVrtxMerkleProofsResponse,
   GetIndexerEventsParams,
   GetIndexerEventsResponse,
   GetIndexerFundingRateParams,
@@ -45,13 +50,11 @@ import {
   GetIndexerQuotePriceResponse,
   GetIndexerReferralCodeParams,
   GetIndexerReferralCodeResponse,
+  GetIndexerSubaccountArbRewardsParams,
   GetIndexerSubaccountRewardsParams,
   GetIndexerSummaryParams,
   GetIndexerSummaryResponse,
-  GetIndexerTokenClaimProofParams,
-  GetIndexerTokenClaimProofResponse,
-  GetIndexerTokenClaimTotalAmountsParams,
-  GetIndexerTokenClaimTotalAmountsResponse,
+  GetSubaccountIndexerArbRewardsResponse,
   GetSubaccountIndexerRewardsResponse,
   IndexerEventWithTx,
   IndexerMarketSnapshot,
@@ -137,7 +140,7 @@ export class IndexerBaseClient {
     });
 
     return {
-      epochs: baseResponse.rewards.map(mapIndexerRewardEpoch),
+      epochs: baseResponse.rewards.map(mapIndexerRewardsEpoch),
       updateTime: toBigDecimal(baseResponse.update_time),
       totalReferrals: Number(baseResponse.total_referrals),
     };
@@ -553,33 +556,57 @@ export class IndexerBaseClient {
   }
 
   /**
-   * Retrieve the token claim proof and total amount claimable for the subaccount for a given epoch and address
+   * Retrieve the merkle proofs & total amounts claimable for the subaccount for all epochs
+   *
    * @param params
    */
-  async getTokenClaimProof(
-    params: GetIndexerTokenClaimProofParams,
-  ): Promise<GetIndexerTokenClaimProofResponse> {
-    const baseResponse = await this.query('merkle_proof', params);
+  async getClaimVrtxMerkleProofs(
+    params: GetIndexerClaimVrtxMerkleProofsParams,
+  ): Promise<GetIndexerClaimVrtxMerkleProofsResponse> {
+    const baseResponse = await this.query('vrtx_merkle_proofs', params);
+
+    return baseResponse.merkle_proofs.map((proof) => {
+      return {
+        proof: proof.proof,
+        totalAmount: toBigDecimal(proof.total_amount),
+      };
+    });
+  }
+
+  /**
+   * Retrieves estimated / past ARB rewards for a subaccount
+   *
+   * @param params
+   */
+  async getSubaccountArbRewards(
+    params: GetIndexerSubaccountArbRewardsParams,
+  ): Promise<GetSubaccountIndexerArbRewardsResponse> {
+    const baseResponse = await this.query('arb_rewards', {
+      address: params.address,
+    });
 
     return {
-      proof: baseResponse.proof,
-      totalAmount: toBigDecimal(baseResponse.total_amount),
+      weeks: baseResponse.arb_rewards.map(mapIndexerArbRewardsWeek),
+      updateTime: toBigDecimal(baseResponse.update_time),
     };
   }
 
   /**
-   * Retrieve the total amounts claimable for the subaccount for all epochs
+   * Retrieve the merkle proofs & total amounts claimable for the subaccount for all weeks
    *
    * @param params
    */
-  async getTokenClaimTotalAmounts(
-    params: GetIndexerTokenClaimTotalAmountsParams,
-  ): Promise<GetIndexerTokenClaimTotalAmountsResponse> {
-    const baseResponse = await this.query('airdrops', params);
+  async getClaimArbMerkleProofs(
+    params: GetIndexerClaimArbMerkleProofsParams,
+  ): Promise<GetIndexerClaimArbMerkleProofsResponse> {
+    const baseResponse = await this.query('arb_merkle_proofs', params);
 
-    return {
-      totalAmounts: baseResponse.total_amounts.map(toBigDecimal),
-    };
+    return baseResponse.merkle_proofs.map((proof) => {
+      return {
+        proof: proof.proof,
+        totalAmount: toBigDecimal(proof.total_amount),
+      };
+    });
   }
 
   protected async query<TRequestType extends IndexerServerQueryRequestType>(

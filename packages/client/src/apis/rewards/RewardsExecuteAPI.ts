@@ -4,7 +4,7 @@ import {
   ClaimTokensToLbaParams,
   VrtxTokenAmountParams,
 } from './types';
-import { LBA_AIRDROP_EPOCH } from '@vertex-protocol/contracts';
+import { IArbAirdrop, LBA_AIRDROP_EPOCH } from '@vertex-protocol/contracts';
 
 export class RewardsExecuteAPI extends BaseVertexAPI {
   /**
@@ -13,11 +13,11 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    * @param params
    */
   async claimTokensToLba(params: ClaimTokensToLbaParams) {
-    const { totalAmount, proof } =
-      await this.context.indexerClient.getTokenClaimProof({
-        epoch: LBA_AIRDROP_EPOCH,
+    const { totalAmount, proof } = (
+      await this.context.indexerClient.getClaimVrtxMerkleProofs({
         address: await this.getChainSignerAddress(),
-      });
+      })
+    )[LBA_AIRDROP_EPOCH];
 
     return this.context.contracts.vrtxAirdrop.claimToLBA(
       params.amount,
@@ -59,11 +59,11 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    * @param params
    */
   async claimLiquidTokens(params: ClaimLiquidTokensParams) {
-    const { totalAmount, proof } =
-      await this.context.indexerClient.getTokenClaimProof({
-        epoch: LBA_AIRDROP_EPOCH,
+    const { totalAmount, proof } = (
+      await this.context.indexerClient.getClaimVrtxMerkleProofs({
         address: await this.getChainSignerAddress(),
-      });
+      })
+    )[params.epoch];
 
     const airdropContract = this.context.contracts.vrtxAirdrop;
 
@@ -122,5 +122,38 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    */
   async claimStakingRewards() {
     return this.context.contracts.vrtxStaking.claimUsdc();
+  }
+
+  /**
+   * Claims all available ARB rewards
+   */
+  async claimArbRewards() {
+    const address = await this.getChainSignerAddress();
+
+    // Get claimed to determine which weeks haven't yet been claimed
+    const claimed = await this.context.contracts.arbAirdrop.getClaimed(address);
+    const proofs = await this.context.indexerClient.getClaimArbMerkleProofs({
+      address,
+    });
+
+    // Get proofs for all weeks that haven't yet been claimed
+    const proofsToClaim: IArbAirdrop.ClaimProofStruct[] = [];
+    proofs.forEach((item, idx) => {
+      if (idx === 0) {
+        // week 0 is invalid
+        return;
+      }
+
+      // There's no partial claim, so find weeks where there's a claimable amount and amt claimed is zero
+      if (item.totalAmount.gt(0) && claimed[idx] === 0n) {
+        proofsToClaim.push({
+          proof: item.proof,
+          totalAmount: item.totalAmount.toFixed(),
+          week: idx,
+        });
+      }
+    });
+
+    return this.context.contracts.arbAirdrop.claim(proofsToClaim);
   }
 }

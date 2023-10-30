@@ -13,8 +13,8 @@ import { BigDecimal } from '@vertex-protocol/utils';
 import { CandlestickPeriod } from './CandlestickPeriod';
 import { IndexerEventType } from './IndexerEventType';
 import {
-  IndexerServerTokenClaimProofParams,
-  IndexerServerTokenClaimTotalAmountsParams,
+  IndexerServerClaimArbMerkleProofsParams,
+  IndexerServerClaimVrtxMerkleProofsParams,
 } from './serverTypes';
 
 export type IndexerSpotBalance = Omit<SpotBalance, 'healthContributions'>;
@@ -104,7 +104,7 @@ export interface IndexerGlobalRewardsForProduct {
   takerTokens: BigDecimal;
 }
 
-export interface IndexerRewardEpoch {
+export interface IndexerRewardsEpoch {
   epoch: number;
   startTime: BigDecimal;
   period: BigDecimal;
@@ -114,7 +114,7 @@ export interface IndexerRewardEpoch {
 }
 
 export interface GetSubaccountIndexerRewardsResponse {
-  epochs: IndexerRewardEpoch[];
+  epochs: IndexerRewardsEpoch[];
   updateTime: BigDecimal;
   totalReferrals: number;
 }
@@ -413,18 +413,45 @@ export interface GetIndexerInterestFundingPaymentsResponse {
   nextCursor: string | null;
 }
 
-export type GetIndexerTokenClaimProofParams =
-  IndexerServerTokenClaimProofParams;
-
-export interface GetIndexerTokenClaimProofResponse {
+export interface IndexerMerkleProof {
   proof: string[];
   totalAmount: BigDecimal;
 }
 
-export type GetIndexerTokenClaimTotalAmountsParams =
-  IndexerServerTokenClaimTotalAmountsParams;
+export type GetIndexerClaimVrtxMerkleProofsParams =
+  IndexerServerClaimVrtxMerkleProofsParams;
 
-export interface GetIndexerTokenClaimTotalAmountsResponse {
-  // Index is the epoch
-  totalAmounts: BigDecimal[];
+export type GetIndexerClaimVrtxMerkleProofsResponse = IndexerMerkleProof[];
+
+export interface GetIndexerSubaccountArbRewardsParams {
+  address: string;
 }
+
+export type IndexerSubaccountArbRewardsForProduct = Pick<
+  IndexerSubaccountRewardsForProduct,
+  'productId' | 'takerVolume' | 'takerFee' | 'takerTokens'
+>;
+
+export type IndexerGlobalArbRewardsForProduct = Pick<
+  IndexerGlobalRewardsForProduct,
+  'productId' | 'takerFees' | 'takerTokens' | 'takerVolumes'
+>;
+
+export interface IndexerArbRewardsWeek {
+  week: number;
+  startTime: BigDecimal;
+  period: BigDecimal;
+  addressRewards: IndexerSubaccountArbRewardsForProduct[];
+  globalRewards: IndexerGlobalArbRewardsForProduct[];
+}
+
+export interface GetSubaccountIndexerArbRewardsResponse {
+  weeks: IndexerArbRewardsWeek[];
+  updateTime: BigDecimal;
+}
+
+export type GetIndexerClaimArbMerkleProofsParams =
+  IndexerServerClaimArbMerkleProofsParams;
+
+export type GetIndexerClaimArbMerkleProofsResponse =
+  GetIndexerClaimVrtxMerkleProofsResponse;
