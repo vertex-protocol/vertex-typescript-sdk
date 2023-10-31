@@ -107,7 +107,7 @@ async function fullSanity(context: RunContext) {
     order: longStopOrder,
     productId: btcPerpProductId,
     triggerCriteria: {
-      type: 'price_below',
+      type: 'oracle_price_below',
       triggerPrice: 10000,
     },
     verifyingAddr: btcPerpOrderbookAddr,
