@@ -97,7 +97,7 @@ export class EngineBaseClient {
   ): Promise<EngineServerQueryResponseByType[TRequestType]> {
     const request = this.getQueryRequest(requestType, params);
     const response = await this.axiosInstance.post<EngineQueryRequestResponse>(
-      `${this.opts.url}/query`,
+      `${this.opts.url}/v1/query`,
       request,
     );
 
@@ -143,7 +143,7 @@ export class EngineBaseClient {
     const reqBody = this.getExecuteRequest(requestType, params);
     const response =
       await this.axiosInstance.post<EngineExecuteRequestResponse>(
-        `${this.opts.url}/execute`,
+        `${this.opts.url}/v1/execute`,
         reqBody,
       );
 
