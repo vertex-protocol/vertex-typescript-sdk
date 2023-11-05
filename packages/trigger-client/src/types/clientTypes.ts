@@ -35,6 +35,10 @@ export type TriggerOrderStatus =
   | {
       type: 'triggered';
       result: EngineServerExecuteResult;
+    }
+  | {
+      type: 'internal_error';
+      error: string;
     };
 
 interface SignatureParams {
@@ -83,7 +87,7 @@ export interface QueryListTriggerOrdersParams
   // Pending trigger orders only, ignores cancelled & triggered orders
   pending: boolean;
   // In seconds
-  maxUpdateTime?: number;
+  maxUpdateTimeInclusive?: number;
   limit?: number;
 }
 
