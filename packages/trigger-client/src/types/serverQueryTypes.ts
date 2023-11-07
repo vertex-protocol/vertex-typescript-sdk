@@ -14,6 +14,10 @@ export type TriggerServerOrderStatus =
   | {
       // Reason string
       cancelled: string;
+    }
+  | {
+      // Error message
+      internal_error: string;
     };
 
 /**

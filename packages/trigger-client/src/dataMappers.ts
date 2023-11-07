@@ -21,6 +21,11 @@ export function mapTriggerServerOrderStatus(
       type: 'cancelled',
       reason: status.cancelled,
     };
+  } else if ('internal_error' in status) {
+    return {
+      type: 'internal_error',
+      error: status.internal_error,
+    };
   } else if ('triggered' in status) {
     return {
       type: 'triggered',

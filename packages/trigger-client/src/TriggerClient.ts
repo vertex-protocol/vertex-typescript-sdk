@@ -171,7 +171,7 @@ export class TriggerClient {
     const queryParams: TriggerServerQueryRequestByType['list_trigger_orders'] =
       {
         limit: params.limit,
-        max_update_time: params.maxUpdateTime,
+        max_update_time: params.maxUpdateTimeInclusive,
         pending: params.pending,
         product_ids: params.productIds,
         signature,
