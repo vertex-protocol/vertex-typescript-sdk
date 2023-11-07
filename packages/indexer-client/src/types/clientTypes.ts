@@ -16,6 +16,7 @@ import {
   IndexerServerClaimArbMerkleProofsParams,
   IndexerServerClaimVrtxMerkleProofsParams,
 } from './serverTypes';
+import { VertexTx } from './VertexTx';
 
 export type IndexerSpotBalance = Omit<SpotBalance, 'healthContributions'>;
 
@@ -34,6 +35,10 @@ export interface IndexerEventPerpStateSnapshot {
   postBalance: IndexerPerpBalance;
   market: PerpMarket;
 }
+
+export type IndexerEventBalanceStateSnapshot =
+  | IndexerEventSpotStateSnapshot
+  | IndexerEventPerpStateSnapshot;
 
 export interface IndexerBalanceTrackedVars {
   netInterestUnrealized: BigDecimal;
@@ -54,7 +59,7 @@ export interface GetIndexerSummaryParams {
 
 export interface IndexerSummaryBalance {
   productId: number;
-  state: IndexerEventPerpStateSnapshot | IndexerEventSpotStateSnapshot;
+  state: IndexerEventBalanceStateSnapshot;
   trackedVars: IndexerBalanceTrackedVars;
 }
 
@@ -247,17 +252,22 @@ export interface GetIndexerEventsParams {
   };
 }
 
-export interface IndexerEvent {
+export interface IndexerEvent<
+  TStateType extends IndexerEventBalanceStateSnapshot = IndexerEventBalanceStateSnapshot,
+> {
   subaccount: string;
   productId: number;
   submissionIndex: string;
   eventType: IndexerEventType;
-  state: IndexerEventSpotStateSnapshot | IndexerEventPerpStateSnapshot;
+  state: TStateType;
   trackedVars: IndexerBalanceTrackedVars;
 }
 
-export interface IndexerEventWithTx extends IndexerEvent {
+export interface IndexerEventWithTx<
+  TStateType extends IndexerEventBalanceStateSnapshot = IndexerEventBalanceStateSnapshot,
+> extends IndexerEvent<TStateType> {
   timestamp: BigDecimal;
+  tx: VertexTx;
 }
 
 export type GetIndexerEventsResponse = IndexerEventWithTx[];

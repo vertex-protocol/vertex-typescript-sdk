@@ -141,6 +141,7 @@ export function mapIndexerEventWithTx(
 ): IndexerEventWithTx {
   return {
     timestamp: toBigDecimal(tx.timestamp),
+    tx: tx.tx,
     ...mapIndexerEvent(event),
   };
 }

@@ -22,6 +22,9 @@ import {
   GetIndexerSubaccountSettlementEventsParams,
   GetIndexerSubaccountSettlementEventsResponse,
   IndexerCollateralEvent,
+  IndexerEventPerpStateSnapshot,
+  IndexerEventSpotStateSnapshot,
+  IndexerEventWithTx,
   IndexerLiquidationEvent,
   IndexerLpEvent,
   IndexerSettlementEvent,
@@ -293,6 +296,7 @@ export class IndexerClient extends IndexerBaseClient {
         }
 
         const newEvent: Partial<IndexerLiquidationEvent> = {
+          lps: [],
           perp: undefined,
           spot: undefined,
           quote: undefined,
@@ -311,30 +315,40 @@ export class IndexerClient extends IndexerBaseClient {
         event.state.preBalance.lpAmount,
       );
 
+      // Event without balance change - not part of this liq
       if (balanceDelta.isZero() && lpBalanceDelta.isZero()) {
-        // Event without balance change - not part of this liq
         return;
       }
 
-      if (event.state.type === ProductEngineType.PERP) {
-        mappedEvent.perp = {
-          balanceLiquidated: balanceDelta.negated(),
-          lpBalanceLiquidated: lpBalanceDelta.negated(),
-          ...event.state,
-        };
-      } else if (event.state.market.productId === QUOTE_PRODUCT_ID) {
-        mappedEvent.quote = {
-          payment: event.state.postBalance.amount.minus(
-            event.state.preBalance.amount,
-          ),
-          ...event.state,
-        };
+      if (!lpBalanceDelta.isZero()) {
+        // LP Decomposition
+        mappedEvent.lps?.push({
+          amountLpDecomposed: lpBalanceDelta.negated(),
+          underlyingBalanceDelta: balanceDelta,
+          indexerEvent: event,
+        });
       } else {
-        mappedEvent.spot = {
-          balanceLiquidated: balanceDelta.negated(),
-          lpBalanceLiquidated: lpBalanceDelta.negated(),
-          ...event.state,
-        };
+        // Actual underlying balance change
+        if (event.state.type === ProductEngineType.PERP) {
+          mappedEvent.perp = {
+            amountLiquidated: balanceDelta.negated(),
+            // This cast is safe because we're checking for event.state.type
+            indexerEvent:
+              event as IndexerEventWithTx<IndexerEventPerpStateSnapshot>,
+          };
+        } else if (event.state.market.productId === QUOTE_PRODUCT_ID) {
+          mappedEvent.quote = {
+            balanceDelta,
+            indexerEvent:
+              event as IndexerEventWithTx<IndexerEventSpotStateSnapshot>,
+          };
+        } else {
+          mappedEvent.spot = {
+            amountLiquidated: balanceDelta.negated(),
+            indexerEvent:
+              event as IndexerEventWithTx<IndexerEventSpotStateSnapshot>,
+          };
+        }
       }
 
       // Valid liq, so set into map
