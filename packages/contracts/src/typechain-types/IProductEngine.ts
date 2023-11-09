@@ -50,6 +50,7 @@ export interface IProductEngineInterface extends Interface {
       | "applyDeltas"
       | "burnLp"
       | "decomposeLps"
+      | "getBalanceAmount"
       | "getClearinghouse"
       | "getEngineType"
       | "getOrderbook"
@@ -74,6 +75,10 @@ export interface IProductEngineInterface extends Interface {
   encodeFunctionData(
     functionFragment: "decomposeLps",
     values: [BytesLike, BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getBalanceAmount",
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getClearinghouse",
@@ -125,6 +130,10 @@ export interface IProductEngineInterface extends Interface {
   decodeFunctionResult(functionFragment: "burnLp", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "decomposeLps",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getBalanceAmount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -222,7 +231,7 @@ export interface IProductEngine extends BaseContract {
 
   burnLp: TypedContractMethod<
     [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
-    [bigint],
+    [[bigint, bigint]],
     "nonpayable"
   >;
 
@@ -230,6 +239,12 @@ export interface IProductEngine extends BaseContract {
     [liquidatee: BytesLike, liquidator: BytesLike, feeCalculator: AddressLike],
     [bigint],
     "nonpayable"
+  >;
+
+  getBalanceAmount: TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike],
+    [bigint],
+    "view"
   >;
 
   getClearinghouse: TypedContractMethod<[], [string], "view">;
@@ -307,7 +322,7 @@ export interface IProductEngine extends BaseContract {
     nameOrSignature: "burnLp"
   ): TypedContractMethod<
     [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
-    [bigint],
+    [[bigint, bigint]],
     "nonpayable"
   >;
   getFunction(
@@ -316,6 +331,13 @@ export interface IProductEngine extends BaseContract {
     [liquidatee: BytesLike, liquidator: BytesLike, feeCalculator: AddressLike],
     [bigint],
     "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "getBalanceAmount"
+  ): TypedContractMethod<
+    [productId: BigNumberish, subaccount: BytesLike],
+    [bigint],
+    "view"
   >;
   getFunction(
     nameOrSignature: "getClearinghouse"
