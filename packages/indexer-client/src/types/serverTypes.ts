@@ -27,9 +27,10 @@ export interface IndexerServerListSubaccountsParams {
   address?: string;
 }
 
-export interface IndexerServerSummaryParams {
-  subaccount: string;
-  timestamp: number[];
+export interface IndexerServerMultiSubaccountSnapshotsParams {
+  // Subaccount hex identifiers
+  subaccounts: string[];
+  timestamps: number[];
 }
 
 export interface IndexerServerRewardsParams {
@@ -151,7 +152,7 @@ export interface IndexerServerClaimArbMerkleProofsParams {
 // Request
 export interface IndexerServerQueryRequestByType {
   subaccounts: IndexerServerListSubaccountsParams;
-  summary: IndexerServerSummaryParams;
+  account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
   rewards: IndexerServerRewardsParams;
   referral_code: IndexerServerReferralCodeParams;
   funding_rate: IndexerServerFundingRateParams;
@@ -189,9 +190,9 @@ export interface IndexerServerListSubaccountsResponse {
   }[];
 }
 
-export interface IndexerServerSummaryResponse {
-  // Map of timestamp requested -> latest events corresponding to each product
-  events: Record<string, IndexerServerEvent[]>;
+export interface IndexerServerMultiSubaccountSnapshotsResponse {
+  // Map of subaccount hex -> timestamp requested -> latest events corresponding to each product
+  snapshots: Record<string, Record<string, IndexerServerEvent[]>>;
 }
 
 export interface IndexerServerRewardsResponse {
@@ -302,7 +303,7 @@ export type IndexerServerClaimArbMerkleProofsResponse =
 // Response
 export interface IndexerServerQueryResponseByType {
   subaccounts: IndexerServerListSubaccountsResponse;
-  summary: IndexerServerSummaryResponse;
+  account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
   rewards: IndexerServerRewardsResponse;
   referral_code: IndexerServerReferralCodeResponse;
   funding_rate: IndexerServerFundingRateResponse;

@@ -18,9 +18,9 @@ async function fullSanity(context: RunContext) {
     subaccountOwner: context.getWallet().address,
   };
 
-  const summary = await client.getSubaccountSummary({
-    subaccount,
-    timestamp: [nowInSeconds(), nowInSeconds() - 60 * 60 * 24],
+  const summary = await client.getMultiSubaccountSnapshots({
+    subaccounts: [subaccount],
+    timestamps: [nowInSeconds(), nowInSeconds() - 60 * 60 * 24],
   });
 
   prettyPrint('Summary', summary);
