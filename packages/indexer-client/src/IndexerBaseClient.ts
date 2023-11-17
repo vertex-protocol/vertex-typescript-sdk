@@ -39,6 +39,8 @@ import {
   GetIndexerMultiProductPerpPricesResponse,
   GetIndexerMultiProductSnapshotsParams,
   GetIndexerMultiProductSnapshotsResponse,
+  GetIndexerMultiSubaccountSnapshotsParams,
+  GetIndexerMultiSubaccountSnapshotsResponse,
   GetIndexerOraclePricesParams,
   GetIndexerOraclePricesResponse,
   GetIndexerOrdersParams,
@@ -52,8 +54,6 @@ import {
   GetIndexerReferralCodeResponse,
   GetIndexerSubaccountArbRewardsParams,
   GetIndexerSubaccountRewardsParams,
-  GetIndexerSummaryParams,
-  GetIndexerSummaryResponse,
   GetSubaccountIndexerArbRewardsResponse,
   GetSubaccountIndexerRewardsResponse,
   IndexerEventWithTx,
@@ -64,7 +64,8 @@ import {
   IndexerServerQueryRequestByType,
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
-  IndexerSummaryBalance,
+  IndexerSnapshotBalance,
+  IndexerSubaccountSnapshot,
   ListIndexerSubaccountsParams,
   ListIndexerSubaccountsResponse,
 } from './types';
@@ -110,42 +111,59 @@ export class IndexerBaseClient {
   }
 
   /**
-   * Retrieve a snapshot of the subaccount's balances at this point in time, with tracked variables for interest, funding, etc.
+   * Retrieve snapshots of multiple subaccounts at multiple points in time.
+   * Each snapshot is a view of the subaccount's balances at this point in time, with tracked variables for interest, funding, etc.
    *
    * @param params
    */
-  async getSubaccountSummary(
-    params: GetIndexerSummaryParams,
-  ): Promise<GetIndexerSummaryResponse> {
-    const baseResponse = await this.query('summary', {
-      subaccount: subaccountToHex({
-        subaccountOwner: params.subaccount.subaccountOwner,
-        subaccountName: params.subaccount.subaccountName,
-      }),
-      timestamp: params.timestamp,
+  async getMultiSubaccountSnapshots(
+    params: GetIndexerMultiSubaccountSnapshotsParams,
+  ): Promise<GetIndexerMultiSubaccountSnapshotsResponse> {
+    const subaccountHexIds = params.subaccounts.map(
+      ({ subaccountOwner, subaccountName }) =>
+        subaccountToHex({
+          subaccountOwner,
+          subaccountName,
+        }),
+    );
+
+    const baseResponse = await this.query('account_snapshots', {
+      subaccounts: subaccountHexIds,
+      timestamps: params.timestamps,
     });
 
-    const response: GetIndexerSummaryResponse = {};
+    const snapshotsBySubaccount = mapValues(
+      baseResponse.snapshots,
+      (balanceSnapshots) => {
+        const snapshotByTimestamp: Record<string, IndexerSubaccountSnapshot> =
+          {};
 
-    Object.entries(baseResponse.events).forEach(([timestamp, events]) => {
-      const balances: IndexerSummaryBalance[] = events.map(
-        (event): IndexerSummaryBalance => {
-          const mappedEvent = mapIndexerEvent(event);
-          return {
-            productId: mappedEvent.productId,
-            state: mappedEvent.state,
-            trackedVars: mappedEvent.trackedVars,
+        Object.entries(balanceSnapshots).forEach(([timestamp, events]) => {
+          const balances: IndexerSnapshotBalance[] = events.map(
+            (event): IndexerSnapshotBalance => {
+              const mappedEvent = mapIndexerEvent(event);
+              return {
+                productId: mappedEvent.productId,
+                state: mappedEvent.state,
+                trackedVars: mappedEvent.trackedVars,
+              };
+            },
+          );
+
+          snapshotByTimestamp[timestamp] = {
+            timestamp: toBigDecimal(timestamp),
+            balances,
           };
-        },
-      );
+        });
 
-      response[timestamp] = {
-        timestamp: toBigDecimal(timestamp),
-        balances,
-      };
-    });
+        return snapshotByTimestamp;
+      },
+    );
 
-    return response;
+    return {
+      subaccountHexIds,
+      snapshots: snapshotsBySubaccount,
+    };
   }
 
   /**

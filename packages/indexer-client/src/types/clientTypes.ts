@@ -58,28 +58,29 @@ export interface IndexerBalanceTrackedVars {
   netEntryLpCumulative: BigDecimal;
 }
 
-export interface GetIndexerSummaryParams {
-  subaccount: Subaccount;
-  // A series of timestamps for which to return a summary of the subaccount
-  timestamp: number[];
+export interface GetIndexerMultiSubaccountSnapshotsParams {
+  subaccounts: Subaccount[];
+  // A series of timestamps for which to return a summary of each subaccount
+  timestamps: number[];
 }
 
-export interface IndexerSummaryBalance {
+export interface IndexerSnapshotBalance {
   productId: number;
   state: IndexerEventBalanceStateSnapshot;
   trackedVars: IndexerBalanceTrackedVars;
 }
 
-export interface IndexerSubaccountSummary {
+export interface IndexerSubaccountSnapshot {
   timestamp: BigDecimal;
-  balances: IndexerSummaryBalance[];
+  balances: IndexerSnapshotBalance[];
 }
 
-// Map of timestamp requested -> summary for that time
-export type GetIndexerSummaryResponse = Record<
-  string,
-  IndexerSubaccountSummary
->;
+export interface GetIndexerMultiSubaccountSnapshotsResponse {
+  // Utility for retrieving a subaccount's hex ID, in the same order as the request params
+  subaccountHexIds: string[];
+  // Map of subaccount hex -> timestamp requested -> summary for that time
+  snapshots: Record<string, Record<string, IndexerSubaccountSnapshot>>;
+}
 
 export interface GetIndexerSubaccountRewardsParams {
   address: string;
