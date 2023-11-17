@@ -24,7 +24,7 @@
     "@vertex-protocol/trigger-client": "*",
     "@vertex-protocol/utils": "*",
     "dotenv": "^16.3.1",
-    "ethers": "^6.7.1"
+    "ethers": "^6.8.1"
   },
   "gitHead": "6d0f498829ddaf01a11d2f46f960811428b370f5"
 }
