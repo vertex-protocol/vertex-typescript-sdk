@@ -6,9 +6,9 @@ export function getProvider(chainEnv: ChainEnv): Provider {
     case 'local':
       return new JsonRpcProvider();
     case 'testnet':
-      return new JsonRpcProvider('https://goerli-rollup.arbitrum.io/rpc', {
-        name: 'arbitrum-goerli',
-        chainId: 421613,
+      return new JsonRpcProvider('https://sepolia-rollup.arbitrum.io/rpc', {
+        name: 'arbitrum-sepolia',
+        chainId: 421614,
       });
     case 'mainnet':
       return new JsonRpcProvider('https://arb1.arbitrum.io/rpc', {
