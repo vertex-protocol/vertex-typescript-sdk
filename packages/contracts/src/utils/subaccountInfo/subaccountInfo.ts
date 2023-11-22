@@ -1,9 +1,9 @@
-import { SubaccountSummaryResponse } from '../query';
+import { SubaccountSummaryResponse } from '../../query';
 import {
   BalanceWithProduct,
   ProductEngineType,
   QUOTE_PRODUCT_ID,
-} from '../common';
+} from '../../common';
 import {
   BigDecimal,
   sumBigDecimalBy,
@@ -14,7 +14,11 @@ import {
   calcPerpBalanceNotionalValue,
   calcPerpBalanceValue,
   calcSpotBalanceValue,
-} from './balanceValue';
+} from '../balanceValue';
+import {
+  calcUnweightedHealthExcludingZeroHealthProducts,
+  isZeroHealth,
+} from './utils';
 
 export interface TotalPortfolioValues {
   // spot + spotLp + perpNotional + perpLp
@@ -86,13 +90,14 @@ export function calcTotalPortfolioValues(
  * @param summary
  */
 export function calcSubaccountLeverage(summary: SubaccountSummaryResponse) {
-  const unweightedHealth = summary.health.unweighted.health;
+  const unweightedHealth =
+    calcUnweightedHealthExcludingZeroHealthProducts(summary);
   if (unweightedHealth.isZero()) {
     return toBigDecimal(0);
   }
 
   const numerator = sumBigDecimalBy(summary.balances, (balance) => {
-    if (balance.productId === QUOTE_PRODUCT_ID) {
+    if (balance.productId === QUOTE_PRODUCT_ID || isZeroHealth(balance)) {
       return toBigDecimal(0);
     }
     const balanceValue =
@@ -101,6 +106,7 @@ export function calcSubaccountLeverage(summary: SubaccountSummaryResponse) {
         : calcPerpBalanceNotionalValue(balance);
     return balanceValue.plus(calcLpBalanceValue(balance));
   });
+
   return numerator.dividedBy(unweightedHealth);
 }
 
@@ -118,7 +124,8 @@ export interface MarginUsageFractions {
 export function calcSubaccountMarginUsageFractions(
   summary: SubaccountSummaryResponse,
 ): MarginUsageFractions {
-  const unweightedHealth = summary.health.unweighted.health;
+  const unweightedHealth =
+    calcUnweightedHealthExcludingZeroHealthProducts(summary);
   const initialHealth = summary.health.initial.health;
   const maintenanceHealth = summary.health.maintenance.health;
 
