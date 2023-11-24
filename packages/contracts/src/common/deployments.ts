@@ -1,9 +1,9 @@
 import { VertexContracts } from './vertexContracts';
-import ArbitrumGoerliCoreDeployment from './deployments/core/deployment.arbitrumGoerli.json';
+import ArbitrumSepoliaCoreDeployment from './deployments/core/deployment.arbitrumSepolia.json';
 import ArbitrumOneCoreDeployment from './deployments/core/deployment.arbitrumOne.json';
 import LocalCoreDeployment from './deployments/core/deployment.localhost.json';
 
-import ArbitrumGoerliLbaDeployment from './deployments/vrtx/deployment.arbitrumGoerli.json';
+import ArbitrumSepoliaLbaDeployment from './deployments/vrtx/deployment.arbitrumSepolia.json';
 import ArbitrumOneLbaDeployment from './deployments/vrtx/deployment.arbitrumOne.json';
 import LocalLbaDeployment from './deployments/vrtx/deployment.localhost.json';
 
@@ -18,8 +18,8 @@ export type VertexDeploymentAddresses = {
  */
 export const VERTEX_DEPLOYMENTS: Record<ChainEnv, VertexDeploymentAddresses> = {
   testnet: {
-    ...ArbitrumGoerliLbaDeployment,
-    ...ArbitrumGoerliCoreDeployment,
+    ...ArbitrumSepoliaCoreDeployment,
+    ...ArbitrumSepoliaLbaDeployment,
   },
   mainnet: {
     ...ArbitrumOneLbaDeployment,
