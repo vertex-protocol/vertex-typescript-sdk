@@ -21,8 +21,6 @@ async function fullSanity(context: RunContext) {
 
   const chainId = await getChainIdFromSigner(signer);
 
-  console.log(chainId);
-
   console.log('Minting tokens...');
   const mintTx = await vertexClient.spot._mintMockERC20({
     // 20000 tokens
