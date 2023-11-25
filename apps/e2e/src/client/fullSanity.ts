@@ -5,11 +5,7 @@ import {
 } from '@vertex-protocol/contracts';
 import { toFixedPoint } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
-import {
-  createVertexClient,
-  getProductMetadataByProductId,
-  PlaceOrderParams,
-} from '@vertex-protocol/client';
+import { createVertexClient, PlaceOrderParams } from '@vertex-protocol/client';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 
@@ -67,7 +63,7 @@ async function fullSanity(context: RunContext) {
     subaccountName: 'default',
     expiration: getExpiration('post_only', 60).toString(),
     // Limit price
-    price: 2000,
+    price: 3000,
     amount: toFixedPoint(-3.5).toString(),
   };
 
@@ -178,36 +174,6 @@ async function fullSanity(context: RunContext) {
     productId: 0,
     amount: toFixedPoint(1000, 6),
   });
-
-  const spotProductId = 1;
-  prettyPrint(
-    'Spot product metadata (testnet)',
-    getProductMetadataByProductId('testnet', spotProductId),
-  );
-  prettyPrint(
-    'Spot product metadata (mainnet)',
-    getProductMetadataByProductId('mainnet', spotProductId),
-  );
-
-  const perpProductId = 2;
-  prettyPrint(
-    'Perp product metadata (testnet)',
-    getProductMetadataByProductId('testnet', perpProductId),
-  );
-  prettyPrint(
-    'Spot product metadata (mainnet)',
-    getProductMetadataByProductId('mainnet', perpProductId),
-  );
-
-  const invalidProductId = 10000;
-  prettyPrint(
-    'Invalid product metadata (testnet)',
-    getProductMetadataByProductId('testnet', invalidProductId),
-  );
-  prettyPrint(
-    'Spot product metadata (mainnet)',
-    getProductMetadataByProductId('mainnet', invalidProductId),
-  );
 
   const nSubmissions =
     await vertexClient.context.contracts.endpoint.nSubmissions();

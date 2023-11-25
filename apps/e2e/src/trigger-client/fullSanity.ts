@@ -149,6 +149,7 @@ async function fullSanity(context: RunContext) {
     subaccountName,
     subaccountOwner,
     verifyingAddr: endpointAddr,
+    chainId,
   });
 
   prettyPrint('Cancel via digest result', cancelViaDigestResult);
@@ -159,6 +160,7 @@ async function fullSanity(context: RunContext) {
     subaccountName,
     subaccountOwner,
     verifyingAddr: endpointAddr,
+    chainId,
   });
 
   prettyPrint('Cancel via product result', cancelViaProductResult);

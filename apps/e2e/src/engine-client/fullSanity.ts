@@ -102,7 +102,7 @@ async function fullSanity(context: RunContext) {
     subaccountName: 'default',
     amount: toFixedPoint(-0.01),
     expiration: getExpiration(),
-    price: 35000,
+    price: 45000,
   };
   const placeResult = await client.placeOrder({
     verifyingAddr: orderbookAddr,
@@ -259,7 +259,7 @@ async function fullSanity(context: RunContext) {
     productId: 3,
     amountBase: toFixedPoint(1, 18),
     quoteAmountLow: toFixedPoint(1000, 18),
-    quoteAmountHigh: toFixedPoint(2000, 18),
+    quoteAmountHigh: toFixedPoint(3000, 18),
     verifyingAddr: endpointAddr,
     chainId,
   });
@@ -271,7 +271,7 @@ async function fullSanity(context: RunContext) {
     productId: 4,
     amountBase: toFixedPoint(1, 18),
     quoteAmountLow: toFixedPoint(1000, 18),
-    quoteAmountHigh: toFixedPoint(2000, 18),
+    quoteAmountHigh: toFixedPoint(3000, 18),
     verifyingAddr: endpointAddr,
     chainId,
   });
@@ -331,7 +331,7 @@ async function fullSanity(context: RunContext) {
       subaccountName: 'default',
       amount: toFixedPoint(-0.01),
       expiration: getExpiration(),
-      price: 28000,
+      price: 38000,
     };
     const placeResult = await client.placeOrder({
       verifyingAddr: orderbookAddr,

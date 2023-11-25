@@ -44,8 +44,7 @@ export type TriggerOrderStatus =
 interface SignatureParams {
   // Orderbook address for placement, endpoint address for cancellation & listing
   verifyingAddr: string;
-  // Defaults to the chain ID of the engine signer
-  chainId?: BigNumberish;
+  chainId: BigNumberish;
 }
 
 /**

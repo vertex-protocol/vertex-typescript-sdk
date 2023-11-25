@@ -12,7 +12,6 @@ import {
   GetEngineNoncesResponse,
 } from './types';
 import {
-  getChainIdFromSigner,
   getSignedTransactionRequest,
   SignableRequestType,
   SignableRequestTypeToParams,
@@ -166,20 +165,6 @@ export class EngineBaseClient {
     return {
       [requestType]: params,
     };
-  }
-
-  async getChainIdIfNeeded(params: {
-    chainId?: BigNumberish;
-  }): Promise<BigNumberish> {
-    if (params.chainId) {
-      return params.chainId;
-    }
-    const signer = this.opts.signer;
-    if (!signer) {
-      throw Error('No signer provided');
-    }
-
-    return getChainIdFromSigner(signer);
   }
 
   /**

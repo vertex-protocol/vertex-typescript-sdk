@@ -1,10 +1,10 @@
 import {
-  EngineExecutePlaceOrderParams,
-  EngineExecuteCancelAndPlaceParams,
-  EngineOrderParams,
   EngineExecuteCancelOrdersParams,
+  EngineExecuteCancelProductOrdersParams,
+  EngineExecutePlaceOrderParams,
+  EngineOrderParams,
 } from '@vertex-protocol/engine-client';
-import { WithoutSubaccountOwner } from '../types';
+import { OptionalSubaccountOwner } from '../types';
 import {
   QueryListTriggerOrdersParams,
   TriggerExecuteCancelOrdersParams,
@@ -12,38 +12,44 @@ import {
   TriggerExecutePlaceOrderParams,
 } from '@vertex-protocol/trigger-client';
 
-type ClientOrderParams<T> = Omit<T, 'order'> & {
-  order: WithoutSubaccountOwner<EngineOrderParams>;
+// TODO This is currently used only for the market API, where speed is more important. This could eventually be used for other executes
+export type OptionalSignatureParams<T> = Omit<
+  T,
+  'verifyingAddr' | 'chainId'
+> & {
+  verifyingAddr?: string;
+  chainId?: number;
 };
 
-type OmitVerifyingAddr<T> = Omit<T, 'verifyingAddr'>;
-
-type OptionalVerifyingAddr<T> = OmitVerifyingAddr<T> & {
-  verifyingAddr?: string;
+type ClientOrderParams<T> = Omit<OptionalSignatureParams<T>, 'order'> & {
+  order: OptionalSubaccountOwner<EngineOrderParams>;
 };
 
 export type PlaceOrderParams = ClientOrderParams<EngineExecutePlaceOrderParams>;
 
-export type CancelAndPlaceOrderParams = Omit<
-  EngineExecuteCancelAndPlaceParams,
-  'placeOrder' | 'cancelOrders'
-> & {
+export type CancelOrdersParams = OptionalSignatureParams<
+  OptionalSubaccountOwner<EngineExecuteCancelOrdersParams>
+>;
+
+export type CancelProductOrdersParams = OptionalSignatureParams<
+  OptionalSubaccountOwner<EngineExecuteCancelProductOrdersParams>
+>;
+
+export interface CancelAndPlaceOrderParams {
   placeOrder: PlaceOrderParams;
-  cancelOrders: WithoutSubaccountOwner<EngineExecuteCancelOrdersParams>;
-};
+  cancelOrders: CancelOrdersParams;
+}
 
-// Make verifyingAddr optional here to be consistent with engine
-export type PlaceTriggerOrderParams = OptionalVerifyingAddr<
-  ClientOrderParams<TriggerExecutePlaceOrderParams>
+export type PlaceTriggerOrderParams =
+  ClientOrderParams<TriggerExecutePlaceOrderParams>;
+
+export type CancelTriggerOrdersParams = OptionalSignatureParams<
+  OptionalSubaccountOwner<TriggerExecuteCancelOrdersParams>
 >;
 
-export type CancelTriggerOrdersParams = OptionalVerifyingAddr<
-  WithoutSubaccountOwner<TriggerExecuteCancelOrdersParams>
->;
-
-export type CancelTriggerProductOrdersParams = OptionalVerifyingAddr<
-  WithoutSubaccountOwner<TriggerExecuteCancelProductOrdersParams>
+export type CancelTriggerProductOrdersParams = OptionalSignatureParams<
+  OptionalSubaccountOwner<TriggerExecuteCancelProductOrdersParams>
 >;
 
 export type GetTriggerOrdersParams =
-  OmitVerifyingAddr<QueryListTriggerOrdersParams>;
+  OptionalSignatureParams<QueryListTriggerOrdersParams>;

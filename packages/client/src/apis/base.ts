@@ -1,6 +1,10 @@
 import { VertexClientContext } from '../context';
-import { WithContracts } from '@vertex-protocol/contracts';
+import {
+  getChainIdFromSigner,
+  WithContracts,
+} from '@vertex-protocol/contracts';
 import { isSigner } from '../utils';
+import { BigNumberish } from 'ethers/lib.esm';
 
 export class BaseVertexAPI {
   readonly context: VertexClientContext;
@@ -20,12 +24,31 @@ export class BaseVertexAPI {
     return (await this.getChainSigner()).getAddress();
   }
 
+  protected async getSignerChainIdIfNeeded(params: {
+    chainId?: BigNumberish;
+  }): Promise<BigNumberish> {
+    if (params.chainId) {
+      return params.chainId;
+    }
+    return this.getSignerChainId();
+  }
+
+  protected async getSignerChainId() {
+    return getChainIdFromSigner(await this.getChainSigner());
+  }
+
   protected getEndpointAddress() {
     return this.context.contractAddresses.endpoint;
   }
 
   protected async getOrderbookAddress(productId: number) {
     return this.context.engineClient.getOrderbookAddress(productId);
+  }
+
+  protected async getSubaccountOwnerIfNeeded(params: {
+    subaccountOwner?: string;
+  }): Promise<string> {
+    return params.subaccountOwner ?? (await this.getChainSignerAddress());
   }
 
   protected paramsWithContracts<T>(params: T): WithContracts<T> {

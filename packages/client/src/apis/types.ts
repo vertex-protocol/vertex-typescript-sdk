@@ -1,1 +1,3 @@
-export type WithoutSubaccountOwner<T> = Omit<T, 'subaccountOwner'>;
+export type OptionalSubaccountOwner<T> = Omit<T, 'subaccountOwner'> & {
+  subaccountOwner?: string;
+};

@@ -110,6 +110,4 @@ export class EngineExecuteClient extends EngineBaseClient {
       verifyingAddr,
     });
   }
-
-  // TODO: settle PNL
 }
