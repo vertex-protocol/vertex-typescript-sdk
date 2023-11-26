@@ -83,7 +83,8 @@ export interface QueryListTriggerOrdersParams
     SignatureParams {
   // In millis, defaults to 90s in the future
   recvTime?: BigDecimal;
-  productIds: number[];
+  // If not given, defaults to all products
+  productId?: number;
   // Pending trigger orders only, ignores cancelled & triggered orders
   pending: boolean;
   // In seconds

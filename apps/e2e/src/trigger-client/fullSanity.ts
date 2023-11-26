@@ -121,13 +121,26 @@ async function fullSanity(context: RunContext) {
   const pendingListOrdersResult = await client.listTriggerOrders({
     chainId,
     pending: true,
-    productIds: [ethProductId, btcPerpProductId],
     subaccountName,
     subaccountOwner,
     verifyingAddr: endpointAddr,
   });
 
   prettyPrint('Pending list orders result', pendingListOrdersResult);
+
+  const pendingListOrdersForProductResult = await client.listTriggerOrders({
+    chainId,
+    pending: true,
+    subaccountName,
+    subaccountOwner,
+    verifyingAddr: endpointAddr,
+    productId: ethProductId,
+  });
+
+  prettyPrint(
+    'Pending list orders for product result',
+    pendingListOrdersForProductResult,
+  );
 
   // Cancel ETH order via digest
   const cancelViaDigestResult = await client.cancelTriggerOrders({
@@ -153,7 +166,6 @@ async function fullSanity(context: RunContext) {
   const nonPendingListOrdersResult = await client.listTriggerOrders({
     chainId,
     pending: false,
-    productIds: [ethProductId, btcPerpProductId],
     subaccountName,
     subaccountOwner,
     verifyingAddr: endpointAddr,

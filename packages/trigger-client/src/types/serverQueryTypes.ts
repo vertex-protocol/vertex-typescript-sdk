@@ -26,8 +26,9 @@ export type TriggerServerOrderStatus =
 
 export interface TriggerServerQueryListOrdersParams
   extends SignedTx<EIP712ListTriggerOrdersValues> {
-  product_ids: number[];
   pending: boolean;
+  // If not given, defaults to all products
+  product_id?: number;
   max_update_time?: number;
   limit?: number;
 }
