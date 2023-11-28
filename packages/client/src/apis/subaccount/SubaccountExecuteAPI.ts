@@ -1,5 +1,5 @@
 import { BaseVertexAPI } from '../base';
-import { WithoutSubaccountOwner } from '../types';
+import { OptionalSubaccountOwner } from '../types';
 import {
   EngineExecuteLinkSignerParams,
   EngineExecuteLiquidateSubaccountParams,
@@ -18,11 +18,12 @@ export class SubaccountExecuteAPI extends BaseVertexAPI {
    * @param params
    */
   async liquidateSubaccount(
-    params: WithoutSubaccountOwner<EngineExecuteLiquidateSubaccountParams>,
+    params: OptionalSubaccountOwner<EngineExecuteLiquidateSubaccountParams>,
   ) {
     return this.context.engineClient.liquidateSubaccount({
-      subaccountOwner: await this.getChainSignerAddress(),
+      subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
       verifyingAddr: this.getEndpointAddress(),
+      chainId: await this.getSignerChainId(),
       ...params,
     });
   }
@@ -33,11 +34,12 @@ export class SubaccountExecuteAPI extends BaseVertexAPI {
    * @param params
    */
   async linkSigner(
-    params: WithoutSubaccountOwner<EngineExecuteLinkSignerParams>,
+    params: OptionalSubaccountOwner<EngineExecuteLinkSignerParams>,
   ) {
     return this.context.engineClient.linkSigner({
-      subaccountOwner: await this.getChainSignerAddress(),
+      subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
       verifyingAddr: this.getEndpointAddress(),
+      chainId: await this.getSignerChainId(),
       ...params,
     });
   }

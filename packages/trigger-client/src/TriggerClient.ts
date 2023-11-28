@@ -14,7 +14,6 @@ import {
 } from './types';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
-  getChainIdFromSigner,
   getOrderNonce,
   getSignedTransactionRequest,
   getTriggerOrderNonce,
@@ -77,7 +76,7 @@ export class TriggerClient {
     const signature = await this.sign(
       'place_order',
       params.verifyingAddr,
-      await this.getChainIdIfNeeded(params),
+      params.chainId,
       orderParams,
     );
 
@@ -109,7 +108,7 @@ export class TriggerClient {
       signature: await this.sign(
         'cancel_orders',
         params.verifyingAddr,
-        await this.getChainIdIfNeeded(params),
+        params.chainId,
         cancelOrdersParams,
       ),
       tx,
@@ -137,7 +136,7 @@ export class TriggerClient {
         signature: await this.sign(
           'cancel_product_orders',
           params.verifyingAddr,
-          await this.getChainIdIfNeeded(params),
+          params.chainId,
           cancelProductOrdersParams,
         ),
         tx,
@@ -164,7 +163,7 @@ export class TriggerClient {
     const signature = await this.sign(
       'list_trigger_orders',
       params.verifyingAddr,
-      await this.getChainIdIfNeeded(params),
+      params.chainId,
       signatureParams,
     );
 
@@ -209,19 +208,6 @@ export class TriggerClient {
       signer,
       verifyingContract,
     });
-  }
-
-  protected async getChainIdIfNeeded(params: {
-    chainId?: BigNumberish;
-  }): Promise<BigNumberish> {
-    if (params.chainId) {
-      return params.chainId;
-    }
-    const signer = this.opts.signer;
-    if (!signer) {
-      throw Error('No signer provided');
-    }
-    return getChainIdFromSigner(signer);
   }
 
   protected async execute<TRequestType extends TriggerServerExecuteRequestType>(

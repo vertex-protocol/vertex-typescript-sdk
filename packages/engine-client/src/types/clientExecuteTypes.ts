@@ -19,8 +19,7 @@ export type SignatureParams =
   | {
       // Endpoint address for all executes except order placement
       verifyingAddr: string;
-      // Defaults to the chain ID of the engine signer
-      chainId?: BigNumberish;
+      chainId: BigNumberish;
     }
   | {
       signature: string;

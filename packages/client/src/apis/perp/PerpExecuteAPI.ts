@@ -3,6 +3,6 @@ import { SettlePnlParams } from '@vertex-protocol/contracts';
 
 export class PerpExecuteAPI extends BaseVertexAPI {
   async settlePnl(params: SettlePnlParams) {
-    // TODO
+    throw Error('Not implemented');
   }
 }

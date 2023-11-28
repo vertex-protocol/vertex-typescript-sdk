@@ -34,7 +34,6 @@ export function calcTotalDeposited(
 
 /**
  * Calculates utilization ratio = abs(total borrowed / total deposited)
- * TODO: The calculations below would benefit from a "roughly zero" check
  *
  * @param product Spot product
  */

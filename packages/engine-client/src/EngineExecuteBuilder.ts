@@ -279,12 +279,10 @@ export class EngineExecuteBuilder {
       return paramsWithNonce.signature;
     }
 
-    const chainId = await this.engineClient.getChainIdIfNeeded(paramsWithNonce);
-
     return await this.engineClient.sign(
       requestType,
       paramsWithNonce.verifyingAddr,
-      chainId,
+      paramsWithNonce.chainId,
       paramsWithNonce,
     );
   }
