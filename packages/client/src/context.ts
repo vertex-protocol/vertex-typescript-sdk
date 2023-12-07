@@ -133,6 +133,27 @@ export async function createClientContext(
           triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.mainnet,
         };
       }
+      if (opts === 'mantleTestnet') {
+        return {
+          contracts: {
+            querierAddress: VERTEX_DEPLOYMENTS.mantleTestnet.querier,
+            spotEngineAddress: VERTEX_DEPLOYMENTS.mantleTestnet.spotEngine,
+            perpEngineAddress: VERTEX_DEPLOYMENTS.mantleTestnet.perpEngine,
+            clearinghouseAddress:
+              VERTEX_DEPLOYMENTS.mantleTestnet.clearinghouse,
+            endpointAddress: VERTEX_DEPLOYMENTS.mantleTestnet.endpoint,
+            arbAirdropAddress: VERTEX_DEPLOYMENTS.mantleTestnet.arbAirdrop,
+            vrtxTokenAddress: VERTEX_DEPLOYMENTS.mantleTestnet.vrtxToken,
+            vrtxAirdropAddress: VERTEX_DEPLOYMENTS.mantleTestnet.vrtxAirdrop,
+            vrtxLbaAddress: VERTEX_DEPLOYMENTS.mantleTestnet.vrtxLba,
+            vrtxVestingAddress: VERTEX_DEPLOYMENTS.mantleTestnet.vrtxVesting,
+            vrtxStakingAddress: VERTEX_DEPLOYMENTS.mantleTestnet.vrtxStaking,
+          },
+          engineEndpoint: ENGINE_CLIENT_ENDPOINTS.mantleTestnet,
+          indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.mantleTestnet,
+          triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.mantleTestnet,
+        };
+      }
       if (opts === 'local') {
         return {
           contracts: {

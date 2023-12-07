@@ -1,1 +1,1 @@
-export type ChainEnv = 'local' | 'testnet' | 'mainnet';
+export type ChainEnv = 'local' | 'testnet' | 'mainnet' | 'mantleTestnet';
