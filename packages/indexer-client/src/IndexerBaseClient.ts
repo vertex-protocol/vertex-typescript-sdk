@@ -29,6 +29,8 @@ import {
   GetIndexerInterestFundingPaymentsResponse,
   GetIndexerLinkedSignerParams,
   GetIndexerLinkedSignerResponse,
+  GetIndexerMakerStatisticsParams,
+  GetIndexerMakerStatisticsResponse,
   GetIndexerMarketSnapshotsParams,
   GetIndexerMarketSnapshotsResponse,
   GetIndexerMatchEventsParams,
@@ -646,6 +648,19 @@ export class IndexerBaseClient {
         totalAmount: toBigDecimal(proof.total_amount),
       };
     });
+  }
+
+  /**
+   * Retrieve maker statistics for a given epoch
+   *
+   * @param params
+   */
+  async getMakerStatistics(
+    params: GetIndexerMakerStatisticsParams,
+  ): Promise<GetIndexerMakerStatisticsResponse> {
+    const baseResponse = await this.query('maker_statistics', params);
+
+    return baseResponse;
   }
 
   protected async query<TRequestType extends IndexerServerQueryRequestType>(
