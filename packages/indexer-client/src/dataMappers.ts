@@ -26,7 +26,7 @@ import {
   IndexerSpotBalance,
   IndexerSubaccountArbRewardsForProduct,
   IndexerSubaccountRewardsForProduct,
-  MakersData,
+  IndexerMaker,
 } from './types';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import {
@@ -270,7 +270,7 @@ export function mapIndexerFundingRate(
 
 export function mapIndexerMakerStatistics(
   maker: IndexerServerMaker,
-): MakersData {
+): IndexerMaker {
   return {
     address: maker.address,
     data: maker.data.map((makerData) => {

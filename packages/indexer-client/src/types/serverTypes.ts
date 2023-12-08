@@ -308,10 +308,10 @@ export interface IndexerServerArbRewardsResponse {
 export type IndexerServerClaimArbMerkleProofsResponse =
   IndexerServerClaimVrtxMerkleProofsResponse;
 
-export type IndexerServerMakerStatisticsResponse = {
+export interface IndexerServerMakerStatisticsResponse {
   reward_coefficient: string;
   makers: IndexerServerMaker[];
-};
+}
 
 // Response
 export interface IndexerServerQueryResponseByType {
