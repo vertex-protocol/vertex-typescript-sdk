@@ -490,7 +490,7 @@ interface IndexerMakerSnapshot {
 
 export interface IndexerMaker {
   address: string;
-  data: IndexerMakerSnapshot[];
+  snapshots: IndexerMakerSnapshot[];
 }
 
 export interface GetIndexerMakerStatisticsResponse {

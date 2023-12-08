@@ -151,7 +151,7 @@ export interface IndexerServerClaimArbMerkleProofsParams {
 }
 
 export interface IndexerServerMakerStatisticsParams {
-  productId: number;
+  product_id: number;
   epoch: number;
   interval: number;
 }

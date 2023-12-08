@@ -273,7 +273,7 @@ export function mapIndexerMakerStatistics(
 ): IndexerMaker {
   return {
     address: maker.address,
-    data: maker.data.map((makerData) => {
+    snapshots: maker.data.map((makerData) => {
       return {
         timestamp: toBigDecimal(makerData.timestamp),
         makerFee: toBigDecimal(makerData.maker_fee),
