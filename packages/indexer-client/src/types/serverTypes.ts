@@ -337,4 +337,5 @@ export interface IndexerServerQueryResponseByType {
   vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsResponse;
   arb_rewards: IndexerServerArbRewardsResponse;
   arb_merkle_proofs: IndexerServerClaimArbMerkleProofsResponse;
+  maker_statistics: IndexerServerMakerStatisticsResponse;
 }
