@@ -495,5 +495,5 @@ export interface IndexerMaker {
 
 export interface GetIndexerMakerStatisticsResponse {
   rewardCoefficient: BigDecimal;
-  makersData: IndexerMaker[];
+  makers: IndexerMaker[];
 }

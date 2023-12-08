@@ -663,7 +663,7 @@ export class IndexerBaseClient {
 
     return {
       rewardCoefficient: toBigDecimal(baseResponse.reward_coefficient),
-      makersData: baseResponse.makers.map(mapIndexerMakerStatistics),
+      makers: baseResponse.makers.map(mapIndexerMakerStatistics),
     };
   }
 
