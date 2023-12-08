@@ -3,6 +3,7 @@ import {
   IndexerServerArbRewardsWeek,
   IndexerServerCandlestick,
   IndexerServerEvent,
+  IndexerServerMaker,
   IndexerServerMarketSnapshot,
   IndexerServerMarketSnapshotInterval,
   IndexerServerMatchEvent,
@@ -149,6 +150,12 @@ export interface IndexerServerClaimArbMerkleProofsParams {
   address: string;
 }
 
+export interface IndexerServerMakerStatisticsParams {
+  productId: number;
+  epoch: number;
+  interval: number;
+}
+
 // Request
 export interface IndexerServerQueryRequestByType {
   subaccounts: IndexerServerListSubaccountsParams;
@@ -173,6 +180,7 @@ export interface IndexerServerQueryRequestByType {
   vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsParams;
   arb_rewards: IndexerServerArbRewardsParams;
   arb_merkle_proofs: IndexerServerClaimArbMerkleProofsParams;
+  maker_statistics: IndexerServerMakerStatisticsParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -299,6 +307,11 @@ export interface IndexerServerArbRewardsResponse {
 
 export type IndexerServerClaimArbMerkleProofsResponse =
   IndexerServerClaimVrtxMerkleProofsResponse;
+
+export type IndexerServerMakerStatisticsResponse = {
+  reward_coefficient: string;
+  makers: IndexerServerMaker[];
+};
 
 // Response
 export interface IndexerServerQueryResponseByType {

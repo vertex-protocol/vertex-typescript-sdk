@@ -215,3 +215,18 @@ export interface IndexerServerMerkleProof {
   total_amount: string;
   proof: string[];
 }
+
+export interface IndexerServerMakerData {
+  timestamp: string;
+  maker_fee: string;
+  uptime: string;
+  sum_q_min: string;
+  q_score: string;
+  maker_share: string;
+  expected_maker_reward: string;
+}
+
+export interface IndexerServerMaker {
+  address: string;
+  data: IndexerServerMakerData[];
+}
