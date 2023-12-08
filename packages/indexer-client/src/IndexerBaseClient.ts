@@ -659,7 +659,11 @@ export class IndexerBaseClient {
   async getMakerStatistics(
     params: GetIndexerMakerStatisticsParams,
   ): Promise<GetIndexerMakerStatisticsResponse> {
-    const baseResponse = await this.query('maker_statistics', params);
+    const baseResponse = await this.query('maker_statistics', {
+      product_id: params.productId,
+      epoch: params.epoch,
+      interval: params.interval,
+    });
 
     return {
       rewardCoefficient: toBigDecimal(baseResponse.reward_coefficient),

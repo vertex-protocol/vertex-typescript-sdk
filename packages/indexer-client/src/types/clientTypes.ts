@@ -475,10 +475,13 @@ export type GetIndexerClaimArbMerkleProofsParams =
 export type GetIndexerClaimArbMerkleProofsResponse =
   GetIndexerClaimVrtxMerkleProofsResponse;
 
-export type GetIndexerMakerStatisticsParams =
-  IndexerServerMakerStatisticsParams;
+export interface GetIndexerMakerStatisticsParams {
+  productId: number;
+  epoch: number;
+  interval: number;
+}
 
-interface IndexerMakerSnapshot {
+export interface IndexerMakerSnapshot {
   timestamp: BigDecimal;
   makerFee: BigDecimal;
   uptime: BigDecimal;
