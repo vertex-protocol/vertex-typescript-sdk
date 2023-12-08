@@ -16,7 +16,6 @@ import {
   IndexerServerClaimArbMerkleProofsParams,
   IndexerServerClaimVrtxMerkleProofsParams,
   IndexerServerListSubaccountsParams,
-  IndexerServerMakerStatisticsParams,
 } from './serverTypes';
 import { VertexTx } from './VertexTx';
 
