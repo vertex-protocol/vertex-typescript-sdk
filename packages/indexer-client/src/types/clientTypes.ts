@@ -479,5 +479,22 @@ export type GetIndexerClaimArbMerkleProofsResponse =
 export type GetIndexerMakerStatisticsParams =
   IndexerServerMakerStatisticsParams;
 
-export type GetIndexerMakerStatisticsResponse =
-  IndexerServerMakerStatisticsResponse;
+interface MakerData {
+  timestamp: BigDecimal;
+  makerFee: BigDecimal;
+  uptime: BigDecimal;
+  sumQMin: BigDecimal;
+  qScore: BigDecimal;
+  makerShare: BigDecimal;
+  expectedMakerReward: BigDecimal;
+}
+
+export interface MakersData {
+  address: string;
+  data: MakerData[];
+}
+
+export type GetIndexerMakerStatisticsResponse = {
+  rewardCoefficient: BigDecimal;
+  makersData: MakersData[];
+};

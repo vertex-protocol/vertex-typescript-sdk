@@ -6,6 +6,7 @@ import {
   mapIndexerEvent,
   mapIndexerEventWithTx,
   mapIndexerFundingRate,
+  mapIndexerMakerStatistics,
   mapIndexerMatchEventBalances,
   mapIndexerOrder,
   mapIndexerPerpPrices,
@@ -660,7 +661,10 @@ export class IndexerBaseClient {
   ): Promise<GetIndexerMakerStatisticsResponse> {
     const baseResponse = await this.query('maker_statistics', params);
 
-    return baseResponse;
+    return {
+      rewardCoefficient: toBigDecimal(baseResponse.reward_coefficient),
+      makersData: baseResponse.makers.map(mapIndexerMakerStatistics),
+    };
   }
 
   protected async query<TRequestType extends IndexerServerQueryRequestType>(
