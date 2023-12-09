@@ -15,6 +15,7 @@ import {
   IndexerServerBalance,
   IndexerServerEvent,
   IndexerServerFundingRate,
+  IndexerServerMaker,
   IndexerServerMatchEventBalances,
   IndexerServerOrder,
   IndexerServerPerpPrices,
@@ -25,6 +26,7 @@ import {
   IndexerSpotBalance,
   IndexerSubaccountArbRewardsForProduct,
   IndexerSubaccountRewardsForProduct,
+  IndexerMaker,
 } from './types';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import {
@@ -263,5 +265,24 @@ export function mapIndexerFundingRate(
     fundingRate: fromX18(fundingRate.funding_rate_x18),
     updateTime: toBigDecimal(fundingRate.update_time),
     productId: fundingRate.product_id,
+  };
+}
+
+export function mapIndexerMakerStatistics(
+  maker: IndexerServerMaker,
+): IndexerMaker {
+  return {
+    address: maker.address,
+    snapshots: maker.data.map((makerData) => {
+      return {
+        timestamp: toBigDecimal(makerData.timestamp),
+        makerFee: toBigDecimal(makerData.maker_fee),
+        uptime: toBigDecimal(makerData.uptime),
+        sumQMin: toBigDecimal(makerData.sum_q_min),
+        qScore: toBigDecimal(makerData.q_score),
+        makerShare: toBigDecimal(makerData.maker_share),
+        expectedMakerReward: toBigDecimal(makerData.expected_maker_reward),
+      };
+    }),
   };
 }

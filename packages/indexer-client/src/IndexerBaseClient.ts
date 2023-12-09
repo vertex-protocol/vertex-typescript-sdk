@@ -6,6 +6,7 @@ import {
   mapIndexerEvent,
   mapIndexerEventWithTx,
   mapIndexerFundingRate,
+  mapIndexerMakerStatistics,
   mapIndexerMatchEventBalances,
   mapIndexerOrder,
   mapIndexerPerpPrices,
@@ -29,6 +30,8 @@ import {
   GetIndexerInterestFundingPaymentsResponse,
   GetIndexerLinkedSignerParams,
   GetIndexerLinkedSignerResponse,
+  GetIndexerMakerStatisticsParams,
+  GetIndexerMakerStatisticsResponse,
   GetIndexerMarketSnapshotsParams,
   GetIndexerMarketSnapshotsResponse,
   GetIndexerMatchEventsParams,
@@ -646,6 +649,26 @@ export class IndexerBaseClient {
         totalAmount: toBigDecimal(proof.total_amount),
       };
     });
+  }
+
+  /**
+   * Retrieve maker statistics for a given epoch
+   *
+   * @param params
+   */
+  async getMakerStatistics(
+    params: GetIndexerMakerStatisticsParams,
+  ): Promise<GetIndexerMakerStatisticsResponse> {
+    const baseResponse = await this.query('maker_statistics', {
+      product_id: params.productId,
+      epoch: params.epoch,
+      interval: params.interval,
+    });
+
+    return {
+      rewardCoefficient: toBigDecimal(baseResponse.reward_coefficient),
+      makers: baseResponse.makers.map(mapIndexerMakerStatistics),
+    };
   }
 
   protected async query<TRequestType extends IndexerServerQueryRequestType>(
