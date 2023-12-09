@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/engine-client",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -22,8 +22,8 @@
     "src"
   ],
   "dependencies": {
-    "@vertex-protocol/contracts": "^0.14.0",
-    "@vertex-protocol/utils": "^0.14.0",
+    "@vertex-protocol/contracts": "^0.15.0",
+    "@vertex-protocol/utils": "^0.15.0",
     "axios": "^1.6.2",
     "ts-mixer": "^6.0.3"
   },
