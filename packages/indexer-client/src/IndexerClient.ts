@@ -316,7 +316,12 @@ export class IndexerClient extends IndexerBaseClient {
       );
 
       // Event without balance change - not part of this liq
-      if (balanceDelta.isZero() && lpBalanceDelta.isZero()) {
+      // However, we could have zero balance changes for the quote product if this was a partial liquidation
+      if (
+        balanceDelta.isZero() &&
+        lpBalanceDelta.isZero() &&
+        event.state.market.productId !== QUOTE_PRODUCT_ID
+      ) {
         return;
       }
 
