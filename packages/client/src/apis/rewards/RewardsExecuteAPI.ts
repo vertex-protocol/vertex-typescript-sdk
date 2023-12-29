@@ -4,7 +4,11 @@ import {
   ClaimTokensToLbaParams,
   VrtxTokenAmountParams,
 } from './types';
-import { IArbAirdrop, LBA_AIRDROP_EPOCH } from '@vertex-protocol/contracts';
+import {
+  IAirdrop,
+  IArbAirdrop,
+  LBA_AIRDROP_EPOCH,
+} from '@vertex-protocol/contracts';
 
 export class RewardsExecuteAPI extends BaseVertexAPI {
   /**
@@ -59,33 +63,19 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    * @param params
    */
   async claimLiquidTokens(params: ClaimLiquidTokensParams) {
-    const address = await this.getChainSignerAddress();
-
-    const { totalAmount, proof } = (
-      await this.context.indexerClient.getClaimVrtxMerkleProofs({
-        address,
-      })
-    )[params.epoch];
-
-    const airdropContract = this.context.contracts.vrtxAirdrop;
-
-    const amountToClaim = await (async () => {
-      if ('amount' in params) {
-        return params.amount;
-      }
-      const amountsClaimed = await airdropContract.getClaimed(address);
-      const availableAmount = totalAmount.minus(
-        amountsClaimed[params.epoch].toString(),
-      );
-
-      return availableAmount.toFixed();
-    })();
-
     return this.context.contracts.vrtxAirdrop.claim(
-      params.epoch,
-      amountToClaim,
-      totalAmount.toFixed(),
-      proof,
+      ...(await this.getClaimLiquidTokensContractParams(params)),
+    );
+  }
+
+  /**
+   * Claim earned VRTX tokens and stake them
+   *
+   * @param params
+   */
+  async claimAndStakeLiquidTokens(params: ClaimLiquidTokensParams) {
+    return this.context.contracts.vrtxAirdrop.claimAndStake(
+      ...(await this.getClaimLiquidTokensContractParams(params)),
     );
   }
 
@@ -125,6 +115,13 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
   }
 
   /**
+   * Claim staking rewards (in USDC), swap for VRTX, and stake the VRTX
+   */
+  async claimAndStakeStakingRewards() {
+    return this.context.contracts.vrtxStaking.claimUsdcAndStake();
+  }
+
+  /**
    * Claims all available ARB rewards
    */
   async claimArbRewards() {
@@ -155,5 +152,38 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
     });
 
     return this.context.contracts.arbAirdrop.claim(proofsToClaim);
+  }
+
+  /**
+   * Util function to share logic between claimLiquidTokens and claimAndStakeLiquidTokens
+   * @param params
+   * @private
+   */
+  private async getClaimLiquidTokensContractParams(
+    params: ClaimLiquidTokensParams,
+  ): Promise<Parameters<IAirdrop['claimAndStake']>> {
+    const address = await this.getChainSignerAddress();
+
+    const { totalAmount, proof } = (
+      await this.context.indexerClient.getClaimVrtxMerkleProofs({
+        address,
+      })
+    )[params.epoch];
+
+    const airdropContract = this.context.contracts.vrtxAirdrop;
+
+    const amountToClaim = await (async () => {
+      if ('amount' in params) {
+        return params.amount;
+      }
+      const amountsClaimed = await airdropContract.getClaimed(address);
+      const availableAmount = totalAmount.minus(
+        amountsClaimed[params.epoch].toString(),
+      );
+
+      return availableAmount.toFixed();
+    })();
+
+    return [params.epoch, amountToClaim, totalAmount.toFixed(), proof];
   }
 }

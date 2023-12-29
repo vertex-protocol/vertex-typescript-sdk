@@ -57,7 +57,9 @@ export interface IStakingInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "claimUsdc"
+      | "claimUsdcAndStake"
       | "claimVrtx"
+      | "getEstimatedVrtxToStake"
       | "getGlobalRewardsBreakdown"
       | "getLastActionTimes"
       | "getRewardsBreakdown"
@@ -69,11 +71,20 @@ export interface IStakingInterface extends Interface {
       | "getWithdrawLockingTime"
       | "getWithdrawnVrtxStates"
       | "stake"
+      | "stakeAs"
       | "withdraw"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "claimUsdc", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "claimUsdcAndStake",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "claimVrtx", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getEstimatedVrtxToStake",
+    values: [AddressLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "getGlobalRewardsBreakdown",
     values?: undefined
@@ -116,12 +127,24 @@ export interface IStakingInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "stake", values: [BigNumberish]): string;
   encodeFunctionData(
+    functionFragment: "stakeAs",
+    values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "withdraw",
     values: [BigNumberish]
   ): string;
 
   decodeFunctionResult(functionFragment: "claimUsdc", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "claimUsdcAndStake",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "claimVrtx", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getEstimatedVrtxToStake",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getGlobalRewardsBreakdown",
     data: BytesLike
@@ -160,6 +183,7 @@ export interface IStakingInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "stakeAs", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 }
 
@@ -208,7 +232,15 @@ export interface IStaking extends BaseContract {
 
   claimUsdc: TypedContractMethod<[], [void], "nonpayable">;
 
+  claimUsdcAndStake: TypedContractMethod<[], [void], "nonpayable">;
+
   claimVrtx: TypedContractMethod<[], [void], "nonpayable">;
+
+  getEstimatedVrtxToStake: TypedContractMethod<
+    [account: AddressLike],
+    [bigint],
+    "nonpayable"
+  >;
 
   getGlobalRewardsBreakdown: TypedContractMethod<
     [],
@@ -252,6 +284,12 @@ export interface IStaking extends BaseContract {
 
   stake: TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
 
+  stakeAs: TypedContractMethod<
+    [staker: AddressLike, amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
   withdraw: TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
@@ -262,8 +300,14 @@ export interface IStaking extends BaseContract {
     nameOrSignature: "claimUsdc"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "claimUsdcAndStake"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "claimVrtx"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "getEstimatedVrtxToStake"
+  ): TypedContractMethod<[account: AddressLike], [bigint], "nonpayable">;
   getFunction(
     nameOrSignature: "getGlobalRewardsBreakdown"
   ): TypedContractMethod<
@@ -309,6 +353,13 @@ export interface IStaking extends BaseContract {
   getFunction(
     nameOrSignature: "stake"
   ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "stakeAs"
+  ): TypedContractMethod<
+    [staker: AddressLike, amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
