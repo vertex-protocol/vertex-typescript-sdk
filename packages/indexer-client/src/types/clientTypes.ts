@@ -388,6 +388,7 @@ export interface IndexerMarketSnapshot {
   timestamp: BigDecimal;
   cumulativeUsers: BigDecimal;
   dailyActiveUsers: BigDecimal;
+  tvl: BigDecimal;
   cumulativeVolumes: Record<number, BigDecimal>;
   cumulativeTakerFees: Record<number, BigDecimal>;
   cumulativeSequencerFees: Record<number, BigDecimal>;

@@ -569,6 +569,7 @@ export class IndexerBaseClient {
         timestamp: toBigDecimal(snapshot.timestamp),
         cumulativeUsers: toBigDecimal(snapshot.cumulative_users),
         dailyActiveUsers: toBigDecimal(snapshot.daily_active_users),
+        tvl: toBigDecimal(snapshot.tvl),
         borrowRates: mapValues(snapshot.borrow_rates, toBigDecimal),
         cumulativeLiquidationAmounts: mapValues(
           snapshot.cumulative_liquidation_amounts,

@@ -124,6 +124,7 @@ export interface IndexerServerMarketSnapshot {
   timestamp: string;
   cumulative_users: string;
   daily_active_users: string;
+  tvl: string;
   // Keyed by product ID -> decimal value in string (i.e. no decimal adjustment) necessary
   // Backend serializes hashmaps with string keys
   cumulative_volumes: Record<string, string>;
