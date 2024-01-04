@@ -8,6 +8,7 @@ import type {
   FunctionFragment,
   Result,
   Interface,
+  EventFragment,
   AddressLike,
   ContractRunner,
   ContractMethod,
@@ -17,6 +18,7 @@ import type {
   TypedContractEvent,
   TypedDeferredTopicFilter,
   TypedEventLog,
+  TypedLogDescription,
   TypedListener,
   TypedContractMethod,
 } from "./common";
@@ -25,13 +27,20 @@ export interface IAirdropInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "claim"
+      | "claimAndStake"
       | "claimToLBA"
       | "getClaimed"
       | "getClaimingDeadlines"
   ): FunctionFragment;
 
+  getEvent(nameOrSignatureOrTopic: "ClaimVrtx"): EventFragment;
+
   encodeFunctionData(
     functionFragment: "claim",
+    values: [BigNumberish, BigNumberish, BigNumberish, BytesLike[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "claimAndStake",
     values: [BigNumberish, BigNumberish, BigNumberish, BytesLike[]]
   ): string;
   encodeFunctionData(
@@ -48,12 +57,34 @@ export interface IAirdropInterface extends Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "claimAndStake",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "claimToLBA", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getClaimed", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getClaimingDeadlines",
     data: BytesLike
   ): Result;
+}
+
+export namespace ClaimVrtxEvent {
+  export type InputTuple = [
+    account: AddressLike,
+    epoch: BigNumberish,
+    amount: BigNumberish
+  ];
+  export type OutputTuple = [account: string, epoch: bigint, amount: bigint];
+  export interface OutputObject {
+    account: string;
+    epoch: bigint;
+    amount: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export interface IAirdrop extends BaseContract {
@@ -110,6 +141,17 @@ export interface IAirdrop extends BaseContract {
     "nonpayable"
   >;
 
+  claimAndStake: TypedContractMethod<
+    [
+      epoch: BigNumberish,
+      amount: BigNumberish,
+      totalAmount: BigNumberish,
+      proof: BytesLike[]
+    ],
+    [void],
+    "nonpayable"
+  >;
+
   claimToLBA: TypedContractMethod<
     [amount: BigNumberish, totalAmount: BigNumberish, proof: BytesLike[]],
     [void],
@@ -137,6 +179,18 @@ export interface IAirdrop extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "claimAndStake"
+  ): TypedContractMethod<
+    [
+      epoch: BigNumberish,
+      amount: BigNumberish,
+      totalAmount: BigNumberish,
+      proof: BytesLike[]
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "claimToLBA"
   ): TypedContractMethod<
     [amount: BigNumberish, totalAmount: BigNumberish, proof: BytesLike[]],
@@ -150,5 +204,24 @@ export interface IAirdrop extends BaseContract {
     nameOrSignature: "getClaimingDeadlines"
   ): TypedContractMethod<[], [bigint[]], "view">;
 
-  filters: {};
+  getEvent(
+    key: "ClaimVrtx"
+  ): TypedContractEvent<
+    ClaimVrtxEvent.InputTuple,
+    ClaimVrtxEvent.OutputTuple,
+    ClaimVrtxEvent.OutputObject
+  >;
+
+  filters: {
+    "ClaimVrtx(address,uint32,uint256)": TypedContractEvent<
+      ClaimVrtxEvent.InputTuple,
+      ClaimVrtxEvent.OutputTuple,
+      ClaimVrtxEvent.OutputObject
+    >;
+    ClaimVrtx: TypedContractEvent<
+      ClaimVrtxEvent.InputTuple,
+      ClaimVrtxEvent.OutputTuple,
+      ClaimVrtxEvent.OutputObject
+    >;
+  };
 }

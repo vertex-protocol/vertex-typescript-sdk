@@ -7,6 +7,31 @@ import type { IAirdrop, IAirdropInterface } from "../IAirdrop";
 
 const _abi = [
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "epoch",
+        type: "uint32",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "ClaimVrtx",
+    type: "event",
+  },
+  {
     inputs: [
       {
         internalType: "uint32",
@@ -30,6 +55,34 @@ const _abi = [
       },
     ],
     name: "claim",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "epoch",
+        type: "uint32",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "totalAmount",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes32[]",
+        name: "proof",
+        type: "bytes32[]",
+      },
+    ],
+    name: "claimAndStake",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
