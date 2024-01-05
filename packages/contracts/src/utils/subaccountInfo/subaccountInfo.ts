@@ -116,7 +116,8 @@ export interface MarginUsageFractions {
 }
 
 /**
- * Calculate margin usage fractions. Which is = (unweighted health - initial/maint health) / unweighted health
+ * Calculate margin usage fractions bounded to [0, 1]
+ * unbounded margin usage = (unweighted health - initial/maint health) / unweighted health
  * iff subaccount has borrows or perp positions, and 0 otherwise.
  *
  * @param summary
@@ -162,33 +163,14 @@ export function calcSubaccountMarginUsageFractions(
     .minus(maintenanceHealth)
     .div(unweightedHealth);
 
+  // If the respective healths are negative, then already "underwater", so max out the margin usage
   return {
-    initial: initialMarginUsage,
-    maintenance: maintenanceMarginUsage,
-  };
-}
-
-/**
- * Calculates margin usage fractions for a single balance.
- *
- * @param balance
- * @param summary
- */
-export function calcBalanceMarginUsageFractions(
-  balance: BalanceWithProduct,
-  summary: SubaccountSummaryResponse,
-): MarginUsageFractions {
-  const marginUsed = calcBalanceMarginUsed(balance);
-  const initialMarginUsage = summary.health.initial.assets.eq(0)
-    ? toBigDecimal(0)
-    : marginUsed.initial.div(summary.health.initial.assets);
-  const maintenanceMarginUsage = summary.health.maintenance.assets.eq(0)
-    ? toBigDecimal(0)
-    : marginUsed.maintenance.div(summary.health.maintenance.assets);
-
-  return {
-    initial: initialMarginUsage,
-    maintenance: maintenanceMarginUsage,
+    initial: initialHealth.isNegative()
+      ? toBigDecimal(1)
+      : BigDecimal.min(initialMarginUsage, 1),
+    maintenance: maintenanceHealth.isNegative()
+      ? toBigDecimal(1)
+      : BigDecimal.min(maintenanceMarginUsage, 1),
   };
 }
 
