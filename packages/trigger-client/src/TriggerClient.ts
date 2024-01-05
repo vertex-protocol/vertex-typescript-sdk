@@ -14,6 +14,7 @@ import {
 } from './types';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
+  getDefaultRecvTime,
   getOrderNonce,
   getSignedTransactionRequest,
   getTriggerOrderNonce,
@@ -153,8 +154,7 @@ export class TriggerClient {
   ): Promise<TriggerQueryResponseByType['list_trigger_orders']> {
     const signatureParams: ListTriggerOrdersParams = {
       // Default to 90 seconds from now if no recvTime is provided
-      recvTime:
-        params.recvTime?.toFixed() ?? (Date.now() + 90 * 1000).toFixed(),
+      recvTime: params.recvTime?.toFixed() ?? getDefaultRecvTime().toFixed(),
       subaccountName: params.subaccountName,
       subaccountOwner: params.subaccountOwner,
     };

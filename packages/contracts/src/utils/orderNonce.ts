@@ -1,10 +1,12 @@
+import { getDefaultRecvTime } from './recvTime';
+
 /**
  * Generates an order nonce based on recvTime in milliseconds, defaulting to Date.now() + 90 seconds
  * @param recvTimeMillis
  * @param randomInt a random integer to avoid hash collisions
  */
 export function getOrderNonce(
-  recvTimeMillis: number = Date.now() + 90 * 1000,
+  recvTimeMillis: number = getDefaultRecvTime(),
   randomInt: number = Math.floor(Math.random() * 1000),
 ): string {
   return getOrderNonceBigInt(recvTimeMillis, randomInt).toString();
@@ -18,7 +20,7 @@ export function getOrderNonce(
  * @param randomInt
  */
 export function getTriggerOrderNonce(
-  recvTimeMillis: number = Date.now() + 90 * 1000,
+  recvTimeMillis: number = getDefaultRecvTime(),
   randomInt: number = Math.floor(Math.random() * 1000),
 ): string {
   const regularOrderNonce = getOrderNonceBigInt(recvTimeMillis, randomInt);
