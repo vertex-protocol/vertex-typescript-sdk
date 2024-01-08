@@ -5,7 +5,7 @@ import {
   TriggerQueryResponseByType,
   TriggerServerExecuteRequestByType,
   TriggerServerExecuteRequestType,
-  TriggerServerExecuteResponse,
+  TriggerServerExecuteResult,
   TriggerServerQueryRequestByType,
   TriggerServerQueryRequestType,
   TriggerServerQueryResponse,
@@ -28,6 +28,7 @@ import {
 } from '@vertex-protocol/contracts';
 import { mapServerOrderInfo, mapTriggerCriteria } from './dataMappers';
 import { BigNumberish, Signer } from 'ethers';
+import { TriggerServerFailureError } from './types/TriggerServerFailureError';
 
 export interface TriggerClientOpts {
   // Server URL
@@ -213,15 +214,14 @@ export class TriggerClient {
   protected async execute<TRequestType extends TriggerServerExecuteRequestType>(
     requestType: TRequestType,
     params: TriggerServerExecuteRequestByType[TRequestType],
-  ): Promise<TriggerServerExecuteResponse> {
+  ): Promise<TriggerServerExecuteResult> {
     const reqBody = {
       [requestType]: params,
     };
-    const response =
-      await this.axiosInstance.post<TriggerServerExecuteResponse>(
-        `${this.opts.url}/execute`,
-        reqBody,
-      );
+    const response = await this.axiosInstance.post<TriggerServerExecuteResult>(
+      `${this.opts.url}/execute`,
+      reqBody,
+    );
 
     this.checkResponseStatus(response);
     this.checkServerStatus(response);
@@ -263,11 +263,11 @@ export class TriggerClient {
 
   private checkServerStatus(
     response: AxiosResponse<
-      TriggerServerExecuteResponse | TriggerServerQueryResponse
+      TriggerServerExecuteResult | TriggerServerQueryResponse
     >,
   ) {
     if (response.data.status !== 'success') {
-      throw response.data;
+      throw new TriggerServerFailureError(response.data);
     }
   }
 }

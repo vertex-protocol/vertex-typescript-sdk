@@ -4,8 +4,6 @@ import {
   EngineServerExecuteResult,
 } from '@vertex-protocol/engine-client';
 
-export type TriggerServerExecuteResult = EngineServerExecuteResult;
-
 export type TriggerServerTriggerCriteria =
   // These trigger on fast oracle price
   | {
@@ -47,4 +45,4 @@ export interface TriggerServerExecuteRequestByType {
 export type TriggerServerExecuteRequestType =
   keyof TriggerServerExecuteRequestByType;
 
-export type TriggerServerExecuteResponse = TriggerServerExecuteResult;
+export type TriggerServerExecuteResult = EngineServerExecuteResult;
