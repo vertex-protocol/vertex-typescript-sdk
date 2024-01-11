@@ -5,3 +5,4 @@ export * from './serverQueryModelTypes';
 export * from './serverExecuteTypes';
 export * from './serverSubscriptionTypes';
 export * from './serverSubscriptionEventTypes';
+export * from './EngineServerFailureError';

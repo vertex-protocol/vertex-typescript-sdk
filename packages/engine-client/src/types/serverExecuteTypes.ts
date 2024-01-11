@@ -10,7 +10,6 @@ import {
   OrderParams,
   SignedTx,
 } from '@vertex-protocol/contracts';
-import { RequireExactlyOne } from '@vertex-protocol/utils';
 import { EngineServerGetOrderResponse } from './serverQueryTypes';
 
 export interface EngineServerPlaceOrderResponse {
@@ -108,9 +107,6 @@ export interface EngineServerExecuteRequestByType {
 
 export type EngineServerExecuteRequestType =
   keyof EngineServerExecuteRequestByType;
-
-export type EngineServerExecuteRequest =
-  RequireExactlyOne<EngineServerExecuteRequestByType>;
 
 export type EngineServerExecutePlaceOrderPayload = {
   payload: EngineServerExecuteRequestByType['place_order'];

@@ -18,6 +18,7 @@ import {
 } from '@vertex-protocol/contracts';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { BigNumberish, Signer } from 'ethers';
+import { EngineServerFailureError } from './types/EngineServerFailureError';
 
 export interface EngineClientOpts {
   // Server URL
@@ -210,7 +211,7 @@ export class EngineBaseClient {
     >,
   ) {
     if (response.data.status !== 'success') {
-      throw response.data;
+      throw new EngineServerFailureError(response.data);
     }
   }
 }
