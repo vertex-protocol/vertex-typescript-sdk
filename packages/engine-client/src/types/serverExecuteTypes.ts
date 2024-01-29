@@ -11,6 +11,8 @@ import {
   SignedTx,
 } from '@vertex-protocol/contracts';
 import { EngineServerGetOrderResponse } from './serverQueryTypes';
+import { BigDecimal } from '@vertex-protocol/utils';
+import { BigNumberish } from 'ethers';
 
 export interface EngineServerPlaceOrderResponse {
   digest: string;
@@ -39,7 +41,7 @@ export interface EngineServerExecuteSuccessResult<
   data: EngineServerExecuteResponseDataByType[T];
   signature: string;
   request_type: EngineServerExecuteResultRequestType;
-  id: string | null;
+  id: BigNumberish | null;
 }
 
 export interface EngineServerExecuteFailureResult {
@@ -59,7 +61,7 @@ type EngineServerExecuteResultRequestType = {
 }[keyof EngineServerExecuteRequestByType];
 
 export interface EngineServerPlaceOrderParams {
-  id: string | null;
+  id: BigNumberish | null;
   product_id: number;
   order: EIP712OrderValues;
   // Bytes
