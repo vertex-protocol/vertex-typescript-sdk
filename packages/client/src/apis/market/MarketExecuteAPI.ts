@@ -48,9 +48,10 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * @param params
    */
   async placeOrder(params: PlaceOrderParams) {
-    const { productId, order, nonce } = params;
+    const { id: orderId, productId, order, nonce } = params;
 
     return this.context.engineClient.placeOrder({
+      id: orderId,
       order: {
         ...order,
         subaccountOwner: await this.getSubaccountOwnerIfNeeded(params.order),

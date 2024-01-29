@@ -46,6 +46,7 @@ export type EngineMintLpParams = WithSpotLeverage<MintLpParams>;
 export type EngineOrderParams = WithoutNonce<OrderParams>;
 
 export type EngineExecutePlaceOrderParams = WithBaseEngineExecuteParams<{
+  id?: number;
   productId: number;
   order: EngineOrderParams;
   // If not given, engine defaults to true (leverage/borrow enabled)

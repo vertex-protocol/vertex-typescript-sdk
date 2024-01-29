@@ -39,6 +39,7 @@ export interface EngineServerExecuteSuccessResult<
   data: EngineServerExecuteResponseDataByType[T];
   signature: string;
   request_type: EngineServerExecuteResultRequestType;
+  id: number | null;
 }
 
 export interface EngineServerExecuteFailureResult {
@@ -58,6 +59,7 @@ type EngineServerExecuteResultRequestType = {
 }[keyof EngineServerExecuteRequestByType];
 
 export interface EngineServerPlaceOrderParams {
+  id: number | null;
   product_id: number;
   order: EIP712OrderValues;
   // Bytes

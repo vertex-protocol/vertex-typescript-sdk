@@ -76,6 +76,24 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Place order result', orderResult);
 
+  console.log('Placing order with custom id...');
+
+  const orderCustomIdResult = await vertexClient.market.placeOrder({
+    id: 100,
+    order: {
+      subaccountName: 'default',
+      expiration: getExpiration('post_only', 60).toString(),
+      // Limit price
+      price: 3000,
+      amount: toFixedPoint(-3.5).toString(),
+    },
+    // Product you're sending the order for
+    productId: 3,
+    nonce: getOrderNonce(),
+  });
+
+  prettyPrint('Place order custom id result', orderCustomIdResult);
+
   const subaccountOrders =
     await vertexClient.context.engineClient.getSubaccountOrders({
       productId: 3,
