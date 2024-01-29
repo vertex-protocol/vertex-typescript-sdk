@@ -28,6 +28,7 @@ export interface SubscriptionBestBidOfferEvent {
  * @description Event from subscribing to a `fill` stream.
  */
 export interface SubscriptionFillEvent {
+  id?: string;
   timestamp: string;
   product_id: number;
   subaccount: string;
