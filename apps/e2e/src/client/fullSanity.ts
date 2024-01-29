@@ -3,7 +3,7 @@ import {
   getChainIdFromSigner,
   getOrderNonce,
 } from '@vertex-protocol/contracts';
-import { toFixedPoint } from '@vertex-protocol/utils';
+import { toBigDecimal, toFixedPoint } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 import { createVertexClient, PlaceOrderParams } from '@vertex-protocol/client';
 import { getExpiration } from '../utils/getExpiration';
@@ -79,7 +79,7 @@ async function fullSanity(context: RunContext) {
   console.log('Placing order with custom id...');
 
   const orderCustomIdResult = await vertexClient.market.placeOrder({
-    id: 100,
+    id: toBigDecimal(100),
     order: {
       subaccountName: 'default',
       expiration: getExpiration('post_only', 60).toString(),

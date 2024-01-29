@@ -1,6 +1,4 @@
-import { BigDecimal } from '@vertex-protocol/utils';
 import { EngineServerPriceTickLiquidity } from './serverQueryTypes';
-import { BigNumberish } from 'ethers';
 
 /**
  * @description Event from subscribing to a `trade` stream.
@@ -30,7 +28,7 @@ export interface SubscriptionBestBidOfferEvent {
  * @description Event from subscribing to a `fill` stream.
  */
 export interface SubscriptionFillEvent {
-  id?: BigNumberish;
+  id?: string;
   timestamp: string;
   product_id: number;
   subaccount: string;
