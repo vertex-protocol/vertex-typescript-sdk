@@ -28,7 +28,8 @@ export interface SubscriptionBestBidOfferEvent {
  * @description Event from subscribing to a `fill` stream.
  */
 export interface SubscriptionFillEvent {
-  id?: string;
+  // NOTE: `id` is excluded from the response to avoid parsing issues.
+  // type of `id` on the backend is `u64` which can overflow until we introduce proper parsing on the SDK.
   timestamp: string;
   product_id: number;
   subaccount: string;

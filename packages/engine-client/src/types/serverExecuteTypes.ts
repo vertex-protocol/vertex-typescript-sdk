@@ -39,7 +39,8 @@ export interface EngineServerExecuteSuccessResult<
   data: EngineServerExecuteResponseDataByType[T];
   signature: string;
   request_type: EngineServerExecuteResultRequestType;
-  id: string | null;
+  // NOTE: `id` is excluded from the response to avoid parsing issues.
+  // type of `id` on the backend is `u64` which can overflow until we introduce proper parsing on the SDK.
 }
 
 export interface EngineServerExecuteFailureResult {
@@ -59,7 +60,7 @@ type EngineServerExecuteResultRequestType = {
 }[keyof EngineServerExecuteRequestByType];
 
 export interface EngineServerPlaceOrderParams {
-  id: string | null;
+  id: number | null;
   product_id: number;
   order: EIP712OrderValues;
   // Bytes
