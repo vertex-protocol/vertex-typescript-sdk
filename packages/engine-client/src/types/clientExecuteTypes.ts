@@ -10,6 +10,7 @@ import {
 } from '@vertex-protocol/contracts';
 import { EngineServerExecuteResult } from './serverExecuteTypes';
 import { BigNumberish } from 'ethers';
+import { BigDecimal } from '@vertex-protocol/utils';
 
 /**
  * Either verifying address or signature must be provided;
@@ -46,6 +47,7 @@ export type EngineMintLpParams = WithSpotLeverage<MintLpParams>;
 export type EngineOrderParams = WithoutNonce<OrderParams>;
 
 export type EngineExecutePlaceOrderParams = WithBaseEngineExecuteParams<{
+  id?: BigDecimal;
   productId: number;
   order: EngineOrderParams;
   // If not given, engine defaults to true (leverage/borrow enabled)
