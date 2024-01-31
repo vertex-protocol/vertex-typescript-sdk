@@ -79,7 +79,7 @@ async function fullSanity(context: RunContext) {
   console.log('Placing order with custom id...');
 
   const orderCustomIdResult = await vertexClient.market.placeOrder({
-    id: toBigDecimal(100),
+    id: 100,
     order: {
       subaccountName: 'default',
       expiration: getExpiration('post_only', 60).toString(),

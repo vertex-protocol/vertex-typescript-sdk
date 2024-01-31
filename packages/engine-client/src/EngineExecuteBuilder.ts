@@ -171,7 +171,7 @@ export class EngineExecuteBuilder {
 
     return {
       payload: {
-        id: clientParams.id?.toNumber() ?? null,
+        id: clientParams.id ?? null,
         product_id: clientParams.productId,
         order: {
           ...orderEIP712Values,

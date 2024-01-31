@@ -21,6 +21,7 @@ export type TriggerServerTriggerCriteria =
     };
 
 export interface TriggerServerExecutePlaceOrderParams {
+  id: number | null;
   product_id: number;
   order: EIP712OrderValues;
   trigger: TriggerServerTriggerCriteria;

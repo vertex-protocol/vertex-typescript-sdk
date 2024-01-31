@@ -83,6 +83,7 @@ export class TriggerClient {
     );
 
     const executeParams: TriggerServerExecuteRequestByType['place_order'] = {
+      id: params.id ?? null,
       order: getVertexEIP712Values('place_order', orderParams),
       trigger: mapTriggerCriteria(params.triggerCriteria),
       signature,

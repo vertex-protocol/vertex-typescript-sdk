@@ -9,7 +9,7 @@ import {
   IClearinghouse__factory,
   MockERC20__factory,
 } from '@vertex-protocol/contracts';
-import { toFixedPoint, toX18 } from '@vertex-protocol/utils';
+import { toBigDecimal, toFixedPoint, toX18 } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 import {
   TriggerClient,
@@ -85,6 +85,7 @@ async function fullSanity(context: RunContext) {
     },
     verifyingAddr: ethOrderbookAddr,
     nonce,
+    id: 1000,
   };
   const shortStopResult = await client.placeTriggerOrder(shortTriggerParams);
   prettyPrint('Short stop order result', shortStopResult);

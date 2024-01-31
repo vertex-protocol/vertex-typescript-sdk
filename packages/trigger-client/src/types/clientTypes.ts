@@ -52,6 +52,7 @@ interface SignatureParams {
  */
 
 export interface TriggerExecutePlaceOrderParams extends SignatureParams {
+  id?: number;
   productId: number;
   order: EngineOrderParams;
   triggerCriteria: TriggerCriteria;
