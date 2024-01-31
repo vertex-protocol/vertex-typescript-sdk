@@ -85,7 +85,7 @@ async function fullSanity(context: RunContext) {
     },
     verifyingAddr: ethOrderbookAddr,
     nonce,
-    id: toBigDecimal(1000),
+    id: 1000,
   };
   const shortStopResult = await client.placeTriggerOrder(shortTriggerParams);
   prettyPrint('Short stop order result', shortStopResult);

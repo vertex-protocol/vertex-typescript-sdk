@@ -52,7 +52,7 @@ interface SignatureParams {
  */
 
 export interface TriggerExecutePlaceOrderParams extends SignatureParams {
-  id?: BigDecimal;
+  id?: number;
   productId: number;
   order: EngineOrderParams;
   triggerCriteria: TriggerCriteria;
