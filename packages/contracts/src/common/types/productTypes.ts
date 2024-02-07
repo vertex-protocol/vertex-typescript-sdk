@@ -42,8 +42,6 @@ interface BaseProduct {
   longWeightMaintenance: BigDecimal;
   // Weight used to calculate maint. health for a short position
   shortWeightMaintenance: BigDecimal;
-  // Health penalty term for large position sizes
-  largePositionPenalty: BigDecimal;
   // LP state
   totalLpQuoteAmount: BigDecimal;
   totalLpBaseAmount: BigDecimal;
