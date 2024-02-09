@@ -485,6 +485,7 @@ export class IndexerBaseClient {
         },
         preBalances: mapIndexerMatchEventBalances(matchEvent.pre_balance),
         postBalances: mapIndexerMatchEventBalances(matchEvent.post_balance),
+        tx,
       };
     });
   }
