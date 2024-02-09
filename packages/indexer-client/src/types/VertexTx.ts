@@ -11,7 +11,10 @@ export interface VertexLiquidateSubaccountTx {
     sender: string;
     liquidatee: string;
     mode: number;
-    health_group: number;
+    // On V2 - should encode health group
+    product_id: number | undefined;
+    // On V1
+    health_group: number | undefined;
     amount: string;
     nonce: number;
   };
