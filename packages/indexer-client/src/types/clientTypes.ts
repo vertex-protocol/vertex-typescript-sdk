@@ -353,6 +353,7 @@ export interface IndexerMatchEvent {
   >;
   preBalances: IndexerMatchEventBalances;
   postBalances: IndexerMatchEventBalances;
+  tx: VertexTx;
 }
 
 export type GetIndexerMatchEventsResponse = IndexerMatchEvent[];

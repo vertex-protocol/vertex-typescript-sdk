@@ -6,6 +6,12 @@ export interface VertexMatchOrdersTx {
   };
 }
 
+export interface VertexMatchOrdersRfqTx {
+  match_orders_rfq: {
+    product_id: number;
+  };
+}
+
 export interface VertexLiquidateSubaccountTx {
   liquidate_subaccount: {
     sender: string;
@@ -20,4 +26,8 @@ export interface VertexLiquidateSubaccountTx {
   };
 }
 
-export type VertexTx = VertexMatchOrdersTx | VertexLiquidateSubaccountTx | any;
+export type VertexTx =
+  | VertexMatchOrdersTx
+  | VertexMatchOrdersRfqTx
+  | VertexLiquidateSubaccountTx
+  | any;
