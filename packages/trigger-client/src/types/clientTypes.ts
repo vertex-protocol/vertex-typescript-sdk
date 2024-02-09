@@ -1,7 +1,7 @@
 import { BigDecimal, BigDecimalish } from '@vertex-protocol/utils';
 import {
-  OrderCancellationParams,
-  ProductOrdersCancellationParams,
+  EIP712CancelOrdersParams,
+  EIP712CancelProductOrdersParams,
   Subaccount,
 } from '@vertex-protocol/contracts';
 import { TriggerServerOrder } from './serverQueryTypes';
@@ -63,10 +63,10 @@ export interface TriggerExecutePlaceOrderParams extends SignatureParams {
 }
 
 export type TriggerExecuteCancelOrdersParams = SignatureParams &
-  WithOptionalNonce<OrderCancellationParams>;
+  WithOptionalNonce<EIP712CancelOrdersParams>;
 
 export type TriggerExecuteCancelProductOrdersParams = SignatureParams &
-  WithOptionalNonce<ProductOrdersCancellationParams>;
+  WithOptionalNonce<EIP712CancelProductOrdersParams>;
 
 export interface TriggerExecuteRequestParamsByType {
   place_order: TriggerExecutePlaceOrderParams;

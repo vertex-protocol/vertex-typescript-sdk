@@ -3,7 +3,7 @@ import {
   WithSignature,
 } from '@vertex-protocol/engine-client';
 import { BaseVertexAPI } from '../base';
-import { OrderParams } from '@vertex-protocol/contracts';
+import { EIP712OrderParams } from '@vertex-protocol/contracts';
 
 /**
  * @description Allows you to build execute messages as expected by the server to send over Websocket.
@@ -66,7 +66,7 @@ export class WebSocketExecuteAPI extends BaseVertexAPI {
   buildPlaceOrderMessage(
     params: WithSignature<
       EngineExecuteRequestParamsByType['place_order'] & {
-        order: OrderParams;
+        order: EIP712OrderParams;
       }
     >,
   ) {

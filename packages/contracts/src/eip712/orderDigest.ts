@@ -1,11 +1,11 @@
-import { OrderParams } from './signatureParamTypes';
+import { EIP712OrderParams } from './signatureParamTypes';
 import { getVertexEIP712Domain } from './getVertexEIP712Domain';
 import { getVertexEIP712Types } from './getVertexEIP712Types';
 import { getVertexEIP712Values } from './getVertexEIP712Values';
 import { BigNumberish, TypedDataEncoder } from 'ethers';
 
 interface OrderDigestParams {
-  order: OrderParams;
+  order: EIP712OrderParams;
   verifyingAddr: string;
   chainId: BigNumberish;
 }

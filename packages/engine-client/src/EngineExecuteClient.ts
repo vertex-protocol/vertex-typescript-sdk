@@ -4,7 +4,7 @@ import {
 } from './types';
 import { EngineExecuteBuilder } from './EngineExecuteBuilder';
 import { EngineBaseClient, EngineClientOpts } from './EngineBaseClient';
-import { getOrderDigest, OrderParams } from '@vertex-protocol/contracts';
+import { getOrderDigest, EIP712OrderParams } from '@vertex-protocol/contracts';
 import { BigNumberish } from 'ethers';
 
 export class EngineExecuteClient extends EngineBaseClient {
@@ -100,7 +100,7 @@ export class EngineExecuteClient extends EngineBaseClient {
   }
 
   getOrderDigest(
-    order: OrderParams,
+    order: EIP712OrderParams,
     verifyingAddr: string,
     chainId: BigNumberish,
   ): string {

@@ -7,7 +7,7 @@ import {
   EIP712OrderValues,
   EIP712ProductOrdersCancellationValues,
   EIP712WithdrawCollateralValues,
-  OrderParams,
+  EIP712OrderParams,
   SignedTx,
 } from '@vertex-protocol/contracts';
 import { EngineServerGetOrderResponse } from './serverQueryTypes';
@@ -113,5 +113,5 @@ export type EngineServerExecuteRequestType =
 
 export type EngineServerExecutePlaceOrderPayload = {
   payload: EngineServerExecuteRequestByType['place_order'];
-  orderParams: OrderParams;
+  orderParams: EIP712OrderParams;
 };

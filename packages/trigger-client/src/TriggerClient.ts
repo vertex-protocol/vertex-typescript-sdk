@@ -19,10 +19,10 @@ import {
   getSignedTransactionRequest,
   getTriggerOrderNonce,
   getVertexEIP712Values,
-  ListTriggerOrdersParams,
-  OrderCancellationParams,
-  OrderParams,
-  ProductOrdersCancellationParams,
+  EIP712ListTriggerOrdersParams,
+  EIP712CancelOrdersParams,
+  EIP712OrderParams,
+  EIP712CancelProductOrdersParams,
   SignableRequestType,
   SignableRequestTypeToParams,
 } from '@vertex-protocol/contracts';
@@ -67,7 +67,7 @@ export class TriggerClient {
   async placeTriggerOrder(
     params: TriggerExecuteRequestParamsByType['place_order'],
   ) {
-    const orderParams: OrderParams = {
+    const orderParams: EIP712OrderParams = {
       amount: params.order.amount,
       expiration: params.order.expiration,
       price: params.order.price,
@@ -98,7 +98,7 @@ export class TriggerClient {
   async cancelTriggerOrders(
     params: TriggerExecuteRequestParamsByType['cancel_orders'],
   ) {
-    const cancelOrdersParams: OrderCancellationParams = {
+    const cancelOrdersParams: EIP712CancelOrdersParams = {
       digests: params.digests,
       nonce: params.nonce ?? getOrderNonce(),
       productIds: params.productIds,
@@ -123,7 +123,7 @@ export class TriggerClient {
   async cancelProductOrders(
     params: TriggerExecuteRequestParamsByType['cancel_product_orders'],
   ) {
-    const cancelProductOrdersParams: ProductOrdersCancellationParams = {
+    const cancelProductOrdersParams: EIP712CancelProductOrdersParams = {
       nonce: params.nonce ?? getOrderNonce(),
       productIds: params.productIds,
       subaccountName: params.subaccountName,
@@ -154,7 +154,7 @@ export class TriggerClient {
   async listTriggerOrders(
     params: TriggerQueryRequestParamsByType['list_trigger_orders'],
   ): Promise<TriggerQueryResponseByType['list_trigger_orders']> {
-    const signatureParams: ListTriggerOrdersParams = {
+    const signatureParams: EIP712ListTriggerOrdersParams = {
       // Default to 90 seconds from now if no recvTime is provided
       recvTime: params.recvTime?.toFixed() ?? getDefaultRecvTime().toFixed(),
       subaccountName: params.subaccountName,
