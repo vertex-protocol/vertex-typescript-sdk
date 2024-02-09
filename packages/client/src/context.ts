@@ -133,6 +133,26 @@ export async function createClientContext(
           triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.mainnet,
         };
       }
+      if (opts === 'blastTestnet') {
+        return {
+          contracts: {
+            querierAddress: VERTEX_DEPLOYMENTS.blastTestnet.querier,
+            spotEngineAddress: VERTEX_DEPLOYMENTS.blastTestnet.spotEngine,
+            perpEngineAddress: VERTEX_DEPLOYMENTS.blastTestnet.perpEngine,
+            clearinghouseAddress: VERTEX_DEPLOYMENTS.blastTestnet.clearinghouse,
+            endpointAddress: VERTEX_DEPLOYMENTS.blastTestnet.endpoint,
+            arbAirdropAddress: VERTEX_DEPLOYMENTS.blastTestnet.arbAirdrop,
+            vrtxTokenAddress: VERTEX_DEPLOYMENTS.blastTestnet.vrtxToken,
+            vrtxAirdropAddress: VERTEX_DEPLOYMENTS.blastTestnet.vrtxAirdrop,
+            vrtxLbaAddress: VERTEX_DEPLOYMENTS.blastTestnet.vrtxLba,
+            vrtxVestingAddress: VERTEX_DEPLOYMENTS.blastTestnet.vrtxVesting,
+            vrtxStakingAddress: VERTEX_DEPLOYMENTS.blastTestnet.vrtxStaking,
+          },
+          engineEndpoint: ENGINE_CLIENT_ENDPOINTS.blastTestnet,
+          indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.blastTestnet,
+          triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.blastTestnet,
+        };
+      }
       if (opts === 'local') {
         return {
           contracts: {
