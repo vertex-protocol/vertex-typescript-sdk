@@ -33,7 +33,7 @@ export class EngineWebClient extends EngineBaseClient {
   /**
    * Determines whether a client needs to complete the cloudflare JS challenge to interact with the API
    *
-   * @return true if the client needs to complete the JS challenge at '${url}/challenge', false otherwise
+   * @return true if the client needs to complete the JS challenge at '/challenge', false otherwise
    */
   async getRequiresCloudflareAuth(): Promise<boolean> {
     // We use a generic endpoint and check for the CF challenge header
