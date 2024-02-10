@@ -1,12 +1,12 @@
-import { RunContext } from '../utils/types';
 import { Subaccount } from '@vertex-protocol/contracts';
-import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
-import { runWithContext } from '../utils/runWithContext';
 import {
   CandlestickPeriod,
   IndexerClient,
 } from '@vertex-protocol/indexer-client';
+import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
 import { prettyPrint } from '../utils/prettyPrint';
+import { runWithContext } from '../utils/runWithContext';
+import { RunContext } from '../utils/types';
 
 async function fullSanity(context: RunContext) {
   const client = new IndexerClient({
@@ -65,11 +65,13 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Linked Signer', linkedSigner);
 
-  const rewards = await client.getSubaccountRewards({
+  const rewards = await client.getPaginatedRewards({
     address: subaccount.subaccountOwner,
+    limit: 2,
+    startCursor: '10',
   });
 
-  prettyPrint('Rewards', rewards);
+  prettyPrint('Paginated Rewards', rewards);
 
   const referralCode = await client.getReferralCode({
     subaccount,

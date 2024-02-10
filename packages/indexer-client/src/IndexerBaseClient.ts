@@ -16,6 +16,8 @@ import {
 } from './dataMappers';
 import {
   Candlestick,
+  GetIndexerArbRewardsParams,
+  GetIndexerArbRewardsResponse,
   GetIndexerCandlesticksParams,
   GetIndexerCandlesticksResponse,
   GetIndexerClaimArbMerkleProofsParams,
@@ -55,10 +57,8 @@ import {
   GetIndexerQuotePriceResponse,
   GetIndexerReferralCodeParams,
   GetIndexerReferralCodeResponse,
-  GetIndexerSubaccountArbRewardsParams,
-  GetIndexerSubaccountRewardsParams,
-  GetSubaccountIndexerArbRewardsResponse,
-  GetSubaccountIndexerRewardsResponse,
+  GetIndexerRewardsParams,
+  GetIndexerRewardsResponse,
   IndexerEventWithTx,
   IndexerMarketSnapshot,
   IndexerMatchEvent,
@@ -170,15 +170,17 @@ export class IndexerBaseClient {
   }
 
   /**
-   * Retrieves estimated / past trading rewards for a subaccount
+   * Retrieves estimated / past trading rewards for an address
    *
    * @param params
    */
-  async getSubaccountRewards(
-    params: GetIndexerSubaccountRewardsParams,
-  ): Promise<GetSubaccountIndexerRewardsResponse> {
+  async getRewards(
+    params: GetIndexerRewardsParams,
+  ): Promise<GetIndexerRewardsResponse> {
     const baseResponse = await this.query('rewards', {
       address: params.address,
+      start: params.start,
+      limit: params.limit,
     });
 
     return {
@@ -618,13 +620,13 @@ export class IndexerBaseClient {
   }
 
   /**
-   * Retrieves estimated / past ARB rewards for a subaccount
+   * Retrieves estimated / past ARB rewards for an address
    *
    * @param params
    */
-  async getSubaccountArbRewards(
-    params: GetIndexerSubaccountArbRewardsParams,
-  ): Promise<GetSubaccountIndexerArbRewardsResponse> {
+  async getArbRewards(
+    params: GetIndexerArbRewardsParams,
+  ): Promise<GetIndexerArbRewardsResponse> {
     const baseResponse = await this.query('arb_rewards', {
       address: params.address,
     });

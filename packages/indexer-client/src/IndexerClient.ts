@@ -10,6 +10,8 @@ import {
   GetIndexerPaginatedInterestFundingPaymentsResponse,
   GetIndexerPaginatedOrdersParams,
   GetIndexerPaginatedOrdersResponse,
+  GetIndexerPaginatedRewardsParams,
+  GetIndexerPaginatedRewardsResponse,
   GetIndexerSubaccountCollateralEventsParams,
   GetIndexerSubaccountCollateralEventsResponse,
   GetIndexerSubaccountInterestFundingPaymentsParams,
@@ -50,7 +52,7 @@ export class IndexerClient extends IndexerBaseClient {
       productIds: params.productIds,
     });
 
-    return this.getPaginationResponse(events, requestedLimit);
+    return this.getPaginationEventsResponse(events, requestedLimit);
   }
 
   async getPaginatedSubaccountLpEvents(
@@ -134,7 +136,7 @@ export class IndexerClient extends IndexerBaseClient {
 
     // Force cast to get rid of the `Partial`
     const events = Array.from(eventsBySubmissionIdx.values());
-    return this.getPaginationResponse(events, requestedLimit);
+    return this.getPaginationEventsResponse(events, requestedLimit);
   }
 
   async getPaginatedSubaccountCollateralEvents(
@@ -177,7 +179,7 @@ export class IndexerClient extends IndexerBaseClient {
       };
     });
 
-    return this.getPaginationResponse(events, requestedLimit);
+    return this.getPaginationEventsResponse(events, requestedLimit);
   }
 
   async getPaginatedSubaccountOrders(
@@ -254,7 +256,7 @@ export class IndexerClient extends IndexerBaseClient {
       })
       .filter((event): event is IndexerSettlementEvent => !!event);
 
-    return this.getPaginationResponse(events, requestedLimit);
+    return this.getPaginationEventsResponse(events, requestedLimit);
   }
 
   async getPaginatedSubaccountLiquidationEvents(
@@ -364,7 +366,7 @@ export class IndexerClient extends IndexerBaseClient {
     const events = Array.from(
       eventsBySubmissionIdx.values(),
     ) as IndexerLiquidationEvent[];
-    return this.getPaginationResponse(events, requestedLimit);
+    return this.getPaginationEventsResponse(events, requestedLimit);
   }
 
   /**
@@ -398,7 +400,43 @@ export class IndexerClient extends IndexerBaseClient {
     };
   }
 
-  private getPaginationResponse<T extends BaseIndexerPaginatedEvent>(
+  /**
+   * Paginated rewards query that paginates on epoch number.
+   *
+   * @param params
+   */
+  async getPaginatedRewards(
+    params: GetIndexerPaginatedRewardsParams,
+  ): Promise<GetIndexerPaginatedRewardsResponse> {
+    const requestedLimit = params.limit;
+
+    const baseResponse = await this.getRewards({
+      address: params.address,
+      // Query for 1 more epoch for proper pagination
+      limit: requestedLimit + 1,
+      // Start cursor is the next epoch number
+      start: Number(params.startCursor),
+    });
+
+    // Truncate the response to the requested limit
+    return {
+      ...baseResponse,
+      epochs: baseResponse.epochs.slice(0, requestedLimit),
+      meta: {
+        hasMore: baseResponse.epochs.length > requestedLimit,
+        // Next cursor is the epoch number of the (requestedLimit+1)th item
+        nextCursor: baseResponse.epochs[requestedLimit]?.epoch.toFixed(),
+      },
+    };
+  }
+
+  /**
+   * A util function to generate the standard pagination response for events
+   * @param events
+   * @param requestedLimit given by consumers of the SDK
+   * @private
+   */
+  private getPaginationEventsResponse<T extends BaseIndexerPaginatedEvent>(
     events: T[],
     requestedLimit: number,
   ): PaginatedIndexerEventsResponse<T> {

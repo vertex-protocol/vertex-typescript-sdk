@@ -82,8 +82,11 @@ export interface GetIndexerMultiSubaccountSnapshotsResponse {
   snapshots: Record<string, Record<string, IndexerSubaccountSnapshot>>;
 }
 
-export interface GetIndexerSubaccountRewardsParams {
+export interface GetIndexerRewardsParams {
   address: string;
+  // Inclusive, epochs are returned in descending order
+  start?: number;
+  limit?: number;
 }
 
 export interface GetIndexerReferralCodeParams {
@@ -126,7 +129,7 @@ export interface IndexerRewardsEpoch {
   globalRewards: IndexerGlobalRewardsForProduct[];
 }
 
-export interface GetSubaccountIndexerRewardsResponse {
+export interface GetIndexerRewardsResponse {
   epochs: IndexerRewardsEpoch[];
   updateTime: BigDecimal;
   totalReferrals: number;
@@ -443,7 +446,7 @@ export type GetIndexerClaimVrtxMerkleProofsParams =
 
 export type GetIndexerClaimVrtxMerkleProofsResponse = IndexerMerkleProof[];
 
-export interface GetIndexerSubaccountArbRewardsParams {
+export interface GetIndexerArbRewardsParams {
   address: string;
 }
 
@@ -465,7 +468,7 @@ export interface IndexerArbRewardsWeek {
   globalRewards: IndexerGlobalArbRewardsForProduct[];
 }
 
-export interface GetSubaccountIndexerArbRewardsResponse {
+export interface GetIndexerArbRewardsResponse {
   weeks: IndexerArbRewardsWeek[];
   updateTime: BigDecimal;
 }

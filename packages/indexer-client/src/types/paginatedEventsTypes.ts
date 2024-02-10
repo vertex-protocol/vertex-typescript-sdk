@@ -3,6 +3,8 @@ import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import {
   GetIndexerInterestFundingPaymentsParams,
   GetIndexerInterestFundingPaymentsResponse,
+  GetIndexerRewardsParams,
+  GetIndexerRewardsResponse,
   IndexerEventBalanceStateSnapshot,
   IndexerEventPerpStateSnapshot,
   IndexerEventSpotStateSnapshot,
@@ -38,6 +40,10 @@ export interface PaginatedIndexerEventsResponse<
   events: T[];
 }
 
+/**
+ * Collateral
+ */
+
 export interface GetIndexerSubaccountCollateralEventsParams
   extends BaseSubaccountPaginationParams {
   eventTypes?: CollateralEventType[];
@@ -53,6 +59,10 @@ export interface IndexerCollateralEvent extends BaseIndexerPaginatedEvent {
 
 export type GetIndexerSubaccountCollateralEventsResponse =
   PaginatedIndexerEventsResponse<IndexerCollateralEvent>;
+
+/**
+ * LP
+ */
 
 export type GetIndexerSubaccountLpEventsParams = BaseSubaccountPaginationParams;
 
@@ -71,6 +81,10 @@ export interface IndexerLpEvent extends BaseIndexerPaginatedEvent {
 export type GetIndexerSubaccountLpEventsResponse =
   PaginatedIndexerEventsResponse<IndexerLpEvent>;
 
+/**
+ * Match events
+ */
+
 export interface GetIndexerSubaccountMatchEventParams
   extends BaseSubaccountPaginationParams {
   // If not given, defaults to all products
@@ -79,6 +93,10 @@ export interface GetIndexerSubaccountMatchEventParams
 
 export type GetIndexerSubaccountMatchEventsResponse =
   PaginatedIndexerEventsResponse<IndexerMatchEvent>;
+
+/**
+ * Orders
+ */
 
 export interface GetIndexerPaginatedOrdersParams
   extends BaseSubaccountPaginationParams {
@@ -90,6 +108,10 @@ export interface GetIndexerPaginatedOrdersResponse {
   orders: IndexerOrder[];
   meta: IndexerPaginationMeta;
 }
+
+/**
+ * Liquidations
+ */
 
 export type GetIndexerSubaccountLiquidationEventsParams =
   BaseSubaccountPaginationParams;
@@ -142,6 +164,10 @@ export interface IndexerLiquidationEvent extends BaseIndexerPaginatedEvent {
 export type GetIndexerSubaccountLiquidationEventsResponse =
   PaginatedIndexerEventsResponse<IndexerLiquidationEvent>;
 
+/**
+ * Settlement
+ */
+
 export type GetIndexerSubaccountSettlementEventsParams =
   BaseSubaccountPaginationParams;
 
@@ -154,6 +180,10 @@ export interface IndexerSettlementEvent extends BaseIndexerPaginatedEvent {
 export type GetIndexerSubaccountSettlementEventsResponse =
   PaginatedIndexerEventsResponse<IndexerSettlementEvent>;
 
+/**
+ * Interest / Funding
+ */
+
 export type GetIndexerSubaccountInterestFundingPaymentsParams =
   BaseSubaccountPaginationParams &
     Pick<GetIndexerInterestFundingPaymentsParams, 'productIds' | 'startCursor'>;
@@ -162,3 +192,14 @@ export interface GetIndexerPaginatedInterestFundingPaymentsResponse
   extends GetIndexerInterestFundingPaymentsResponse {
   meta: IndexerPaginationMeta;
 }
+
+/**
+ * Paginated rewards query - these paginate on epoch #, which is `number`, but for consistency we use the
+ * string pagination params / meta that is used for other paginated queries
+ */
+
+export type GetIndexerPaginatedRewardsParams = IndexerPaginationParams &
+  Pick<GetIndexerRewardsParams, 'address'>;
+
+export type GetIndexerPaginatedRewardsResponse = WithPaginationMeta &
+  GetIndexerRewardsResponse;

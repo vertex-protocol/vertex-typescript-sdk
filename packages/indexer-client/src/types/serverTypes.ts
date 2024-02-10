@@ -36,6 +36,9 @@ export interface IndexerServerMultiSubaccountSnapshotsParams {
 
 export interface IndexerServerRewardsParams {
   address: string;
+  // Inclusive, epochs are returned in descending order
+  start?: number;
+  limit?: number;
 }
 
 export interface IndexerServerReferralCodeParams {
