@@ -177,8 +177,11 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
         return params.amount;
       }
       const amountsClaimed = await airdropContract.getClaimed(address);
+
       const availableAmount = totalAmount.minus(
-        amountsClaimed[params.epoch].toString(),
+        // Some wallets seem to throw a `RangeError` here if we do amountsClaimed[params.epoch]
+        // Likely because `amountsClaimed` isn't a simple array but a proxy
+        amountsClaimed.at(params.epoch)?.toString() ?? 0,
       );
 
       return availableAmount.toFixed();
