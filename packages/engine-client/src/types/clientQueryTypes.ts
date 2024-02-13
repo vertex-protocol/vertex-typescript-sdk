@@ -3,9 +3,9 @@ import {
   GetAllMarketsResponse,
   GetSubaccountSummaryParams,
   HealthGroup,
-  OrderParams,
+  EIP712OrderParams,
   ProductEngineType,
-  SignedOrderParams,
+  SignedEIP712OrderParams,
   Subaccount,
   SubaccountSummaryResponse,
 } from '@vertex-protocol/contracts';
@@ -116,7 +116,7 @@ export interface EngineOrder extends Subaccount {
   expiration: BigDecimal;
   nonce: string;
   digest: string;
-  orderParams: OrderParams;
+  orderParams: EIP712OrderParams;
   placementTime: number;
 }
 
@@ -124,14 +124,14 @@ export type GetEngineOrderResponse = EngineOrder;
 
 export interface ValidateSignedEngineOrderParams {
   productId: number;
-  signedOrder: SignedOrderParams;
+  signedOrder: SignedEIP712OrderParams;
 }
 
 export interface ValidateEngineOrderParams {
   productId: number;
   orderbookAddr: string;
   chainId: BigNumberish;
-  order: OrderParams;
+  order: EIP712OrderParams;
 }
 
 export interface ValidateEngineOrderResponse {

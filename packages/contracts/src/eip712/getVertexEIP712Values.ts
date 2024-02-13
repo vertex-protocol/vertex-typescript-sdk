@@ -3,15 +3,15 @@ import {
   SignableRequestTypeToParams,
 } from './signableRequestType';
 import {
-  BurnLpParams,
-  LinkSignerParams,
-  LiquidateSubaccountParams,
-  ListTriggerOrdersParams,
-  MintLpParams,
-  OrderCancellationParams,
-  OrderParams,
-  ProductOrdersCancellationParams,
-  WithdrawCollateralParams,
+  EIP712BurnLpParams,
+  EIP712LinkSignerParams,
+  EIP712LiquidateSubaccountParams,
+  EIP712ListTriggerOrdersParams,
+  EIP712MintLpParams,
+  EIP712CancelOrdersParams,
+  EIP712OrderParams,
+  EIP712CancelProductOrdersParams,
+  EIP712WithdrawCollateralParams,
 } from './signatureParamTypes';
 import { toX18 } from '@vertex-protocol/utils';
 import { subaccountToHex } from '../utils';
@@ -44,35 +44,39 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
   let values: SignableRequestTypeToEIP712Values[keyof SignableRequestTypeToEIP712Values];
   switch (requestType) {
     case 'withdraw_collateral':
-      values = getWithdrawCollateralValues(params as WithdrawCollateralParams);
+      values = getWithdrawCollateralValues(
+        params as EIP712WithdrawCollateralParams,
+      );
       break;
     case 'mint_lp':
-      values = getMintLpValues(params as MintLpParams);
+      values = getMintLpValues(params as EIP712MintLpParams);
       break;
     case 'burn_lp':
-      values = getBurnLpValues(params as BurnLpParams);
+      values = getBurnLpValues(params as EIP712BurnLpParams);
       break;
     case 'place_order':
-      values = getOrderValues(params as OrderParams);
+      values = getOrderValues(params as EIP712OrderParams);
       break;
     case 'list_trigger_orders':
-      values = getListTriggerOrdersValues(params as ListTriggerOrdersParams);
+      values = getListTriggerOrdersValues(
+        params as EIP712ListTriggerOrdersParams,
+      );
       break;
     case 'cancel_orders':
-      values = getOrderCancellationValues(params as OrderCancellationParams);
+      values = getOrderCancellationValues(params as EIP712CancelOrdersParams);
       break;
     case 'cancel_product_orders':
       values = getProductOrdersCancellationValues(
-        params as ProductOrdersCancellationParams,
+        params as EIP712CancelProductOrdersParams,
       );
       break;
     case 'liquidate_subaccount':
       values = getLiquidateSubaccountValues(
-        params as LiquidateSubaccountParams,
+        params as EIP712LiquidateSubaccountParams,
       );
       break;
     case 'link_signer':
-      values = getLinkSignerValues(params as LinkSignerParams);
+      values = getLinkSignerValues(params as EIP712LinkSignerParams);
       break;
     default:
       throw Error(`Unknown request type: ${requestType}`);
@@ -82,7 +86,7 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
 }
 
 function getWithdrawCollateralValues(
-  params: WithdrawCollateralParams,
+  params: EIP712WithdrawCollateralParams,
 ): EIP712WithdrawCollateralValues {
   return {
     sender: subaccountToHex({
@@ -95,7 +99,7 @@ function getWithdrawCollateralValues(
   };
 }
 
-function getMintLpValues(params: MintLpParams): EIP712MintLpValues {
+function getMintLpValues(params: EIP712MintLpParams): EIP712MintLpValues {
   return {
     sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
@@ -109,7 +113,7 @@ function getMintLpValues(params: MintLpParams): EIP712MintLpValues {
   };
 }
 
-function getBurnLpValues(params: BurnLpParams): EIP712BurnLpValues {
+function getBurnLpValues(params: EIP712BurnLpParams): EIP712BurnLpValues {
   return {
     sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
@@ -121,7 +125,7 @@ function getBurnLpValues(params: BurnLpParams): EIP712BurnLpValues {
   };
 }
 
-function getOrderValues(params: OrderParams): EIP712OrderValues {
+function getOrderValues(params: EIP712OrderParams): EIP712OrderValues {
   return {
     sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
@@ -135,7 +139,7 @@ function getOrderValues(params: OrderParams): EIP712OrderValues {
 }
 
 function getListTriggerOrdersValues(
-  params: ListTriggerOrdersParams,
+  params: EIP712ListTriggerOrdersParams,
 ): EIP712ListTriggerOrdersValues {
   return {
     recvTime: BigInt(params.recvTime).toString(),
@@ -147,7 +151,7 @@ function getListTriggerOrdersValues(
 }
 
 function getOrderCancellationValues(
-  params: OrderCancellationParams,
+  params: EIP712CancelOrdersParams,
 ): EIP712OrderCancellationValues {
   return {
     sender: subaccountToHex({
@@ -161,7 +165,7 @@ function getOrderCancellationValues(
 }
 
 function getProductOrdersCancellationValues(
-  params: ProductOrdersCancellationParams,
+  params: EIP712CancelProductOrdersParams,
 ): EIP712ProductOrdersCancellationValues {
   return {
     sender: subaccountToHex({
@@ -174,7 +178,7 @@ function getProductOrdersCancellationValues(
 }
 
 function getLiquidateSubaccountValues(
-  params: LiquidateSubaccountParams,
+  params: EIP712LiquidateSubaccountParams,
 ): EIP712LiquidateSubaccountValues {
   return {
     sender: subaccountToHex({
@@ -192,7 +196,9 @@ function getLiquidateSubaccountValues(
   };
 }
 
-function getLinkSignerValues(params: LinkSignerParams): EIP712LinkSignerValues {
+function getLinkSignerValues(
+  params: EIP712LinkSignerParams,
+): EIP712LinkSignerValues {
   return {
     sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,

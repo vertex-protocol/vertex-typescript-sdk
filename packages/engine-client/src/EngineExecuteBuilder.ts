@@ -1,7 +1,7 @@
 import {
   getOrderNonce,
   getVertexEIP712Values,
-  OrderParams,
+  EIP712OrderParams,
   SignableRequestType,
   SignableRequestTypeToParams,
 } from '@vertex-protocol/contracts';
@@ -160,7 +160,7 @@ export class EngineExecuteBuilder {
   buildPlaceOrderPayloadSync(
     clientParams: WithSignature<
       EngineExecuteRequestParamsByType['place_order'] & {
-        order: OrderParams;
+        order: EIP712OrderParams;
       }
     >,
   ): EngineServerExecutePlaceOrderPayload {

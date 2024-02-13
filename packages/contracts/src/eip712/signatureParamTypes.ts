@@ -6,18 +6,18 @@ export interface SignedTx<TBaseTx> {
   signature: string;
 }
 
-export interface SignedOrderParams {
-  order: OrderParams;
+export interface SignedEIP712OrderParams {
+  order: EIP712OrderParams;
   signature: string;
 }
 
-export interface WithdrawCollateralParams extends Subaccount {
+export interface EIP712WithdrawCollateralParams extends Subaccount {
   productId: number;
   amount: BigNumberish;
   nonce: string;
 }
 
-export interface MintLpParams extends Subaccount {
+export interface EIP712MintLpParams extends Subaccount {
   productId: number;
   amountBase: BigNumberish;
   quoteAmountLow: BigNumberish;
@@ -25,13 +25,13 @@ export interface MintLpParams extends Subaccount {
   nonce: string;
 }
 
-export interface BurnLpParams extends Subaccount {
+export interface EIP712BurnLpParams extends Subaccount {
   productId: number;
   amount: BigNumberish;
   nonce: string;
 }
 
-export interface LiquidateSubaccountParams extends Subaccount {
+export interface EIP712LiquidateSubaccountParams extends Subaccount {
   // Subaccount being liquidated
   liquidateeOwner: string;
   liquidateeName: string;
@@ -43,7 +43,7 @@ export interface LiquidateSubaccountParams extends Subaccount {
   nonce: string;
 }
 
-export interface OrderParams extends Subaccount {
+export interface EIP712OrderParams extends Subaccount {
   // Expiration time in seconds, with order type encoded if relevant
   expiration: BigNumberish;
   // Limit price
@@ -54,22 +54,22 @@ export interface OrderParams extends Subaccount {
   nonce: string;
 }
 
-export interface ListTriggerOrdersParams extends Subaccount {
+export interface EIP712ListTriggerOrdersParams extends Subaccount {
   recvTime: BigNumberish;
 }
 
-export interface OrderCancellationParams extends Subaccount {
+export interface EIP712CancelOrdersParams extends Subaccount {
   productIds: number[];
   digests: string[];
   nonce: string;
 }
 
-export interface ProductOrdersCancellationParams extends Subaccount {
+export interface EIP712CancelProductOrdersParams extends Subaccount {
   productIds: number[];
   nonce: string;
 }
 
-export interface LinkSignerParams extends Subaccount {
+export interface EIP712LinkSignerParams extends Subaccount {
   signer: string;
   nonce: string;
 }

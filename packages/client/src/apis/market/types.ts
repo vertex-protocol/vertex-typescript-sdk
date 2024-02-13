@@ -1,25 +1,18 @@
 import {
+  EngineExecuteBurnLpParams,
   EngineExecuteCancelOrdersParams,
   EngineExecuteCancelProductOrdersParams,
+  EngineExecuteMintLpParams,
   EngineExecutePlaceOrderParams,
   EngineOrderParams,
 } from '@vertex-protocol/engine-client';
-import { OptionalSubaccountOwner } from '../types';
+import { OptionalSignatureParams, OptionalSubaccountOwner } from '../types';
 import {
   QueryListTriggerOrdersParams,
   TriggerExecuteCancelOrdersParams,
   TriggerExecuteCancelProductOrdersParams,
   TriggerExecutePlaceOrderParams,
 } from '@vertex-protocol/trigger-client';
-
-// TODO This is currently used only for the market API, where speed is more important. This could eventually be used for other executes
-export type OptionalSignatureParams<T> = Omit<
-  T,
-  'verifyingAddr' | 'chainId'
-> & {
-  verifyingAddr?: string;
-  chainId?: number;
-};
 
 type ClientOrderParams<T> = Omit<OptionalSignatureParams<T>, 'order'> & {
   order: OptionalSubaccountOwner<EngineOrderParams>;
@@ -49,6 +42,14 @@ export type CancelTriggerOrdersParams = OptionalSignatureParams<
 
 export type CancelTriggerProductOrdersParams = OptionalSignatureParams<
   OptionalSubaccountOwner<TriggerExecuteCancelProductOrdersParams>
+>;
+
+export type MintLpParams = OptionalSignatureParams<
+  OptionalSubaccountOwner<EngineExecuteMintLpParams>
+>;
+
+export type BurnLpParams = OptionalSignatureParams<
+  OptionalSubaccountOwner<EngineExecuteBurnLpParams>
 >;
 
 export type GetTriggerOrdersParams =

@@ -9,7 +9,7 @@ import {
   GetEngineSubaccountFeeRatesParams,
   GetEngineSubaccountSummaryParams,
 } from '@vertex-protocol/engine-client';
-import { GetSubaccountIdParams } from './queryTypes';
+import { GetSubaccountIdParams } from './types';
 import {
   GetIndexerLinkedSignerParams,
   GetIndexerReferralCodeParams,

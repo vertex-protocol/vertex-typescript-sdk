@@ -7,7 +7,7 @@ import {
 } from '@vertex-protocol/contracts';
 import { Wallet } from 'ethers';
 
-export * from './queryTypes';
+export * from './types';
 
 export class SubaccountAPI extends Mixin(
   SubaccountExecuteAPI,

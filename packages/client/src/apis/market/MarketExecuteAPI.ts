@@ -1,31 +1,27 @@
 import { BaseVertexAPI } from '../base';
 import {
+  BurnLpParams,
   CancelAndPlaceOrderParams,
   CancelOrdersParams,
   CancelProductOrdersParams,
   CancelTriggerOrdersParams,
   CancelTriggerProductOrdersParams,
-  OptionalSignatureParams,
+  MintLpParams,
   PlaceOrderParams,
   PlaceTriggerOrderParams,
 } from './types';
-import {
-  EngineExecuteBurnLpParams,
-  EngineExecuteMintLpParams,
-} from '@vertex-protocol/engine-client';
-
-import { OptionalSubaccountOwner } from '../types';
+import { OptionalSignatureParams } from '../types';
 
 export class MarketExecuteAPI extends BaseVertexAPI {
   /**
    * Mint LP tokens through engine
    * @param params
    */
-  async mintLp(params: OptionalSubaccountOwner<EngineExecuteMintLpParams>) {
+  async mintLp(params: MintLpParams) {
     return this.context.engineClient.mintLp({
       ...params,
-      chainId: await this.getSignerChainId(),
-      verifyingAddr: this.getEndpointAddress(),
+      chainId: await this.getSignerChainIdIfNeeded(params),
+      verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
       subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
     });
   }
@@ -34,11 +30,11 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Burn LP tokens through engine
    * @param params
    */
-  async burnLp(params: OptionalSubaccountOwner<EngineExecuteBurnLpParams>) {
+  async burnLp(params: BurnLpParams) {
     return this.context.engineClient.burnLp({
       ...params,
-      chainId: await this.getSignerChainId(),
-      verifyingAddr: this.getEndpointAddress(),
+      chainId: await this.getSignerChainIdIfNeeded(params),
+      verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
       subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
     });
   }
