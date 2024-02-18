@@ -89,6 +89,8 @@ export interface GetIndexerRewardsParams {
   limit?: number;
 }
 
+export type GetIndexerTakerRewardsParams = GetIndexerRewardsParams;
+
 export interface GetIndexerReferralCodeParams {
   subaccount: Subaccount;
 }
@@ -131,6 +133,18 @@ export interface IndexerRewardsEpoch {
 
 export interface GetIndexerRewardsResponse {
   epochs: IndexerRewardsEpoch[];
+  updateTime: BigDecimal;
+  totalReferrals: number;
+}
+
+export interface IndexerTakerRewardsEpoch {
+  epoch: number;
+  takerTokens: BigDecimal;
+  takerReferralTokens: BigDecimal;
+}
+
+export interface GetIndexerTakerRewardsResponse {
+  epochs: IndexerTakerRewardsEpoch[];
   updateTime: BigDecimal;
   totalReferrals: number;
 }

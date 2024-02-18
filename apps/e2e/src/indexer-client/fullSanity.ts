@@ -73,6 +73,13 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Paginated Rewards', rewards);
 
+  const takerRewards = await client.getTakerRewards({
+    address: subaccount.subaccountOwner,
+    limit: 1,
+  });
+
+  prettyPrint('Taker Rewards', takerRewards);
+
   const referralCode = await client.getReferralCode({
     subaccount,
   });
