@@ -13,7 +13,6 @@ import { GetSubaccountIdParams } from './types';
 import {
   GetIndexerLinkedSignerParams,
   GetIndexerReferralCodeParams,
-  GetIndexerSubaccountRewardsParams,
 } from '@vertex-protocol/indexer-client';
 
 export class SubaccountQueryAPI extends BaseVertexAPI {
@@ -61,14 +60,6 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
    */
   async getSubaccountFeeRates(params: GetEngineSubaccountFeeRatesParams) {
     return this.context.engineClient.getSubaccountFeeRates(params);
-  }
-
-  /**
-   * Queries all token rewards across epochs for a subaccount
-   * @param params
-   */
-  async getSubaccountTokenRewards(params: GetIndexerSubaccountRewardsParams) {
-    return this.context.indexerClient.getSubaccountRewards(params);
   }
 
   /**
