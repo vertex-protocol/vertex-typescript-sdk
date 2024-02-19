@@ -59,6 +59,8 @@ import {
   GetIndexerReferralCodeResponse,
   GetIndexerRewardsParams,
   GetIndexerRewardsResponse,
+  GetIndexerTakerRewardsParams,
+  GetIndexerTakerRewardsResponse,
   IndexerEventWithTx,
   IndexerMarketSnapshot,
   IndexerMatchEvent,
@@ -69,6 +71,7 @@ import {
   IndexerServerQueryResponseByType,
   IndexerSnapshotBalance,
   IndexerSubaccountSnapshot,
+  IndexerTakerRewardsEpoch,
   ListIndexerSubaccountsParams,
   ListIndexerSubaccountsResponse,
 } from './types';
@@ -170,7 +173,7 @@ export class IndexerBaseClient {
   }
 
   /**
-   * Retrieves estimated / past trading rewards for an address
+   * Retrieves estimated / past rewards for an address
    *
    * @param params
    */
@@ -185,6 +188,35 @@ export class IndexerBaseClient {
 
     return {
       epochs: baseResponse.rewards.map(mapIndexerRewardsEpoch),
+      updateTime: toBigDecimal(baseResponse.update_time),
+      totalReferrals: Number(baseResponse.total_referrals),
+    };
+  }
+
+  /**
+   * Retrieves estimated / past taker trading + referral rewards for an address
+   *
+   * @param params
+   */
+  async getTakerRewards(
+    params: GetIndexerTakerRewardsParams,
+  ): Promise<GetIndexerTakerRewardsResponse> {
+    const baseResponse = await this.query('taker_rewards', {
+      address: params.address,
+      start: params.start,
+      limit: params.limit,
+    });
+
+    return {
+      epochs: baseResponse.taker_rewards.map(
+        (epoch): IndexerTakerRewardsEpoch => {
+          return {
+            epoch: epoch.epoch,
+            takerTokens: toBigDecimal(epoch.taker_tokens),
+            takerReferralTokens: toBigDecimal(epoch.taker_referral_tokens),
+          };
+        },
+      ),
       updateTime: toBigDecimal(baseResponse.update_time),
       totalReferrals: Number(baseResponse.total_referrals),
     };

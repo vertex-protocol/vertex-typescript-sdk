@@ -13,6 +13,7 @@ import {
   IndexerServerProductPayment,
   IndexerServerProductSnapshot,
   IndexerServerRewardsEpoch,
+  IndexerServerTakerRewardsEpoch,
   IndexerServerTx,
 } from './serverModelTypes';
 
@@ -40,6 +41,8 @@ export interface IndexerServerRewardsParams {
   start?: number;
   limit?: number;
 }
+
+export type IndexerServerTakerRewardsParams = IndexerServerRewardsParams;
 
 export interface IndexerServerReferralCodeParams {
   subaccount: string;
@@ -161,29 +164,30 @@ export interface IndexerServerMakerStatisticsParams {
 
 // Request
 export interface IndexerServerQueryRequestByType {
-  subaccounts: IndexerServerListSubaccountsParams;
   account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
-  rewards: IndexerServerRewardsParams;
-  referral_code: IndexerServerReferralCodeParams;
+  arb_merkle_proofs: IndexerServerClaimArbMerkleProofsParams;
+  arb_rewards: IndexerServerArbRewardsParams;
+  candlesticks: IndexerServerCandlesticksParams;
+  events: IndexerServerEventsParams;
   funding_rate: IndexerServerFundingRateParams;
   funding_rates: IndexerServerFundingRatesParams;
-  price: IndexerServerPriceParams;
-  perp_prices: IndexerServerPerpPricesParams;
-  oracle_price: IndexerServerOraclePricesParams;
-  candlesticks: IndexerServerCandlesticksParams;
-  products: IndexerServerProductsParams;
-  product_snapshots: IndexerServerMultiProductsParams;
-  events: IndexerServerEventsParams;
-  orders: IndexerServerOrdersParams;
-  matches: IndexerServerMatchEventsParams;
-  usdc_price: Record<string, never>;
-  linked_signer_rate_limit: IndexerServerLinkedSignerParams;
-  market_snapshots: IndexerServerMarketSnapshotsParams;
   interest_and_funding: IndexerServerInterestFundingParams;
-  vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsParams;
-  arb_rewards: IndexerServerArbRewardsParams;
-  arb_merkle_proofs: IndexerServerClaimArbMerkleProofsParams;
+  linked_signer_rate_limit: IndexerServerLinkedSignerParams;
   maker_statistics: IndexerServerMakerStatisticsParams;
+  market_snapshots: IndexerServerMarketSnapshotsParams;
+  matches: IndexerServerMatchEventsParams;
+  oracle_price: IndexerServerOraclePricesParams;
+  orders: IndexerServerOrdersParams;
+  perp_prices: IndexerServerPerpPricesParams;
+  price: IndexerServerPriceParams;
+  product_snapshots: IndexerServerMultiProductsParams;
+  products: IndexerServerProductsParams;
+  referral_code: IndexerServerReferralCodeParams;
+  rewards: IndexerServerRewardsParams;
+  subaccounts: IndexerServerListSubaccountsParams;
+  taker_rewards: IndexerServerTakerRewardsParams;
+  usdc_price: Record<string, never>;
+  vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -208,6 +212,12 @@ export interface IndexerServerMultiSubaccountSnapshotsResponse {
 
 export interface IndexerServerRewardsResponse {
   rewards: IndexerServerRewardsEpoch[];
+  update_time: string;
+  total_referrals: string;
+}
+
+export interface IndexerServerTakerRewardsResponse {
+  taker_rewards: IndexerServerTakerRewardsEpoch[];
   update_time: string;
   total_referrals: string;
 }
@@ -318,27 +328,28 @@ export interface IndexerServerMakerStatisticsResponse {
 
 // Response
 export interface IndexerServerQueryResponseByType {
-  subaccounts: IndexerServerListSubaccountsResponse;
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
-  rewards: IndexerServerRewardsResponse;
-  referral_code: IndexerServerReferralCodeResponse;
+  arb_merkle_proofs: IndexerServerClaimArbMerkleProofsResponse;
+  arb_rewards: IndexerServerArbRewardsResponse;
+  candlesticks: IndexerServerCandlesticksResponse;
+  events: IndexerServerEventsResponse;
   funding_rate: IndexerServerFundingRateResponse;
   funding_rates: IndexerServerFundingRatesResponse;
-  price: IndexerServerPriceResponse;
-  perp_prices: IndexerServerPerpPricesResponse;
-  oracle_price: IndexerServerOraclePricesResponse;
-  candlesticks: IndexerServerCandlesticksResponse;
-  products: IndexerServerProductsResponse;
-  product_snapshots: IndexerServerMultiProductsResponse;
-  events: IndexerServerEventsResponse;
-  orders: IndexerServerOrdersResponse;
-  matches: IndexerServerMatchEventsResponse;
-  usdc_price: IndexerServerUsdcPriceResponse;
-  linked_signer_rate_limit: IndexerServerLinkedSignerResponse;
-  market_snapshots: IndexerServerMarketSnapshotsResponse;
   interest_and_funding: IndexerServerInterestFundingResponse;
-  vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsResponse;
-  arb_rewards: IndexerServerArbRewardsResponse;
-  arb_merkle_proofs: IndexerServerClaimArbMerkleProofsResponse;
+  linked_signer_rate_limit: IndexerServerLinkedSignerResponse;
   maker_statistics: IndexerServerMakerStatisticsResponse;
+  market_snapshots: IndexerServerMarketSnapshotsResponse;
+  matches: IndexerServerMatchEventsResponse;
+  oracle_price: IndexerServerOraclePricesResponse;
+  orders: IndexerServerOrdersResponse;
+  perp_prices: IndexerServerPerpPricesResponse;
+  price: IndexerServerPriceResponse;
+  product_snapshots: IndexerServerMultiProductsResponse;
+  products: IndexerServerProductsResponse;
+  referral_code: IndexerServerReferralCodeResponse;
+  rewards: IndexerServerRewardsResponse;
+  subaccounts: IndexerServerListSubaccountsResponse;
+  taker_rewards: IndexerServerTakerRewardsResponse;
+  usdc_price: IndexerServerUsdcPriceResponse;
+  vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsResponse;
 }

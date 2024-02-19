@@ -1,3 +1,4 @@
+import { EIP712OrderValues } from '@vertex-protocol/contracts';
 import {
   EngineServerPerpBalance,
   EngineServerPerpProduct,
@@ -6,7 +7,6 @@ import {
 } from '@vertex-protocol/engine-client';
 import { IndexerEventType } from './IndexerEventType';
 import { VertexTx } from './VertexTx';
-import { EIP712OrderValues } from '@vertex-protocol/contracts';
 
 export type IndexerServerProduct =
   | {
@@ -24,6 +24,10 @@ export type IndexerServerBalance =
       perp: EngineServerPerpBalance;
     };
 
+/**
+ * Candlesticks
+ */
+
 export interface IndexerServerCandlestick {
   product_id: number;
   granularity: string;
@@ -36,11 +40,19 @@ export interface IndexerServerCandlestick {
   volume: string;
 }
 
+/**
+ * Product snapshots
+ */
+
 export interface IndexerServerProductSnapshot {
   product_id: number;
   submission_idx: string;
   product: IndexerServerProduct;
 }
+
+/**
+ * Base Events
+ */
 
 export interface IndexerServerEvent {
   subaccount: string;
@@ -66,6 +78,10 @@ export interface IndexerServerTx {
   tx: VertexTx;
 }
 
+/**
+ * Orders
+ */
+
 export interface IndexerServerOrder {
   digest: string;
   subaccount: string;
@@ -81,6 +97,10 @@ export interface IndexerServerOrder {
   // Includes sequencer fee
   fee: string;
 }
+
+/**
+ * Match events
+ */
 
 export interface IndexerServerMatchEvent {
   digest: string;
@@ -107,11 +127,19 @@ export interface IndexerServerMatchEventBalances {
   quote?: IndexerServerBalance;
 }
 
+/**
+ * Oracle price
+ */
+
 export interface IndexerServerOraclePrice {
   product_id: number;
   oracle_price_x18: string;
   update_time: number;
 }
+
+/**
+ * Market snapshots
+ */
 
 export interface IndexerServerMarketSnapshotInterval {
   count: number;
@@ -141,6 +169,10 @@ export interface IndexerServerMarketSnapshot {
   borrow_rates: Record<string, string>;
 }
 
+/**
+ * Interest / funding
+ */
+
 export interface IndexerServerProductPayment {
   product_id: number;
   idx: string;
@@ -150,6 +182,10 @@ export interface IndexerServerProductPayment {
   rate_x18: string;
   oracle_price_x18: string;
 }
+
+/**
+ * Rewards
+ */
 
 export interface IndexerServerSubaccountRewardsForProduct {
   product_id: number;
@@ -189,6 +225,16 @@ export interface IndexerServerRewardsEpoch {
   global_rewards: IndexerServerGlobalRewardsForProduct[];
 }
 
+export interface IndexerServerTakerRewardsEpoch {
+  epoch: number;
+  taker_tokens: string;
+  taker_referral_tokens: string;
+}
+
+/**
+ * Arb rewards
+ */
+
 export interface IndexerServerSubaccountArbRewardsForProduct {
   product_id: number;
   taker_volume: string;
@@ -212,10 +258,18 @@ export interface IndexerServerArbRewardsWeek {
   global_rewards: IndexerServerGlobalArbRewardsForProduct[];
 }
 
+/**
+ * VRTX claim merkle proof
+ */
+
 export interface IndexerServerMerkleProof {
   total_amount: string;
   proof: string[];
 }
+
+/**
+ * Maker stats
+ */
 
 export interface IndexerServerMakerData {
   timestamp: string;
