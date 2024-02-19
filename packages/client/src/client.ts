@@ -1,11 +1,11 @@
-import { createClientContext, VertexClientContext } from './context';
-import { MarketAPI } from './apis/market';
-import { SubaccountAPI } from './apis/subaccount';
-import { SpotAPI } from './apis/spot';
-import { PerpAPI } from './apis/perp';
-import { WebsocketAPI } from './apis/ws';
 import { Signer } from 'ethers';
+import { MarketAPI } from './apis/market';
+import { PerpAPI } from './apis/perp';
 import { RewardsAPI } from './apis/rewards';
+import { SpotAPI } from './apis/spot';
+import { SubaccountAPI } from './apis/subaccount';
+import { WebsocketAPI } from './apis/ws';
+import { createClientContext, VertexClientContext } from './context';
 
 /**
  * Client for querying and executing against Vertex Clearinghouse.
@@ -42,35 +42,9 @@ export class VertexClient {
   async setSignerOrProvider(
     signerOrProvider: VertexClientContext['signerOrProvider'],
   ) {
-    const {
-      clearinghouse,
-      endpoint,
-      perpEngine,
-      querier,
-      spotEngine,
-      arbAirdrop,
-      vrtxAirdrop,
-      vrtxLba,
-      vrtxToken,
-      vrtxVesting,
-      vrtxStaking,
-    } = this.context.contractAddresses;
-
     const newContext = await createClientContext(
       {
-        contracts: {
-          querierAddress: querier,
-          spotEngineAddress: spotEngine,
-          perpEngineAddress: perpEngine,
-          clearinghouseAddress: clearinghouse,
-          endpointAddress: endpoint,
-          arbAirdropAddress: arbAirdrop,
-          vrtxTokenAddress: vrtxToken,
-          vrtxAirdropAddress: vrtxAirdrop,
-          vrtxLbaAddress: vrtxLba,
-          vrtxVestingAddress: vrtxVesting,
-          vrtxStakingAddress: vrtxStaking,
-        },
+        contractAddresses: this.context.contractAddresses,
         engineEndpoint: this.context.engineClient.opts.url,
         indexerEndpoint: this.context.indexerClient.opts.url,
         triggerEndpoint: this.context.triggerClient.opts.url,
