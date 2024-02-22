@@ -118,6 +118,7 @@ export interface EngineOrder extends Subaccount {
   digest: string;
   orderParams: EIP712OrderParams;
   placementTime: number;
+  orderType: string;
 }
 
 export type GetEngineOrderResponse = EngineOrder;

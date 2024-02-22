@@ -266,6 +266,7 @@ export interface EngineServerOrder {
   unfilled_amount: string;
   digest: string;
   placed_at: number;
+  order_type: string;
 }
 
 export type EngineServerGetOrderResponse = EngineServerOrder;
