@@ -100,9 +100,9 @@ async function fullSanity(context: RunContext) {
   const order: EngineOrderParams = {
     subaccountOwner: signer.address,
     subaccountName: 'default',
-    amount: toFixedPoint(-0.01),
+    amount: toFixedPoint(-0.03),
     expiration: getExpiration(),
-    price: 45000,
+    price: 60000,
   };
   const placeResult = await client.placeOrder({
     verifyingAddr: orderbookAddr,

@@ -3,6 +3,7 @@ import {
   GetAllMarketsResponse,
   GetSubaccountSummaryParams,
   HealthGroup,
+  OrderExpirationType,
   EIP712OrderParams,
   ProductEngineType,
   SignedEIP712OrderParams,
@@ -118,6 +119,7 @@ export interface EngineOrder extends Subaccount {
   digest: string;
   orderParams: EIP712OrderParams;
   placementTime: number;
+  orderType: OrderExpirationType;
 }
 
 export type GetEngineOrderResponse = EngineOrder;
