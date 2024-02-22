@@ -19,6 +19,7 @@ import {
   BalanceHealthContributions,
   calcTotalBorrowed,
   calcTotalDeposited,
+  OrderExpirationType,
   PerpMarket,
   ProductEngineType,
   SpotMarket,
@@ -60,7 +61,7 @@ export function mapEngineServerOrder(
       subaccountName: subaccount.subaccountName,
     },
     placementTime: order.placed_at,
-    orderType: order.order_type,
+    orderType: order.order_type as OrderExpirationType,
   };
 }
 

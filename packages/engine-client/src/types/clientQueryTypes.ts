@@ -4,7 +4,7 @@ import {
   GetSubaccountSummaryParams,
   HealthGroup,
   OrderExpirationType,
-  OrderParams,
+  EIP712OrderParams,
   ProductEngineType,
   SignedEIP712OrderParams,
   Subaccount,
