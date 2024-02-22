@@ -1,3 +1,4 @@
+import { OrderExpirationType } from '@vertex-protocol/contracts';
 import {
   EngineServerPerpBalance,
   EngineServerPerpProduct,
@@ -266,7 +267,7 @@ export interface EngineServerOrder {
   unfilled_amount: string;
   digest: string;
   placed_at: number;
-  order_type: string;
+  order_type: OrderExpirationType;
 }
 
 export type EngineServerGetOrderResponse = EngineServerOrder;
