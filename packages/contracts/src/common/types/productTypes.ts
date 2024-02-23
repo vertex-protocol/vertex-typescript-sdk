@@ -55,6 +55,8 @@ export interface PerpProduct extends BaseProduct {
   type: ProductEngineType.PERP;
   // Current open interest
   openInterest: BigDecimal;
+  cumulativeFundingLong: BigDecimal;
+  cumulativeFundingShort: BigDecimal;
 }
 
 /**

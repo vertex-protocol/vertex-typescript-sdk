@@ -605,7 +605,7 @@ export class IndexerBaseClient {
         cumulativeUsers: toBigDecimal(snapshot.cumulative_users),
         dailyActiveUsers: toBigDecimal(snapshot.daily_active_users),
         tvl: toBigDecimal(snapshot.tvl),
-        borrowRates: mapValues(snapshot.borrow_rates, toBigDecimal),
+        borrowRates: mapValues(snapshot.borrow_rates, fromX18),
         cumulativeLiquidationAmounts: mapValues(
           snapshot.cumulative_liquidation_amounts,
           toBigDecimal,
@@ -624,9 +624,9 @@ export class IndexerBaseClient {
         ),
         cumulativeTrades: mapValues(snapshot.cumulative_trades, toBigDecimal),
         cumulativeVolumes: mapValues(snapshot.cumulative_volumes, toBigDecimal),
-        depositRates: mapValues(snapshot.deposit_rates, toBigDecimal),
-        fundingRates: mapValues(snapshot.funding_rates, toBigDecimal),
-        openInterests: mapValues(snapshot.open_interests, toBigDecimal),
+        depositRates: mapValues(snapshot.deposit_rates, fromX18),
+        fundingRates: mapValues(snapshot.funding_rates, fromX18),
+        openInterests: mapValues(snapshot.open_interests, fromX18),
         totalBorrows: mapValues(snapshot.total_borrows, toBigDecimal),
         totalDeposits: mapValues(snapshot.total_deposits, toBigDecimal),
       };

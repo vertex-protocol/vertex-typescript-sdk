@@ -1,11 +1,11 @@
-import { FQuerier } from '../typechain-types';
+import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import {
   BalanceHealthContributions,
   PerpProduct,
   ProductEngineType,
   SpotProduct,
 } from '../common';
-import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
+import { FQuerier } from '../typechain-types';
 import { calcTotalBorrowed, calcTotalDeposited } from '../utils';
 
 export function mapContractSpotProduct(
@@ -48,6 +48,8 @@ export function mapContractPerpProduct(
     shortWeightMaintenance: fromX18(product.risk.shortWeightMaintenanceX18),
     longWeightInitial: fromX18(product.risk.longWeightInitialX18),
     longWeightMaintenance: fromX18(product.risk.longWeightMaintenanceX18),
+    cumulativeFundingLong: fromX18(product.state.cumulativeFundingLongX18),
+    cumulativeFundingShort: fromX18(product.state.cumulativeFundingShortX18),
     oraclePrice: fromX18(product.oraclePriceX18),
     openInterest: toBigDecimal(product.state.openInterest),
     totalLpBaseAmount: toBigDecimal(product.lpState.base),

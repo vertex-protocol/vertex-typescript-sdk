@@ -1,4 +1,15 @@
 import {
+  BalanceHealthContributions,
+  calcTotalBorrowed,
+  calcTotalDeposited,
+  OrderExpirationType,
+  PerpMarket,
+  ProductEngineType,
+  SpotMarket,
+  subaccountFromHex,
+} from '@vertex-protocol/contracts';
+import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
+import {
   EngineMarketPrice,
   EngineOrder,
   EnginePriceTickLiquidity,
@@ -14,17 +25,6 @@ import {
   EngineSymbolsResponse,
   GetEngineSubaccountSummaryResponse,
 } from '../types';
-import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
-import {
-  BalanceHealthContributions,
-  calcTotalBorrowed,
-  calcTotalDeposited,
-  OrderExpirationType,
-  PerpMarket,
-  ProductEngineType,
-  SpotMarket,
-  subaccountFromHex,
-} from '@vertex-protocol/contracts';
 import { mapEngineServerProductType } from './productEngineTypeMappers';
 
 export function mapEngineServerTickLiquidity(
@@ -129,6 +129,10 @@ export function mapEngineServerPerpProduct(
       totalLpBaseAmount: toBigDecimal(product.lp_state.base),
       totalLpQuoteAmount: toBigDecimal(product.lp_state.quote),
       totalLpSupply: toBigDecimal(product.lp_state.supply),
+      cumulativeFundingLong: fromX18(product.state.cumulative_funding_long_x18),
+      cumulativeFundingShort: fromX18(
+        product.state.cumulative_funding_short_x18,
+      ),
     },
   };
 }
