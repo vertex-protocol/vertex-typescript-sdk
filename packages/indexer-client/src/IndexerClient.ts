@@ -7,36 +7,36 @@ import { toBigDecimal } from '@vertex-protocol/utils';
 import { IndexerBaseClient } from './IndexerBaseClient';
 import {
   BaseIndexerPaginatedEvent,
-  GetIndexerPaginatedInterestFundingPaymentsResponse,
-  GetIndexerPaginatedOrdersParams,
-  GetIndexerPaginatedOrdersResponse,
-  GetIndexerPaginatedRewardsParams,
-  GetIndexerPaginatedRewardsResponse,
-  GetIndexerSubaccountCollateralEventsParams,
-  GetIndexerSubaccountCollateralEventsResponse,
-  GetIndexerSubaccountInterestFundingPaymentsParams,
-  GetIndexerSubaccountLiquidationEventsParams,
-  GetIndexerSubaccountLiquidationEventsResponse,
-  GetIndexerSubaccountLpEventsParams,
-  GetIndexerSubaccountLpEventsResponse,
-  GetIndexerSubaccountMatchEventParams,
-  GetIndexerSubaccountMatchEventsResponse,
-  GetIndexerSubaccountSettlementEventsParams,
-  GetIndexerSubaccountSettlementEventsResponse,
   IndexerCollateralEvent,
   IndexerEventPerpStateSnapshot,
   IndexerEventSpotStateSnapshot,
   IndexerEventWithTx,
   IndexerLiquidationEvent,
   IndexerLpEvent,
+  IndexerQueryPaginatedInterestFundingPaymentsResponse,
+  IndexerQueryPaginatedOrdersParams,
+  IndexerQueryPaginatedOrdersResponse,
+  IndexerQueryPaginatedRewardsParams,
+  IndexerQueryPaginatedRewardsResponse,
+  IndexerQuerySubaccountCollateralEventsParams,
+  IndexerQuerySubaccountCollateralEventsResponse,
+  IndexerQuerySubaccountInterestFundingPaymentsParams,
+  IndexerQuerySubaccountLiquidationEventsParams,
+  IndexerQuerySubaccountLiquidationEventsResponse,
+  IndexerQuerySubaccountLpEventsParams,
+  IndexerQuerySubaccountLpEventsResponse,
+  IndexerQuerySubaccountMatchEventParams,
+  IndexerQuerySubaccountMatchEventsResponse,
+  IndexerQuerySubaccountSettlementEventsParams,
+  IndexerQuerySubaccountSettlementEventsResponse,
   IndexerSettlementEvent,
   PaginatedIndexerEventsResponse,
 } from './types';
 
 export class IndexerClient extends IndexerBaseClient {
   async getPaginatedSubaccountMatchEvents(
-    params: GetIndexerSubaccountMatchEventParams,
-  ): Promise<GetIndexerSubaccountMatchEventsResponse> {
+    params: IndexerQuerySubaccountMatchEventParams,
+  ): Promise<IndexerQuerySubaccountMatchEventsResponse> {
     const {
       startCursor,
       limit: requestedLimit,
@@ -56,8 +56,8 @@ export class IndexerClient extends IndexerBaseClient {
   }
 
   async getPaginatedSubaccountLpEvents(
-    params: GetIndexerSubaccountLpEventsParams,
-  ): Promise<GetIndexerSubaccountLpEventsResponse> {
+    params: IndexerQuerySubaccountLpEventsParams,
+  ): Promise<IndexerQuerySubaccountLpEventsResponse> {
     const {
       startCursor,
       limit: requestedLimit,
@@ -140,8 +140,8 @@ export class IndexerClient extends IndexerBaseClient {
   }
 
   async getPaginatedSubaccountCollateralEvents(
-    params: GetIndexerSubaccountCollateralEventsParams,
-  ): Promise<GetIndexerSubaccountCollateralEventsResponse> {
+    params: IndexerQuerySubaccountCollateralEventsParams,
+  ): Promise<IndexerQuerySubaccountCollateralEventsResponse> {
     const {
       startCursor,
       limit: requestedLimit,
@@ -183,8 +183,8 @@ export class IndexerClient extends IndexerBaseClient {
   }
 
   async getPaginatedSubaccountOrders(
-    params: GetIndexerPaginatedOrdersParams,
-  ): Promise<GetIndexerPaginatedOrdersResponse> {
+    params: IndexerQueryPaginatedOrdersParams,
+  ): Promise<IndexerQueryPaginatedOrdersResponse> {
     const {
       startCursor,
       limit: requestedLimit,
@@ -214,8 +214,8 @@ export class IndexerClient extends IndexerBaseClient {
   }
 
   async getPaginatedSubaccountSettlementEvents(
-    params: GetIndexerSubaccountSettlementEventsParams,
-  ): Promise<GetIndexerSubaccountSettlementEventsResponse> {
+    params: IndexerQuerySubaccountSettlementEventsParams,
+  ): Promise<IndexerQuerySubaccountSettlementEventsResponse> {
     const {
       startCursor,
       limit: requestedLimit,
@@ -260,8 +260,8 @@ export class IndexerClient extends IndexerBaseClient {
   }
 
   async getPaginatedSubaccountLiquidationEvents(
-    params: GetIndexerSubaccountLiquidationEventsParams,
-  ): Promise<GetIndexerSubaccountLiquidationEventsResponse> {
+    params: IndexerQuerySubaccountLiquidationEventsParams,
+  ): Promise<IndexerQuerySubaccountLiquidationEventsResponse> {
     const {
       startCursor,
       limit: requestedLimit,
@@ -377,8 +377,8 @@ export class IndexerClient extends IndexerBaseClient {
    * @param params
    */
   async getPaginatedSubaccountInterestFundingPayments(
-    params: GetIndexerSubaccountInterestFundingPaymentsParams,
-  ): Promise<GetIndexerPaginatedInterestFundingPaymentsResponse> {
+    params: IndexerQuerySubaccountInterestFundingPaymentsParams,
+  ): Promise<IndexerQueryPaginatedInterestFundingPaymentsResponse> {
     const { limit, productIds, startCursor, subaccountName, subaccountOwner } =
       params;
     const baseResponse = await this.getInterestFundingPayments({
@@ -406,8 +406,8 @@ export class IndexerClient extends IndexerBaseClient {
    * @param params
    */
   async getPaginatedRewards(
-    params: GetIndexerPaginatedRewardsParams,
-  ): Promise<GetIndexerPaginatedRewardsResponse> {
+    params: IndexerQueryPaginatedRewardsParams,
+  ): Promise<IndexerQueryPaginatedRewardsResponse> {
     const requestedLimit = params.limit;
 
     const baseResponse = await this.getRewards({

@@ -16,64 +16,64 @@ import {
 } from './dataMappers';
 import {
   Candlestick,
-  GetIndexerArbRewardsParams,
-  GetIndexerArbRewardsResponse,
-  GetIndexerCandlesticksParams,
-  GetIndexerCandlesticksResponse,
-  GetIndexerClaimArbMerkleProofsParams,
-  GetIndexerClaimArbMerkleProofsResponse,
-  GetIndexerClaimVrtxMerkleProofsParams,
-  GetIndexerClaimVrtxMerkleProofsResponse,
-  GetIndexerEventsParams,
-  GetIndexerEventsResponse,
-  GetIndexerFundingRateParams,
-  GetIndexerFundingRateResponse,
-  GetIndexerInterestFundingPaymentsParams,
-  GetIndexerInterestFundingPaymentsResponse,
-  GetIndexerLinkedSignerParams,
-  GetIndexerLinkedSignerResponse,
-  GetIndexerMakerStatisticsParams,
-  GetIndexerMakerStatisticsResponse,
-  GetIndexerMarketSnapshotsParams,
-  GetIndexerMarketSnapshotsResponse,
-  GetIndexerMatchEventsParams,
-  GetIndexerMatchEventsResponse,
-  GetIndexerMultiProductFundingRatesParams,
-  GetIndexerMultiProductFundingRatesResponse,
-  GetIndexerMultiProductPerpPricesParams,
-  GetIndexerMultiProductPerpPricesResponse,
-  GetIndexerMultiProductSnapshotsParams,
-  GetIndexerMultiProductSnapshotsResponse,
-  GetIndexerMultiSubaccountSnapshotsParams,
-  GetIndexerMultiSubaccountSnapshotsResponse,
-  GetIndexerOraclePricesParams,
-  GetIndexerOraclePricesResponse,
-  GetIndexerOrdersParams,
-  GetIndexerOrdersResponse,
-  GetIndexerPerpPricesParams,
-  GetIndexerPerpPricesResponse,
-  GetIndexerProductSnapshotsParams,
-  GetIndexerProductSnapshotsResponse,
-  GetIndexerQuotePriceResponse,
-  GetIndexerReferralCodeParams,
-  GetIndexerReferralCodeResponse,
-  GetIndexerRewardsParams,
-  GetIndexerRewardsResponse,
-  GetIndexerTakerRewardsParams,
-  GetIndexerTakerRewardsResponse,
   IndexerEventWithTx,
   IndexerMarketSnapshot,
   IndexerMatchEvent,
   IndexerOraclePrice,
-  IndexerServerEventsParams,
+  IndexerQueryArbRewardsParams,
+  IndexerQueryArbRewardsResponse,
+  IndexerQueryCandlesticksParams,
+  IndexerQueryCandlesticksResponse,
+  IndexerQueryClaimArbMerkleProofsParams,
+  IndexerQueryClaimArbMerkleProofsResponse,
+  IndexerQueryClaimVrtxMerkleProofsParams,
+  IndexerQueryClaimVrtxMerkleProofsResponse,
+  IndexerQueryEventsParams,
+  IndexerQueryEventsResponse,
+  IndexerQueryFundingRateParams,
+  IndexerQueryFundingRateResponse,
+  IndexerQueryInterestFundingPaymentsParams,
+  IndexerQueryInterestFundingPaymentsResponse,
+  IndexerQueryLinkedSignerParams,
+  IndexerQueryLinkedSignerResponse,
+  IndexerQueryListSubaccountsParams,
+  IndexerQueryListSubaccountsResponse,
+  IndexerQueryMakerStatisticsParams,
+  IndexerQueryMakerStatisticsResponse,
+  IndexerQueryMarketSnapshotsParams,
+  IndexerQueryMarketSnapshotsResponse,
+  IndexerQueryMatchEventsParams,
+  IndexerQueryMatchEventsResponse,
+  IndexerQueryMultiProductFundingRatesParams,
+  IndexerQueryMultiProductFundingRatesResponse,
+  IndexerQueryMultiProductPerpPricesParams,
+  IndexerQueryMultiProductPerpPricesResponse,
+  IndexerQueryMultiProductSnapshotsParams,
+  IndexerQueryMultiProductSnapshotsResponse,
+  IndexerQueryMultiSubaccountSnapshotsParams,
+  IndexerQueryMultiSubaccountSnapshotsResponse,
+  IndexerQueryOraclePricesParams,
+  IndexerQueryOraclePricesResponse,
+  IndexerQueryOrdersParams,
+  IndexerQueryOrdersResponse,
+  IndexerQueryPerpPricesParams,
+  IndexerQueryPerpPricesResponse,
+  IndexerQueryProductSnapshotsParams,
+  IndexerQueryProductSnapshotsResponse,
+  IndexerQueryQuotePriceResponse,
+  IndexerQueryReferralCodeParams,
+  IndexerQueryReferralCodeResponse,
+  IndexerQueryRewardsParams,
+  IndexerQueryRewardsResponse,
+  IndexerQueryTakerRewardsParams,
+  IndexerQueryTakerRewardsResponse,
+  IndexerServerQueryEventsParams,
   IndexerServerQueryRequestByType,
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
   IndexerSnapshotBalance,
   IndexerSubaccountSnapshot,
   IndexerTakerRewardsEpoch,
-  ListIndexerSubaccountsParams,
-  ListIndexerSubaccountsResponse,
 } from './types';
 
 export interface IndexerClientOpts {
@@ -103,8 +103,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async listSubaccounts(
-    params: ListIndexerSubaccountsParams,
-  ): Promise<ListIndexerSubaccountsResponse> {
+    params: IndexerQueryListSubaccountsParams,
+  ): Promise<IndexerQueryListSubaccountsResponse> {
     const baseResponse = await this.query('subaccounts', params);
 
     return baseResponse.subaccounts.map((item) => {
@@ -123,8 +123,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getMultiSubaccountSnapshots(
-    params: GetIndexerMultiSubaccountSnapshotsParams,
-  ): Promise<GetIndexerMultiSubaccountSnapshotsResponse> {
+    params: IndexerQueryMultiSubaccountSnapshotsParams,
+  ): Promise<IndexerQueryMultiSubaccountSnapshotsResponse> {
     const subaccountHexIds = params.subaccounts.map(
       ({ subaccountOwner, subaccountName }) =>
         subaccountToHex({
@@ -178,8 +178,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getRewards(
-    params: GetIndexerRewardsParams,
-  ): Promise<GetIndexerRewardsResponse> {
+    params: IndexerQueryRewardsParams,
+  ): Promise<IndexerQueryRewardsResponse> {
     const baseResponse = await this.query('rewards', {
       address: params.address,
       start: params.start,
@@ -199,8 +199,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getTakerRewards(
-    params: GetIndexerTakerRewardsParams,
-  ): Promise<GetIndexerTakerRewardsResponse> {
+    params: IndexerQueryTakerRewardsParams,
+  ): Promise<IndexerQueryTakerRewardsResponse> {
     const baseResponse = await this.query('taker_rewards', {
       address: params.address,
       start: params.start,
@@ -228,8 +228,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getReferralCode(
-    params: GetIndexerReferralCodeParams,
-  ): Promise<GetIndexerReferralCodeResponse> {
+    params: IndexerQueryReferralCodeParams,
+  ): Promise<IndexerQueryReferralCodeResponse> {
     const baseResponse = await this.query('referral_code', {
       subaccount: subaccountToHex({
         subaccountOwner: params.subaccount.subaccountOwner,
@@ -247,8 +247,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getFundingRate(
-    params: GetIndexerFundingRateParams,
-  ): Promise<GetIndexerFundingRateResponse> {
+    params: IndexerQueryFundingRateParams,
+  ): Promise<IndexerQueryFundingRateResponse> {
     const baseResponse = await this.query('funding_rate', {
       product_id: params.productId,
     });
@@ -261,8 +261,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getMultiProductFundingRates(
-    params: GetIndexerMultiProductFundingRatesParams,
-  ): Promise<GetIndexerMultiProductFundingRatesResponse> {
+    params: IndexerQueryMultiProductFundingRatesParams,
+  ): Promise<IndexerQueryMultiProductFundingRatesResponse> {
     const baseResponse = await this.query('funding_rates', {
       product_ids: params.productIds,
     });
@@ -275,8 +275,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getPerpPrices(
-    params: GetIndexerPerpPricesParams,
-  ): Promise<GetIndexerPerpPricesResponse> {
+    params: IndexerQueryPerpPricesParams,
+  ): Promise<IndexerQueryPerpPricesResponse> {
     const baseResponse = await this.query('price', {
       product_id: params.productId,
     });
@@ -289,8 +289,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getMultiProductPerpPrices(
-    params: GetIndexerMultiProductPerpPricesParams,
-  ): Promise<GetIndexerMultiProductPerpPricesResponse> {
+    params: IndexerQueryMultiProductPerpPricesParams,
+  ): Promise<IndexerQueryMultiProductPerpPricesResponse> {
     const baseResponse = await this.query('perp_prices', {
       product_ids: params.productIds,
     });
@@ -303,8 +303,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getOraclePrices(
-    params: GetIndexerOraclePricesParams,
-  ): Promise<GetIndexerOraclePricesResponse> {
+    params: IndexerQueryOraclePricesParams,
+  ): Promise<IndexerQueryOraclePricesResponse> {
     const baseResponse = await this.query('oracle_price', {
       product_ids: params.productIds,
     });
@@ -323,8 +323,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getCandlesticks(
-    params: GetIndexerCandlesticksParams,
-  ): Promise<GetIndexerCandlesticksResponse> {
+    params: IndexerQueryCandlesticksParams,
+  ): Promise<IndexerQueryCandlesticksResponse> {
     const baseResponse = await this.query('candlesticks', {
       product_id: params.productId,
       max_time: params.maxTimeInclusive,
@@ -349,8 +349,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getProductSnapshots(
-    params: GetIndexerProductSnapshotsParams,
-  ): Promise<GetIndexerProductSnapshotsResponse> {
+    params: IndexerQueryProductSnapshotsParams,
+  ): Promise<IndexerQueryProductSnapshotsResponse> {
     const baseResponse = await this.query('products', {
       product_id: params.productId,
       max_time: params.maxTimestampInclusive,
@@ -371,8 +371,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getMultiProductSnapshots(
-    params: GetIndexerMultiProductSnapshotsParams,
-  ): Promise<GetIndexerMultiProductSnapshotsResponse> {
+    params: IndexerQueryMultiProductSnapshotsParams,
+  ): Promise<IndexerQueryMultiProductSnapshotsResponse> {
     const baseResponse = await this.query('product_snapshots', {
       product_ids: params.productIds,
       max_time: params.maxTimestampInclusive,
@@ -392,9 +392,11 @@ export class IndexerBaseClient {
    * @param params
    */
   async getEvents(
-    params: GetIndexerEventsParams,
-  ): Promise<GetIndexerEventsResponse> {
-    const serverLimit = ((): IndexerServerEventsParams['limit'] | undefined => {
+    params: IndexerQueryEventsParams,
+  ): Promise<IndexerQueryEventsResponse> {
+    const serverLimit = (():
+      | IndexerServerQueryEventsParams['limit']
+      | undefined => {
       if (!params.limit) {
         return;
       }
@@ -441,8 +443,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getOrders(
-    params: GetIndexerOrdersParams,
-  ): Promise<GetIndexerOrdersResponse> {
+    params: IndexerQueryOrdersParams,
+  ): Promise<IndexerQueryOrdersResponse> {
     const baseResponse = await this.query('orders', {
       subaccount: params.subaccount
         ? subaccountToHex({
@@ -467,8 +469,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getMatchEvents(
-    params: GetIndexerMatchEventsParams,
-  ): Promise<GetIndexerMatchEventsResponse> {
+    params: IndexerQueryMatchEventsParams,
+  ): Promise<IndexerQueryMatchEventsResponse> {
     const baseResponse = await this.query('matches', {
       subaccount: params.subaccount
         ? subaccountToHex({
@@ -533,8 +535,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getInterestFundingPayments(
-    params: GetIndexerInterestFundingPaymentsParams,
-  ): Promise<GetIndexerInterestFundingPaymentsResponse> {
+    params: IndexerQueryInterestFundingPaymentsParams,
+  ): Promise<IndexerQueryInterestFundingPaymentsResponse> {
     const baseResponse = await this.query('interest_and_funding', {
       subaccount: subaccountToHex({
         subaccountOwner: params.subaccount.subaccountOwner,
@@ -559,7 +561,7 @@ export class IndexerBaseClient {
   /**
    * Gets quote (USDC) price in terms of USD
    */
-  async getQuotePrice(): Promise<GetIndexerQuotePriceResponse> {
+  async getQuotePrice(): Promise<IndexerQueryQuotePriceResponse> {
     const baseResponse = await this.query('usdc_price', {});
     return {
       price: fromX18(baseResponse.price_x18),
@@ -570,8 +572,8 @@ export class IndexerBaseClient {
    * Fetches currently registered linked signer with the remaining txs allowed for the subaccount
    */
   async getLinkedSignerWithRateLimit(
-    params: GetIndexerLinkedSignerParams,
-  ): Promise<GetIndexerLinkedSignerResponse> {
+    params: IndexerQueryLinkedSignerParams,
+  ): Promise<IndexerQueryLinkedSignerResponse> {
     const baseResponse = await this.query('linked_signer_rate_limit', {
       subaccount: subaccountToHex(params.subaccount),
     });
@@ -588,8 +590,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getMarketSnapshots(
-    params: GetIndexerMarketSnapshotsParams,
-  ): Promise<GetIndexerMarketSnapshotsResponse> {
+    params: IndexerQueryMarketSnapshotsParams,
+  ): Promise<IndexerQueryMarketSnapshotsResponse> {
     const baseResponse = await this.query('market_snapshots', {
       interval: {
         granularity: params.granularity,
@@ -639,8 +641,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getClaimVrtxMerkleProofs(
-    params: GetIndexerClaimVrtxMerkleProofsParams,
-  ): Promise<GetIndexerClaimVrtxMerkleProofsResponse> {
+    params: IndexerQueryClaimVrtxMerkleProofsParams,
+  ): Promise<IndexerQueryClaimVrtxMerkleProofsResponse> {
     const baseResponse = await this.query('vrtx_merkle_proofs', params);
 
     return baseResponse.merkle_proofs.map((proof) => {
@@ -657,8 +659,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getArbRewards(
-    params: GetIndexerArbRewardsParams,
-  ): Promise<GetIndexerArbRewardsResponse> {
+    params: IndexerQueryArbRewardsParams,
+  ): Promise<IndexerQueryArbRewardsResponse> {
     const baseResponse = await this.query('arb_rewards', {
       address: params.address,
     });
@@ -675,8 +677,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getClaimArbMerkleProofs(
-    params: GetIndexerClaimArbMerkleProofsParams,
-  ): Promise<GetIndexerClaimArbMerkleProofsResponse> {
+    params: IndexerQueryClaimArbMerkleProofsParams,
+  ): Promise<IndexerQueryClaimArbMerkleProofsResponse> {
     const baseResponse = await this.query('arb_merkle_proofs', params);
 
     return baseResponse.merkle_proofs.map((proof) => {
@@ -693,8 +695,8 @@ export class IndexerBaseClient {
    * @param params
    */
   async getMakerStatistics(
-    params: GetIndexerMakerStatisticsParams,
-  ): Promise<GetIndexerMakerStatisticsResponse> {
+    params: IndexerQueryMakerStatisticsParams,
+  ): Promise<IndexerQueryMakerStatisticsResponse> {
     const baseResponse = await this.query('maker_statistics', {
       product_id: params.productId,
       epoch: params.epoch,

@@ -1,15 +1,19 @@
-import { BigDecimal, BigDecimalish } from '@vertex-protocol/utils';
 import {
   EIP712CancelOrdersParams,
   EIP712CancelProductOrdersParams,
   Subaccount,
 } from '@vertex-protocol/contracts';
-import { TriggerServerOrder } from './serverQueryTypes';
 import {
   EngineOrderParams,
   EngineServerExecuteResult,
 } from '@vertex-protocol/engine-client';
+import { BigDecimal, BigDecimalish } from '@vertex-protocol/utils';
 import { BigNumberish } from 'ethers';
+import { TriggerServerOrder } from './serverQueryTypes';
+
+/**
+ * Base Types
+ */
 
 type WithOptionalNonce<T> = Omit<T, 'nonce'> & { nonce?: string };
 

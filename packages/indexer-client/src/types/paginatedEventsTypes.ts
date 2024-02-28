@@ -1,16 +1,16 @@
 import { Subaccount } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import {
-  GetIndexerInterestFundingPaymentsParams,
-  GetIndexerInterestFundingPaymentsResponse,
-  GetIndexerRewardsParams,
-  GetIndexerRewardsResponse,
   IndexerEventBalanceStateSnapshot,
   IndexerEventPerpStateSnapshot,
   IndexerEventSpotStateSnapshot,
   IndexerEventWithTx,
   IndexerMatchEvent,
   IndexerOrder,
+  IndexerQueryInterestFundingPaymentsParams,
+  IndexerQueryInterestFundingPaymentsResponse,
+  IndexerQueryRewardsParams,
+  IndexerQueryRewardsResponse,
 } from './clientTypes';
 import { CollateralEventType } from './collateralEventType';
 
@@ -44,7 +44,7 @@ export interface PaginatedIndexerEventsResponse<
  * Collateral
  */
 
-export interface GetIndexerSubaccountCollateralEventsParams
+export interface IndexerQuerySubaccountCollateralEventsParams
   extends BaseSubaccountPaginationParams {
   eventTypes?: CollateralEventType[];
 }
@@ -57,14 +57,15 @@ export interface IndexerCollateralEvent extends BaseIndexerPaginatedEvent {
   snapshot: IndexerEventSpotStateSnapshot;
 }
 
-export type GetIndexerSubaccountCollateralEventsResponse =
+export type IndexerQuerySubaccountCollateralEventsResponse =
   PaginatedIndexerEventsResponse<IndexerCollateralEvent>;
 
 /**
  * LP
  */
 
-export type GetIndexerSubaccountLpEventsParams = BaseSubaccountPaginationParams;
+export type IndexerQuerySubaccountLpEventsParams =
+  BaseSubaccountPaginationParams;
 
 export interface IndexerLpEvent extends BaseIndexerPaginatedEvent {
   // Positive for mint, negative for burn
@@ -78,33 +79,33 @@ export interface IndexerLpEvent extends BaseIndexerPaginatedEvent {
   quoteSnapshot?: IndexerEventSpotStateSnapshot;
 }
 
-export type GetIndexerSubaccountLpEventsResponse =
+export type IndexerQuerySubaccountLpEventsResponse =
   PaginatedIndexerEventsResponse<IndexerLpEvent>;
 
 /**
  * Match events
  */
 
-export interface GetIndexerSubaccountMatchEventParams
+export interface IndexerQuerySubaccountMatchEventParams
   extends BaseSubaccountPaginationParams {
   // If not given, defaults to all products
   productIds?: number[];
 }
 
-export type GetIndexerSubaccountMatchEventsResponse =
+export type IndexerQuerySubaccountMatchEventsResponse =
   PaginatedIndexerEventsResponse<IndexerMatchEvent>;
 
 /**
  * Orders
  */
 
-export interface GetIndexerPaginatedOrdersParams
+export interface IndexerQueryPaginatedOrdersParams
   extends BaseSubaccountPaginationParams {
   // If not given, defaults to all products
   productIds?: number[];
 }
 
-export interface GetIndexerPaginatedOrdersResponse {
+export interface IndexerQueryPaginatedOrdersResponse {
   orders: IndexerOrder[];
   meta: IndexerPaginationMeta;
 }
@@ -113,7 +114,7 @@ export interface GetIndexerPaginatedOrdersResponse {
  * Liquidations
  */
 
-export type GetIndexerSubaccountLiquidationEventsParams =
+export type IndexerQuerySubaccountLiquidationEventsParams =
   BaseSubaccountPaginationParams;
 
 type WithIndexerEvent<
@@ -161,14 +162,14 @@ export interface IndexerLiquidationEvent extends BaseIndexerPaginatedEvent {
   >;
 }
 
-export type GetIndexerSubaccountLiquidationEventsResponse =
+export type IndexerQuerySubaccountLiquidationEventsResponse =
   PaginatedIndexerEventsResponse<IndexerLiquidationEvent>;
 
 /**
  * Settlement
  */
 
-export type GetIndexerSubaccountSettlementEventsParams =
+export type IndexerQuerySubaccountSettlementEventsParams =
   BaseSubaccountPaginationParams;
 
 export interface IndexerSettlementEvent extends BaseIndexerPaginatedEvent {
@@ -177,19 +178,22 @@ export interface IndexerSettlementEvent extends BaseIndexerPaginatedEvent {
   snapshot: IndexerEventPerpStateSnapshot;
 }
 
-export type GetIndexerSubaccountSettlementEventsResponse =
+export type IndexerQuerySubaccountSettlementEventsResponse =
   PaginatedIndexerEventsResponse<IndexerSettlementEvent>;
 
 /**
  * Interest / Funding
  */
 
-export type GetIndexerSubaccountInterestFundingPaymentsParams =
+export type IndexerQuerySubaccountInterestFundingPaymentsParams =
   BaseSubaccountPaginationParams &
-    Pick<GetIndexerInterestFundingPaymentsParams, 'productIds' | 'startCursor'>;
+    Pick<
+      IndexerQueryInterestFundingPaymentsParams,
+      'productIds' | 'startCursor'
+    >;
 
-export interface GetIndexerPaginatedInterestFundingPaymentsResponse
-  extends GetIndexerInterestFundingPaymentsResponse {
+export interface IndexerQueryPaginatedInterestFundingPaymentsResponse
+  extends IndexerQueryInterestFundingPaymentsResponse {
   meta: IndexerPaginationMeta;
 }
 
@@ -198,8 +202,8 @@ export interface GetIndexerPaginatedInterestFundingPaymentsResponse
  * string pagination params / meta that is used for other paginated queries
  */
 
-export type GetIndexerPaginatedRewardsParams = IndexerPaginationParams &
-  Pick<GetIndexerRewardsParams, 'address'>;
+export type IndexerQueryPaginatedRewardsParams = IndexerPaginationParams &
+  Pick<IndexerQueryRewardsParams, 'address'>;
 
-export type GetIndexerPaginatedRewardsResponse = WithPaginationMeta &
-  GetIndexerRewardsResponse;
+export type IndexerQueryPaginatedRewardsResponse = WithPaginationMeta &
+  IndexerQueryRewardsResponse;

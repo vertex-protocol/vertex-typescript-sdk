@@ -1,4 +1,3 @@
-import { BaseVertexAPI } from '../base';
 import {
   getSubaccountSummary,
   GetSubaccountSummaryParams,
@@ -9,11 +8,12 @@ import {
   GetEngineSubaccountFeeRatesParams,
   GetEngineSubaccountSummaryParams,
 } from '@vertex-protocol/engine-client';
-import { GetSubaccountIdParams } from './types';
 import {
-  GetIndexerLinkedSignerParams,
-  GetIndexerReferralCodeParams,
+  IndexerQueryLinkedSignerParams,
+  IndexerQueryReferralCodeParams,
 } from '@vertex-protocol/indexer-client';
+import { BaseVertexAPI } from '../base';
+import { GetSubaccountIdParams } from './types';
 
 export class SubaccountQueryAPI extends BaseVertexAPI {
   /**
@@ -67,7 +67,7 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
    * @param params
    */
   async getSubaccountLinkedSignerWithRateLimit(
-    params: GetIndexerLinkedSignerParams,
+    params: IndexerQueryLinkedSignerParams,
   ) {
     return this.context.indexerClient.getLinkedSignerWithRateLimit(params);
   }
@@ -76,7 +76,7 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
    * Retrieves referral code for an address
    * @param params
    */
-  async getReferralCode(params: GetIndexerReferralCodeParams) {
+  async getReferralCode(params: IndexerQueryReferralCodeParams) {
     return this.context.indexerClient.getReferralCode(params);
   }
 }

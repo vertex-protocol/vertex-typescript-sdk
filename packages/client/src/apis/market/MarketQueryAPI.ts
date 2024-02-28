@@ -1,4 +1,3 @@
-import { BaseVertexAPI } from '../base';
 import {
   getAllMarkets,
   GetAllMarketsResponse,
@@ -14,15 +13,16 @@ import {
   ValidateEngineOrderParams,
 } from '@vertex-protocol/engine-client';
 import {
-  GetIndexerCandlesticksParams,
-  GetIndexerFundingRateParams,
-  GetIndexerMarketSnapshotsParams,
-  GetIndexerMultiProductFundingRatesParams,
-  GetIndexerMultiProductSnapshotsParams,
-  GetIndexerOrdersParams,
-  GetIndexerOrdersResponse,
-  GetIndexerProductSnapshotsParams,
+  IndexerQueryCandlesticksParams,
+  IndexerQueryFundingRateParams,
+  IndexerQueryMarketSnapshotsParams,
+  IndexerQueryMultiProductFundingRatesParams,
+  IndexerQueryMultiProductSnapshotsParams,
+  IndexerQueryOrdersParams,
+  IndexerQueryOrdersResponse,
+  IndexerQueryProductSnapshotsParams,
 } from '@vertex-protocol/indexer-client';
+import { BaseVertexAPI } from '../base';
 import { GetTriggerOrdersParams } from './types';
 
 export class MarketQueryAPI extends BaseVertexAPI {
@@ -90,8 +90,8 @@ export class MarketQueryAPI extends BaseVertexAPI {
    * @param params
    */
   async getHistoricalOrders(
-    params: GetIndexerOrdersParams,
-  ): Promise<GetIndexerOrdersResponse> {
+    params: IndexerQueryOrdersParams,
+  ): Promise<IndexerQueryOrdersResponse> {
     return this.context.indexerClient.getOrders(params);
   }
 
@@ -124,7 +124,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async getCandlesticks(params: GetIndexerCandlesticksParams) {
+  async getCandlesticks(params: IndexerQueryCandlesticksParams) {
     return this.context.indexerClient.getCandlesticks(params);
   }
 
@@ -151,7 +151,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async getFundingRate(params: GetIndexerFundingRateParams) {
+  async getFundingRate(params: IndexerQueryFundingRateParams) {
     return this.context.indexerClient.getFundingRate(params);
   }
 
@@ -161,7 +161,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    * @param params
    */
   async getMultiProductFundingRates(
-    params: GetIndexerMultiProductFundingRatesParams,
+    params: IndexerQueryMultiProductFundingRatesParams,
   ) {
     return this.context.indexerClient.getMultiProductFundingRates(params);
   }
@@ -171,7 +171,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async getProductSnapshots(params: GetIndexerProductSnapshotsParams) {
+  async getProductSnapshots(params: IndexerQueryProductSnapshotsParams) {
     return this.context.indexerClient.getProductSnapshots(params);
   }
 
@@ -180,7 +180,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async getMarketSnapshots(params: GetIndexerMarketSnapshotsParams) {
+  async getMarketSnapshots(params: IndexerQueryMarketSnapshotsParams) {
     return this.context.indexerClient.getMarketSnapshots(params);
   }
 
@@ -190,7 +190,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    * @param params
    */
   async getMultiProductSnapshots(
-    params: GetIndexerMultiProductSnapshotsParams,
+    params: IndexerQueryMultiProductSnapshotsParams,
   ) {
     return this.context.indexerClient.getMultiProductSnapshots(params);
   }

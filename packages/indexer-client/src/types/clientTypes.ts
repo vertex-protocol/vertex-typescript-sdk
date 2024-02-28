@@ -13,17 +13,15 @@ import { BigDecimal } from '@vertex-protocol/utils';
 import { CandlestickPeriod } from './CandlestickPeriod';
 import { IndexerEventType } from './IndexerEventType';
 import {
-  IndexerServerClaimArbMerkleProofsParams,
-  IndexerServerClaimVrtxMerkleProofsParams,
-  IndexerServerListSubaccountsParams,
+  IndexerServerQueryClaimArbMerkleProofsParams,
+  IndexerServerQueryClaimVrtxMerkleProofsParams,
+  IndexerServerQueryListSubaccountsParams,
 } from './serverTypes';
 import { VertexTx } from './VertexTx';
 
-export type ListIndexerSubaccountsParams = IndexerServerListSubaccountsParams;
-
-export type ListIndexerSubaccountsResponse = ({
-  hexId: string;
-} & Subaccount)[];
+/**
+ * Base Types
+ */
 
 export type IndexerSpotBalance = Omit<SpotBalance, 'healthContributions'>;
 
@@ -58,7 +56,22 @@ export interface IndexerBalanceTrackedVars {
   netEntryLpCumulative: BigDecimal;
 }
 
-export interface GetIndexerMultiSubaccountSnapshotsParams {
+/**
+ * List Subaccounts
+ */
+
+export type IndexerQueryListSubaccountsParams =
+  IndexerServerQueryListSubaccountsParams;
+
+export type IndexerQueryListSubaccountsResponse = ({
+  hexId: string;
+} & Subaccount)[];
+
+/**
+ * Subaccount snapshots
+ */
+
+export interface IndexerQueryMultiSubaccountSnapshotsParams {
   subaccounts: Subaccount[];
   // A series of timestamps for which to return a summary of each subaccount
   timestamps: number[];
@@ -75,25 +88,25 @@ export interface IndexerSubaccountSnapshot {
   balances: IndexerSnapshotBalance[];
 }
 
-export interface GetIndexerMultiSubaccountSnapshotsResponse {
+export interface IndexerQueryMultiSubaccountSnapshotsResponse {
   // Utility for retrieving a subaccount's hex ID, in the same order as the request params
   subaccountHexIds: string[];
   // Map of subaccount hex -> timestamp requested -> summary for that time
   snapshots: Record<string, Record<string, IndexerSubaccountSnapshot>>;
 }
 
-export interface GetIndexerRewardsParams {
+/**
+ * Rewards
+ */
+
+export interface IndexerQueryRewardsParams {
   address: string;
   // Inclusive, epochs are returned in descending order
   start?: number;
   limit?: number;
 }
 
-export type GetIndexerTakerRewardsParams = GetIndexerRewardsParams;
-
-export interface GetIndexerReferralCodeParams {
-  subaccount: Subaccount;
-}
+export type IndexerQueryTakerRewardsParams = IndexerQueryRewardsParams;
 
 export interface IndexerSubaccountRewardsForProduct {
   productId: number;
@@ -131,7 +144,7 @@ export interface IndexerRewardsEpoch {
   globalRewards: IndexerGlobalRewardsForProduct[];
 }
 
-export interface GetIndexerRewardsResponse {
+export interface IndexerQueryRewardsResponse {
   epochs: IndexerRewardsEpoch[];
   updateTime: BigDecimal;
   totalReferrals: number;
@@ -143,17 +156,29 @@ export interface IndexerTakerRewardsEpoch {
   takerReferralTokens: BigDecimal;
 }
 
-export interface GetIndexerTakerRewardsResponse {
+export interface IndexerQueryTakerRewardsResponse {
   epochs: IndexerTakerRewardsEpoch[];
   updateTime: BigDecimal;
   totalReferrals: number;
 }
 
-export interface GetIndexerReferralCodeResponse {
+/**
+ * Referral Code
+ */
+
+export interface IndexerQueryReferralCodeParams {
+  subaccount: Subaccount;
+}
+
+export interface IndexerQueryReferralCodeResponse {
   referralCode: string | null;
 }
 
-export interface GetIndexerPerpPricesParams {
+/**
+ * Perp prices
+ */
+
+export interface IndexerQueryPerpPricesParams {
   productId: number;
 }
 
@@ -165,19 +190,23 @@ export interface IndexerPerpPrices {
   updateTime: BigDecimal;
 }
 
-export type GetIndexerPerpPricesResponse = IndexerPerpPrices;
+export type IndexerQueryPerpPricesResponse = IndexerPerpPrices;
 
-export interface GetIndexerMultiProductPerpPricesParams {
+export interface IndexerQueryMultiProductPerpPricesParams {
   productIds: number[];
 }
 
 // Map of productId -> IndexerPerpPrices
-export type GetIndexerMultiProductPerpPricesResponse = Record<
+export type IndexerQueryMultiProductPerpPricesResponse = Record<
   number,
   IndexerPerpPrices
 >;
 
-export interface GetIndexerOraclePricesParams {
+/**
+ * Oracle prices
+ */
+
+export interface IndexerQueryOraclePricesParams {
   productIds: number[];
 }
 
@@ -188,9 +217,13 @@ export interface IndexerOraclePrice {
   updateTime: BigDecimal;
 }
 
-export type GetIndexerOraclePricesResponse = IndexerOraclePrice[];
+export type IndexerQueryOraclePricesResponse = IndexerOraclePrice[];
 
-export interface GetIndexerFundingRateParams {
+/**
+ * Funding Rates
+ */
+
+export interface IndexerQueryFundingRateParams {
   productId: number;
 }
 
@@ -201,19 +234,23 @@ export interface IndexerFundingRate {
   updateTime: BigDecimal;
 }
 
-export type GetIndexerFundingRateResponse = IndexerFundingRate;
+export type IndexerQueryFundingRateResponse = IndexerFundingRate;
 
-export interface GetIndexerMultiProductFundingRatesParams {
+export interface IndexerQueryMultiProductFundingRatesParams {
   productIds: number[];
 }
 
 // Map of productId -> IndexerFundingRate
-export type GetIndexerMultiProductFundingRatesResponse = Record<
+export type IndexerQueryMultiProductFundingRatesResponse = Record<
   number,
   IndexerFundingRate
 >;
 
-export interface GetIndexerCandlesticksParams {
+/**
+ * Candlesticks
+ */
+
+export interface IndexerQueryCandlesticksParams {
   productId: number;
   period: CandlestickPeriod;
   // Seconds
@@ -232,9 +269,13 @@ export interface Candlestick {
   volume: BigDecimal;
 }
 
-export type GetIndexerCandlesticksResponse = Candlestick[];
+export type IndexerQueryCandlesticksResponse = Candlestick[];
 
-export interface GetIndexerProductSnapshotsParams {
+/**
+ * Product Snapshots
+ */
+
+export interface IndexerQueryProductSnapshotsParams {
   // Max submission index, inclusive
   startCursor?: string;
   productId: number;
@@ -246,23 +287,27 @@ export interface IndexerProductSnapshot extends Market {
   submissionIndex: string;
 }
 
-export type GetIndexerProductSnapshotsResponse = IndexerProductSnapshot[];
+export type IndexerQueryProductSnapshotsResponse = IndexerProductSnapshot[];
 
-export interface GetIndexerMultiProductSnapshotsParams {
+export interface IndexerQueryMultiProductSnapshotsParams {
   productIds: number[];
   maxTimestampInclusive?: number;
 }
 
 // Map of productId -> IndexerProductSnapshot
-export type GetIndexerMultiProductSnapshotsResponse = Record<
+export type IndexerQueryMultiProductSnapshotsResponse = Record<
   number,
   IndexerProductSnapshot
 >;
 
-// There can be multiple events per tx, this allows a limit depending on usecase
-export type GetIndexerEventsLimitType = 'events' | 'txs';
+/**
+ * Events
+ */
 
-export interface GetIndexerEventsParams {
+// There can be multiple events per tx, this allows a limit depending on usecase
+export type IndexerQueryEventsLimitType = 'events' | 'txs';
+
+export interface IndexerQueryEventsParams {
   // Max submission index, inclusive
   startCursor?: string;
   subaccount?: Subaccount;
@@ -272,7 +317,7 @@ export interface GetIndexerEventsParams {
   // Descending order for idx (time), defaults to true
   desc?: boolean;
   limit?: {
-    type: GetIndexerEventsLimitType;
+    type: IndexerQueryEventsLimitType;
     value: number;
   };
 }
@@ -295,9 +340,13 @@ export interface IndexerEventWithTx<
   tx: VertexTx;
 }
 
-export type GetIndexerEventsResponse = IndexerEventWithTx[];
+export type IndexerQueryEventsResponse = IndexerEventWithTx[];
 
-export interface GetIndexerOrdersParams {
+/**
+ * Orders
+ */
+
+export interface IndexerQueryOrdersParams {
   // Max submission index, inclusive
   startCursor?: string;
   subaccount?: Subaccount;
@@ -331,9 +380,13 @@ export interface IndexerOrder {
   totalFee: BigDecimal;
 }
 
-export type GetIndexerOrdersResponse = IndexerOrder[];
+export type IndexerQueryOrdersResponse = IndexerOrder[];
 
-export interface GetIndexerMatchEventsParams {
+/**
+ * Match events
+ */
+
+export interface IndexerQueryMatchEventsParams {
   // When not given, will return all maker events
   subaccount?: Subaccount;
   productIds?: number[];
@@ -373,17 +426,25 @@ export interface IndexerMatchEvent {
   tx: VertexTx;
 }
 
-export type GetIndexerMatchEventsResponse = IndexerMatchEvent[];
+export type IndexerQueryMatchEventsResponse = IndexerMatchEvent[];
 
-export interface GetIndexerQuotePriceResponse {
+/**
+ * Quote price
+ */
+
+export interface IndexerQueryQuotePriceResponse {
   price: BigDecimal;
 }
 
-export interface GetIndexerLinkedSignerParams {
+/**
+ * Linked Signer
+ */
+
+export interface IndexerQueryLinkedSignerParams {
   subaccount: Subaccount;
 }
 
-export interface GetIndexerLinkedSignerResponse {
+export interface IndexerQueryLinkedSignerResponse {
   totalTxLimit: BigDecimal;
   remainingTxs: BigDecimal;
   // If remainingTxs is 0, this is the time until the next link signer tx can be sent
@@ -392,7 +453,11 @@ export interface GetIndexerLinkedSignerResponse {
   signer: string;
 }
 
-export interface GetIndexerMarketSnapshotsParams {
+/**
+ * Market snapshots
+ */
+
+export interface IndexerQueryMarketSnapshotsParams {
   // Defaults to all
   productIds?: number[];
   // Currently accepts all integers, in seconds
@@ -421,9 +486,13 @@ export interface IndexerMarketSnapshot {
   borrowRates: Record<number, BigDecimal>;
 }
 
-export type GetIndexerMarketSnapshotsResponse = IndexerMarketSnapshot[];
+export type IndexerQueryMarketSnapshotsResponse = IndexerMarketSnapshot[];
 
-export interface GetIndexerInterestFundingPaymentsParams {
+/**
+ * Interest / funding payments
+ */
+
+export interface IndexerQueryInterestFundingPaymentsParams {
   subaccount: Subaccount;
   productIds: number[];
   limit: number;
@@ -444,23 +513,31 @@ export interface IndexerProductPayment {
   oraclePrice: BigDecimal;
 }
 
-export interface GetIndexerInterestFundingPaymentsResponse {
+export interface IndexerQueryInterestFundingPaymentsResponse {
   interestPayments: IndexerProductPayment[];
   fundingPayments: IndexerProductPayment[];
   nextCursor: string | null;
 }
+
+/**
+ * Merkle proof
+ */
 
 export interface IndexerMerkleProof {
   proof: string[];
   totalAmount: BigDecimal;
 }
 
-export type GetIndexerClaimVrtxMerkleProofsParams =
-  IndexerServerClaimVrtxMerkleProofsParams;
+export type IndexerQueryClaimVrtxMerkleProofsParams =
+  IndexerServerQueryClaimVrtxMerkleProofsParams;
 
-export type GetIndexerClaimVrtxMerkleProofsResponse = IndexerMerkleProof[];
+export type IndexerQueryClaimVrtxMerkleProofsResponse = IndexerMerkleProof[];
 
-export interface GetIndexerArbRewardsParams {
+/**
+ * Arb rewards
+ */
+
+export interface IndexerQueryArbRewardsParams {
   address: string;
 }
 
@@ -482,18 +559,26 @@ export interface IndexerArbRewardsWeek {
   globalRewards: IndexerGlobalArbRewardsForProduct[];
 }
 
-export interface GetIndexerArbRewardsResponse {
+export interface IndexerQueryArbRewardsResponse {
   weeks: IndexerArbRewardsWeek[];
   updateTime: BigDecimal;
 }
 
-export type GetIndexerClaimArbMerkleProofsParams =
-  IndexerServerClaimArbMerkleProofsParams;
+/**
+ * Arb claim merkle proof
+ */
 
-export type GetIndexerClaimArbMerkleProofsResponse =
-  GetIndexerClaimVrtxMerkleProofsResponse;
+export type IndexerQueryClaimArbMerkleProofsParams =
+  IndexerServerQueryClaimArbMerkleProofsParams;
 
-export interface GetIndexerMakerStatisticsParams {
+export type IndexerQueryClaimArbMerkleProofsResponse =
+  IndexerQueryClaimVrtxMerkleProofsResponse;
+
+/**
+ * Maker stats
+ */
+
+export interface IndexerQueryMakerStatisticsParams {
   productId: number;
   epoch: number;
   interval: number;
@@ -514,7 +599,7 @@ export interface IndexerMaker {
   snapshots: IndexerMakerSnapshot[];
 }
 
-export interface GetIndexerMakerStatisticsResponse {
+export interface IndexerQueryMakerStatisticsResponse {
   rewardCoefficient: BigDecimal;
   makers: IndexerMaker[];
 }
