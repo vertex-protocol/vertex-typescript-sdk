@@ -105,6 +105,14 @@ export async function createClientContext(
         triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.blastTestnet,
       };
     }
+    if (opts === 'blastMainnet') {
+      return {
+        contractAddresses: VERTEX_DEPLOYMENTS.blastMainnet,
+        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.blastMainnet,
+        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.blastMainnet,
+        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.blastMainnet,
+      };
+    }
     if (opts === 'local') {
       return {
         contractAddresses: VERTEX_DEPLOYMENTS.local,
