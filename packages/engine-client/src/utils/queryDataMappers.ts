@@ -13,17 +13,17 @@ import {
   EngineMarketPrice,
   EngineOrder,
   EnginePriceTickLiquidity,
-  EngineServerGetOrderResponse,
+  EngineQuerySubaccountSummaryResponse,
+  EngineQuerySymbolsResponse,
   EngineServerMarketPrice,
   EngineServerPerpProduct,
   EngineServerPriceTickLiquidity,
+  EngineServerQueryOrderResponse,
+  EngineServerQuerySubaccountInfoResponse,
+  EngineServerQuerySymbolsResponse,
   EngineServerSpotProduct,
-  EngineServerSubaccountInfoResponse,
   EngineServerSymbol,
-  EngineServerSymbolsResponse,
   EngineSymbol,
-  EngineSymbolsResponse,
-  GetEngineSubaccountSummaryResponse,
 } from '../types';
 import { mapEngineServerProductType } from './productEngineTypeMappers';
 
@@ -37,7 +37,7 @@ export function mapEngineServerTickLiquidity(
 }
 
 export function mapEngineServerOrder(
-  order: EngineServerGetOrderResponse,
+  order: EngineServerQueryOrderResponse,
 ): EngineOrder {
   const subaccount = subaccountFromHex(order.sender);
   return {
@@ -148,9 +148,9 @@ export function mapEngineServerBalanceHealthContributions(
 }
 
 export function mapSubaccountSummary(
-  baseResponse: EngineServerSubaccountInfoResponse,
-): GetEngineSubaccountSummaryResponse {
-  const balances: GetEngineSubaccountSummaryResponse['balances'] = [];
+  baseResponse: EngineServerQuerySubaccountInfoResponse,
+): EngineQuerySubaccountSummaryResponse {
+  const balances: EngineQuerySubaccountSummaryResponse['balances'] = [];
 
   baseResponse.spot_balances.forEach((spotBalance) => {
     const product = baseResponse.spot_products.find(
@@ -213,8 +213,8 @@ export function mapSubaccountSummary(
 }
 
 export function mapEngineServerSymbols(
-  baseResponse: EngineServerSymbolsResponse,
-): EngineSymbolsResponse {
+  baseResponse: EngineServerQuerySymbolsResponse,
+): EngineQuerySymbolsResponse {
   const symbols: Record<string, EngineSymbol> = mapValues(
     baseResponse.symbols,
     mapEngineServerSymbol,

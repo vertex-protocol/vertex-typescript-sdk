@@ -1,5 +1,8 @@
 import { EngineBaseClient } from './EngineBaseClient';
-import { EngineServerIpBlockResponse, GetEngineTimeResponse } from './types';
+import {
+  EngineQueryTimeResponse,
+  EngineServerQueryIpBlockResponse,
+} from './types';
 
 /**
  * Queries that talk directly to web, _not_ the engine. Placing here in the `engine-client` as we don't have enough
@@ -23,7 +26,7 @@ export class EngineWebClient extends EngineBaseClient {
           if (res.status !== 403) {
             return false;
           }
-          const resData: EngineServerIpBlockResponse = res.data;
+          const resData: EngineServerQueryIpBlockResponse = res.data;
 
           return Boolean(resData.blocked && resData.reason === 'ip');
         })
@@ -56,7 +59,7 @@ export class EngineWebClient extends EngineBaseClient {
   /**
    * Retrieves current server epoch in milliseconds
    */
-  async getTime(): Promise<GetEngineTimeResponse> {
+  async getTime(): Promise<EngineQueryTimeResponse> {
     return this.axiosInstance
       .get(`${this.opts.url}/time`)
       .then((res) => res.data);

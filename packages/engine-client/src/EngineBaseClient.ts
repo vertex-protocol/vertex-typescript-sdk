@@ -1,4 +1,13 @@
 import {
+  getSignedTransactionRequest,
+  SignableRequestType,
+  SignableRequestTypeToParams,
+} from '@vertex-protocol/contracts';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { BigNumberish, Signer } from 'ethers';
+import {
+  EngineQueryNoncesParams,
+  EngineQueryNoncesResponse,
   EngineServerExecuteRequestByType,
   EngineServerExecuteRequestType,
   EngineServerExecuteResult,
@@ -8,16 +17,7 @@ import {
   EngineServerQueryResponse,
   EngineServerQueryResponseByType,
   EngineServerQuerySuccessResponse,
-  GetEngineNoncesParams,
-  GetEngineNoncesResponse,
 } from './types';
-import {
-  getSignedTransactionRequest,
-  SignableRequestType,
-  SignableRequestTypeToParams,
-} from '@vertex-protocol/contracts';
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { BigNumberish, Signer } from 'ethers';
 import { EngineServerFailureError } from './types/EngineServerFailureError';
 
 export interface EngineClientOpts {
@@ -74,8 +74,8 @@ export class EngineBaseClient {
   }
 
   public async getNonces(
-    params: GetEngineNoncesParams,
-  ): Promise<GetEngineNoncesResponse> {
+    params: EngineQueryNoncesParams,
+  ): Promise<EngineQueryNoncesResponse> {
     const baseResp = await this.query('nonces', params);
 
     return {

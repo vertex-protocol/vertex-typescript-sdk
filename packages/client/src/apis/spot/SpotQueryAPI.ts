@@ -1,14 +1,17 @@
-import { BaseSpotAPI } from './BaseSpotAPI';
+import { EngineQueryMaxWithdrawableParams } from '@vertex-protocol/engine-client';
 import { BigDecimal, toBigDecimal } from '@vertex-protocol/utils';
-import { GetEngineMaxWithdrawableParams } from '@vertex-protocol/engine-client';
-import { GetTokenAllowanceParams, GetTokenWalletBalanceParams } from './types';
+import { BaseSpotAPI } from './BaseSpotAPI';
+import {
+  QueryTokenAllowanceParams,
+  QueryTokenWalletBalanceParams,
+} from './types';
 
 export class SpotQueryAPI extends BaseSpotAPI {
   /**
    * Gets the estimated max withdrawable amount for a product
    * @param params
    */
-  async getMaxWithdrawable(params: GetEngineMaxWithdrawableParams) {
+  async getMaxWithdrawable(params: EngineQueryMaxWithdrawableParams) {
     return this.context.engineClient.getMaxWithdrawable(params);
   }
 
@@ -18,7 +21,7 @@ export class SpotQueryAPI extends BaseSpotAPI {
   async getTokenWalletBalance({
     address,
     ...rest
-  }: GetTokenWalletBalanceParams): Promise<bigint> {
+  }: QueryTokenWalletBalanceParams): Promise<bigint> {
     const token = await this.getTokenContractForProduct(rest);
     return token.balanceOf(address);
   }
@@ -29,7 +32,7 @@ export class SpotQueryAPI extends BaseSpotAPI {
   async getTokenAllowance({
     address,
     ...rest
-  }: GetTokenAllowanceParams): Promise<BigDecimal> {
+  }: QueryTokenAllowanceParams): Promise<BigDecimal> {
     const token = await this.getTokenContractForProduct(rest);
     return toBigDecimal(
       await token.allowance(address, this.getEndpointAddress()),

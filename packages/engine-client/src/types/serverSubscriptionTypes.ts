@@ -1,22 +1,22 @@
-export interface EngineServerTradeStreamParams {
+export interface EngineServerSubscriptionTradeStreamParams {
   product_id: number;
 }
 
-export interface EngineServerBestBidOfferStreamParams {
+export interface EngineServerSubscriptionBestBidOfferStreamParams {
   product_id: number;
 }
 
-export interface EngineServerFillStreamParams {
-  product_id: number;
-  subaccount: string;
-}
-
-export interface EngineServerPositionChangeStreamParams {
+export interface EngineServerSubscriptionFillStreamParams {
   product_id: number;
   subaccount: string;
 }
 
-export interface EngineServerBookDepthStreamParams {
+export interface EngineServerSubscriptionPositionChangeStreamParams {
+  product_id: number;
+  subaccount: string;
+}
+
+export interface EngineServerSubscriptionBookDepthStreamParams {
   product_id: number;
 }
 
@@ -24,11 +24,11 @@ export interface EngineServerBookDepthStreamParams {
  * @description Available subscription streams
  */
 export interface EngineServerSubscriptionStreamParamsByType {
-  trade: EngineServerTradeStreamParams;
-  best_bid_offer: EngineServerBestBidOfferStreamParams;
-  fill: EngineServerFillStreamParams;
-  position_change: EngineServerPositionChangeStreamParams;
-  book_depth: EngineServerBookDepthStreamParams;
+  trade: EngineServerSubscriptionTradeStreamParams;
+  best_bid_offer: EngineServerSubscriptionBestBidOfferStreamParams;
+  fill: EngineServerSubscriptionFillStreamParams;
+  position_change: EngineServerSubscriptionPositionChangeStreamParams;
+  book_depth: EngineServerSubscriptionBookDepthStreamParams;
 }
 
 export type EngineServerSubscriptionStreamParamsType =

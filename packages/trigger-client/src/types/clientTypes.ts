@@ -1,15 +1,15 @@
-import { BigDecimal, BigDecimalish } from '@vertex-protocol/utils';
 import {
   EIP712CancelOrdersParams,
   EIP712CancelProductOrdersParams,
   Subaccount,
 } from '@vertex-protocol/contracts';
-import { TriggerServerOrder } from './serverQueryTypes';
 import {
   EngineOrderParams,
   EngineServerExecuteResult,
 } from '@vertex-protocol/engine-client';
+import { BigDecimal, BigDecimalish } from '@vertex-protocol/utils';
 import { BigNumberish } from 'ethers';
+import { TriggerServerOrder } from './serverQueryTypes';
 
 type WithOptionalNonce<T> = Omit<T, 'nonce'> & { nonce?: string };
 
@@ -78,7 +78,7 @@ export interface TriggerExecuteRequestParamsByType {
  * Queries
  */
 
-export interface QueryListTriggerOrdersParams
+export interface TriggerQueryListTriggerOrdersParams
   extends Subaccount,
     SignatureParams {
   // In millis, defaults to 90s in the future
@@ -109,14 +109,14 @@ export interface TriggerOrderInfo {
   updatedAt: number;
 }
 
-export interface QueryListTriggerOrdersResponse {
+export interface TriggerQueryListTriggerOrdersResponse {
   orders: TriggerOrderInfo[];
 }
 
 export interface TriggerQueryRequestParamsByType {
-  list_trigger_orders: QueryListTriggerOrdersParams;
+  list_trigger_orders: TriggerQueryListTriggerOrdersParams;
 }
 
 export interface TriggerQueryResponseByType {
-  list_trigger_orders: QueryListTriggerOrdersResponse;
+  list_trigger_orders: TriggerQueryListTriggerOrdersResponse;
 }

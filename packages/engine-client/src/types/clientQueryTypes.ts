@@ -1,23 +1,25 @@
 import {
   BalanceSide,
+  EIP712OrderParams,
   GetAllMarketsResponse,
   GetSubaccountSummaryParams,
   HealthGroup,
   OrderExpirationType,
-  EIP712OrderParams,
   ProductEngineType,
   SignedEIP712OrderParams,
   Subaccount,
   SubaccountSummaryResponse,
 } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
-import {
-  EngineServerNoncesParams,
-  EngineServerTimeResponse,
-} from './serverQueryTypes';
 import { BigNumberish } from 'ethers';
+import {
+  EngineServerQueryNoncesParams,
+  EngineServerQueryTimeResponse,
+} from './serverQueryTypes';
 
-export type GetEngineSubaccountSummaryParams = GetSubaccountSummaryParams;
+/**
+ * Base Types
+ */
 
 export type SubaccountTx =
   | {
@@ -51,34 +53,46 @@ export interface SubaccountProductDeltaTx {
   vQuoteDelta: BigDecimal;
 }
 
-export interface GetEngineContractsResponse {
+/**
+ * Contracts
+ */
+
+export interface EngineQueryContractsResponse {
   chainId: BigNumberish;
   endpointAddr: string;
   orderbookAddrs: string[];
 }
 
-export type GetEngineEstimatedSubaccountSummaryParams =
+/**
+ * Subaccount summary + estimation
+ */
+export type EngineQuerySubaccountSummaryParams = GetSubaccountSummaryParams;
+
+export type EngineQueryEstimatedSubaccountSummaryParams =
   GetSubaccountSummaryParams & {
     txs: SubaccountTx[];
   };
 
-export type GetEngineNoncesParams = EngineServerNoncesParams;
+export type EngineQuerySubaccountSummaryResponse = SubaccountSummaryResponse;
 
-export interface GetEngineNoncesResponse {
+/**
+ * Nonces
+ */
+
+export type EngineQueryNoncesParams = EngineServerQueryNoncesParams;
+
+export interface EngineQueryNoncesResponse {
   orderNonce: string;
   txNonce: string;
 }
 
-export type GetEngineSubaccountSummaryResponse = SubaccountSummaryResponse;
+/**
+ * Symbols
+ */
 
-export interface GetEngineSymbolsParams {
+export interface EngineQuerySymbolsParams {
   productType?: ProductEngineType;
   productIds?: number[];
-}
-
-export interface EngineSymbolsResponse {
-  // mapping of product symbol to symbols info
-  symbols: Record<string, EngineSymbol>;
 }
 
 export interface EngineSymbol {
@@ -96,13 +110,30 @@ export interface EngineSymbol {
   longWeightMaintenance: BigDecimal;
 }
 
-export type GetEngineAllMarketsResponse = GetAllMarketsResponse;
+export interface EngineQuerySymbolsResponse {
+  // mapping of product symbol to symbols info
+  symbols: Record<string, EngineSymbol>;
+}
 
-export interface GetEngineHealthGroupsResponse {
+/**
+ * All Markets
+ */
+
+export type EngineQueryAllMarketsResponse = GetAllMarketsResponse;
+
+/**
+ * Health Groups
+ */
+
+export interface EngineQueryHealthGroupsResponse {
   healthGroups: HealthGroup[];
 }
 
-export interface GetEngineOrderParams {
+/**
+ * Orders
+ */
+
+export interface EngineQueryOrderParams {
   productId: number;
   digest: string;
 }
@@ -122,26 +153,9 @@ export interface EngineOrder extends Subaccount {
   orderType: OrderExpirationType;
 }
 
-export type GetEngineOrderResponse = EngineOrder;
+export type EngineQueryOrderResponse = EngineOrder;
 
-export interface ValidateSignedEngineOrderParams {
-  productId: number;
-  signedOrder: SignedEIP712OrderParams;
-}
-
-export interface ValidateEngineOrderParams {
-  productId: number;
-  orderbookAddr: string;
-  chainId: BigNumberish;
-  order: EIP712OrderParams;
-}
-
-export interface ValidateEngineOrderResponse {
-  productId: number;
-  valid: boolean;
-}
-
-export interface GetEngineSubaccountOrdersParams extends Subaccount {
+export interface EngineQuerySubaccountOrdersParams extends Subaccount {
   productId: number;
 }
 
@@ -150,24 +164,49 @@ export interface EngineSubaccountOrders {
   orders: EngineOrder[];
 }
 
-export type GetEngineSubaccountOrdersResponse = EngineSubaccountOrders;
+export type EngineQuerySubaccountOrdersResponse = EngineSubaccountOrders;
 
-export interface GetEngineSubaccountProductOrdersParams extends Subaccount {
+export interface EngineQuerySubaccountProductOrdersParams extends Subaccount {
   productIds: number[];
 }
 
-export interface GetEngineSubaccountProductOrdersResponse {
+export interface EngineQuerySubaccountProductOrdersResponse {
   productOrders: EngineSubaccountOrders[];
 }
 
-export type GetEngineSubaccountFeeRatesParams = Subaccount;
+/**
+ * Order validation
+ */
+
+export interface EngineQueryValidateSignedOrderParams {
+  productId: number;
+  signedOrder: SignedEIP712OrderParams;
+}
+
+export interface EngineQueryValidateOrderParams {
+  productId: number;
+  orderbookAddr: string;
+  chainId: BigNumberish;
+  order: EIP712OrderParams;
+}
+
+export interface EngineQueryValidateOrderResponse {
+  productId: number;
+  valid: boolean;
+}
+
+/**
+ * Fee rates
+ */
+
+export type EngineQuerySubaccountFeeRatesParams = Subaccount;
 
 export interface SubaccountOrderFeeRates {
   maker: BigDecimal;
   taker: BigDecimal;
 }
 
-export interface GetEngineSubaccountFeeRatesResponse {
+export interface EngineQuerySubaccountFeeRatesResponse {
   // By Product ID
   orders: Record<number, SubaccountOrderFeeRates>;
   withdrawal: Record<number, BigDecimal>;
@@ -176,23 +215,31 @@ export interface GetEngineSubaccountFeeRatesResponse {
   takerSequencerFee: BigDecimal;
 }
 
+/**
+ * Market liquidity
+ */
+
 export interface EnginePriceTickLiquidity {
   price: BigDecimal;
   liquidity: BigDecimal;
 }
 
-export interface GetEngineMarketLiquidityParams {
+export interface EngineQueryMarketLiquidityParams {
   productId: number;
   // The minimum depth in base price ticks (i.e. per side
   depth: number;
 }
 
-export interface GetEngineMarketLiquidityResponse {
+export interface EngineQueryMarketLiquidityResponse {
   bids: EnginePriceTickLiquidity[];
   asks: EnginePriceTickLiquidity[];
 }
 
-export interface GetEngineMarketPriceParams {
+/**
+ * Market prices
+ */
+
+export interface EngineQueryMarketPriceParams {
   productId: number;
 }
 
@@ -202,17 +249,21 @@ export interface EngineMarketPrice {
   ask: BigDecimal;
 }
 
-export type GetEngineMarketPriceResponse = EngineMarketPrice;
+export type EngineQueryMarketPriceResponse = EngineMarketPrice;
 
-export interface GetEngineMarketPricesParams {
+export interface EngineQueryMarketPricesParams {
   productIds: number[];
 }
 
-export interface GetEngineMarketPricesResponse {
+export interface EngineQueryMarketPricesResponse {
   marketPrices: EngineMarketPrice[];
 }
 
-export interface GetEngineMaxOrderSizeParams extends Subaccount {
+/**
+ * Max order size
+ */
+
+export interface EngineQueryMaxOrderSizeParams extends Subaccount {
   price: BigDecimal;
   productId: number;
   side: BalanceSide;
@@ -221,32 +272,48 @@ export interface GetEngineMaxOrderSizeParams extends Subaccount {
   spotLeverage?: boolean;
 }
 
-export type GetEngineMaxOrderSizeResponse = BigDecimal;
+export type EngineQueryMaxOrderSizeResponse = BigDecimal;
 
-export interface GetEngineMaxWithdrawableParams extends Subaccount {
+/**
+ * Max withdrawable
+ */
+
+export interface EngineQueryMaxWithdrawableParams extends Subaccount {
   productId: number;
   // If not given, engine defaults to true (leverage/borrow enabled)
   spotLeverage?: boolean;
 }
 
-export type GetEngineMaxWithdrawableResponse = BigDecimal;
+export type EngineQueryMaxWithdrawableResponse = BigDecimal;
 
-export interface GetEngineMaxMintLpAmountParams extends Subaccount {
+/**
+ * Max mint LP
+ */
+
+export interface EngineQueryMaxMintLpAmountParams extends Subaccount {
   productId: number;
   // If not given, engine defaults to true (leverage/borrow enabled) for spot
   // Do not pass this for perp products
   spotLeverage?: boolean;
 }
 
-export interface GetEngineMaxMintLpAmountResponse {
+export interface EngineQueryMaxMintLpAmountResponse {
   maxBaseAmount: BigDecimal;
   maxQuoteAmount: BigDecimal;
 }
 
-export type GetEngineTimeResponse = EngineServerTimeResponse;
+/**
+ * Time
+ */
 
-export type GetEngineLinkedSignerParams = Subaccount;
+export type EngineQueryTimeResponse = EngineServerQueryTimeResponse;
 
-export interface GetEngineLinkedSignerResponse {
+/**
+ * Linked Signer
+ */
+
+export type EngineQueryLinkedSignerParams = Subaccount;
+
+export interface EngineQueryLinkedSignerResponse {
   signer: string;
 }

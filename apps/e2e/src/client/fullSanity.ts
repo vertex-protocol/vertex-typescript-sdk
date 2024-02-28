@@ -1,13 +1,16 @@
-import { RunContext } from '../utils/types';
+import {
+  createVertexClient,
+  ExecutePlaceOrderParams,
+} from '@vertex-protocol/client';
 import {
   getChainIdFromSigner,
   getOrderNonce,
 } from '@vertex-protocol/contracts';
-import { toBigDecimal, toFixedPoint } from '@vertex-protocol/utils';
-import { runWithContext } from '../utils/runWithContext';
-import { createVertexClient, PlaceOrderParams } from '@vertex-protocol/client';
+import { toFixedPoint } from '@vertex-protocol/utils';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
+import { runWithContext } from '../utils/runWithContext';
+import { RunContext } from '../utils/types';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -59,7 +62,7 @@ async function fullSanity(context: RunContext) {
   console.log('Placing order...');
   const orderNonce = getOrderNonce();
 
-  const orderParams: PlaceOrderParams['order'] = {
+  const orderParams: ExecutePlaceOrderParams['order'] = {
     subaccountName: 'default',
     expiration: getExpiration('post_only', 60).toString(),
     // Limit price

@@ -1,11 +1,14 @@
-import { BaseVertexAPI } from '../base';
 import {
   createDeterministicLinkedSignerPrivateKey,
   getChainIdFromSigner,
   Subaccount,
 } from '@vertex-protocol/contracts';
 import { Wallet } from 'ethers';
-import { LinkSignerParams, LiquidateSubaccountParams } from './types';
+import { BaseVertexAPI } from '../base';
+import {
+  ExecuteLinkSignerParams,
+  ExecuteLiquidateSubaccountParams,
+} from './types';
 
 export class SubaccountExecuteAPI extends BaseVertexAPI {
   /**
@@ -13,7 +16,7 @@ export class SubaccountExecuteAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async liquidateSubaccount(params: LiquidateSubaccountParams) {
+  async liquidateSubaccount(params: ExecuteLiquidateSubaccountParams) {
     return this.context.engineClient.liquidateSubaccount({
       ...params,
       subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
@@ -27,7 +30,7 @@ export class SubaccountExecuteAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async linkSigner(params: LinkSignerParams) {
+  async linkSigner(params: ExecuteLinkSignerParams) {
     return this.context.engineClient.linkSigner({
       ...params,
       subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),

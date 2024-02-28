@@ -1,23 +1,23 @@
 import { BaseVertexAPI } from '../base';
-import {
-  BurnLpParams,
-  CancelAndPlaceOrderParams,
-  CancelOrdersParams,
-  CancelProductOrdersParams,
-  CancelTriggerOrdersParams,
-  CancelTriggerProductOrdersParams,
-  MintLpParams,
-  PlaceOrderParams,
-  PlaceTriggerOrderParams,
-} from './types';
 import { OptionalSignatureParams } from '../types';
+import {
+  ExecuteBurnLpParams,
+  ExecuteCancelAndPlaceOrderParams,
+  ExecuteCancelOrdersParams,
+  ExecuteCancelProductOrdersParams,
+  ExecuteCancelTriggerOrdersParams,
+  ExecuteCancelTriggerProductOrdersParams,
+  ExecuteMintLpParams,
+  ExecutePlaceOrderParams,
+  ExecutePlaceTriggerOrderParams,
+} from './types';
 
 export class MarketExecuteAPI extends BaseVertexAPI {
   /**
    * Mint LP tokens through engine
    * @param params
    */
-  async mintLp(params: MintLpParams) {
+  async mintLp(params: ExecuteMintLpParams) {
     return this.context.engineClient.mintLp({
       ...params,
       chainId: await this.getSignerChainIdIfNeeded(params),
@@ -30,7 +30,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Burn LP tokens through engine
    * @param params
    */
-  async burnLp(params: BurnLpParams) {
+  async burnLp(params: ExecuteBurnLpParams) {
     return this.context.engineClient.burnLp({
       ...params,
       chainId: await this.getSignerChainIdIfNeeded(params),
@@ -43,7 +43,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Places an order through the engine
    * @param params
    */
-  async placeOrder(params: PlaceOrderParams) {
+  async placeOrder(params: ExecutePlaceOrderParams) {
     const { id: orderId, productId, order, nonce } = params;
 
     return this.context.engineClient.placeOrder({
@@ -64,7 +64,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Cancels orders through the engine
    * @param params
    */
-  async cancelOrders(params: CancelOrdersParams) {
+  async cancelOrders(params: ExecuteCancelOrdersParams) {
     return this.context.engineClient.cancelOrders({
       ...params,
       chainId: await this.getSignerChainIdIfNeeded(params),
@@ -77,7 +77,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Cancels orders through the engine and places a new one
    * @param params
    */
-  async cancelAndPlace(params: CancelAndPlaceOrderParams) {
+  async cancelAndPlace(params: ExecuteCancelAndPlaceOrderParams) {
     const { productId, order, nonce, spotLeverage } = params.placeOrder;
     const subaccountOwner = await this.getSubaccountOwnerIfNeeded(
       params.cancelOrders,
@@ -112,7 +112,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Cancels all orders for provided products through the engine.
    * @param params
    */
-  async cancelProductOrders(params: CancelProductOrdersParams) {
+  async cancelProductOrders(params: ExecuteCancelProductOrdersParams) {
     return this.context.engineClient.cancelProductOrders({
       ...params,
       chainId: await this.getSignerChainIdIfNeeded(params),
@@ -125,7 +125,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Places a trigger order through the trigger service
    * @param params
    */
-  async placeTriggerOrder(params: PlaceTriggerOrderParams) {
+  async placeTriggerOrder(params: ExecutePlaceTriggerOrderParams) {
     return this.context.triggerClient.placeTriggerOrder({
       ...params,
       chainId: await this.getSignerChainIdIfNeeded(params),
@@ -141,7 +141,7 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Cancels all trigger orders for provided digests through the trigger service.
    * @param params
    */
-  async cancelTriggerOrders(params: CancelTriggerOrdersParams) {
+  async cancelTriggerOrders(params: ExecuteCancelTriggerOrdersParams) {
     return this.context.triggerClient.cancelTriggerOrders({
       ...params,
       chainId: await this.getSignerChainIdIfNeeded(params),
@@ -154,7 +154,9 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    * Cancels all trigger orders for provided products through the trigger service.
    * @param params
    */
-  async cancelTriggerProductOrders(params: CancelTriggerProductOrdersParams) {
+  async cancelTriggerProductOrders(
+    params: ExecuteCancelTriggerProductOrdersParams,
+  ) {
     return this.context.triggerClient.cancelProductOrders({
       ...params,
       chainId: await this.getSignerChainIdIfNeeded(params),

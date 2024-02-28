@@ -1,25 +1,25 @@
-import { BaseVertexAPI } from '../base';
 import {
   getSubaccountSummary,
   GetSubaccountSummaryParams,
   subaccountToBytes32,
 } from '@vertex-protocol/contracts';
 import {
-  GetEngineEstimatedSubaccountSummaryParams,
-  GetEngineSubaccountFeeRatesParams,
-  GetEngineSubaccountSummaryParams,
+  EngineQueryEstimatedSubaccountSummaryParams,
+  EngineQuerySubaccountFeeRatesParams,
+  EngineQuerySubaccountSummaryParams,
 } from '@vertex-protocol/engine-client';
-import { GetSubaccountIdParams } from './types';
 import {
   GetIndexerLinkedSignerParams,
   GetIndexerReferralCodeParams,
 } from '@vertex-protocol/indexer-client';
+import { BaseVertexAPI } from '../base';
+import { QuerySubaccountIdParams } from './types';
 
 export class SubaccountQueryAPI extends BaseVertexAPI {
   /**
    * Calls contract directly to get a subaccount ID, returns a number to make things easier
    */
-  async getSubaccountId(params: GetSubaccountIdParams): Promise<number> {
+  async getSubaccountId(params: QuerySubaccountIdParams): Promise<number> {
     const bnId = await this.context.contracts.endpoint.getSubaccountId(
       subaccountToBytes32({
         subaccountOwner: params.address,
@@ -40,7 +40,7 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
    * Gets the subaccount state according to the offchain engine
    * @param params
    */
-  async getEngineSubaccountSummary(params: GetEngineSubaccountSummaryParams) {
+  async getEngineSubaccountSummary(params: EngineQuerySubaccountSummaryParams) {
     return this.context.engineClient.getSubaccountSummary(params);
   }
 
@@ -49,7 +49,7 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
    * @param params
    */
   async getEngineEstimatedSubaccountSummary(
-    params: GetEngineEstimatedSubaccountSummaryParams,
+    params: EngineQueryEstimatedSubaccountSummaryParams,
   ) {
     return this.context.engineClient.getEstimatedSubaccountSummary(params);
   }
@@ -58,7 +58,7 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
    * Queries engine to get subaccount fee rates
    * @param params
    */
-  async getSubaccountFeeRates(params: GetEngineSubaccountFeeRatesParams) {
+  async getSubaccountFeeRates(params: EngineQuerySubaccountFeeRatesParams) {
     return this.context.engineClient.getSubaccountFeeRates(params);
   }
 

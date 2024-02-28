@@ -1,49 +1,50 @@
-import { EngineBaseClient } from './EngineBaseClient';
 import {
   encodeSignedOrder,
   MarketWithProduct,
-  subaccountFromHex,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
 import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
+import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
+import { EngineBaseClient } from './EngineBaseClient';
 import {
-  EngineServerStatusResponse,
-  EngineServerSubaccountInfoQueryParams,
-  EngineSymbolsResponse,
-  GetEngineAllMarketsResponse,
-  GetEngineContractsResponse,
-  GetEngineEstimatedSubaccountSummaryParams,
-  GetEngineHealthGroupsResponse,
-  GetEngineLinkedSignerParams,
-  GetEngineLinkedSignerResponse,
-  GetEngineMarketLiquidityParams,
-  GetEngineMarketLiquidityResponse,
-  GetEngineMarketPriceParams,
-  GetEngineMarketPriceResponse,
-  GetEngineMarketPricesParams,
-  GetEngineMarketPricesResponse,
-  GetEngineMaxMintLpAmountParams,
-  GetEngineMaxMintLpAmountResponse,
-  GetEngineMaxOrderSizeParams,
-  GetEngineMaxOrderSizeResponse,
-  GetEngineMaxWithdrawableParams,
-  GetEngineMaxWithdrawableResponse,
-  GetEngineOrderParams,
-  GetEngineOrderResponse,
-  GetEngineSubaccountFeeRatesParams,
-  GetEngineSubaccountFeeRatesResponse,
-  GetEngineSubaccountOrdersParams,
-  GetEngineSubaccountOrdersResponse,
-  GetEngineSubaccountProductOrdersParams,
-  GetEngineSubaccountProductOrdersResponse,
-  GetEngineSubaccountSummaryParams,
-  GetEngineSubaccountSummaryResponse,
-  GetEngineSymbolsParams,
+  EngineQueryAllMarketsResponse,
+  EngineQueryContractsResponse,
+  EngineQueryEstimatedSubaccountSummaryParams,
+  EngineQueryHealthGroupsResponse,
+  EngineQueryLinkedSignerParams,
+  EngineQueryLinkedSignerResponse,
+  EngineQueryMarketLiquidityParams,
+  EngineQueryMarketLiquidityResponse,
+  EngineQueryMarketPriceParams,
+  EngineQueryMarketPriceResponse,
+  EngineQueryMarketPricesParams,
+  EngineQueryMarketPricesResponse,
+  EngineQueryMaxMintLpAmountParams,
+  EngineQueryMaxMintLpAmountResponse,
+  EngineQueryMaxOrderSizeParams,
+  EngineQueryMaxOrderSizeResponse,
+  EngineQueryMaxWithdrawableParams,
+  EngineQueryMaxWithdrawableResponse,
+  EngineQueryOrderParams,
+  EngineQueryOrderResponse,
+  EngineQuerySubaccountFeeRatesParams,
+  EngineQuerySubaccountFeeRatesResponse,
+  EngineQuerySubaccountOrdersParams,
+  EngineQuerySubaccountOrdersResponse,
+  EngineQuerySubaccountProductOrdersParams,
+  EngineQuerySubaccountProductOrdersResponse,
+  EngineQuerySubaccountSummaryParams,
+  EngineQuerySubaccountSummaryResponse,
+  EngineQuerySymbolsParams,
+  EngineQuerySymbolsResponse,
+  EngineQueryValidateOrderParams,
+  EngineQueryValidateOrderResponse,
+  EngineQueryValidateSignedOrderParams,
+  EngineServerQueryStatusResponse,
+  EngineServerQuerySubaccountInfoParams,
   SubaccountOrderFeeRates,
-  ValidateEngineOrderParams,
-  ValidateEngineOrderResponse,
-  ValidateSignedEngineOrderParams,
 } from './types';
+import { mapProductEngineType } from './utils/productEngineTypeMappers';
 import {
   mapEngineMarketPrice,
   mapEngineServerOrder,
@@ -53,14 +54,12 @@ import {
   mapEngineServerTickLiquidity,
   mapSubaccountSummary,
 } from './utils/queryDataMappers';
-import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
-import { mapProductEngineType } from './utils/productEngineTypeMappers';
 
 export class EngineQueryClient extends EngineBaseClient {
   /**
    * Retrieves the set of contracts that the engine is interfacing with
    */
-  async getContracts(): Promise<GetEngineContractsResponse> {
+  async getContracts(): Promise<EngineQueryContractsResponse> {
     const baseResponse = await this.query('contracts', {});
     return {
       chainId: baseResponse.chain_id,
@@ -72,7 +71,7 @@ export class EngineQueryClient extends EngineBaseClient {
   /**
    * Retrieves current engine status
    */
-  async getStatus(): Promise<EngineServerStatusResponse> {
+  async getStatus(): Promise<EngineServerQueryStatusResponse> {
     return this.query('status', {});
   }
 
@@ -83,8 +82,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async getSubaccountSummary(
-    params: GetEngineSubaccountSummaryParams,
-  ): Promise<GetEngineSubaccountSummaryResponse> {
+    params: EngineQuerySubaccountSummaryParams,
+  ): Promise<EngineQuerySubaccountSummaryResponse> {
     const subaccount = subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
@@ -102,19 +101,19 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async getEstimatedSubaccountSummary(
-    params: GetEngineEstimatedSubaccountSummaryParams,
-  ): Promise<GetEngineSubaccountSummaryResponse> {
+    params: EngineQueryEstimatedSubaccountSummaryParams,
+  ): Promise<EngineQuerySubaccountSummaryResponse> {
     const subaccount = subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     });
-    const queryParams: EngineServerSubaccountInfoQueryParams = {
+    const queryParams: EngineServerQuerySubaccountInfoParams = {
       subaccount: subaccount,
       txns: params.txs.map(
         (
           tx,
         ): NonNullable<
-          EngineServerSubaccountInfoQueryParams['txns']
+          EngineServerQuerySubaccountInfoParams['txns']
         >[number] => {
           switch (tx.type) {
             case 'burn_lp':
@@ -162,8 +161,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async getSymbols(
-    params: GetEngineSymbolsParams,
-  ): Promise<EngineSymbolsResponse> {
+    params: EngineQuerySymbolsParams,
+  ): Promise<EngineQuerySymbolsResponse> {
     const baseResponse = await this.query('symbols', {
       product_ids: params.productIds,
       product_type: params.productType
@@ -176,7 +175,7 @@ export class EngineQueryClient extends EngineBaseClient {
   /**
    * Retrieves all market states as per the offchain engine. Same return interface as contracts
    */
-  async getAllMarkets(): Promise<GetEngineAllMarketsResponse> {
+  async getAllMarkets(): Promise<EngineQueryAllMarketsResponse> {
     const markets: MarketWithProduct[] = [];
 
     const baseResponse = await this.query('all_products', {});
@@ -193,7 +192,7 @@ export class EngineQueryClient extends EngineBaseClient {
   /**
    * Retrieves all health groups (linked spot & perp products) from the engine
    */
-  async getHealthGroups(): Promise<GetEngineHealthGroupsResponse> {
+  async getHealthGroups(): Promise<EngineQueryHealthGroupsResponse> {
     const baseResponse = await this.query('health_groups', {});
 
     return {
@@ -214,8 +213,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async getOrder(
-    params: GetEngineOrderParams,
-  ): Promise<GetEngineOrderResponse> {
+    params: EngineQueryOrderParams,
+  ): Promise<EngineQueryOrderResponse> {
     const baseResponse = await this.query('order', {
       digest: params.digest,
       product_id: params.productId,
@@ -230,8 +229,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async validateOrderParams(
-    params: ValidateEngineOrderParams,
-  ): Promise<ValidateEngineOrderResponse> {
+    params: EngineQueryValidateOrderParams,
+  ): Promise<EngineQueryValidateOrderResponse> {
     const signedOrder = {
       order: params.order,
       signature: await this.sign(
@@ -253,8 +252,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async validateSignedOrderParams(
-    params: ValidateSignedEngineOrderParams,
-  ): Promise<ValidateEngineOrderResponse> {
+    params: EngineQueryValidateSignedOrderParams,
+  ): Promise<EngineQueryValidateOrderResponse> {
     const baseResponse = await this.query('validate_order', {
       product_id: params.productId,
       order: encodeSignedOrder(params.signedOrder),
@@ -271,8 +270,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async getSubaccountOrders(
-    params: GetEngineSubaccountOrdersParams,
-  ): Promise<GetEngineSubaccountOrdersResponse> {
+    params: EngineQuerySubaccountOrdersParams,
+  ): Promise<EngineQuerySubaccountOrdersResponse> {
     const baseResponse = await this.query('subaccount_orders', {
       sender: subaccountToHex({
         subaccountOwner: params.subaccountOwner,
@@ -292,8 +291,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async getSubaccountMultiProductOrders(
-    params: GetEngineSubaccountProductOrdersParams,
-  ): Promise<GetEngineSubaccountProductOrdersResponse> {
+    params: EngineQuerySubaccountProductOrdersParams,
+  ): Promise<EngineQuerySubaccountProductOrdersResponse> {
     const baseResponse = await this.query('orders', {
       sender: subaccountToHex({
         subaccountOwner: params.subaccountOwner,
@@ -301,8 +300,6 @@ export class EngineQueryClient extends EngineBaseClient {
       }),
       product_ids: params.productIds,
     });
-
-    const subaccount = subaccountFromHex(baseResponse.sender);
 
     return {
       productOrders: baseResponse.product_orders.map((orders) => {
@@ -319,8 +316,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @params params
    */
   async getSubaccountFeeRates(
-    params: GetEngineSubaccountFeeRatesParams,
-  ): Promise<GetEngineSubaccountFeeRatesResponse> {
+    params: EngineQuerySubaccountFeeRatesParams,
+  ): Promise<EngineQuerySubaccountFeeRatesResponse> {
     const baseResponse = await this.query('fee_rates', {
       sender: subaccountToHex({
         subaccountOwner: params.subaccountOwner,
@@ -361,8 +358,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async getMarketLiquidity(
-    params: GetEngineMarketLiquidityParams,
-  ): Promise<GetEngineMarketLiquidityResponse> {
+    params: EngineQueryMarketLiquidityParams,
+  ): Promise<EngineQueryMarketLiquidityResponse> {
     const baseResponse = await this.query('market_liquidity', {
       product_id: params.productId,
       depth: params.depth,
@@ -378,8 +375,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async getMarketPrice(
-    params: GetEngineMarketPriceParams,
-  ): Promise<GetEngineMarketPriceResponse> {
+    params: EngineQueryMarketPriceParams,
+  ): Promise<EngineQueryMarketPriceResponse> {
     const baseResponse = await this.query('market_price', {
       product_id: params.productId,
     });
@@ -391,8 +388,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async getMarketPrices(
-    params: GetEngineMarketPricesParams,
-  ): Promise<GetEngineMarketPricesResponse> {
+    params: EngineQueryMarketPricesParams,
+  ): Promise<EngineQueryMarketPricesResponse> {
     const baseResponse = await this.query('market_prices', {
       product_ids: params.productIds,
     });
@@ -406,8 +403,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async getMaxOrderSize(
-    params: GetEngineMaxOrderSizeParams,
-  ): Promise<GetEngineMaxOrderSizeResponse> {
+    params: EngineQueryMaxOrderSizeParams,
+  ): Promise<EngineQueryMaxOrderSizeResponse> {
     const baseResponse = await this.query('max_order_size', {
       direction: params.side,
       price_x18: toX18(params.price).toString(),
@@ -428,8 +425,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async getMaxWithdrawable(
-    params: GetEngineMaxWithdrawableParams,
-  ): Promise<GetEngineMaxWithdrawableResponse> {
+    params: EngineQueryMaxWithdrawableParams,
+  ): Promise<EngineQueryMaxWithdrawableResponse> {
     const baseResponse = await this.query('max_withdrawable', {
       product_id: params.productId,
       sender: subaccountToHex({
@@ -449,8 +446,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @param params
    */
   async getMaxMintLpAmount(
-    params: GetEngineMaxMintLpAmountParams,
-  ): Promise<GetEngineMaxMintLpAmountResponse> {
+    params: EngineQueryMaxMintLpAmountParams,
+  ): Promise<EngineQueryMaxMintLpAmountResponse> {
     const baseResponse = await this.query('max_lp_mintable', {
       product_id: params.productId,
       sender: subaccountToHex({
@@ -473,8 +470,8 @@ export class EngineQueryClient extends EngineBaseClient {
    * @returns
    */
   public async getLinkedSigner(
-    params: GetEngineLinkedSignerParams,
-  ): Promise<GetEngineLinkedSignerResponse> {
+    params: EngineQueryLinkedSignerParams,
+  ): Promise<EngineQueryLinkedSignerResponse> {
     const baseResponse = await this.query('linked_signer', {
       subaccount: subaccountToHex({
         subaccountOwner: params.subaccountOwner,

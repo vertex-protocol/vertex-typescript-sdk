@@ -4,7 +4,7 @@ export interface VrtxTokenAmountParams {
   amount: BigNumberish;
 }
 
-export type ClaimTokensToLbaParams = VrtxTokenAmountParams;
+export type ExecuteClaimTokensToLbaParams = VrtxTokenAmountParams;
 
 // Either specify the amount, or attempt to claim all available tokens
 type AmountOrAllParams =
@@ -13,6 +13,6 @@ type AmountOrAllParams =
       claimAll: true;
     };
 
-export type ClaimLiquidTokensParams = {
+export type ExecuteClaimLiquidTokensParams = {
   epoch: number;
 } & AmountOrAllParams;

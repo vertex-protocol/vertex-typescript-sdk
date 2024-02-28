@@ -6,7 +6,10 @@ import {
   MockERC20__factory,
 } from '@vertex-protocol/contracts';
 import { BaseSpotAPI } from './BaseSpotAPI';
-import { ApproveAllowanceParams, WithdrawCollateralParams } from './types';
+import {
+  ExecuteApproveAllowanceParams,
+  ExecuteWithdrawCollateralParams,
+} from './types';
 
 export class SpotExecuteAPI extends BaseSpotAPI {
   async deposit(params: ExecuteDepositCollateralParams) {
@@ -19,7 +22,7 @@ export class SpotExecuteAPI extends BaseSpotAPI {
     });
   }
 
-  async withdraw(params: WithdrawCollateralParams) {
+  async withdraw(params: ExecuteWithdrawCollateralParams) {
     return this.context.engineClient.withdrawCollateral({
       ...params,
       subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
@@ -28,7 +31,7 @@ export class SpotExecuteAPI extends BaseSpotAPI {
     });
   }
 
-  async approveAllowance(params: ApproveAllowanceParams) {
+  async approveAllowance(params: ExecuteApproveAllowanceParams) {
     return approveDepositAllowance({
       amount: params.amount,
       endpoint: this.context.contracts.endpoint,

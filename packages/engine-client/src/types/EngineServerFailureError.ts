@@ -1,5 +1,5 @@
-import { EngineServerQueryFailureResponse } from './serverQueryTypes';
 import { EngineServerExecuteFailureResult } from './serverExecuteTypes';
+import { EngineServerQueryFailureResponse } from './serverQueryTypes';
 
 export class EngineServerFailureError extends Error {
   constructor(

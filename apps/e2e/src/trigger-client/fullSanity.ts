@@ -1,5 +1,3 @@
-import { RunContext } from '../utils/types';
-import { EngineOrderParams } from '@vertex-protocol/engine-client';
 import {
   depositCollateral,
   Endpoint__factory,
@@ -9,14 +7,16 @@ import {
   IClearinghouse__factory,
   MockERC20__factory,
 } from '@vertex-protocol/contracts';
-import { toBigDecimal, toFixedPoint, toX18 } from '@vertex-protocol/utils';
-import { runWithContext } from '../utils/runWithContext';
+import { EngineOrderParams } from '@vertex-protocol/engine-client';
 import {
   TriggerClient,
   TriggerExecutePlaceOrderParams,
 } from '@vertex-protocol/trigger-client';
+import { toFixedPoint, toX18 } from '@vertex-protocol/utils';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
+import { runWithContext } from '../utils/runWithContext';
+import { RunContext } from '../utils/types';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();

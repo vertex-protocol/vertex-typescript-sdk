@@ -1,4 +1,7 @@
-import { RunContext } from '../utils/types';
+import {
+  createVertexClient,
+  ExecutePlaceOrderParams,
+} from '@vertex-protocol/client';
 import {
   getChainIdFromSigner,
   getOrderNonce,
@@ -6,7 +9,7 @@ import {
 } from '@vertex-protocol/contracts';
 import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
-import { createVertexClient, PlaceOrderParams } from '@vertex-protocol/client';
+import { RunContext } from '../utils/types';
 
 async function wsSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -16,7 +19,7 @@ async function wsSanity(context: RunContext) {
 
   const chainId = await getChainIdFromSigner(signer);
 
-  const orderParams: PlaceOrderParams['order'] = {
+  const orderParams: ExecutePlaceOrderParams['order'] = {
     subaccountName: 'default',
     // `nowInSeconds` is exposed by the `@vertex-protocol/utils` package
     // This gives 60s before the order expires

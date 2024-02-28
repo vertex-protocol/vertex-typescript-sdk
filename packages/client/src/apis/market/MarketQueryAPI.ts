@@ -1,17 +1,16 @@
-import { BaseVertexAPI } from '../base';
 import {
   getAllMarkets,
   GetAllMarketsResponse,
 } from '@vertex-protocol/contracts';
 import {
-  GetEngineMarketLiquidityParams,
-  GetEngineMarketPriceParams,
-  GetEngineMarketPricesParams,
-  GetEngineMaxMintLpAmountParams,
-  GetEngineMaxOrderSizeParams,
-  GetEngineSubaccountOrdersParams,
-  GetEngineSubaccountProductOrdersParams,
-  ValidateEngineOrderParams,
+  EngineQueryMarketLiquidityParams,
+  EngineQueryMarketPriceParams,
+  EngineQueryMarketPricesParams,
+  EngineQueryMaxMintLpAmountParams,
+  EngineQueryMaxOrderSizeParams,
+  EngineQuerySubaccountOrdersParams,
+  EngineQuerySubaccountProductOrdersParams,
+  EngineQueryValidateOrderParams,
 } from '@vertex-protocol/engine-client';
 import {
   GetIndexerCandlesticksParams,
@@ -23,7 +22,8 @@ import {
   GetIndexerOrdersResponse,
   GetIndexerProductSnapshotsParams,
 } from '@vertex-protocol/indexer-client';
-import { GetTriggerOrdersParams } from './types';
+import { BaseVertexAPI } from '../base';
+import { QueryListTriggerOrdersParams } from './types';
 
 export class MarketQueryAPI extends BaseVertexAPI {
   /**
@@ -50,7 +50,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   /**
    * @description Queries engine to determine if the order can be submitted within health requirements
    */
-  async validateOrderParams(params: ValidateEngineOrderParams) {
+  async validateOrderParams(params: EngineQueryValidateOrderParams) {
     return this.context.engineClient.validateOrderParams(params);
   }
 
@@ -58,7 +58,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    * @description Queries the offchain engine to retrieve status of any open orders for the given subaccount
    * @param params
    */
-  async getOpenSubaccountOrders(params: GetEngineSubaccountOrdersParams) {
+  async getOpenSubaccountOrders(params: EngineQuerySubaccountOrdersParams) {
     return this.context.engineClient.getSubaccountOrders(params);
   }
 
@@ -67,7 +67,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    * @param params
    */
   async getOpenSubaccountMultiProductOrders(
-    params: GetEngineSubaccountProductOrdersParams,
+    params: EngineQuerySubaccountProductOrdersParams,
   ) {
     return this.context.engineClient.getSubaccountMultiProductOrders(params);
   }
@@ -76,7 +76,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    * @description Queries the offchain trigger service to list trigger orders. Requires a signature
    * @param params
    */
-  async getTriggerOrders(params: GetTriggerOrdersParams) {
+  async getTriggerOrders(params: QueryListTriggerOrdersParams) {
     return this.context.triggerClient.listTriggerOrders({
       ...params,
       chainId: await this.getSignerChainIdIfNeeded(params),
@@ -99,7 +99,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    * @description Queries engine to determine maximum order size
    * @param params
    */
-  async getMaxOrderSize(params: GetEngineMaxOrderSizeParams) {
+  async getMaxOrderSize(params: EngineQueryMaxOrderSizeParams) {
     return this.context.engineClient.getMaxOrderSize(params);
   }
 
@@ -107,7 +107,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    * @description Queries engine to determine maximum base amount contribution for minting LPs
    * @param params
    */
-  async getMaxMintLp(params: GetEngineMaxMintLpAmountParams) {
+  async getMaxMintLp(params: EngineQueryMaxMintLpAmountParams) {
     return this.context.engineClient.getMaxMintLpAmount(params);
   }
 
@@ -115,7 +115,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    * @description Retrieves liquidity per price tick from the engine. The engine will skip price levels that have no liquidity,
    * so it is not guaranteed that the bids/asks are evenly spaced
    */
-  async getMarketLiquidity(params: GetEngineMarketLiquidityParams) {
+  async getMarketLiquidity(params: EngineQueryMarketLiquidityParams) {
     return this.context.engineClient.getMarketLiquidity(params);
   }
 
@@ -133,7 +133,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async getLatestMarketPrice(params: GetEngineMarketPriceParams) {
+  async getLatestMarketPrice(params: EngineQueryMarketPriceParams) {
     return this.context.engineClient.getMarketPrice(params);
   }
 
@@ -142,7 +142,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async getLatestMarketPrices(params: GetEngineMarketPricesParams) {
+  async getLatestMarketPrices(params: EngineQueryMarketPricesParams) {
     return this.context.engineClient.getMarketPrices(params);
   }
 

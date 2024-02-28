@@ -1,18 +1,18 @@
-import { OptionalSignatureParams, OptionalSubaccountOwner } from '../types';
 import {
   EngineExecuteLinkSignerParams,
   EngineExecuteLiquidateSubaccountParams,
 } from '@vertex-protocol/engine-client';
+import { OptionalSignatureParams, OptionalSubaccountOwner } from '../types';
 
-export interface GetSubaccountIdParams {
+export interface QuerySubaccountIdParams {
   address: string;
   name: string;
 }
 
-export type LinkSignerParams = OptionalSignatureParams<
+export type ExecuteLinkSignerParams = OptionalSignatureParams<
   OptionalSubaccountOwner<EngineExecuteLinkSignerParams>
 >;
 
-export type LiquidateSubaccountParams = OptionalSignatureParams<
+export type ExecuteLiquidateSubaccountParams = OptionalSignatureParams<
   OptionalSubaccountOwner<EngineExecuteLiquidateSubaccountParams>
 >;

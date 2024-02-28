@@ -4,31 +4,31 @@ import {
   EIP712LiquidateSubaccountValues,
   EIP712MintLpValues,
   EIP712OrderCancellationValues,
+  EIP712OrderParams,
   EIP712OrderValues,
   EIP712ProductOrdersCancellationValues,
   EIP712WithdrawCollateralValues,
-  EIP712OrderParams,
   SignedTx,
 } from '@vertex-protocol/contracts';
-import { EngineServerGetOrderResponse } from './serverQueryTypes';
+import { EngineServerQueryOrderResponse } from './serverQueryTypes';
 
-export interface EngineServerPlaceOrderResponse {
+export interface EngineServerExecutePlaceOrderResponse {
   digest: string;
 }
 
-export interface EngineServerCancelOrdersResponse {
-  cancelled_orders: EngineServerGetOrderResponse[];
+export interface EngineServerExecuteCancelOrdersResponse {
+  cancelled_orders: EngineServerQueryOrderResponse[];
 }
 
-export interface EngineServerExecuteResponseDataByType {
+export interface EngineServerExecuteExecuteResponseDataByType {
   liquidate_subaccount: null;
   withdraw_collateral: null;
   mint_lp: null;
   burn_lp: null;
-  place_order: EngineServerPlaceOrderResponse;
-  cancel_product_orders: EngineServerCancelOrdersResponse;
-  cancel_orders: EngineServerCancelOrdersResponse;
-  cancel_and_place: EngineServerPlaceOrderResponse;
+  place_order: EngineServerExecutePlaceOrderResponse;
+  cancel_product_orders: EngineServerExecuteCancelOrdersResponse;
+  cancel_orders: EngineServerExecuteCancelOrdersResponse;
+  cancel_and_place: EngineServerExecutePlaceOrderResponse;
   link_signer: null;
 }
 
@@ -36,7 +36,7 @@ export interface EngineServerExecuteSuccessResult<
   T extends EngineServerExecuteRequestType = EngineServerExecuteRequestType,
 > {
   status: 'success';
-  data: EngineServerExecuteResponseDataByType[T];
+  data: EngineServerExecuteExecuteResponseDataByType[T];
   signature: string;
   request_type: EngineServerExecuteResultRequestType;
   // NOTE: `id` is excluded from the response to avoid parsing issues.
@@ -59,7 +59,7 @@ type EngineServerExecuteResultRequestType = {
   [K in keyof EngineServerExecuteRequestByType]: `execute_${K}`;
 }[keyof EngineServerExecuteRequestByType];
 
-export interface EngineServerPlaceOrderParams {
+export interface EngineServerExecutePlaceOrderParams {
   id: number | null;
   product_id: number;
   order: EIP712OrderValues;
@@ -69,20 +69,20 @@ export interface EngineServerPlaceOrderParams {
   spot_leverage: boolean | null;
 }
 
-export type EngineServerCancelOrdersParams = SignedTx<
+export type EngineServerExecuteCancelOrdersParams = SignedTx<
   Omit<EIP712OrderCancellationValues, 'productIds'> & {
     // number[] is technically assignable to "Bytes", so we need to override the ByteFieldsToHex result here
     productIds: number[];
   }
 >;
 
-export type EngineServiceCancelAndPlaceParams = Omit<
-  EngineServerCancelOrdersParams,
+export type EngineServerCancelAndPlaceParams = Omit<
+  EngineServerExecuteCancelOrdersParams,
   'tx' | 'signature'
 > & {
-  cancel_tx: EngineServerCancelOrdersParams['tx'];
-  cancel_signature: EngineServerCancelOrdersParams['signature'];
-  place_order: EngineServerPlaceOrderParams;
+  cancel_tx: EngineServerExecuteCancelOrdersParams['tx'];
+  cancel_signature: EngineServerExecuteCancelOrdersParams['signature'];
+  place_order: EngineServerExecutePlaceOrderParams;
 };
 
 type WithSpotLeverage<T> = T & {
@@ -96,9 +96,9 @@ export interface EngineServerExecuteRequestByType {
   >;
   mint_lp: WithSpotLeverage<SignedTx<EIP712MintLpValues>>;
   burn_lp: SignedTx<EIP712BurnLpValues>;
-  place_order: EngineServerPlaceOrderParams;
-  cancel_orders: EngineServerCancelOrdersParams;
-  cancel_and_place: EngineServiceCancelAndPlaceParams;
+  place_order: EngineServerExecutePlaceOrderParams;
+  cancel_orders: EngineServerExecuteCancelOrdersParams;
+  cancel_and_place: EngineServerCancelAndPlaceParams;
   cancel_product_orders: SignedTx<
     Omit<EIP712ProductOrdersCancellationValues, 'productIds'> & {
       // number[] is technically assignable to "Bytes", so we need to override the ByteFieldsToHex result here

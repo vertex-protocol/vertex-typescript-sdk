@@ -1,14 +1,14 @@
-import { BaseVertexAPI } from '../base';
-import {
-  ClaimLiquidTokensParams,
-  ClaimTokensToLbaParams,
-  VrtxTokenAmountParams,
-} from './types';
 import {
   IAirdrop,
   IArbAirdrop,
   LBA_AIRDROP_EPOCH,
 } from '@vertex-protocol/contracts';
+import { BaseVertexAPI } from '../base';
+import {
+  ExecuteClaimLiquidTokensParams,
+  ExecuteClaimTokensToLbaParams,
+  VrtxTokenAmountParams,
+} from './types';
 
 export class RewardsExecuteAPI extends BaseVertexAPI {
   /**
@@ -16,7 +16,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async claimTokensToLba(params: ClaimTokensToLbaParams) {
+  async claimTokensToLba(params: ExecuteClaimTokensToLbaParams) {
     const { totalAmount, proof } = (
       await this.context.indexerClient.getClaimVrtxMerkleProofs({
         address: await this.getChainSignerAddress(),
@@ -62,7 +62,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async claimLiquidTokens(params: ClaimLiquidTokensParams) {
+  async claimLiquidTokens(params: ExecuteClaimLiquidTokensParams) {
     return this.context.contracts.vrtxAirdrop.claim(
       ...(await this.getClaimLiquidTokensContractParams(params)),
     );
@@ -73,7 +73,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async claimAndStakeLiquidTokens(params: ClaimLiquidTokensParams) {
+  async claimAndStakeLiquidTokens(params: ExecuteClaimLiquidTokensParams) {
     return this.context.contracts.vrtxAirdrop.claimAndStake(
       ...(await this.getClaimLiquidTokensContractParams(params)),
     );
@@ -160,7 +160,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    * @private
    */
   private async getClaimLiquidTokensContractParams(
-    params: ClaimLiquidTokensParams,
+    params: ExecuteClaimLiquidTokensParams,
   ): Promise<Parameters<IAirdrop['claimAndStake']>> {
     const address = await this.getChainSignerAddress();
 
