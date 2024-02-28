@@ -1,7 +1,8 @@
+import {
+  ChainEnv,
+  VertexDeploymentAddresses,
+} from '@vertex-protocol/contracts';
 import { Provider, Wallet } from 'ethers';
-import { VertexDeploymentAddresses } from '@vertex-protocol/contracts';
-
-export type ChainEnv = 'local' | 'testnet' | 'mainnet';
 
 export interface Env {
   chainEnv: ChainEnv;

@@ -1,4 +1,4 @@
-import { ChainEnv } from './types';
+import { ChainEnv } from '@vertex-protocol/contracts';
 import { JsonRpcProvider, Provider } from 'ethers';
 
 export function getProvider(chainEnv: ChainEnv): Provider {
@@ -14,6 +14,11 @@ export function getProvider(chainEnv: ChainEnv): Provider {
       return new JsonRpcProvider('https://arb1.arbitrum.io/rpc', {
         name: 'arbitrum-one',
         chainId: 42161,
+      });
+    case 'blastTestnet':
+      return new JsonRpcProvider('https://sepolia.blast.io', {
+        name: 'blase-sepolia',
+        chainId: 1685877734,
       });
   }
 }
