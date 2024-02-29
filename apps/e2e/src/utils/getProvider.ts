@@ -17,7 +17,13 @@ export function getProvider(chainEnv: ChainEnv): Provider {
       });
     case 'blastTestnet':
       return new JsonRpcProvider('https://sepolia.blast.io', {
-        name: 'blase-sepolia',
+        name: 'blast-sepolia',
+        chainId: 1685877734,
+      });
+    case 'blastMainnet':
+      // TODO: Mainnet details
+      return new JsonRpcProvider('https://sepolia.blast.io', {
+        name: 'blast',
         chainId: 1685877734,
       });
   }
