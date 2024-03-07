@@ -495,8 +495,10 @@ export class IndexerBaseClient {
       const productId = (() => {
         if ('match_orders' in tx) {
           return tx.match_orders.product_id;
+        } else if ('match_orders_r_f_q' in tx) {
+          return tx.match_orders_r_f_q.product_id;
         } else {
-          throw new Error('Match Event Tx is not a MatchOrders event');
+          throw new Error('Match Event Tx is not a valid match event');
         }
       })();
 
