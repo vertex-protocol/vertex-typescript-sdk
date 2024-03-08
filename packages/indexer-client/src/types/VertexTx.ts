@@ -7,7 +7,7 @@ export interface VertexMatchOrdersTx {
 }
 
 export interface VertexMatchOrdersRfqTx {
-  match_orders_rfq: {
+  match_orders_r_f_q: {
     product_id: number;
   };
 }
