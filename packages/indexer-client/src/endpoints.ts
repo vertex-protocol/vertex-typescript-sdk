@@ -5,5 +5,5 @@ export const INDEXER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   testnet: 'https://archive.sepolia-test.vertexprotocol.com/v1',
   blastTestnet: 'https://archive.blast-test.vertexprotocol.com/v1',
   mainnet: 'https://archive.prod.vertexprotocol.com/v1',
-  blastMainnet: 'https://archive.blast-test.vertexprotocol.com/v1',
+  blastMainnet: 'https://archive.blast-prod.vertexprotocol.com/v1',
 };
