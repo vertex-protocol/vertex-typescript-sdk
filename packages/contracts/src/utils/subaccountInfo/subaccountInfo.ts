@@ -1,14 +1,14 @@
-import { SubaccountSummaryResponse } from '../../query';
-import {
-  BalanceWithProduct,
-  ProductEngineType,
-  QUOTE_PRODUCT_ID,
-} from '../../common';
 import {
   BigDecimal,
   sumBigDecimalBy,
   toBigDecimal,
 } from '@vertex-protocol/utils';
+import {
+  BalanceWithProduct,
+  ProductEngineType,
+  QUOTE_PRODUCT_ID,
+} from '../../common';
+import { SubaccountSummaryResponse } from '../../query';
 import {
   calcLpBalanceValue,
   calcPerpBalanceNotionalValue,
@@ -92,7 +92,11 @@ export function calcTotalPortfolioValues(
 export function calcSubaccountLeverage(summary: SubaccountSummaryResponse) {
   const unweightedHealth =
     calcUnweightedHealthExcludingZeroHealthProducts(summary);
+
   if (unweightedHealth.isZero()) {
+    return toBigDecimal(0);
+  }
+  if (!hasBorrowsOrPerps(summary)) {
     return toBigDecimal(0);
   }
 
@@ -138,21 +142,7 @@ export function calcSubaccountMarginUsageFractions(
   if (unweightedHealth.isZero()) {
     return zeroMarginUsage;
   }
-
-  let hasBorrowsOrPerps = false;
-  for (const balance of summary.balances) {
-    if (balance.amount.lt(0)) {
-      // Either a spot borrow or a perp position
-      hasBorrowsOrPerps = true;
-      break;
-    } else if (balance.type === ProductEngineType.PERP) {
-      if (!balance.amount.isZero() || !balance.lpAmount.isZero()) {
-        hasBorrowsOrPerps = true;
-        break;
-      }
-    }
-  }
-  if (!hasBorrowsOrPerps) {
+  if (!hasBorrowsOrPerps(summary)) {
     return zeroMarginUsage;
   }
 
@@ -188,4 +178,24 @@ export function calcBalanceMarginUsed(balance: BalanceWithProduct) {
       balance.healthContributions.maintenance.negated(),
     ),
   };
+}
+
+/**
+ * Check if a subaccount has borrows or perp positions
+ *
+ * @param summary
+ */
+function hasBorrowsOrPerps(summary: SubaccountSummaryResponse) {
+  for (const balance of summary.balances) {
+    if (balance.amount.lt(0)) {
+      // Either a spot borrow or a perp position
+      return true;
+    } else if (balance.type === ProductEngineType.PERP) {
+      if (!balance.amount.isZero() || !balance.lpAmount.isZero()) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
