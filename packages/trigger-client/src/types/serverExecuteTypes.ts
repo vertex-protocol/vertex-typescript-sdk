@@ -20,7 +20,7 @@ export type TriggerServerTriggerCriteria =
       last_price_below: string;
     };
 
-export interface TriggerServerExecutePlaceOrderParams {
+export interface TriggerServerPlaceOrderParams {
   id: number | null;
   product_id: number;
   order: EIP712OrderValues;
@@ -31,16 +31,16 @@ export interface TriggerServerExecutePlaceOrderParams {
   spot_leverage: boolean | null;
 }
 
-export type TriggerServerExecuteCancelOrdersParams =
+export type TriggerServerCancelOrdersParams =
   EngineServerExecuteRequestByType['cancel_orders'];
 
-export type TriggerServerExecuteCancelProductOrdersParams =
+export type TriggerServerCancelProductOrdersParams =
   EngineServerExecuteRequestByType['cancel_product_orders'];
 
 export interface TriggerServerExecuteRequestByType {
-  place_order: TriggerServerExecutePlaceOrderParams;
-  cancel_orders: TriggerServerExecuteCancelOrdersParams;
-  cancel_product_orders: TriggerServerExecuteCancelProductOrdersParams;
+  place_order: TriggerServerPlaceOrderParams;
+  cancel_orders: TriggerServerCancelOrdersParams;
+  cancel_product_orders: TriggerServerCancelProductOrdersParams;
 }
 
 export type TriggerServerExecuteRequestType =

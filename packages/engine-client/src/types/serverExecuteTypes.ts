@@ -4,20 +4,20 @@ import {
   EIP712LiquidateSubaccountValues,
   EIP712MintLpValues,
   EIP712OrderCancellationValues,
+  EIP712OrderParams,
   EIP712OrderValues,
   EIP712ProductOrdersCancellationValues,
   EIP712WithdrawCollateralValues,
-  EIP712OrderParams,
   SignedTx,
 } from '@vertex-protocol/contracts';
-import { EngineServerGetOrderResponse } from './serverQueryTypes';
+import { EngineServerOrderResponse } from './serverQueryTypes';
 
 export interface EngineServerPlaceOrderResponse {
   digest: string;
 }
 
 export interface EngineServerCancelOrdersResponse {
-  cancelled_orders: EngineServerGetOrderResponse[];
+  cancelled_orders: EngineServerOrderResponse[];
 }
 
 export interface EngineServerExecuteResponseDataByType {

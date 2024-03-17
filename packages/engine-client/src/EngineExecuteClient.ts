@@ -1,11 +1,11 @@
-import {
-  EngineExecutePlaceOrderResult,
-  EngineExecuteRequestParamsByType,
-} from './types';
-import { EngineExecuteBuilder } from './EngineExecuteBuilder';
-import { EngineBaseClient, EngineClientOpts } from './EngineBaseClient';
-import { getOrderDigest, EIP712OrderParams } from '@vertex-protocol/contracts';
+import { EIP712OrderParams, getOrderDigest } from '@vertex-protocol/contracts';
 import { BigNumberish } from 'ethers';
+import { EngineBaseClient, EngineClientOpts } from './EngineBaseClient';
+import { EngineExecuteBuilder } from './EngineExecuteBuilder';
+import {
+  EngineExecuteRequestParamsByType,
+  EnginePlaceOrderResult,
+} from './types';
 
 export class EngineExecuteClient extends EngineBaseClient {
   readonly payloadBuilder: EngineExecuteBuilder;
@@ -49,7 +49,7 @@ export class EngineExecuteClient extends EngineBaseClient {
 
   async placeOrder(
     params: EngineExecuteRequestParamsByType['place_order'],
-  ): Promise<EngineExecutePlaceOrderResult> {
+  ): Promise<EnginePlaceOrderResult> {
     const placeOrderPayload = await this.payloadBuilder.buildPlaceOrderPayload(
       params,
     );

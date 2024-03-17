@@ -1,4 +1,3 @@
-import { OrderExpirationType } from '@vertex-protocol/contracts';
 import {
   EngineServerPerpBalance,
   EngineServerPerpProduct,
@@ -235,7 +234,7 @@ export interface EngineServerProductOrdersResponse {
   product_orders: EngineServerSubaccountOrders[];
 }
 
-export interface EngineServerSubaccountFeeRatesResponse {
+export interface EngineServerFeeRatesResponse {
   liquidation_sequencer_fee: string;
   health_check_sequencer_fee: string;
   taker_sequencer_fee: string;
@@ -270,7 +269,7 @@ export interface EngineServerOrder {
   order_type: string;
 }
 
-export type EngineServerGetOrderResponse = EngineServerOrder;
+export type EngineServerOrderResponse = EngineServerOrder;
 
 export interface EngineServerValidateOrderResponse {
   product_id: number;
@@ -310,11 +309,11 @@ export interface EngineServerQueryResponseByType {
   symbols: EngineServerSymbolsResponse;
   all_products: EngineServerAllProductsResponse;
   health_groups: EngineServerHealthGroupsResponse;
-  order: EngineServerGetOrderResponse;
+  order: EngineServerOrderResponse;
   orders: EngineServerProductOrdersResponse;
   validate_order: EngineServerValidateOrderResponse;
   subaccount_orders: EngineServerSubaccountOrdersResponse;
-  fee_rates: EngineServerSubaccountFeeRatesResponse;
+  fee_rates: EngineServerFeeRatesResponse;
   market_liquidity: EngineServerMarketLiquidityResponse;
   market_price: EngineServerMarketPriceResponse;
   market_prices: EngineServerMarketPricesResponse;

@@ -13,8 +13,8 @@ import {
   EngineMarketPrice,
   EngineOrder,
   EnginePriceTickLiquidity,
-  EngineServerGetOrderResponse,
   EngineServerMarketPrice,
+  EngineServerOrderResponse,
   EngineServerPerpProduct,
   EngineServerPriceTickLiquidity,
   EngineServerSpotProduct,
@@ -37,7 +37,7 @@ export function mapEngineServerTickLiquidity(
 }
 
 export function mapEngineServerOrder(
-  order: EngineServerGetOrderResponse,
+  order: EngineServerOrderResponse,
 ): EngineOrder {
   const subaccount = subaccountFromHex(order.sender);
   return {

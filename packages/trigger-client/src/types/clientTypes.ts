@@ -1,15 +1,15 @@
-import { BigDecimal, BigDecimalish } from '@vertex-protocol/utils';
 import {
   EIP712CancelOrdersParams,
   EIP712CancelProductOrdersParams,
   Subaccount,
 } from '@vertex-protocol/contracts';
-import { TriggerServerOrder } from './serverQueryTypes';
 import {
   EngineOrderParams,
   EngineServerExecuteResult,
 } from '@vertex-protocol/engine-client';
+import { BigDecimal, BigDecimalish } from '@vertex-protocol/utils';
 import { BigNumberish } from 'ethers';
+import { TriggerServerOrder } from './serverQueryTypes';
 
 type WithOptionalNonce<T> = Omit<T, 'nonce'> & { nonce?: string };
 
@@ -51,7 +51,7 @@ interface SignatureParams {
  * Executes
  */
 
-export interface TriggerExecutePlaceOrderParams extends SignatureParams {
+export interface TriggerPlaceOrderParams extends SignatureParams {
   id?: number;
   productId: number;
   order: EngineOrderParams;
@@ -62,25 +62,17 @@ export interface TriggerExecutePlaceOrderParams extends SignatureParams {
   nonce?: string;
 }
 
-export type TriggerExecuteCancelOrdersParams = SignatureParams &
+export type TriggerCancelOrdersParams = SignatureParams &
   WithOptionalNonce<EIP712CancelOrdersParams>;
 
-export type TriggerExecuteCancelProductOrdersParams = SignatureParams &
+export type TriggerCancelProductOrdersParams = SignatureParams &
   WithOptionalNonce<EIP712CancelProductOrdersParams>;
-
-export interface TriggerExecuteRequestParamsByType {
-  place_order: TriggerExecutePlaceOrderParams;
-  cancel_orders: TriggerExecuteCancelOrdersParams;
-  cancel_product_orders: TriggerExecuteCancelProductOrdersParams;
-}
 
 /**
  * Queries
  */
 
-export interface QueryListTriggerOrdersParams
-  extends Subaccount,
-    SignatureParams {
+export interface TriggerListOrdersParams extends Subaccount, SignatureParams {
   // In millis, defaults to 90s in the future
   recvTime?: BigDecimal;
   // If not given, defaults to all products
@@ -109,14 +101,6 @@ export interface TriggerOrderInfo {
   updatedAt: number;
 }
 
-export interface QueryListTriggerOrdersResponse {
+export interface TriggerListOrdersResponse {
   orders: TriggerOrderInfo[];
-}
-
-export interface TriggerQueryRequestParamsByType {
-  list_trigger_orders: QueryListTriggerOrdersParams;
-}
-
-export interface TriggerQueryResponseByType {
-  list_trigger_orders: QueryListTriggerOrdersResponse;
 }

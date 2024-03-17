@@ -2,8 +2,8 @@ import {
   EIP712ListTriggerOrdersValues,
   SignedTx,
 } from '@vertex-protocol/contracts';
-import { TriggerServerExecutePlaceOrderParams } from './serverExecuteTypes';
 import { EngineServerExecuteResult } from '@vertex-protocol/engine-client';
+import { TriggerServerPlaceOrderParams } from './serverExecuteTypes';
 
 export type TriggerServerOrderStatus =
   | 'pending'
@@ -24,7 +24,7 @@ export type TriggerServerOrderStatus =
  * Request types
  */
 
-export interface TriggerServerQueryListOrdersParams
+export interface TriggerServerListTriggerOrdersParams
   extends SignedTx<EIP712ListTriggerOrdersValues> {
   pending: boolean;
   // If not given, defaults to all products
@@ -34,7 +34,7 @@ export interface TriggerServerQueryListOrdersParams
 }
 
 export interface TriggerServerQueryRequestByType {
-  list_trigger_orders: TriggerServerQueryListOrdersParams;
+  list_trigger_orders: TriggerServerListTriggerOrdersParams;
 }
 
 export type TriggerServerQueryRequestType =
@@ -44,7 +44,7 @@ export type TriggerServerQueryRequestType =
  * Response types
  */
 
-export type TriggerServerOrder = TriggerServerExecutePlaceOrderParams & {
+export type TriggerServerOrder = TriggerServerPlaceOrderParams & {
   // Digest is always populated here
   digest: string;
 };
@@ -55,12 +55,12 @@ export interface TriggerServerOrderInfo {
   updated_at: number;
 }
 
-export interface TriggerServerQueryListOrdersResponse {
+export interface TriggerServerListTriggerOrdersResponse {
   orders: TriggerServerOrderInfo[];
 }
 
 export interface TriggerServerQueryResponseByType {
-  list_trigger_orders: TriggerServerQueryListOrdersResponse;
+  list_trigger_orders: TriggerServerListTriggerOrdersResponse;
 }
 
 export interface TriggerServerQuerySuccessResponse<

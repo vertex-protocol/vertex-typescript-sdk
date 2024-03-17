@@ -1,8 +1,26 @@
 import {
-  TriggerExecuteRequestParamsByType,
+  EIP712CancelOrdersParams,
+  EIP712CancelProductOrdersParams,
+  EIP712ListTriggerOrdersParams,
+  EIP712OrderParams,
+  getDefaultRecvTime,
+  getOrderNonce,
+  getSignedTransactionRequest,
+  getTriggerOrderNonce,
+  getVertexEIP712Values,
+  SignableRequestType,
+  SignableRequestTypeToParams,
+} from '@vertex-protocol/contracts';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { BigNumberish, Signer } from 'ethers';
+import { mapServerOrderInfo, mapTriggerCriteria } from './dataMappers';
+import {
+  TriggerCancelOrdersParams,
+  TriggerCancelProductOrdersParams,
+  TriggerListOrdersParams,
+  TriggerListOrdersResponse,
   TriggerOrderInfo,
-  TriggerQueryRequestParamsByType,
-  TriggerQueryResponseByType,
+  TriggerPlaceOrderParams,
   TriggerServerExecuteRequestByType,
   TriggerServerExecuteRequestType,
   TriggerServerExecuteResult,
@@ -12,22 +30,6 @@ import {
   TriggerServerQueryResponseByType,
   TriggerServerQuerySuccessResponse,
 } from './types';
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import {
-  getDefaultRecvTime,
-  getOrderNonce,
-  getSignedTransactionRequest,
-  getTriggerOrderNonce,
-  getVertexEIP712Values,
-  EIP712ListTriggerOrdersParams,
-  EIP712CancelOrdersParams,
-  EIP712OrderParams,
-  EIP712CancelProductOrdersParams,
-  SignableRequestType,
-  SignableRequestTypeToParams,
-} from '@vertex-protocol/contracts';
-import { mapServerOrderInfo, mapTriggerCriteria } from './dataMappers';
-import { BigNumberish, Signer } from 'ethers';
 import { TriggerServerFailureError } from './types/TriggerServerFailureError';
 
 export interface TriggerClientOpts {
@@ -64,9 +66,7 @@ export class TriggerClient {
   Executes
    */
 
-  async placeTriggerOrder(
-    params: TriggerExecuteRequestParamsByType['place_order'],
-  ) {
+  async placeTriggerOrder(params: TriggerPlaceOrderParams) {
     const orderParams: EIP712OrderParams = {
       amount: params.order.amount,
       expiration: params.order.expiration,
@@ -95,9 +95,7 @@ export class TriggerClient {
     return this.execute('place_order', executeParams);
   }
 
-  async cancelTriggerOrders(
-    params: TriggerExecuteRequestParamsByType['cancel_orders'],
-  ) {
+  async cancelTriggerOrders(params: TriggerCancelOrdersParams) {
     const cancelOrdersParams: EIP712CancelOrdersParams = {
       digests: params.digests,
       nonce: params.nonce ?? getOrderNonce(),
@@ -120,9 +118,7 @@ export class TriggerClient {
     return this.execute('cancel_orders', executeParams);
   }
 
-  async cancelProductOrders(
-    params: TriggerExecuteRequestParamsByType['cancel_product_orders'],
-  ) {
+  async cancelProductOrders(params: TriggerCancelProductOrdersParams) {
     const cancelProductOrdersParams: EIP712CancelProductOrdersParams = {
       nonce: params.nonce ?? getOrderNonce(),
       productIds: params.productIds,
@@ -151,9 +147,9 @@ export class TriggerClient {
   /*
   Queries
    */
-  async listTriggerOrders(
-    params: TriggerQueryRequestParamsByType['list_trigger_orders'],
-  ): Promise<TriggerQueryResponseByType['list_trigger_orders']> {
+  async listOrders(
+    params: TriggerListOrdersParams,
+  ): Promise<TriggerListOrdersResponse> {
     const signatureParams: EIP712ListTriggerOrdersParams = {
       // Default to 90 seconds from now if no recvTime is provided
       recvTime: params.recvTime?.toFixed() ?? getDefaultRecvTime().toFixed(),
