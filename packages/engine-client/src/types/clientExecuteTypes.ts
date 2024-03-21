@@ -1,16 +1,15 @@
 import {
   EIP712BurnLpParams,
+  EIP712CancelOrdersParams,
+  EIP712CancelProductOrdersParams,
   EIP712LinkSignerParams,
   EIP712LiquidateSubaccountParams,
   EIP712MintLpParams,
-  EIP712CancelOrdersParams,
   EIP712OrderParams,
-  EIP712CancelProductOrdersParams,
   EIP712WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
-import { EngineServerExecuteResult } from './serverExecuteTypes';
 import { BigNumberish } from 'ethers';
-import { BigDecimal } from '@vertex-protocol/utils';
+import { EngineServerExecuteResult } from './serverExecuteTypes';
 
 /**
  * Either verifying address or signature must be provided;
@@ -42,11 +41,9 @@ export type WithBaseEngineExecuteParams<T> = SignatureParams &
     nonce?: string;
   };
 
-export type EngineMintLpParams = WithSpotLeverage<EIP712MintLpParams>;
-
 export type EngineOrderParams = WithoutNonce<EIP712OrderParams>;
 
-export type EngineExecutePlaceOrderParams = WithBaseEngineExecuteParams<{
+export type EnginePlaceOrderParams = WithBaseEngineExecuteParams<{
   id?: number;
   productId: number;
   order: EngineOrderParams;
@@ -54,45 +51,46 @@ export type EngineExecutePlaceOrderParams = WithBaseEngineExecuteParams<{
   spotLeverage?: boolean;
 }>;
 
-export type EngineExecuteLiquidateSubaccountParams =
+export type EngineLiquidateSubaccountParams =
   WithBaseEngineExecuteParams<EIP712LiquidateSubaccountParams>;
 
-export type EngineExecuteMintLpParams =
-  WithBaseEngineExecuteParams<EngineMintLpParams>;
+export type EngineMintLpParams = WithBaseEngineExecuteParams<
+  WithSpotLeverage<EIP712MintLpParams>
+>;
 
-export type EngineExecuteBurnLpParams =
+export type EngineBurnLpParams =
   WithBaseEngineExecuteParams<EIP712BurnLpParams>;
 
-export type EngineExecuteWithdrawCollateralParams = WithBaseEngineExecuteParams<
+export type EngineWithdrawCollateralParams = WithBaseEngineExecuteParams<
   WithSpotLeverage<EIP712WithdrawCollateralParams>
 >;
 
-export type EngineExecuteCancelOrdersParams =
+export type EngineCancelOrdersParams =
   WithBaseEngineExecuteParams<EIP712CancelOrdersParams>;
 
-export type EngineExecuteCancelAndPlaceParams = {
-  cancelOrders: EngineExecuteCancelOrdersParams;
-  placeOrder: EngineExecutePlaceOrderParams;
+export type EngineCancelAndPlaceParams = {
+  cancelOrders: EngineCancelOrdersParams;
+  placeOrder: EnginePlaceOrderParams;
 };
 
-export type EngineExecuteCancelProductOrdersParams =
+export type EngineCancelProductOrdersParams =
   WithBaseEngineExecuteParams<EIP712CancelProductOrdersParams>;
 
-export type EngineExecuteLinkSignerParams =
+export type EngineLinkSignerParams =
   WithBaseEngineExecuteParams<EIP712LinkSignerParams>;
 
 export interface EngineExecuteRequestParamsByType {
-  liquidate_subaccount: EngineExecuteLiquidateSubaccountParams;
-  mint_lp: EngineExecuteMintLpParams;
-  withdraw_collateral: EngineExecuteWithdrawCollateralParams;
-  burn_lp: EngineExecuteBurnLpParams;
-  place_order: EngineExecutePlaceOrderParams;
-  cancel_orders: EngineExecuteCancelOrdersParams;
-  cancel_and_place: EngineExecuteCancelAndPlaceParams;
-  cancel_product_orders: EngineExecuteCancelProductOrdersParams;
-  link_signer: EngineExecuteLinkSignerParams;
+  liquidate_subaccount: EngineLiquidateSubaccountParams;
+  mint_lp: EngineMintLpParams;
+  withdraw_collateral: EngineWithdrawCollateralParams;
+  burn_lp: EngineBurnLpParams;
+  place_order: EnginePlaceOrderParams;
+  cancel_orders: EngineCancelOrdersParams;
+  cancel_and_place: EngineCancelAndPlaceParams;
+  cancel_product_orders: EngineCancelProductOrdersParams;
+  link_signer: EngineLinkSignerParams;
 }
 
-export type EngineExecutePlaceOrderResult = EngineServerExecuteResult & {
+export type EnginePlaceOrderResult = EngineServerExecuteResult & {
   orderParams: EIP712OrderParams;
 };

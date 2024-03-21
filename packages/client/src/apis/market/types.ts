@@ -1,31 +1,31 @@
 import {
-  EngineExecuteBurnLpParams,
-  EngineExecuteCancelOrdersParams,
-  EngineExecuteCancelProductOrdersParams,
-  EngineExecuteMintLpParams,
-  EngineExecutePlaceOrderParams,
+  EngineBurnLpParams,
+  EngineCancelOrdersParams,
+  EngineCancelProductOrdersParams,
+  EngineMintLpParams,
   EngineOrderParams,
+  EnginePlaceOrderParams,
 } from '@vertex-protocol/engine-client';
-import { OptionalSignatureParams, OptionalSubaccountOwner } from '../types';
 import {
-  QueryListTriggerOrdersParams,
-  TriggerExecuteCancelOrdersParams,
-  TriggerExecuteCancelProductOrdersParams,
-  TriggerExecutePlaceOrderParams,
+  TriggerCancelOrdersParams,
+  TriggerCancelProductOrdersParams,
+  TriggerListOrdersParams,
+  TriggerPlaceOrderParams,
 } from '@vertex-protocol/trigger-client';
+import { OptionalSignatureParams, OptionalSubaccountOwner } from '../types';
 
 type ClientOrderParams<T> = Omit<OptionalSignatureParams<T>, 'order'> & {
   order: OptionalSubaccountOwner<EngineOrderParams>;
 };
 
-export type PlaceOrderParams = ClientOrderParams<EngineExecutePlaceOrderParams>;
+export type PlaceOrderParams = ClientOrderParams<EnginePlaceOrderParams>;
 
 export type CancelOrdersParams = OptionalSignatureParams<
-  OptionalSubaccountOwner<EngineExecuteCancelOrdersParams>
+  OptionalSubaccountOwner<EngineCancelOrdersParams>
 >;
 
 export type CancelProductOrdersParams = OptionalSignatureParams<
-  OptionalSubaccountOwner<EngineExecuteCancelProductOrdersParams>
+  OptionalSubaccountOwner<EngineCancelProductOrdersParams>
 >;
 
 export interface CancelAndPlaceOrderParams {
@@ -34,23 +34,23 @@ export interface CancelAndPlaceOrderParams {
 }
 
 export type PlaceTriggerOrderParams =
-  ClientOrderParams<TriggerExecutePlaceOrderParams>;
+  ClientOrderParams<TriggerPlaceOrderParams>;
 
 export type CancelTriggerOrdersParams = OptionalSignatureParams<
-  OptionalSubaccountOwner<TriggerExecuteCancelOrdersParams>
+  OptionalSubaccountOwner<TriggerCancelOrdersParams>
 >;
 
 export type CancelTriggerProductOrdersParams = OptionalSignatureParams<
-  OptionalSubaccountOwner<TriggerExecuteCancelProductOrdersParams>
+  OptionalSubaccountOwner<TriggerCancelProductOrdersParams>
 >;
 
 export type MintLpParams = OptionalSignatureParams<
-  OptionalSubaccountOwner<EngineExecuteMintLpParams>
+  OptionalSubaccountOwner<EngineMintLpParams>
 >;
 
 export type BurnLpParams = OptionalSignatureParams<
-  OptionalSubaccountOwner<EngineExecuteBurnLpParams>
+  OptionalSubaccountOwner<EngineBurnLpParams>
 >;
 
 export type GetTriggerOrdersParams =
-  OptionalSignatureParams<QueryListTriggerOrdersParams>;
+  OptionalSignatureParams<TriggerListOrdersParams>;

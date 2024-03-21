@@ -1,4 +1,3 @@
-import { BaseVertexAPI } from '../base';
 import {
   getAllMarkets,
   GetAllMarketsResponse,
@@ -23,6 +22,7 @@ import {
   GetIndexerOrdersResponse,
   GetIndexerProductSnapshotsParams,
 } from '@vertex-protocol/indexer-client';
+import { BaseVertexAPI } from '../base';
 import { GetTriggerOrdersParams } from './types';
 
 export class MarketQueryAPI extends BaseVertexAPI {
@@ -77,7 +77,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    * @param params
    */
   async getTriggerOrders(params: GetTriggerOrdersParams) {
-    return this.context.triggerClient.listTriggerOrders({
+    return this.context.triggerClient.listOrders({
       ...params,
       chainId: await this.getSignerChainIdIfNeeded(params),
       verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),

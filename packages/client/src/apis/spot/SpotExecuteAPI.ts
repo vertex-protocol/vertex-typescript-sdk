@@ -1,7 +1,7 @@
 import {
   approveDepositAllowance,
   depositCollateral,
-  ExecuteDepositCollateralParams,
+  DepositCollateralParams,
   MintMockERC20Params,
   MockERC20__factory,
 } from '@vertex-protocol/contracts';
@@ -9,7 +9,7 @@ import { BaseSpotAPI } from './BaseSpotAPI';
 import { ApproveAllowanceParams, WithdrawCollateralParams } from './types';
 
 export class SpotExecuteAPI extends BaseSpotAPI {
-  async deposit(params: ExecuteDepositCollateralParams) {
+  async deposit(params: DepositCollateralParams) {
     return depositCollateral({
       endpoint: this.context.contracts.endpoint,
       subaccountName: params.subaccountName,

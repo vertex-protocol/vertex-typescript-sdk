@@ -3,7 +3,7 @@ import { EngineServerPriceTickLiquidity } from './serverQueryTypes';
 /**
  * @description Event from subscribing to a `trade` stream.
  */
-export interface SubscriptionTradeEvent {
+export interface EngineServerSubscriptionTradeEvent {
   timestamp: string;
   product_id: number;
   price: string;
@@ -15,7 +15,7 @@ export interface SubscriptionTradeEvent {
 /**
  * @description Event from subscribing to a `best_bid_offer` stream.
  */
-export interface SubscriptionBestBidOfferEvent {
+export interface EngineServerSubscriptionBestBidOfferEvent {
   timestamp: string;
   product_id: number;
   bid_price: string;
@@ -27,7 +27,7 @@ export interface SubscriptionBestBidOfferEvent {
 /**
  * @description Event from subscribing to a `fill` stream.
  */
-export interface SubscriptionFillEvent {
+export interface EngineServerSubscriptionFillEvent {
   // NOTE: `id` is excluded from the response to avoid parsing issues.
   // type of `id` on the backend is `u64` which can overflow until we introduce proper parsing on the SDK.
   timestamp: string;
@@ -43,7 +43,7 @@ export interface SubscriptionFillEvent {
 /**
  * @description Event from subscribing to a `position_change` stream.
  */
-export interface SubscriptionPositionChangeEvent {
+export interface EngineServerSubscriptionPositionChangeEvent {
   timestamp: string;
   product_id: number;
   is_lp: false;
@@ -52,7 +52,7 @@ export interface SubscriptionPositionChangeEvent {
   v_quote_amount: string;
 }
 
-export interface SubscriptionBookDepthEvent {
+export interface EngineServerSubscriptionBookDepthEvent {
   min_timestamp: string;
   max_timestamp: string;
   product_id: number;

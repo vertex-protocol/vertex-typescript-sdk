@@ -1,5 +1,3 @@
-import { RunContext } from '../utils/types';
-import { EngineOrderParams } from '@vertex-protocol/engine-client';
 import {
   depositCollateral,
   Endpoint__factory,
@@ -9,14 +7,16 @@ import {
   IClearinghouse__factory,
   MockERC20__factory,
 } from '@vertex-protocol/contracts';
-import { toBigDecimal, toFixedPoint, toX18 } from '@vertex-protocol/utils';
-import { runWithContext } from '../utils/runWithContext';
+import { EngineOrderParams } from '@vertex-protocol/engine-client';
 import {
   TriggerClient,
-  TriggerExecutePlaceOrderParams,
+  TriggerPlaceOrderParams,
 } from '@vertex-protocol/trigger-client';
+import { toFixedPoint, toX18 } from '@vertex-protocol/utils';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
+import { runWithContext } from '../utils/runWithContext';
+import { RunContext } from '../utils/types';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -74,7 +74,7 @@ async function fullSanity(context: RunContext) {
     verifyingAddr: ethOrderbookAddr,
   });
 
-  const shortTriggerParams: TriggerExecutePlaceOrderParams = {
+  const shortTriggerParams: TriggerPlaceOrderParams = {
     chainId,
     order: shortStopOrder,
     productId: ethProductId,
@@ -103,7 +103,7 @@ async function fullSanity(context: RunContext) {
     subaccountOwner,
   };
 
-  const longStopParams: TriggerExecutePlaceOrderParams = {
+  const longStopParams: TriggerPlaceOrderParams = {
     chainId,
     order: longStopOrder,
     productId: btcPerpProductId,
@@ -119,7 +119,7 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Long stop order result', longStopResult);
 
-  const pendingListOrdersResult = await client.listTriggerOrders({
+  const pendingListOrdersResult = await client.listOrders({
     chainId,
     pending: true,
     subaccountName,
@@ -129,7 +129,7 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Pending list orders result', pendingListOrdersResult);
 
-  const pendingListOrdersForProductResult = await client.listTriggerOrders({
+  const pendingListOrdersForProductResult = await client.listOrders({
     chainId,
     pending: true,
     subaccountName,
@@ -166,7 +166,7 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Cancel via product result', cancelViaProductResult);
 
-  const nonPendingListOrdersResult = await client.listTriggerOrders({
+  const nonPendingListOrdersResult = await client.listOrders({
     chainId,
     pending: false,
     subaccountName,
