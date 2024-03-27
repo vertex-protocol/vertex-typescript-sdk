@@ -460,33 +460,6 @@ export type GetIndexerClaimVrtxMerkleProofsParams =
 
 export type GetIndexerClaimVrtxMerkleProofsResponse = IndexerMerkleProof[];
 
-export interface GetIndexerArbRewardsParams {
-  address: string;
-}
-
-export type IndexerSubaccountArbRewardsForProduct = Pick<
-  IndexerSubaccountRewardsForProduct,
-  'productId' | 'takerVolume' | 'takerFee' | 'takerTokens'
->;
-
-export type IndexerGlobalArbRewardsForProduct = Pick<
-  IndexerGlobalRewardsForProduct,
-  'productId' | 'takerFees' | 'takerTokens' | 'takerVolumes'
->;
-
-export interface IndexerArbRewardsWeek {
-  week: number;
-  startTime: BigDecimal;
-  period: BigDecimal;
-  addressRewards: IndexerSubaccountArbRewardsForProduct[];
-  globalRewards: IndexerGlobalArbRewardsForProduct[];
-}
-
-export interface GetIndexerArbRewardsResponse {
-  weeks: IndexerArbRewardsWeek[];
-  updateTime: BigDecimal;
-}
-
 export type GetIndexerClaimArbMerkleProofsParams =
   IndexerServerClaimArbMerkleProofsParams;
 
