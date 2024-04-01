@@ -166,9 +166,10 @@ export class EngineQueryClient extends EngineBaseClient {
   ): Promise<EngineSymbolsResponse> {
     const baseResponse = await this.query('symbols', {
       product_ids: params.productIds,
-      product_type: params.productType
-        ? mapProductEngineType(params.productType)
-        : undefined,
+      product_type:
+        params.productType != null
+          ? mapProductEngineType(params.productType)
+          : undefined,
     });
     return mapEngineServerSymbols(baseResponse);
   }

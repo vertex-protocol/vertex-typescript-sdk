@@ -201,6 +201,18 @@ async function fullSanity(context: RunContext) {
   const engineTime = await vertexClient.context.engineClient.getTime();
 
   prettyPrint('Engine time', engineTime);
+
+  const perpSymbols = await vertexClient.context.engineClient.getSymbols({
+    productType: 1,
+  });
+
+  prettyPrint('Perp symbols', perpSymbols);
+
+  const spotSymbols = await vertexClient.context.engineClient.getSymbols({
+    productType: 0,
+  });
+
+  prettyPrint('Spot symbols', spotSymbols);
 }
 
 runWithContext(fullSanity);
