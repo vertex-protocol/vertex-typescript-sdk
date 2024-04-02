@@ -543,6 +543,49 @@ export type GetIndexerClaimArbMerkleProofsResponse =
   GetIndexerClaimVrtxMerkleProofsResponse;
 
 /**
+ * Blitz points
+ */
+
+export interface GetIndexerBlitzPointsParams {
+  address: string;
+}
+
+export interface GetIndexerBlitzPointsResponse {
+  // Accrued points from the initial points drop
+  initialPoints: BigDecimal;
+  // Accrued taker points from trading
+  tradingPoints: BigDecimal;
+  // Accrued points from referrals
+  referralPoints: BigDecimal;
+}
+
+export interface GetIndexerBlastPointsParams {
+  address: string;
+}
+
+export interface GetIndexerBlastPointsResponse {
+  points: BigDecimal;
+  gold: BigDecimal;
+}
+
+export interface GetIndexerBlitzInitialDropConditionsParams {
+  address: string;
+}
+
+export interface GetIndexerBlitzInitialDropConditionsResponse {
+  // Amount eligible for the initial drop
+  amount: BigDecimal;
+  // Deadline in seconds to claim
+  deadline: BigDecimal;
+  // Whether the address has reached 100+ USDB in acct value
+  accountValueReached: boolean;
+  // Whether address has completed 2 perp trades
+  perpTradesCompleted: boolean;
+  // Whether address has a verified tweet tagging Blitz
+  tweeted: boolean;
+}
+
+/**
  * Maker stats
  */
 
