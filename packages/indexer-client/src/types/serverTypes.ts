@@ -156,6 +156,18 @@ export interface IndexerServerClaimArbMerkleProofsParams {
   address: string;
 }
 
+export interface IndexerServerBlitzPointsParams {
+  address: string;
+}
+
+export interface IndexerServerBlastPointsParams {
+  address: string;
+}
+
+export interface IndexerServerBlitzInitialDropConditionsParams {
+  address: string;
+}
+
 export interface IndexerServerMakerStatisticsParams {
   product_id: number;
   epoch: number;
@@ -167,10 +179,13 @@ export interface IndexerServerQueryRequestByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
   arb_merkle_proofs: IndexerServerClaimArbMerkleProofsParams;
   arb_rewards: IndexerServerArbRewardsParams;
+  blast_points: IndexerServerBlastPointsParams;
+  blitz_points: IndexerServerBlitzPointsParams;
   candlesticks: IndexerServerCandlesticksParams;
   events: IndexerServerEventsParams;
   funding_rate: IndexerServerFundingRateParams;
   funding_rates: IndexerServerFundingRatesParams;
+  initial_drop_conditions: IndexerServerBlitzInitialDropConditionsParams;
   interest_and_funding: IndexerServerInterestFundingParams;
   linked_signer_rate_limit: IndexerServerLinkedSignerParams;
   maker_statistics: IndexerServerMakerStatisticsParams;
@@ -321,6 +336,25 @@ export interface IndexerServerArbRewardsResponse {
 export type IndexerServerClaimArbMerkleProofsResponse =
   IndexerServerClaimVrtxMerkleProofsResponse;
 
+export interface IndexerServerBlitzPointsResponse {
+  initial_points: string;
+  trading_points: string;
+  referral_points: string;
+}
+
+export interface IndexerServerBlastPointsResponse {
+  points: string;
+  gold: string;
+}
+
+export interface IndexerServerBlitzInitialDropConditionsResponse {
+  amount: string;
+  deadline: string;
+  account_value_reached: boolean;
+  perp_trades_done: boolean;
+  tweeted: boolean;
+}
+
 export interface IndexerServerMakerStatisticsResponse {
   reward_coefficient: string;
   makers: IndexerServerMaker[];
@@ -331,10 +365,13 @@ export interface IndexerServerQueryResponseByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
   arb_merkle_proofs: IndexerServerClaimArbMerkleProofsResponse;
   arb_rewards: IndexerServerArbRewardsResponse;
+  blast_points: IndexerServerBlastPointsResponse;
+  blitz_points: IndexerServerBlitzPointsResponse;
   candlesticks: IndexerServerCandlesticksResponse;
   events: IndexerServerEventsResponse;
   funding_rate: IndexerServerFundingRateResponse;
   funding_rates: IndexerServerFundingRatesResponse;
+  initial_drop_conditions: IndexerServerBlitzInitialDropConditionsResponse;
   interest_and_funding: IndexerServerInterestFundingResponse;
   linked_signer_rate_limit: IndexerServerLinkedSignerResponse;
   maker_statistics: IndexerServerMakerStatisticsResponse;

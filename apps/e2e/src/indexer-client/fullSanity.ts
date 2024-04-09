@@ -84,12 +84,29 @@ async function fullSanity(context: RunContext) {
     subaccount,
   });
 
+  if (
+    context.env.chainEnv === 'blastTestnet' ||
+    context.env.chainEnv === 'blastMainnet'
+  ) {
+    const blastPoints = await client.getBlastPoints({
+      address: subaccount.subaccountOwner,
+    });
+    const blitzPoints = await client.getBlitzPoints({
+      address: subaccount.subaccountOwner,
+    });
+
+    prettyPrint('Blitz & Blast Points', {
+      blastPoints,
+      blitzPoints,
+    });
+  }
+
   prettyPrint('Referral code', referralCode);
 
   const productSnapshots = await client.getProductSnapshots({
     limit: 2,
     maxTimestampInclusive: nowInSeconds(),
-    productId: 1,
+    productId: 2,
   });
 
   prettyPrint('Product snapshots', productSnapshots);
@@ -97,13 +114,13 @@ async function fullSanity(context: RunContext) {
   const marketSnapshots = await client.getMarketSnapshots({
     granularity: TimeInSeconds.HOUR,
     limit: 1,
-    productIds: [1, 2, 3, 4],
+    productIds: [2, 3, 4],
   });
 
   prettyPrint('Market snapshots', marketSnapshots);
 
   const multiProductSnapshots = await client.getMultiProductSnapshots({
-    productIds: [1, 2, 3],
+    productIds: [2, 3],
   });
 
   prettyPrint('Multiple products snapshots', multiProductSnapshots);
@@ -153,7 +170,7 @@ async function fullSanity(context: RunContext) {
   const matchEvents = await client.getPaginatedSubaccountMatchEvents({
     subaccountName: subaccount.subaccountName,
     subaccountOwner: subaccount.subaccountOwner,
-    productIds: [0, 1, 2, 3, 4],
+    productIds: [0, 2, 3, 4],
     limit: 10,
   });
 
@@ -163,7 +180,7 @@ async function fullSanity(context: RunContext) {
     await client.getPaginatedSubaccountInterestFundingPayments({
       subaccountName: subaccount.subaccountName,
       subaccountOwner: subaccount.subaccountOwner,
-      productIds: [0, 1, 2, 3, 4],
+      productIds: [0, 2, 3, 4],
       limit: 10,
     });
 

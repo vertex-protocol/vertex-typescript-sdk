@@ -15,6 +15,12 @@ import {
 } from './dataMappers';
 import {
   Candlestick,
+  GetIndexerBlastPointsParams,
+  GetIndexerBlastPointsResponse,
+  GetIndexerBlitzInitialDropConditionsParams,
+  GetIndexerBlitzInitialDropConditionsResponse,
+  GetIndexerBlitzPointsParams,
+  GetIndexerBlitzPointsResponse,
   GetIndexerCandlesticksParams,
   GetIndexerCandlesticksResponse,
   GetIndexerClaimArbMerkleProofsParams,
@@ -633,7 +639,7 @@ export class IndexerBaseClient {
   }
 
   /**
-   * Retrieve the merkle proofs & total amounts claimable for the subaccount for all epochs
+   * Retrieve the merkle proofs & total amounts claimable for the address for all epochs
    *
    * @param params
    */
@@ -651,7 +657,7 @@ export class IndexerBaseClient {
   }
 
   /**
-   * Retrieve the merkle proofs & total amounts claimable for the subaccount for all weeks
+   * Retrieve the merkle proofs & total amounts claimable for the address for all weeks
    *
    * @param params
    */
@@ -666,6 +672,52 @@ export class IndexerBaseClient {
         totalAmount: toBigDecimal(proof.total_amount),
       };
     });
+  }
+
+  /**
+   * Retrieve blitz points for the address
+   */
+  async getBlitzPoints(
+    params: GetIndexerBlitzPointsParams,
+  ): Promise<GetIndexerBlitzPointsResponse> {
+    const baseResponse = await this.query('blitz_points', params);
+
+    return {
+      initialPoints: toBigDecimal(baseResponse.initial_points),
+      referralPoints: toBigDecimal(baseResponse.referral_points),
+      tradingPoints: toBigDecimal(baseResponse.trading_points),
+    };
+  }
+
+  /**
+   * Retrieve blast points for the address
+   */
+  async getBlastPoints(
+    params: GetIndexerBlastPointsParams,
+  ): Promise<GetIndexerBlastPointsResponse> {
+    const baseResponse = await this.query('blast_points', params);
+
+    return {
+      points: toBigDecimal(baseResponse.points),
+      gold: toBigDecimal(baseResponse.gold),
+    };
+  }
+
+  /**
+   * Retrieve status for initial claim process for Blitz
+   */
+  async getBlitzInitialDropConditions(
+    params: GetIndexerBlitzInitialDropConditionsParams,
+  ): Promise<GetIndexerBlitzInitialDropConditionsResponse> {
+    const baseResponse = await this.query('initial_drop_conditions', params);
+
+    return {
+      accountValueReached: baseResponse.account_value_reached,
+      amount: toBigDecimal(baseResponse.amount),
+      deadline: toBigDecimal(baseResponse.deadline),
+      perpTradesCompleted: baseResponse.perp_trades_done,
+      tweeted: baseResponse.tweeted,
+    };
   }
 
   /**
