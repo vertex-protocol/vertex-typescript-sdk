@@ -3,4 +3,5 @@ export type ChainEnv =
   | 'testnet'
   | 'mainnet'
   | 'blastTestnet'
-  | 'blastMainnet';
+  | 'blastMainnet'
+  | 'mantleTestnet';
