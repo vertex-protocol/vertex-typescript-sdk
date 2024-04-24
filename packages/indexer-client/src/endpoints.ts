@@ -6,4 +6,5 @@ export const INDEXER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   blastTestnet: 'https://archive.blast-test.vertexprotocol.com/v1',
   mainnet: 'https://archive.prod.vertexprotocol.com/v1',
   blastMainnet: 'https://archive.blast-prod.vertexprotocol.com/v1',
+  mantleTestnet: 'https://archive.mantle-test.vertexprotocol.com/v1',
 };

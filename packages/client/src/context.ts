@@ -113,6 +113,14 @@ export async function createClientContext(
         triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.blastMainnet,
       };
     }
+    if (opts === 'mantleTestnet') {
+      return {
+        contractAddresses: VERTEX_DEPLOYMENTS.mantleTestnet,
+        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.mantleTestnet,
+        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.mantleTestnet,
+        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.blastMainnet,
+      };
+    }
     if (opts === 'local') {
       return {
         contractAddresses: VERTEX_DEPLOYMENTS.local,

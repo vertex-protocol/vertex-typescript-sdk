@@ -2,12 +2,14 @@ import ArbitrumOneCoreDeployment from './deployments/core/deployment.arbitrumOne
 import ArbitrumSepoliaCoreDeployment from './deployments/core/deployment.arbitrumSepolia.json';
 import BlastMainnetCoreDeployment from './deployments/core/deployment.blastMainnet.json';
 import BlastSepoliaCoreDeployment from './deployments/core/deployment.blastSepolia.json';
+import MantleSepoliaCoreDeployment from './deployments/core/deployment.mantleSepolia.json';
 import LocalCoreDeployment from './deployments/core/deployment.localhost.json';
 
 import ArbitrumOneLbaDeployment from './deployments/vrtx/deployment.arbitrumOne.json';
 import ArbitrumSepoliaLbaDeployment from './deployments/vrtx/deployment.arbitrumSepolia.json';
 import BlastMainnetLbaDeployment from './deployments/vrtx/deployment.blastMainnet.json';
 import BlastSepoliaLbaDeployment from './deployments/vrtx/deployment.blastSepolia.json';
+import MantleSepoliaLbaDeployment from './deployments/vrtx/deployment.mantleSepolia.json';
 import LocalLbaDeployment from './deployments/vrtx/deployment.localhost.json';
 
 import { ChainEnv } from './types';
@@ -36,6 +38,10 @@ export const VERTEX_DEPLOYMENTS: Record<ChainEnv, VertexDeploymentAddresses> = {
   blastMainnet: {
     ...BlastMainnetLbaDeployment,
     ...BlastMainnetCoreDeployment,
+  },
+  mantleTestnet: {
+    ...MantleSepoliaLbaDeployment,
+    ...MantleSepoliaCoreDeployment,
   },
   local: {
     ...LocalLbaDeployment,

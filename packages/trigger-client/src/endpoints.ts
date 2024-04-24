@@ -6,4 +6,5 @@ export const TRIGGER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   blastTestnet: 'https://trigger.blast-test.vertexprotocol.com/v1',
   mainnet: 'https://trigger.prod.vertexprotocol.com/v1',
   blastMainnet: 'https://trigger.blast-prod.vertexprotocol.com/v1',
+  mantleTestnet: 'https://trigger.mantle-test.vertexprotocol.com/v1',
 };
