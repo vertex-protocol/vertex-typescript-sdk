@@ -1,4 +1,11 @@
 import {
+  getSignedTransactionRequest,
+  SignableRequestType,
+  SignableRequestTypeToParams,
+} from '@vertex-protocol/contracts';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { BigNumberish, Signer } from 'ethers';
+import {
   EngineServerExecuteRequestByType,
   EngineServerExecuteRequestType,
   EngineServerExecuteResult,
@@ -11,13 +18,6 @@ import {
   GetEngineNoncesParams,
   GetEngineNoncesResponse,
 } from './types';
-import {
-  getSignedTransactionRequest,
-  SignableRequestType,
-  SignableRequestTypeToParams,
-} from '@vertex-protocol/contracts';
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { BigNumberish, Signer } from 'ethers';
 import { EngineServerFailureError } from './types/EngineServerFailureError';
 
 export interface EngineClientOpts {
@@ -31,8 +31,6 @@ export interface EngineClientOpts {
 
 // Only 1 key can be defined per execute request
 type EngineExecuteRequestBody = Partial<EngineServerExecuteRequestByType>;
-
-type EngineExecuteRequestResponse = EngineServerExecuteResult;
 
 type EngineQueryRequestResponse<
   T extends EngineServerQueryRequestType = EngineServerQueryRequestType,
@@ -139,13 +137,11 @@ export class EngineBaseClient {
   public async execute<TRequestType extends EngineServerExecuteRequestType>(
     requestType: TRequestType,
     params: EngineServerExecuteRequestByType[TRequestType],
-  ): Promise<EngineExecuteRequestResponse> {
+  ): Promise<EngineServerExecuteResult<TRequestType>> {
     const reqBody = this.getExecuteRequest(requestType, params);
-    const response =
-      await this.axiosInstance.post<EngineExecuteRequestResponse>(
-        `${this.opts.url}/execute`,
-        reqBody,
-      );
+    const response = await this.axiosInstance.post<
+      EngineServerExecuteResult<TRequestType>
+    >(`${this.opts.url}/execute`, reqBody);
 
     this.checkResponseStatus(response);
     this.checkServerStatus(response);
@@ -207,7 +203,7 @@ export class EngineBaseClient {
 
   private checkServerStatus(
     response: AxiosResponse<
-      EngineExecuteRequestResponse | EngineQueryRequestResponse
+      EngineServerExecuteResult | EngineQueryRequestResponse
     >,
   ) {
     if (response.data.status !== 'success') {
