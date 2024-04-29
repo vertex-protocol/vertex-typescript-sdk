@@ -5,12 +5,12 @@ export function getProvider(chainEnv: ChainEnv): Provider {
   switch (chainEnv) {
     case 'local':
       return new JsonRpcProvider();
-    case 'testnet':
+    case 'arbitrumTestnet':
       return new JsonRpcProvider('https://sepolia-rollup.arbitrum.io/rpc', {
         name: 'arbitrum-sepolia',
         chainId: 421614,
       });
-    case 'mainnet':
+    case 'arbitrum':
       return new JsonRpcProvider('https://arb1.arbitrum.io/rpc', {
         name: 'arbitrum-one',
         chainId: 42161,
@@ -20,7 +20,7 @@ export function getProvider(chainEnv: ChainEnv): Provider {
         name: 'blast-sepolia',
         chainId: 1685877734,
       });
-    case 'blastMainnet':
+    case 'blast':
       return new JsonRpcProvider('https://rpc.blast.io', {
         name: 'blast',
         chainId: 81457,

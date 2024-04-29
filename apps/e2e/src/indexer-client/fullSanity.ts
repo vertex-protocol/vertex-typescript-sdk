@@ -86,7 +86,7 @@ async function fullSanity(context: RunContext) {
 
   if (
     context.env.chainEnv === 'blastTestnet' ||
-    context.env.chainEnv === 'blastMainnet'
+    context.env.chainEnv === 'blast'
   ) {
     const blastPoints = await client.getBlastPoints({
       address: subaccount.subaccountOwner,

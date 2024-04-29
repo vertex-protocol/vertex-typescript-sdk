@@ -81,20 +81,20 @@ export async function createClientContext(
     indexerEndpoint,
     triggerEndpoint,
   } = ((): VertexClientContextOpts => {
-    if (opts === 'testnet') {
+    if (opts === 'arbitrumTestnet') {
       return {
-        contractAddresses: VERTEX_DEPLOYMENTS.testnet,
-        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.testnet,
-        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.testnet,
-        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.testnet,
+        contractAddresses: VERTEX_DEPLOYMENTS.arbitrumTestnet,
+        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.arbitrumTestnet,
+        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.arbitrumTestnet,
+        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.arbitrumTestnet,
       };
     }
-    if (opts === 'mainnet') {
+    if (opts === 'arbitrum') {
       return {
-        contractAddresses: VERTEX_DEPLOYMENTS.mainnet,
-        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.mainnet,
-        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.mainnet,
-        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.mainnet,
+        contractAddresses: VERTEX_DEPLOYMENTS.arbitrum,
+        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.arbitrum,
+        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.arbitrum,
+        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.arbitrum,
       };
     }
     if (opts === 'blastTestnet') {
@@ -105,12 +105,12 @@ export async function createClientContext(
         triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.blastTestnet,
       };
     }
-    if (opts === 'blastMainnet') {
+    if (opts === 'blast') {
       return {
-        contractAddresses: VERTEX_DEPLOYMENTS.blastMainnet,
-        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.blastMainnet,
-        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.blastMainnet,
-        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.blastMainnet,
+        contractAddresses: VERTEX_DEPLOYMENTS.blast,
+        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.blast,
+        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.blast,
+        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.blast,
       };
     }
     if (opts === 'mantleTestnet') {
