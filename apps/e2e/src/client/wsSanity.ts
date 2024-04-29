@@ -1,12 +1,13 @@
-import { RunContext } from '../utils/types';
+import { createVertexClient, PlaceOrderParams } from '@vertex-protocol/client';
 import {
   getChainIdFromSigner,
+  getOrderDigest,
   getOrderNonce,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
 import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
-import { createVertexClient, PlaceOrderParams } from '@vertex-protocol/client';
+import { RunContext } from '../utils/types';
 
 async function wsSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -55,11 +56,11 @@ async function wsSanity(context: RunContext) {
     `Place Order WS request: ${JSON.stringify(wsPlaceOrderReq, null, 2)}`,
   );
 
-  const wsOrderDigest = vertexClient.context.engineClient.getOrderDigest(
-    wsOrder,
+  const wsOrderDigest = getOrderDigest({
+    order: wsOrder,
     verifyingAddr,
     chainId,
-  );
+  });
 
   const wsCancelOrdersReq = vertexClient.ws.execute.buildCancelOrdersMessage({
     subaccountOwner: await signer.getAddress(),

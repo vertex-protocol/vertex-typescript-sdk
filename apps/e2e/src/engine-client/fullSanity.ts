@@ -1,13 +1,9 @@
-import { RunContext } from '../utils/types';
-import {
-  EngineClient,
-  EngineOrderParams,
-} from '@vertex-protocol/engine-client';
 import {
   createDeterministicLinkedSignerPrivateKey,
   depositCollateral,
   Endpoint__factory,
   getChainIdFromSigner,
+  getOrderDigest,
   getOrderNonce,
   IClearinghouse__factory,
   MockERC20__factory,
@@ -16,11 +12,16 @@ import {
   subaccountToBytes32,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
+import {
+  EngineClient,
+  EngineOrderParams,
+} from '@vertex-protocol/engine-client';
 import { toBigDecimal, toFixedPoint } from '@vertex-protocol/utils';
 import { Wallet, ZeroAddress } from 'ethers';
-import { runWithContext } from '../utils/runWithContext';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
+import { runWithContext } from '../utils/runWithContext';
+import { RunContext } from '../utils/types';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -111,11 +112,11 @@ async function fullSanity(context: RunContext) {
     order,
     nonce: getOrderNonce(),
   });
-  const orderDigest = client.getOrderDigest(
-    placeResult.orderParams,
-    orderbookAddr,
+  const orderDigest = getOrderDigest({
+    order: placeResult.orderParams,
+    verifyingAddr: orderbookAddr,
     chainId,
-  );
+  });
   prettyPrint('Done placing spot order', placeResult);
 
   const subaccountOrders = await client.getSubaccountOrders({
