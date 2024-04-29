@@ -91,6 +91,7 @@ export interface EngineExecuteRequestParamsByType {
   link_signer: EngineLinkSignerParams;
 }
 
-export type EnginePlaceOrderResult = EngineServerExecuteResult & {
-  orderParams: EIP712OrderParams;
-};
+export type EnginePlaceOrderResult =
+  EngineServerExecuteResult<'place_order'> & {
+    orderParams: EIP712OrderParams;
+  };
