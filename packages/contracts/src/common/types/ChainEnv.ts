@@ -1,7 +1,7 @@
 export type ChainEnv =
   | 'local'
-  | 'testnet'
-  | 'mainnet'
+  | 'arbitrumTestnet'
+  | 'arbitrum'
   | 'blastTestnet'
-  | 'blastMainnet'
+  | 'blast'
   | 'mantleTestnet';
