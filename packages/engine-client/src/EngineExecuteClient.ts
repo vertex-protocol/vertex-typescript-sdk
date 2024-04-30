@@ -1,5 +1,3 @@
-import { EIP712OrderParams, getOrderDigest } from '@vertex-protocol/contracts';
-import { BigNumberish } from 'ethers';
 import { EngineBaseClient, EngineClientOpts } from './EngineBaseClient';
 import { EngineExecuteBuilder } from './EngineExecuteBuilder';
 import {
@@ -97,17 +95,5 @@ export class EngineExecuteClient extends EngineBaseClient {
       'link_signer',
       await this.payloadBuilder.buildLinkSignerPayload(params),
     );
-  }
-
-  getOrderDigest(
-    order: EIP712OrderParams,
-    verifyingAddr: string,
-    chainId: BigNumberish,
-  ): string {
-    return getOrderDigest({
-      chainId,
-      order,
-      verifyingAddr,
-    });
   }
 }

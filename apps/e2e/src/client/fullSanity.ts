@@ -1,13 +1,14 @@
-import { RunContext } from '../utils/types';
+import { createVertexClient, PlaceOrderParams } from '@vertex-protocol/client';
 import {
   getChainIdFromSigner,
+  getOrderDigest,
   getOrderNonce,
 } from '@vertex-protocol/contracts';
-import { toBigDecimal, toFixedPoint } from '@vertex-protocol/utils';
-import { runWithContext } from '../utils/runWithContext';
-import { createVertexClient, PlaceOrderParams } from '@vertex-protocol/client';
+import { toFixedPoint } from '@vertex-protocol/utils';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
+import { runWithContext } from '../utils/runWithContext';
+import { RunContext } from '../utils/types';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -106,11 +107,11 @@ async function fullSanity(context: RunContext) {
   const verifyingAddr =
     await vertexClient.context.engineClient.getOrderbookAddress(3);
 
-  const digest = vertexClient.context.engineClient.getOrderDigest(
-    orderResult.orderParams,
+  const digest = getOrderDigest({
+    order: orderResult.orderParams,
     verifyingAddr,
     chainId,
-  );
+  });
 
   prettyPrint('Order digest', digest);
 
@@ -131,11 +132,13 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Place perp order result', perpOrderResult);
 
-  const perpOrderDigest = vertexClient.context.engineClient.getOrderDigest(
-    perpOrderResult.orderParams,
-    await vertexClient.context.engineClient.getOrderbookAddress(4),
+  const perpOrderDigest = getOrderDigest({
+    order: perpOrderResult.orderParams,
+    verifyingAddr: await vertexClient.context.engineClient.getOrderbookAddress(
+      4,
+    ),
     chainId,
-  );
+  });
 
   console.log(`Cancelling and placing orders in single request`);
   const cancelAndPlaceResult = await vertexClient.market.cancelAndPlace({
