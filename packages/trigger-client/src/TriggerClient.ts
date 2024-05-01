@@ -24,6 +24,7 @@ import {
   TriggerServerExecuteRequestByType,
   TriggerServerExecuteRequestType,
   TriggerServerExecuteResult,
+  TriggerServerExecuteSuccessResult,
   TriggerServerQueryRequestByType,
   TriggerServerQueryRequestType,
   TriggerServerQueryResponse,
@@ -208,22 +209,29 @@ export class TriggerClient {
     });
   }
 
+  /**
+   * POSTs an execute message to the trigger service and returns the successful response. Throws the failure response wrapped
+   * in an TriggerServerFailureError on failure.
+   *
+   * @param requestType
+   * @param params
+   */
   protected async execute<TRequestType extends TriggerServerExecuteRequestType>(
     requestType: TRequestType,
     params: TriggerServerExecuteRequestByType[TRequestType],
-  ): Promise<TriggerServerExecuteResult> {
+  ): Promise<TriggerServerExecuteSuccessResult<TRequestType>> {
     const reqBody = {
       [requestType]: params,
     };
-    const response = await this.axiosInstance.post<TriggerServerExecuteResult>(
-      `${this.opts.url}/execute`,
-      reqBody,
-    );
+    const response = await this.axiosInstance.post<
+      TriggerServerExecuteResult<TRequestType>
+    >(`${this.opts.url}/execute`, reqBody);
 
     this.checkResponseStatus(response);
     this.checkServerStatus(response);
 
-    return response.data;
+    // checkServerStatus catches the failure result and throws the error, so the cast to the success response is acceptable here
+    return response.data as TriggerServerExecuteSuccessResult<TRequestType>;
   }
 
   protected async query<TRequestType extends TriggerServerQueryRequestType>(

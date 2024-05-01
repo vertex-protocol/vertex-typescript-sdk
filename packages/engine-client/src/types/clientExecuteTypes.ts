@@ -9,7 +9,7 @@ import {
   EIP712WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import { BigNumberish } from 'ethers';
-import { EngineServerExecuteResult } from './serverExecuteTypes';
+import { EngineServerExecuteSuccessResult } from './serverExecuteTypes';
 
 /**
  * Either verifying address or signature must be provided;
@@ -92,6 +92,6 @@ export interface EngineExecuteRequestParamsByType {
 }
 
 export type EnginePlaceOrderResult =
-  EngineServerExecuteResult<'place_order'> & {
+  EngineServerExecuteSuccessResult<'place_order'> & {
     orderParams: EIP712OrderParams;
   };

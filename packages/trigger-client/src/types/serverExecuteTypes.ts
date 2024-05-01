@@ -1,7 +1,8 @@
 import { EIP712OrderValues } from '@vertex-protocol/contracts';
 import {
+  EngineServerExecuteFailureResult,
   EngineServerExecuteRequestByType,
-  EngineServerExecuteResult,
+  EngineServerExecuteSuccessResult,
 } from '@vertex-protocol/engine-client';
 
 export type TriggerServerTriggerCriteria =
@@ -46,4 +47,10 @@ export interface TriggerServerExecuteRequestByType {
 export type TriggerServerExecuteRequestType =
   keyof TriggerServerExecuteRequestByType;
 
-export type TriggerServerExecuteResult = EngineServerExecuteResult;
+export type TriggerServerExecuteSuccessResult<
+  T extends TriggerServerExecuteRequestType = TriggerServerExecuteRequestType,
+> = EngineServerExecuteSuccessResult<T>;
+
+export type TriggerServerExecuteResult<
+  T extends TriggerServerExecuteRequestType = TriggerServerExecuteRequestType,
+> = TriggerServerExecuteSuccessResult<T> | EngineServerExecuteFailureResult;
