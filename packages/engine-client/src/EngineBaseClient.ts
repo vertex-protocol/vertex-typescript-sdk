@@ -9,6 +9,7 @@ import {
   EngineServerExecuteRequestByType,
   EngineServerExecuteRequestType,
   EngineServerExecuteResult,
+  EngineServerExecuteSuccessResult,
   EngineServerQueryRequest,
   EngineServerQueryRequestByType,
   EngineServerQueryRequestType,
@@ -128,7 +129,8 @@ export class EngineBaseClient {
   }
 
   /**
-   * POSTs an execute message to the engine
+   * POSTs an execute message to the engine and returns the successful response. Throws the failure response wrapped
+   * in an EngineServerFailureError on failure.
    *
    * @param requestType
    * @param params
@@ -137,7 +139,7 @@ export class EngineBaseClient {
   public async execute<TRequestType extends EngineServerExecuteRequestType>(
     requestType: TRequestType,
     params: EngineServerExecuteRequestByType[TRequestType],
-  ): Promise<EngineServerExecuteResult<TRequestType>> {
+  ): Promise<EngineServerExecuteSuccessResult<TRequestType>> {
     const reqBody = this.getExecuteRequest(requestType, params);
     const response = await this.axiosInstance.post<
       EngineServerExecuteResult<TRequestType>
@@ -146,7 +148,8 @@ export class EngineBaseClient {
     this.checkResponseStatus(response);
     this.checkServerStatus(response);
 
-    return response.data;
+    // checkServerStatus catches the failure result and throws the error, so the cast to the success response is acceptable here
+    return response.data as EngineServerExecuteSuccessResult<TRequestType>;
   }
 
   /**

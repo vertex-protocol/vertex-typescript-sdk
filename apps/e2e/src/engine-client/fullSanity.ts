@@ -119,6 +119,12 @@ async function fullSanity(context: RunContext) {
   });
   prettyPrint('Done placing spot order', placeResult);
 
+  if (orderDigest !== placeResult.data.digest) {
+    throw Error(
+      `Computed and returned order digests do not match. Computed: ${orderDigest}. Returned: ${placeResult.data.digest}`,
+    );
+  }
+
   const subaccountOrders = await client.getSubaccountOrders({
     productId: 2,
     subaccountName: 'default',
