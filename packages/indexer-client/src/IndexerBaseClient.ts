@@ -1,5 +1,10 @@
 import { subaccountFromHex, subaccountToHex } from '@vertex-protocol/contracts';
-import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
+import {
+  fromX18,
+  mapValues,
+  nowInSeconds,
+  toBigDecimal,
+} from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
   mapIndexerEvent,
@@ -7,8 +12,6 @@ import {
   mapIndexerFundingRate,
   mapIndexerMakerStatistics,
   mapIndexerMatchEventBalances,
-  mapIndexerMultiProductResponse,
-  mapIndexerMultiTimestampProductResponse,
   mapIndexerOrder,
   mapIndexerPerpPrices,
   mapIndexerProductPayment,
@@ -45,8 +48,6 @@ import {
   GetIndexerMultiProductSnapshotsResponse,
   GetIndexerMultiSubaccountSnapshotsParams,
   GetIndexerMultiSubaccountSnapshotsResponse,
-  GetIndexerMultiTimestampProductSnapshotsParams,
-  GetIndexerMultiTimestampProductSnapshotsResponse,
   GetIndexerOraclePricesParams,
   GetIndexerOraclePricesResponse,
   GetIndexerOrdersParams,
@@ -376,35 +377,10 @@ export class IndexerBaseClient {
   async getMultiProductSnapshots(
     params: GetIndexerMultiProductSnapshotsParams,
   ): Promise<GetIndexerMultiProductSnapshotsResponse> {
-    const baseResponse = await this.query('product_snapshots', {
+    const timestampToProductsMap = await this.query('product_snapshots', {
       product_ids: params.productIds,
-      max_time: params.maxTimestampInclusive,
+      max_time: params.maxTimestampInclusive ?? [nowInSeconds()],
     });
-
-    const productIdsToProducts = mapIndexerMultiProductResponse(baseResponse);
-
-    return mapValues(productIdsToProducts, (indexerProduct) => {
-      return {
-        ...mapIndexerServerProduct(indexerProduct.product),
-        submissionIndex: indexerProduct.submission_idx,
-      };
-    });
-  }
-
-  /**
-   * Retrieves historical snapshots for multiple products
-   * @param params
-   */
-  async getMultiTimestampProductSnapshots(
-    params: GetIndexerMultiTimestampProductSnapshotsParams,
-  ): Promise<GetIndexerMultiTimestampProductSnapshotsResponse> {
-    const baseResponse = await this.query('product_snapshots', {
-      product_ids: params.productIds,
-      max_time: params.timestamps,
-    });
-
-    const timestampToProductsMap =
-      mapIndexerMultiTimestampProductResponse(baseResponse);
 
     return mapValues(timestampToProductsMap, (productIdToProduct) => {
       return mapValues(productIdToProduct, (indexerProduct) => {

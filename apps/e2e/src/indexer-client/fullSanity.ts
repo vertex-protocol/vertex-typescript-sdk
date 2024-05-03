@@ -106,17 +106,23 @@ async function fullSanity(context: RunContext) {
     productIds: [1, 2, 3],
   });
 
-  prettyPrint('Multiple products snapshots', multiProductSnapshots);
+  prettyPrint(
+    'Multiple products snapshots',
+    Object.values(multiProductSnapshots).pop(),
+  );
 
-  const now = Math.round(Date.now() / 1000);
-  const multiTimestampProductSnapshots =
-    await client.getMultiTimestampProductSnapshots({
-      productIds: [1, 2, 3],
-      timestamps: [now, now - 3600, now - 86400],
-    });
+  const now = nowInSeconds();
+  const multiTimestampProductSnapshots = await client.getMultiProductSnapshots({
+    productIds: [1, 2, 3],
+    maxTimestampInclusive: [
+      now,
+      now - TimeInSeconds.HOUR,
+      now - TimeInSeconds.DAY,
+    ],
+  });
 
   prettyPrint(
-    'Multiple timestamp and product products snapshots',
+    'Multi timestamp and multi product snapshots',
     multiTimestampProductSnapshots,
   );
 

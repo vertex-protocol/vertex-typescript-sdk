@@ -41,47 +41,6 @@ import {
   mapEngineServerSpotProduct,
 } from '@vertex-protocol/engine-client';
 
-export function mapIndexerMultiProductResponse(
-  serverResponse: IndexerServerMultiProductsResponse,
-): Record<string, IndexerServerProductSnapshot> {
-  if (Object.keys(serverResponse).length === 0) {
-    return {};
-  }
-
-  if (isIndexerServerProductSnapshotRecord(serverResponse)) {
-    return serverResponse;
-  } else {
-    throw new Error('expected map of string -> IndexerServerProductSnapshot');
-  }
-}
-
-export function mapIndexerMultiTimestampProductResponse(
-  serverResponse: IndexerServerMultiProductsResponse,
-): Record<string, Record<string, IndexerServerProductSnapshot>> {
-  if (Object.keys(serverResponse).length === 0) {
-    return {};
-  }
-
-  if (!isIndexerServerProductSnapshotRecord(serverResponse)) {
-    return serverResponse;
-  } else {
-    throw new Error(
-      'expected map of string -> (string -> IndexerServerProductSnapshot)',
-    );
-  }
-}
-
-function isIndexerServerProductSnapshotRecord(
-  obj:
-    | Record<string, IndexerServerProductSnapshot>
-    | Record<string, Record<string, IndexerServerProductSnapshot>>,
-): obj is Record<string, IndexerServerProductSnapshot> {
-  return Object.values(obj).every(
-    (value) =>
-      typeof value === 'object' && value !== null && 'product_id' in value,
-  );
-}
-
 export function mapIndexerServerProduct(product: IndexerServerProduct): Market {
   if ('spot' in product) {
     return mapEngineServerSpotProduct(product.spot);
