@@ -7,6 +7,7 @@ export const ENGINE_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   arbitrum: 'https://gateway.prod.vertexprotocol.com/v1',
   blast: 'https://gateway.blast-prod.vertexprotocol.com/v1',
   mantleTestnet: 'https://gateway.mantle-test.vertexprotocol.com/v1',
+  mantle: 'https://gateway.mantle-prod.vertexprotocol.com/v1',
 };
 
 export const ENGINE_WS_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
@@ -16,6 +17,7 @@ export const ENGINE_WS_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   arbitrum: 'wss://gateway.prod.vertexprotocol.com/v1/ws',
   blast: 'wss://gateway.blast-prod.vertexprotocol.com/v1/ws',
   mantleTestnet: 'wss://gateway.mantle-test.vertexprotocol.com/v1/ws',
+  mantle: 'wss://gateway.mantle-prod.vertexprotocol.com/v1/ws',
 };
 
 export const ENGINE_WS_SUBSCRIPTION_CLIENT_ENDPOINTS: Record<ChainEnv, string> =
@@ -27,4 +29,5 @@ export const ENGINE_WS_SUBSCRIPTION_CLIENT_ENDPOINTS: Record<ChainEnv, string> =
     arbitrum: 'wss://gateway.prod.vertexprotocol.com/v1/subscribe',
     blast: 'wss://gateway.blast-prod.vertexprotocol.com/v1/subscribe',
     mantleTestnet: 'wss://gateway.mantle-test.vertexprotocol.com/v1/subscribe',
+    mantle: 'wss://gateway.mantle-prod.vertexprotocol.com/v1/subscribe',
   };
