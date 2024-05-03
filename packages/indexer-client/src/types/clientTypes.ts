@@ -214,7 +214,7 @@ export interface GetIndexerMultiProductSnapshotsParams {
   maxTimestampInclusive?: number[];
 }
 
-// Map of timestamp -> GetIndexerMultiProductSnapshotsResponse
+// Map of timestamp -> (productId -> IndexerProductSnapshot)
 export type GetIndexerMultiProductSnapshotsResponse = Record<
   string,
   Record<number, IndexerProductSnapshot>
