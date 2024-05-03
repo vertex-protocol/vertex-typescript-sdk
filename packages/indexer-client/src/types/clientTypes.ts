@@ -220,6 +220,17 @@ export type GetIndexerMultiProductSnapshotsResponse = Record<
   IndexerProductSnapshot
 >;
 
+export interface GetIndexerMultiTimestampProductSnapshotsParams {
+  productIds: number[];
+  timestamps: number[];
+}
+
+// Map of timestamp -> GetIndexerMultiProductSnapshotsResponse
+export type GetIndexerMultiTimestampProductSnapshotsResponse = Record<
+  string,
+  GetIndexerMultiProductSnapshotsResponse
+>;
+
 /**
  * Market snapshots
  */

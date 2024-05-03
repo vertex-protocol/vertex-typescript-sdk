@@ -7,6 +7,8 @@ import {
   mapIndexerFundingRate,
   mapIndexerMakerStatistics,
   mapIndexerMatchEventBalances,
+  mapIndexerMultiProductResponse,
+  mapIndexerMultiTimestampProductResponse,
   mapIndexerOrder,
   mapIndexerPerpPrices,
   mapIndexerProductPayment,
@@ -43,6 +45,8 @@ import {
   GetIndexerMultiProductSnapshotsResponse,
   GetIndexerMultiSubaccountSnapshotsParams,
   GetIndexerMultiSubaccountSnapshotsResponse,
+  GetIndexerMultiTimestampProductSnapshotsParams,
+  GetIndexerMultiTimestampProductSnapshotsResponse,
   GetIndexerOraclePricesParams,
   GetIndexerOraclePricesResponse,
   GetIndexerOrdersParams,
@@ -62,7 +66,9 @@ import {
   IndexerMarketSnapshot,
   IndexerMatchEvent,
   IndexerOraclePrice,
+  IndexerProductSnapshot,
   IndexerServerEventsParams,
+  IndexerServerProductSnapshot,
   IndexerServerQueryRequestByType,
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
@@ -375,11 +381,38 @@ export class IndexerBaseClient {
       max_time: params.maxTimestampInclusive,
     });
 
-    return mapValues(baseResponse, (value) => {
+    const productIdsToProducts = mapIndexerMultiProductResponse(baseResponse);
+
+    return mapValues(productIdsToProducts, (indexerProduct) => {
       return {
-        ...mapIndexerServerProduct(value.product),
-        submissionIndex: value.submission_idx,
+        ...mapIndexerServerProduct(indexerProduct.product),
+        submissionIndex: indexerProduct.submission_idx,
       };
+    });
+  }
+
+  /**
+   * Retrieves historical snapshots for multiple products
+   * @param params
+   */
+  async getMultiTimestampProductSnapshots(
+    params: GetIndexerMultiTimestampProductSnapshotsParams,
+  ): Promise<GetIndexerMultiTimestampProductSnapshotsResponse> {
+    const baseResponse = await this.query('product_snapshots', {
+      product_ids: params.productIds,
+      max_time: params.timestamps,
+    });
+
+    const timestampToProductsMap =
+      mapIndexerMultiTimestampProductResponse(baseResponse);
+
+    return mapValues(timestampToProductsMap, (productIdToProduct) => {
+      return mapValues(productIdToProduct, (indexerProduct) => {
+        return {
+          ...mapIndexerServerProduct(indexerProduct.product),
+          submissionIndex: indexerProduct.submission_idx,
+        };
+      });
     });
   }
 
