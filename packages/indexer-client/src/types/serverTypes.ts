@@ -268,7 +268,7 @@ export interface IndexerServerProductsResponse {
   txs: IndexerServerTx[];
 }
 
-// Map of productId -> IndexerServerProductSnapshot or timestamp -> (productID -> IndexerServerProductSnapshot)
+// Map of timestamp -> (productID -> IndexerServerProductSnapshot)
 export type IndexerServerMultiProductsResponse = Record<
   string,
   Record<string, IndexerServerProductSnapshot>
