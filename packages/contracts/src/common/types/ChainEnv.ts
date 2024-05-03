@@ -4,4 +4,5 @@ export type ChainEnv =
   | 'arbitrum'
   | 'blastTestnet'
   | 'blast'
-  | 'mantleTestnet';
+  | 'mantleTestnet'
+  | 'mantle';
