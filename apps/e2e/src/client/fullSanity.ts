@@ -219,6 +219,7 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Spot symbols', spotSymbols);
 
+  // TODO: refactor / move multi-part examples to a `utils` sub-folder to keep sanity tests cleaner
   console.log('Slow mode withdrawal');
   // 1. approve 1 USDC for submitting slow-mode tx
   console.log('Approving 1 USDC allowance...');
