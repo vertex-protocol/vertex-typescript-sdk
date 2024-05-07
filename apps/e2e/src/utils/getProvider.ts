@@ -25,5 +25,15 @@ export function getProvider(chainEnv: ChainEnv): Provider {
         name: 'blast',
         chainId: 81457,
       });
+    case 'mantleTestnet':
+      return new JsonRpcProvider('https://rpc.sepolia.mantle.xyz', {
+        name: 'mantle-sepolia',
+        chainId: 5003,
+      });
+    case 'mantle':
+      return new JsonRpcProvider('https://rpc.mantle.xyz', {
+        name: 'mantle',
+        chainId: 5000,
+      });
   }
 }
