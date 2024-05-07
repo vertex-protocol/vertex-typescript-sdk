@@ -3,12 +3,14 @@ import {
   getChainIdFromSigner,
   getOrderDigest,
   getOrderNonce,
+  getVertexEIP712Values,
 } from '@vertex-protocol/contracts';
 import { toFixedPoint } from '@vertex-protocol/utils';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
+import { AbiCoder, getBytes, solidityPacked } from 'ethers';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -216,6 +218,56 @@ async function fullSanity(context: RunContext) {
   });
 
   prettyPrint('Spot symbols', spotSymbols);
+
+  // TODO: refactor / move multi-part examples to a `utils` sub-folder to keep sanity tests cleaner
+  console.log('Slow mode withdrawal');
+  // 1. approve 1 USDC for submitting slow-mode tx
+  console.log('Approving 1 USDC allowance...');
+  const approveSlowModeTx = await vertexClient.spot.approveAllowance({
+    amount: toFixedPoint(1, 6),
+    productId: 0,
+  });
+  await approveSlowModeTx.wait();
+
+  // 2. generate withdraw collateral tx
+  const tx = getVertexEIP712Values('withdraw_collateral', {
+    amount: toFixedPoint(1000, 6),
+    nonce: await vertexClient.context.engineClient.getTxNonce(),
+    productId: 0,
+    subaccountName: 'default',
+    subaccountOwner: await signer.getAddress(),
+  });
+
+  const encodedTx = AbiCoder.defaultAbiCoder().encode(
+    [
+      // Sender
+      'bytes32',
+      // Product ID
+      'uint32',
+      // Amount
+      'uint128',
+      // Nonce
+      'uint64',
+    ],
+    [tx.sender, tx.productId, tx.amount, tx.nonce],
+  );
+  const encodedSlowModeTx = solidityPacked(
+    ['uint8', 'bytes'],
+    [
+      // Withdraw collateral enum value
+      2,
+      encodedTx,
+    ],
+  );
+
+  console.log('Submitting Slow mode withdrawal...');
+  // 3. submit via slow-mode
+  const txResp =
+    await vertexClient.context.contracts.endpoint.submitSlowModeTransaction(
+      getBytes(encodedSlowModeTx),
+    );
+
+  prettyPrint('Slow mode withdrawal Tx Response', txResp);
 }
 
 runWithContext(fullSanity);
