@@ -1,5 +1,10 @@
 import { subaccountFromHex, subaccountToHex } from '@vertex-protocol/contracts';
-import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
+import {
+  fromX18,
+  mapValues,
+  nowInSeconds,
+  toBigDecimal,
+} from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
   mapIndexerEvent,
@@ -68,7 +73,9 @@ import {
   IndexerMarketSnapshot,
   IndexerMatchEvent,
   IndexerOraclePrice,
+  IndexerProductSnapshot,
   IndexerServerEventsParams,
+  IndexerServerProductSnapshot,
   IndexerServerQueryRequestByType,
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
@@ -376,16 +383,18 @@ export class IndexerBaseClient {
   async getMultiProductSnapshots(
     params: GetIndexerMultiProductSnapshotsParams,
   ): Promise<GetIndexerMultiProductSnapshotsResponse> {
-    const baseResponse = await this.query('product_snapshots', {
+    const timestampToProductsMap = await this.query('product_snapshots', {
       product_ids: params.productIds,
-      max_time: params.maxTimestampInclusive,
+      max_time: params.maxTimestampInclusive ?? [nowInSeconds()],
     });
 
-    return mapValues(baseResponse, (value) => {
-      return {
-        ...mapIndexerServerProduct(value.product),
-        submissionIndex: value.submission_idx,
-      };
+    return mapValues(timestampToProductsMap, (productIdToProduct) => {
+      return mapValues(productIdToProduct, (indexerProduct) => {
+        return {
+          ...mapIndexerServerProduct(indexerProduct.product),
+          submissionIndex: indexerProduct.submission_idx,
+        };
+      });
     });
   }
 

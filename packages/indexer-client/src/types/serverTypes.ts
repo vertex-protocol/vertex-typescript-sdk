@@ -86,7 +86,7 @@ export interface IndexerServerProductsParams {
 
 export interface IndexerServerMultiProductsParams {
   product_ids: number[];
-  max_time?: number;
+  max_time: number[];
 }
 
 export interface IndexerServerEventsParams {
@@ -283,10 +283,10 @@ export interface IndexerServerProductsResponse {
   txs: IndexerServerTx[];
 }
 
-// Map of productId -> IndexerServerProductSnapshot
+// Map of timestamp -> (productID -> IndexerServerProductSnapshot)
 export type IndexerServerMultiProductsResponse = Record<
   string,
-  IndexerServerProductSnapshot
+  Record<string, IndexerServerProductSnapshot>
 >;
 
 export interface IndexerServerEventsResponse {

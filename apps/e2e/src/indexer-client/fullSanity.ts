@@ -123,7 +123,25 @@ async function fullSanity(context: RunContext) {
     productIds: [2, 3],
   });
 
-  prettyPrint('Multiple products snapshots', multiProductSnapshots);
+  prettyPrint(
+    'Multiple products snapshots',
+    Object.values(multiProductSnapshots).pop(),
+  );
+
+  const now = nowInSeconds();
+  const multiTimestampProductSnapshots = await client.getMultiProductSnapshots({
+    productIds: [1, 2, 3],
+    maxTimestampInclusive: [
+      now,
+      now - TimeInSeconds.HOUR,
+      now - TimeInSeconds.DAY,
+    ],
+  });
+
+  prettyPrint(
+    'Multi timestamp and multi product snapshots',
+    multiTimestampProductSnapshots,
+  );
 
   const candlesticks = await client.getCandlesticks({
     limit: 2,

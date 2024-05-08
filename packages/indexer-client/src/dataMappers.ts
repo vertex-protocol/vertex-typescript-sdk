@@ -23,6 +23,9 @@ import {
   IndexerSpotBalance,
   IndexerSubaccountRewardsForProduct,
   IndexerMaker,
+  IndexerServerMultiProductsResponse,
+  IndexerProductSnapshot,
+  IndexerServerProductSnapshot,
 } from './types';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import {

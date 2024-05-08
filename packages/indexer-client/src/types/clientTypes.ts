@@ -211,13 +211,13 @@ export type GetIndexerProductSnapshotsResponse = IndexerProductSnapshot[];
 
 export interface GetIndexerMultiProductSnapshotsParams {
   productIds: number[];
-  maxTimestampInclusive?: number;
+  maxTimestampInclusive?: number[];
 }
 
-// Map of productId -> IndexerProductSnapshot
+// Map of timestamp -> (productId -> IndexerProductSnapshot)
 export type GetIndexerMultiProductSnapshotsResponse = Record<
-  number,
-  IndexerProductSnapshot
+  string,
+  Record<number, IndexerProductSnapshot>
 >;
 
 /**
