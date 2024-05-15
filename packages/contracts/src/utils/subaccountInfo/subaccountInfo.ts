@@ -1,7 +1,7 @@
 import {
   BigDecimal,
+  BigDecimals,
   sumBigDecimalBy,
-  toBigDecimal,
 } from '@vertex-protocol/utils';
 import {
   BalanceWithProduct,
@@ -47,13 +47,13 @@ export function calcTotalPortfolioValues(
   summary: SubaccountSummaryResponse,
 ): TotalPortfolioValues {
   const values: TotalPortfolioValues = {
-    netTotal: toBigDecimal(0),
-    spot: toBigDecimal(0),
-    spotLp: toBigDecimal(0),
-    perp: toBigDecimal(0),
-    perpNotional: toBigDecimal(0),
-    perpLp: toBigDecimal(0),
-    totalNotional: toBigDecimal(0),
+    netTotal: BigDecimals.ZERO,
+    spot: BigDecimals.ZERO,
+    spotLp: BigDecimals.ZERO,
+    perp: BigDecimals.ZERO,
+    perpNotional: BigDecimals.ZERO,
+    perpLp: BigDecimals.ZERO,
+    totalNotional: BigDecimals.ZERO,
   };
 
   summary.balances.forEach((balance) => {
@@ -94,15 +94,15 @@ export function calcSubaccountLeverage(summary: SubaccountSummaryResponse) {
     calcUnweightedHealthExcludingZeroHealthProducts(summary);
 
   if (unweightedHealth.isZero()) {
-    return toBigDecimal(0);
+    return BigDecimals.ZERO;
   }
   if (!hasBorrowsOrPerps(summary)) {
-    return toBigDecimal(0);
+    return BigDecimals.ZERO;
   }
 
   const numerator = sumBigDecimalBy(summary.balances, (balance) => {
     if (balance.productId === QUOTE_PRODUCT_ID || isZeroHealth(balance)) {
-      return toBigDecimal(0);
+      return BigDecimals.ZERO;
     }
     const balanceValue =
       balance.type === ProductEngineType.SPOT
@@ -135,8 +135,8 @@ export function calcSubaccountMarginUsageFractions(
   const maintenanceHealth = summary.health.maintenance.health;
 
   const zeroMarginUsage: MarginUsageFractions = {
-    initial: toBigDecimal(0),
-    maintenance: toBigDecimal(0),
+    initial: BigDecimals.ZERO,
+    maintenance: BigDecimals.ZERO,
   };
 
   if (unweightedHealth.isZero()) {
@@ -156,10 +156,10 @@ export function calcSubaccountMarginUsageFractions(
   // If the respective healths are negative, then already "underwater", so max out the margin usage
   return {
     initial: initialHealth.isNegative()
-      ? toBigDecimal(1)
+      ? BigDecimals.ONE
       : BigDecimal.min(initialMarginUsage, 1),
     maintenance: maintenanceHealth.isNegative()
-      ? toBigDecimal(1)
+      ? BigDecimals.ONE
       : BigDecimal.min(maintenanceMarginUsage, 1),
   };
 }

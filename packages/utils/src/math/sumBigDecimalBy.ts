@@ -1,4 +1,5 @@
-import { BigDecimal, toBigDecimal } from './bigDecimal';
+import { BigDecimal } from './bigDecimal';
+import { BigDecimals } from './BigDecimals';
 
 /**
  * Util function to sum BigDecimal values, inspired by Lodash
@@ -12,6 +13,6 @@ export function sumBigDecimalBy<T>(
   return (
     collection?.reduce((total, item) => {
       return total.plus(iteratee(item));
-    }, toBigDecimal(0)) ?? toBigDecimal(0)
+    }, BigDecimals.ZERO) ?? BigDecimals.ZERO
   );
 }
