@@ -49,7 +49,11 @@ export type TriggerServerExecuteRequestType =
 
 export type TriggerServerExecuteSuccessResult<
   T extends TriggerServerExecuteRequestType = TriggerServerExecuteRequestType,
-> = EngineServerExecuteSuccessResult<T>;
+> = Omit<
+  EngineServerExecuteSuccessResult<T>,
+  // Trigger service doesn't give back any data for executes
+  'data'
+>;
 
 export type TriggerServerExecuteResult<
   T extends TriggerServerExecuteRequestType = TriggerServerExecuteRequestType,
