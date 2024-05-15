@@ -1,12 +1,13 @@
 import {
   BigDecimal,
   BigDecimalish,
+  BigDecimals,
   fromX18,
   TimeInSeconds,
   toBigDecimal,
 } from '@vertex-protocol/utils';
-import { SpotProduct } from '../common';
 import { BigNumberish } from 'ethers';
+import { SpotProduct } from '../common';
 
 /**
  * Calculate amount total borrowed for a product
@@ -77,7 +78,7 @@ export function calcBorrowRatePerSecond(product: SpotProduct) {
     const utilizationTerm = interestLargeCap.times(
       toBigDecimal(utilization)
         .minus(interestInflectionUtil)
-        .div(toBigDecimal(1).minus(interestInflectionUtil)),
+        .div(BigDecimals.ONE.minus(interestInflectionUtil)),
     );
     annualRate = interestFloor.plus(interestSmallCap).plus(utilizationTerm);
   } else {
@@ -127,5 +128,5 @@ export function calcRealizedDepositRateForTimeRange(
   }
   return utilization
     .times(calcBorrowRateForTimeRange(product, seconds))
-    .times(toBigDecimal(1).minus(toBigDecimal(interestFeeFrac)));
+    .times(BigDecimals.ONE.minus(toBigDecimal(interestFeeFrac)));
 }
