@@ -26,6 +26,10 @@ import {
   IndexerServerMultiProductsResponse,
   IndexerProductSnapshot,
   IndexerServerProductSnapshot,
+  IndexerServerLeaderboardPosition,
+  IndexerLeaderboardParticipant,
+  IndexerServerLeaderboardContest,
+  IndexerLeaderboardContest,
 } from './types';
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import {
@@ -253,5 +257,34 @@ export function mapIndexerMakerStatistics(
         expectedMakerReward: toBigDecimal(makerData.expected_maker_reward),
       };
     }),
+  };
+}
+
+export function mapIndexerLeaderboardPosition(
+  position: IndexerServerLeaderboardPosition,
+): IndexerLeaderboardParticipant {
+  return {
+    subaccount: position.subaccount,
+    contestId: position.contest_id,
+    pnl: toBigDecimal(position.pnl),
+    pnlRank: toBigDecimal(position.pnl_rank),
+    percentRoi: toBigDecimal(position.roi),
+    roiRank: toBigDecimal(position.roi_rank),
+    updateTime: toBigDecimal(position.update_time),
+  };
+}
+
+export function mapIndexerLeaderboardContest(
+  contest: IndexerServerLeaderboardContest,
+): IndexerLeaderboardContest {
+  return {
+    contestId: contest.contest_id,
+    startTime: toBigDecimal(contest.start_time),
+    endTime: toBigDecimal(contest.end_time),
+    period: toBigDecimal(contest.threshold),
+    totalParticipants: toBigDecimal(contest.count),
+    minRequiredAccountValue: toBigDecimal(contest.threshold),
+    active: contest.active,
+    lastUpdated: toBigDecimal(contest.last_updated),
   };
 }

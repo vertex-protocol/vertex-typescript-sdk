@@ -18,6 +18,7 @@ import {
   IndexerServerListSubaccountsParams,
 } from './serverTypes';
 import { VertexTx } from './VertexTx';
+import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
 
 /**
  * Base types
@@ -613,4 +614,61 @@ export interface IndexerMaker {
 export interface GetIndexerMakerStatisticsResponse {
   rewardCoefficient: BigDecimal;
   makers: IndexerMaker[];
+}
+
+export interface GetIndexerLeaderboardParams {
+  contestId: number;
+  rankType: IndexerLeaderboardRankType;
+  // Min rank inclusive
+  startCursor?: string;
+  limit?: string;
+}
+
+export interface IndexerLeaderboardParticipant {
+  subaccount: string;
+  contestId: number;
+  pnl: BigDecimal;
+  pnlRank: BigDecimal;
+  percentRoi: BigDecimal;
+  roiRank: BigDecimal;
+  // Seconds
+  updateTime: BigDecimal;
+}
+
+export interface GetIndexerLeaderboardResponse {
+  participants: IndexerLeaderboardParticipant[];
+}
+
+export interface GetIndexerLeaderboardParticipantParams {
+  contestId: number;
+  subaccount: string;
+}
+
+export interface GetIndexerLeaderboardParticipantResponse {
+  participant: IndexerLeaderboardParticipant | null;
+}
+
+export interface GetIndexerLeaderboardContestsParams {
+  contestIds: number[];
+}
+
+export interface IndexerLeaderboardContest {
+  contestId: number;
+  // NOTE: Start / End times are ignored when `period` is non-zero.
+  // Start time in seconds
+  startTime: BigDecimal;
+  // End time in seconds
+  endTime: BigDecimal;
+  // Contest duration in seconds; when set to 0, contest duration is [startTime,endTime];
+  // Otherwise, contest runs indefinitely in the interval [lastUpdated - period, lastUpdated] if active;
+  period: BigDecimal;
+  // Last updated time in Seconds
+  lastUpdated: BigDecimal;
+  totalParticipants: BigDecimal;
+  minRequiredAccountValue: BigDecimal;
+  active: boolean;
+}
+
+export interface GetIndexerLeaderboardContestsResponse {
+  contests: IndexerLeaderboardContest[];
 }

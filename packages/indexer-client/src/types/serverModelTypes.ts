@@ -285,3 +285,24 @@ export interface IndexerServerMaker {
   address: string;
   data: IndexerServerMakerData[];
 }
+
+export interface IndexerServerLeaderboardPosition {
+  subaccount: string;
+  contest_id: number;
+  pnl: string;
+  pnl_rank: string;
+  roi: string;
+  roi_rank: string;
+  update_time: string;
+}
+
+export interface IndexerServerLeaderboardContest {
+  contest_id: number;
+  start_time: string;
+  end_time: string;
+  timeframe: string;
+  count: string;
+  threshold: string;
+  last_updated: string;
+  active: boolean;
+}

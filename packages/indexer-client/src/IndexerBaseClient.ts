@@ -10,6 +10,8 @@ import {
   mapIndexerEvent,
   mapIndexerEventWithTx,
   mapIndexerFundingRate,
+  mapIndexerLeaderboardContest,
+  mapIndexerLeaderboardPosition,
   mapIndexerMakerStatistics,
   mapIndexerMatchEventBalances,
   mapIndexerOrder,
@@ -38,6 +40,12 @@ import {
   GetIndexerFundingRateResponse,
   GetIndexerInterestFundingPaymentsParams,
   GetIndexerInterestFundingPaymentsResponse,
+  GetIndexerLeaderboardContestsParams,
+  GetIndexerLeaderboardContestsResponse,
+  GetIndexerLeaderboardParams,
+  GetIndexerLeaderboardParticipantParams,
+  GetIndexerLeaderboardParticipantResponse,
+  GetIndexerLeaderboardResponse,
   GetIndexerLinkedSignerParams,
   GetIndexerLinkedSignerResponse,
   GetIndexerMakerStatisticsParams,
@@ -746,6 +754,61 @@ export class IndexerBaseClient {
     return {
       rewardCoefficient: toBigDecimal(baseResponse.reward_coefficient),
       makers: baseResponse.makers.map(mapIndexerMakerStatistics),
+    };
+  }
+
+  /**
+   * Retrieve leaderboard stats for a given contest
+   *
+   * @param params
+   */
+  async getLeaderboard(
+    params: GetIndexerLeaderboardParams,
+  ): Promise<GetIndexerLeaderboardResponse> {
+    const baseResponse = await this.query('leaderboard', {
+      contest_id: params.contestId,
+      rank_type: params.rankType,
+      start: params.startCursor,
+      limit: params.limit,
+    });
+
+    return {
+      participants: baseResponse.positions.map(mapIndexerLeaderboardPosition),
+    };
+  }
+
+  /**
+   * Retrieve leaderboard ranking of a subaccount on a given contest
+   *
+   * @param params
+   */
+  async getLeaderboardParticipant(
+    params: GetIndexerLeaderboardParticipantParams,
+  ): Promise<GetIndexerLeaderboardParticipantResponse> {
+    const baseResponse = await this.query('leaderboard_rank', {
+      subaccount: params.subaccount,
+      contest_id: params.contestId,
+    });
+
+    return {
+      participant: mapIndexerLeaderboardPosition(baseResponse.position),
+    };
+  }
+
+  /**
+   * Retrieve metadata of provided leaderboard contests
+   *
+   * @param params
+   */
+  async getLeaderboardContests(
+    params: GetIndexerLeaderboardContestsParams,
+  ): Promise<GetIndexerLeaderboardContestsResponse> {
+    const baseResponse = await this.query('leaderboard_contests', {
+      contest_ids: params.contestIds,
+    });
+
+    return {
+      contests: baseResponse.contests.map(mapIndexerLeaderboardContest),
     };
   }
 
