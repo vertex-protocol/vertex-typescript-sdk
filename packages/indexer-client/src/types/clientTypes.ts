@@ -621,7 +621,7 @@ export interface GetIndexerLeaderboardParams {
   rankType: IndexerLeaderboardRankType;
   // Min rank inclusive
   startCursor?: string;
-  limit?: string;
+  limit?: number;
 }
 
 export interface IndexerLeaderboardParticipant {
@@ -641,7 +641,7 @@ export interface GetIndexerLeaderboardResponse {
 
 export interface GetIndexerLeaderboardParticipantParams {
   contestId: number;
-  subaccount: string;
+  subaccount: Subaccount;
 }
 
 export interface GetIndexerLeaderboardParticipantResponse {

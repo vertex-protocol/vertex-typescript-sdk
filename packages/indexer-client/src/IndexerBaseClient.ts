@@ -786,7 +786,7 @@ export class IndexerBaseClient {
     params: GetIndexerLeaderboardParticipantParams,
   ): Promise<GetIndexerLeaderboardParticipantResponse> {
     const baseResponse = await this.query('leaderboard_rank', {
-      subaccount: params.subaccount,
+      subaccount: subaccountToHex(params.subaccount),
       contest_id: params.contestId,
     });
 

@@ -251,6 +251,31 @@ async function fullSanity(context: RunContext) {
   });
 
   prettyPrint('Paginated LP events', lpEvents);
+
+  const leaderboard = await client.getLeaderboard({
+    limit: 5,
+    startCursor: undefined,
+    contestId: 1,
+    rankType: 'pnl',
+  });
+
+  prettyPrint('Leaderboard', leaderboard);
+
+  const leaderboardParticipant = await client.getLeaderboardParticipant({
+    subaccount: {
+      subaccountName: subaccount.subaccountName,
+      subaccountOwner: subaccount.subaccountOwner,
+    },
+    contestId: 1,
+  });
+
+  prettyPrint('Leaderboard Participant', leaderboardParticipant);
+
+  const leaderboardContests = await client.getLeaderboardContests({
+    contestIds: [1],
+  });
+
+  prettyPrint('Leaderboard Contests', leaderboardContests);
 }
 
 runWithContext(fullSanity);

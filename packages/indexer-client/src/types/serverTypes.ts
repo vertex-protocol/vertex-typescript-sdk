@@ -180,8 +180,8 @@ export interface IndexerServerMakerStatisticsParams {
 export interface IndexerServerLeaderboardParams {
   contest_id: number;
   rank_type: IndexerLeaderboardRankType;
-  start?: string;
-  limit?: string;
+  start?: number | string;
+  limit?: number | string;
 }
 
 export interface IndexerServerLeaderboardRankParams {
