@@ -645,6 +645,7 @@ export interface GetIndexerLeaderboardParticipantParams {
 }
 
 export interface GetIndexerLeaderboardParticipantResponse {
+  // Participant is `null` when the subaccount is not eligible for the provided contest.
   participant: IndexerLeaderboardParticipant | null;
 }
 
@@ -665,6 +666,7 @@ export interface IndexerLeaderboardContest {
   // Last updated time in Seconds
   lastUpdated: BigDecimal;
   totalParticipants: BigDecimal;
+  // Float indicating the min account value required to be eligible for this contest e.g: 250.0
   minRequiredAccountValue: BigDecimal;
   active: boolean;
 }
