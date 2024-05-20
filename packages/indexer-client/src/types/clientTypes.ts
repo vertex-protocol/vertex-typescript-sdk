@@ -631,6 +631,8 @@ export interface IndexerLeaderboardParticipant {
   pnlRank: BigDecimal;
   percentRoi: BigDecimal;
   roiRank: BigDecimal;
+  // Float indicating the ending account value at the time the snapshot was taken i.e: at updateTime
+  accountValue: BigDecimal;
   // Seconds
   updateTime: BigDecimal;
 }

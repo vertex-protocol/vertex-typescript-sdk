@@ -271,6 +271,7 @@ export function mapIndexerLeaderboardPosition(
     pnlRank: toBigDecimal(position.pnl_rank),
     percentRoi: toBigDecimal(position.roi),
     roiRank: toBigDecimal(position.roi_rank),
+    accountValue: toBigDecimal(position.account_value),
     updateTime: toBigDecimal(position.update_time),
   };
 }

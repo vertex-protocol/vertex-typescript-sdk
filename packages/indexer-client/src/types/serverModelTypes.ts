@@ -293,6 +293,7 @@ export interface IndexerServerLeaderboardPosition {
   pnl_rank: string;
   roi: string;
   roi_rank: string;
+  account_value: string;
   update_time: string;
 }
 
