@@ -39,6 +39,7 @@ import {
   PerpMarket,
   ProductEngineType,
   SpotMarket,
+  subaccountFromHex,
 } from '@vertex-protocol/contracts';
 import {
   mapEngineServerPerpProduct,
@@ -264,7 +265,7 @@ export function mapIndexerLeaderboardPosition(
   position: IndexerServerLeaderboardPosition,
 ): IndexerLeaderboardParticipant {
   return {
-    subaccount: position.subaccount,
+    subaccount: subaccountFromHex(position.subaccount),
     contestId: position.contest_id,
     pnl: toBigDecimal(position.pnl),
     pnlRank: toBigDecimal(position.pnl_rank),

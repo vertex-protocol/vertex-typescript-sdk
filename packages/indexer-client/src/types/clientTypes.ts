@@ -625,7 +625,7 @@ export interface GetIndexerLeaderboardParams {
 }
 
 export interface IndexerLeaderboardParticipant {
-  subaccount: string;
+  subaccount: Subaccount;
   contestId: number;
   pnl: BigDecimal;
   pnlRank: BigDecimal;

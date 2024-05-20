@@ -387,7 +387,7 @@ export interface IndexerServerLeaderboardResponse {
 }
 
 export interface IndexerServerLeaderboardRankResponse {
-  position: IndexerServerLeaderboardPosition;
+  position: IndexerServerLeaderboardPosition | null;
 }
 
 export interface IndexerServerLeaderboardContestsResponse {

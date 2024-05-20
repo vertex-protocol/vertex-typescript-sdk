@@ -791,7 +791,9 @@ export class IndexerBaseClient {
     });
 
     return {
-      participant: mapIndexerLeaderboardPosition(baseResponse.position),
+      participant: baseResponse.position
+        ? mapIndexerLeaderboardPosition(baseResponse.position)
+        : null,
     };
   }
 
