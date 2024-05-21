@@ -1,0 +1,64 @@
+{
+  "name": "@vertex-protocol/web-data-test",
+  "version": "0.34.0",
+  "description": "",
+  "author": "Frank Jia <frank@vertexprotocol.com>",
+  "homepage": "",
+  "bugs": {
+    "url": ""
+  },
+  "license": "ISC",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "source": "./src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vertex-protocol/vertex-sdk",
+    "directory": "packages/web-data"
+  },
+  "scripts": {
+    "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
+    "build": "tsc -b",
+    "dev": "tsc -w"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5",
+    "@tanstack/react-query-devtools": "^5",
+    "@vertex-protocol/client": "0.34.0",
+    "bignumber.js": "^9.1.2",
+    "d3-format": "^3.1.0",
+    "ethers": "6.12.1",
+    "react": "^18",
+    "react-dom": "^18",
+    "viem": "^2",
+    "wagmi": "^2"
+  },
+  "devDependencies": {
+    "@tanstack/react-query": "^5",
+    "@tanstack/react-query-devtools": "^5",
+    "@types/d3-format": "^3.0.4",
+    "@types/react": "18.0.17",
+    "@types/react-dom": "18.0.6",
+    "@vertex-protocol/client": "0.34.0",
+    "bignumber.js": "^9.1.2",
+    "d3-format": "^3.1.0",
+    "ethers": "*",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "viem": "^2.9.32",
+    "wagmi": "^2.8.1"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "Vertex Web Data"
+  },
+  "gitHead": "ae666e32756ecabbfff5a6eb316465ea0a0e071d"
+}
