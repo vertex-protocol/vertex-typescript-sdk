@@ -97,7 +97,7 @@ async function fullSanity(context: RunContext) {
 
   console.log('Placing order');
   const productId = 1;
-  const orderbookAddr = await clearinghouse.getOrderbook(productId);
+  const orderbookAddr = await client.getOrderbookAddress(productId);
   const order: EngineOrderParams = {
     subaccountOwner: signer.address,
     subaccountName: 'default',
