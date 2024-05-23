@@ -332,7 +332,7 @@ async function fullSanity(context: RunContext) {
   // places order for multiple products
   for (const productId of [1, 2]) {
     console.log('Placing order for product', productId);
-    const orderbookAddr = await clearinghouse.getOrderbook(productId);
+    const orderbookAddr = await client.getOrderbookAddress(productId);
     const order: EngineOrderParams = {
       subaccountOwner: signer.address,
       subaccountName: 'default',
