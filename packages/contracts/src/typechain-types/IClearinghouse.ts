@@ -76,21 +76,11 @@ export declare namespace IEndpoint {
     amount: bigint;
   };
 
-  export type PricesStruct = {
-    spotPriceX18: BigNumberish;
-    perpPriceX18: BigNumberish;
-  };
-
-  export type PricesStructOutput = [
-    spotPriceX18: bigint,
-    perpPriceX18: bigint
-  ] & { spotPriceX18: bigint; perpPriceX18: bigint };
-
   export type LiquidateSubaccountStruct = {
     sender: BytesLike;
     liquidatee: BytesLike;
-    mode: BigNumberish;
-    healthGroup: BigNumberish;
+    productId: BigNumberish;
+    isEncodedSpread: boolean;
     amount: BigNumberish;
     nonce: BigNumberish;
   };
@@ -98,15 +88,15 @@ export declare namespace IEndpoint {
   export type LiquidateSubaccountStructOutput = [
     sender: string,
     liquidatee: string,
-    mode: bigint,
-    healthGroup: bigint,
+    productId: bigint,
+    isEncodedSpread: boolean,
     amount: bigint,
     nonce: bigint
   ] & {
     sender: string;
     liquidatee: string;
-    mode: bigint;
-    healthGroup: bigint;
+    productId: bigint;
+    isEncodedSpread: boolean;
     amount: bigint;
     nonce: bigint;
   };
@@ -146,86 +136,19 @@ export declare namespace IEndpoint {
     productIds: bigint[]
   ] & { subaccounts: string[]; productIds: bigint[] };
 
-  export type UpdateFeeRatesStruct = {
-    user: AddressLike;
-    productId: BigNumberish;
-    makerRateX18: BigNumberish;
-    takerRateX18: BigNumberish;
-  };
-
-  export type UpdateFeeRatesStructOutput = [
-    user: string,
-    productId: bigint,
-    makerRateX18: bigint,
-    takerRateX18: bigint
-  ] & {
-    user: string;
-    productId: bigint;
-    makerRateX18: bigint;
-    takerRateX18: bigint;
-  };
-
-  export type WithdrawCollateralStruct = {
+  export type TransferQuoteStruct = {
     sender: BytesLike;
-    productId: BigNumberish;
+    recipient: BytesLike;
     amount: BigNumberish;
     nonce: BigNumberish;
   };
 
-  export type WithdrawCollateralStructOutput = [
+  export type TransferQuoteStructOutput = [
     sender: string,
-    productId: bigint,
+    recipient: string,
     amount: bigint,
     nonce: bigint
-  ] & { sender: string; productId: bigint; amount: bigint; nonce: bigint };
-}
-
-export declare namespace RiskHelper {
-  export type RiskStruct = {
-    longWeightInitialX18: BigNumberish;
-    shortWeightInitialX18: BigNumberish;
-    longWeightMaintenanceX18: BigNumberish;
-    shortWeightMaintenanceX18: BigNumberish;
-    largePositionPenaltyX18: BigNumberish;
-  };
-
-  export type RiskStructOutput = [
-    longWeightInitialX18: bigint,
-    shortWeightInitialX18: bigint,
-    longWeightMaintenanceX18: bigint,
-    shortWeightMaintenanceX18: bigint,
-    largePositionPenaltyX18: bigint
-  ] & {
-    longWeightInitialX18: bigint;
-    shortWeightInitialX18: bigint;
-    longWeightMaintenanceX18: bigint;
-    shortWeightMaintenanceX18: bigint;
-    largePositionPenaltyX18: bigint;
-  };
-}
-
-export declare namespace IClearinghouseState {
-  export type RiskStoreStruct = {
-    longWeightInitial: BigNumberish;
-    shortWeightInitial: BigNumberish;
-    longWeightMaintenance: BigNumberish;
-    shortWeightMaintenance: BigNumberish;
-    largePositionPenalty: BigNumberish;
-  };
-
-  export type RiskStoreStructOutput = [
-    longWeightInitial: bigint,
-    shortWeightInitial: bigint,
-    longWeightMaintenance: bigint,
-    shortWeightMaintenance: bigint,
-    largePositionPenalty: bigint
-  ] & {
-    longWeightInitial: bigint;
-    shortWeightInitial: bigint;
-    longWeightMaintenance: bigint;
-    shortWeightMaintenance: bigint;
-    largePositionPenalty: bigint;
-  };
+  ] & { sender: string; recipient: string; amount: bigint; nonce: bigint };
 }
 
 export interface IClearinghouseInterface extends Interface {
@@ -237,28 +160,21 @@ export interface IClearinghouseInterface extends Interface {
       | "claimSequencerFees"
       | "depositCollateral"
       | "depositInsurance"
-      | "getAllBooks"
+      | "getClearinghouseLiq"
       | "getEndpoint"
       | "getEngineByProduct"
       | "getEngineByType"
       | "getHealth"
       | "getInsurance"
-      | "getMaxHealthGroup"
-      | "getNumProducts"
-      | "getOraclePriceX18"
-      | "getOraclePricesX18"
-      | "getOrderbook"
       | "getQuote"
-      | "getRisk"
-      | "getSupportedEngines"
+      | "getSpreads"
       | "getVersion"
       | "liquidateSubaccount"
       | "mintLp"
-      | "mintLpSlowMode"
-      | "modifyProductConfig"
-      | "registerProductForId"
+      | "registerProduct"
       | "settlePnl"
-      | "updateFeeRates"
+      | "transferQuote"
+      | "upgradeClearinghouseLiq"
       | "withdrawCollateral"
   ): FunctionFragment;
 
@@ -271,7 +187,7 @@ export interface IClearinghouseInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "addEngine",
-    values: [AddressLike, BigNumberish]
+    values: [AddressLike, AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "burnLp",
@@ -294,7 +210,7 @@ export interface IClearinghouseInterface extends Interface {
     values: [IEndpoint.DepositInsuranceStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "getAllBooks",
+    functionFragment: "getClearinghouseLiq",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -317,33 +233,9 @@ export interface IClearinghouseInterface extends Interface {
     functionFragment: "getInsurance",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "getMaxHealthGroup",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getNumProducts",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getOraclePriceX18",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getOraclePricesX18",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getOrderbook",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(functionFragment: "getQuote", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getRisk",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getSupportedEngines",
+    functionFragment: "getSpreads",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -359,28 +251,24 @@ export interface IClearinghouseInterface extends Interface {
     values: [IEndpoint.MintLpStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "mintLpSlowMode",
-    values: [IEndpoint.MintLpStruct]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "modifyProductConfig",
-    values: [BigNumberish, IClearinghouseState.RiskStoreStruct]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "registerProductForId",
-    values: [AddressLike, IClearinghouseState.RiskStoreStruct, BigNumberish]
+    functionFragment: "registerProduct",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "settlePnl",
     values: [IEndpoint.SettlePnlStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "updateFeeRates",
-    values: [IEndpoint.UpdateFeeRatesStruct]
+    functionFragment: "transferQuote",
+    values: [IEndpoint.TransferQuoteStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "upgradeClearinghouseLiq",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawCollateral",
-    values: [IEndpoint.WithdrawCollateralStruct]
+    values: [BytesLike, BigNumberish, BigNumberish, AddressLike]
   ): string;
 
   decodeFunctionResult(functionFragment: "addEngine", data: BytesLike): Result;
@@ -402,7 +290,7 @@ export interface IClearinghouseInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getAllBooks",
+    functionFragment: "getClearinghouseLiq",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -422,32 +310,8 @@ export interface IClearinghouseInterface extends Interface {
     functionFragment: "getInsurance",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "getMaxHealthGroup",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getNumProducts",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getOraclePriceX18",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getOraclePricesX18",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getOrderbook",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "getQuote", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getRisk", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getSupportedEngines",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "getSpreads", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getVersion", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "liquidateSubaccount",
@@ -455,20 +319,16 @@ export interface IClearinghouseInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "mintLp", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "mintLpSlowMode",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "modifyProductConfig",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "registerProductForId",
+    functionFragment: "registerProduct",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "settlePnl", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "updateFeeRates",
+    functionFragment: "transferQuote",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "upgradeClearinghouseLiq",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -478,16 +338,11 @@ export interface IClearinghouseInterface extends Interface {
 }
 
 export namespace ClearinghouseInitializedEvent {
-  export type InputTuple = [
-    endpoint: AddressLike,
-    quote: AddressLike,
-    fees: AddressLike
-  ];
-  export type OutputTuple = [endpoint: string, quote: string, fees: string];
+  export type InputTuple = [endpoint: AddressLike, quote: AddressLike];
+  export type OutputTuple = [endpoint: string, quote: string];
   export interface OutputObject {
     endpoint: string;
     quote: string;
-    fees: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -499,29 +354,26 @@ export namespace LiquidationEvent {
   export type InputTuple = [
     liquidatorSubaccount: BytesLike,
     liquidateeSubaccount: BytesLike,
-    mode: BigNumberish,
-    healthGroup: BigNumberish,
+    productId: BigNumberish,
+    isEncodedSpread: boolean,
     amount: BigNumberish,
-    amountQuote: BigNumberish,
-    insuranceCover: BigNumberish
+    amountQuote: BigNumberish
   ];
   export type OutputTuple = [
     liquidatorSubaccount: string,
     liquidateeSubaccount: string,
-    mode: bigint,
-    healthGroup: bigint,
+    productId: bigint,
+    isEncodedSpread: boolean,
     amount: bigint,
-    amountQuote: bigint,
-    insuranceCover: bigint
+    amountQuote: bigint
   ];
   export interface OutputObject {
     liquidatorSubaccount: string;
     liquidateeSubaccount: string;
-    mode: bigint;
-    healthGroup: bigint;
+    productId: bigint;
+    isEncodedSpread: boolean;
     amount: bigint;
     amountQuote: bigint;
-    insuranceCover: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -595,7 +447,11 @@ export interface IClearinghouse extends BaseContract {
   ): Promise<this>;
 
   addEngine: TypedContractMethod<
-    [engine: AddressLike, engineType: BigNumberish],
+    [
+      engine: AddressLike,
+      offchainExchange: AddressLike,
+      engineType: BigNumberish
+    ],
     [void],
     "nonpayable"
   >;
@@ -607,7 +463,7 @@ export interface IClearinghouse extends BaseContract {
   >;
 
   burnLpAndTransfer: TypedContractMethod<
-    [tx: IEndpoint.BurnLpAndTransferStruct],
+    [txn: IEndpoint.BurnLpAndTransferStruct],
     [void],
     "nonpayable"
   >;
@@ -630,7 +486,7 @@ export interface IClearinghouse extends BaseContract {
     "nonpayable"
   >;
 
-  getAllBooks: TypedContractMethod<[], [string[]], "view">;
+  getClearinghouseLiq: TypedContractMethod<[], [string], "view">;
 
   getEndpoint: TypedContractMethod<[], [string], "view">;
 
@@ -654,39 +510,11 @@ export interface IClearinghouse extends BaseContract {
 
   getInsurance: TypedContractMethod<[], [bigint], "view">;
 
-  getMaxHealthGroup: TypedContractMethod<[], [bigint], "view">;
-
-  getNumProducts: TypedContractMethod<[], [bigint], "view">;
-
-  getOraclePriceX18: TypedContractMethod<
-    [productId: BigNumberish],
-    [bigint],
-    "view"
-  >;
-
-  getOraclePricesX18: TypedContractMethod<
-    [healthGroup: BigNumberish],
-    [IEndpoint.PricesStructOutput],
-    "view"
-  >;
-
-  getOrderbook: TypedContractMethod<
-    [productId: BigNumberish],
-    [string],
-    "view"
-  >;
-
   getQuote: TypedContractMethod<[], [string], "view">;
 
-  getRisk: TypedContractMethod<
-    [productId: BigNumberish],
-    [RiskHelper.RiskStructOutput],
-    "view"
-  >;
+  getSpreads: TypedContractMethod<[], [bigint], "view">;
 
-  getSupportedEngines: TypedContractMethod<[], [bigint[]], "view">;
-
-  getVersion: TypedContractMethod<[], [bigint], "nonpayable">;
+  getVersion: TypedContractMethod<[], [bigint], "view">;
 
   liquidateSubaccount: TypedContractMethod<
     [tx: IEndpoint.LiquidateSubaccountStruct],
@@ -700,25 +528,9 @@ export interface IClearinghouse extends BaseContract {
     "nonpayable"
   >;
 
-  mintLpSlowMode: TypedContractMethod<
-    [tx: IEndpoint.MintLpStruct],
+  registerProduct: TypedContractMethod<
+    [productId: BigNumberish],
     [void],
-    "nonpayable"
-  >;
-
-  modifyProductConfig: TypedContractMethod<
-    [productId: BigNumberish, riskStore: IClearinghouseState.RiskStoreStruct],
-    [void],
-    "nonpayable"
-  >;
-
-  registerProductForId: TypedContractMethod<
-    [
-      book: AddressLike,
-      riskStore: IClearinghouseState.RiskStoreStruct,
-      healthGroup: BigNumberish
-    ],
-    [bigint],
     "nonpayable"
   >;
 
@@ -728,14 +540,25 @@ export interface IClearinghouse extends BaseContract {
     "nonpayable"
   >;
 
-  updateFeeRates: TypedContractMethod<
-    [tx: IEndpoint.UpdateFeeRatesStruct],
+  transferQuote: TypedContractMethod<
+    [tx: IEndpoint.TransferQuoteStruct],
+    [void],
+    "nonpayable"
+  >;
+
+  upgradeClearinghouseLiq: TypedContractMethod<
+    [_clearinghouseLiq: AddressLike],
     [void],
     "nonpayable"
   >;
 
   withdrawCollateral: TypedContractMethod<
-    [tx: IEndpoint.WithdrawCollateralStruct],
+    [
+      sender: BytesLike,
+      productId: BigNumberish,
+      amount: BigNumberish,
+      sendTo: AddressLike
+    ],
     [void],
     "nonpayable"
   >;
@@ -747,7 +570,11 @@ export interface IClearinghouse extends BaseContract {
   getFunction(
     nameOrSignature: "addEngine"
   ): TypedContractMethod<
-    [engine: AddressLike, engineType: BigNumberish],
+    [
+      engine: AddressLike,
+      offchainExchange: AddressLike,
+      engineType: BigNumberish
+    ],
     [void],
     "nonpayable"
   >;
@@ -757,7 +584,7 @@ export interface IClearinghouse extends BaseContract {
   getFunction(
     nameOrSignature: "burnLpAndTransfer"
   ): TypedContractMethod<
-    [tx: IEndpoint.BurnLpAndTransferStruct],
+    [txn: IEndpoint.BurnLpAndTransferStruct],
     [void],
     "nonpayable"
   >;
@@ -783,8 +610,8 @@ export interface IClearinghouse extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "getAllBooks"
-  ): TypedContractMethod<[], [string[]], "view">;
+    nameOrSignature: "getClearinghouseLiq"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "getEndpoint"
   ): TypedContractMethod<[], [string], "view">;
@@ -805,40 +632,14 @@ export interface IClearinghouse extends BaseContract {
     nameOrSignature: "getInsurance"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
-    nameOrSignature: "getMaxHealthGroup"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "getNumProducts"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "getOraclePriceX18"
-  ): TypedContractMethod<[productId: BigNumberish], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "getOraclePricesX18"
-  ): TypedContractMethod<
-    [healthGroup: BigNumberish],
-    [IEndpoint.PricesStructOutput],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "getOrderbook"
-  ): TypedContractMethod<[productId: BigNumberish], [string], "view">;
-  getFunction(
     nameOrSignature: "getQuote"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "getRisk"
-  ): TypedContractMethod<
-    [productId: BigNumberish],
-    [RiskHelper.RiskStructOutput],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "getSupportedEngines"
-  ): TypedContractMethod<[], [bigint[]], "view">;
+    nameOrSignature: "getSpreads"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "getVersion"
-  ): TypedContractMethod<[], [bigint], "nonpayable">;
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "liquidateSubaccount"
   ): TypedContractMethod<
@@ -850,40 +651,34 @@ export interface IClearinghouse extends BaseContract {
     nameOrSignature: "mintLp"
   ): TypedContractMethod<[tx: IEndpoint.MintLpStruct], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "mintLpSlowMode"
-  ): TypedContractMethod<[tx: IEndpoint.MintLpStruct], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "modifyProductConfig"
-  ): TypedContractMethod<
-    [productId: BigNumberish, riskStore: IClearinghouseState.RiskStoreStruct],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "registerProductForId"
-  ): TypedContractMethod<
-    [
-      book: AddressLike,
-      riskStore: IClearinghouseState.RiskStoreStruct,
-      healthGroup: BigNumberish
-    ],
-    [bigint],
-    "nonpayable"
-  >;
+    nameOrSignature: "registerProduct"
+  ): TypedContractMethod<[productId: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "settlePnl"
   ): TypedContractMethod<[tx: IEndpoint.SettlePnlStruct], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "updateFeeRates"
+    nameOrSignature: "transferQuote"
   ): TypedContractMethod<
-    [tx: IEndpoint.UpdateFeeRatesStruct],
+    [tx: IEndpoint.TransferQuoteStruct],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "upgradeClearinghouseLiq"
+  ): TypedContractMethod<
+    [_clearinghouseLiq: AddressLike],
     [void],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "withdrawCollateral"
   ): TypedContractMethod<
-    [tx: IEndpoint.WithdrawCollateralStruct],
+    [
+      sender: BytesLike,
+      productId: BigNumberish,
+      amount: BigNumberish,
+      sendTo: AddressLike
+    ],
     [void],
     "nonpayable"
   >;
@@ -911,7 +706,7 @@ export interface IClearinghouse extends BaseContract {
   >;
 
   filters: {
-    "ClearinghouseInitialized(address,address,address)": TypedContractEvent<
+    "ClearinghouseInitialized(address,address)": TypedContractEvent<
       ClearinghouseInitializedEvent.InputTuple,
       ClearinghouseInitializedEvent.OutputTuple,
       ClearinghouseInitializedEvent.OutputObject
@@ -922,7 +717,7 @@ export interface IClearinghouse extends BaseContract {
       ClearinghouseInitializedEvent.OutputObject
     >;
 
-    "Liquidation(bytes32,bytes32,uint8,uint32,int128,int128,int128)": TypedContractEvent<
+    "Liquidation(bytes32,bytes32,uint32,bool,int128,int128)": TypedContractEvent<
       LiquidationEvent.InputTuple,
       LiquidationEvent.OutputTuple,
       LiquidationEvent.OutputObject

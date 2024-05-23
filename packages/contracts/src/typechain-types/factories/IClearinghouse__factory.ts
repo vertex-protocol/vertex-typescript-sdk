@@ -24,12 +24,6 @@ const _abi = [
         name: "quote",
         type: "address",
       },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "fees",
-        type: "address",
-      },
     ],
     name: "ClearinghouseInitialized",
     type: "event",
@@ -50,16 +44,16 @@ const _abi = [
         type: "bytes32",
       },
       {
-        indexed: true,
-        internalType: "uint8",
-        name: "mode",
-        type: "uint8",
+        indexed: false,
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
       },
       {
         indexed: false,
-        internalType: "uint32",
-        name: "healthGroup",
-        type: "uint32",
+        internalType: "bool",
+        name: "isEncodedSpread",
+        type: "bool",
       },
       {
         indexed: false,
@@ -71,12 +65,6 @@ const _abi = [
         indexed: false,
         internalType: "int128",
         name: "amountQuote",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "insuranceCover",
         type: "int128",
       },
     ],
@@ -113,6 +101,11 @@ const _abi = [
       {
         internalType: "address",
         name: "engine",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "offchainExchange",
         type: "address",
       },
       {
@@ -187,7 +180,7 @@ const _abi = [
           },
         ],
         internalType: "struct IEndpoint.BurnLpAndTransfer",
-        name: "tx",
+        name: "txn",
         type: "tuple",
       },
     ],
@@ -273,12 +266,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "getAllBooks",
+    name: "getClearinghouseLiq",
     outputs: [
       {
-        internalType: "address[]",
+        internalType: "address",
         name: "",
-        type: "address[]",
+        type: "address",
       },
     ],
     stateMutability: "view",
@@ -374,101 +367,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "getMaxHealthGroup",
-    outputs: [
-      {
-        internalType: "uint32",
-        name: "",
-        type: "uint32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getNumProducts",
-    outputs: [
-      {
-        internalType: "uint32",
-        name: "",
-        type: "uint32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-    ],
-    name: "getOraclePriceX18",
-    outputs: [
-      {
-        internalType: "int128",
-        name: "",
-        type: "int128",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint32",
-        name: "healthGroup",
-        type: "uint32",
-      },
-    ],
-    name: "getOraclePricesX18",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "int128",
-            name: "spotPriceX18",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "perpPriceX18",
-            type: "int128",
-          },
-        ],
-        internalType: "struct IEndpoint.Prices",
-        name: "",
-        type: "tuple",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-    ],
-    name: "getOrderbook",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "getQuote",
     outputs: [
       {
@@ -481,59 +379,13 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint32",
-        name: "productId",
-        type: "uint32",
-      },
-    ],
-    name: "getRisk",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "int128",
-            name: "longWeightInitialX18",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "shortWeightInitialX18",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "longWeightMaintenanceX18",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "shortWeightMaintenanceX18",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "largePositionPenaltyX18",
-            type: "int128",
-          },
-        ],
-        internalType: "struct RiskHelper.Risk",
-        name: "",
-        type: "tuple",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [],
-    name: "getSupportedEngines",
+    name: "getSpreads",
     outputs: [
       {
-        internalType: "enum IProductEngine.EngineType[]",
+        internalType: "uint256",
         name: "",
-        type: "uint8[]",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -549,7 +401,7 @@ const _abi = [
         type: "uint64",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -567,14 +419,14 @@ const _abi = [
             type: "bytes32",
           },
           {
-            internalType: "uint8",
-            name: "mode",
-            type: "uint8",
+            internalType: "uint32",
+            name: "productId",
+            type: "uint32",
           },
           {
-            internalType: "uint32",
-            name: "healthGroup",
-            type: "uint32",
+            internalType: "bool",
+            name: "isEncodedSpread",
+            type: "bool",
           },
           {
             internalType: "int128",
@@ -645,146 +497,13 @@ const _abi = [
   {
     inputs: [
       {
-        components: [
-          {
-            internalType: "bytes32",
-            name: "sender",
-            type: "bytes32",
-          },
-          {
-            internalType: "uint32",
-            name: "productId",
-            type: "uint32",
-          },
-          {
-            internalType: "uint128",
-            name: "amountBase",
-            type: "uint128",
-          },
-          {
-            internalType: "uint128",
-            name: "quoteAmountLow",
-            type: "uint128",
-          },
-          {
-            internalType: "uint128",
-            name: "quoteAmountHigh",
-            type: "uint128",
-          },
-          {
-            internalType: "uint64",
-            name: "nonce",
-            type: "uint64",
-          },
-        ],
-        internalType: "struct IEndpoint.MintLp",
-        name: "tx",
-        type: "tuple",
-      },
-    ],
-    name: "mintLpSlowMode",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint32",
         name: "productId",
         type: "uint32",
       },
-      {
-        components: [
-          {
-            internalType: "int32",
-            name: "longWeightInitial",
-            type: "int32",
-          },
-          {
-            internalType: "int32",
-            name: "shortWeightInitial",
-            type: "int32",
-          },
-          {
-            internalType: "int32",
-            name: "longWeightMaintenance",
-            type: "int32",
-          },
-          {
-            internalType: "int32",
-            name: "shortWeightMaintenance",
-            type: "int32",
-          },
-          {
-            internalType: "int32",
-            name: "largePositionPenalty",
-            type: "int32",
-          },
-        ],
-        internalType: "struct IClearinghouseState.RiskStore",
-        name: "riskStore",
-        type: "tuple",
-      },
     ],
-    name: "modifyProductConfig",
+    name: "registerProduct",
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "book",
-        type: "address",
-      },
-      {
-        components: [
-          {
-            internalType: "int32",
-            name: "longWeightInitial",
-            type: "int32",
-          },
-          {
-            internalType: "int32",
-            name: "shortWeightInitial",
-            type: "int32",
-          },
-          {
-            internalType: "int32",
-            name: "longWeightMaintenance",
-            type: "int32",
-          },
-          {
-            internalType: "int32",
-            name: "shortWeightMaintenance",
-            type: "int32",
-          },
-          {
-            internalType: "int32",
-            name: "largePositionPenalty",
-            type: "int32",
-          },
-        ],
-        internalType: "struct IClearinghouseState.RiskStore",
-        name: "riskStore",
-        type: "tuple",
-      },
-      {
-        internalType: "uint32",
-        name: "healthGroup",
-        type: "uint32",
-      },
-    ],
-    name: "registerProductForId",
-    outputs: [
-      {
-        internalType: "uint32",
-        name: "",
-        type: "uint32",
-      },
-    ],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -818,49 +537,14 @@ const _abi = [
       {
         components: [
           {
-            internalType: "address",
-            name: "user",
-            type: "address",
-          },
-          {
-            internalType: "uint32",
-            name: "productId",
-            type: "uint32",
-          },
-          {
-            internalType: "int64",
-            name: "makerRateX18",
-            type: "int64",
-          },
-          {
-            internalType: "int64",
-            name: "takerRateX18",
-            type: "int64",
-          },
-        ],
-        internalType: "struct IEndpoint.UpdateFeeRates",
-        name: "tx",
-        type: "tuple",
-      },
-    ],
-    name: "updateFeeRates",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        components: [
-          {
             internalType: "bytes32",
             name: "sender",
             type: "bytes32",
           },
           {
-            internalType: "uint32",
-            name: "productId",
-            type: "uint32",
+            internalType: "bytes32",
+            name: "recipient",
+            type: "bytes32",
           },
           {
             internalType: "uint128",
@@ -873,9 +557,50 @@ const _abi = [
             type: "uint64",
           },
         ],
-        internalType: "struct IEndpoint.WithdrawCollateral",
+        internalType: "struct IEndpoint.TransferQuote",
         name: "tx",
         type: "tuple",
+      },
+    ],
+    name: "transferQuote",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_clearinghouseLiq",
+        type: "address",
+      },
+    ],
+    name: "upgradeClearinghouseLiq",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "sender",
+        type: "bytes32",
+      },
+      {
+        internalType: "uint32",
+        name: "productId",
+        type: "uint32",
+      },
+      {
+        internalType: "uint128",
+        name: "amount",
+        type: "uint128",
+      },
+      {
+        internalType: "address",
+        name: "sendTo",
+        type: "address",
       },
     ],
     name: "withdrawCollateral",
