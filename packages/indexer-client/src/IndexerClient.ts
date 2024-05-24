@@ -8,6 +8,8 @@ import { IndexerBaseClient } from './IndexerBaseClient';
 import {
   BaseIndexerPaginatedEvent,
   GetIndexerPaginatedInterestFundingPaymentsResponse,
+  GetIndexerPaginatedLeaderboardParams,
+  GetIndexerPaginatedLeaderboardResponse,
   GetIndexerPaginatedOrdersParams,
   GetIndexerPaginatedOrdersResponse,
   GetIndexerPaginatedRewardsParams,
@@ -426,6 +428,41 @@ export class IndexerClient extends IndexerBaseClient {
         hasMore: baseResponse.epochs.length > requestedLimit,
         // Next cursor is the epoch number of the (requestedLimit+1)th item
         nextCursor: baseResponse.epochs[requestedLimit]?.epoch.toFixed(),
+      },
+    };
+  }
+
+  /**
+   * Paginated leaderboard query that paginates on rank number.
+   *
+   * @param params
+   */
+  async getPaginatedLeaderboard(
+    params: GetIndexerPaginatedLeaderboardParams,
+  ): Promise<GetIndexerPaginatedLeaderboardResponse> {
+    const requestedLimit = params.limit;
+
+    const baseResponse = await this.getLeaderboard({
+      contestId: params.contestId,
+      rankType: params.rankType,
+      // Query for 1 more result for proper pagination
+      limit: requestedLimit + 1,
+      // Start cursor is the next rank number
+      startCursor: params.startCursor,
+    });
+
+    const nextCursor =
+      1 + params.rankType == 'pnl'
+        ? baseResponse.participants[requestedLimit]?.pnlRank.toFixed()
+        : baseResponse.participants[requestedLimit]?.roiRank.toFixed();
+
+    // Truncate the response to the requested limit
+    return {
+      ...baseResponse,
+      meta: {
+        hasMore: baseResponse.participants.length > requestedLimit,
+        // Next cursor is the next rank
+        nextCursor,
       },
     };
   }

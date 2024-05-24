@@ -276,6 +276,26 @@ async function fullSanity(context: RunContext) {
   });
 
   prettyPrint('Leaderboard Contests', leaderboardContests);
+
+  const leaderboardFirstPage = await client.getPaginatedLeaderboard({
+    rankType: 'pnl',
+    startCursor: undefined,
+    contestId: 1,
+    limit: 5,
+  });
+
+  prettyPrint('Leaderboard First Page', leaderboardFirstPage);
+
+  if (leaderboardFirstPage.meta.hasMore) {
+    const leaderboardSecondPage = await client.getPaginatedLeaderboard({
+      rankType: 'pnl',
+      startCursor: leaderboardFirstPage.meta.nextCursor,
+      contestId: 1,
+      limit: 5,
+    });
+
+    prettyPrint('Leaderboard Second Page', leaderboardSecondPage);
+  }
 }
 
 runWithContext(fullSanity);
