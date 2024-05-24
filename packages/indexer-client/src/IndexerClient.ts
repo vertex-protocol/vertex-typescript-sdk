@@ -452,9 +452,9 @@ export class IndexerClient extends IndexerBaseClient {
     });
 
     const nextCursor =
-      1 + params.rankType == 'pnl'
-        ? baseResponse.participants[requestedLimit]?.pnlRank.toFixed()
-        : baseResponse.participants[requestedLimit]?.roiRank.toFixed();
+      params.rankType == 'pnl'
+        ? baseResponse.participants[requestedLimit]?.pnlRank
+        : baseResponse.participants[requestedLimit]?.roiRank;
 
     // Truncate the response to the requested limit
     return {
@@ -462,7 +462,7 @@ export class IndexerClient extends IndexerBaseClient {
       meta: {
         hasMore: baseResponse.participants.length > requestedLimit,
         // Next cursor is the next rank
-        nextCursor,
+        nextCursor: nextCursor.plus(1).toFixed(),
       },
     };
   }

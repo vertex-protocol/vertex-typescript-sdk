@@ -278,7 +278,7 @@ async function fullSanity(context: RunContext) {
   prettyPrint('Leaderboard Contests', leaderboardContests);
 
   const leaderboardFirstPage = await client.getPaginatedLeaderboard({
-    rankType: 'pnl',
+    rankType: 'roi',
     startCursor: undefined,
     contestId: 1,
     limit: 5,
@@ -288,7 +288,7 @@ async function fullSanity(context: RunContext) {
 
   if (leaderboardFirstPage.meta.hasMore) {
     const leaderboardSecondPage = await client.getPaginatedLeaderboard({
-      rankType: 'pnl',
+      rankType: 'roi',
       startCursor: leaderboardFirstPage.meta.nextCursor,
       contestId: 1,
       limit: 5,
