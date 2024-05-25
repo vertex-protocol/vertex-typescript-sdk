@@ -451,18 +451,17 @@ export class IndexerClient extends IndexerBaseClient {
       startCursor: params.startCursor,
     });
 
-    const nextCursor =
-      params.rankType == 'pnl'
-        ? baseResponse.participants[requestedLimit]?.pnlRank
-        : baseResponse.participants[requestedLimit]?.roiRank;
-
-    // Truncate the response to the requested limit
     return {
       ...baseResponse,
+      // Truncate the response to the requested limit
+      participants: baseResponse.participants.slice(0, requestedLimit),
       meta: {
         hasMore: baseResponse.participants.length > requestedLimit,
-        // Next cursor is the next rank
-        nextCursor: nextCursor.plus(1).toFixed(),
+        // Next cursor is the rank number of the (requestedLimit+1)th item
+        nextCursor:
+          params.rankType == 'pnl'
+            ? baseResponse.participants[requestedLimit]?.pnlRank.toFixed()
+            : baseResponse.participants[requestedLimit]?.roiRank.toFixed(),
       },
     };
   }
