@@ -18,6 +18,7 @@ import {
   IndexerServerListSubaccountsParams,
 } from './serverTypes';
 import { VertexTx } from './VertexTx';
+import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
 
 /**
  * Base types
@@ -613,4 +614,65 @@ export interface IndexerMaker {
 export interface GetIndexerMakerStatisticsResponse {
   rewardCoefficient: BigDecimal;
   makers: IndexerMaker[];
+}
+
+export interface GetIndexerLeaderboardParams {
+  contestId: number;
+  rankType: IndexerLeaderboardRankType;
+  // Min rank inclusive
+  startCursor?: string;
+  limit?: number;
+}
+
+export interface IndexerLeaderboardParticipant {
+  subaccount: Subaccount;
+  contestId: number;
+  pnl: BigDecimal;
+  pnlRank: BigDecimal;
+  percentRoi: BigDecimal;
+  roiRank: BigDecimal;
+  // Float indicating the ending account value at the time the snapshot was taken i.e: at updateTime
+  accountValue: BigDecimal;
+  // Seconds
+  updateTime: BigDecimal;
+}
+
+export interface GetIndexerLeaderboardResponse {
+  participants: IndexerLeaderboardParticipant[];
+}
+
+export interface GetIndexerLeaderboardParticipantParams {
+  contestId: number;
+  subaccount: Subaccount;
+}
+
+export interface GetIndexerLeaderboardParticipantResponse {
+  // Participant is `null` when the subaccount is not eligible for the provided contest.
+  participant: IndexerLeaderboardParticipant | null;
+}
+
+export interface GetIndexerLeaderboardContestsParams {
+  contestIds: number[];
+}
+
+export interface IndexerLeaderboardContest {
+  contestId: number;
+  // NOTE: Start / End times are ignored when `period` is non-zero.
+  // Start time in seconds
+  startTime: BigDecimal;
+  // End time in seconds
+  endTime: BigDecimal;
+  // Contest duration in seconds; when set to 0, contest duration is [startTime,endTime];
+  // Otherwise, contest runs indefinitely in the interval [lastUpdated - period, lastUpdated] if active;
+  period: BigDecimal;
+  // Last updated time in Seconds
+  lastUpdated: BigDecimal;
+  totalParticipants: BigDecimal;
+  // Float indicating the min account value required to be eligible for this contest e.g: 250.0
+  minRequiredAccountValue: BigDecimal;
+  active: boolean;
+}
+
+export interface GetIndexerLeaderboardContestsResponse {
+  contests: IndexerLeaderboardContest[];
 }

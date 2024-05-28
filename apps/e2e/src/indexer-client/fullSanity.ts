@@ -251,6 +251,51 @@ async function fullSanity(context: RunContext) {
   });
 
   prettyPrint('Paginated LP events', lpEvents);
+
+  const leaderboard = await client.getLeaderboard({
+    limit: 5,
+    startCursor: undefined,
+    contestId: 1,
+    rankType: 'pnl',
+  });
+
+  prettyPrint('Leaderboard', leaderboard);
+
+  const leaderboardParticipant = await client.getLeaderboardParticipant({
+    subaccount: {
+      subaccountName: subaccount.subaccountName,
+      subaccountOwner: subaccount.subaccountOwner,
+    },
+    contestId: 1,
+  });
+
+  prettyPrint('Leaderboard Participant', leaderboardParticipant);
+
+  const leaderboardContests = await client.getLeaderboardContests({
+    contestIds: [1],
+  });
+
+  prettyPrint('Leaderboard Contests', leaderboardContests);
+
+  const leaderboardFirstPage = await client.getPaginatedLeaderboard({
+    rankType: 'roi',
+    startCursor: undefined,
+    contestId: 1,
+    limit: 5,
+  });
+
+  prettyPrint('Leaderboard First Page', leaderboardFirstPage);
+
+  if (leaderboardFirstPage.meta.hasMore) {
+    const leaderboardSecondPage = await client.getPaginatedLeaderboard({
+      rankType: 'roi',
+      startCursor: leaderboardFirstPage.meta.nextCursor,
+      contestId: 1,
+      limit: 5,
+    });
+
+    prettyPrint('Leaderboard Second Page', leaderboardSecondPage);
+  }
 }
 
 runWithContext(fullSanity);

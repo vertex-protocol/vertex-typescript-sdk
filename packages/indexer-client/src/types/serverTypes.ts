@@ -1,8 +1,11 @@
 import { IndexerEventType } from './IndexerEventType';
+import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
 import {
   IndexerServerArbRewardsWeek,
   IndexerServerCandlestick,
   IndexerServerEvent,
+  IndexerServerLeaderboardContest,
+  IndexerServerLeaderboardPosition,
   IndexerServerMaker,
   IndexerServerMarketSnapshot,
   IndexerServerMarketSnapshotInterval,
@@ -174,6 +177,22 @@ export interface IndexerServerMakerStatisticsParams {
   interval: number;
 }
 
+export interface IndexerServerLeaderboardParams {
+  contest_id: number;
+  rank_type: IndexerLeaderboardRankType;
+  start?: number | string;
+  limit?: number | string;
+}
+
+export interface IndexerServerLeaderboardRankParams {
+  subaccount: string;
+  contest_id: number;
+}
+
+export interface IndexerServerLeaderboardContestsParams {
+  contest_ids: number[];
+}
+
 // Request
 export interface IndexerServerQueryRequestByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
@@ -203,6 +222,9 @@ export interface IndexerServerQueryRequestByType {
   taker_rewards: IndexerServerTakerRewardsParams;
   usdc_price: Record<string, never>;
   vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsParams;
+  leaderboard: IndexerServerLeaderboardParams;
+  leaderboard_rank: IndexerServerLeaderboardRankParams;
+  leaderboard_contests: IndexerServerLeaderboardContestsParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -360,6 +382,18 @@ export interface IndexerServerMakerStatisticsResponse {
   makers: IndexerServerMaker[];
 }
 
+export interface IndexerServerLeaderboardResponse {
+  positions: IndexerServerLeaderboardPosition[];
+}
+
+export interface IndexerServerLeaderboardRankResponse {
+  position: IndexerServerLeaderboardPosition | null;
+}
+
+export interface IndexerServerLeaderboardContestsResponse {
+  contests: IndexerServerLeaderboardContest[];
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
@@ -389,4 +423,7 @@ export interface IndexerServerQueryResponseByType {
   taker_rewards: IndexerServerTakerRewardsResponse;
   usdc_price: IndexerServerUsdcPriceResponse;
   vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsResponse;
+  leaderboard: IndexerServerLeaderboardResponse;
+  leaderboard_rank: IndexerServerLeaderboardRankResponse;
+  leaderboard_contests: IndexerServerLeaderboardContestsResponse;
 }

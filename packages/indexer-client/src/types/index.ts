@@ -4,5 +4,6 @@ export * from './serverTypes';
 export * from './serverModelTypes';
 export * from './CandlestickPeriod';
 export * from './IndexerEventType';
+export * from './IndexerLeaderboardType';
 export * from './collateralEventType';
 export * from './VertexTx';

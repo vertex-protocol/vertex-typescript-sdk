@@ -3,6 +3,8 @@ import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import {
   GetIndexerInterestFundingPaymentsParams,
   GetIndexerInterestFundingPaymentsResponse,
+  GetIndexerLeaderboardParams,
+  GetIndexerLeaderboardResponse,
   GetIndexerRewardsParams,
   GetIndexerRewardsResponse,
   IndexerEventBalanceStateSnapshot,
@@ -192,6 +194,12 @@ export interface GetIndexerPaginatedInterestFundingPaymentsResponse
   extends GetIndexerInterestFundingPaymentsResponse {
   meta: IndexerPaginationMeta;
 }
+
+export type GetIndexerPaginatedLeaderboardParams = IndexerPaginationParams &
+  Pick<GetIndexerLeaderboardParams, 'contestId' | 'rankType'>;
+
+export type GetIndexerPaginatedLeaderboardResponse = WithPaginationMeta &
+  GetIndexerLeaderboardResponse;
 
 /**
  * Paginated rewards query - these paginate on epoch #, which is `number`, but for consistency we use the
