@@ -1,15 +1,5 @@
 import { useEffect, useState } from 'react';
 
-function useIsClient() {
-  const [isClient, setClient] = useState(false);
-
-  useEffect(() => {
-    setClient(true);
-  }, []);
-
-  return isClient;
-}
-
 /**
  * Util hook for determining whether an initial client mount has occurred. This is useful as we cannot correctly load connection
  * state before this (all wallet interaction is based on localstorage, so all states will start in `disconnected` even if the user
@@ -37,4 +27,14 @@ export function useDidInitializeWalletConnection() {
   }, [didInitialClientMount, isClient]);
 
   return didInitialClientMount;
+}
+
+function useIsClient() {
+  const [isClient, setClient] = useState(false);
+
+  useEffect(() => {
+    setClient(true);
+  }, []);
+
+  return isClient;
 }

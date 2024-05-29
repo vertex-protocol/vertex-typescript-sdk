@@ -31,15 +31,15 @@ export interface CoreEVMContextProviderProps {
  * which wraps this provider within the necessary Wagmi context
  */
 export function CoreEVMContextProvider({
-  primaryChainEnv,
-  setPrimaryChainEnv,
+  primaryChainEnv: basePrimaryChainEnv,
+  setPrimaryChainEnv: setBasePrimaryChainEnv,
   supportedChainEnvs,
   supportedChains,
   children,
 }: CoreEVMContextProviderProps) {
   const primaryChain = useMemo(() => {
-    return getPrimaryChain(primaryChainEnv);
-  }, [primaryChainEnv]);
+    return getPrimaryChain(basePrimaryChainEnv);
+  }, [basePrimaryChainEnv]);
 
   const didInitializeWalletConnection = useDidInitializeWalletConnection();
   // Wagmi does not give access to the active connector in the `connecting` state, so we store this state separately
@@ -165,9 +165,18 @@ export function CoreEVMContextProvider({
     [baseSwitchChain, primaryChain.id],
   );
 
+  const setPrimaryChainEnv = useCallback(
+    (chainEnv: ChainEnv) => {
+      setBasePrimaryChainEnv(chainEnv);
+      // Prompt user to switch onto the new primary chain
+      switchChain(getPrimaryChain(chainEnv).id);
+    },
+    [setBasePrimaryChainEnv, switchChain],
+  );
+
   const evmContextData = useMemo((): EVMContextData => {
     return {
-      primaryChainEnv,
+      primaryChainEnv: basePrimaryChainEnv,
       setPrimaryChainEnv,
       primaryChain,
       primaryChainMetadata: getChainMetadata(primaryChain),
@@ -183,7 +192,7 @@ export function CoreEVMContextProvider({
       setReadOnlyAddressOverride,
     };
   }, [
-    primaryChainEnv,
+    basePrimaryChainEnv,
     setPrimaryChainEnv,
     primaryChain,
     supportedChains,

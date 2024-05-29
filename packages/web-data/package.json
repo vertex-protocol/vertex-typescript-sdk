@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/web-data-test",
-  "version": "0.34.0",
+  "version": "0.34.1",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -28,12 +28,14 @@
     "build": "tsc -b",
     "dev": "tsc -w"
   },
+  "dependencies": {
+    "d3-format": "^3.1.0"
+  },
   "peerDependencies": {
     "@tanstack/react-query": "^5",
     "@tanstack/react-query-devtools": "^5",
-    "@vertex-protocol/client": "0.34.0",
+    "@vertex-protocol/client": "0.34.1",
     "bignumber.js": "^9.1.2",
-    "d3-format": "^3.1.0",
     "ethers": "6.12.1",
     "react": "^18",
     "react-dom": "^18",
@@ -41,24 +43,23 @@
     "wagmi": "^2"
   },
   "devDependencies": {
-    "@tanstack/react-query": "^5",
-    "@tanstack/react-query-devtools": "^5",
+    "@tanstack/react-query": "5.32.1",
+    "@tanstack/react-query-devtools": "5.32.1",
     "@types/d3-format": "^3.0.4",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
-    "@vertex-protocol/client": "0.34.0",
+    "@vertex-protocol/client": "0.34.1",
     "bignumber.js": "^9.1.2",
-    "d3-format": "^3.1.0",
     "ethers": "*",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "viem": "^2.9.32",
-    "wagmi": "^2.8.1"
+    "viem": "2.9.32",
+    "wagmi": "2.8.1"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
     "displayName": "Vertex Web Data"
   },
-  "gitHead": "ae666e32756ecabbfff5a6eb316465ea0a0e071d"
+  "gitHead": "029f9e5be6edd92cea1fdbcbe964fa4f6174625f"
 }
