@@ -15,7 +15,9 @@
     "lint": "eslint './**/*.ts' --fix && prettier --write './**/*.ts'",
     "gen-typedoc": "npx typedoc",
     "link-local": "lerna exec -- yarn link",
-    "unlink-local": "lerna exec -- yarn unlink"
+    "unlink-local": "lerna exec -- yarn unlink",
+    "link-react-package-dependencies": "setup-react-package-yarn-links.sh",
+    "unlink-react-package-dependencies": "UNLINK=true setup-react-package-yarn-links.sh"
   },
   "lint-staged": {
     "*.ts": "yarn lint"

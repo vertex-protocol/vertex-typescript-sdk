@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/indexer-client",
-  "version": "0.34.0",
+  "version": "0.34.2",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -11,7 +11,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "repository": "https://github.com/vertex-protocol/vertex-sdk",
+  "repository": "https://github.com/vertex-protocol/vertex-typescript-sdk",
   "scripts": {
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
@@ -22,9 +22,9 @@
     "src"
   ],
   "dependencies": {
-    "@vertex-protocol/contracts": "^0.34.0",
-    "@vertex-protocol/engine-client": "^0.34.0",
-    "@vertex-protocol/utils": "^0.34.0",
+    "@vertex-protocol/contracts": "^0.34.2",
+    "@vertex-protocol/engine-client": "^0.34.2",
+    "@vertex-protocol/utils": "^0.34.2",
     "axios": "^1.6.2",
     "ts-mixer": "^6.0.3"
   },
@@ -39,5 +39,5 @@
     "readmeFile": "./README.md",
     "displayName": "Vertex Indexer Server Utils"
   },
-  "gitHead": "a2b88b89dbc84faef248f45e8cb68b93e63fc186"
+  "gitHead": "9db3b26e8c23e8585abf0482d0faba509330cfea"
 }
