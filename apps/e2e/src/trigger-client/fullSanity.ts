@@ -7,7 +7,10 @@ import {
   IClearinghouse__factory,
   MockERC20__factory,
 } from '@vertex-protocol/contracts';
-import { EngineOrderParams } from '@vertex-protocol/engine-client';
+import {
+  EngineClient,
+  EngineOrderParams,
+} from '@vertex-protocol/engine-client';
 import {
   TriggerClient,
   TriggerPlaceOrderParams,
@@ -21,6 +24,11 @@ import { RunContext } from '../utils/types';
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
   const chainId = await getChainIdFromSigner(signer);
+
+  const engineClient = new EngineClient({
+    url: context.endpoints.engine,
+    signer,
+  });
 
   const client = new TriggerClient({
     url: context.endpoints.trigger,
@@ -56,7 +64,7 @@ async function fullSanity(context: RunContext) {
   console.log('Done depositing collateral, placing stop orders');
 
   const ethProductId = 3;
-  const ethOrderbookAddr = await clearinghouse.getOrderbook(ethProductId);
+  const ethOrderbookAddr = await engineClient.getOrderbookAddress(ethProductId);
   const nonce = getTriggerOrderNonce();
 
   const shortStopOrder: EngineOrderParams & { nonce: string } = {
@@ -88,10 +96,10 @@ async function fullSanity(context: RunContext) {
     id: 1000,
   };
   const shortStopResult = await client.placeTriggerOrder(shortTriggerParams);
-  prettyPrint('Short stop order result', shortStopResult);
+  prettyPrint('Short stop order result', shortStopResult.data);
 
   const btcPerpProductId = 2;
-  const btcPerpOrderbookAddr = await clearinghouse.getOrderbook(
+  const btcPerpOrderbookAddr = await engineClient.getOrderbookAddress(
     btcPerpProductId,
   );
 
