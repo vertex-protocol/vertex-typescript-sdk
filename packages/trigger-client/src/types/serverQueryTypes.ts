@@ -30,6 +30,7 @@ export interface TriggerServerListTriggerOrdersParams
   // If not given, defaults to all products
   product_id?: number;
   max_update_time?: number;
+  digests?: string[];
   limit?: number;
 }
 

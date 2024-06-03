@@ -103,13 +103,22 @@ async function fullSanity(context: RunContext) {
     btcPerpProductId,
   );
 
-  const longStopOrder: EngineOrderParams = {
+  const longStopNonce = getTriggerOrderNonce();
+
+  const longStopOrder: EngineOrderParams & { nonce: string } = {
+    nonce: longStopNonce,
     amount: toX18(0.01),
     expiration: getExpiration('fok'),
     price: 50000,
     subaccountName,
     subaccountOwner,
   };
+
+  const longStopDigest = getOrderDigest({
+    chainId,
+    order: longStopOrder,
+    verifyingAddr: ethOrderbookAddr,
+  });
 
   const longStopParams: TriggerPlaceOrderParams = {
     chainId,
@@ -120,7 +129,7 @@ async function fullSanity(context: RunContext) {
       triggerPrice: 10000,
     },
     verifyingAddr: btcPerpOrderbookAddr,
-    nonce,
+    nonce: longStopNonce,
   };
 
   const longStopResult = await client.placeTriggerOrder(longStopParams);
@@ -183,6 +192,17 @@ async function fullSanity(context: RunContext) {
   });
 
   prettyPrint('Non-pending list orders result', nonPendingListOrdersResult);
+
+  const ordersByDigest = await client.listOrders({
+    chainId,
+    verifyingAddr: endpointAddr,
+    subaccountName,
+    subaccountOwner,
+    pending: false,
+    digests: [shortStopDigest, longStopDigest],
+  });
+
+  prettyPrint('List orders by digest result', ordersByDigest);
 }
 
 runWithContext(fullSanity);

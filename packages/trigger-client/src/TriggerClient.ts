@@ -172,6 +172,7 @@ export class TriggerClient {
         max_update_time: params.maxUpdateTimeInclusive,
         pending: params.pending,
         product_id: params.productId,
+        digests: params.digests,
         signature,
         tx,
       };
