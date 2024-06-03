@@ -1,5 +1,5 @@
 {
-  "name": "@vertex-protocol/utils",
+  "name": "@vertex-protocol/react-client",
   "version": "0.34.2",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
@@ -21,25 +21,45 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/vertex-protocol/vertex-typescript-sdk",
-    "directory": "packages/utils"
+    "directory": "packages/react-client"
   },
   "scripts": {
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "dev": "tsc -w"
   },
+  "dependencies": {
+    "d3-format": "^3.1.0"
+  },
   "peerDependencies": {
+    "@tanstack/react-query": "^5",
+    "@tanstack/react-query-devtools": "^5",
+    "@vertex-protocol/client": "0.34.2",
     "bignumber.js": "^9.1.2",
-    "ethers": "*"
+    "ethers": "6.12.1",
+    "react": "^18",
+    "react-dom": "^18",
+    "viem": "^2",
+    "wagmi": "^2"
   },
   "devDependencies": {
+    "@tanstack/react-query": "5.32.1",
+    "@tanstack/react-query-devtools": "5.32.1",
+    "@types/d3-format": "^3.0.4",
+    "@types/react": "18.0.17",
+    "@types/react-dom": "18.0.6",
+    "@vertex-protocol/client": "0.34.2",
     "bignumber.js": "^9.1.2",
-    "ethers": "*"
+    "ethers": "workspace:*",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "viem": "2.9.32",
+    "wagmi": "2.8.1"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
-    "displayName": "Vertex Utils"
+    "displayName": "Vertex React Client"
   },
   "gitHead": "9db3b26e8c23e8585abf0482d0faba509330cfea"
 }
