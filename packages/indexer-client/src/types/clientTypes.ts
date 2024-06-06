@@ -19,6 +19,7 @@ import {
 } from './serverTypes';
 import { VertexTx } from './VertexTx';
 import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
+import { IndexerVrtxTokenInfoType } from './IndexerVrtxTokenInfoType';
 
 /**
  * Base types
@@ -676,3 +677,9 @@ export interface IndexerLeaderboardContest {
 export interface GetIndexerLeaderboardContestsResponse {
   contests: IndexerLeaderboardContest[];
 }
+
+export interface GetIndexerVrtxTokenInfoParams {
+  tokenInfoType: IndexerVrtxTokenInfoType;
+}
+
+export type GetIndexerVrtxTokenInfoResponse = number;

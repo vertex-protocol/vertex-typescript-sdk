@@ -77,6 +77,8 @@ import {
   GetIndexerRewardsResponse,
   GetIndexerTakerRewardsParams,
   GetIndexerTakerRewardsResponse,
+  GetIndexerVrtxTokenInfoParams,
+  GetIndexerVrtxTokenInfoResponse,
   IndexerEventWithTx,
   IndexerMarketSnapshot,
   IndexerMatchEvent,
@@ -812,6 +814,20 @@ export class IndexerBaseClient {
     return {
       contests: baseResponse.contests.map(mapIndexerLeaderboardContest),
     };
+  }
+
+  /**
+   * Retrieves VRTX total / circulating supply
+   *
+   * @param params
+   */
+  async getVrtxTokenInfo(
+    params: GetIndexerVrtxTokenInfoParams,
+  ): Promise<GetIndexerVrtxTokenInfoResponse> {
+    const baseUrl = this.opts.url.replace('/v1', '');
+    return this.axiosInstance
+      .get(`${baseUrl}/v2/vrtx?q=${params.tokenInfoType}`)
+      .then((res) => res.data);
   }
 
   protected async query<TRequestType extends IndexerServerQueryRequestType>(
