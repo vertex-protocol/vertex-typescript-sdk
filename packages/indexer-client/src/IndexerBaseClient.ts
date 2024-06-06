@@ -99,6 +99,7 @@ import {
 export interface IndexerClientOpts {
   // Server URL
   url: string;
+  v2Url?: string;
 }
 
 type IndexerQueryRequestBody = Partial<IndexerServerQueryRequestByType>;
@@ -111,6 +112,7 @@ export class IndexerBaseClient {
   readonly axiosInstance: AxiosInstance;
 
   constructor(opts: IndexerClientOpts) {
+    opts.v2Url = opts.v2Url ? opts.v2Url : opts.url.replace('v1', 'v2');
     this.opts = opts;
     this.axiosInstance = axios.create({
       withCredentials: true,
@@ -824,9 +826,8 @@ export class IndexerBaseClient {
   async getVrtxTokenInfo(
     params: GetIndexerVrtxTokenInfoParams,
   ): Promise<GetIndexerVrtxTokenInfoResponse> {
-    const baseUrl = this.opts.url.replace('/v1', '');
     return this.axiosInstance
-      .get(`${baseUrl}/v2/vrtx?q=${params.tokenInfoType}`)
+      .get(`${this.opts.v2Url}/vrtx?q=${params.tokenInfoType}`)
       .then((res) => res.data);
   }
 
