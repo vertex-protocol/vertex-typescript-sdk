@@ -296,6 +296,18 @@ async function fullSanity(context: RunContext) {
 
     prettyPrint('Leaderboard Second Page', leaderboardSecondPage);
   }
+
+  const vrtxTotalSupply = await client.getVrtxTokenInfo({
+    tokenInfoType: 'total_supply',
+  });
+
+  prettyPrint('VRTX Total Supply', vrtxTotalSupply);
+
+  const vrtxCirculatingSupply = await client.getVrtxTokenInfo({
+    tokenInfoType: 'circulating_supply',
+  });
+
+  prettyPrint('VRTX Circulating Supply', vrtxCirculatingSupply);
 }
 
 runWithContext(fullSanity);

@@ -77,13 +77,13 @@ import {
   GetIndexerRewardsResponse,
   GetIndexerTakerRewardsParams,
   GetIndexerTakerRewardsResponse,
+  GetIndexerVrtxTokenInfoParams,
+  GetIndexerVrtxTokenInfoResponse,
   IndexerEventWithTx,
   IndexerMarketSnapshot,
   IndexerMatchEvent,
   IndexerOraclePrice,
-  IndexerProductSnapshot,
   IndexerServerEventsParams,
-  IndexerServerProductSnapshot,
   IndexerServerQueryRequestByType,
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
@@ -95,8 +95,9 @@ import {
 } from './types';
 
 export interface IndexerClientOpts {
-  // Server URL
+  // Server URLs
   url: string;
+  v2Url?: string;
 }
 
 type IndexerQueryRequestBody = Partial<IndexerServerQueryRequestByType>;
@@ -106,6 +107,7 @@ type IndexerQueryRequestBody = Partial<IndexerServerQueryRequestByType>;
  */
 export class IndexerBaseClient {
   readonly opts: IndexerClientOpts;
+  readonly v2Url: string;
   readonly axiosInstance: AxiosInstance;
 
   constructor(opts: IndexerClientOpts) {
@@ -113,6 +115,7 @@ export class IndexerBaseClient {
     this.axiosInstance = axios.create({
       withCredentials: true,
     });
+    this.v2Url = opts.v2Url ? opts.v2Url : opts.url.replace('v1', 'v2');
   }
 
   /**
@@ -812,6 +815,23 @@ export class IndexerBaseClient {
     return {
       contests: baseResponse.contests.map(mapIndexerLeaderboardContest),
     };
+  }
+
+  /**
+   * Retrieves VRTX total / circulating supply
+   *
+   * @param params
+   */
+  async getVrtxTokenInfo(
+    params: GetIndexerVrtxTokenInfoParams,
+  ): Promise<GetIndexerVrtxTokenInfoResponse> {
+    const response = await this.axiosInstance.get(
+      `${this.v2Url}/vrtx?q=${params.tokenInfoType}`,
+    );
+
+    this.checkResponseStatus(response);
+
+    return response.data;
   }
 
   protected async query<TRequestType extends IndexerServerQueryRequestType>(
