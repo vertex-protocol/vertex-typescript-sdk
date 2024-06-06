@@ -83,9 +83,7 @@ import {
   IndexerMarketSnapshot,
   IndexerMatchEvent,
   IndexerOraclePrice,
-  IndexerProductSnapshot,
   IndexerServerEventsParams,
-  IndexerServerProductSnapshot,
   IndexerServerQueryRequestByType,
   IndexerServerQueryRequestType,
   IndexerServerQueryResponseByType,
@@ -827,9 +825,13 @@ export class IndexerBaseClient {
   async getVrtxTokenInfo(
     params: GetIndexerVrtxTokenInfoParams,
   ): Promise<GetIndexerVrtxTokenInfoResponse> {
-    return this.axiosInstance
-      .get(`${this.v2Url}/vrtx?q=${params.tokenInfoType}`)
-      .then((res) => res.data);
+    const response = await this.axiosInstance.get(
+      `${this.v2Url}/vrtx?q=${params.tokenInfoType}`,
+    );
+
+    this.checkResponseStatus(response);
+
+    return response.data;
   }
 
   protected async query<TRequestType extends IndexerServerQueryRequestType>(
