@@ -97,7 +97,7 @@ import {
 } from './types';
 
 export interface IndexerClientOpts {
-  // Server URL
+  // Server URLs
   url: string;
   v2Url?: string;
 }
@@ -109,14 +109,15 @@ type IndexerQueryRequestBody = Partial<IndexerServerQueryRequestByType>;
  */
 export class IndexerBaseClient {
   readonly opts: IndexerClientOpts;
+  readonly v2Url: string;
   readonly axiosInstance: AxiosInstance;
 
   constructor(opts: IndexerClientOpts) {
-    opts.v2Url = opts.v2Url ? opts.v2Url : opts.url.replace('v1', 'v2');
     this.opts = opts;
     this.axiosInstance = axios.create({
       withCredentials: true,
     });
+    this.v2Url = opts.v2Url ? opts.v2Url : opts.url.replace('v1', 'v2');
   }
 
   /**
@@ -827,7 +828,7 @@ export class IndexerBaseClient {
     params: GetIndexerVrtxTokenInfoParams,
   ): Promise<GetIndexerVrtxTokenInfoResponse> {
     return this.axiosInstance
-      .get(`${this.opts.v2Url}/vrtx?q=${params.tokenInfoType}`)
+      .get(`${this.v2Url}/vrtx?q=${params.tokenInfoType}`)
       .then((res) => res.data);
   }
 

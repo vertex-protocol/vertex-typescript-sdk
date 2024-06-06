@@ -682,4 +682,12 @@ export interface GetIndexerVrtxTokenInfoParams {
   tokenInfoType: IndexerVrtxTokenInfoType;
 }
 
+/**
+ * Represents the total or circulating supply of the VRTX token as a float number.
+ *
+ * @typedef {number} GetIndexerVrtxTokenInfoResponse
+ *
+ * @note This value does not include token decimals. It is a base 10 number.
+ * For instance, 10 VRTX will be represented as 10.0, not 10*10^18.
+ */
 export type GetIndexerVrtxTokenInfoResponse = number;
