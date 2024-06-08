@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 
 /**
  * Util hook for determining whether an initial client mount has occurred. This is useful as we cannot correctly load connection
@@ -29,12 +29,22 @@ export function useDidInitializeWalletConnection() {
   return didInitialClientMount;
 }
 
-function useIsClient() {
-  const [isClient, setClient] = useState(false);
+/**
+ * Returns `false` when on the server and during hydration, `true` after hydration.
+ * https://tkdodo.eu/blog/avoiding-hydration-mismatches-with-use-sync-external-store
+ */
+export function useIsClient() {
+  return useSyncExternalStore(
+    // An empty subscribe, basically a no-op.
+    emptySubscribe,
+    // Called on the client after hydration.
+    () => true,
+    // Called on the server and during hydration.
+    () => false,
+  );
+}
 
-  useEffect(() => {
-    setClient(true);
-  }, []);
-
-  return isClient;
+function emptySubscribe() {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  return () => {};
 }
