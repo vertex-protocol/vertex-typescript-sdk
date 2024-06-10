@@ -7,6 +7,7 @@ import {
 } from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
+  mapIndexerArbRewardsWeek,
   mapIndexerEvent,
   mapIndexerEventWithTx,
   mapIndexerFundingRate,
@@ -28,6 +29,8 @@ import {
   GetIndexerBlitzInitialDropConditionsResponse,
   GetIndexerBlitzPointsParams,
   GetIndexerBlitzPointsResponse,
+  GetIndexerArbRewardsParams,
+  GetIndexerArbRewardsResponse,
   GetIndexerCandlesticksParams,
   GetIndexerCandlesticksResponse,
   GetIndexerClaimArbMerkleProofsParams,
@@ -674,6 +677,24 @@ export class IndexerBaseClient {
         totalAmount: toBigDecimal(proof.total_amount),
       };
     });
+  }
+
+  /**
+   * Retrieves estimated / past ARB rewards for an address
+   *
+   * @param params
+   */
+  async getArbRewards(
+    params: GetIndexerArbRewardsParams,
+  ): Promise<GetIndexerArbRewardsResponse> {
+    const baseResponse = await this.query('arb_rewards', {
+      address: params.address,
+    });
+
+    return {
+      weeks: baseResponse.arb_rewards.map(mapIndexerArbRewardsWeek),
+      updateTime: toBigDecimal(baseResponse.update_time),
+    };
   }
 
   /**

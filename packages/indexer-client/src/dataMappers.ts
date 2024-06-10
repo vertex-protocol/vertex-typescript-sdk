@@ -1,7 +1,9 @@
 import {
+  IndexerArbRewardsWeek,
   IndexerEvent,
   IndexerEventWithTx,
   IndexerFundingRate,
+  IndexerGlobalArbRewardsForProduct,
   IndexerGlobalRewardsForProduct,
   IndexerMatchEventBalances,
   IndexerOrder,
@@ -9,6 +11,7 @@ import {
   IndexerPerpPrices,
   IndexerProductPayment,
   IndexerRewardsEpoch,
+  IndexerServerArbRewardsWeek,
   IndexerServerBalance,
   IndexerServerEvent,
   IndexerServerFundingRate,
@@ -21,6 +24,7 @@ import {
   IndexerServerRewardsEpoch,
   IndexerServerTx,
   IndexerSpotBalance,
+  IndexerSubaccountArbRewardsForProduct,
   IndexerSubaccountRewardsForProduct,
   IndexerMaker,
   IndexerServerMultiProductsResponse,
@@ -212,6 +216,36 @@ export function mapIndexerRewardsEpoch(
           makerVolumes: toBigDecimal(reward.maker_volumes),
           qScores: toBigDecimal(reward.q_scores),
           rewardCoefficient: toBigDecimal(reward.reward_coefficient),
+          takerFees: toBigDecimal(reward.taker_fees),
+          takerTokens: toBigDecimal(reward.taker_tokens),
+          takerVolumes: toBigDecimal(reward.taker_volumes),
+        };
+      },
+    ),
+  };
+}
+
+export function mapIndexerArbRewardsWeek(
+  week: IndexerServerArbRewardsWeek,
+): IndexerArbRewardsWeek {
+  return {
+    week: week.week,
+    period: toBigDecimal(week.period),
+    startTime: toBigDecimal(week.start_time),
+    addressRewards: week.address_rewards.map(
+      (reward): IndexerSubaccountArbRewardsForProduct => {
+        return {
+          productId: reward.product_id,
+          takerFee: toBigDecimal(reward.taker_fee),
+          takerTokens: toBigDecimal(reward.taker_tokens),
+          takerVolume: toBigDecimal(reward.taker_volume),
+        };
+      },
+    ),
+    globalRewards: week.global_rewards.map(
+      (reward): IndexerGlobalArbRewardsForProduct => {
+        return {
+          productId: reward.product_id,
           takerFees: toBigDecimal(reward.taker_fees),
           takerTokens: toBigDecimal(reward.taker_tokens),
           takerVolumes: toBigDecimal(reward.taker_volumes),
