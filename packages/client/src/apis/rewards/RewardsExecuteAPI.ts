@@ -1,14 +1,17 @@
-import { BaseVertexAPI } from '../base';
-import {
-  ClaimLiquidTokensParams,
-  ClaimTokensToLbaParams,
-  VrtxTokenAmountParams,
-} from './types';
 import {
   IAirdrop,
   IArbAirdrop,
   LBA_AIRDROP_EPOCH,
 } from '@vertex-protocol/contracts';
+import { BaseOverrides } from '@vertex-protocol/contracts/dist/typechain-types/common';
+import { BaseVertexAPI } from '../base';
+import {
+  ClaimDelegatedLiquidTokensParams,
+  ClaimLiquidTokensParams,
+  ClaimTokensToLbaParams,
+  DelegateRewardsParams,
+  VrtxTokenAmountParams,
+} from './types';
 
 export class RewardsExecuteAPI extends BaseVertexAPI {
   /**
@@ -65,6 +68,22 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
   async claimLiquidTokens(params: ClaimLiquidTokensParams) {
     return this.context.contracts.vrtxAirdrop.claim(
       ...(await this.getClaimLiquidTokensContractParams(params)),
+    );
+  }
+
+  /**
+   * Claim earned VRTX tokens for cross-chain non-EOA wallets, where rewards for the wallet are delegated to another address
+   *
+   * @param params
+   */
+  async claimDelegatedLiquidTokens(params: ClaimDelegatedLiquidTokensParams) {
+    const { originalRewardsAddress, ...claimLiquidTokensParams } = params;
+    return this.context.contracts.vrtxAirdrop.claimCrossChain(
+      originalRewardsAddress,
+      ...(await this.getClaimLiquidTokensContractParams({
+        ...claimLiquidTokensParams,
+        addressOverride: originalRewardsAddress,
+      })),
     );
   }
 
@@ -155,14 +174,35 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
   }
 
   /**
+   * Delegate rewards to another address so that they can be claimed on the primary rewards chain (i.e Arbitrum).
+   * Only callable by non-EOA wallets
+   *
+   * @param receiverAddress
+   * @param gmpFee fee, in native tokens, to pay for the Axelar cross-chain message
+   */
+  async delegateRewards({ receiverAddress, gmpFee }: DelegateRewardsParams) {
+    const contractCallOverrides: BaseOverrides = {
+      value: gmpFee,
+    };
+    return this.context.contracts.senderReceiver.delegateAirdrop(
+      receiverAddress,
+      contractCallOverrides,
+    );
+  }
+
+  /**
    * Util function to share logic between claimLiquidTokens and claimAndStakeLiquidTokens
    * @param params
    * @private
    */
   private async getClaimLiquidTokensContractParams(
-    params: ClaimLiquidTokensParams,
+    params: ClaimLiquidTokensParams & {
+      // Overrides address used for getting merkle proofs & amounts. Used for claiming delegated rewards
+      addressOverride?: string;
+    },
   ): Promise<Parameters<IAirdrop['claimAndStake']>> {
-    const address = await this.getChainSignerAddress();
+    const address =
+      params.addressOverride ?? (await this.getChainSignerAddress());
 
     const { totalAmount, proof } = (
       await this.context.indexerClient.getClaimVrtxMerkleProofs({

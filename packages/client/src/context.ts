@@ -11,6 +11,7 @@ import {
   ISpotEngine__factory,
   IStaking__factory,
   IVesting__factory,
+  SenderReceiver__factory,
   VERTEX_DEPLOYMENTS,
   VertexContracts,
   VertexDeploymentAddresses,
@@ -68,11 +69,11 @@ export type CreateVertexClientContextOpts = VertexClientContextOpts | ChainEnv;
 /**
  * Utility function to create client context from options
  *
- * @param opts
+ * @param optsOrChainEnv
  * @param signerOpts
  */
 export async function createClientContext(
-  opts: CreateVertexClientContextOpts,
+  optsOrChainEnv: CreateVertexClientContextOpts,
   signerOpts: CreateVertexClientContextSignerOpts,
 ): Promise<VertexClientContext> {
   const {
@@ -81,63 +82,17 @@ export async function createClientContext(
     indexerEndpoint,
     triggerEndpoint,
   } = ((): VertexClientContextOpts => {
-    if (opts === 'arbitrumTestnet') {
-      return {
-        contractAddresses: VERTEX_DEPLOYMENTS.arbitrumTestnet,
-        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.arbitrumTestnet,
-        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.arbitrumTestnet,
-        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.arbitrumTestnet,
-      };
+    if (typeof optsOrChainEnv === 'object') {
+      // Custom config
+      return optsOrChainEnv;
     }
-    if (opts === 'arbitrum') {
-      return {
-        contractAddresses: VERTEX_DEPLOYMENTS.arbitrum,
-        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.arbitrum,
-        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.arbitrum,
-        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.arbitrum,
-      };
-    }
-    if (opts === 'blastTestnet') {
-      return {
-        contractAddresses: VERTEX_DEPLOYMENTS.blastTestnet,
-        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.blastTestnet,
-        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.blastTestnet,
-        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.blastTestnet,
-      };
-    }
-    if (opts === 'blast') {
-      return {
-        contractAddresses: VERTEX_DEPLOYMENTS.blast,
-        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.blast,
-        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.blast,
-        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.blast,
-      };
-    }
-    if (opts === 'mantleTestnet') {
-      return {
-        contractAddresses: VERTEX_DEPLOYMENTS.mantleTestnet,
-        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.mantleTestnet,
-        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.mantleTestnet,
-        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.mantleTestnet,
-      };
-    }
-    if (opts === 'mantle') {
-      return {
-        contractAddresses: VERTEX_DEPLOYMENTS.mantle,
-        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.mantle,
-        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.mantle,
-        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.mantle,
-      };
-    }
-    if (opts === 'local') {
-      return {
-        contractAddresses: VERTEX_DEPLOYMENTS.local,
-        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.local,
-        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.local,
-        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.local,
-      };
-    }
-    return opts;
+
+    return {
+      contractAddresses: VERTEX_DEPLOYMENTS[optsOrChainEnv],
+      engineEndpoint: ENGINE_CLIENT_ENDPOINTS[optsOrChainEnv],
+      indexerEndpoint: INDEXER_CLIENT_ENDPOINTS[optsOrChainEnv],
+      triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS[optsOrChainEnv],
+    };
   })();
   const { signerOrProvider, linkedSigner } = signerOpts;
 
@@ -153,11 +108,11 @@ export async function createClientContext(
         contractAddresses.querier,
         signerOrProvider,
       ),
-      clearinghouse: await IClearinghouse__factory.connect(
+      clearinghouse: IClearinghouse__factory.connect(
         contractAddresses.clearinghouse,
         signerOrProvider,
       ),
-      endpoint: await Endpoint__factory.connect(
+      endpoint: Endpoint__factory.connect(
         contractAddresses.endpoint,
         signerOrProvider,
       ),
@@ -191,6 +146,10 @@ export async function createClientContext(
       ),
       vrtxStaking: IStaking__factory.connect(
         contractAddresses.vrtxStaking,
+        signerOrProvider,
+      ),
+      senderReceiver: SenderReceiver__factory.connect(
+        contractAddresses.senderReceiver,
         signerOrProvider,
       ),
     },

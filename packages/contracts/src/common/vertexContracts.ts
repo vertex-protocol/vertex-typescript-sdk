@@ -10,6 +10,7 @@ import {
   ISpotEngine,
   IStaking,
   IVesting,
+  SenderReceiver,
 } from '../typechain-types';
 
 /**
@@ -27,6 +28,8 @@ export interface VertexContracts {
   vrtxLba: ILBA;
   vrtxVesting: IVesting;
   vrtxStaking: IStaking;
+  // TODO: Rename this?
+  senderReceiver: SenderReceiver;
 }
 
 // Utility types to bundle parameters with contracts

@@ -28,9 +28,12 @@ export interface IAirdropInterface extends Interface {
     nameOrSignature:
       | "claim"
       | "claimAndStake"
+      | "claimCrossChain"
       | "claimToLBA"
+      | "delegates"
       | "getClaimed"
       | "getClaimingDeadlines"
+      | "updateDelegate"
   ): FunctionFragment;
 
   getEvent(nameOrSignatureOrTopic: "ClaimVrtx"): EventFragment;
@@ -44,8 +47,16 @@ export interface IAirdropInterface extends Interface {
     values: [BigNumberish, BigNumberish, BigNumberish, BytesLike[]]
   ): string;
   encodeFunctionData(
+    functionFragment: "claimCrossChain",
+    values: [AddressLike, BigNumberish, BigNumberish, BigNumberish, BytesLike[]]
+  ): string;
+  encodeFunctionData(
     functionFragment: "claimToLBA",
     values: [BigNumberish, BigNumberish, BytesLike[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "delegates",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getClaimed",
@@ -55,16 +66,29 @@ export interface IAirdropInterface extends Interface {
     functionFragment: "getClaimingDeadlines",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "updateDelegate",
+    values: [AddressLike, AddressLike]
+  ): string;
 
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "claimAndStake",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "claimCrossChain",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "claimToLBA", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "delegates", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getClaimed", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getClaimingDeadlines",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateDelegate",
     data: BytesLike
   ): Result;
 }
@@ -152,15 +176,35 @@ export interface IAirdrop extends BaseContract {
     "nonpayable"
   >;
 
+  claimCrossChain: TypedContractMethod<
+    [
+      account: AddressLike,
+      epoch: BigNumberish,
+      amount: BigNumberish,
+      totalAmount: BigNumberish,
+      proof: BytesLike[]
+    ],
+    [void],
+    "nonpayable"
+  >;
+
   claimToLBA: TypedContractMethod<
     [amount: BigNumberish, totalAmount: BigNumberish, proof: BytesLike[]],
     [void],
     "nonpayable"
   >;
 
+  delegates: TypedContractMethod<[account: AddressLike], [string], "view">;
+
   getClaimed: TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
 
   getClaimingDeadlines: TypedContractMethod<[], [bigint[]], "view">;
+
+  updateDelegate: TypedContractMethod<
+    [account: AddressLike, delegate: AddressLike],
+    [void],
+    "nonpayable"
+  >;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -191,6 +235,19 @@ export interface IAirdrop extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "claimCrossChain"
+  ): TypedContractMethod<
+    [
+      account: AddressLike,
+      epoch: BigNumberish,
+      amount: BigNumberish,
+      totalAmount: BigNumberish,
+      proof: BytesLike[]
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "claimToLBA"
   ): TypedContractMethod<
     [amount: BigNumberish, totalAmount: BigNumberish, proof: BytesLike[]],
@@ -198,11 +255,21 @@ export interface IAirdrop extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "delegates"
+  ): TypedContractMethod<[account: AddressLike], [string], "view">;
+  getFunction(
     nameOrSignature: "getClaimed"
   ): TypedContractMethod<[account: AddressLike], [bigint[]], "view">;
   getFunction(
     nameOrSignature: "getClaimingDeadlines"
   ): TypedContractMethod<[], [bigint[]], "view">;
+  getFunction(
+    nameOrSignature: "updateDelegate"
+  ): TypedContractMethod<
+    [account: AddressLike, delegate: AddressLike],
+    [void],
+    "nonpayable"
+  >;
 
   getEvent(
     key: "ClaimVrtx"
