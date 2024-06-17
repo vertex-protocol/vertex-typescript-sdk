@@ -81,6 +81,8 @@ export interface TriggerListOrdersParams extends Subaccount, SignatureParams {
   pending: boolean;
   // In seconds
   maxUpdateTimeInclusive?: number;
+  // When provided, the associated trigger orders are returned regardless of other filters
+  digests?: string[];
   limit?: number;
 }
 
