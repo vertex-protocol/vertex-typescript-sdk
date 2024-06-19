@@ -1,9 +1,9 @@
 import { IndexerEventType } from './IndexerEventType';
 import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
 import {
-  IndexerServerArbRewardsWeek,
   IndexerServerCandlestick,
   IndexerServerEvent,
+  IndexerServerFoundationTakerRewardsWeek,
   IndexerServerLeaderboardContest,
   IndexerServerLeaderboardPosition,
   IndexerServerMaker,
@@ -151,11 +151,11 @@ export interface IndexerServerClaimVrtxMerkleProofsParams {
   address: string;
 }
 
-export interface IndexerServerArbRewardsParams {
+export interface IndexerServerFoundationTakerRewardsParams {
   address: string;
 }
 
-export interface IndexerServerClaimArbMerkleProofsParams {
+export interface IndexerServerClaimFoundationRewardsMerkleProofsParams {
   address: string;
 }
 
@@ -196,8 +196,8 @@ export interface IndexerServerLeaderboardContestsParams {
 // Request
 export interface IndexerServerQueryRequestByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
-  arb_merkle_proofs: IndexerServerClaimArbMerkleProofsParams;
-  arb_rewards: IndexerServerArbRewardsParams;
+  foundation_rewards_merkle_proofs: IndexerServerClaimFoundationRewardsMerkleProofsParams;
+  foundation_taker_rewards: IndexerServerFoundationTakerRewardsParams;
   blast_points: IndexerServerBlastPointsParams;
   blitz_points: IndexerServerBlitzPointsParams;
   candlesticks: IndexerServerCandlesticksParams;
@@ -350,12 +350,12 @@ export interface IndexerServerClaimVrtxMerkleProofsResponse {
   merkle_proofs: IndexerServerMerkleProof[];
 }
 
-export interface IndexerServerArbRewardsResponse {
-  arb_rewards: IndexerServerArbRewardsWeek[];
+export interface IndexerServerFoundationTakerRewardsResponse {
+  foundation_taker_rewards: IndexerServerFoundationTakerRewardsWeek[];
   update_time: string;
 }
 
-export type IndexerServerClaimArbMerkleProofsResponse =
+export type IndexerServerClaimFoundationRewardsMerkleProofsResponse =
   IndexerServerClaimVrtxMerkleProofsResponse;
 
 export interface IndexerServerBlitzPointsResponse {
@@ -397,8 +397,8 @@ export interface IndexerServerLeaderboardContestsResponse {
 // Response
 export interface IndexerServerQueryResponseByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
-  arb_merkle_proofs: IndexerServerClaimArbMerkleProofsResponse;
-  arb_rewards: IndexerServerArbRewardsResponse;
+  foundation_rewards_merkle_proofs: IndexerServerClaimFoundationRewardsMerkleProofsResponse;
+  foundation_taker_rewards: IndexerServerFoundationTakerRewardsResponse;
   blast_points: IndexerServerBlastPointsResponse;
   blitz_points: IndexerServerBlitzPointsResponse;
   candlesticks: IndexerServerCandlesticksResponse;

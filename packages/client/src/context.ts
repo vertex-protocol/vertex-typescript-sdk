@@ -169,8 +169,8 @@ export async function createClientContext(
         contractAddresses.perpEngine,
         signerOrProvider,
       ),
-      arbAirdrop: IArbAirdrop__factory.connect(
-        contractAddresses.arbAirdrop,
+      foundationRewardsAirdrop: IArbAirdrop__factory.connect(
+        contractAddresses.foundationRewardsAirdrop,
         signerOrProvider,
       ),
       vrtxToken: IERC20__factory.connect(

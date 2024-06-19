@@ -235,27 +235,27 @@ export interface IndexerServerTakerRewardsEpoch {
  * Arb rewards
  */
 
-export interface IndexerServerSubaccountArbRewardsForProduct {
+export interface IndexerServerFoundationTakerRewardsForProduct {
   product_id: number;
   taker_volume: string;
   taker_fee: string;
   taker_tokens: string;
 }
 
-export interface IndexerServerGlobalArbRewardsForProduct {
+export interface IndexerServerFoundationTakerGlobalRewardsForProduct {
   product_id: number;
   taker_volumes: string;
   taker_fees: string;
   taker_tokens: string;
 }
 
-export interface IndexerServerArbRewardsWeek {
+export interface IndexerServerFoundationTakerRewardsWeek {
   week: number;
   start_time: string;
   period: string;
   // Per product ID
-  address_rewards: IndexerServerSubaccountArbRewardsForProduct[];
-  global_rewards: IndexerServerGlobalArbRewardsForProduct[];
+  address_rewards: IndexerServerFoundationTakerRewardsForProduct[];
+  global_rewards: IndexerServerFoundationTakerGlobalRewardsForProduct[];
 }
 
 /**

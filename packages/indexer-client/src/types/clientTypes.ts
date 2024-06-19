@@ -12,14 +12,14 @@ import {
 import { BigDecimal } from '@vertex-protocol/utils';
 import { CandlestickPeriod } from './CandlestickPeriod';
 import { IndexerEventType } from './IndexerEventType';
+import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
+import { IndexerVrtxTokenInfoType } from './IndexerVrtxTokenInfoType';
 import {
-  IndexerServerClaimArbMerkleProofsParams,
+  IndexerServerClaimFoundationRewardsMerkleProofsParams,
   IndexerServerClaimVrtxMerkleProofsParams,
   IndexerServerListSubaccountsParams,
 } from './serverTypes';
 import { VertexTx } from './VertexTx';
-import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
-import { IndexerVrtxTokenInfoType } from './IndexerVrtxTokenInfoType';
 
 /**
  * Base types
@@ -537,37 +537,37 @@ export type GetIndexerClaimVrtxMerkleProofsResponse = IndexerMerkleProof[];
 /**
  * Arb Rewards
  */
-export interface GetIndexerArbRewardsParams {
+export interface GetIndexerFoundationTakerRewardsParams {
   address: string;
 }
 
-export type IndexerSubaccountArbRewardsForProduct = Pick<
+export type IndexerSubaccountFoundationTakerRewardsForProduct = Pick<
   IndexerSubaccountRewardsForProduct,
   'productId' | 'takerVolume' | 'takerFee' | 'takerTokens'
 >;
 
-export type IndexerGlobalArbRewardsForProduct = Pick<
+export type IndexerFoundationTakerGlobalRewardsForProduct = Pick<
   IndexerGlobalRewardsForProduct,
   'productId' | 'takerFees' | 'takerTokens' | 'takerVolumes'
 >;
 
-export interface IndexerArbRewardsWeek {
+export interface IndexerFoundationTakerRewardsWeek {
   week: number;
   startTime: BigDecimal;
   period: BigDecimal;
-  addressRewards: IndexerSubaccountArbRewardsForProduct[];
-  globalRewards: IndexerGlobalArbRewardsForProduct[];
+  addressRewards: IndexerSubaccountFoundationTakerRewardsForProduct[];
+  globalRewards: IndexerFoundationTakerGlobalRewardsForProduct[];
 }
 
-export interface GetIndexerArbRewardsResponse {
-  weeks: IndexerArbRewardsWeek[];
+export interface GetIndexerFoundationTakerRewardsResponse {
+  weeks: IndexerFoundationTakerRewardsWeek[];
   updateTime: BigDecimal;
 }
 
-export type GetIndexerClaimArbMerkleProofsParams =
-  IndexerServerClaimArbMerkleProofsParams;
+export type GetIndexerClaimFoundationRewardsMerkleProofsParams =
+  IndexerServerClaimFoundationRewardsMerkleProofsParams;
 
-export type GetIndexerClaimArbMerkleProofsResponse =
+export type GetIndexerClaimFoundationRewardsMerkleProofsResponse =
   GetIndexerClaimVrtxMerkleProofsResponse;
 
 /**
