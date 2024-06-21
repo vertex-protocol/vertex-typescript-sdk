@@ -1,12 +1,11 @@
 import { toBigDecimal } from '@vertex-protocol/utils';
 import { format as d3Format } from 'd3-format';
-import { CustomNumberFormatSpecifier } from './NumberFormatSpecifier';
 import { mapCustomFormatSpecifier } from './mapCustomFormatSpecifier';
 import { postProcessFormattedNumber } from './postProcessFormattedNumber';
 import { NumberFormatOptions, NumberFormatValue } from './types';
 
 export function formatNumber(
-  val?: NumberFormatValue,
+  val: NumberFormatValue | undefined,
   options?: NumberFormatOptions,
 ): string {
   const { defaultValue, defaultFallback, formatSpecifier } = options ?? {};
@@ -15,8 +14,7 @@ export function formatNumber(
     return defaultFallback ?? '-';
   }
 
-  const givenFormatSpecifier =
-    formatSpecifier ?? CustomNumberFormatSpecifier.NUMBER_AUTO;
+  const givenFormatSpecifier = formatSpecifier ?? '~,g';
 
   const valueToFormat = toBigDecimal(val ?? defaultValue ?? 0);
   const mappedCustomSpecifier = mapCustomFormatSpecifier(
