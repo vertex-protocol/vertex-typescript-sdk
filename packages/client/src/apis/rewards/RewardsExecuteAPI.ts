@@ -1,14 +1,14 @@
+import {
+  IAirdrop,
+  IArbAirdrop,
+  LBA_AIRDROP_EPOCH,
+} from '@vertex-protocol/contracts';
 import { BaseVertexAPI } from '../base';
 import {
   ClaimLiquidTokensParams,
   ClaimTokensToLbaParams,
   VrtxTokenAmountParams,
 } from './types';
-import {
-  IAirdrop,
-  IArbAirdrop,
-  LBA_AIRDROP_EPOCH,
-} from '@vertex-protocol/contracts';
 
 export class RewardsExecuteAPI extends BaseVertexAPI {
   /**
@@ -122,16 +122,19 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
   }
 
   /**
-   * Claims all available ARB rewards
+   * Claims all available foundation rewards. Foundation rewards are tokens associated with the chain. For example, ARB on Arbitrum.
+   * Typically, foundations for these chains will issue rewards for us to give to users.
    */
-  async claimArbRewards() {
+  async claimFoundationRewards() {
     const address = await this.getChainSignerAddress();
 
     // Get claimed to determine which weeks haven't yet been claimed
-    const claimed = await this.context.contracts.arbAirdrop.getClaimed(address);
-    const proofs = await this.context.indexerClient.getClaimArbMerkleProofs({
-      address,
-    });
+    const claimed =
+      await this.context.contracts.foundationRewardsAirdrop.getClaimed(address);
+    const proofs =
+      await this.context.indexerClient.getClaimFoundationRewardsMerkleProofs({
+        address,
+      });
 
     // Get proofs for all weeks that haven't yet been claimed
     const proofsToClaim: IArbAirdrop.ClaimProofStruct[] = [];
@@ -151,7 +154,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
       }
     });
 
-    return this.context.contracts.arbAirdrop.claim(proofsToClaim);
+    return this.context.contracts.foundationRewardsAirdrop.claim(proofsToClaim);
   }
 
   /**

@@ -1,42 +1,4 @@
 import {
-  IndexerArbRewardsWeek,
-  IndexerEvent,
-  IndexerEventWithTx,
-  IndexerFundingRate,
-  IndexerGlobalArbRewardsForProduct,
-  IndexerGlobalRewardsForProduct,
-  IndexerMatchEventBalances,
-  IndexerOrder,
-  IndexerPerpBalance,
-  IndexerPerpPrices,
-  IndexerProductPayment,
-  IndexerRewardsEpoch,
-  IndexerServerArbRewardsWeek,
-  IndexerServerBalance,
-  IndexerServerEvent,
-  IndexerServerFundingRate,
-  IndexerServerMaker,
-  IndexerServerMatchEventBalances,
-  IndexerServerOrder,
-  IndexerServerPerpPrices,
-  IndexerServerProduct,
-  IndexerServerProductPayment,
-  IndexerServerRewardsEpoch,
-  IndexerServerTx,
-  IndexerSpotBalance,
-  IndexerSubaccountArbRewardsForProduct,
-  IndexerSubaccountRewardsForProduct,
-  IndexerMaker,
-  IndexerServerMultiProductsResponse,
-  IndexerProductSnapshot,
-  IndexerServerProductSnapshot,
-  IndexerServerLeaderboardPosition,
-  IndexerLeaderboardParticipant,
-  IndexerServerLeaderboardContest,
-  IndexerLeaderboardContest,
-} from './types';
-import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
-import {
   getRecvTimeFromOrderNonce,
   Market,
   parseRawExpirationTimestamp,
@@ -49,6 +11,41 @@ import {
   mapEngineServerPerpProduct,
   mapEngineServerSpotProduct,
 } from '@vertex-protocol/engine-client';
+import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
+import {
+  IndexerEvent,
+  IndexerEventWithTx,
+  IndexerFoundationTakerGlobalRewardsForProduct,
+  IndexerFoundationTakerRewardsWeek,
+  IndexerFundingRate,
+  IndexerGlobalRewardsForProduct,
+  IndexerLeaderboardContest,
+  IndexerLeaderboardParticipant,
+  IndexerMaker,
+  IndexerMatchEventBalances,
+  IndexerOrder,
+  IndexerPerpBalance,
+  IndexerPerpPrices,
+  IndexerProductPayment,
+  IndexerRewardsEpoch,
+  IndexerServerBalance,
+  IndexerServerEvent,
+  IndexerServerFoundationTakerRewardsWeek,
+  IndexerServerFundingRate,
+  IndexerServerLeaderboardContest,
+  IndexerServerLeaderboardPosition,
+  IndexerServerMaker,
+  IndexerServerMatchEventBalances,
+  IndexerServerOrder,
+  IndexerServerPerpPrices,
+  IndexerServerProduct,
+  IndexerServerProductPayment,
+  IndexerServerRewardsEpoch,
+  IndexerServerTx,
+  IndexerSpotBalance,
+  IndexerSubaccountFoundationTakerRewardsForProduct,
+  IndexerSubaccountRewardsForProduct,
+} from './types';
 
 export function mapIndexerServerProduct(product: IndexerServerProduct): Market {
   if ('spot' in product) {
@@ -225,15 +222,15 @@ export function mapIndexerRewardsEpoch(
   };
 }
 
-export function mapIndexerArbRewardsWeek(
-  week: IndexerServerArbRewardsWeek,
-): IndexerArbRewardsWeek {
+export function mapIndexerFoundationTakerRewardsWeek(
+  week: IndexerServerFoundationTakerRewardsWeek,
+): IndexerFoundationTakerRewardsWeek {
   return {
     week: week.week,
     period: toBigDecimal(week.period),
     startTime: toBigDecimal(week.start_time),
     addressRewards: week.address_rewards.map(
-      (reward): IndexerSubaccountArbRewardsForProduct => {
+      (reward): IndexerSubaccountFoundationTakerRewardsForProduct => {
         return {
           productId: reward.product_id,
           takerFee: toBigDecimal(reward.taker_fee),
@@ -243,7 +240,7 @@ export function mapIndexerArbRewardsWeek(
       },
     ),
     globalRewards: week.global_rewards.map(
-      (reward): IndexerGlobalArbRewardsForProduct => {
+      (reward): IndexerFoundationTakerGlobalRewardsForProduct => {
         return {
           productId: reward.product_id,
           takerFees: toBigDecimal(reward.taker_fees),

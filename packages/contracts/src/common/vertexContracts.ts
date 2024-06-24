@@ -21,7 +21,7 @@ export interface VertexContracts {
   clearinghouse: IClearinghouse;
   spotEngine: ISpotEngine;
   perpEngine: IPerpEngine;
-  arbAirdrop: IArbAirdrop;
+  foundationRewardsAirdrop: IArbAirdrop;
   vrtxToken: IERC20;
   vrtxAirdrop: IAirdrop;
   vrtxLba: ILBA;

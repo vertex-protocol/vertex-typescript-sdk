@@ -7,9 +7,9 @@ import {
 } from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
-  mapIndexerArbRewardsWeek,
   mapIndexerEvent,
   mapIndexerEventWithTx,
+  mapIndexerFoundationTakerRewardsWeek,
   mapIndexerFundingRate,
   mapIndexerLeaderboardContest,
   mapIndexerLeaderboardPosition,
@@ -29,16 +29,16 @@ import {
   GetIndexerBlitzInitialDropConditionsResponse,
   GetIndexerBlitzPointsParams,
   GetIndexerBlitzPointsResponse,
-  GetIndexerArbRewardsParams,
-  GetIndexerArbRewardsResponse,
   GetIndexerCandlesticksParams,
   GetIndexerCandlesticksResponse,
-  GetIndexerClaimArbMerkleProofsParams,
-  GetIndexerClaimArbMerkleProofsResponse,
+  GetIndexerClaimFoundationRewardsMerkleProofsParams,
+  GetIndexerClaimFoundationRewardsMerkleProofsResponse,
   GetIndexerClaimVrtxMerkleProofsParams,
   GetIndexerClaimVrtxMerkleProofsResponse,
   GetIndexerEventsParams,
   GetIndexerEventsResponse,
+  GetIndexerFoundationTakerRewardsParams,
+  GetIndexerFoundationTakerRewardsResponse,
   GetIndexerFundingRateParams,
   GetIndexerFundingRateResponse,
   GetIndexerInterestFundingPaymentsParams,
@@ -680,19 +680,22 @@ export class IndexerBaseClient {
   }
 
   /**
-   * Retrieves estimated / past ARB rewards for an address
+   * Retrieves estimated / past foundation taker rewards for an address
+   * Example of foundation taker rewards: ARB rewards on Arbitrum
    *
    * @param params
    */
-  async getArbRewards(
-    params: GetIndexerArbRewardsParams,
-  ): Promise<GetIndexerArbRewardsResponse> {
-    const baseResponse = await this.query('arb_rewards', {
+  async getFoundationTakerRewards(
+    params: GetIndexerFoundationTakerRewardsParams,
+  ): Promise<GetIndexerFoundationTakerRewardsResponse> {
+    const baseResponse = await this.query('foundation_taker_rewards', {
       address: params.address,
     });
 
     return {
-      weeks: baseResponse.arb_rewards.map(mapIndexerArbRewardsWeek),
+      weeks: baseResponse.foundation_taker_rewards.map(
+        mapIndexerFoundationTakerRewardsWeek,
+      ),
       updateTime: toBigDecimal(baseResponse.update_time),
     };
   }
@@ -702,10 +705,13 @@ export class IndexerBaseClient {
    *
    * @param params
    */
-  async getClaimArbMerkleProofs(
-    params: GetIndexerClaimArbMerkleProofsParams,
-  ): Promise<GetIndexerClaimArbMerkleProofsResponse> {
-    const baseResponse = await this.query('arb_merkle_proofs', params);
+  async getClaimFoundationRewardsMerkleProofs(
+    params: GetIndexerClaimFoundationRewardsMerkleProofsParams,
+  ): Promise<GetIndexerClaimFoundationRewardsMerkleProofsResponse> {
+    const baseResponse = await this.query(
+      'foundation_rewards_merkle_proofs',
+      params,
+    );
 
     return baseResponse.merkle_proofs.map((proof) => {
       return {
