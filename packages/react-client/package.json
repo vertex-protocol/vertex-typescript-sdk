@@ -34,7 +34,7 @@
   "peerDependencies": {
     "@tanstack/react-query": "^5",
     "@tanstack/react-query-devtools": "^5",
-    "@vertex-protocol/client": "0.34.2",
+    "@vertex-protocol/client": "0.39.0",
     "bignumber.js": "^9.1.2",
     "ethers": "6.12.1",
     "react": "^18",
