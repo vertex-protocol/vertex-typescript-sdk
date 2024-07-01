@@ -11,9 +11,12 @@ import {
 import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
 import {
   EngineMarketPrice,
+  EngineMinDepositRate,
   EngineOrder,
   EnginePriceTickLiquidity,
   EngineServerMarketPrice,
+  EngineServerMinDepositRate,
+  EngineServerMinDepositRatesResponse,
   EngineServerOrderResponse,
   EngineServerPerpProduct,
   EngineServerPriceTickLiquidity,
@@ -23,6 +26,7 @@ import {
   EngineServerSymbolsResponse,
   EngineSymbol,
   EngineSymbolsResponse,
+  GetEngineMinDepositRatesResponse,
   GetEngineSubaccountSummaryResponse,
 } from '../types';
 import { mapEngineServerProductType } from './productEngineTypeMappers';
@@ -253,5 +257,27 @@ export function mapEngineMarketPrice(
     ask: fromX18(baseResponse.ask_x18),
     bid: fromX18(baseResponse.bid_x18),
     productId: baseResponse.product_id,
+  };
+}
+
+export function mapEngineServerDepositRates(
+  baseResponse: EngineServerMinDepositRatesResponse,
+): GetEngineMinDepositRatesResponse {
+  const minDepositRates: Record<number, EngineMinDepositRate> = mapValues(
+    baseResponse.min_deposit_rates,
+    mapEngineMinDepositRate,
+  );
+
+  return {
+    minDepositRates,
+  };
+}
+
+export function mapEngineMinDepositRate(
+  baseResponse: EngineServerMinDepositRate,
+): EngineMinDepositRate {
+  return {
+    productId: baseResponse.product_id,
+    minDepositRate: fromX18(baseResponse.min_deposit_rate_x18),
   };
 }

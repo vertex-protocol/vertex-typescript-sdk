@@ -250,3 +250,12 @@ export type GetEngineLinkedSignerParams = Subaccount;
 export interface GetEngineLinkedSignerResponse {
   signer: string;
 }
+
+export interface EngineMinDepositRate {
+  productId: number;
+  minDepositRate: BigDecimal;
+}
+
+export interface GetEngineMinDepositRatesResponse {
+  minDepositRates: Record<number, EngineMinDepositRate>;
+}

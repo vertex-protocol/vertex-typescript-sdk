@@ -1,4 +1,6 @@
 import {
+  calcBorrowRateForTimeRange,
+  calcRealizedDepositRateForTimeRange,
   createDeterministicLinkedSignerPrivateKey,
   depositCollateral,
   Endpoint__factory,
@@ -7,6 +9,7 @@ import {
   getOrderNonce,
   IClearinghouse__factory,
   MockERC20__factory,
+  ProductEngineType,
   subaccountFromBytes32,
   subaccountFromHex,
   subaccountToBytes32,
@@ -16,7 +19,7 @@ import {
   EngineClient,
   EngineOrderParams,
 } from '@vertex-protocol/engine-client';
-import { toBigDecimal, toFixedPoint } from '@vertex-protocol/utils';
+import { fromX18, toBigDecimal, toFixedPoint } from '@vertex-protocol/utils';
 import { Wallet, ZeroAddress } from 'ethers';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
@@ -399,6 +402,41 @@ async function fullSanity(context: RunContext) {
     subaccountName: 'default',
   });
   prettyPrint('Subaccount info after withdraw collateral', subaccountInfoAtEnd);
+
+  const minDepositRates = await client.getMinDepositRates();
+
+  prettyPrint('Min deposit rates', minDepositRates);
+
+  const subInfo = await client.getSubaccountSummary({
+    subaccountOwner: await signer.getAddress(),
+    subaccountName: 'default',
+  });
+
+  for (const balance of subInfo.balances) {
+    if (balance.type == ProductEngineType.SPOT) {
+      const minDepositRate =
+        minDepositRates.minDepositRates[balance.productId].minDepositRate;
+      console.log('product', balance.productId);
+      console.log('min Deposit Rate', minDepositRate.toNumber());
+      console.log(
+        'deposit APR',
+        calcRealizedDepositRateForTimeRange(
+          balance,
+          31536000,
+          0.2,
+          minDepositRate,
+        ).toNumber() * 100,
+      );
+      console.log(
+        'borrow APR',
+        calcBorrowRateForTimeRange(
+          balance,
+          31536000,
+          minDepositRate,
+        ).toNumber() * 100,
+      );
+    }
+  }
 }
 
 runWithContext(fullSanity);

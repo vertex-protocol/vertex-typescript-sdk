@@ -28,6 +28,7 @@ import {
   GetEngineMaxOrderSizeResponse,
   GetEngineMaxWithdrawableParams,
   GetEngineMaxWithdrawableResponse,
+  GetEngineMinDepositRatesResponse,
   GetEngineOrderParams,
   GetEngineOrderResponse,
   GetEngineSubaccountFeeRatesParams,
@@ -46,6 +47,8 @@ import {
 } from './types';
 import {
   mapEngineMarketPrice,
+  mapEngineMinDepositRate,
+  mapEngineServerDepositRates,
   mapEngineServerOrder,
   mapEngineServerPerpProduct,
   mapEngineServerSpotProduct,
@@ -207,6 +210,15 @@ export class EngineQueryClient extends EngineBaseClient {
         },
       ),
     };
+  }
+
+  /**
+   * Retrieves min deposit rates for all spot products from the engine
+   */
+  async getMinDepositRates(): Promise<GetEngineMinDepositRatesResponse> {
+    const baseResponse = await this.query('min_deposit_rates', {});
+
+    return mapEngineServerDepositRates(baseResponse);
   }
 
   /**

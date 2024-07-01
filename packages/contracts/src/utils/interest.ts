@@ -100,6 +100,7 @@ export function calcBorrowRatePerSecond(product: SpotProduct) {
 export function calcBorrowRateForTimeRange(
   product: SpotProduct,
   seconds: BigDecimalish,
+  minDepositRate: BigDecimalish,
 ) {
   const borrowRatePerSecond = calcBorrowRatePerSecond(product);
 
@@ -107,7 +108,9 @@ export function calcBorrowRateForTimeRange(
   const borrowRateForTime =
     borrowRatePerSecond.plus(1).toNumber() ** toBigDecimal(seconds).toNumber() -
     1;
-  return toBigDecimal(borrowRateForTime);
+  return toBigDecimal(borrowRateForTime).plus(
+    toBigDecimal(minDepositRate).div(100),
+  );
 }
 
 /**
@@ -121,12 +124,14 @@ export function calcRealizedDepositRateForTimeRange(
   product: SpotProduct,
   seconds: BigDecimalish,
   interestFeeFrac: BigDecimalish,
+  minDepositRate: BigDecimalish,
 ) {
   const utilization = calcUtilizationRatio(product);
   if (utilization.eq(0)) {
     return toBigDecimal(0);
   }
   return utilization
-    .times(calcBorrowRateForTimeRange(product, seconds))
-    .times(BigDecimals.ONE.minus(toBigDecimal(interestFeeFrac)));
+    .times(calcBorrowRateForTimeRange(product, seconds, toBigDecimal(0)))
+    .times(BigDecimals.ONE.minus(toBigDecimal(interestFeeFrac)))
+    .plus(toBigDecimal(minDepositRate).div(100));
 }
