@@ -108,9 +108,7 @@ export function calcBorrowRateForTimeRange(
   const borrowRateForTime =
     borrowRatePerSecond.plus(1).toNumber() ** toBigDecimal(seconds).toNumber() -
     1;
-  return toBigDecimal(borrowRateForTime).plus(
-    toBigDecimal(minDepositRate).div(100),
-  );
+  return toBigDecimal(borrowRateForTime).plus(toBigDecimal(minDepositRate));
 }
 
 /**
@@ -133,5 +131,5 @@ export function calcRealizedDepositRateForTimeRange(
   return utilization
     .times(calcBorrowRateForTimeRange(product, seconds, toBigDecimal(0)))
     .times(BigDecimals.ONE.minus(toBigDecimal(interestFeeFrac)))
-    .plus(toBigDecimal(minDepositRate).div(100));
+    .plus(toBigDecimal(minDepositRate));
 }
