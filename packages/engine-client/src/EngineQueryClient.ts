@@ -5,7 +5,12 @@ import {
   subaccountFromHex,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
-import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
+import {
+  fromX18,
+  mapValues,
+  toBigDecimal,
+  toX18,
+} from '@vertex-protocol/utils';
 import {
   EngineServerStatusResponse,
   EngineServerSubaccountInfoQueryParams,
@@ -47,8 +52,6 @@ import {
 } from './types';
 import {
   mapEngineMarketPrice,
-  mapEngineMinDepositRate,
-  mapEngineServerDepositRates,
   mapEngineServerOrder,
   mapEngineServerPerpProduct,
   mapEngineServerSpotProduct,
@@ -218,7 +221,14 @@ export class EngineQueryClient extends EngineBaseClient {
   async getMinDepositRates(): Promise<GetEngineMinDepositRatesResponse> {
     const baseResponse = await this.query('min_deposit_rates', {});
 
-    return mapEngineServerDepositRates(baseResponse);
+    return {
+      minDepositRates: mapValues(baseResponse.min_deposit_rates, (m) => {
+        return {
+          productId: m.product_id,
+          minDepositRate: fromX18(m.min_deposit_rate_x18),
+        };
+      }),
+    };
   }
 
   /**

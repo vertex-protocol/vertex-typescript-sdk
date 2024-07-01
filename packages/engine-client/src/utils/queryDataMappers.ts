@@ -259,25 +259,3 @@ export function mapEngineMarketPrice(
     productId: baseResponse.product_id,
   };
 }
-
-export function mapEngineServerDepositRates(
-  baseResponse: EngineServerMinDepositRatesResponse,
-): GetEngineMinDepositRatesResponse {
-  const minDepositRates: Record<number, EngineMinDepositRate> = mapValues(
-    baseResponse.min_deposit_rates,
-    mapEngineMinDepositRate,
-  );
-
-  return {
-    minDepositRates,
-  };
-}
-
-export function mapEngineMinDepositRate(
-  baseResponse: EngineServerMinDepositRate,
-): EngineMinDepositRate {
-  return {
-    productId: baseResponse.product_id,
-    minDepositRate: fromX18(baseResponse.min_deposit_rate_x18),
-  };
-}

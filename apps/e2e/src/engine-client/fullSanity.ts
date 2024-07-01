@@ -19,7 +19,12 @@ import {
   EngineClient,
   EngineOrderParams,
 } from '@vertex-protocol/engine-client';
-import { fromX18, toBigDecimal, toFixedPoint } from '@vertex-protocol/utils';
+import {
+  fromX18,
+  TimeInSeconds,
+  toBigDecimal,
+  toFixedPoint,
+} from '@vertex-protocol/utils';
 import { Wallet, ZeroAddress } from 'ethers';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
@@ -407,12 +412,7 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Min deposit rates', minDepositRates);
 
-  const subInfo = await client.getSubaccountSummary({
-    subaccountOwner: await signer.getAddress(),
-    subaccountName: 'default',
-  });
-
-  for (const balance of subInfo.balances) {
+  subaccountInfoAtEnd.balances.forEach((balance) => {
     if (balance.type == ProductEngineType.SPOT) {
       const minDepositRate =
         minDepositRates.minDepositRates[balance.productId].minDepositRate;
@@ -422,7 +422,7 @@ async function fullSanity(context: RunContext) {
         'deposit APR',
         calcRealizedDepositRateForTimeRange(
           balance,
-          31536000,
+          TimeInSeconds.YEAR,
           0.2,
           minDepositRate,
         ).toNumber() * 100,
@@ -431,12 +431,12 @@ async function fullSanity(context: RunContext) {
         'borrow APR',
         calcBorrowRateForTimeRange(
           balance,
-          31536000,
+          TimeInSeconds.YEAR,
           minDepositRate,
         ).toNumber() * 100,
       );
     }
-  }
+  });
 }
 
 runWithContext(fullSanity);
