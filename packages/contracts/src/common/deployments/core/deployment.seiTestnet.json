@@ -1,0 +1,13 @@
+{
+  "nodeUrl": "https://evm-rpc-testnet.sei-apis.com",
+  "explorerUrl": "https://seiscan.app/atlantic-2",
+  "startBlock": 100690759,
+  "deployer": "0x3c06e307BA6Ab81E8Ff6661c1559ce8027744AE5",
+  "quote": "0xbC47901f4d2C5fc871ae0037Ea05c3F614690781",
+  "querier": "0xa0Cc645ED3Fe3aa4719B39dfE941632BbEC01a66",
+  "clearinghouse": "0x9D37c59380BA015cF0c115fB89ac6238B96c868E",
+  "endpoint": "0x4597CFdd371239a99477Cdabf9cF0B23fDf559B4",
+  "spotEngine": "0x19199A6618a5a9528e3131b5416B5148d79234dA",
+  "perpEngine": "0x97f3B38dFf81cB413e3Eb7CDeF1c8d7D58947Fee",
+  "foundationRewardsAirdrop": "0x0000000000000000000000000000000000000000"
+}

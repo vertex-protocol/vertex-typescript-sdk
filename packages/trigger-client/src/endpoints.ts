@@ -8,4 +8,5 @@ export const TRIGGER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   blast: 'https://trigger.blast-prod.vertexprotocol.com/v1',
   mantleTestnet: 'https://trigger.mantle-test.vertexprotocol.com/v1',
   mantle: 'https://trigger.mantle-prod.vertexprotocol.com/v1',
+  seiTestnet: 'https://trigger.sei-test.vertexprotocol.com/v1',
 };
