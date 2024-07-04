@@ -133,6 +133,7 @@ export interface EngineServerQueryRequestByType {
   max_withdrawable: EngineServerMaxWithdrawableQueryParams;
   max_lp_mintable: EngineServerMaxMintLpQueryParams;
   linked_signer: EngineServerLinkedSignerParams;
+  min_deposit_rates: Record<string, never>;
 }
 
 export type EngineServerQueryRequestType = keyof EngineServerQueryRequestByType;
@@ -301,6 +302,16 @@ export interface EngineServerLinkedSignerResponse {
   linked_signer: string;
 }
 
+export interface EngineServerMinDepositRate {
+  product_id: number;
+  min_deposit_rate_x18: string;
+}
+
+export interface EngineServerMinDepositRatesResponse {
+  // product_id -> EngineServerMinDepositRate
+  min_deposit_rates: Record<number, EngineServerMinDepositRate>;
+}
+
 export interface EngineServerQueryResponseByType {
   contracts: EngineServerContractsResponse;
   status: EngineServerStatusResponse;
@@ -320,6 +331,7 @@ export interface EngineServerQueryResponseByType {
   max_order_size: EngineServerMaxOrderSizeResponse;
   max_withdrawable: EngineServerMaxWithdrawableResponse;
   max_lp_mintable: EngineServerMaxMintLpResponse;
+  min_deposit_rates: EngineServerMinDepositRatesResponse;
   linked_signer: EngineServerLinkedSignerResponse;
 }
 

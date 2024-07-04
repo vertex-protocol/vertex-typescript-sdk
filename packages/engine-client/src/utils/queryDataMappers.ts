@@ -11,9 +11,12 @@ import {
 import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
 import {
   EngineMarketPrice,
+  EngineMinDepositRate,
   EngineOrder,
   EnginePriceTickLiquidity,
   EngineServerMarketPrice,
+  EngineServerMinDepositRate,
+  EngineServerMinDepositRatesResponse,
   EngineServerOrderResponse,
   EngineServerPerpProduct,
   EngineServerPriceTickLiquidity,
@@ -23,6 +26,7 @@ import {
   EngineServerSymbolsResponse,
   EngineSymbol,
   EngineSymbolsResponse,
+  GetEngineMinDepositRatesResponse,
   GetEngineSubaccountSummaryResponse,
 } from '../types';
 import { mapEngineServerProductType } from './productEngineTypeMappers';

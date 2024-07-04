@@ -5,7 +5,12 @@ import {
   subaccountFromHex,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
-import { fromX18, toBigDecimal, toX18 } from '@vertex-protocol/utils';
+import {
+  fromX18,
+  mapValues,
+  toBigDecimal,
+  toX18,
+} from '@vertex-protocol/utils';
 import {
   EngineServerStatusResponse,
   EngineServerSubaccountInfoQueryParams,
@@ -28,6 +33,7 @@ import {
   GetEngineMaxOrderSizeResponse,
   GetEngineMaxWithdrawableParams,
   GetEngineMaxWithdrawableResponse,
+  GetEngineMinDepositRatesResponse,
   GetEngineOrderParams,
   GetEngineOrderResponse,
   GetEngineSubaccountFeeRatesParams,
@@ -206,6 +212,22 @@ export class EngineQueryClient extends EngineBaseClient {
           };
         },
       ),
+    };
+  }
+
+  /**
+   * Retrieves min deposit rates for all spot products from the engine
+   */
+  async getMinDepositRates(): Promise<GetEngineMinDepositRatesResponse> {
+    const baseResponse = await this.query('min_deposit_rates', {});
+
+    return {
+      minDepositRates: mapValues(baseResponse.min_deposit_rates, (m) => {
+        return {
+          productId: m.product_id,
+          minDepositRate: fromX18(m.min_deposit_rate_x18),
+        };
+      }),
     };
   }
 
