@@ -8,4 +8,5 @@ export const INDEXER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   blast: 'https://archive.blast-prod.vertexprotocol.com/v1',
   mantleTestnet: 'https://archive.mantle-test.vertexprotocol.com/v1',
   mantle: 'https://archive.mantle-prod.vertexprotocol.com/v1',
+  seiTestnet: 'https://archive.sei-test.vertexprotocol.com/v1',
 };
