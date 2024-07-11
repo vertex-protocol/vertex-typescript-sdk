@@ -7,6 +7,7 @@ import {
   localhost,
   mantle,
   mantleSepoliaTestnet,
+  seiTestnet,
 } from 'wagmi/chains';
 import { PrimaryChain } from '../../../types';
 
@@ -26,5 +27,7 @@ export function getPrimaryChain(chainEnv: ChainEnv): PrimaryChain {
       return mantle;
     case 'blast':
       return blast;
+    case 'seiTestnet':
+      return seiTestnet;
   }
 }
