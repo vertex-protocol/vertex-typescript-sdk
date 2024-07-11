@@ -53,8 +53,8 @@
     "ethers": "workspace:*",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "viem": "^2.17",
-    "wagmi": "^2.10"
+    "viem": "^2.17.3",
+    "wagmi": "^2.10.10"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
