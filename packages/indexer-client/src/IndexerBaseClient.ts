@@ -733,6 +733,17 @@ export class IndexerBaseClient {
       initialPoints: toBigDecimal(baseResponse.initial_points),
       referralPoints: toBigDecimal(baseResponse.referral_points),
       tradingPoints: toBigDecimal(baseResponse.trading_points),
+      phase2Epochs: baseResponse.phase2_points.map(
+        ({ epoch, period, referral_points, start_time, trading_points }) => {
+          return {
+            epoch,
+            startTime: toBigDecimal(start_time),
+            period: toBigDecimal(period),
+            tradingPoints: toBigDecimal(trading_points),
+            referralPoints: toBigDecimal(referral_points),
+          };
+        },
+      ),
     };
   }
 
