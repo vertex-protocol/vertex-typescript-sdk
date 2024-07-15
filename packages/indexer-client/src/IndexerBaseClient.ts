@@ -854,7 +854,13 @@ export class IndexerBaseClient {
   async getFastWithdrawalSignature(
     params: GetIndexerFastWithdrawalSignatureParams,
   ): Promise<GetIndexerFastWithdrawalSignatureResponse> {
-    return await this.query('fast_withdrawal_signature', params);
+    const baseResponse = await this.query('fast_withdrawal_signature', params);
+    return {
+      idx: baseResponse.idx,
+      tx: baseResponse.tx,
+      txBytes: baseResponse.tx_bytes,
+      signatures: baseResponse.signatures,
+    };
   }
 
   /**

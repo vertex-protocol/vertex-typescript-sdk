@@ -723,5 +723,9 @@ export type GetIndexerVrtxTokenInfoResponse = number;
 export type GetIndexerFastWithdrawalSignatureParams =
   IndexerServerFastWithdrawalSignatureParams;
 
-export type GetIndexerFastWithdrawalSignatureResponse =
-  IndexerServerFastWithdrawalSignatureResponse;
+export interface GetIndexerFastWithdrawalSignatureResponse {
+  idx: string;
+  tx: EndpointWithdrawCollateralTx;
+  txBytes: string;
+  signatures: string[];
+}
