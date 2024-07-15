@@ -308,6 +308,20 @@ async function fullSanity(context: RunContext) {
   });
 
   prettyPrint('VRTX Circulating Supply', vrtxCirculatingSupply);
+
+  const latestWithdrawal = await client.getEvents({
+    eventTypes: ['withdraw_collateral'],
+    limit: {
+      type: 'txs',
+      value: 1,
+    },
+  });
+
+  const fastWithdrawalSignature = await client.getFastWithdrawalSignature({
+    idx: latestWithdrawal[0].submissionIndex,
+  });
+
+  prettyPrint('Fast Withdrawal Signature', fastWithdrawalSignature);
 }
 
 runWithContext(fullSanity);

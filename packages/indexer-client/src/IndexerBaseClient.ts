@@ -37,6 +37,8 @@ import {
   GetIndexerClaimVrtxMerkleProofsResponse,
   GetIndexerEventsParams,
   GetIndexerEventsResponse,
+  GetIndexerFastWithdrawalSignatureParams,
+  GetIndexerFastWithdrawalSignatureResponse,
   GetIndexerFoundationTakerRewardsParams,
   GetIndexerFoundationTakerRewardsResponse,
   GetIndexerFundingRateParams,
@@ -842,6 +844,17 @@ export class IndexerBaseClient {
     return {
       contests: baseResponse.contests.map(mapIndexerLeaderboardContest),
     };
+  }
+
+  /**
+   * Retrieve signature and tx to submit a fast withdrawal
+   *
+   * @param params
+   */
+  async getFastWithdrawalSignature(
+    params: GetIndexerFastWithdrawalSignatureParams,
+  ): Promise<GetIndexerFastWithdrawalSignatureResponse> {
+    return await this.query('fast_withdrawal_signature', params);
   }
 
   /**

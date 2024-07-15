@@ -19,6 +19,7 @@ import {
   IndexerServerTakerRewardsEpoch,
   IndexerServerTx,
 } from './serverModelTypes';
+import { EndpointWithdrawCollateralTx } from './VertexTx';
 
 /**
  * Params
@@ -193,6 +194,10 @@ export interface IndexerServerLeaderboardContestsParams {
   contest_ids: number[];
 }
 
+export interface IndexerServerFastWithdrawalSignatureParams {
+  idx: number | string;
+}
+
 // Request
 export interface IndexerServerQueryRequestByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
@@ -225,6 +230,7 @@ export interface IndexerServerQueryRequestByType {
   leaderboard: IndexerServerLeaderboardParams;
   leaderboard_rank: IndexerServerLeaderboardRankParams;
   leaderboard_contests: IndexerServerLeaderboardContestsParams;
+  fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -394,6 +400,13 @@ export interface IndexerServerLeaderboardContestsResponse {
   contests: IndexerServerLeaderboardContest[];
 }
 
+export interface IndexerServerFastWithdrawalSignatureResponse {
+  idx: string;
+  tx: EndpointWithdrawCollateralTx;
+  tx_bytes: string;
+  signatures: string[];
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
@@ -426,4 +439,5 @@ export interface IndexerServerQueryResponseByType {
   leaderboard: IndexerServerLeaderboardResponse;
   leaderboard_rank: IndexerServerLeaderboardRankResponse;
   leaderboard_contests: IndexerServerLeaderboardContestsResponse;
+  fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureResponse;
 }

@@ -17,9 +17,11 @@ import { IndexerVrtxTokenInfoType } from './IndexerVrtxTokenInfoType';
 import {
   IndexerServerClaimFoundationRewardsMerkleProofsParams,
   IndexerServerClaimVrtxMerkleProofsParams,
+  IndexerServerFastWithdrawalSignatureParams,
+  IndexerServerFastWithdrawalSignatureResponse,
   IndexerServerListSubaccountsParams,
 } from './serverTypes';
-import { VertexTx } from './VertexTx';
+import { EndpointWithdrawCollateralTx, VertexTx } from './VertexTx';
 
 /**
  * Base types
@@ -717,3 +719,9 @@ export interface GetIndexerVrtxTokenInfoParams {
  * For instance, 10 VRTX will be represented as 10.0, not 10*10^18.
  */
 export type GetIndexerVrtxTokenInfoResponse = number;
+
+export type GetIndexerFastWithdrawalSignatureParams =
+  IndexerServerFastWithdrawalSignatureParams;
+
+export type GetIndexerFastWithdrawalSignatureResponse =
+  IndexerServerFastWithdrawalSignatureResponse;
