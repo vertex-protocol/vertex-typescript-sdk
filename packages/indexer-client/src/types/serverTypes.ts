@@ -194,10 +194,10 @@ export interface IndexerServerLeaderboardContestsParams {
   contest_ids: number[];
 }
 
-/**
- * @property {number | string} idx - The submission index of the WithdrawCollateral transaction to be used for fast withdraw.
- */
 export interface IndexerServerFastWithdrawalSignatureParams {
+  /**
+   * The submission index of the WithdrawCollateral tx to be used for fast withdraw.
+   */
   idx: number | string;
 }
 
