@@ -9,5 +9,6 @@
   "endpoint": "0x1a77cB939B7C4fA5Cc90b09787260DABf5f05c41",
   "spotEngine": "0xA1DbC395Cbaa8c7b74456697C42ADa8F2b08CAbb",
   "perpEngine": "0xEC1149dF1559eaDB0Af4cf6d9BeAc7a08Aa9f694",
-  "foundationRewardsAirdrop": "0x22614Ae2A21c22d46279dB4ADd1aFb9902763465"
+  "foundationRewardsAirdrop": "0x22614Ae2A21c22d46279dB4ADd1aFb9902763465",
+  "withdrawPool": "0xe41bd29964aD0861628d46F331d95E05cF183847"
 }
