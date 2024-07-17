@@ -19,7 +19,7 @@ import {
   IndexerServerTakerRewardsEpoch,
   IndexerServerTx,
 } from './serverModelTypes';
-import { EndpointWithdrawCollateralTx } from './VertexTx';
+import { VertexWithdrawCollateralTx } from './VertexTx';
 
 /**
  * Params
@@ -405,7 +405,7 @@ export interface IndexerServerLeaderboardContestsResponse {
 
 export interface IndexerServerFastWithdrawalSignatureResponse {
   idx: string;
-  tx: EndpointWithdrawCollateralTx;
+  tx: VertexWithdrawCollateralTx['withdraw_collateral'];
   tx_bytes: string;
   signatures: string[];
 }

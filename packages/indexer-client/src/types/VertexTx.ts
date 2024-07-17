@@ -26,15 +26,13 @@ export interface VertexLiquidateSubaccountTx {
   };
 }
 
-export interface EndpointWithdrawCollateralTx {
-  sender: string;
-  product_id: number;
-  amount: string;
-  nonce: number;
-}
-
 export interface VertexWithdrawCollateralTx {
-  withdraw_collateral: EndpointWithdrawCollateralTx;
+  withdraw_collateral: {
+    sender: string;
+    product_id: number;
+    amount: string;
+    nonce: number;
+  };
 }
 
 export type VertexTx =

@@ -18,10 +18,9 @@ import {
   IndexerServerClaimFoundationRewardsMerkleProofsParams,
   IndexerServerClaimVrtxMerkleProofsParams,
   IndexerServerFastWithdrawalSignatureParams,
-  IndexerServerFastWithdrawalSignatureResponse,
   IndexerServerListSubaccountsParams,
 } from './serverTypes';
-import { EndpointWithdrawCollateralTx, VertexTx } from './VertexTx';
+import { VertexTx, VertexWithdrawCollateralTx } from './VertexTx';
 
 /**
  * Base types
@@ -725,7 +724,7 @@ export type GetIndexerFastWithdrawalSignatureParams =
 
 export interface GetIndexerFastWithdrawalSignatureResponse {
   idx: string;
-  tx: EndpointWithdrawCollateralTx;
+  tx: VertexWithdrawCollateralTx['withdraw_collateral'];
   txBytes: string;
   signatures: string[];
 }
