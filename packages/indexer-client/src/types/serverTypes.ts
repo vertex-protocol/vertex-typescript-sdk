@@ -19,6 +19,7 @@ import {
   IndexerServerTakerRewardsEpoch,
   IndexerServerTx,
 } from './serverModelTypes';
+import { VertexWithdrawCollateralTx } from './VertexTx';
 
 /**
  * Params
@@ -193,6 +194,13 @@ export interface IndexerServerLeaderboardContestsParams {
   contest_ids: number[];
 }
 
+export interface IndexerServerFastWithdrawalSignatureParams {
+  /**
+   * The submission index of the WithdrawCollateral tx to be used for fast withdraw.
+   */
+  idx: number | string;
+}
+
 // Request
 export interface IndexerServerQueryRequestByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
@@ -225,6 +233,7 @@ export interface IndexerServerQueryRequestByType {
   leaderboard: IndexerServerLeaderboardParams;
   leaderboard_rank: IndexerServerLeaderboardRankParams;
   leaderboard_contests: IndexerServerLeaderboardContestsParams;
+  fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -394,6 +403,13 @@ export interface IndexerServerLeaderboardContestsResponse {
   contests: IndexerServerLeaderboardContest[];
 }
 
+export interface IndexerServerFastWithdrawalSignatureResponse {
+  idx: string;
+  tx: VertexWithdrawCollateralTx['withdraw_collateral'];
+  tx_bytes: string;
+  signatures: string[];
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
@@ -426,4 +442,5 @@ export interface IndexerServerQueryResponseByType {
   leaderboard: IndexerServerLeaderboardResponse;
   leaderboard_rank: IndexerServerLeaderboardRankResponse;
   leaderboard_contests: IndexerServerLeaderboardContestsResponse;
+  fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureResponse;
 }
