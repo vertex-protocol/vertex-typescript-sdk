@@ -8,13 +8,14 @@ import {
   localhost,
   mantle,
   mantleSepoliaTestnet,
+  seiTestnet,
 } from 'wagmi/chains';
 
 /**
  * The overarching "type" of the chain - regardless of whether it's testnet or mainnet
  * Ex. Arbitrum Sepolia -> Chain type of arbitrum
  */
-export type ChainType = 'arbitrum' | 'mantle' | 'blast';
+export type ChainType = 'arbitrum' | 'mantle' | 'blast' | 'sei';
 
 const ARB_CHAIN_IDS = new Set<number>([
   arbitrum.id,
@@ -23,6 +24,7 @@ const ARB_CHAIN_IDS = new Set<number>([
   hardhat.id,
 ]);
 const MANTLE_CHAIN_IDS = new Set<number>([mantle.id, mantleSepoliaTestnet.id]);
+const SEI_CHAIN_IDS = new Set<number>([seiTestnet.id]);
 const BLAST_CHAIN_IDS = new Set<number>([blast.id, blastSepolia.id]);
 
 export function getChainType(chain: Chain): ChainType {
@@ -31,6 +33,9 @@ export function getChainType(chain: Chain): ChainType {
   }
   if (MANTLE_CHAIN_IDS.has(chain.id)) {
     return 'mantle';
+  }
+  if (SEI_CHAIN_IDS.has(chain.id)) {
+    return 'sei';
   }
   if (BLAST_CHAIN_IDS.has(chain.id)) {
     return 'blast';
