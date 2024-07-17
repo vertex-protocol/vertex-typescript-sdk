@@ -1,5 +1,5 @@
 import { EthereumProviderOptions } from '@walletconnect/ethereum-provider';
-import { Chain } from 'viem';
+import { Chain } from 'wagmi/chains';
 import { CoinbaseWalletParameters } from 'wagmi/connectors';
 
 export interface WagmiConnectorOptions {
