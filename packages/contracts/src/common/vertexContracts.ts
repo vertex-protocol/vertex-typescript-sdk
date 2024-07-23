@@ -10,6 +10,7 @@ import {
   ISpotEngine,
   IStaking,
   IVesting,
+  WithdrawPool,
 } from '../typechain-types';
 
 /**
@@ -22,6 +23,7 @@ export interface VertexContracts {
   spotEngine: ISpotEngine;
   perpEngine: IPerpEngine;
   foundationRewardsAirdrop: IArbAirdrop;
+  withdrawPool: WithdrawPool;
   vrtxToken: IERC20;
   vrtxAirdrop: IAirdrop;
   vrtxLba: ILBA;
