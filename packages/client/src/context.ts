@@ -14,6 +14,7 @@ import {
   VERTEX_DEPLOYMENTS,
   VertexContracts,
   VertexDeploymentAddresses,
+  WithdrawPool__factory,
 } from '@vertex-protocol/contracts';
 import {
   ENGINE_CLIENT_ENDPOINTS,
@@ -179,6 +180,10 @@ export async function createClientContext(
       ),
       foundationRewardsAirdrop: IArbAirdrop__factory.connect(
         contractAddresses.foundationRewardsAirdrop,
+        signerOrProvider,
+      ),
+      withdrawPool: WithdrawPool__factory.connect(
+        contractAddresses.withdrawPool,
         signerOrProvider,
       ),
       vrtxToken: IERC20__factory.connect(
