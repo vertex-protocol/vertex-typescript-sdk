@@ -48,9 +48,8 @@ export class EngineExecuteClient extends EngineBaseClient {
   async placeOrder(
     params: EngineExecuteRequestParamsByType['place_order'],
   ): Promise<EnginePlaceOrderResult> {
-    const placeOrderPayload = await this.payloadBuilder.buildPlaceOrderPayload(
-      params,
-    );
+    const placeOrderPayload =
+      await this.payloadBuilder.buildPlaceOrderPayload(params);
     return {
       ...(await this.execute('place_order', placeOrderPayload.payload)),
       orderParams: placeOrderPayload.orderParams,

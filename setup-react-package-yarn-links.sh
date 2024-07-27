@@ -6,6 +6,7 @@ PACKAGES=(
   "react"
   "@tanstack/react-query"
   "wagmi"
+  "viem"
 )
 
 # Check UNLINK env var as a quick way to use a "flag"

@@ -6,11 +6,11 @@ import {
   getVertexEIP712Values,
 } from '@vertex-protocol/contracts';
 import { toFixedPoint } from '@vertex-protocol/utils';
+import { AbiCoder, getBytes, solidityPacked } from 'ethers';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
-import { AbiCoder, getBytes, solidityPacked } from 'ethers';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -136,9 +136,8 @@ async function fullSanity(context: RunContext) {
 
   const perpOrderDigest = getOrderDigest({
     order: perpOrderResult.orderParams,
-    verifyingAddr: await vertexClient.context.engineClient.getOrderbookAddress(
-      4,
-    ),
+    verifyingAddr:
+      await vertexClient.context.engineClient.getOrderbookAddress(4),
     chainId,
   });
 

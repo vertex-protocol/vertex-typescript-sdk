@@ -1,4 +1,5 @@
 *.env
+.nx
 
 .DS_store
 .idea/
