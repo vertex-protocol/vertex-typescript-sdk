@@ -8,12 +8,17 @@ module.exports = {
   extends: [
     'prettier',
     'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
   ],
   rules: {
-    'prettier/prettier': 2,
-    'no-constant-condition': 0,
-    'no-case-declarations': 0,
+    'no-case-declarations': 'off',
+    'no-constant-condition': 'off',
+    'prettier/prettier': 'error',
+    'react-hooks/exhaustive-deps': 'error',
+    'react/jsx-uses-react': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
 };

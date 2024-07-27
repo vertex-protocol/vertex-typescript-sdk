@@ -12,7 +12,7 @@
     "build": "npx lerna run build",
     "publish": "yarn build && npx lerna publish --force-publish --no-private",
     "dev": "npx lerna run dev",
-    "lint": "eslint './**/*.ts' --fix && prettier --write './**/*.ts'",
+    "lint": "eslint './**/*.{ts,tsx}' --fix && prettier --write './**/*.{ts,tsx}'",
     "gen-typedoc": "npx typedoc",
     "link-local": "lerna exec -- yarn link",
     "unlink-local": "lerna exec -- yarn unlink",
@@ -20,7 +20,7 @@
     "unlink-react-package-dependencies": "UNLINK=true ./setup-react-package-yarn-links.sh"
   },
   "lint-staged": {
-    "*.ts": "yarn lint"
+    "*.{ts,tsx}": "yarn lint"
   },
   "devDependencies": {
     "@types/node": "^18.6.5",
@@ -29,6 +29,8 @@
     "eslint": "^8.37.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
     "husky": "^8.0.3",
     "lerna": "^5.6.2",
     "lint-staged": "^13.2.0",
