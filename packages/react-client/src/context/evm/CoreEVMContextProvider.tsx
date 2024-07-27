@@ -20,7 +20,7 @@ import { getPrimaryChain } from './utils';
 
 export interface CoreEVMContextProviderProps {
   children: ReactNode;
-  primaryChainEnv: ChainEnv;
+  primaryChainEnv: ChainEnv | undefined;
   setPrimaryChainEnv: (chainEnv: ChainEnv) => void;
   supportedChainEnvs: ChainEnv[];
   supportedChains: WagmiConfigParams['supportedChains'];
@@ -37,9 +37,20 @@ export function CoreEVMContextProvider({
   supportedChains,
   children,
 }: CoreEVMContextProviderProps) {
+  const primaryChainEnv = useMemo((): ChainEnv => {
+    // Failsafe check - if localstorage has an invalid value, just default to the first supported env
+    if (
+      basePrimaryChainEnv &&
+      supportedChainEnvs.includes(basePrimaryChainEnv)
+    ) {
+      return basePrimaryChainEnv;
+    }
+    return supportedChainEnvs[0];
+  }, [basePrimaryChainEnv, supportedChainEnvs]);
+
   const primaryChain = useMemo(() => {
-    return getPrimaryChain(basePrimaryChainEnv);
-  }, [basePrimaryChainEnv]);
+    return getPrimaryChain(primaryChainEnv);
+  }, [primaryChainEnv]);
 
   const didInitializeWalletConnection = useDidInitializeWalletConnection();
   // Wagmi does not give access to the active connector in the `connecting` state, so we store this state separately
@@ -176,7 +187,7 @@ export function CoreEVMContextProvider({
 
   const evmContextData = useMemo((): EVMContextData => {
     return {
-      primaryChainEnv: basePrimaryChainEnv,
+      primaryChainEnv,
       setPrimaryChainEnv,
       primaryChain,
       primaryChainMetadata: getChainMetadata(primaryChain),
@@ -192,7 +203,7 @@ export function CoreEVMContextProvider({
       setReadOnlyAddressOverride,
     };
   }, [
-    basePrimaryChainEnv,
+    primaryChainEnv,
     setPrimaryChainEnv,
     primaryChain,
     supportedChains,

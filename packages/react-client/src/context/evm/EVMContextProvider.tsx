@@ -14,23 +14,12 @@ interface Props extends EVMContextParams {
 
 export function EVMContextProvider({
   supportedChainEnvs,
-  primaryChainEnv: basePrimaryChainEnv,
+  primaryChainEnv,
   setPrimaryChainEnv,
   supportedChains,
   connectorOptions,
   children,
 }: Props) {
-  const primaryChainEnv = useMemo((): ChainEnv => {
-    // Failsafe check - if localstorage has an invalid value, just default to the first supported env
-    if (
-      basePrimaryChainEnv &&
-      supportedChainEnvs.includes(basePrimaryChainEnv)
-    ) {
-      return basePrimaryChainEnv;
-    }
-    return supportedChainEnvs[0];
-  }, [basePrimaryChainEnv, supportedChainEnvs]);
-
   const wagmiConfig = useMemo(() => {
     return getWagmiConfig({
       supportedChains,
