@@ -1,3 +1,5 @@
+.nx/
+
 *.env
 
 .DS_store
