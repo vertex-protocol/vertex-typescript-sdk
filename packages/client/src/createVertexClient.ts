@@ -1,9 +1,9 @@
+import { VertexClient } from './client';
 import {
   createClientContext,
   CreateVertexClientContextOpts,
   CreateVertexClientContextSignerOpts,
 } from './context';
-import { VertexClient } from './client';
 
 /**
  * Creates a Vertex client from given options.
