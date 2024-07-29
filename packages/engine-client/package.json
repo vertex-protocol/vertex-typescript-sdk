@@ -33,10 +33,13 @@
   "devDependencies": {
     "ethers": "*"
   },
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md",
-    "displayName": "Vertex Engine Server Utils"
+  "typedocOptions": {
+    "entryPoints": [
+      "./src/index.ts"
+    ],
+    "readme": "./README.md",
+    "name": "Vertex Engine Server Utils",
+    "suppressCommentWarningsInDeclarationFiles": true
   },
   "gitHead": "49c31db15f92f89cda26598774d21a9930884708"
 }

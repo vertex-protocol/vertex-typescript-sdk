@@ -1,31 +1,31 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "commentStyle": "all",
+  "customDescription": "Vertex Typescript SDK Documentation",
+  "customTitle": "Vertex Typescript SDK Documentation",
   "entryPointStrategy": "packages",
   "entryPoints": [
     "packages/**"
   ],
-  "excludePrivate": true,
-  "excludeProtected": true,
-  "excludeInternal": true,
-  "excludeExternals": true,
   "exclude": [
     "**/node_modules/**/*",
     "**/dist/**/*"
   ],
+  "excludeExternals": true,
+  "excludeInternal": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
   "externalPattern": [
     "./packages/contracts/src/typechain-types/**"
   ],
-  "out": "apps/docs",
   "internalModule": "Internal",
-  "sort": [
-    "visibility",
-    "source-order"
-  ],
-  "customTitle": "Vertex Typescript SDK Documentation",
-  "customDescription": "Vertex Typescript SDK Documentation",
+  "out": "apps/docs",
   "plugin": [
     "typedoc-plugin-missing-exports",
     "typedoc-plugin-extras"
+  ],
+  "sort": [
+    "visibility",
+    "source-order"
   ]
 }
