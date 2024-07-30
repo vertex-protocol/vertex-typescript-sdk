@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/react-client",
-  "version": "0.42.2",
+  "version": "0.42.3",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -44,7 +44,7 @@
     "@tanstack/react-query": "5.50.1",
     "@types/d3-format": "^3.0.4",
     "@types/react": "18.3.3",
-    "@vertex-protocol/client": "^0.42.2",
+    "@vertex-protocol/client": "^0.42.3",
     "bignumber.js": "^9.1.2",
     "ethers": "workspace:*",
     "react": "18.2.0",
@@ -56,5 +56,5 @@
     "readmeFile": "./README.md",
     "displayName": "Vertex React Client"
   },
-  "gitHead": "49c31db15f92f89cda26598774d21a9930884708"
+  "gitHead": "ef728e33d367d36994590cf25691919a92631418"
 }
