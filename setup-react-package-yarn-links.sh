@@ -4,6 +4,7 @@
 # will break local development of web-related packages. This must be run AFTER running the related script in the SDK repo
 PACKAGES=(
   "react"
+  "@types/react"
   "@tanstack/react-query"
   "wagmi"
   "viem"
