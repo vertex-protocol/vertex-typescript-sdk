@@ -11,7 +11,10 @@ export function getWagmiConfig(params: WagmiConfigParams): Config {
     ? [
         injected(),
         walletConnect(params.connectorOptions.walletConnect),
-        coinbaseWallet(params.connectorOptions.coinbase),
+        coinbaseWallet({
+          version: '4',
+          ...params.connectorOptions.coinbase,
+        }),
       ]
     : [];
 

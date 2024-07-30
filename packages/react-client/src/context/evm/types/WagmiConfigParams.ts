@@ -6,7 +6,7 @@ export interface WagmiConnectorOptions {
   walletConnect: Required<
     Pick<EthereumProviderOptions, 'projectId' | 'metadata'>
   >;
-  coinbase: CoinbaseWalletParameters;
+  coinbase: CoinbaseWalletParameters<'4'>;
 }
 
 export interface WagmiConfigParams {
