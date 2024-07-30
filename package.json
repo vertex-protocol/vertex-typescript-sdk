@@ -32,7 +32,7 @@
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "husky": "^8.0.3",
-    "lerna": "^5.6.2",
+    "lerna": "^8.1.7",
     "lint-staged": "^13.2.0",
     "prettier": "^2.8.7",
     "ts-node": "^10.9.1",

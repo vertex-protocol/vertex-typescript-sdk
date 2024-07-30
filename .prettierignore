@@ -42,3 +42,5 @@ yarn-error.log*
 .vercel
 
 charting_library
+/.nx/cache
+/.nx/workspace-data
