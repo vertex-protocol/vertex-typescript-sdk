@@ -7,7 +7,6 @@
   ],
   "private": true,
   "scripts": {
-    "prepare": "husky install",
     "clean": "npx lerna run clean",
     "build": "npx lerna run build",
     "publish-all": "yarn build && npx lerna publish --force-publish --no-private",
@@ -17,7 +16,8 @@
     "link-local": "lerna exec -- yarn link",
     "unlink-local": "lerna exec -- yarn unlink",
     "link-react-package-dependencies": "./setup-react-package-yarn-links.sh",
-    "unlink-react-package-dependencies": "UNLINK=true ./setup-react-package-yarn-links.sh"
+    "unlink-react-package-dependencies": "UNLINK=true ./setup-react-package-yarn-links.sh",
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{ts,tsx}": "yarn lint"
@@ -31,9 +31,9 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^4.6.2",
-    "husky": "^8.0.3",
+    "husky": "^9.1.4",
     "lerna": "^8.1.7",
-    "lint-staged": "^13.2.0",
+    "lint-staged": "^15.2.7",
     "prettier": "^2.8.7",
     "ts-node": "^10.9.1",
     "typedoc": "^0.23.28",
