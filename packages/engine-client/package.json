@@ -24,8 +24,8 @@
   "dependencies": {
     "@vertex-protocol/contracts": "^0.42.5",
     "@vertex-protocol/utils": "^0.42.5",
-    "axios": "^1.6.2",
-    "ts-mixer": "^6.0.3"
+    "axios": "*",
+    "ts-mixer": "*"
   },
   "peerDependencies": {
     "ethers": "*"
