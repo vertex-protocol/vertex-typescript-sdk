@@ -371,6 +371,14 @@ export interface IndexerServerBlitzPointsResponse {
   initial_points: string;
   trading_points: string;
   referral_points: string;
+  phase2_points: Array<{
+    epoch: number;
+    // in seconds
+    start_time: string;
+    period: string;
+    trading_points: string;
+    referral_points: string;
+  }>;
 }
 
 export interface IndexerServerBlastPointsResponse {

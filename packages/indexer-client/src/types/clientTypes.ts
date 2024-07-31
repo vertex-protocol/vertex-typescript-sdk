@@ -579,13 +579,25 @@ export interface GetIndexerBlitzPointsParams {
   address: string;
 }
 
+export interface IndexerBlitzPointsEpoch {
+  epoch: number;
+  // Start time of the epoch in seconds
+  startTime: BigDecimal;
+  // Period of the epoch in seconds
+  period: BigDecimal;
+  tradingPoints: BigDecimal;
+  referralPoints: BigDecimal;
+}
+
 export interface GetIndexerBlitzPointsResponse {
   // Accrued points from the initial points drop
   initialPoints: BigDecimal;
-  // Accrued taker points from trading
+  // Total accrued taker points from trading for phase 1 & phase 2
   tradingPoints: BigDecimal;
-  // Accrued points from referrals
+  // Total accrued points from referrals for phase 1 & phase 2
   referralPoints: BigDecimal;
+  // Epoch-based data for phase 2, in descending order
+  phase2Epochs: IndexerBlitzPointsEpoch[];
 }
 
 export interface GetIndexerBlastPointsParams {
