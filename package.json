@@ -10,7 +10,7 @@
     "prepare": "husky install",
     "clean": "npx lerna run clean",
     "build": "npx lerna run build",
-    "publish": "yarn build && npx lerna publish --force-publish --no-private",
+    "publish-all": "yarn build && npx lerna publish --force-publish --no-private",
     "dev": "npx lerna run dev",
     "lint": "eslint './**/*.{ts,tsx}' --fix && prettier --write './**/*.{ts,tsx}'",
     "gen-typedoc": "npx typedoc",
