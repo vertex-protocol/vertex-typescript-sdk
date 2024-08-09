@@ -6,4 +6,5 @@ export type ChainEnv =
   | 'blast'
   | 'mantleTestnet'
   | 'mantle'
-  | 'seiTestnet';
+  | 'seiTestnet'
+  | 'sei';

@@ -30,15 +30,20 @@ export function getProvider(chainEnv: ChainEnv): Provider {
         name: 'mantle-sepolia',
         chainId: 5003,
       });
+    case 'mantle':
+      return new JsonRpcProvider('https://rpc.mantle.xyz', {
+        name: 'mantle',
+        chainId: 5000,
+      });
     case 'seiTestnet':
       return new JsonRpcProvider('https://evm-rpc-testnet.sei-apis.com', {
         name: 'sei-testnet',
         chainId: 1328,
       });
-    case 'mantle':
-      return new JsonRpcProvider('https://rpc.mantle.xyz', {
-        name: 'mantle',
-        chainId: 5000,
+    case 'sei':
+      return new JsonRpcProvider('https://evm-rpc.sei-apis.com', {
+        name: 'sei',
+        chainId: 1329,
       });
   }
 }

@@ -8,6 +8,7 @@ import {
   mantle,
   mantleSepoliaTestnet,
   seiTestnet,
+  sei,
 } from 'wagmi/chains';
 import { PrimaryChain } from '../../../types';
 
@@ -29,5 +30,7 @@ export function getPrimaryChain(chainEnv: ChainEnv): PrimaryChain {
       return blast;
     case 'seiTestnet':
       return seiTestnet;
+    case 'sei':
+      return sei;
   }
 }
