@@ -11,7 +11,7 @@ import {
   sei,
 } from 'wagmi/chains';
 
-const PRIMARY_CHAINS = [
+export const PRIMARY_CHAINS = [
   localhost,
   hardhat,
   arbitrum,
