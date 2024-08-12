@@ -8,6 +8,7 @@ import {
   localhost,
   mantle,
   mantleSepoliaTestnet,
+  sei,
   seiTestnet,
 } from 'wagmi/chains';
 
@@ -24,7 +25,7 @@ const ARB_CHAIN_IDS = new Set<number>([
   hardhat.id,
 ]);
 const MANTLE_CHAIN_IDS = new Set<number>([mantle.id, mantleSepoliaTestnet.id]);
-const SEI_CHAIN_IDS = new Set<number>([seiTestnet.id]);
+const SEI_CHAIN_IDS = new Set<number>([seiTestnet.id, sei.id]);
 const BLAST_CHAIN_IDS = new Set<number>([blast.id, blastSepolia.id]);
 
 export function getChainType(chain: Chain): ChainType {
