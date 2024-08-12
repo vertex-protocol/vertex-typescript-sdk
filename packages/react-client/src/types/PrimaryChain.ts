@@ -11,7 +11,7 @@ import {
   sei,
 } from 'wagmi/chains';
 
-const PRIMARY_CHAINS = [
+export const PRIMARY_CHAINS = [
   localhost,
   hardhat,
   arbitrum,
@@ -23,6 +23,8 @@ const PRIMARY_CHAINS = [
   seiTestnet,
   sei,
 ] as const;
+
+export const PRIMARY_CHAIN_IDS = PRIMARY_CHAINS.map((chain) => chain.id);
 
 export type PrimaryChain = (typeof PRIMARY_CHAINS)[number];
 
