@@ -40,4 +40,4 @@ export type VertexTx =
   | VertexMatchOrdersRfqTx
   | VertexLiquidateSubaccountTx
   | VertexWithdrawCollateralTx
-  | any;
+  | any; // eslint-disable-line @typescript-eslint/no-explicit-any

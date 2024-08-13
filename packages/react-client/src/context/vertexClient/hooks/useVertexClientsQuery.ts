@@ -44,10 +44,13 @@ export function useVertexClientsQuery({
   const wagmiConfig = useConfig();
 
   const chainEnvToPrimaryChain = useMemo(() => {
-    return supportedChainEnvs.reduce((acc, chainEnv) => {
-      const primaryChain = getPrimaryChain(chainEnv);
-      return { ...acc, [chainEnv]: primaryChain };
-    }, {} as Record<ChainEnv, PrimaryChain>);
+    return supportedChainEnvs.reduce(
+      (acc, chainEnv) => {
+        const primaryChain = getPrimaryChain(chainEnv);
+        return { ...acc, [chainEnv]: primaryChain };
+      },
+      {} as Record<ChainEnv, PrimaryChain>,
+    );
   }, [supportedChainEnvs]);
 
   const { data: vertexClientsByChainEnv, error } = useQuery({
@@ -88,19 +91,22 @@ export function useVertexClientsQuery({
 
       const clientPromiseResults = await Promise.allSettled(clientPromises);
 
-      return clientPromiseResults.reduce((prev, result, currentIndex) => {
-        if (result.status === 'rejected') {
-          console.error(
-            `[useVertexClientsQuery] Error creating Vertex client for ${supportedChainEnvs[currentIndex]}`,
-            result.reason,
-          );
-          return prev;
-        }
+      return clientPromiseResults.reduce(
+        (prev, result, currentIndex) => {
+          if (result.status === 'rejected') {
+            console.error(
+              `[useVertexClientsQuery] Error creating Vertex client for ${supportedChainEnvs[currentIndex]}`,
+              result.reason,
+            );
+            return prev;
+          }
 
-        const clientWithMetadata = result.value;
-        prev[clientWithMetadata.chainEnv] = clientWithMetadata;
-        return prev;
-      }, {} as Record<ChainEnv, VertexClientWithMetadata>);
+          const clientWithMetadata = result.value;
+          prev[clientWithMetadata.chainEnv] = clientWithMetadata;
+          return prev;
+        },
+        {} as Record<ChainEnv, VertexClientWithMetadata>,
+      );
     },
     refetchOnWindowFocus: false,
     refetchOnMount: false,
