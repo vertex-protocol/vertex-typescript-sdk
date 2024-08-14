@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/utils",
-  "version": "0.45.0",
+  "version": "0.45.1",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -35,11 +35,6 @@
   "devDependencies": {
     "bignumber.js": "^9.1.2",
     "ethers": "*"
-  },
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md",
-    "displayName": "Vertex Utils"
   },
   "gitHead": "88119393c0d18cf3be1578e2a3a60b10e18b09f6"
 }

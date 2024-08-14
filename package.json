@@ -37,9 +37,9 @@
     "lint-staged": "^15.2.7",
     "prettier": "^3.3.3",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.23.28",
-    "typedoc-plugin-extras": "^2.3.2",
-    "typedoc-plugin-missing-exports": "^1.0.0",
+    "typedoc": "^0.26.5",
+    "typedoc-plugin-extras": "^3.1.0",
+    "typedoc-plugin-missing-exports": "^3.0.0",
     "typescript": "^5.5.4"
   },
   "resolutions": {
