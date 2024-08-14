@@ -9,7 +9,8 @@ import {
 import { BaseVertexAPI } from '../base';
 
 /**
- * @description Allows you to build subscription messages as expected by the server to send over Websocket.
+ * Builds subscription messages as expected by the server to send over Websocket.
+ *
  * @example
  * const tradeSubscriptionParams = vertexClient.ws.subscription.buildSubscriptionParams('trade', ...);
  * const tradeSubscriptionMessage = vertexClient.ws.subscription.buildSubscriptionMessage(

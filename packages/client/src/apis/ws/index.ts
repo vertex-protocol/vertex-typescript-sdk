@@ -5,7 +5,7 @@ import { WebSocketQueryAPI } from './WebSocketQueryAPI';
 import { WebSocketSubscriptionAPI } from './WebSocketSubscriptionAPI';
 
 /**
- * @description Allows you to build ws messages as expected by the server to send over Websocket.
+ * Builds ws messages as expected by the server to send over Websocket.
  */
 export class WebsocketAPI extends BaseVertexAPI {
   readonly query: WebSocketQueryAPI;

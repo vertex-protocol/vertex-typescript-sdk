@@ -30,7 +30,9 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * {@link (getSubaccountSummary:CONTRACTS)}
+   * Returns a comprehensive summary for a subaaccount, including its balances and health
+   *
+   * @see {@link getSubaccountSummary:CONTRACTS | getSubaccountSummary}
    */
   async getSubaccountSummary(params: GetSubaccountSummaryParams) {
     return getSubaccountSummary(this.paramsWithContracts(params));

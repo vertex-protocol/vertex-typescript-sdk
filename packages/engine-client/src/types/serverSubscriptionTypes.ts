@@ -21,7 +21,7 @@ export interface EngineServerBookDepthStreamParams {
 }
 
 /**
- * @description Available subscription streams
+ * Available subscription streams
  */
 export interface EngineServerSubscriptionStreamParamsByType {
   trade: EngineServerTradeStreamParams;
@@ -35,7 +35,7 @@ export type EngineServerSubscriptionStreamParamsType =
   keyof EngineServerSubscriptionStreamParamsByType;
 
 /**
- * @description Describes a stream that can be subscribed to.
+ * Describes a stream that can be subscribed to.
  */
 export type EngineServerSubscriptionStream<
   TStreamType extends EngineServerSubscriptionStreamParamsType,
@@ -44,14 +44,14 @@ export type EngineServerSubscriptionStream<
 } & EngineServerSubscriptionStreamParamsByType[TStreamType];
 
 /**
- * @description Params to provide to a `subscribe` / `unsubscribe` action.
+ * Params to provide to a `subscribe` / `unsubscribe` action.
  */
 export interface EngineServerSubscriptionParams {
   stream: EngineServerSubscriptionStream<EngineServerSubscriptionStreamParamsType>;
 }
 
 /**
- * @description Available actions on the subscription API.
+ * Available actions on the subscription API.
  */
 export interface EngineServerSubscriptionRequestByType {
   subscribe: EngineServerSubscriptionParams;
@@ -63,7 +63,7 @@ export type EngineServerSubscriptionRequestType =
   keyof EngineServerSubscriptionRequestByType;
 
 /**
- * @description Top level request to send to the server.
+ * Top level request to send to the server.
  */
 export type EngineServerSubscriptionRequest<
   TRequestType extends EngineServerSubscriptionRequestType,

@@ -57,7 +57,6 @@ export function calcUtilizationRatio(product: SpotProduct) {
  *
  * The returned rate is annual rate / 31536000 seconds per year.
  *
- * {@label UTILS}
  * @param product Spot product
  */
 export function calcBorrowRatePerSecond(product: SpotProduct) {

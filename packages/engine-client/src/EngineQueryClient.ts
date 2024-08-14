@@ -339,7 +339,7 @@ export class EngineQueryClient extends EngineBaseClient {
 
   /**
    * Gets maker & taker fee rates for order fees
-   * @params params
+   * @param params
    */
   async getSubaccountFeeRates(
     params: GetEngineSubaccountFeeRatesParams,

@@ -6,7 +6,7 @@ import {
 import { BaseVertexAPI } from '../base';
 
 /**
- * @description Allows you to build query messages as expected by the server to send over Websocket.
+ * Builds query messages as expected by the server to send over Websocket.
  * @example vertexClient.ws.query.buildQueryMessage('all_products', {})
  */
 export class WebSocketQueryAPI extends BaseVertexAPI {
