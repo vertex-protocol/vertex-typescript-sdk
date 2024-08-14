@@ -17,7 +17,7 @@ import {
 import { hexlify } from 'ethers';
 
 /**
- * @description Builds execute payloads as expected by the server.
+ * Builds execute payloads as expected by the server.
  * @param nonce A nonce is computed when one is not provided.
  * @param signature A signature is computed when one is not provided.
  */

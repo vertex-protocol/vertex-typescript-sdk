@@ -6,7 +6,7 @@ import { BaseVertexAPI } from '../base';
 import { EIP712OrderParams } from '@vertex-protocol/contracts';
 
 /**
- * @description Allows you to build execute messages as expected by the server to send over Websocket.
+ * Builds execute messages as expected by the server to send over Websocket.
  * @example vertexClient.ws.execute.buildPlaceOrderMessage(...)
  */
 export class WebSocketExecuteAPI extends BaseVertexAPI {

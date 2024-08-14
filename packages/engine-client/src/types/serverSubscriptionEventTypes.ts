@@ -1,7 +1,7 @@
 import { EngineServerPriceTickLiquidity } from './serverQueryTypes';
 
 /**
- * @description Event from subscribing to a `trade` stream.
+ * Event from subscribing to a `trade` stream.
  */
 export interface EngineServerSubscriptionTradeEvent {
   timestamp: string;
@@ -13,7 +13,7 @@ export interface EngineServerSubscriptionTradeEvent {
 }
 
 /**
- * @description Event from subscribing to a `best_bid_offer` stream.
+ * Event from subscribing to a `best_bid_offer` stream.
  */
 export interface EngineServerSubscriptionBestBidOfferEvent {
   timestamp: string;
@@ -25,7 +25,7 @@ export interface EngineServerSubscriptionBestBidOfferEvent {
 }
 
 /**
- * @description Event from subscribing to a `fill` stream.
+ * Event from subscribing to a `fill` stream.
  */
 export interface EngineServerSubscriptionFillEvent {
   // NOTE: `id` is excluded from the response to avoid parsing issues.
@@ -41,7 +41,7 @@ export interface EngineServerSubscriptionFillEvent {
 }
 
 /**
- * @description Event from subscribing to a `position_change` stream.
+ * Event from subscribing to a `position_change` stream.
  */
 export interface EngineServerSubscriptionPositionChangeEvent {
   timestamp: string;

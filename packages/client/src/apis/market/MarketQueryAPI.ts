@@ -27,35 +27,35 @@ import { GetTriggerOrdersParams } from './types';
 
 export class MarketQueryAPI extends BaseVertexAPI {
   /**
-   * @description Retrieve all market states from the on-chain contracts
+   * Retrieves all market states from the on-chain contracts
    */
   async getAllMarkets(): Promise<GetAllMarketsResponse> {
     return getAllMarkets(this.context.contracts);
   }
 
   /**
-   * @description Retrieves all market states from the offchain engine
+   * Retrieves all market states from the offchain engine
    */
   async getAllEngineMarkets(): Promise<GetAllMarketsResponse> {
     return this.context.engineClient.getAllMarkets();
   }
 
   /**
-   * @description Retrieve all spread health groups
+   * Retrieves all spread health groups
    */
   async getHealthGroups() {
     return this.context.engineClient.getHealthGroups();
   }
 
   /**
-   * @description Queries engine to determine if the order can be submitted within health requirements
+   * Queries engine to determine if the order can be submitted within health requirements
    */
   async validateOrderParams(params: ValidateEngineOrderParams) {
     return this.context.engineClient.validateOrderParams(params);
   }
 
   /**
-   * @description Queries the offchain engine to retrieve status of any open orders for the given subaccount
+   * Queries the offchain engine to retrieve status of any open orders for the given subaccount
    * @param params
    */
   async getOpenSubaccountOrders(params: GetEngineSubaccountOrdersParams) {
@@ -63,7 +63,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Queries the offchain engine to retrieve status of any open orders for the given subaccount for multiple products
+   * Queries the offchain engine to retrieve status of any open orders for the given subaccount for multiple products
    * @param params
    */
   async getOpenSubaccountMultiProductOrders(
@@ -73,7 +73,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Queries the offchain trigger service to list trigger orders. Requires a signature
+   * Queries the offchain trigger service to list trigger orders. Requires a signature
    * @param params
    */
   async getTriggerOrders(params: GetTriggerOrdersParams) {
@@ -85,7 +85,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Queries indexer to fetch historical orders
+   * Queries indexer to fetch historical orders
    *
    * @param params
    */
@@ -96,7 +96,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Queries engine to determine maximum order size
+   * Queries engine to determine maximum order size
    * @param params
    */
   async getMaxOrderSize(params: GetEngineMaxOrderSizeParams) {
@@ -104,7 +104,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Queries engine to determine maximum base amount contribution for minting LPs
+   * Queries engine to determine maximum base amount contribution for minting LPs
    * @param params
    */
   async getMaxMintLp(params: GetEngineMaxMintLpAmountParams) {
@@ -112,7 +112,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Retrieves liquidity per price tick from the engine. The engine will skip price levels that have no liquidity,
+   * Retrieves liquidity per price tick from the engine. The engine will skip price levels that have no liquidity,
    * so it is not guaranteed that the bids/asks are evenly spaced
    */
   async getMarketLiquidity(params: GetEngineMarketLiquidityParams) {
@@ -120,7 +120,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Historical candlesticks from the indexer, use getLatestMarketPrice for the latest orderbook prices
+   * Historical candlesticks from the indexer, use getLatestMarketPrice for the latest orderbook prices
    *
    * @param params
    */
@@ -129,7 +129,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Retrieves the latest off-chain orderbook price from the engine
+   * Retrieves the latest off-chain orderbook price from the engine
    *
    * @param params
    */
@@ -138,7 +138,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Retrieves the latest off-chain orderbook price from the engine for multiple markets
+   * Retrieves the latest off-chain orderbook price from the engine for multiple markets
    *
    * @param params
    */
@@ -147,7 +147,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Retrieves the latest funding rate for a perp product
+   * Retrieves the latest funding rate for a perp product
    *
    * @param params
    */
@@ -156,7 +156,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Retrieves the latest funding rate for multiple perp products
+   * Retrieves the latest funding rate for multiple perp products
    *
    * @param params
    */
@@ -167,7 +167,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Retrieves the historical snapshots for a product from the indexer
+   * Retrieves the historical snapshots for a product from the indexer
    *
    * @param params
    */
@@ -176,7 +176,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Retrieves the historical snapshots for a market from the indexer
+   * Retrieves the historical snapshots for a market from the indexer
    *
    * @param params
    */
@@ -185,7 +185,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * @description Retrieves the historical snapshots for multiple products from the indexer
+   * Retrieves the historical snapshots for multiple products from the indexer
    *
    * @param params
    */
