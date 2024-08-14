@@ -34,10 +34,5 @@
   "devDependencies": {
     "ethers": "*"
   },
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md",
-    "displayName": "Vertex Trigger Server Utils"
-  },
   "gitHead": "88119393c0d18cf3be1578e2a3a60b10e18b09f6"
 }
