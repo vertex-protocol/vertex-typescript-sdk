@@ -37,6 +37,11 @@ export default [
       'react-hooks': reactHooksPlugin,
       'prettier': prettierPlugin,
     },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
     rules: {
       ...js.configs.recommended.rules,
       ...tsPlugin.configs['eslint-recommended'].rules,
