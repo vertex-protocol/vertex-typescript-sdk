@@ -97,7 +97,7 @@ export function getVertexEIP712Types(
         TransferQuote: [
           { name: 'sender', type: 'bytes32' },
           { name: 'recipient', type: 'bytes32' },
-          { name: 'amount', type: 'int128' },
+          { name: 'amount', type: 'uint128' },
           { name: 'nonce', type: 'uint64' },
         ],
       };

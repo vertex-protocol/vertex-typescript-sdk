@@ -446,7 +446,7 @@ async function fullSanity(context: RunContext) {
     }),
     subaccountOwner: signer.address,
     subaccountName: 'default',
-    amount: toFixedPoint(50, 18), // amount must be x18
+    amount: toFixedPoint(50), // amount must be x18
     verifyingAddr: endpointAddr,
   });
   prettyPrint('Done transferring quote', transferQuoteResult);
