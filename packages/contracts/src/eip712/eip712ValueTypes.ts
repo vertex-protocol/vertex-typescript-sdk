@@ -8,6 +8,7 @@ import {
   EIP712OrderParams,
   EIP712CancelProductOrdersParams,
   EIP712WithdrawCollateralParams,
+  EIP712TransferQuoteParams,
 } from './signatureParamTypes';
 import { BigNumberish } from 'ethers';
 
@@ -51,6 +52,9 @@ export type EIP712ProductOrdersCancellationValues =
 
 export type EIP712LinkSignerValues = WithEIP712Sender<EIP712LinkSignerParams>;
 
+export type EIP712TransferQuoteValues =
+  WithEIP712Sender<EIP712TransferQuoteParams>;
+
 /**
  * All possible requests to be signed, to the EIP712 value interface
  */
@@ -64,4 +68,5 @@ export interface SignableRequestTypeToEIP712Values {
   cancel_product_orders: EIP712ProductOrdersCancellationValues;
   liquidate_subaccount: EIP712LiquidateSubaccountValues;
   link_signer: EIP712LinkSignerValues;
+  transfer_quote: EIP712TransferQuoteValues;
 }

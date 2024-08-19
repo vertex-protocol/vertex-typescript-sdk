@@ -6,6 +6,7 @@ import {
   EIP712LiquidateSubaccountParams,
   EIP712MintLpParams,
   EIP712OrderParams,
+  EIP712TransferQuoteParams,
   EIP712WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import { BigNumberish } from 'ethers';
@@ -79,6 +80,9 @@ export type EngineCancelProductOrdersParams =
 export type EngineLinkSignerParams =
   WithBaseEngineExecuteParams<EIP712LinkSignerParams>;
 
+export type EngineTransferQuoteParams =
+  WithBaseEngineExecuteParams<EIP712TransferQuoteParams>;
+
 export interface EngineExecuteRequestParamsByType {
   liquidate_subaccount: EngineLiquidateSubaccountParams;
   mint_lp: EngineMintLpParams;
@@ -89,6 +93,7 @@ export interface EngineExecuteRequestParamsByType {
   cancel_and_place: EngineCancelAndPlaceParams;
   cancel_product_orders: EngineCancelProductOrdersParams;
   link_signer: EngineLinkSignerParams;
+  transfer_quote: EngineTransferQuoteParams;
 }
 
 export type EnginePlaceOrderResult =

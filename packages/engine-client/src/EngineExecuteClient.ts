@@ -96,4 +96,13 @@ export class EngineExecuteClient extends EngineBaseClient {
       await this.payloadBuilder.buildLinkSignerPayload(params),
     );
   }
+
+  async transferQuote(
+    params: EngineExecuteRequestParamsByType['transfer_quote'],
+  ) {
+    return this.execute(
+      'transfer_quote',
+      await this.payloadBuilder.buildTransferQuotePayload(params),
+    );
+  }
 }

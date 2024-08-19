@@ -437,6 +437,19 @@ async function fullSanity(context: RunContext) {
       );
     }
   });
+
+  const transferQuoteResult = await client.transferQuote({
+    chainId,
+    recipient: subaccountToHex({
+      subaccountOwner: signer.address,
+      subaccountName: 'transfer1',
+    }),
+    subaccountOwner: signer.address,
+    subaccountName: 'default',
+    amount: toFixedPoint(50, 18), // amount must be x18
+    verifyingAddr: endpointAddr,
+  });
+  prettyPrint('Done transferring quote', transferQuoteResult);
 }
 
 runWithContext(fullSanity);
