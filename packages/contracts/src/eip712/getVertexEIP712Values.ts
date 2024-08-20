@@ -222,7 +222,10 @@ function getTransferQuoteValues(
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
-    recipient: params.recipient,
+    recipient: subaccountToHex({
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.recipientName,
+    }),
     amount: BigInt(params.amount).toString(),
     nonce: BigInt(params.nonce).toString(),
   };

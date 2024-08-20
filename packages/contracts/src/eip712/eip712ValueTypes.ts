@@ -52,8 +52,13 @@ export type EIP712ProductOrdersCancellationValues =
 
 export type EIP712LinkSignerValues = WithEIP712Sender<EIP712LinkSignerParams>;
 
-export type EIP712TransferQuoteValues =
-  WithEIP712Sender<EIP712TransferQuoteParams>;
+export type EIP712TransferQuoteValues = Omit<
+  WithEIP712Sender<EIP712TransferQuoteParams>,
+  'recipientName'
+> & {
+  // Hex encoded bytes32
+  recipient: string;
+};
 
 /**
  * All possible requests to be signed, to the EIP712 value interface
