@@ -75,8 +75,7 @@ export interface EIP712LinkSignerParams extends Subaccount {
 }
 
 export interface EIP712TransferQuoteParams extends Subaccount {
-  // Recipient subaccount name
-  recipientName: string;
+  recipientSubaccountName: string;
   amount: BigNumberish;
   nonce: string;
 }

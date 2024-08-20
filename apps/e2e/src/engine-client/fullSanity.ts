@@ -440,7 +440,7 @@ async function fullSanity(context: RunContext) {
 
   const transferQuoteResult = await client.transferQuote({
     chainId,
-    recipientName: 'transfer1',
+    recipientSubaccountName: 'transfer1',
     subaccountOwner: signer.address,
     subaccountName: 'default',
     amount: toFixedPoint(50), // amount must be x18

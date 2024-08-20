@@ -54,7 +54,7 @@ export type EIP712LinkSignerValues = WithEIP712Sender<EIP712LinkSignerParams>;
 
 export type EIP712TransferQuoteValues = Omit<
   WithEIP712Sender<EIP712TransferQuoteParams>,
-  'recipientName'
+  'recipientSubaccountName'
 > & {
   // Hex encoded bytes32
   recipient: string;
