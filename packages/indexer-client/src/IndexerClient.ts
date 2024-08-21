@@ -41,6 +41,7 @@ export class IndexerClient extends IndexerBaseClient {
   ): Promise<GetIndexerSubaccountMatchEventsResponse> {
     const {
       startCursor,
+      maxTimestampInclusive,
       limit: requestedLimit,
       subaccountName,
       subaccountOwner,
@@ -49,6 +50,7 @@ export class IndexerClient extends IndexerBaseClient {
     const limit = requestedLimit + 1;
     const events = await this.getMatchEvents({
       startCursor,
+      maxTimestampInclusive,
       limit,
       subaccount: { subaccountName, subaccountOwner },
       productIds: params.productIds,
@@ -62,6 +64,7 @@ export class IndexerClient extends IndexerBaseClient {
   ): Promise<GetIndexerSubaccountLpEventsResponse> {
     const {
       startCursor,
+      maxTimestampInclusive,
       limit: requestedLimit,
       subaccountName,
       subaccountOwner,
@@ -72,6 +75,7 @@ export class IndexerClient extends IndexerBaseClient {
     const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
+      maxTimestampInclusive,
       eventTypes: ['mint_lp', 'burn_lp'],
       limit: {
         type: 'txs',
@@ -146,6 +150,7 @@ export class IndexerClient extends IndexerBaseClient {
   ): Promise<GetIndexerSubaccountCollateralEventsResponse> {
     const {
       startCursor,
+      maxTimestampInclusive,
       limit: requestedLimit,
       subaccountName,
       subaccountOwner,
@@ -154,6 +159,7 @@ export class IndexerClient extends IndexerBaseClient {
     const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
+      maxTimestampInclusive,
       eventTypes: params.eventTypes ?? [
         'deposit_collateral',
         'withdraw_collateral',
@@ -189,6 +195,7 @@ export class IndexerClient extends IndexerBaseClient {
   ): Promise<GetIndexerPaginatedOrdersResponse> {
     const {
       startCursor,
+      maxTimestampInclusive,
       limit: requestedLimit,
       subaccountName,
       subaccountOwner,
@@ -198,6 +205,7 @@ export class IndexerClient extends IndexerBaseClient {
     const limit = requestedLimit + 1;
     const baseResponse = await this.getOrders({
       startCursor,
+      maxTimestampInclusive,
       subaccount: { subaccountName, subaccountOwner },
       limit,
       productIds,
@@ -220,6 +228,7 @@ export class IndexerClient extends IndexerBaseClient {
   ): Promise<GetIndexerSubaccountSettlementEventsResponse> {
     const {
       startCursor,
+      maxTimestampInclusive,
       limit: requestedLimit,
       subaccountName,
       subaccountOwner,
@@ -229,6 +238,7 @@ export class IndexerClient extends IndexerBaseClient {
     const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
+      maxTimestampInclusive,
       eventTypes: ['settle_pnl'],
       limit: {
         type: 'txs',
@@ -266,6 +276,7 @@ export class IndexerClient extends IndexerBaseClient {
   ): Promise<GetIndexerSubaccountLiquidationEventsResponse> {
     const {
       startCursor,
+      maxTimestampInclusive,
       limit: requestedLimit,
       subaccountName,
       subaccountOwner,
@@ -278,6 +289,7 @@ export class IndexerClient extends IndexerBaseClient {
     const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
+      maxTimestampInclusive,
       eventTypes: ['liquidate_subaccount'],
       limit: {
         type: 'txs',
