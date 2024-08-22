@@ -235,7 +235,7 @@ async function fullSanity(context: RunContext) {
 
   const withdrawEvents = await client.getPaginatedSubaccountCollateralEvents({
     limit: 1,
-    startCursor: '507204',
+    maxTimestampInclusive: nowInSeconds() - TimeInSeconds.DAY,
     subaccountName: subaccount.subaccountName,
     subaccountOwner: subaccount.subaccountOwner,
     eventTypes: ['withdraw_collateral'],

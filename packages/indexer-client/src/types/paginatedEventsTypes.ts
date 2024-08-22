@@ -29,7 +29,14 @@ export interface IndexerPaginationMeta {
 
 export type WithPaginationMeta = { meta: IndexerPaginationMeta };
 
-type BaseSubaccountPaginationParams = Subaccount & IndexerPaginationParams;
+type BaseSubaccountPaginationParams = Subaccount &
+  IndexerPaginationParams & {
+    /**
+     * If provided, only events with a timestamp in seconds <= this value will be returned
+     * Specifying `startCursor` will supercede this value
+     */
+    maxTimestampInclusive?: number;
+  };
 
 export interface BaseIndexerPaginatedEvent {
   timestamp: BigDecimal;
@@ -186,9 +193,11 @@ export type GetIndexerSubaccountSettlementEventsResponse =
  * Interest / Funding
  */
 
-export type GetIndexerSubaccountInterestFundingPaymentsParams =
-  BaseSubaccountPaginationParams &
-    Pick<GetIndexerInterestFundingPaymentsParams, 'productIds' | 'startCursor'>;
+export type GetIndexerSubaccountInterestFundingPaymentsParams = Omit<
+  BaseSubaccountPaginationParams,
+  'maxTimestampInclusive'
+> &
+  Pick<GetIndexerInterestFundingPaymentsParams, 'productIds' | 'startCursor'>;
 
 export interface GetIndexerPaginatedInterestFundingPaymentsResponse
   extends GetIndexerInterestFundingPaymentsResponse {
