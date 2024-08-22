@@ -272,6 +272,30 @@ export class EngineExecuteBuilder {
     };
   }
 
+  /**
+   * Builds server payload for the `transfer_quote` execute action.
+   *
+   * @param clientParams Client TransferQuote params.
+   * @returns `transfer_quote` payload
+   */
+  async buildTransferQuotePayload(
+    clientParams: EngineExecuteRequestParamsByType['transfer_quote'],
+  ): Promise<EngineServerExecuteRequestByType['transfer_quote']> {
+    const nonce = await this.getTxNonceIfNeeded(clientParams);
+    const paramsWithNonce = { ...clientParams, nonce };
+
+    const tx = getVertexEIP712Values('transfer_quote', paramsWithNonce);
+    const signature = await this.getSignatureIfNeeded(
+      'transfer_quote',
+      paramsWithNonce,
+    );
+
+    return {
+      tx,
+      signature,
+    };
+  }
+
   protected async getSignatureIfNeeded<T extends SignableRequestType>(
     requestType: T,
     paramsWithNonce: SignatureParams & SignableRequestTypeToParams[T],

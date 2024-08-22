@@ -7,6 +7,7 @@ import {
   EIP712OrderParams,
   EIP712OrderValues,
   EIP712ProductOrdersCancellationValues,
+  EIP712TransferQuoteValues,
   EIP712WithdrawCollateralValues,
   SignedTx,
 } from '@vertex-protocol/contracts';
@@ -30,6 +31,7 @@ export interface EngineServerExecuteResponseDataByType {
   cancel_orders: EngineServerCancelOrdersResponse;
   cancel_and_place: EngineServerPlaceOrderResponse;
   link_signer: null;
+  transfer_quote: null;
 }
 
 export interface EngineServerExecuteSuccessResult<
@@ -106,6 +108,7 @@ export interface EngineServerExecuteRequestByType {
     }
   >;
   link_signer: SignedTx<EIP712LinkSignerValues>;
+  transfer_quote: SignedTx<EIP712TransferQuoteValues>;
 }
 
 export type EngineServerExecuteRequestType =

@@ -5,7 +5,11 @@ import {
   Subaccount,
 } from '@vertex-protocol/contracts';
 import { Wallet } from 'ethers';
-import { LinkSignerParams, LiquidateSubaccountParams } from './types';
+import {
+  LinkSignerParams,
+  LiquidateSubaccountParams,
+  TransferQuoteParams,
+} from './types';
 
 export class SubaccountExecuteAPI extends BaseVertexAPI {
   /**
@@ -29,6 +33,20 @@ export class SubaccountExecuteAPI extends BaseVertexAPI {
    */
   async linkSigner(params: LinkSignerParams) {
     return this.context.engineClient.linkSigner({
+      ...params,
+      subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
+      verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
+      chainId: await this.getSignerChainIdIfNeeded(params),
+    });
+  }
+
+  /**
+   * Transfers quote between subaccounts under the same wallet.
+   *
+   * @param params
+   */
+  async transferQuote(params: TransferQuoteParams) {
+    return this.context.engineClient.transferQuote({
       ...params,
       subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
       verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
