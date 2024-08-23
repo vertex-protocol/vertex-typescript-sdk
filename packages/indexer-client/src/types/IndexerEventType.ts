@@ -5,4 +5,5 @@ export type IndexerEventType =
   | 'settle_pnl'
   | 'match_orders'
   | 'mint_lp'
-  | 'burn_lp';
+  | 'burn_lp'
+  | 'transfer_quote';
