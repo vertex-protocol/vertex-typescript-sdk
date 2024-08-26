@@ -45,5 +45,10 @@ export function getProvider(chainEnv: ChainEnv): Provider {
         name: 'sei',
         chainId: 1329,
       });
+    case 'baseTestnet':
+      return new JsonRpcProvider('https://sepolia.base.org', {
+        name: 'base-sepolia',
+        chainId: 84532,
+      });
   }
 }

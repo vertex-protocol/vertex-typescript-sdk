@@ -7,4 +7,5 @@ export type ChainEnv =
   | 'mantleTestnet'
   | 'mantle'
   | 'seiTestnet'
-  | 'sei';
+  | 'sei'
+  | 'baseTestnet';

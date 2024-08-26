@@ -146,6 +146,14 @@ export async function createClientContext(
         triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.sei,
       };
     }
+    if (opts === 'baseTestnet') {
+      return {
+        contractAddresses: VERTEX_DEPLOYMENTS.baseTestnet,
+        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.baseTestnet,
+        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.baseTestnet,
+        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.baseTestnet,
+      };
+    }
     if (opts === 'local') {
       return {
         contractAddresses: VERTEX_DEPLOYMENTS.local,

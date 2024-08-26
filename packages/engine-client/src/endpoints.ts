@@ -10,6 +10,7 @@ export const ENGINE_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   mantle: 'https://gateway.mantle-prod.vertexprotocol.com/v1',
   seiTestnet: 'https://gateway.sei-test.vertexprotocol.com/v1',
   sei: 'https://gateway.sei-prod.vertexprotocol.com/v1',
+  baseTestnet: 'https://gateway.base-test.vertexprotocol.com/v1',
 };
 
 export const ENGINE_WS_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
@@ -22,6 +23,7 @@ export const ENGINE_WS_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   mantle: 'wss://gateway.mantle-prod.vertexprotocol.com/v1/ws',
   seiTestnet: 'wss://gateway.sei-test.vertexprotocol.com/v1/ws',
   sei: 'wss://gateway.sei-prod.vertexprotocol.com/v1/ws',
+  baseTestnet: 'wss://gateway.base-test.vertexprotocol.com/v1/ws',
 };
 
 export const ENGINE_WS_SUBSCRIPTION_CLIENT_ENDPOINTS: Record<ChainEnv, string> =
@@ -36,4 +38,5 @@ export const ENGINE_WS_SUBSCRIPTION_CLIENT_ENDPOINTS: Record<ChainEnv, string> =
     mantle: 'wss://gateway.mantle-prod.vertexprotocol.com/v1/subscribe',
     seiTestnet: 'wss://gateway.sei-test.vertexprotocol.com/v1/subscribe',
     sei: 'wss://gateway.sei-prod.vertexprotocol.com/v1/subscribe',
+    baseTestnet: 'wss://gateway.base-test.vertexprotocol.com/v1/subscribe',
   };
