@@ -7,6 +7,7 @@ import MantleSepoliaCoreDeployment from './deployments/core/deployment.mantleSep
 import MantleMainnetCoreDeployment from './deployments/core/deployment.mantleMainnet.json';
 import SeiTestnetCoreDeployment from './deployments/core/deployment.seiTestnet.json';
 import SeiMainnetCoreDeployment from './deployments/core/deployment.seiMainnet.json';
+import BaseTestnetCoreDeployment from './deployments/core/deployment.baseTestnet.json';
 
 import ArbitrumOneLbaDeployment from './deployments/vrtx/deployment.arbitrumOne.json';
 import ArbitrumSepoliaLbaDeployment from './deployments/vrtx/deployment.arbitrumSepolia.json';
@@ -17,6 +18,7 @@ import MantleSepoliaLbaDeployment from './deployments/vrtx/deployment.mantleSepo
 import MantleMainnetLbaDeployment from './deployments/vrtx/deployment.mantleMainnet.json';
 import SeiTestnetLbaDeployment from './deployments/vrtx/deployment.seiTestnet.json';
 import SeiMainnetLbaDeployment from './deployments/vrtx/deployment.seiMainnet.json';
+import BaseTestnetLbaDeployment from './deployments/vrtx/deployment.baseTestnet.json';
 
 import { ChainEnv } from './types';
 import { VertexContracts } from './vertexContracts';
@@ -60,6 +62,10 @@ export const VERTEX_DEPLOYMENTS: Record<ChainEnv, VertexDeploymentAddresses> = {
   sei: {
     ...SeiMainnetLbaDeployment,
     ...SeiMainnetCoreDeployment,
+  },
+  baseTestnet: {
+    ...BaseTestnetLbaDeployment,
+    ...BaseTestnetCoreDeployment,
   },
   local: {
     ...LocalLbaDeployment,
