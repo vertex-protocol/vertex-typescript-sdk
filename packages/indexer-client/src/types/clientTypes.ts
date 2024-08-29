@@ -689,14 +689,10 @@ export interface GetIndexerLeaderboardParticipantParams {
   subaccount: Subaccount;
 }
 
-// contestId -> IndexerLeaderboardParticipant;
-export type IndexerTieredLeaderboardParticipant = Record<
-  string,
-  IndexerLeaderboardParticipant
->;
-
 export interface GetIndexerLeaderboardParticipantResponse {
-  participant: IndexerTieredLeaderboardParticipant;
+  // If the subaccount is not eligible for a given contest, it would not be included in the response.
+  // contestId -> IndexerLeaderboardParticipant
+  participant: Record<string, IndexerLeaderboardParticipant>;
 }
 
 export interface GetIndexerLeaderboardContestsParams {

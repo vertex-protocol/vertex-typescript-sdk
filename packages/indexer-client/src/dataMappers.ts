@@ -41,12 +41,10 @@ import {
   IndexerServerProduct,
   IndexerServerProductPayment,
   IndexerServerRewardsEpoch,
-  IndexerServerTieredLeaderboardPosition,
   IndexerServerTx,
   IndexerSpotBalance,
   IndexerSubaccountFoundationTakerRewardsForProduct,
   IndexerSubaccountRewardsForProduct,
-  IndexerTieredLeaderboardParticipant,
 } from './types';
 
 export function mapIndexerServerProduct(product: IndexerServerProduct): Market {
@@ -308,17 +306,6 @@ export function mapIndexerLeaderboardPosition(
     volume: position.volume ? toBigDecimal(position.volume) : undefined,
     updateTime: toBigDecimal(position.update_time),
   };
-}
-
-export function mapIndexerTieredLeaderboardPosition(
-  tieredPosition: IndexerServerTieredLeaderboardPosition,
-): IndexerTieredLeaderboardParticipant {
-  return Object.fromEntries(
-    Object.entries(tieredPosition).map(([contestId, position]) => [
-      contestId,
-      mapIndexerLeaderboardPosition(position),
-    ]),
-  );
 }
 
 export function mapIndexerLeaderboardContest(

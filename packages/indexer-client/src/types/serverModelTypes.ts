@@ -298,12 +298,6 @@ export interface IndexerServerLeaderboardPosition {
   update_time: string;
 }
 
-// contest_id -> IndexerServerLeaderboardPosition
-export type IndexerServerTieredLeaderboardPosition = Record<
-  string,
-  IndexerServerLeaderboardPosition
->;
-
 export interface IndexerServerLeaderboardContest {
   contest_id: number;
   start_time: string;

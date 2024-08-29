@@ -17,7 +17,6 @@ import {
   IndexerServerProductSnapshot,
   IndexerServerRewardsEpoch,
   IndexerServerTakerRewardsEpoch,
-  IndexerServerTieredLeaderboardPosition,
   IndexerServerTx,
 } from './serverModelTypes';
 import { VertexWithdrawCollateralTx } from './VertexTx';
@@ -405,7 +404,9 @@ export interface IndexerServerLeaderboardResponse {
 }
 
 export interface IndexerServerLeaderboardRankResponse {
-  positions: IndexerServerTieredLeaderboardPosition;
+  // If the subaccount is not eligible for a given contest, it would not be included in the response.
+  // contestId -> IndexerServerLeaderboardPosition
+  positions: Record<string, IndexerServerLeaderboardPosition>;
 }
 
 export interface IndexerServerLeaderboardContestsResponse {

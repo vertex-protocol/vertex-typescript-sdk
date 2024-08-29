@@ -20,7 +20,6 @@ import {
   mapIndexerProductPayment,
   mapIndexerRewardsEpoch,
   mapIndexerServerProduct,
-  mapIndexerTieredLeaderboardPosition,
 } from './dataMappers';
 import {
   Candlestick,
@@ -86,6 +85,7 @@ import {
   GetIndexerVrtxTokenInfoParams,
   GetIndexerVrtxTokenInfoResponse,
   IndexerEventWithTx,
+  IndexerLeaderboardParticipant,
   IndexerMarketSnapshot,
   IndexerMatchEvent,
   IndexerOraclePrice,
@@ -835,7 +835,9 @@ export class IndexerBaseClient {
     });
 
     return {
-      participant: mapIndexerTieredLeaderboardPosition(baseResponse.positions),
+      participant: mapValues(baseResponse.positions, (position) =>
+        mapIndexerLeaderboardPosition(position),
+      ),
     };
   }
 
