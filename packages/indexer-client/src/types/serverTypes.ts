@@ -17,6 +17,7 @@ import {
   IndexerServerProductSnapshot,
   IndexerServerRewardsEpoch,
   IndexerServerTakerRewardsEpoch,
+  IndexerServerTieredLeaderboardPosition,
   IndexerServerTx,
 } from './serverModelTypes';
 import { VertexWithdrawCollateralTx } from './VertexTx';
@@ -187,7 +188,7 @@ export interface IndexerServerLeaderboardParams {
 
 export interface IndexerServerLeaderboardRankParams {
   subaccount: string;
-  contest_id: number;
+  contest_ids: number[];
 }
 
 export interface IndexerServerLeaderboardContestsParams {
@@ -404,7 +405,7 @@ export interface IndexerServerLeaderboardResponse {
 }
 
 export interface IndexerServerLeaderboardRankResponse {
-  position: IndexerServerLeaderboardPosition | null;
+  positions: IndexerServerTieredLeaderboardPosition;
 }
 
 export interface IndexerServerLeaderboardContestsResponse {

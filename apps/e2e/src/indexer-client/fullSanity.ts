@@ -255,7 +255,7 @@ async function fullSanity(context: RunContext) {
   const leaderboard = await client.getLeaderboard({
     limit: 5,
     startCursor: undefined,
-    contestId: 1,
+    contestId: 8,
     rankType: 'pnl',
   });
 
@@ -266,7 +266,7 @@ async function fullSanity(context: RunContext) {
       subaccountName: subaccount.subaccountName,
       subaccountOwner: subaccount.subaccountOwner,
     },
-    contestId: 1,
+    contestIds: [5, 6, 7],
   });
 
   prettyPrint('Leaderboard Participant', leaderboardParticipant);

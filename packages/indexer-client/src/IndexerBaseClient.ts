@@ -20,6 +20,7 @@ import {
   mapIndexerProductPayment,
   mapIndexerRewardsEpoch,
   mapIndexerServerProduct,
+  mapIndexerTieredLeaderboardPosition,
 } from './dataMappers';
 import {
   Candlestick,
@@ -830,13 +831,11 @@ export class IndexerBaseClient {
   ): Promise<GetIndexerLeaderboardParticipantResponse> {
     const baseResponse = await this.query('leaderboard_rank', {
       subaccount: subaccountToHex(params.subaccount),
-      contest_id: params.contestId,
+      contest_ids: params.contestIds,
     });
 
     return {
-      participant: baseResponse.position
-        ? mapIndexerLeaderboardPosition(baseResponse.position)
-        : null,
+      participant: mapIndexerTieredLeaderboardPosition(baseResponse.positions),
     };
   }
 

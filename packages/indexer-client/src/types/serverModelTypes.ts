@@ -294,8 +294,15 @@ export interface IndexerServerLeaderboardPosition {
   roi: string;
   roi_rank: string;
   account_value: string;
+  volume?: string;
   update_time: string;
 }
+
+// contest_id -> IndexerServerLeaderboardPosition
+export type IndexerServerTieredLeaderboardPosition = Record<
+  string,
+  IndexerServerLeaderboardPosition
+>;
 
 export interface IndexerServerLeaderboardContest {
   contest_id: number;
@@ -304,6 +311,8 @@ export interface IndexerServerLeaderboardContest {
   timeframe: string;
   count: string;
   threshold: string;
+  volume_threshold: string;
+  product_ids: number[];
   last_updated: string;
   active: boolean;
 }

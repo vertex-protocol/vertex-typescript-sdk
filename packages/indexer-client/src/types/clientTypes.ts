@@ -673,6 +673,9 @@ export interface IndexerLeaderboardParticipant {
   roiRank: BigDecimal;
   // Float indicating the ending account value at the time the snapshot was taken i.e: at updateTime
   accountValue: BigDecimal;
+  // Float indicating the trading volume at the time the snapshot was taken i.e: at updateTime.
+  // Null for contests that have no volume requirement.
+  volume?: BigDecimal;
   // Seconds
   updateTime: BigDecimal;
 }
@@ -682,13 +685,18 @@ export interface GetIndexerLeaderboardResponse {
 }
 
 export interface GetIndexerLeaderboardParticipantParams {
-  contestId: number;
+  contestIds: number[];
   subaccount: Subaccount;
 }
 
+// contestId -> IndexerLeaderboardParticipant;
+export type IndexerTieredLeaderboardParticipant = Record<
+  string,
+  IndexerLeaderboardParticipant
+>;
+
 export interface GetIndexerLeaderboardParticipantResponse {
-  // Participant is `null` when the subaccount is not eligible for the provided contest.
-  participant: IndexerLeaderboardParticipant | null;
+  participant: IndexerTieredLeaderboardParticipant;
 }
 
 export interface GetIndexerLeaderboardContestsParams {
@@ -710,6 +718,10 @@ export interface IndexerLeaderboardContest {
   totalParticipants: BigDecimal;
   // Float indicating the min account value required to be eligible for this contest e.g: 250.0
   minRequiredAccountValue: BigDecimal;
+  // Float indicating the min trading volume required to be eligible for this contest e.g: 1000.0
+  minRequiredVolume: BigDecimal;
+  // For market-specific contests, only the volume from these products will be counted.
+  requiredProductIds: number[];
   active: boolean;
 }
 
