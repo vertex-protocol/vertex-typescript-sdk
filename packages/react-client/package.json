@@ -35,7 +35,7 @@
     "@tanstack/react-query": "^5",
     "@vertex-protocol/client": "0.47.0",
     "bignumber.js": "^9.1.2",
-    "ethers": "6.12.1",
+    "ethers": "6.13.1",
     "react": "^18",
     "viem": "^2.17",
     "wagmi": "^2.10"
