@@ -85,6 +85,7 @@ import {
   GetIndexerVrtxTokenInfoParams,
   GetIndexerVrtxTokenInfoResponse,
   IndexerEventWithTx,
+  IndexerLeaderboardParticipant,
   IndexerMarketSnapshot,
   IndexerMatchEvent,
   IndexerOraclePrice,
@@ -830,13 +831,13 @@ export class IndexerBaseClient {
   ): Promise<GetIndexerLeaderboardParticipantResponse> {
     const baseResponse = await this.query('leaderboard_rank', {
       subaccount: subaccountToHex(params.subaccount),
-      contest_id: params.contestId,
+      contest_ids: params.contestIds,
     });
 
     return {
-      participant: baseResponse.position
-        ? mapIndexerLeaderboardPosition(baseResponse.position)
-        : null,
+      participant: mapValues(baseResponse.positions, (position) =>
+        mapIndexerLeaderboardPosition(position),
+      ),
     };
   }
 

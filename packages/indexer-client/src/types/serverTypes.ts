@@ -187,7 +187,7 @@ export interface IndexerServerLeaderboardParams {
 
 export interface IndexerServerLeaderboardRankParams {
   subaccount: string;
-  contest_id: number;
+  contest_ids: number[];
 }
 
 export interface IndexerServerLeaderboardContestsParams {
@@ -404,7 +404,9 @@ export interface IndexerServerLeaderboardResponse {
 }
 
 export interface IndexerServerLeaderboardRankResponse {
-  position: IndexerServerLeaderboardPosition | null;
+  // If the subaccount is not eligible for a given contest, it would not be included in the response.
+  // contestId -> IndexerServerLeaderboardPosition
+  positions: Record<string, IndexerServerLeaderboardPosition>;
 }
 
 export interface IndexerServerLeaderboardContestsResponse {

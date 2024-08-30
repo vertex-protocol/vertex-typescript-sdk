@@ -294,6 +294,7 @@ export interface IndexerServerLeaderboardPosition {
   roi: string;
   roi_rank: string;
   account_value: string;
+  volume?: string;
   update_time: string;
 }
 
@@ -304,6 +305,8 @@ export interface IndexerServerLeaderboardContest {
   timeframe: string;
   count: string;
   threshold: string;
+  volume_threshold: string;
+  product_ids: number[];
   last_updated: string;
   active: boolean;
 }
