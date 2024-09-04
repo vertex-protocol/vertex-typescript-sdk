@@ -10,6 +10,7 @@ import {
   seiTestnet,
   sei,
   baseSepolia,
+  base,
 } from 'wagmi/chains';
 
 export const PRIMARY_CHAINS = [
@@ -24,6 +25,7 @@ export const PRIMARY_CHAINS = [
   seiTestnet,
   sei,
   baseSepolia,
+  base,
 ] as const;
 
 export const PRIMARY_CHAIN_IDS = PRIMARY_CHAINS.map((chain) => chain.id);

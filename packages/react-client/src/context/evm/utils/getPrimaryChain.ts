@@ -10,6 +10,7 @@ import {
   seiTestnet,
   sei,
   baseSepolia,
+  base,
 } from 'wagmi/chains';
 import { PrimaryChain } from '../../../types';
 
@@ -35,5 +36,7 @@ export function getPrimaryChain(chainEnv: ChainEnv): PrimaryChain {
       return sei;
     case 'baseTestnet':
       return baseSepolia;
+    case 'base':
+      return base;
   }
 }
