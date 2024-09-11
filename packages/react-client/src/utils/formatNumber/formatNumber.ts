@@ -14,7 +14,7 @@ export function formatNumber(
     return defaultFallback ?? '-';
   }
 
-  const givenFormatSpecifier = formatSpecifier ?? '~g';
+  const givenFormatSpecifier = formatSpecifier ?? ',~g';
 
   const valueToFormat = toBigDecimal(val ?? defaultValue ?? 0);
   const mappedCustomSpecifier = mapCustomFormatSpecifier(
