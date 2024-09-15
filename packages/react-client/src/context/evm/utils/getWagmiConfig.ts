@@ -24,6 +24,7 @@ export function getWagmiConfig(params: WagmiConfigParams): Config {
     client({ chain }) {
       return createClient({ chain, transport: http() });
     },
+    storage: params.storage,
     ssr: true,
   });
 }

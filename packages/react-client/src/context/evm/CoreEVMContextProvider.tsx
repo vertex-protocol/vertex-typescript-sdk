@@ -9,7 +9,7 @@ import {
 } from 'wagmi';
 import { getChainMetadata } from '../../utils';
 import { EVMContext } from './EVMContext';
-import { useDidInitializeWalletConnection, useEthersSigner } from './hooks';
+import { useEthersSigner } from './hooks';
 import {
   ChainStatus,
   ConnectionStatus,
@@ -52,7 +52,6 @@ export function CoreEVMContextProvider({
     return getPrimaryChain(primaryChainEnv);
   }, [primaryChainEnv]);
 
-  const didInitializeWalletConnection = useDidInitializeWalletConnection();
   // Wagmi does not give access to the active connector in the `connecting` state, so we store this state separately
   const [lastConnectRequestConnector, setLastConnectRequestConnector] =
     useState<Connector>();
@@ -75,6 +74,8 @@ export function CoreEVMContextProvider({
     connector: activeConnector,
     chain: connectedChain,
   } = useAccount();
+
+  console.log(connectedAccountStatus, connectedAddress);
 
   const { disconnect } = useDisconnect();
   const { connect: baseConnect, connectors } = useConnect();
@@ -112,8 +113,8 @@ export function CoreEVMContextProvider({
       return {
         type: 'reconnecting',
         connector: activeConnector,
-        address: undefined,
-        signer: undefined,
+        address: exposedAddress,
+        signer,
       };
     }
     if (connectedAccountStatus === 'connecting') {
@@ -126,7 +127,7 @@ export function CoreEVMContextProvider({
     }
 
     return {
-      type: didInitializeWalletConnection ? 'disconnected' : 'initializing',
+      type: 'disconnected',
       connector: activeConnector,
       address: undefined,
       signer: undefined,
@@ -135,7 +136,6 @@ export function CoreEVMContextProvider({
     readOnlyAddressOverride,
     connectedAddress,
     connectedAccountStatus,
-    didInitializeWalletConnection,
     activeConnector,
     signer,
     lastConnectRequestConnector,

@@ -7,8 +7,8 @@ import { Connector } from 'wagmi';
 export type ConnectionStatus =
   | {
       type: 'initializing' | 'disconnected' | 'reconnecting' | 'connecting';
-      address: undefined;
-      signer: undefined;
+      address: string | undefined;
+      signer: JsonRpcSigner | undefined;
       connector: Connector | undefined;
     }
   | {
