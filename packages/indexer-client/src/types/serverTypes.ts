@@ -168,6 +168,12 @@ export interface IndexerServerBlastPointsParams {
   address: string;
 }
 
+export interface IndexerServerBlitzPointsLeaderboardParams {
+  epoch: number;
+  start?: number | string;
+  limit?: number | string;
+}
+
 export interface IndexerServerBlitzInitialDropConditionsParams {
   address: string;
 }
@@ -208,6 +214,7 @@ export interface IndexerServerQueryRequestByType {
   foundation_taker_rewards: IndexerServerFoundationTakerRewardsParams;
   blast_points: IndexerServerBlastPointsParams;
   blitz_points: IndexerServerBlitzPointsParams;
+  blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardParams;
   candlesticks: IndexerServerCandlesticksParams;
   events: IndexerServerEventsParams;
   funding_rate: IndexerServerFundingRateParams;
@@ -381,6 +388,15 @@ export interface IndexerServerBlitzPointsResponse {
   }>;
 }
 
+export interface IndexerServerBlitzPointsLeaderboardResponse {
+  positions: Array<{
+    address: string;
+    trading_point: string;
+    referral_point: string;
+    rank: string;
+  }>;
+}
+
 export interface IndexerServerBlastPointsResponse {
   points: string;
   gold: string;
@@ -427,6 +443,7 @@ export interface IndexerServerQueryResponseByType {
   foundation_taker_rewards: IndexerServerFoundationTakerRewardsResponse;
   blast_points: IndexerServerBlastPointsResponse;
   blitz_points: IndexerServerBlitzPointsResponse;
+  blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardResponse;
   candlesticks: IndexerServerCandlesticksResponse;
   events: IndexerServerEventsResponse;
   funding_rate: IndexerServerFundingRateResponse;

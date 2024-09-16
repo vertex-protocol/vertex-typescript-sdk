@@ -626,6 +626,21 @@ export interface GetIndexerBlitzInitialDropConditionsResponse {
   tweeted: boolean;
 }
 
+export interface GetIndexerBlitzPointsLeaderboardParams {
+  epoch: number;
+  startCursor?: number;
+  limit: number;
+}
+
+export interface GetIndexerBlitzPointsLeaderboardResponse {
+  positions: Array<{
+    rank: BigDecimal;
+    address: string;
+    referralPoints: BigDecimal;
+    tradingPoints: BigDecimal;
+  }>;
+}
+
 /**
  * Maker stats
  */

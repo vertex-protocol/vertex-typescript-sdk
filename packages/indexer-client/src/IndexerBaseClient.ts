@@ -27,6 +27,8 @@ import {
   GetIndexerBlastPointsResponse,
   GetIndexerBlitzInitialDropConditionsParams,
   GetIndexerBlitzInitialDropConditionsResponse,
+  GetIndexerBlitzPointsLeaderboardParams,
+  GetIndexerBlitzPointsLeaderboardResponse,
   GetIndexerBlitzPointsParams,
   GetIndexerBlitzPointsResponse,
   GetIndexerCandlesticksParams,
@@ -85,7 +87,6 @@ import {
   GetIndexerVrtxTokenInfoParams,
   GetIndexerVrtxTokenInfoResponse,
   IndexerEventWithTx,
-  IndexerLeaderboardParticipant,
   IndexerMarketSnapshot,
   IndexerMatchEvent,
   IndexerOraclePrice,
@@ -764,6 +765,33 @@ export class IndexerBaseClient {
     };
   }
 
+  /**
+   * Retrieve blitz points leaderboard
+   */
+  async getBlitzPointsLeaderboard(
+    params: GetIndexerBlitzPointsLeaderboardParams,
+  ): Promise<GetIndexerBlitzPointsLeaderboardResponse> {
+    const baseResponse = await this.query('blitz_points_leaderboard', {
+      limit: params.limit,
+      start: params.startCursor,
+      epoch: params.epoch,
+    });
+
+    console.log(baseResponse);
+
+    return {
+      positions: baseResponse.positions.map(
+        ({ rank, trading_point, referral_point, address }) => {
+          return {
+            rank: toBigDecimal(rank),
+            tradingPoints: toBigDecimal(trading_point),
+            referralPoints: toBigDecimal(referral_point),
+            address,
+          };
+        },
+      ),
+    };
+  }
   /**
    * Retrieve status for initial claim process for Blitz
    */
