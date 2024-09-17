@@ -580,6 +580,7 @@ export interface GetIndexerBlitzPointsParams {
 }
 
 export interface IndexerBlitzPointsEpoch {
+  rank: BigDecimal;
   epoch: number;
   // Start time of the epoch in seconds
   startTime: BigDecimal;

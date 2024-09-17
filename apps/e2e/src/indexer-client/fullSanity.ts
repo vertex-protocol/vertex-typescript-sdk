@@ -97,7 +97,7 @@ async function fullSanity(context: RunContext) {
 
     const blitzPointsLeaderboard = await client.getBlitzPointsLeaderboard({
       startCursor: undefined,
-      epoch: 2,
+      epoch: 1,
       limit: 5,
     });
 

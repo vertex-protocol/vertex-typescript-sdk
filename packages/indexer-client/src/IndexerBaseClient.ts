@@ -738,9 +738,17 @@ export class IndexerBaseClient {
       referralPoints: toBigDecimal(baseResponse.referral_points),
       tradingPoints: toBigDecimal(baseResponse.trading_points),
       phase2Epochs: baseResponse.phase2_points.map(
-        ({ epoch, period, referral_points, start_time, trading_points }) => {
+        ({
+          epoch,
+          rank,
+          period,
+          referral_points,
+          start_time,
+          trading_points,
+        }) => {
           return {
             epoch,
+            rank: toBigDecimal(rank),
             startTime: toBigDecimal(start_time),
             period: toBigDecimal(period),
             tradingPoints: toBigDecimal(trading_points),
@@ -777,15 +785,13 @@ export class IndexerBaseClient {
       epoch: params.epoch,
     });
 
-    console.log(baseResponse);
-
     return {
       positions: baseResponse.positions.map(
-        ({ rank, trading_point, referral_point, address }) => {
+        ({ rank, trading_points, referral_points, address }) => {
           return {
             rank: toBigDecimal(rank),
-            tradingPoints: toBigDecimal(trading_point),
-            referralPoints: toBigDecimal(referral_point),
+            tradingPoints: toBigDecimal(trading_points),
+            referralPoints: toBigDecimal(referral_points),
             address,
           };
         },

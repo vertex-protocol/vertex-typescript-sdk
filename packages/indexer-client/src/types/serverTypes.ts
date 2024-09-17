@@ -379,6 +379,7 @@ export interface IndexerServerBlitzPointsResponse {
   trading_points: string;
   referral_points: string;
   phase2_points: Array<{
+    rank: string;
     epoch: number;
     // in seconds
     start_time: string;
@@ -391,8 +392,8 @@ export interface IndexerServerBlitzPointsResponse {
 export interface IndexerServerBlitzPointsLeaderboardResponse {
   positions: Array<{
     address: string;
-    trading_point: string;
-    referral_point: string;
+    trading_points: string;
+    referral_points: string;
     rank: string;
   }>;
 }
