@@ -170,8 +170,8 @@ export interface IndexerServerBlastPointsParams {
 
 export interface IndexerServerBlitzPointsLeaderboardParams {
   epoch: number;
-  start?: number | string;
-  limit?: number | string;
+  start?: number;
+  limit?: number;
 }
 
 export interface IndexerServerBlitzInitialDropConditionsParams {
