@@ -136,9 +136,8 @@ async function fullSanity(context: RunContext) {
 
   const perpOrderDigest = getOrderDigest({
     order: perpOrderResult.orderParams,
-    verifyingAddr: await vertexClient.context.engineClient.getOrderbookAddress(
-      4,
-    ),
+    verifyingAddr:
+      await vertexClient.context.engineClient.getOrderbookAddress(4),
     chainId,
   });
 

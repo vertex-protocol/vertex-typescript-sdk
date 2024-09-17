@@ -2,7 +2,6 @@ import { EngineBaseClient } from './EngineBaseClient';
 import {
   encodeSignedOrder,
   MarketWithProduct,
-  subaccountFromHex,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
 import {
@@ -324,8 +323,6 @@ export class EngineQueryClient extends EngineBaseClient {
       }),
       product_ids: params.productIds,
     });
-
-    const subaccount = subaccountFromHex(baseResponse.sender);
 
     return {
       productOrders: baseResponse.product_orders.map((orders) => {

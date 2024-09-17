@@ -99,9 +99,8 @@ async function fullSanity(context: RunContext) {
   prettyPrint('Short stop order result', shortStopResult.data);
 
   const btcPerpProductId = 2;
-  const btcPerpOrderbookAddr = await engineClient.getOrderbookAddress(
-    btcPerpProductId,
-  );
+  const btcPerpOrderbookAddr =
+    await engineClient.getOrderbookAddress(btcPerpProductId);
 
   const longStopNonce = getTriggerOrderNonce();
 

@@ -20,7 +20,6 @@ import {
   EngineOrderParams,
 } from '@vertex-protocol/engine-client';
 import {
-  fromX18,
   TimeInSeconds,
   toBigDecimal,
   toFixedPoint,

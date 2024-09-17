@@ -281,7 +281,8 @@ export interface GetIndexerEventsParams {
 }
 
 export interface IndexerEvent<
-  TStateType extends IndexerEventBalanceStateSnapshot = IndexerEventBalanceStateSnapshot,
+  TStateType extends
+    IndexerEventBalanceStateSnapshot = IndexerEventBalanceStateSnapshot,
 > {
   subaccount: string;
   productId: number;
@@ -292,7 +293,8 @@ export interface IndexerEvent<
 }
 
 export interface IndexerEventWithTx<
-  TStateType extends IndexerEventBalanceStateSnapshot = IndexerEventBalanceStateSnapshot,
+  TStateType extends
+    IndexerEventBalanceStateSnapshot = IndexerEventBalanceStateSnapshot,
 > extends IndexerEvent<TStateType> {
   timestamp: BigDecimal;
   tx: VertexTx;
