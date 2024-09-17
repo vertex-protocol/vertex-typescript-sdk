@@ -27,6 +27,8 @@ import {
   GetIndexerBlastPointsResponse,
   GetIndexerBlitzInitialDropConditionsParams,
   GetIndexerBlitzInitialDropConditionsResponse,
+  GetIndexerBlitzPointsLeaderboardParams,
+  GetIndexerBlitzPointsLeaderboardResponse,
   GetIndexerBlitzPointsParams,
   GetIndexerBlitzPointsResponse,
   GetIndexerCandlesticksParams,
@@ -85,7 +87,6 @@ import {
   GetIndexerVrtxTokenInfoParams,
   GetIndexerVrtxTokenInfoResponse,
   IndexerEventWithTx,
-  IndexerLeaderboardParticipant,
   IndexerMarketSnapshot,
   IndexerMatchEvent,
   IndexerOraclePrice,
@@ -737,9 +738,17 @@ export class IndexerBaseClient {
       referralPoints: toBigDecimal(baseResponse.referral_points),
       tradingPoints: toBigDecimal(baseResponse.trading_points),
       phase2Epochs: baseResponse.phase2_points.map(
-        ({ epoch, period, referral_points, start_time, trading_points }) => {
+        ({
+          epoch,
+          rank,
+          period,
+          referral_points,
+          start_time,
+          trading_points,
+        }) => {
           return {
             epoch,
+            rank: toBigDecimal(rank),
             startTime: toBigDecimal(start_time),
             period: toBigDecimal(period),
             tradingPoints: toBigDecimal(trading_points),
@@ -764,6 +773,31 @@ export class IndexerBaseClient {
     };
   }
 
+  /**
+   * Retrieve blitz points leaderboard
+   */
+  async getBlitzPointsLeaderboard(
+    params: GetIndexerBlitzPointsLeaderboardParams,
+  ): Promise<GetIndexerBlitzPointsLeaderboardResponse> {
+    const baseResponse = await this.query('blitz_points_leaderboard', {
+      limit: params.limit,
+      start: params.startCursor,
+      epoch: params.epoch,
+    });
+
+    return {
+      positions: baseResponse.positions.map(
+        ({ rank, trading_points, referral_points, address }) => {
+          return {
+            rank: toBigDecimal(rank),
+            tradingPoints: toBigDecimal(trading_points),
+            referralPoints: toBigDecimal(referral_points),
+            address,
+          };
+        },
+      ),
+    };
+  }
   /**
    * Retrieve status for initial claim process for Blitz
    */

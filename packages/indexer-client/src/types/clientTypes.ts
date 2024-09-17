@@ -580,6 +580,7 @@ export interface GetIndexerBlitzPointsParams {
 }
 
 export interface IndexerBlitzPointsEpoch {
+  rank: BigDecimal;
   epoch: number;
   // Start time of the epoch in seconds
   startTime: BigDecimal;
@@ -624,6 +625,21 @@ export interface GetIndexerBlitzInitialDropConditionsResponse {
   perpTradesCompleted: boolean;
   // Whether address has a verified tweet tagging Blitz
   tweeted: boolean;
+}
+
+export interface GetIndexerBlitzPointsLeaderboardParams {
+  epoch: number;
+  startCursor?: number;
+  limit: number;
+}
+
+export interface GetIndexerBlitzPointsLeaderboardResponse {
+  positions: Array<{
+    rank: BigDecimal;
+    address: string;
+    referralPoints: BigDecimal;
+    tradingPoints: BigDecimal;
+  }>;
 }
 
 /**
