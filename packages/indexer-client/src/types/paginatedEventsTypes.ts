@@ -213,10 +213,12 @@ export type GetIndexerPaginatedLeaderboardResponse = WithPaginationMeta &
   GetIndexerLeaderboardResponse;
 
 export type GetIndexerPaginatedBlitzPointsLeaderboardParams =
-  IndexerPaginationParams & GetIndexerBlitzPointsLeaderboardParams;
+  IndexerPaginationParams &
+    Pick<GetIndexerBlitzPointsLeaderboardParams, 'epoch'>;
 
 export type GetIndexerPaginatedBlitzPointsLeaderboardResponse =
   WithPaginationMeta & GetIndexerBlitzPointsLeaderboardResponse;
+
 /**
  * Paginated rewards query - these paginate on epoch #, which is `number`, but for consistency we use the
  * string pagination params / meta that is used for other paginated queries

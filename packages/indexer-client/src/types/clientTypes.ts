@@ -629,7 +629,8 @@ export interface GetIndexerBlitzInitialDropConditionsResponse {
 
 export interface GetIndexerBlitzPointsLeaderboardParams {
   epoch: number;
-  startCursor?: number;
+  // Minimum rank, inclusive
+  startCursor?: string;
   limit: number;
 }
 
