@@ -7,6 +7,8 @@ import { toBigDecimal } from '@vertex-protocol/utils';
 import { IndexerBaseClient } from './IndexerBaseClient';
 import {
   BaseIndexerPaginatedEvent,
+  GetIndexerPaginatedBlitzPointsLeaderboardParams,
+  GetIndexerPaginatedBlitzPointsLeaderboardResponse,
   GetIndexerPaginatedInterestFundingPaymentsResponse,
   GetIndexerPaginatedLeaderboardParams,
   GetIndexerPaginatedLeaderboardResponse,
@@ -440,6 +442,36 @@ export class IndexerClient extends IndexerBaseClient {
         hasMore: baseResponse.epochs.length > requestedLimit,
         // Next cursor is the epoch number of the (requestedLimit+1)th item
         nextCursor: baseResponse.epochs[requestedLimit]?.epoch.toFixed(),
+      },
+    };
+  }
+
+  /**
+   * Paginated blitz points leaderboard query that paginates on rank number.
+   *
+   * @param params
+   */
+  async getPaginatedBlitzPointsLeaderboard(
+    params: GetIndexerPaginatedBlitzPointsLeaderboardParams,
+  ): Promise<GetIndexerPaginatedBlitzPointsLeaderboardResponse> {
+    const requestedLimit = params.limit;
+
+    const baseResponse = await this.getBlitzPointsLeaderboard({
+      epoch: params.epoch,
+      // Query for 1 more result for proper pagination
+      limit: requestedLimit + 1,
+      // Start cursor is the next rank number
+      startCursor: params.startCursor,
+    });
+
+    return {
+      ...baseResponse,
+      // Truncate the response to the requested limit
+      positions: baseResponse.positions.slice(0, requestedLimit),
+      meta: {
+        hasMore: baseResponse.positions.length > requestedLimit,
+        // Next cursor is the rank number of the (requestedLimit+1)th item
+        nextCursor: baseResponse.positions[requestedLimit]?.rank.toFixed(),
       },
     };
   }

@@ -629,17 +629,20 @@ export interface GetIndexerBlitzInitialDropConditionsResponse {
 
 export interface GetIndexerBlitzPointsLeaderboardParams {
   epoch: number;
-  startCursor?: number;
+  // Minimum rank, inclusive
+  startCursor?: string;
   limit: number;
 }
 
+export interface IndexerBlitzPointsLeaderboardPosition {
+  rank: BigDecimal;
+  address: string;
+  referralPoints: BigDecimal;
+  tradingPoints: BigDecimal;
+}
+
 export interface GetIndexerBlitzPointsLeaderboardResponse {
-  positions: Array<{
-    rank: BigDecimal;
-    address: string;
-    referralPoints: BigDecimal;
-    tradingPoints: BigDecimal;
-  }>;
+  positions: IndexerBlitzPointsLeaderboardPosition[];
 }
 
 /**

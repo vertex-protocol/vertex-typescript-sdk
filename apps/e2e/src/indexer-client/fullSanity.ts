@@ -95,11 +95,12 @@ async function fullSanity(context: RunContext) {
       address: subaccount.subaccountOwner,
     });
 
-    const blitzPointsLeaderboard = await client.getBlitzPointsLeaderboard({
-      startCursor: undefined,
-      epoch: 1,
-      limit: 5,
-    });
+    const blitzPointsLeaderboard =
+      await client.getPaginatedBlitzPointsLeaderboard({
+        startCursor: '2',
+        epoch: 1,
+        limit: 10,
+      });
 
     prettyPrint('Blitz & Blast Points', {
       blastPoints,
@@ -138,7 +139,7 @@ async function fullSanity(context: RunContext) {
 
   const now = nowInSeconds();
   const multiTimestampProductSnapshots = await client.getMultiProductSnapshots({
-    productIds: [1, 2, 3],
+    productIds: [0, 2, 4],
     maxTimestampInclusive: [
       now,
       now - TimeInSeconds.HOUR,

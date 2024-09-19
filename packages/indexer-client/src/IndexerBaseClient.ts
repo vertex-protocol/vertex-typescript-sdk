@@ -781,7 +781,7 @@ export class IndexerBaseClient {
   ): Promise<GetIndexerBlitzPointsLeaderboardResponse> {
     const baseResponse = await this.query('blitz_points_leaderboard', {
       limit: params.limit,
-      start: params.startCursor,
+      start: Number(params.startCursor),
       epoch: params.epoch,
     });
 
@@ -798,6 +798,7 @@ export class IndexerBaseClient {
       ),
     };
   }
+
   /**
    * Retrieve status for initial claim process for Blitz
    */
