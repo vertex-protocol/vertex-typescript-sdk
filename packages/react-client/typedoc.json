@@ -1,6 +1,0 @@
-{
-  "extends": ["../../typedoc.base.json"],
-  "entryPoints": ["./src/index.ts"],
-  "readme": "./README.md",
-  "name": "Vertex React Client"
-}
