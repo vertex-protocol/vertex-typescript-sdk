@@ -633,13 +633,15 @@ export interface GetIndexerBlitzPointsLeaderboardParams {
   limit: number;
 }
 
+export interface IndexerBlitzPointsLeaderboardPosition {
+  rank: BigDecimal;
+  address: string;
+  referralPoints: BigDecimal;
+  tradingPoints: BigDecimal;
+}
+
 export interface GetIndexerBlitzPointsLeaderboardResponse {
-  positions: Array<{
-    rank: BigDecimal;
-    address: string;
-    referralPoints: BigDecimal;
-    tradingPoints: BigDecimal;
-  }>;
+  positions: IndexerBlitzPointsLeaderboardPosition[];
 }
 
 /**

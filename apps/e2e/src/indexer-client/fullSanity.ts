@@ -95,11 +95,12 @@ async function fullSanity(context: RunContext) {
       address: subaccount.subaccountOwner,
     });
 
-    const blitzPointsLeaderboard = await client.getBlitzPointsLeaderboard({
-      startCursor: undefined,
-      epoch: 1,
-      limit: 5,
-    });
+    const blitzPointsLeaderboard =
+      await client.getPaginatedBlitzPointsLeaderboard({
+        startCursor: undefined,
+        epoch: 1,
+        limit: 10,
+      });
 
     prettyPrint('Blitz & Blast Points', {
       blastPoints,

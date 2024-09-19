@@ -1,6 +1,8 @@
 import { Subaccount } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import {
+  GetIndexerBlitzPointsLeaderboardParams,
+  GetIndexerBlitzPointsLeaderboardResponse,
   GetIndexerInterestFundingPaymentsParams,
   GetIndexerInterestFundingPaymentsResponse,
   GetIndexerLeaderboardParams,
@@ -210,6 +212,11 @@ export type GetIndexerPaginatedLeaderboardParams = IndexerPaginationParams &
 export type GetIndexerPaginatedLeaderboardResponse = WithPaginationMeta &
   GetIndexerLeaderboardResponse;
 
+export type GetIndexerPaginatedBlitzPointsLeaderboardParams =
+  IndexerPaginationParams & GetIndexerBlitzPointsLeaderboardParams;
+
+export type GetIndexerPaginatedBlitzPointsLeaderboardResponse =
+  WithPaginationMeta & GetIndexerBlitzPointsLeaderboardResponse;
 /**
  * Paginated rewards query - these paginate on epoch #, which is `number`, but for consistency we use the
  * string pagination params / meta that is used for other paginated queries
