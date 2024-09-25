@@ -61,6 +61,7 @@ export interface GetIndexerSubaccountCollateralEventsParams
 }
 
 export interface IndexerCollateralEvent extends BaseIndexerPaginatedEvent {
+  eventType: CollateralEventType;
   // Positive for deposits, negative for withdrawals
   amount: BigDecimal;
   // The collateral balance after the event
