@@ -7,6 +7,7 @@ import { toBigDecimal } from '@vertex-protocol/utils';
 import { IndexerBaseClient } from './IndexerBaseClient';
 import {
   BaseIndexerPaginatedEvent,
+  CollateralEventType,
   GetIndexerPaginatedBlitzPointsLeaderboardParams,
   GetIndexerPaginatedBlitzPointsLeaderboardResponse,
   GetIndexerPaginatedInterestFundingPaymentsResponse,
@@ -165,6 +166,7 @@ export class IndexerClient extends IndexerBaseClient {
       eventTypes: params.eventTypes ?? [
         'deposit_collateral',
         'withdraw_collateral',
+        'transfer_quote',
       ],
       limit: {
         type: 'txs',
@@ -180,6 +182,8 @@ export class IndexerClient extends IndexerBaseClient {
 
       return {
         timestamp: event.timestamp,
+        // This cast is safe as the query param restricts to collateral events
+        eventType: event.eventType as CollateralEventType,
         submissionIndex: event.submissionIndex,
         snapshot: event.state,
         amount: event.state.postBalance.amount.minus(
