@@ -67,9 +67,14 @@ export interface IStakingInterface extends Interface {
       | "getTotalScore"
       | "getTotalVrtxStaked"
       | "getUsdcClaimable"
+      | "getV2Bonus"
+      | "getV2BonusDeadline"
+      | "getV2StartTime"
       | "getVrtxStaked"
       | "getWithdrawLockingTime"
       | "getWithdrawnVrtxStates"
+      | "migrateToV2"
+      | "migrateToV2WithNewWallet"
       | "stake"
       | "stakeAs"
       | "withdraw"
@@ -114,6 +119,18 @@ export interface IStakingInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "getV2Bonus",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getV2BonusDeadline",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getV2StartTime",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getVrtxStaked",
     values: [AddressLike]
   ): string;
@@ -123,6 +140,14 @@ export interface IStakingInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getWithdrawnVrtxStates",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "migrateToV2",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "migrateToV2WithNewWallet",
     values: [AddressLike]
   ): string;
   encodeFunctionData(functionFragment: "stake", values: [BigNumberish]): string;
@@ -170,6 +195,15 @@ export interface IStakingInterface extends Interface {
     functionFragment: "getUsdcClaimable",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getV2Bonus", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getV2BonusDeadline",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getV2StartTime",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getVrtxStaked",
     data: BytesLike
@@ -180,6 +214,14 @@ export interface IStakingInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getWithdrawnVrtxStates",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "migrateToV2",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "migrateToV2WithNewWallet",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
@@ -272,6 +314,12 @@ export interface IStaking extends BaseContract {
     "view"
   >;
 
+  getV2Bonus: TypedContractMethod<[account: AddressLike], [bigint], "view">;
+
+  getV2BonusDeadline: TypedContractMethod<[], [bigint], "view">;
+
+  getV2StartTime: TypedContractMethod<[], [bigint], "view">;
+
   getVrtxStaked: TypedContractMethod<[account: AddressLike], [bigint], "view">;
 
   getWithdrawLockingTime: TypedContractMethod<[], [bigint], "view">;
@@ -280,6 +328,14 @@ export interface IStaking extends BaseContract {
     [account: AddressLike],
     [IStaking.WithdrawnVrtxStatesStructOutput],
     "view"
+  >;
+
+  migrateToV2: TypedContractMethod<[], [void], "nonpayable">;
+
+  migrateToV2WithNewWallet: TypedContractMethod<
+    [staker: AddressLike],
+    [void],
+    "nonpayable"
   >;
 
   stake: TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
@@ -338,6 +394,15 @@ export interface IStaking extends BaseContract {
     nameOrSignature: "getUsdcClaimable"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
+    nameOrSignature: "getV2Bonus"
+  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getV2BonusDeadline"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getV2StartTime"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "getVrtxStaked"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
@@ -350,6 +415,12 @@ export interface IStaking extends BaseContract {
     [IStaking.WithdrawnVrtxStatesStructOutput],
     "view"
   >;
+  getFunction(
+    nameOrSignature: "migrateToV2"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "migrateToV2WithNewWallet"
+  ): TypedContractMethod<[staker: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "stake"
   ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;

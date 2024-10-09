@@ -10,6 +10,7 @@ import {
   IPerpEngine__factory,
   ISpotEngine__factory,
   IStaking__factory,
+  IStakingV2__factory,
   IVesting__factory,
   VERTEX_DEPLOYMENTS,
   VertexContracts,
@@ -228,6 +229,10 @@ export async function createClientContext(
       ),
       vrtxStaking: IStaking__factory.connect(
         contractAddresses.vrtxStaking,
+        signerOrProvider,
+      ),
+      vrtxStakingV2: IStakingV2__factory.connect(
+        contractAddresses.vrtxStakingV2,
         signerOrProvider,
       ),
     },

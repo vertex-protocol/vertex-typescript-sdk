@@ -9,6 +9,7 @@ import {
   IPerpEngine,
   ISpotEngine,
   IStaking,
+  IStakingV2,
   IVesting,
   WithdrawPool,
 } from '../typechain-types';
@@ -29,6 +30,7 @@ export interface VertexContracts {
   vrtxLba: ILBA;
   vrtxVesting: IVesting;
   vrtxStaking: IStaking;
+  vrtxStakingV2: IStakingV2;
 }
 
 // Utility types to bundle parameters with contracts
