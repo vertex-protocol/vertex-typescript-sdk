@@ -13,8 +13,6 @@ import {
 export class RewardsExecuteAPI extends BaseVertexAPI {
   /**
    * Claim VRTX tokens received during the airdrop phase to be deposited into the LBA pool
-   *
-   * @param params
    */
   async claimTokensToLba(params: ClaimTokensToLbaParams) {
     const { totalAmount, proof } = (
@@ -32,8 +30,6 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
 
   /**
    * Deposit USDC into the LBA pool
-   *
-   * @param params
    */
   async depositLbaUsdc(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxLba.depositUsdc(params.amount);
@@ -41,8 +37,6 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
 
   /**
    * Withdraw USDC from the LBA pool
-   *
-   * @param params
    */
   async withdrawLbaUsdc(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxLba.withdrawUsdc(params.amount);
@@ -50,8 +44,6 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
 
   /**
    * Withdraw LP liquidity tokens from the LBA pool after the AMM has been created
-   *
-   * @param params
    */
   async withdrawLbaLiquidity(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxLba.withdrawLiquidity(params.amount);
@@ -59,8 +51,6 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
 
   /**
    * Claim earned VRTX tokens
-   *
-   * @param params
    */
   async claimLiquidTokens(params: ClaimLiquidTokensParams) {
     return this.context.contracts.vrtxAirdrop.claim(
@@ -70,8 +60,6 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
 
   /**
    * Claim earned VRTX tokens and stake them
-   *
-   * @param params
    */
   async claimAndStakeLiquidTokens(params: ClaimLiquidTokensParams) {
     return this.context.contracts.vrtxAirdrop.claimAndStake(
@@ -87,10 +75,24 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
   }
 
   /**
+   * Migrate VRTX tokens from the old staking contract to the new staking contract
+   */
+  async migrateStakingV2() {
+    return this.context.contracts.vrtxStaking.migrateToV2();
+  }
+
+  /**
    * Stake VRTX tokens
    */
   async stake(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxStaking.stake(params.amount);
+  }
+
+  /**
+   * Stake V2 VRTX tokens
+   */
+  async stakeV2(params: VrtxTokenAmountParams) {
+    return this.context.contracts.vrtxStakingV2.stake(params.amount);
   }
 
   /**
@@ -101,10 +103,32 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
   }
 
   /**
+   * Unstake V2 VRTX tokens, unstake tokens instantly with a penalty that is redistributed
+   */
+  async unstakeV2() {
+    return this.context.contracts.vrtxStakingV2.withdraw();
+  }
+
+  /**
+   * Unstake V2 VRTX tokens, unstaked tokens that are unlocked will need to be claimed
+   * after 21 day locking period
+   */
+  async unstakeV2Slow() {
+    return this.context.contracts.vrtxStakingV2.withdrawSlow();
+  }
+
+  /**
    * Claim unlocked tokens that were previously unstaked
    */
   async withdrawUnstakedTokens() {
     return this.context.contracts.vrtxStaking.claimVrtx();
+  }
+
+  /**
+   * Claim unlocked V2 tokens that were previously unstaked
+   */
+  async withdrawUnstakedV2Tokens() {
+    return this.context.contracts.vrtxStakingV2.claimWithdraw();
   }
 
   /**
