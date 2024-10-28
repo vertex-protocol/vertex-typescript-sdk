@@ -661,6 +661,15 @@ export class IndexerBaseClient {
         openInterests: mapValues(snapshot.open_interests, fromX18),
         totalBorrows: mapValues(snapshot.total_borrows, toBigDecimal),
         totalDeposits: mapValues(snapshot.total_deposits, toBigDecimal),
+        cumulativeTradeSizes: mapValues(
+          snapshot.cumulative_trade_sizes,
+          toBigDecimal,
+        ),
+        cumulativeInflows: mapValues(snapshot.cumulative_inflows, toBigDecimal),
+        cumulativeOutflows: mapValues(
+          snapshot.cumulative_outflows,
+          toBigDecimal,
+        ),
       };
     });
   }
