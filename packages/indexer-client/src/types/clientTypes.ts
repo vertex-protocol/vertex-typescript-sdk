@@ -254,6 +254,9 @@ export interface IndexerMarketSnapshot {
   fundingRates: Record<number, BigDecimal>;
   depositRates: Record<number, BigDecimal>;
   borrowRates: Record<number, BigDecimal>;
+  cumulativeTradeSizes: Record<number, BigDecimal>;
+  cumulativeInflows: Record<number, BigDecimal>;
+  cumulativeOutflows: Record<number, BigDecimal>;
 }
 
 export type GetIndexerMarketSnapshotsResponse = IndexerMarketSnapshot[];

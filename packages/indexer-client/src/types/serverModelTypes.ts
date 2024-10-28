@@ -167,6 +167,9 @@ export interface IndexerServerMarketSnapshot {
   funding_rates: Record<string, string>;
   deposit_rates: Record<string, string>;
   borrow_rates: Record<string, string>;
+  cumulative_trade_sizes: Record<string, string>;
+  cumulative_inflows: Record<string, string>;
+  cumulative_outflows: Record<string, string>;
 }
 
 /**
