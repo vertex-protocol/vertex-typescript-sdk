@@ -36,13 +36,3 @@ to enable other local repos to consume Vertex packages without having to publish
 
 > When making a change to the SDK, you will need to build the SDK, then run `yarn install --force` on the consuming
 > repo for the changes to be picked up.
-
-**link/unlink-react-package-dependencies**: Used for local development of web-related packages. These scripts
-are required because certain web libraries require that only one instance be present, so we need to link these
-dependencies to a singular source of truth. The sequence should be:
-
-- Run `yarn link` in the relevant `node_modules/` folder (ex. `node_modules/react`) of the frontend repository
-    - `vertex-web-monorepo` has a util script in `package.json` that runs through all of these steps
-- Run `link-react-package-dependencies` in this repo
-
-To unlink, run `unlink-react-package-dependencies` and then `yarn unlink` in the relevant `node_modules/` folder.

@@ -14,6 +14,7 @@ export { IPerpEngine__factory } from "./IPerpEngine__factory";
 export { IProductEngine__factory } from "./IProductEngine__factory";
 export { ISpotEngine__factory } from "./ISpotEngine__factory";
 export { IStaking__factory } from "./IStaking__factory";
+export { IStakingV2__factory } from "./IStakingV2__factory";
 export { IVesting__factory } from "./IVesting__factory";
 export { MockERC20__factory } from "./MockERC20__factory";
 export { WithdrawPool__factory } from "./WithdrawPool__factory";

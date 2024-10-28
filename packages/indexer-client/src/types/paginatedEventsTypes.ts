@@ -1,6 +1,8 @@
 import { Subaccount } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import {
+  GetIndexerBlitzPointsLeaderboardParams,
+  GetIndexerBlitzPointsLeaderboardResponse,
   GetIndexerInterestFundingPaymentsParams,
   GetIndexerInterestFundingPaymentsResponse,
   GetIndexerLeaderboardParams,
@@ -59,6 +61,7 @@ export interface GetIndexerSubaccountCollateralEventsParams
 }
 
 export interface IndexerCollateralEvent extends BaseIndexerPaginatedEvent {
+  eventType: CollateralEventType;
   // Positive for deposits, negative for withdrawals
   amount: BigDecimal;
   // The collateral balance after the event
@@ -209,6 +212,13 @@ export type GetIndexerPaginatedLeaderboardParams = IndexerPaginationParams &
 
 export type GetIndexerPaginatedLeaderboardResponse = WithPaginationMeta &
   GetIndexerLeaderboardResponse;
+
+export type GetIndexerPaginatedBlitzPointsLeaderboardParams =
+  IndexerPaginationParams &
+    Pick<GetIndexerBlitzPointsLeaderboardParams, 'epoch'>;
+
+export type GetIndexerPaginatedBlitzPointsLeaderboardResponse =
+  WithPaginationMeta & GetIndexerBlitzPointsLeaderboardResponse;
 
 /**
  * Paginated rewards query - these paginate on epoch #, which is `number`, but for consistency we use the
