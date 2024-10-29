@@ -79,3 +79,7 @@ export interface EIP712TransferQuoteParams extends Subaccount {
   amount: BigNumberish;
   nonce: string;
 }
+
+export interface EIP712LeaderboardAuthenticationParams extends Subaccount {
+  expiration: BigNumberish;
+}

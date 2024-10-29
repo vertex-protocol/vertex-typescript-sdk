@@ -1,4 +1,15 @@
-import { subaccountFromHex, subaccountToHex } from '@vertex-protocol/contracts';
+import {
+  EIP712LeaderboardAuthenticationParams,
+  EIP712LeaderboardAuthenticationValues,
+  getDefaultRecvTime,
+  getSignedTransactionRequest,
+  getVertexEIP712Values,
+  SignableRequestType,
+  SignableRequestTypeToParams,
+  SignedTx,
+  subaccountFromHex,
+  subaccountToHex,
+} from '@vertex-protocol/contracts';
 import {
   fromX18,
   mapValues,
@@ -13,6 +24,7 @@ import {
   mapIndexerFundingRate,
   mapIndexerLeaderboardContest,
   mapIndexerLeaderboardPosition,
+  mapIndexerLeaderboardRegistration,
   mapIndexerMakerStatistics,
   mapIndexerMatchEventBalances,
   mapIndexerOrder,
@@ -52,6 +64,8 @@ import {
   GetIndexerLeaderboardParams,
   GetIndexerLeaderboardParticipantParams,
   GetIndexerLeaderboardParticipantResponse,
+  GetIndexerLeaderboardRegistrationParams,
+  GetIndexerLeaderboardRegistrationResponse,
   GetIndexerLeaderboardResponse,
   GetIndexerLinkedSignerParams,
   GetIndexerLinkedSignerResponse,
@@ -100,11 +114,14 @@ import {
   ListIndexerSubaccountsParams,
   ListIndexerSubaccountsResponse,
 } from './types';
+import { BigNumberish, Signer } from 'ethers';
 
 export interface IndexerClientOpts {
   // Server URLs
   url: string;
   v2Url?: string;
+  // Signer for EIP712 signing, if not provided, requests that require signatures will error
+  signer?: Signer;
 }
 
 type IndexerQueryRequestBody = Partial<IndexerServerQueryRequestByType>;
@@ -877,6 +894,53 @@ export class IndexerBaseClient {
   }
 
   /**
+   * When `updateRegistration` is `null`, retrieves the registration status for a leaderboard participant.
+   * Otherwise, it attempts to register a user to the provided `contestId`. This requires signing.
+   * @param params
+   */
+  async getLeaderboardRegistration(
+    params: GetIndexerLeaderboardRegistrationParams,
+  ): Promise<GetIndexerLeaderboardRegistrationResponse> {
+    let updateRegistrationTx: SignedTx<EIP712LeaderboardAuthenticationValues> | null =
+      null;
+    if (params.updateRegistration) {
+      const signatureParams: EIP712LeaderboardAuthenticationParams = {
+        // Default to 90 seconds from now if no recvTime is provided
+        expiration:
+          params.recvTime?.toFixed() ?? getDefaultRecvTime().toFixed(),
+        subaccountName: params.subaccountName,
+        subaccountOwner: params.subaccountOwner,
+      };
+
+      const tx = getVertexEIP712Values(
+        'leaderboard_authentication',
+        signatureParams,
+      );
+      const signature = await this.sign(
+        'leaderboard_authentication',
+        params.updateRegistration.verifyingAddr,
+        params.updateRegistration.chainId,
+        signatureParams,
+      );
+
+      updateRegistrationTx = {
+        tx,
+        signature,
+      };
+    }
+    const baseResponse = await this.query('leaderboard_registration', {
+      address: params.subaccountOwner,
+      contest_id: params.contestId,
+      update_registration: updateRegistrationTx,
+    });
+    return {
+      registration: baseResponse.registration
+        ? mapIndexerLeaderboardRegistration(baseResponse.registration)
+        : null,
+    };
+  }
+
+  /**
    * Retrieve metadata of provided leaderboard contests
    *
    * @param params
@@ -949,5 +1013,24 @@ export class IndexerBaseClient {
         `Unexpected response from server: ${response.status} ${response.statusText}`,
       );
     }
+  }
+
+  protected async sign<T extends SignableRequestType>(
+    requestType: T,
+    verifyingContract: string,
+    chainId: BigNumberish,
+    params: SignableRequestTypeToParams[T],
+  ) {
+    const signer = this.opts.signer;
+    if (signer == null) {
+      throw Error('No signer provided');
+    }
+    return getSignedTransactionRequest({
+      chainId,
+      requestParams: params,
+      requestType,
+      signer,
+      verifyingContract,
+    });
   }
 }

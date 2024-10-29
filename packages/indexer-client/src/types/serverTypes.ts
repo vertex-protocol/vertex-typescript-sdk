@@ -1,3 +1,7 @@
+import {
+  EIP712LeaderboardAuthenticationValues,
+  SignedTx,
+} from '@vertex-protocol/contracts';
 import { IndexerEventType } from './IndexerEventType';
 import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
 import {
@@ -6,6 +10,7 @@ import {
   IndexerServerFoundationTakerRewardsWeek,
   IndexerServerLeaderboardContest,
   IndexerServerLeaderboardPosition,
+  IndexerServerLeaderboardRegistration,
   IndexerServerMaker,
   IndexerServerMarketSnapshot,
   IndexerServerMarketSnapshotInterval,
@@ -200,6 +205,12 @@ export interface IndexerServerLeaderboardContestsParams {
   contest_ids: number[];
 }
 
+export interface IndexerServerLeaderboardRegistrationParams {
+  address: string;
+  contest_id: number;
+  update_registration: SignedTx<EIP712LeaderboardAuthenticationValues> | null;
+}
+
 export interface IndexerServerFastWithdrawalSignatureParams {
   /**
    * The submission index of the WithdrawCollateral tx to be used for fast withdraw.
@@ -240,6 +251,7 @@ export interface IndexerServerQueryRequestByType {
   leaderboard: IndexerServerLeaderboardParams;
   leaderboard_rank: IndexerServerLeaderboardRankParams;
   leaderboard_contests: IndexerServerLeaderboardContestsParams;
+  leaderboard_registration: IndexerServerLeaderboardRegistrationParams;
   fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureParams;
 }
 
@@ -420,6 +432,11 @@ export interface IndexerServerLeaderboardResponse {
   positions: IndexerServerLeaderboardPosition[];
 }
 
+export interface IndexerServerLeaderboardRegistrationResponse {
+  // null if user is not registered for the provided contest
+  registration: IndexerServerLeaderboardRegistration | null;
+}
+
 export interface IndexerServerLeaderboardRankResponse {
   // If the subaccount is not eligible for a given contest, it would not be included in the response.
   // contestId -> IndexerServerLeaderboardPosition
@@ -470,5 +487,6 @@ export interface IndexerServerQueryResponseByType {
   leaderboard: IndexerServerLeaderboardResponse;
   leaderboard_rank: IndexerServerLeaderboardRankResponse;
   leaderboard_contests: IndexerServerLeaderboardContestsResponse;
+  leaderboard_registration: IndexerServerLeaderboardRegistrationResponse;
   fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureResponse;
 }

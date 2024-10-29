@@ -9,6 +9,7 @@ import {
   EIP712CancelProductOrdersParams,
   EIP712WithdrawCollateralParams,
   EIP712TransferQuoteParams,
+  EIP712LeaderboardAuthenticationParams,
 } from './signatureParamTypes';
 import { BigNumberish } from 'ethers';
 
@@ -60,6 +61,9 @@ export type EIP712TransferQuoteValues = Omit<
   recipient: string;
 };
 
+export type EIP712LeaderboardAuthenticationValues =
+  WithEIP712Sender<EIP712LeaderboardAuthenticationParams>;
+
 /**
  * All possible requests to be signed, to the EIP712 value interface
  */
@@ -74,4 +78,5 @@ export interface SignableRequestTypeToEIP712Values {
   liquidate_subaccount: EIP712LiquidateSubaccountValues;
   link_signer: EIP712LinkSignerValues;
   transfer_quote: EIP712TransferQuoteValues;
+  leaderboard_authentication: EIP712LeaderboardAuthenticationValues;
 }

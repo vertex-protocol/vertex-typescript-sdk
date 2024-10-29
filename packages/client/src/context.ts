@@ -244,6 +244,7 @@ export async function createClientContext(
     }),
     indexerClient: new IndexerClient({
       url: indexerEndpoint,
+      signer: validSigner,
     }),
     triggerClient: new TriggerClient({
       url: triggerEndpoint,
