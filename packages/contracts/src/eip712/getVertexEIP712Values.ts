@@ -13,11 +13,13 @@ import {
   EIP712CancelProductOrdersParams,
   EIP712WithdrawCollateralParams,
   EIP712TransferQuoteParams,
+  EIP712LeaderboardAuthenticationParams,
 } from './signatureParamTypes';
 import { toX18 } from '@vertex-protocol/utils';
 import { subaccountToHex } from '../utils';
 import {
   EIP712BurnLpValues,
+  EIP712LeaderboardAuthenticationValues,
   EIP712LinkSignerValues,
   EIP712LiquidateSubaccountValues,
   EIP712ListTriggerOrdersValues,
@@ -82,6 +84,11 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
       break;
     case 'transfer_quote':
       values = getTransferQuoteValues(params as EIP712TransferQuoteParams);
+      break;
+    case 'leaderboard_authentication':
+      values = getLeaderboardAuthenticationValues(
+        params as EIP712LeaderboardAuthenticationParams,
+      );
       break;
     default:
       throw Error(`Unknown request type: ${requestType}`);
@@ -228,5 +235,17 @@ function getTransferQuoteValues(
     }),
     amount: BigInt(params.amount).toString(),
     nonce: BigInt(params.nonce).toString(),
+  };
+}
+
+function getLeaderboardAuthenticationValues(
+  params: EIP712LeaderboardAuthenticationParams,
+): EIP712LeaderboardAuthenticationValues {
+  return {
+    sender: subaccountToHex({
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.subaccountName,
+    }),
+    expiration: BigInt(params.expiration).toString(),
   };
 }
