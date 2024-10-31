@@ -723,7 +723,11 @@ interface LeaderboardSignatureParams {
 
 export interface GetIndexerLeaderboardRegistrationParams extends Subaccount {
   contestId: number;
-  updateRegistration: LeaderboardSignatureParams | null;
+}
+
+export interface UpdateIndexerLeaderboardRegistrationParams
+  extends GetIndexerLeaderboardRegistrationParams {
+  updateRegistration: LeaderboardSignatureParams;
   // In millis, defaults to 90s in the future
   recvTime?: BigDecimal;
 }
@@ -739,6 +743,9 @@ export interface GetIndexerLeaderboardRegistrationResponse {
   // null if user is not registered for the provided contest
   registration: IndexerLeaderboardRegistration | null;
 }
+
+export type UpdateIndexerLeaderboardRegistrationResponse =
+  GetIndexerLeaderboardRegistrationResponse;
 
 export interface GetIndexerLeaderboardContestsParams {
   contestIds: number[];

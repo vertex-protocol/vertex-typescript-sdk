@@ -337,8 +337,8 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Fast Withdrawal Signature', fastWithdrawalSignature);
 
-  const leaderboardRegistrationResult = await client.getLeaderboardRegistration(
-    {
+  const updateLeaderboardRegistrationResult =
+    await client.updateLeaderboardRegistration({
       contestId: 12,
       subaccountName: subaccount.subaccountName,
       subaccountOwner: subaccount.subaccountOwner,
@@ -346,6 +346,18 @@ async function fullSanity(context: RunContext) {
         verifyingAddr: endpointAddr,
         chainId,
       },
+    });
+
+  prettyPrint(
+    'Update leaderboard registration result',
+    updateLeaderboardRegistrationResult,
+  );
+
+  const leaderboardRegistrationResult = await client.getLeaderboardRegistration(
+    {
+      contestId: 12,
+      subaccountName: subaccount.subaccountName,
+      subaccountOwner: subaccount.subaccountOwner,
     },
   );
 
