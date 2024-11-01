@@ -740,7 +740,8 @@ export interface IndexerLeaderboardRegistration {
 }
 
 export interface GetIndexerLeaderboardRegistrationResponse {
-  // null if user is not registered for the provided contest
+  // For non-tiered contests, null if the user is not registered for the provided contestId.
+  // For tiered contests (i.e., related contests), null if the user is not registered for any of the contests in the tier group.
   registration: IndexerLeaderboardRegistration | null;
 }
 
