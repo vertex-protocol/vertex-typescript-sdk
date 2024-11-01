@@ -21,6 +21,7 @@ import {
   IndexerGlobalRewardsForProduct,
   IndexerLeaderboardContest,
   IndexerLeaderboardParticipant,
+  IndexerLeaderboardRegistration,
   IndexerMaker,
   IndexerMatchEventBalances,
   IndexerOrder,
@@ -34,6 +35,7 @@ import {
   IndexerServerFundingRate,
   IndexerServerLeaderboardContest,
   IndexerServerLeaderboardPosition,
+  IndexerServerLeaderboardRegistration,
   IndexerServerMaker,
   IndexerServerMatchEventBalances,
   IndexerServerOrder,
@@ -305,6 +307,16 @@ export function mapIndexerLeaderboardPosition(
     accountValue: toBigDecimal(position.account_value),
     volume: position.volume ? toBigDecimal(position.volume) : undefined,
     updateTime: toBigDecimal(position.update_time),
+  };
+}
+
+export function mapIndexerLeaderboardRegistration(
+  registration: IndexerServerLeaderboardRegistration,
+): IndexerLeaderboardRegistration {
+  return {
+    address: registration.address,
+    contestId: registration.contest_id,
+    updateTime: toBigDecimal(registration.update_time),
   };
 }
 

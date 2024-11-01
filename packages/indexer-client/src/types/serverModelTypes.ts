@@ -313,3 +313,9 @@ export interface IndexerServerLeaderboardContest {
   last_updated: string;
   active: boolean;
 }
+
+export interface IndexerServerLeaderboardRegistration {
+  address: string;
+  contest_id: number;
+  update_time: string;
+}

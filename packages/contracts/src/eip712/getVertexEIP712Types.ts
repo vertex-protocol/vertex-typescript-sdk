@@ -101,5 +101,12 @@ export function getVertexEIP712Types(
           { name: 'nonce', type: 'uint64' },
         ],
       };
+    case 'leaderboard_authentication':
+      return {
+        LeaderboardAuthentication: [
+          { name: 'sender', type: 'bytes32' },
+          { name: 'expiration', type: 'uint64' },
+        ],
+      };
   }
 }

@@ -21,6 +21,7 @@ import {
   IndexerServerListSubaccountsParams,
 } from './serverTypes';
 import { VertexTx, VertexWithdrawCollateralTx } from './VertexTx';
+import { BigNumberish } from 'ethers';
 
 /**
  * Base types
@@ -716,6 +717,39 @@ export interface GetIndexerLeaderboardParticipantResponse {
   // contestId -> IndexerLeaderboardParticipant
   participant: Record<string, IndexerLeaderboardParticipant>;
 }
+
+interface LeaderboardSignatureParams {
+  // endpoint address
+  verifyingAddr: string;
+  chainId: BigNumberish;
+}
+
+export interface GetIndexerLeaderboardRegistrationParams extends Subaccount {
+  contestId: number;
+}
+
+export interface UpdateIndexerLeaderboardRegistrationParams
+  extends GetIndexerLeaderboardRegistrationParams {
+  updateRegistration: LeaderboardSignatureParams;
+  // In millis, defaults to 90s in the future
+  recvTime?: BigDecimal;
+}
+
+export interface IndexerLeaderboardRegistration {
+  address: string;
+  contestId: number;
+  // Seconds
+  updateTime: BigDecimal;
+}
+
+export interface GetIndexerLeaderboardRegistrationResponse {
+  // For non-tiered contests, null if the user is not registered for the provided contestId.
+  // For tiered contests (i.e., related contests), null if the user is not registered for any of the contests in the tier group.
+  registration: IndexerLeaderboardRegistration | null;
+}
+
+export type UpdateIndexerLeaderboardRegistrationResponse =
+  GetIndexerLeaderboardRegistrationResponse;
 
 export interface GetIndexerLeaderboardContestsParams {
   contestIds: number[];

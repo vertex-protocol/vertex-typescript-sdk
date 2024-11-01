@@ -1,4 +1,4 @@
-import { Subaccount } from '@vertex-protocol/contracts';
+import { getChainIdFromSigner, Subaccount } from '@vertex-protocol/contracts';
 import {
   CandlestickPeriod,
   IndexerClient,
@@ -9,8 +9,13 @@ import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 
 async function fullSanity(context: RunContext) {
+  const signer = context.getWallet();
+  const chainId = await getChainIdFromSigner(signer);
+  const endpointAddr = context.contracts.endpoint;
+
   const client = new IndexerClient({
     url: context.endpoints.indexer,
+    signer,
   });
 
   const subaccount: Subaccount = {
@@ -331,6 +336,32 @@ async function fullSanity(context: RunContext) {
   });
 
   prettyPrint('Fast Withdrawal Signature', fastWithdrawalSignature);
+
+  const updateLeaderboardRegistrationResult =
+    await client.updateLeaderboardRegistration({
+      contestId: 12,
+      subaccountName: subaccount.subaccountName,
+      subaccountOwner: subaccount.subaccountOwner,
+      updateRegistration: {
+        verifyingAddr: endpointAddr,
+        chainId,
+      },
+    });
+
+  prettyPrint(
+    'Update leaderboard registration result',
+    updateLeaderboardRegistrationResult,
+  );
+
+  const leaderboardRegistrationResult = await client.getLeaderboardRegistration(
+    {
+      contestId: 12,
+      subaccountName: subaccount.subaccountName,
+      subaccountOwner: subaccount.subaccountOwner,
+    },
+  );
+
+  prettyPrint('Leaderboard registration result', leaderboardRegistrationResult);
 }
 
 runWithContext(fullSanity);

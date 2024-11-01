@@ -9,6 +9,7 @@ import {
   EIP712CancelProductOrdersParams,
   EIP712WithdrawCollateralParams,
   EIP712TransferQuoteParams,
+  EIP712LeaderboardAuthenticationParams,
 } from './signatureParamTypes';
 
 /**
@@ -25,6 +26,7 @@ export interface SignableRequestTypeToParams {
   liquidate_subaccount: EIP712LiquidateSubaccountParams;
   link_signer: EIP712LinkSignerParams;
   transfer_quote: EIP712TransferQuoteParams;
+  leaderboard_authentication: EIP712LeaderboardAuthenticationParams;
 }
 
 export type SignableRequestType = keyof SignableRequestTypeToParams;
