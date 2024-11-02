@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/trigger-client",
-  "version": "0.54.0",
+  "version": "0.54.1",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -22,9 +22,9 @@
     "src"
   ],
   "dependencies": {
-    "@vertex-protocol/contracts": "^0.54.0",
-    "@vertex-protocol/engine-client": "^0.54.0",
-    "@vertex-protocol/utils": "^0.54.0",
+    "@vertex-protocol/contracts": "^0.54.1",
+    "@vertex-protocol/engine-client": "^0.54.1",
+    "@vertex-protocol/utils": "^0.54.1",
     "axios": "*",
     "ts-mixer": "*"
   },
