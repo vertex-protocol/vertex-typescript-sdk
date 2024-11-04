@@ -115,6 +115,11 @@ const _abi = [
             name: "totalVrtxBalance",
             type: "uint128",
           },
+          {
+            internalType: "uint128",
+            name: "usdcAmount",
+            type: "uint128",
+          },
         ],
         internalType: "struct IStakingV2.GlobalYieldsBreakdown[]",
         name: "",
@@ -150,6 +155,19 @@ const _abi = [
         internalType: "struct IStakingV2.LastActionTimes",
         name: "",
         type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getMigrationBonusPool",
+    outputs: [
+      {
+        internalType: "uint128",
+        name: "",
+        type: "uint128",
       },
     ],
     stateMutability: "view",

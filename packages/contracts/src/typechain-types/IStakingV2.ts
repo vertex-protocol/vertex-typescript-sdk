@@ -46,18 +46,21 @@ export declare namespace IStakingV2 {
     baseYieldAmount: BigNumberish;
     feesYieldAmount: BigNumberish;
     totalVrtxBalance: BigNumberish;
+    usdcAmount: BigNumberish;
   };
 
   export type GlobalYieldsBreakdownStructOutput = [
     distributionTime: bigint,
     baseYieldAmount: bigint,
     feesYieldAmount: bigint,
-    totalVrtxBalance: bigint
+    totalVrtxBalance: bigint,
+    usdcAmount: bigint
   ] & {
     distributionTime: bigint;
     baseYieldAmount: bigint;
     feesYieldAmount: bigint;
     totalVrtxBalance: bigint;
+    usdcAmount: bigint;
   };
 
   export type LastActionTimesStruct = {
@@ -108,6 +111,7 @@ export interface IStakingV2Interface extends Interface {
       | "getDefaultConfig"
       | "getGlobalYieldsBreakdown"
       | "getLastActionTimes"
+      | "getMigrationBonusPool"
       | "getReleaseSchedule"
       | "getState"
       | "getTotalVrtxBalance"
@@ -139,6 +143,10 @@ export interface IStakingV2Interface extends Interface {
   encodeFunctionData(
     functionFragment: "getLastActionTimes",
     values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getMigrationBonusPool",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getReleaseSchedule",
@@ -190,6 +198,10 @@ export interface IStakingV2Interface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getLastActionTimes",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getMigrationBonusPool",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -288,6 +300,8 @@ export interface IStakingV2 extends BaseContract {
     "view"
   >;
 
+  getMigrationBonusPool: TypedContractMethod<[], [bigint], "view">;
+
   getReleaseSchedule: TypedContractMethod<
     [account: AddressLike],
     [IStakingV2.ReleaseScheduleStructOutput],
@@ -359,6 +373,9 @@ export interface IStakingV2 extends BaseContract {
     [IStakingV2.LastActionTimesStructOutput],
     "view"
   >;
+  getFunction(
+    nameOrSignature: "getMigrationBonusPool"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "getReleaseSchedule"
   ): TypedContractMethod<
