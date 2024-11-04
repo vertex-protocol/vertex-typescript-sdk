@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/contracts",
-  "version": "0.54.1",
+  "version": "0.55.0",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -24,7 +24,7 @@
     "abis"
   ],
   "dependencies": {
-    "@vertex-protocol/utils": "^0.54.1"
+    "@vertex-protocol/utils": "^0.55.0"
   },
   "peerDependencies": {
     "ethers": "*"
