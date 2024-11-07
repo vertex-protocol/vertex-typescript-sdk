@@ -85,6 +85,9 @@ export interface IndexerServerCandlesticksParams {
   limit: number;
 }
 
+export type IndexerEdgeServerCandlesticksParams =
+  IndexerServerCandlesticksParams;
+
 export interface IndexerServerProductsParams {
   product_id: number;
   max_time?: number;
@@ -144,6 +147,9 @@ export interface IndexerServerMarketSnapshotsParams {
   // Defaults to all
   product_ids?: number[];
 }
+
+export type IndexerEdgeServerMarketSnapshotsParams =
+  IndexerServerMarketSnapshotsParams;
 
 export interface IndexerServerInterestFundingParams {
   subaccount: string;
@@ -227,6 +233,7 @@ export interface IndexerServerQueryRequestByType {
   blitz_points: IndexerServerBlitzPointsParams;
   blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardParams;
   candlesticks: IndexerServerCandlesticksParams;
+  edge_candlesticks: IndexerEdgeServerCandlesticksParams;
   events: IndexerServerEventsParams;
   funding_rate: IndexerServerFundingRateParams;
   funding_rates: IndexerServerFundingRatesParams;
@@ -235,6 +242,7 @@ export interface IndexerServerQueryRequestByType {
   linked_signer_rate_limit: IndexerServerLinkedSignerParams;
   maker_statistics: IndexerServerMakerStatisticsParams;
   market_snapshots: IndexerServerMarketSnapshotsParams;
+  edge_market_snapshots: IndexerEdgeServerMarketSnapshotsParams;
   matches: IndexerServerMatchEventsParams;
   oracle_price: IndexerServerOraclePricesParams;
   orders: IndexerServerOrdersParams;
@@ -328,6 +336,9 @@ export interface IndexerServerCandlesticksResponse {
   candlesticks: IndexerServerCandlestick[];
 }
 
+export type IndexerEdgeServerCandlesticksResponse =
+  IndexerServerCandlesticksResponse;
+
 export interface IndexerServerProductsResponse {
   products: IndexerServerProductSnapshot[];
   txs: IndexerServerTx[];
@@ -366,6 +377,10 @@ export interface IndexerServerLinkedSignerResponse {
 
 export interface IndexerServerMarketSnapshotsResponse {
   snapshots: IndexerServerMarketSnapshot[];
+}
+
+export interface IndexerEdgeServerMarketSnapshotsResponse {
+  snapshots: Record<number, IndexerServerMarketSnapshot[]>;
 }
 
 export interface IndexerServerInterestFundingResponse {
@@ -464,6 +479,7 @@ export interface IndexerServerQueryResponseByType {
   blitz_points: IndexerServerBlitzPointsResponse;
   blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardResponse;
   candlesticks: IndexerServerCandlesticksResponse;
+  edge_candlesticks: IndexerEdgeServerCandlesticksResponse;
   events: IndexerServerEventsResponse;
   funding_rate: IndexerServerFundingRateResponse;
   funding_rates: IndexerServerFundingRatesResponse;
@@ -472,6 +488,7 @@ export interface IndexerServerQueryResponseByType {
   linked_signer_rate_limit: IndexerServerLinkedSignerResponse;
   maker_statistics: IndexerServerMakerStatisticsResponse;
   market_snapshots: IndexerServerMarketSnapshotsResponse;
+  edge_market_snapshots: IndexerEdgeServerMarketSnapshotsResponse;
   matches: IndexerServerMatchEventsResponse;
   oracle_price: IndexerServerOraclePricesResponse;
   orders: IndexerServerOrdersResponse;

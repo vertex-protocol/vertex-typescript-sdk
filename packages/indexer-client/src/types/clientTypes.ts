@@ -195,6 +195,10 @@ export interface Candlestick {
 
 export type GetIndexerCandlesticksResponse = Candlestick[];
 
+export type GetIndexerEdgeCandlesticksResponse = GetIndexerCandlesticksResponse;
+
+export type GetIndexerEdgeCandlesticksParams = GetIndexerCandlesticksParams;
+
 /**
  * Product snapshots
  */
@@ -261,6 +265,15 @@ export interface IndexerMarketSnapshot {
 }
 
 export type GetIndexerMarketSnapshotsResponse = IndexerMarketSnapshot[];
+
+export type GetIndexerEdgeMarketSnapshotsParams =
+  GetIndexerMarketSnapshotsParams;
+
+// Map of chain id -> IndexerMarketSnapshot[]
+export type GetIndexerEdgeMarketSnapshotResponse = Record<
+  number,
+  IndexerMarketSnapshot[]
+>;
 
 /**
  * Events

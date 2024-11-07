@@ -129,6 +129,15 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
+   * Historical candlesticks from Edge, use getLatestMarketPrice for the latest orderbook prices
+   *
+   * @param params
+   */
+  async getEdgeCandlesticks(params: GetIndexerCandlesticksParams) {
+    return this.context.indexerClient.getEdgeCandlesticks(params);
+  }
+
+  /**
    * Retrieves the latest off-chain orderbook price from the engine
    *
    * @param params
@@ -182,6 +191,15 @@ export class MarketQueryAPI extends BaseVertexAPI {
    */
   async getMarketSnapshots(params: GetIndexerMarketSnapshotsParams) {
     return this.context.indexerClient.getMarketSnapshots(params);
+  }
+
+  /**
+   * Retrieves the historical snapshots for a market from Edge
+   *
+   * @param params
+   */
+  async getEdgeMarketSnapshots(params: GetIndexerMarketSnapshotsParams) {
+    return this.context.indexerClient.getEdgeMarketSnapshots(params);
   }
 
   /**
