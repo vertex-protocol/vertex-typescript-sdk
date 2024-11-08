@@ -195,6 +195,10 @@ export interface Candlestick {
 
 export type GetIndexerCandlesticksResponse = Candlestick[];
 
+export type GetIndexerEdgeCandlesticksResponse = GetIndexerCandlesticksResponse;
+
+export type GetIndexerEdgeCandlesticksParams = GetIndexerCandlesticksParams;
+
 /**
  * Product snapshots
  */
@@ -249,7 +253,7 @@ export interface IndexerMarketSnapshot {
   cumulativeMakerFees: Record<number, BigDecimal>;
   cumulativeTrades: Record<number, BigDecimal>;
   cumulativeLiquidationAmounts: Record<number, BigDecimal>;
-  openInterests: Record<number, BigDecimal>;
+  openInterestsQuote: Record<number, BigDecimal>;
   totalDeposits: Record<number, BigDecimal>;
   totalBorrows: Record<number, BigDecimal>;
   fundingRates: Record<number, BigDecimal>;
@@ -261,6 +265,20 @@ export interface IndexerMarketSnapshot {
 }
 
 export type GetIndexerMarketSnapshotsResponse = IndexerMarketSnapshot[];
+
+export interface GetIndexerEdgeMarketSnapshotsParams {
+  // Currently accepts all integers, in seconds
+  granularity: number;
+  // Seconds
+  maxTimeInclusive?: number;
+  limit: number;
+}
+
+// Map of chain id -> IndexerMarketSnapshot[]
+export type GetIndexerEdgeMarketSnapshotResponse = Record<
+  number,
+  IndexerMarketSnapshot[]
+>;
 
 /**
  * Events

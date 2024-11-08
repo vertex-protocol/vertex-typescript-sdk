@@ -18,6 +18,7 @@ import {
 } from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
+  mapIndexerCandlesticks,
   mapIndexerEvent,
   mapIndexerEventWithTx,
   mapIndexerFoundationTakerRewardsWeek,
@@ -26,6 +27,7 @@ import {
   mapIndexerLeaderboardPosition,
   mapIndexerLeaderboardRegistration,
   mapIndexerMakerStatistics,
+  mapIndexerMarketSnapshot,
   mapIndexerMatchEventBalances,
   mapIndexerOrder,
   mapIndexerPerpPrices,
@@ -34,7 +36,6 @@ import {
   mapIndexerServerProduct,
 } from './dataMappers';
 import {
-  Candlestick,
   GetIndexerBlastPointsParams,
   GetIndexerBlastPointsResponse,
   GetIndexerBlitzInitialDropConditionsParams,
@@ -49,6 +50,10 @@ import {
   GetIndexerClaimFoundationRewardsMerkleProofsResponse,
   GetIndexerClaimVrtxMerkleProofsParams,
   GetIndexerClaimVrtxMerkleProofsResponse,
+  GetIndexerEdgeCandlesticksParams,
+  GetIndexerEdgeCandlesticksResponse,
+  GetIndexerEdgeMarketSnapshotResponse,
+  GetIndexerEdgeMarketSnapshotsParams,
   GetIndexerEventsParams,
   GetIndexerEventsResponse,
   GetIndexerFastWithdrawalSignatureParams,
@@ -101,7 +106,6 @@ import {
   GetIndexerVrtxTokenInfoParams,
   GetIndexerVrtxTokenInfoResponse,
   IndexerEventWithTx,
-  IndexerMarketSnapshot,
   IndexerMatchEvent,
   IndexerOraclePrice,
   IndexerServerEventsParams,
@@ -379,16 +383,24 @@ export class IndexerBaseClient {
       granularity: params.period,
     });
 
-    return baseResponse.candlesticks.map((candlestick): Candlestick => {
-      return {
-        close: fromX18(candlestick.close_x18),
-        high: fromX18(candlestick.high_x18),
-        low: fromX18(candlestick.low_x18),
-        open: fromX18(candlestick.open_x18),
-        time: toBigDecimal(candlestick.timestamp),
-        volume: toBigDecimal(candlestick.volume),
-      };
+    return baseResponse.candlesticks.map(mapIndexerCandlesticks);
+  }
+
+  /**
+   * Retrieves candlesticks for a product from Edge
+   * @param params
+   */
+  async getEdgeCandlesticks(
+    params: GetIndexerEdgeCandlesticksParams,
+  ): Promise<GetIndexerEdgeCandlesticksResponse> {
+    const baseResponse = await this.query('edge_candlesticks', {
+      product_id: params.productId,
+      max_time: params.maxTimeInclusive,
+      limit: params.limit,
+      granularity: params.period,
     });
+
+    return baseResponse.candlesticks.map(mapIndexerCandlesticks);
   }
 
   /**
@@ -650,47 +662,27 @@ export class IndexerBaseClient {
       product_ids: params.productIds,
     });
 
-    return baseResponse.snapshots.map((snapshot): IndexerMarketSnapshot => {
-      return {
-        timestamp: toBigDecimal(snapshot.timestamp),
-        cumulativeUsers: toBigDecimal(snapshot.cumulative_users),
-        dailyActiveUsers: toBigDecimal(snapshot.daily_active_users),
-        tvl: toBigDecimal(snapshot.tvl),
-        borrowRates: mapValues(snapshot.borrow_rates, fromX18),
-        cumulativeLiquidationAmounts: mapValues(
-          snapshot.cumulative_liquidation_amounts,
-          toBigDecimal,
-        ),
-        cumulativeMakerFees: mapValues(
-          snapshot.cumulative_maker_fees,
-          toBigDecimal,
-        ),
-        cumulativeSequencerFees: mapValues(
-          snapshot.cumulative_sequencer_fees,
-          toBigDecimal,
-        ),
-        cumulativeTakerFees: mapValues(
-          snapshot.cumulative_taker_fees,
-          toBigDecimal,
-        ),
-        cumulativeTrades: mapValues(snapshot.cumulative_trades, toBigDecimal),
-        cumulativeVolumes: mapValues(snapshot.cumulative_volumes, toBigDecimal),
-        depositRates: mapValues(snapshot.deposit_rates, fromX18),
-        fundingRates: mapValues(snapshot.funding_rates, fromX18),
-        openInterests: mapValues(snapshot.open_interests, fromX18),
-        totalBorrows: mapValues(snapshot.total_borrows, toBigDecimal),
-        totalDeposits: mapValues(snapshot.total_deposits, toBigDecimal),
-        cumulativeTradeSizes: mapValues(
-          snapshot.cumulative_trade_sizes,
-          toBigDecimal,
-        ),
-        cumulativeInflows: mapValues(snapshot.cumulative_inflows, toBigDecimal),
-        cumulativeOutflows: mapValues(
-          snapshot.cumulative_outflows,
-          toBigDecimal,
-        ),
-      };
+    return baseResponse.snapshots.map(mapIndexerMarketSnapshot);
+  }
+
+  /**
+   * Retrieve historical market snapshots from Edge
+   * @param params
+   */
+  async getEdgeMarketSnapshots(
+    params: GetIndexerEdgeMarketSnapshotsParams,
+  ): Promise<GetIndexerEdgeMarketSnapshotResponse> {
+    const baseResponse = await this.query('edge_market_snapshots', {
+      interval: {
+        granularity: params.granularity,
+        max_time: params.maxTimeInclusive?.toString(),
+        count: params.limit,
+      },
     });
+
+    return mapValues(baseResponse.snapshots, (snapshots) =>
+      snapshots.map(mapIndexerMarketSnapshot),
+    );
   }
 
   /**
