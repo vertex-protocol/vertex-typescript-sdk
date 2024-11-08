@@ -7,8 +7,65 @@ import type { IStakingV2, IStakingV2Interface } from "../IStakingV2";
 
 const _abi = [
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "wallet",
+        type: "address",
+      },
+    ],
+    name: "ConnectTradingWallet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "int128",
+        name: "vrtxDelta",
+        type: "int128",
+      },
+      {
+        indexed: false,
+        internalType: "int128",
+        name: "liquidDelta",
+        type: "int128",
+      },
+    ],
+    name: "ModifyStake",
+    type: "event",
+  },
+  {
     inputs: [],
     name: "claimWithdraw",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "wallet",
+        type: "address",
+      },
+    ],
+    name: "connectTradingWallet",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -253,6 +310,25 @@ const _abi = [
         internalType: "uint128",
         name: "",
         type: "uint128",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "getTradingWallet",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
       },
     ],
     stateMutability: "view",

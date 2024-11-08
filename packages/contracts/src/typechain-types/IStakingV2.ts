@@ -8,6 +8,7 @@ import type {
   FunctionFragment,
   Result,
   Interface,
+  EventFragment,
   AddressLike,
   ContractRunner,
   ContractMethod,
@@ -17,6 +18,7 @@ import type {
   TypedContractEvent,
   TypedDeferredTopicFilter,
   TypedEventLog,
+  TypedLogDescription,
   TypedListener,
   TypedContractMethod,
 } from "./common";
@@ -107,6 +109,7 @@ export interface IStakingV2Interface extends Interface {
   getFunction(
     nameOrSignature:
       | "claimWithdraw"
+      | "connectTradingWallet"
       | "getConfig"
       | "getDefaultConfig"
       | "getGlobalYieldsBreakdown"
@@ -115,6 +118,7 @@ export interface IStakingV2Interface extends Interface {
       | "getReleaseSchedule"
       | "getState"
       | "getTotalVrtxBalance"
+      | "getTradingWallet"
       | "getVrtxBalance"
       | "getWithdrawableTime"
       | "migrate"
@@ -124,9 +128,17 @@ export interface IStakingV2Interface extends Interface {
       | "withdrawSlow"
   ): FunctionFragment;
 
+  getEvent(
+    nameOrSignatureOrTopic: "ConnectTradingWallet" | "ModifyStake"
+  ): EventFragment;
+
   encodeFunctionData(
     functionFragment: "claimWithdraw",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "connectTradingWallet",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getConfig",
@@ -161,6 +173,10 @@ export interface IStakingV2Interface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "getTradingWallet",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getVrtxBalance",
     values: [AddressLike]
   ): string;
@@ -185,6 +201,10 @@ export interface IStakingV2Interface extends Interface {
 
   decodeFunctionResult(
     functionFragment: "claimWithdraw",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "connectTradingWallet",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getConfig", data: BytesLike): Result;
@@ -214,6 +234,10 @@ export interface IStakingV2Interface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getTradingWallet",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getVrtxBalance",
     data: BytesLike
   ): Result;
@@ -229,6 +253,41 @@ export interface IStakingV2Interface extends Interface {
     functionFragment: "withdrawSlow",
     data: BytesLike
   ): Result;
+}
+
+export namespace ConnectTradingWalletEvent {
+  export type InputTuple = [account: AddressLike, wallet: AddressLike];
+  export type OutputTuple = [account: string, wallet: string];
+  export interface OutputObject {
+    account: string;
+    wallet: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace ModifyStakeEvent {
+  export type InputTuple = [
+    account: AddressLike,
+    vrtxDelta: BigNumberish,
+    liquidDelta: BigNumberish
+  ];
+  export type OutputTuple = [
+    account: string,
+    vrtxDelta: bigint,
+    liquidDelta: bigint
+  ];
+  export interface OutputObject {
+    account: string;
+    vrtxDelta: bigint;
+    liquidDelta: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export interface IStakingV2 extends BaseContract {
@@ -276,6 +335,12 @@ export interface IStakingV2 extends BaseContract {
 
   claimWithdraw: TypedContractMethod<[], [void], "nonpayable">;
 
+  connectTradingWallet: TypedContractMethod<
+    [wallet: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
   getConfig: TypedContractMethod<
     [account: AddressLike],
     [IStakingV2.ConfigStructOutput],
@@ -316,6 +381,12 @@ export interface IStakingV2 extends BaseContract {
 
   getTotalVrtxBalance: TypedContractMethod<[], [bigint], "view">;
 
+  getTradingWallet: TypedContractMethod<
+    [account: AddressLike],
+    [string],
+    "view"
+  >;
+
   getVrtxBalance: TypedContractMethod<[account: AddressLike], [bigint], "view">;
 
   getWithdrawableTime: TypedContractMethod<
@@ -349,6 +420,9 @@ export interface IStakingV2 extends BaseContract {
   getFunction(
     nameOrSignature: "claimWithdraw"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "connectTradingWallet"
+  ): TypedContractMethod<[wallet: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "getConfig"
   ): TypedContractMethod<
@@ -394,6 +468,9 @@ export interface IStakingV2 extends BaseContract {
     nameOrSignature: "getTotalVrtxBalance"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
+    nameOrSignature: "getTradingWallet"
+  ): TypedContractMethod<[account: AddressLike], [string], "view">;
+  getFunction(
     nameOrSignature: "getVrtxBalance"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
@@ -423,5 +500,42 @@ export interface IStakingV2 extends BaseContract {
     nameOrSignature: "withdrawSlow"
   ): TypedContractMethod<[], [void], "nonpayable">;
 
-  filters: {};
+  getEvent(
+    key: "ConnectTradingWallet"
+  ): TypedContractEvent<
+    ConnectTradingWalletEvent.InputTuple,
+    ConnectTradingWalletEvent.OutputTuple,
+    ConnectTradingWalletEvent.OutputObject
+  >;
+  getEvent(
+    key: "ModifyStake"
+  ): TypedContractEvent<
+    ModifyStakeEvent.InputTuple,
+    ModifyStakeEvent.OutputTuple,
+    ModifyStakeEvent.OutputObject
+  >;
+
+  filters: {
+    "ConnectTradingWallet(address,address)": TypedContractEvent<
+      ConnectTradingWalletEvent.InputTuple,
+      ConnectTradingWalletEvent.OutputTuple,
+      ConnectTradingWalletEvent.OutputObject
+    >;
+    ConnectTradingWallet: TypedContractEvent<
+      ConnectTradingWalletEvent.InputTuple,
+      ConnectTradingWalletEvent.OutputTuple,
+      ConnectTradingWalletEvent.OutputObject
+    >;
+
+    "ModifyStake(address,int128,int128)": TypedContractEvent<
+      ModifyStakeEvent.InputTuple,
+      ModifyStakeEvent.OutputTuple,
+      ModifyStakeEvent.OutputObject
+    >;
+    ModifyStake: TypedContractEvent<
+      ModifyStakeEvent.InputTuple,
+      ModifyStakeEvent.OutputTuple,
+      ModifyStakeEvent.OutputObject
+    >;
+  };
 }
