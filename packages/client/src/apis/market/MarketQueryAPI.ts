@@ -14,6 +14,8 @@ import {
 } from '@vertex-protocol/engine-client';
 import {
   GetIndexerCandlesticksParams,
+  GetIndexerEdgeCandlesticksParams,
+  GetIndexerEdgeMarketSnapshotsParams,
   GetIndexerFundingRateParams,
   GetIndexerMarketSnapshotsParams,
   GetIndexerMultiProductFundingRatesParams,
@@ -133,7 +135,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async getEdgeCandlesticks(params: GetIndexerCandlesticksParams) {
+  async getEdgeCandlesticks(params: GetIndexerEdgeCandlesticksParams) {
     return this.context.indexerClient.getEdgeCandlesticks(params);
   }
 
@@ -198,7 +200,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
    *
    * @param params
    */
-  async getEdgeMarketSnapshots(params: GetIndexerMarketSnapshotsParams) {
+  async getEdgeMarketSnapshots(params: GetIndexerEdgeMarketSnapshotsParams) {
     return this.context.indexerClient.getEdgeMarketSnapshots(params);
   }
 

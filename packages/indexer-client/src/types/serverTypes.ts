@@ -148,8 +148,9 @@ export interface IndexerServerMarketSnapshotsParams {
   product_ids?: number[];
 }
 
-export type IndexerEdgeServerMarketSnapshotsParams =
-  IndexerServerMarketSnapshotsParams;
+export interface IndexerEdgeServerMarketSnapshotsParams {
+  interval: IndexerServerMarketSnapshotInterval;
+}
 
 export interface IndexerServerInterestFundingParams {
   subaccount: string;

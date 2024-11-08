@@ -266,8 +266,13 @@ export interface IndexerMarketSnapshot {
 
 export type GetIndexerMarketSnapshotsResponse = IndexerMarketSnapshot[];
 
-export type GetIndexerEdgeMarketSnapshotsParams =
-  GetIndexerMarketSnapshotsParams;
+export interface GetIndexerEdgeMarketSnapshotsParams {
+  // Currently accepts all integers, in seconds
+  granularity: number;
+  // Seconds
+  maxTimeInclusive?: number;
+  limit: number;
+}
 
 // Map of chain id -> IndexerMarketSnapshot[]
 export type GetIndexerEdgeMarketSnapshotResponse = Record<

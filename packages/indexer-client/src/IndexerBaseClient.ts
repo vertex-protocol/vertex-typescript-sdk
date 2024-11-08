@@ -36,7 +36,6 @@ import {
   mapIndexerServerProduct,
 } from './dataMappers';
 import {
-  Candlestick,
   GetIndexerBlastPointsParams,
   GetIndexerBlastPointsResponse,
   GetIndexerBlitzInitialDropConditionsParams,
@@ -107,7 +106,6 @@ import {
   GetIndexerVrtxTokenInfoParams,
   GetIndexerVrtxTokenInfoResponse,
   IndexerEventWithTx,
-  IndexerMarketSnapshot,
   IndexerMatchEvent,
   IndexerOraclePrice,
   IndexerServerEventsParams,
@@ -680,7 +678,6 @@ export class IndexerBaseClient {
         max_time: params.maxTimeInclusive?.toString(),
         count: params.limit,
       },
-      product_ids: params.productIds,
     });
 
     return mapValues(baseResponse.snapshots, (snapshots) =>
