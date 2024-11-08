@@ -253,7 +253,7 @@ export interface IndexerMarketSnapshot {
   cumulativeMakerFees: Record<number, BigDecimal>;
   cumulativeTrades: Record<number, BigDecimal>;
   cumulativeLiquidationAmounts: Record<number, BigDecimal>;
-  openInterests: Record<number, BigDecimal>;
+  openInterestsQuote: Record<number, BigDecimal>;
   totalDeposits: Record<number, BigDecimal>;
   totalBorrows: Record<number, BigDecimal>;
   fundingRates: Record<number, BigDecimal>;
