@@ -17,6 +17,7 @@ import {
   IndexerOrder,
 } from './clientTypes';
 import { CollateralEventType } from './collateralEventType';
+import { VertexTx } from './VertexTx';
 
 export interface IndexerPaginationParams {
   limit: number;
@@ -40,9 +41,10 @@ type BaseSubaccountPaginationParams = Subaccount &
     maxTimestampInclusive?: number;
   };
 
-export interface BaseIndexerPaginatedEvent {
+export interface BaseIndexerPaginatedEvent extends Subaccount {
   timestamp: BigDecimal;
   submissionIndex: string;
+  tx: VertexTx;
 }
 
 export interface PaginatedIndexerEventsResponse<

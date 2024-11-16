@@ -10,6 +10,7 @@ import {
   Subaccount,
 } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils';
+import { BigNumberish } from 'ethers';
 import { CandlestickPeriod } from './CandlestickPeriod';
 import { IndexerEventType } from './IndexerEventType';
 import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
@@ -21,7 +22,6 @@ import {
   IndexerServerListSubaccountsParams,
 } from './serverTypes';
 import { VertexTx, VertexWithdrawCollateralTx } from './VertexTx';
-import { BigNumberish } from 'ethers';
 
 /**
  * Base types
@@ -382,7 +382,7 @@ export interface IndexerMatchEventBalances {
   quote?: IndexerSpotBalance;
 }
 
-export interface IndexerMatchEvent {
+export interface IndexerMatchEvent extends Subaccount {
   productId: number;
   digest: string;
   order: EIP712OrderValues;
