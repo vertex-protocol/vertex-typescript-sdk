@@ -717,6 +717,9 @@ export interface IndexerLeaderboardParticipant {
   // Float indicating the trading volume at the time the snapshot was taken i.e: at updateTime.
   // Null for contests that have no volume requirement.
   volume?: BigDecimal;
+  // Float indicating the staked VRTX amount at the time the snapshot was taken i.e: at updateTime.
+  // Null for contests that have no staking requirement.
+  stakedVrtx?: BigDecimal;
   // Seconds
   updateTime: BigDecimal;
 }
@@ -790,6 +793,8 @@ export interface IndexerLeaderboardContest {
   minRequiredAccountValue: BigDecimal;
   // Float indicating the min trading volume required to be eligible for this contest e.g: 1000.0
   minRequiredVolume: BigDecimal;
+  // Float indicating the min staked vrtx required to be eligible for this contest e.g: 1000.0
+  minRequiredStakedVrtx: BigDecimal;
   // For market-specific contests, only the volume from these products will be counted.
   requiredProductIds: number[];
   active: boolean;
