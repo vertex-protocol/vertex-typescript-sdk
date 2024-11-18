@@ -35,9 +35,28 @@ export interface VertexWithdrawCollateralTx {
   };
 }
 
+export interface VertexDepositCollateralTx {
+  deposit_collateral: {
+    sender: string;
+    product_id: number;
+    amount: string;
+  };
+}
+
+export interface VertexTransferQuoteTx {
+  transfer_quote: {
+    sender: string;
+    recipient: string;
+    amount: string;
+    nonce: number;
+  };
+}
+
 export type VertexTx =
   | VertexMatchOrdersTx
   | VertexMatchOrdersRfqTx
   | VertexLiquidateSubaccountTx
+  | VertexDepositCollateralTx
+  | VertexTransferQuoteTx
   | VertexWithdrawCollateralTx
   | any;

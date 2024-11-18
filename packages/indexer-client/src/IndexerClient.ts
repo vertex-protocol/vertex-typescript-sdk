@@ -1,6 +1,7 @@
 import {
   ProductEngineType,
   QUOTE_PRODUCT_ID,
+  subaccountFromHex,
 } from '@vertex-protocol/contracts';
 import { toBigDecimal } from '@vertex-protocol/utils';
 
@@ -106,6 +107,8 @@ export class IndexerClient extends IndexerBaseClient {
           quoteSnapshot: undefined,
           timestamp: event.timestamp,
           submissionIndex: event.submissionIndex,
+          tx: event.tx,
+          ...subaccountFromHex(event.subaccount),
         };
         eventsBySubmissionIdx.set(event.submissionIndex, newEvent);
 
@@ -190,6 +193,8 @@ export class IndexerClient extends IndexerBaseClient {
           event.state.preBalance.amount,
         ),
         newAmount: event.state.postBalance.amount,
+        tx: event.tx,
+        ...subaccountFromHex(event.subaccount),
       };
     });
 
@@ -270,6 +275,8 @@ export class IndexerClient extends IndexerBaseClient {
           quoteDelta: event.state.preBalance.vQuoteBalance.minus(
             event.state.postBalance.vQuoteBalance,
           ),
+          tx: event.tx,
+          ...subaccountFromHex(event.subaccount),
         };
       })
       .filter((event): event is IndexerSettlementEvent => !!event);

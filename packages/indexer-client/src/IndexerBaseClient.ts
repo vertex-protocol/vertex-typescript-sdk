@@ -17,6 +17,7 @@ import {
   toBigDecimal,
 } from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { BigNumberish, Signer } from 'ethers';
 import {
   mapIndexerCandlesticks,
   mapIndexerEvent,
@@ -120,7 +121,6 @@ import {
   UpdateIndexerLeaderboardRegistrationParams,
   UpdateIndexerLeaderboardRegistrationResponse,
 } from './types';
-import { BigNumberish, Signer } from 'ethers';
 
 export interface IndexerClientOpts {
   // Server URLs
@@ -583,6 +583,7 @@ export class IndexerBaseClient {
         preBalances: mapIndexerMatchEventBalances(matchEvent.pre_balance),
         postBalances: mapIndexerMatchEventBalances(matchEvent.post_balance),
         tx,
+        ...subaccountFromHex(matchEvent.order.sender),
       };
     });
   }
@@ -1025,14 +1026,6 @@ export class IndexerBaseClient {
     return response.data;
   }
 
-  private checkResponseStatus(response: AxiosResponse) {
-    if (response.status !== 200 || !response.data) {
-      throw Error(
-        `Unexpected response from server: ${response.status} ${response.statusText}`,
-      );
-    }
-  }
-
   protected async sign<T extends SignableRequestType>(
     requestType: T,
     verifyingContract: string,
@@ -1050,5 +1043,13 @@ export class IndexerBaseClient {
       signer,
       verifyingContract,
     });
+  }
+
+  private checkResponseStatus(response: AxiosResponse) {
+    if (response.status !== 200 || !response.data) {
+      throw Error(
+        `Unexpected response from server: ${response.status} ${response.statusText}`,
+      );
+    }
   }
 }
