@@ -310,6 +310,9 @@ export function mapIndexerLeaderboardPosition(
     roiRank: toBigDecimal(position.roi_rank),
     accountValue: toBigDecimal(position.account_value),
     volume: position.volume ? toBigDecimal(position.volume) : undefined,
+    stakedVrtx: position.staked_vrtx
+      ? toBigDecimal(position.staked_vrtx)
+      : undefined,
     updateTime: toBigDecimal(position.update_time),
   };
 }
@@ -335,6 +338,7 @@ export function mapIndexerLeaderboardContest(
     totalParticipants: toBigDecimal(contest.count),
     minRequiredAccountValue: toBigDecimal(contest.threshold),
     minRequiredVolume: toBigDecimal(contest.volume_threshold),
+    minRequiredStakedVrtx: toBigDecimal(contest.staking_threshold),
     requiredProductIds: contest.product_ids,
     active: contest.active,
     lastUpdated: toBigDecimal(contest.last_updated),

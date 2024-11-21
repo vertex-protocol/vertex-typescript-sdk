@@ -298,6 +298,7 @@ export interface IndexerServerLeaderboardPosition {
   roi_rank: string;
   account_value: string;
   volume?: string;
+  staked_vrtx?: string;
   update_time: string;
 }
 
@@ -309,6 +310,7 @@ export interface IndexerServerLeaderboardContest {
   count: string;
   threshold: string;
   volume_threshold: string;
+  staking_threshold: string;
   product_ids: number[];
   last_updated: string;
   active: boolean;
