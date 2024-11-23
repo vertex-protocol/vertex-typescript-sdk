@@ -7,7 +7,7 @@ import {
 import { getBytes, hexlify, toUtf8Bytes, toUtf8String } from 'ethers';
 
 /**
- * Converts a subaccount object (owner + name) to it's bytes32 representation.
+ * Converts a subaccount object (owner + name) to its bytes32 representation.
  * @param subaccount subaccount object (owner + name)
  * @returns bytes32 representation of a subaccount
  */
@@ -32,7 +32,7 @@ export function subaccountToBytes32(subaccount: Subaccount): SubaccountBytes32 {
 
 /**
  * Given a bytes32 representation of a subaccount, returns a subaccount object (owner + name)
- * @param bytes bytes32 representaion of a subaccount where bytes[0:20]=owner & bytes[20:32]=subaccountName
+ * @param bytes bytes32 representation of a subaccount where bytes[0:20]=owner & bytes[20:32]=subaccountName
  * @returns subaccount object (owner + name)
  */
 export function subaccountFromBytes32(bytes: SubaccountBytes32): Subaccount {
@@ -53,14 +53,12 @@ export function subaccountFromBytes32(bytes: SubaccountBytes32): Subaccount {
 
   return {
     subaccountOwner: hexlify(address),
-    subaccountName: bytesToStr(name),
+    subaccountName: bytesToStrFallback(name),
   };
 }
 
 /**
- * When interacting with the contracts (e.g: deposit collateral);
- * subaccount name is represented as bytes12.
- * This util converts a subaccount name to it's bytes12 representation.
+ * Converts a subaccount name to its bytes12 representation.
  * @param name subaccount name
  * @returns bytes12 representation of a subaccount name.
  */
@@ -69,9 +67,7 @@ export function subaccountNameToBytes12(name: string): SubaccountNameBytes12 {
 }
 
 /**
- * When interacting with the engine, we need to send a hex string representation
- * of the bytes32 of a subaccount for serialization reasons. This util
- * converts a subaccount object (owner + name) to such hex representation.
+ * Converts a subaccount object (owner + name) to its hex string representation.
  * @param subaccount subaccount object (owner + name)
  * @returns hex string representation of a subaccount
  */
@@ -88,6 +84,12 @@ export function subaccountFromHex(subaccount: string): Subaccount {
   return subaccountFromBytes32(getBytes(subaccount));
 }
 
+/**
+ * Converts a string to a bytes array of fixed length, padding with zero bytes if necessary.
+ * @param input input string
+ * @param bytesLen length of the resulting bytes array
+ * @returns padded bytes array
+ */
 export function strToBytes(input: string, bytesLen: number): Bytes {
   const bytes = toUtf8Bytes(input);
   const buffer = new Uint8Array(bytesLen);
@@ -97,7 +99,18 @@ export function strToBytes(input: string, bytesLen: number): Bytes {
   return buffer;
 }
 
-export function bytesToStr(input: Bytes): string {
-  // toUtf8String will replace zero bytes with \0, so strip them out here
-  return toUtf8String(input).replace(/\0/g, '');
+/**
+ * Converts a bytes array to a string, attempting to decode as UTF-8 first.
+ * Falls back to returning a hex representation if decoding fails.
+ * @param input input bytes array
+ * @returns decoded string or hex representation
+ */
+export function bytesToStrFallback(input: Bytes): string {
+  try {
+    // Attempt to decode as UTF-8
+    return toUtf8String(input).replace(/\0/g, '');
+  } catch {
+    // Fallback to hex representation if decoding fails
+    return hexlify(input);
+  }
 }
