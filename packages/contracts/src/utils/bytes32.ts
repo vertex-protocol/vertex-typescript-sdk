@@ -1,10 +1,10 @@
+import { getBytes, hexlify, toUtf8Bytes, toUtf8String } from 'ethers';
 import {
   Bytes,
   Subaccount,
   SubaccountBytes32,
   SubaccountNameBytes12,
 } from '../common';
-import { getBytes, hexlify, toUtf8Bytes, toUtf8String } from 'ethers';
 
 /**
  * Converts a subaccount object (owner + name) to it's bytes32 representation.
@@ -51,9 +51,16 @@ export function subaccountFromBytes32(bytes: SubaccountBytes32): Subaccount {
     }
   }
 
+  let subaccountName: string;
+  try {
+    subaccountName = bytesToUtf8Str(name);
+  } catch (e) {
+    subaccountName = hexlify(name);
+  }
+
   return {
     subaccountOwner: hexlify(address),
-    subaccountName: bytesToStr(name),
+    subaccountName,
   };
 }
 
@@ -97,7 +104,11 @@ export function strToBytes(input: string, bytesLen: number): Bytes {
   return buffer;
 }
 
-export function bytesToStr(input: Bytes): string {
+/**
+ * Converts a bytes buffer to a utf8 string. Will throw if the bytes is not a valid UTF8 string
+ * @param input
+ */
+export function bytesToUtf8Str(input: Bytes): string {
   // toUtf8String will replace zero bytes with \0, so strip them out here
   return toUtf8String(input).replace(/\0/g, '');
 }
