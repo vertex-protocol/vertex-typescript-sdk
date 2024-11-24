@@ -1,4 +1,10 @@
-import { getBytes, hexlify, toUtf8Bytes, toUtf8String } from 'ethers';
+import {
+  getBytes,
+  hexlify,
+  isHexString,
+  toUtf8Bytes,
+  toUtf8String,
+} from 'ethers';
 import {
   Bytes,
   Subaccount,
@@ -7,13 +13,19 @@ import {
 } from '../common';
 
 /**
- * Converts a subaccount object (owner + name) to it's bytes32 representation.
+ * Converts a subaccount object (owner + name) to its bytes32 representation.
  * @param subaccount subaccount object (owner + name)
  * @returns bytes32 representation of a subaccount
  */
 export function subaccountToBytes32(subaccount: Subaccount): SubaccountBytes32 {
   const address = getBytes(subaccount.subaccountOwner);
-  const name = toUtf8Bytes(subaccount.subaccountName);
+  // If the subaccount name is a hex string, then assume that it's a hexlified representation of a non-utf8 string
+  let name: Uint8Array;
+  if (isHexString(subaccount.subaccountName)) {
+    name = getBytes(subaccount.subaccountName);
+  } else {
+    name = toUtf8Bytes(subaccount.subaccountName);
+  }
 
   if (address.length != 20) {
     throw new Error(`owner must be 20 bytes, but found ${address.length}`);
