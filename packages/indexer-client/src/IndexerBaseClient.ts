@@ -929,7 +929,10 @@ export class IndexerBaseClient {
       };
 
     const baseResponse = await this.query('leaderboard_registration', {
-      address: params.subaccountOwner,
+      subaccount: subaccountToHex({
+        subaccountOwner: params.subaccountOwner,
+        subaccountName: params.subaccountName,
+      }),
       contest_id: params.contestId,
       update_registration: updateRegistrationTx,
     });
@@ -948,7 +951,10 @@ export class IndexerBaseClient {
     params: GetIndexerLeaderboardRegistrationParams,
   ): Promise<GetIndexerLeaderboardRegistrationResponse> {
     const baseResponse = await this.query('leaderboard_registration', {
-      address: params.subaccountOwner,
+      subaccount: subaccountToHex({
+        subaccountOwner: params.subaccountOwner,
+        subaccountName: params.subaccountName,
+      }),
       contest_id: params.contestId,
       update_registration: null,
     });
