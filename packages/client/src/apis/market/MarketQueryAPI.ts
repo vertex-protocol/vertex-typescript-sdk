@@ -43,6 +43,15 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
+   * Get all edge engine markets
+   */
+  async getEdgeAllEngineMarkets(): Promise<
+    Record<number, GetAllMarketsResponse>
+  > {
+    return this.context.engineClient.getEdgeAllMarkets();
+  }
+
+  /**
    * Retrieves all spread health groups
    */
   async getHealthGroups() {

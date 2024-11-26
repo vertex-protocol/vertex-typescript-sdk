@@ -116,6 +116,7 @@ export interface EngineServerQueryRequestByType {
   nonces: EngineServerNoncesParams;
   symbols: EngineServerSymbolsQueryParams;
   all_products: Record<string, never>;
+  edge_all_products: Record<string, never>;
   health_groups: Record<string, never>;
   subaccount_info: Omit<EngineServerSubaccountInfoQueryParams, 'txns'> & {
     // JSON serialized txns
@@ -312,6 +313,10 @@ export interface EngineServerMinDepositRatesResponse {
   min_deposit_rates: Record<number, EngineServerMinDepositRate>;
 }
 
+export interface EngineServerEdgeAllProductsResponse {
+  edge_all_products: Record<number, EngineServerAllProductsResponse>;
+}
+
 export interface EngineServerQueryResponseByType {
   contracts: EngineServerContractsResponse;
   status: EngineServerStatusResponse;
@@ -319,6 +324,7 @@ export interface EngineServerQueryResponseByType {
   subaccount_info: EngineServerSubaccountInfoResponse;
   symbols: EngineServerSymbolsResponse;
   all_products: EngineServerAllProductsResponse;
+  edge_all_products: EngineServerEdgeAllProductsResponse;
   health_groups: EngineServerHealthGroupsResponse;
   order: EngineServerOrderResponse;
   orders: EngineServerProductOrdersResponse;
