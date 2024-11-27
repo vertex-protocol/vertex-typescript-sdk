@@ -198,6 +198,27 @@ export class EngineQueryClient extends EngineBaseClient {
   }
 
   /**
+   * Retrieves all markets by chain id.
+   */
+  async getEdgeAllMarkets(): Promise<Record<number, MarketWithProduct[]>> {
+    const baseResponse = await this.query('edge_all_products', {});
+
+    return mapValues(baseResponse.edge_all_products, (allProducts) => {
+      const markets: MarketWithProduct[] = [];
+
+      allProducts.spot_products.forEach((spotProduct) => {
+        markets.push(mapEngineServerSpotProduct(spotProduct));
+      });
+
+      allProducts.perp_products.forEach((perpProduct) => {
+        markets.push(mapEngineServerPerpProduct(perpProduct));
+      });
+
+      return markets;
+    });
+  }
+
+  /**
    * Retrieves all health groups (linked spot & perp products) from the engine
    */
   async getHealthGroups(): Promise<GetEngineHealthGroupsResponse> {

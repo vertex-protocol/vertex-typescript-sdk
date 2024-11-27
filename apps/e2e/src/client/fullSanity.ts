@@ -160,6 +160,7 @@ async function fullSanity(context: RunContext) {
 
   // Fetches state from offchain sequencer
   await vertexClient.market.getAllEngineMarkets();
+  await vertexClient.market.getEdgeAllEngineMarkets();
   await vertexClient.market.getLatestMarketPrices({ productIds: [1, 2, 3] });
 
   // Fetches state from Arbitrum
