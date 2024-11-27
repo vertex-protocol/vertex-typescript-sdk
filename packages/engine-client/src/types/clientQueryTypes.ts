@@ -97,6 +97,7 @@ export interface EngineSymbol {
 }
 
 export type GetEngineAllMarketsResponse = GetAllMarketsResponse;
+
 export interface GetEngineHealthGroupsResponse {
   healthGroups: HealthGroup[];
 }

@@ -314,6 +314,7 @@ export interface EngineServerMinDepositRatesResponse {
 }
 
 export interface EngineServerEdgeAllProductsResponse {
+  // chain_id -> EngineServerAllProductsResponse
   edge_all_products: Record<number, EngineServerAllProductsResponse>;
 }
 
