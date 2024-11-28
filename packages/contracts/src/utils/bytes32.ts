@@ -66,7 +66,7 @@ export function subaccountFromBytes32(bytes: SubaccountBytes32): Subaccount {
   let subaccountName: string;
   try {
     subaccountName = bytesToUtf8Str(name);
-  } catch (e) {
+  } catch (_e) {
     subaccountName = hexlify(name);
   }
 

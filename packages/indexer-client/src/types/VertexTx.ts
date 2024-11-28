@@ -59,4 +59,5 @@ export type VertexTx =
   | VertexDepositCollateralTx
   | VertexTransferQuoteTx
   | VertexWithdrawCollateralTx
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   | any;
