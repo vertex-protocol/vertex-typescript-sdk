@@ -39,10 +39,10 @@ export class VertexClient {
    * Sets the signer or provider for the client. Will cause a full reload of the current context.
    * @param signerOrProvider
    */
-  async setSignerOrProvider(
+  setSignerOrProvider(
     signerOrProvider: VertexClientContext['signerOrProvider'],
   ) {
-    const newContext = await createClientContext(
+    const newContext = createClientContext(
       {
         contractAddresses: this.context.contractAddresses,
         engineEndpoint: this.context.engineClient.opts.url,

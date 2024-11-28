@@ -1,4 +1,8 @@
-import { createVertexClient, PlaceOrderParams } from '@vertex-protocol/client';
+import {
+  createVertexClient,
+  PlaceOrderParams,
+  VertexClient,
+} from '@vertex-protocol/client';
 import {
   getChainIdFromSigner,
   getOrderDigest,
@@ -6,15 +10,15 @@ import {
   getVertexEIP712Values,
 } from '@vertex-protocol/contracts';
 import { toFixedPoint } from '@vertex-protocol/utils';
+import { AbiCoder, getBytes, solidityPacked } from 'ethers';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
-import { AbiCoder, getBytes, solidityPacked } from 'ethers';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
-  const vertexClient = await createVertexClient(context.env.chainEnv, {
+  const vertexClient: VertexClient = createVertexClient(context.env.chainEnv, {
     signerOrProvider: signer,
   });
 

@@ -35,16 +35,16 @@ async function fullSanity(context: RunContext) {
     signer,
   });
 
-  const clearinghouse = await IClearinghouse__factory.connect(
+  const clearinghouse = IClearinghouse__factory.connect(
     context.contracts.clearinghouse,
     signer,
   );
-  const quote = await MockERC20__factory.connect(
+  const quote = MockERC20__factory.connect(
     await clearinghouse.getQuote(),
     signer,
   );
   const endpointAddr = context.contracts.endpoint;
-  const endpoint = await Endpoint__factory.connect(endpointAddr, signer);
+  const endpoint = Endpoint__factory.connect(endpointAddr, signer);
 
   const depositAmount = toFixedPoint(10000, 6);
 

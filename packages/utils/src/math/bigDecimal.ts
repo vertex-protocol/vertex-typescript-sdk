@@ -1,5 +1,5 @@
-import { BigNumberish } from 'ethers';
 import { BigNumber as BigDecimal } from 'bignumber.js';
+import { BigNumberish } from 'ethers';
 
 // Renames `BigNumber` type from `bignumber.js`.
 export { BigNumber as BigDecimal } from 'bignumber.js';
@@ -24,7 +24,8 @@ export function toBigDecimal(val: BigDecimalish): BigDecimal {
     } else if (typeof val === 'string' || typeof val === 'number') {
       return val;
     }
-    return val.toString();
+    // This is unlikely to occur, but it's here for completeness. Uses the suggestion here: https://typescript-eslint.io/rules/no-base-to-string/#alternatives
+    return JSON.stringify(val);
   })();
   return new BigDecimal(bnConstructorVal);
 }

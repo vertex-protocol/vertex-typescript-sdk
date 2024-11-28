@@ -40,16 +40,16 @@ async function fullSanity(context: RunContext) {
   });
 
   const clearinghouseAddr = context.contracts.clearinghouse;
-  const clearinghouse = await IClearinghouse__factory.connect(
+  const clearinghouse = IClearinghouse__factory.connect(
     clearinghouseAddr,
     signer,
   );
-  const quote = await MockERC20__factory.connect(
+  const quote = MockERC20__factory.connect(
     await clearinghouse.getQuote(),
     signer,
   );
   const endpointAddr = await clearinghouse.getEndpoint();
-  const endpoint = await Endpoint__factory.connect(endpointAddr, signer);
+  const endpoint = Endpoint__factory.connect(endpointAddr, signer);
   await (await quote.mint(signer.address, toFixedPoint(10000, 6))).wait();
   await (await quote.approve(endpointAddr, toFixedPoint(10000, 6))).wait();
 
@@ -75,7 +75,7 @@ async function fullSanity(context: RunContext) {
     subaccountOwner: signer.address,
     subaccountName: 'default',
   });
-  console.log(`subaccountBytes32: ${subaccountBytes32}`);
+  console.log(`subaccountBytes32: ${String(subaccountBytes32)}`);
   console.log(`subaccountHex: ${subaccountHex}`);
   const subaccountFrom32BytesOut = subaccountFromBytes32(subaccountBytes32);
   const subaccountFromHexOut = subaccountFromHex(subaccountHex);

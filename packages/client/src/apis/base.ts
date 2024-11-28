@@ -1,10 +1,10 @@
-import { VertexClientContext } from '../context';
 import {
   getChainIdFromSigner,
   WithContracts,
 } from '@vertex-protocol/contracts';
-import { isSigner } from '../utils';
 import { BigNumberish } from 'ethers/lib.esm';
+import { VertexClientContext } from '../context';
+import { isSigner } from '../utils';
 
 export class BaseVertexAPI {
   readonly context: VertexClientContext;
@@ -13,7 +13,7 @@ export class BaseVertexAPI {
     this.context = context;
   }
 
-  protected async getChainSigner() {
+  protected getChainSigner() {
     if (isSigner(this.context.signerOrProvider)) {
       return this.context.signerOrProvider;
     }
@@ -21,7 +21,7 @@ export class BaseVertexAPI {
   }
 
   protected async getChainSignerAddress() {
-    return (await this.getChainSigner()).getAddress();
+    return this.getChainSigner().getAddress();
   }
 
   protected async getSignerChainIdIfNeeded(params: {
@@ -34,7 +34,7 @@ export class BaseVertexAPI {
   }
 
   protected async getSignerChainId() {
-    return getChainIdFromSigner(await this.getChainSigner());
+    return getChainIdFromSigner(this.getChainSigner());
   }
 
   protected getEndpointAddress() {

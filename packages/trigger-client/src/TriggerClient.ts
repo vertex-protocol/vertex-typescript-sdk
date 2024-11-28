@@ -255,8 +255,7 @@ export class TriggerClient {
       TriggerServerQuerySuccessResponse<TRequestType>
     >;
 
-    return successResponse.data
-      .data as TriggerServerQueryResponseByType[TRequestType];
+    return successResponse.data.data;
   }
 
   private checkResponseStatus(response: AxiosResponse) {

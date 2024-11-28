@@ -40,7 +40,7 @@ export class SpotExecuteAPI extends BaseSpotAPI {
     const config = await this.context.contracts.spotEngine.getConfig(
       params.productId,
     );
-    const erc20 = await MockERC20__factory.connect(
+    const erc20 = MockERC20__factory.connect(
       config.token,
       this.context.signerOrProvider,
     );

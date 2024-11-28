@@ -1,5 +1,3 @@
-// TODO: Populate all types
-
 export interface VertexMatchOrdersTx {
   match_orders: {
     product_id: number;
@@ -59,5 +57,7 @@ export type VertexTx =
   | VertexDepositCollateralTx
   | VertexTransferQuoteTx
   | VertexWithdrawCollateralTx
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  | any;
+  | {
+      // TODO: Populate all types
+      [key: string]: never;
+    };

@@ -1007,7 +1007,7 @@ export class IndexerBaseClient {
 
     this.checkResponseStatus(response);
 
-    return response.data;
+    return response.data as GetIndexerVrtxTokenInfoResponse;
   }
 
   protected async query<TRequestType extends IndexerServerQueryRequestType>(

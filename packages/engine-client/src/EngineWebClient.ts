@@ -23,7 +23,7 @@ export class EngineWebClient extends EngineBaseClient {
           if (res.status !== 403) {
             return false;
           }
-          const resData: EngineServerIpBlockResponse = res.data;
+          const resData = res.data as EngineServerIpBlockResponse;
 
           return Boolean(resData.blocked && resData.reason === 'ip');
         })
@@ -59,6 +59,6 @@ export class EngineWebClient extends EngineBaseClient {
   async getTime(): Promise<GetEngineTimeResponse> {
     return this.axiosInstance
       .get(`${this.opts.url}/time`)
-      .then((res) => res.data);
+      .then((res) => res.data as GetEngineTimeResponse);
   }
 }
