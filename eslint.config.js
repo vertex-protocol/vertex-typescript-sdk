@@ -54,7 +54,6 @@ module.exports = tseslint.config(
       '**/.nx/',
       'packages/contracts/src/typechain-types',
       '**/node_modules/',
-      '**/.next',
       '**/dist',
     ],
   },
