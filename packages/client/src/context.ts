@@ -73,10 +73,10 @@ export type CreateVertexClientContextOpts = VertexClientContextOpts | ChainEnv;
  * @param opts
  * @param signerOpts
  */
-export async function createClientContext(
+export function createClientContext(
   opts: CreateVertexClientContextOpts,
   signerOpts: CreateVertexClientContextSignerOpts,
-): Promise<VertexClientContext> {
+): VertexClientContext {
   const {
     contractAddresses,
     engineEndpoint,
@@ -175,9 +175,7 @@ export async function createClientContext(
   })();
   const { signerOrProvider, linkedSigner } = signerOpts;
 
-  const validSigner = isSigner(signerOrProvider)
-    ? (signerOrProvider as Signer)
-    : undefined;
+  const validSigner = isSigner(signerOrProvider) ? signerOrProvider : undefined;
 
   return {
     signerOrProvider: signerOrProvider,
@@ -187,11 +185,11 @@ export async function createClientContext(
         contractAddresses.querier,
         signerOrProvider,
       ),
-      clearinghouse: await IClearinghouse__factory.connect(
+      clearinghouse: IClearinghouse__factory.connect(
         contractAddresses.clearinghouse,
         signerOrProvider,
       ),
-      endpoint: await Endpoint__factory.connect(
+      endpoint: Endpoint__factory.connect(
         contractAddresses.endpoint,
         signerOrProvider,
       ),

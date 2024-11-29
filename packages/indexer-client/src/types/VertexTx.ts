@@ -1,5 +1,3 @@
-// TODO: Populate all types
-
 export interface VertexMatchOrdersTx {
   match_orders: {
     product_id: number;
@@ -59,4 +57,7 @@ export type VertexTx =
   | VertexDepositCollateralTx
   | VertexTransferQuoteTx
   | VertexWithdrawCollateralTx
-  | any;
+  | {
+      // TODO: Populate all types
+      [key: string]: never;
+    };

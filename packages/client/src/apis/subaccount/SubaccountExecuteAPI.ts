@@ -1,10 +1,10 @@
-import { BaseVertexAPI } from '../base';
 import {
   createDeterministicLinkedSignerPrivateKey,
   getChainIdFromSigner,
   Subaccount,
 } from '@vertex-protocol/contracts';
 import { Wallet } from 'ethers';
+import { BaseVertexAPI } from '../base';
 import {
   LinkSignerParams,
   LiquidateSubaccountParams,
@@ -60,7 +60,7 @@ export class SubaccountExecuteAPI extends BaseVertexAPI {
   async createDeterministicLinkedSigner(
     params: Pick<Subaccount, 'subaccountName'>,
   ) {
-    const chainSigner = await this.getChainSigner();
+    const chainSigner = this.getChainSigner();
 
     const chainId = await getChainIdFromSigner(chainSigner);
     const address = await chainSigner.getAddress();

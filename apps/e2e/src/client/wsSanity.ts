@@ -1,4 +1,8 @@
-import { createVertexClient, PlaceOrderParams } from '@vertex-protocol/client';
+import {
+  createVertexClient,
+  PlaceOrderParams,
+  VertexClient,
+} from '@vertex-protocol/client';
 import {
   getChainIdFromSigner,
   getOrderDigest,
@@ -11,7 +15,7 @@ import { RunContext } from '../utils/types';
 
 async function wsSanity(context: RunContext) {
   const signer = context.getWallet();
-  const vertexClient = await createVertexClient(context.env.chainEnv, {
+  const vertexClient: VertexClient = createVertexClient(context.env.chainEnv, {
     signerOrProvider: signer,
   });
 

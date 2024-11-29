@@ -12,9 +12,9 @@ import {
  * @param opts
  * @param signerOpts
  */
-export async function createVertexClient(
+export function createVertexClient(
   opts: CreateVertexClientContextOpts,
   signerOpts: CreateVertexClientContextSignerOpts,
-): Promise<VertexClient> {
-  return new VertexClient(await createClientContext(opts, signerOpts));
+): VertexClient {
+  return new VertexClient(createClientContext(opts, signerOpts));
 }

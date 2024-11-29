@@ -108,8 +108,7 @@ export class EngineBaseClient {
       EngineServerQuerySuccessResponse<TRequestType>
     >;
 
-    return successResponse.data
-      .data as EngineServerQueryResponseByType[TRequestType];
+    return successResponse.data.data;
   }
 
   /**

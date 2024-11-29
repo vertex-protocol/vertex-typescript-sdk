@@ -65,7 +65,8 @@ export interface TriggerServerQueryResponseByType {
 }
 
 export interface TriggerServerQuerySuccessResponse<
-  TQueryType extends keyof TriggerServerQueryResponseByType = TriggerServerQueryRequestType,
+  TQueryType extends
+    keyof TriggerServerQueryResponseByType = TriggerServerQueryRequestType,
 > {
   status: 'success';
   data: TriggerServerQueryResponseByType[TQueryType];
@@ -78,7 +79,8 @@ export interface TriggerServerQueryFailureResponse {
 }
 
 export type TriggerServerQueryResponse<
-  TQueryType extends keyof TriggerServerQueryResponseByType = TriggerServerQueryRequestType,
+  TQueryType extends
+    keyof TriggerServerQueryResponseByType = TriggerServerQueryRequestType,
 > =
   | TriggerServerQuerySuccessResponse<TQueryType>
   | TriggerServerQueryFailureResponse;
