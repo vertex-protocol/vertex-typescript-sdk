@@ -9,16 +9,6 @@ module.exports = tseslint.config(
   tseslint.configs.recommendedTypeChecked,
   prettierPluginRecommended,
   {
-    languageOptions: {
-      // Ensures we can use global vars like `__dirname`.
-      globals: { ...globals.node },
-    },
-    rules: {
-      // Allows us to use `require` in `js` files.
-      '@typescript-eslint/no-require-imports': 'off',
-    },
-  },
-  {
     files: ['**/*.{ts,tsx}'],
     plugins: {
       '@typescript-eslint': typescriptEslint,
@@ -47,6 +37,17 @@ module.exports = tseslint.config(
       'no-case-declarations': 'off',
       'no-constant-condition': 'off',
       'prettier/prettier': 'error',
+    },
+  },
+  {
+    files: ['eslint.config.js'],
+    languageOptions: {
+      // Ensures we can use global vars like `__dirname`.
+      globals: { ...globals.node },
+    },
+    rules: {
+      // Allows us to use `require`.
+      '@typescript-eslint/no-require-imports': 'off',
     },
   },
   {
