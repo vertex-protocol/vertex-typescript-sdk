@@ -353,10 +353,11 @@ async function fullSanity(context: RunContext) {
       'Update leaderboard registration result',
       updateLeaderboardRegistrationResult,
     );
-  } catch (e: any) {
+  } catch (e: unknown) {
+    const error = e as { response?: { data?: unknown } };
     console.log(
       'Failed to update leaderboard registration:',
-      e?.response?.data ?? e,
+      error?.response?.data ?? e,
     );
   }
 
@@ -372,10 +373,11 @@ async function fullSanity(context: RunContext) {
       'Leaderboard registration result',
       leaderboardRegistrationResult,
     );
-  } catch (e: any) {
+  } catch (e: unknown) {
+    const error = e as { response?: { data?: unknown } };
     console.log(
       'Failed to query leaderboard registration:',
-      e?.response?.data ?? e,
+      error?.response?.data ?? e,
     );
   }
 }
