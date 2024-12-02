@@ -317,7 +317,7 @@ export interface IndexerServerLeaderboardContest {
 }
 
 export interface IndexerServerLeaderboardRegistration {
-  address: string;
+  subaccount: string;
   contest_id: number;
   update_time: string;
 }

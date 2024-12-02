@@ -759,7 +759,7 @@ export interface UpdateIndexerLeaderboardRegistrationParams
 }
 
 export interface IndexerLeaderboardRegistration {
-  address: string;
+  subaccount: Subaccount;
   contestId: number;
   // Seconds
   updateTime: BigDecimal;

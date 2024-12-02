@@ -213,7 +213,7 @@ export interface IndexerServerLeaderboardContestsParams {
 }
 
 export interface IndexerServerLeaderboardRegistrationParams {
-  address: string;
+  subaccount: string;
   contest_id: number;
   update_registration: SignedTx<EIP712LeaderboardAuthenticationValues> | null;
 }

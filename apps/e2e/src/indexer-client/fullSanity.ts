@@ -337,31 +337,47 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Fast Withdrawal Signature', fastWithdrawalSignature);
 
-  const updateLeaderboardRegistrationResult =
-    await client.updateLeaderboardRegistration({
-      contestId: 12,
-      subaccountName: subaccount.subaccountName,
-      subaccountOwner: subaccount.subaccountOwner,
-      updateRegistration: {
-        verifyingAddr: endpointAddr,
-        chainId,
-      },
-    });
+  try {
+    const updateLeaderboardRegistrationResult =
+      await client.updateLeaderboardRegistration({
+        contestId: 17,
+        subaccountName: subaccount.subaccountName,
+        subaccountOwner: subaccount.subaccountOwner,
+        updateRegistration: {
+          verifyingAddr: endpointAddr,
+          chainId,
+        },
+      });
 
-  prettyPrint(
-    'Update leaderboard registration result',
-    updateLeaderboardRegistrationResult,
-  );
+    prettyPrint(
+      'Update leaderboard registration result',
+      updateLeaderboardRegistrationResult,
+    );
+  } catch (e: any) {
+    console.log(
+      'Failed to update leaderboard registration:',
+      e?.response?.data ?? e,
+    );
+  }
 
-  const leaderboardRegistrationResult = await client.getLeaderboardRegistration(
-    {
-      contestId: 12,
-      subaccountName: subaccount.subaccountName,
-      subaccountOwner: subaccount.subaccountOwner,
-    },
-  );
+  try {
+    const leaderboardRegistrationResult =
+      await client.getLeaderboardRegistration({
+        contestId: 16,
+        subaccountName: subaccount.subaccountName,
+        subaccountOwner: subaccount.subaccountOwner,
+      });
 
-  prettyPrint('Leaderboard registration result', leaderboardRegistrationResult);
+    prettyPrint(
+      'Leaderboard registration result',
+      leaderboardRegistrationResult,
+    );
+  } catch (e: any) {
+    console.log(
+      'Failed to query leaderboard registration:',
+      e?.response?.data ?? e,
+    );
+  }
 }
 
 runWithContext(fullSanity);

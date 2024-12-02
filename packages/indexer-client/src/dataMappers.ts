@@ -321,7 +321,7 @@ export function mapIndexerLeaderboardRegistration(
   registration: IndexerServerLeaderboardRegistration,
 ): IndexerLeaderboardRegistration {
   return {
-    address: registration.address,
+    subaccount: subaccountFromHex(registration.subaccount),
     contestId: registration.contest_id,
     updateTime: toBigDecimal(registration.update_time),
   };
