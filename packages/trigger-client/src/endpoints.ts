@@ -12,4 +12,5 @@ export const TRIGGER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   sei: 'https://trigger.sei-prod.vertexprotocol.com/v1',
   baseTestnet: 'https://trigger.base-test.vertexprotocol.com/v1',
   base: 'https://trigger.base-prod.vertexprotocol.com/v1',
+  sonicTestnet: 'https://trigger.sonic-test.vertexprotocol.com/v1',
 };

@@ -55,5 +55,10 @@ export function getProvider(chainEnv: ChainEnv): Provider {
         name: 'base',
         chainId: 8453,
       });
+    case 'sonicTestnet':
+      return new JsonRpcProvider('https://rpc.blaze.soniclabs.com', {
+        name: 'sonic-testnet',
+        chainId: 57054,
+      });
   }
 }
