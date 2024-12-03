@@ -7,6 +7,7 @@ import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
+import { isErrorInResponseData } from '../utils/isErrorInResponseData';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -353,10 +354,10 @@ async function fullSanity(context: RunContext) {
       'Update leaderboard registration result',
       updateLeaderboardRegistrationResult,
     );
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.log(
       'Failed to update leaderboard registration:',
-      e?.response?.data ?? e,
+      isErrorInResponseData(e) ? e.response.data : e,
     );
   }
 
@@ -372,10 +373,10 @@ async function fullSanity(context: RunContext) {
       'Leaderboard registration result',
       leaderboardRegistrationResult,
     );
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.log(
       'Failed to query leaderboard registration:',
-      e?.response?.data ?? e,
+      isErrorInResponseData(e) ? e.response.data : e,
     );
   }
 }

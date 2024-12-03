@@ -262,6 +262,7 @@ export interface IndexerMarketSnapshot {
   cumulativeTradeSizes: Record<number, BigDecimal>;
   cumulativeInflows: Record<number, BigDecimal>;
   cumulativeOutflows: Record<number, BigDecimal>;
+  oraclePrices: Record<number, BigDecimal>;
 }
 
 export type GetIndexerMarketSnapshotsResponse = IndexerMarketSnapshot[];

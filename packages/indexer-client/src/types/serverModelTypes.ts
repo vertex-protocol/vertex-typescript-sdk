@@ -170,6 +170,7 @@ export interface IndexerServerMarketSnapshot {
   cumulative_trade_sizes: Record<string, string>;
   cumulative_inflows: Record<string, string>;
   cumulative_outflows: Record<string, string>;
+  oracle_prices: Record<string, string>;
 }
 
 /**
