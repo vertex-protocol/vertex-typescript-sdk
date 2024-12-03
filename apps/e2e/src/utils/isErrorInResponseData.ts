@@ -1,6 +1,6 @@
 export function isErrorInResponseData(
   error: unknown,
-): error is { response: { data: string } } {
+): error is { response: { data: unknown } } {
   return (
     typeof error === 'object' &&
     error !== null &&
