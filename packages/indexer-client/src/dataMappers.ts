@@ -396,5 +396,6 @@ export function mapIndexerMarketSnapshot(
     ),
     cumulativeInflows: mapValues(snapshot.cumulative_inflows, toBigDecimal),
     cumulativeOutflows: mapValues(snapshot.cumulative_outflows, toBigDecimal),
+    oraclePrices: mapValues(snapshot.oracle_prices, fromX18),
   };
 }
