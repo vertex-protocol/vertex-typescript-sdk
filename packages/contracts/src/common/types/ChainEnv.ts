@@ -9,4 +9,5 @@ export type ChainEnv =
   | 'seiTestnet'
   | 'sei'
   | 'baseTestnet'
-  | 'base';
+  | 'base'
+  | 'sonicTestnet';

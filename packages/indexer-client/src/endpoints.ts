@@ -12,4 +12,5 @@ export const INDEXER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   sei: 'https://archive.sei-prod.vertexprotocol.com/v1',
   baseTestnet: 'https://archive.base-test.vertexprotocol.com/v1',
   base: 'https://archive.base-prod.vertexprotocol.com/v1',
+  sonicTestnet: 'https://archive.sonic-test.vertexprotocol.com/v1',
 };

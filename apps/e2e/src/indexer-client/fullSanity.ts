@@ -4,10 +4,10 @@ import {
   IndexerClient,
 } from '@vertex-protocol/indexer-client';
 import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
+import { getServerError } from '../utils/getServerError';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
-import { isErrorInResponseData } from '../utils/isErrorInResponseData';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -357,7 +357,7 @@ async function fullSanity(context: RunContext) {
   } catch (e: unknown) {
     console.log(
       'Failed to update leaderboard registration:',
-      isErrorInResponseData(e) ? e.response.data : e,
+      getServerError(e),
     );
   }
 
@@ -374,10 +374,7 @@ async function fullSanity(context: RunContext) {
       leaderboardRegistrationResult,
     );
   } catch (e: unknown) {
-    console.log(
-      'Failed to query leaderboard registration:',
-      isErrorInResponseData(e) ? e.response.data : e,
-    );
+    console.log('Failed to query leaderboard registration:', getServerError(e));
   }
 }
 

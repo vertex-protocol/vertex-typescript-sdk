@@ -1,8 +1,6 @@
 {
-  "nodeUrl": "https://lively-small-wave.sei-atlantic.quiknode.pro/fda3c38ead9aa11afb2b4aeb16916f11c4f381a1",
-  "publicNodeUrl": "https://evm-rpc-testnet.sei-apis.com",
+  "nodeUrl": "https://evm-rpc-testnet.sei-apis.com",
   "explorerUrl": "https://seitrace.com/?chain=atlantic-2",
-  "sequencerAddr": "0x0F7F6B308B5111EB4a86D44Dc90394b53A3aCe13",
   "startBlock": 101101325,
   "deployer": "0x3c06e307BA6Ab81E8Ff6661c1559ce8027744AE5",
   "quote": "0xbC47901f4d2C5fc871ae0037Ea05c3F614690781",
@@ -11,11 +9,6 @@
   "endpoint": "0xa822AfcdDff7c3236D2dC2643646C7B36BDefb3c",
   "spotEngine": "0x9DC1A319dA6aF2D16B6Bac84303cC63ac9e3E2b2",
   "perpEngine": "0xF9DE3847F0bD11a15886741a64Db7dc50c79ED89",
-  "offchainExchange": "0x8E4489714C509e5eA0601cb6c3C33B54A357a64A",
-  "proxyManager": "0x46A745AAF63c17B3E689DB7c143cb01F9584E7e5",
   "foundationRewardsAirdrop": "0x5Ab918fCcdE0236C537C2c97BFA40b52180ea643",
-  "sanctionsListAddr": "0xb1A31E7Ed119c132Dce80E7aB73AC64c3049A26C",
-  "verifier": "0x6EECE6FcF09FDcf3CF95E4c41f5FD9AdE16640A2",
-  "contractOwner": "0x5a6e1D5c544A9093B77513E0bFfD9f8D6C88BaB1",
   "withdrawPool": "0xdF70069015e592ef59716F193Ef117a0db2B4d69"
 }
