@@ -171,6 +171,14 @@ export function createClientContext(
         triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.sonicTestnet,
       };
     }
+    if (opts === 'beraTestnet') {
+      return {
+        contractAddresses: VERTEX_DEPLOYMENTS.beraTestnet,
+        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.beraTestnet,
+        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.beraTestnet,
+        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.beraTestnet,
+      };
+    }
     if (opts === 'local') {
       return {
         contractAddresses: VERTEX_DEPLOYMENTS.local,

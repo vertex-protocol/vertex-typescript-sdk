@@ -10,6 +10,7 @@ import SeiMainnetCoreDeployment from './deployments/core/deployment.seiMainnet.j
 import BaseTestnetCoreDeployment from './deployments/core/deployment.baseTestnet.json';
 import BaseMainnetCoreDeployment from './deployments/core/deployment.baseMainnet.json';
 import SonicTestnetCoreDeployment from './deployments/core/deployment.sonicTestnet.json';
+import BeraTestnetCoreDeployment from './deployments/core/deployment.beraTestnet.json';
 
 import ArbitrumOneLbaDeployment from './deployments/vrtx/deployment.arbitrumOne.json';
 import ArbitrumSepoliaLbaDeployment from './deployments/vrtx/deployment.arbitrumSepolia.json';
@@ -23,6 +24,7 @@ import SeiMainnetLbaDeployment from './deployments/vrtx/deployment.seiMainnet.js
 import BaseTestnetLbaDeployment from './deployments/vrtx/deployment.baseTestnet.json';
 import BaseMainnetLbaDeployment from './deployments/vrtx/deployment.baseMainnet.json';
 import SonicTestnetLbaDeployment from './deployments/vrtx/deployment.sonicTestnet.json';
+import BeraTestnetLbaDeployment from './deployments/vrtx/deployment.beraTestnet.json';
 
 import { ChainEnv } from './types';
 import { VertexContracts } from './vertexContracts';
@@ -78,6 +80,10 @@ export const VERTEX_DEPLOYMENTS: Record<ChainEnv, VertexDeploymentAddresses> = {
   sonicTestnet: {
     ...SonicTestnetLbaDeployment,
     ...SonicTestnetCoreDeployment,
+  },
+  beraTestnet: {
+    ...BeraTestnetLbaDeployment,
+    ...BeraTestnetCoreDeployment,
   },
   local: {
     ...LocalLbaDeployment,
