@@ -1,5 +1,6 @@
 import {
   EIP712BurnLpValues,
+  EIP712IsolatedOrderParams,
   EIP712LinkSignerValues,
   EIP712LiquidateSubaccountValues,
   EIP712MintLpValues,
@@ -27,6 +28,7 @@ export interface EngineServerExecuteResponseDataByType {
   mint_lp: null;
   burn_lp: null;
   place_order: EngineServerPlaceOrderResponse;
+  place_isolated_order: EngineServerPlaceOrderResponse;
   cancel_product_orders: EngineServerCancelOrdersResponse;
   cancel_orders: EngineServerCancelOrdersResponse;
   cancel_and_place: EngineServerPlaceOrderResponse;
@@ -71,6 +73,16 @@ export interface EngineServerPlaceOrderParams {
   spot_leverage: boolean | null;
 }
 
+export interface EngineServerPlaceIsolatedOrderParams {
+  id: number | null;
+  product_id: number;
+  isolated_order: EIP712OrderValues;
+  // Bytes
+  signature: string;
+  // Engine defaults this to false
+  borrow_margin: boolean | null;
+}
+
 export type EngineServerCancelOrdersParams = SignedTx<
   Omit<EIP712OrderCancellationValues, 'productIds'> & {
     // number[] is technically assignable to "Bytes", so we need to override the ByteFieldsToHex result here
@@ -99,6 +111,7 @@ export interface EngineServerExecuteRequestByType {
   mint_lp: WithSpotLeverage<SignedTx<EIP712MintLpValues>>;
   burn_lp: SignedTx<EIP712BurnLpValues>;
   place_order: EngineServerPlaceOrderParams;
+  place_isolated_order: EngineServerPlaceIsolatedOrderParams;
   cancel_orders: EngineServerCancelOrdersParams;
   cancel_and_place: EngineServiceCancelAndPlaceParams;
   cancel_product_orders: SignedTx<
@@ -114,7 +127,12 @@ export interface EngineServerExecuteRequestByType {
 export type EngineServerExecuteRequestType =
   keyof EngineServerExecuteRequestByType;
 
-export type EngineServerExecutePlaceOrderPayload = {
+export interface EngineServerExecutePlaceOrderPayload {
   payload: EngineServerExecuteRequestByType['place_order'];
   orderParams: EIP712OrderParams;
-};
+}
+
+export interface EngineServerExecutePlaceIsolatedOrderPayload {
+  payload: EngineServerExecuteRequestByType['place_isolated_order'];
+  orderParams: EIP712IsolatedOrderParams;
+}

@@ -1,5 +1,5 @@
-import { SignableRequestType } from './signableRequestType';
 import { TypedDataField } from 'ethers';
+import { SignableRequestType } from './signableRequestType';
 
 /**
  * Return the EIP712 types for a given request
@@ -47,6 +47,17 @@ export function getVertexEIP712Types(
           { name: 'amount', type: 'int128' },
           { name: 'expiration', type: 'uint64' },
           { name: 'nonce', type: 'uint64' },
+        ],
+      };
+    case 'place_isolated_order':
+      return {
+        IsolatedOrder: [
+          { name: 'sender', type: 'bytes32' },
+          { name: 'priceX18', type: 'int128' },
+          { name: 'amount', type: 'int128' },
+          { name: 'expiration', type: 'uint64' },
+          { name: 'nonce', type: 'uint64' },
+          { name: 'margin', type: 'int128' },
         ],
       };
     case 'list_trigger_orders':

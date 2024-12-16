@@ -13,6 +13,7 @@ import {
   EngineMarketPrice,
   EngineOrder,
   EnginePriceTickLiquidity,
+  EngineServerIsolatedPositionsResponse,
   EngineServerMarketPrice,
   EngineServerOrderResponse,
   EngineServerPerpProduct,
@@ -23,6 +24,7 @@ import {
   EngineServerSymbolsResponse,
   EngineSymbol,
   EngineSymbolsResponse,
+  GetEngineIsolatedPositionsResponse,
   GetEngineSubaccountSummaryResponse,
 } from '../types';
 import { mapEngineServerProductType } from './productEngineTypeMappers';
@@ -50,6 +52,7 @@ export function mapEngineServerOrder(
     subaccountName: subaccount.subaccountName,
     totalAmount: toBigDecimal(order.amount),
     unfilledAmount: toBigDecimal(order.unfilled_amount),
+    margin: order.margin ? toBigDecimal(order.margin) : null,
     // Standardizes from hex
     // toFixed is required as toString gives values with `e`
     orderParams: {
@@ -210,6 +213,41 @@ export function mapSubaccountSummary(
       },
     },
   };
+}
+
+export function mapEngineServerIsolatedPositions(
+  baseResponse: EngineServerIsolatedPositionsResponse,
+): GetEngineIsolatedPositionsResponse {
+  return baseResponse.isolated_positions.map((position) => {
+    const perpBalance = position.base_balance;
+    const quoteBalance = position.quote_balance;
+
+    return {
+      subaccount: subaccountFromHex(position.subaccount),
+      baseBalance: {
+        amount: toBigDecimal(perpBalance.balance.amount),
+        lpAmount: toBigDecimal(perpBalance.lp_balance.amount),
+        vQuoteBalance: toBigDecimal(perpBalance.balance.v_quote_balance),
+        // Health contributions === healths for an isolated position
+        healthContributions: {
+          initial: toBigDecimal(position.healths[0].health),
+          maintenance: toBigDecimal(position.healths[1].health),
+          unweighted: toBigDecimal(position.healths[2].health),
+        },
+        ...mapEngineServerPerpProduct(position.base_product).product,
+      },
+      quoteBalance: {
+        amount: toBigDecimal(quoteBalance.balance.amount),
+        lpAmount: toBigDecimal(quoteBalance.lp_balance.amount),
+        healthContributions: {
+          initial: toBigDecimal(0),
+          maintenance: toBigDecimal(0),
+          unweighted: toBigDecimal(0),
+        },
+        ...mapEngineServerSpotProduct(position.quote_product).product,
+      },
+    };
+  });
 }
 
 export function mapEngineServerSymbols(

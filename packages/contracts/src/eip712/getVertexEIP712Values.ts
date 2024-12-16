@@ -1,24 +1,8 @@
-import {
-  SignableRequestType,
-  SignableRequestTypeToParams,
-} from './signableRequestType';
-import {
-  EIP712BurnLpParams,
-  EIP712LinkSignerParams,
-  EIP712LiquidateSubaccountParams,
-  EIP712ListTriggerOrdersParams,
-  EIP712MintLpParams,
-  EIP712CancelOrdersParams,
-  EIP712OrderParams,
-  EIP712CancelProductOrdersParams,
-  EIP712WithdrawCollateralParams,
-  EIP712TransferQuoteParams,
-  EIP712LeaderboardAuthenticationParams,
-} from './signatureParamTypes';
 import { toX18 } from '@vertex-protocol/utils';
 import { subaccountToHex } from '../utils';
 import {
   EIP712BurnLpValues,
+  EIP712IsolatedOrderValues,
   EIP712LeaderboardAuthenticationValues,
   EIP712LinkSignerValues,
   EIP712LiquidateSubaccountValues,
@@ -31,6 +15,24 @@ import {
   EIP712WithdrawCollateralValues,
   SignableRequestTypeToEIP712Values,
 } from './eip712ValueTypes';
+import {
+  SignableRequestType,
+  SignableRequestTypeToParams,
+} from './signableRequestType';
+import {
+  EIP712BurnLpParams,
+  EIP712CancelOrdersParams,
+  EIP712CancelProductOrdersParams,
+  EIP712IsolatedOrderParams,
+  EIP712LeaderboardAuthenticationParams,
+  EIP712LinkSignerParams,
+  EIP712LiquidateSubaccountParams,
+  EIP712ListTriggerOrdersParams,
+  EIP712MintLpParams,
+  EIP712OrderParams,
+  EIP712TransferQuoteParams,
+  EIP712WithdrawCollateralParams,
+} from './signatureParamTypes';
 
 /**
  * Returns the EIP712 compatible values for signing.
@@ -60,6 +62,9 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
       break;
     case 'place_order':
       values = getOrderValues(params as EIP712OrderParams);
+      break;
+    case 'place_isolated_order':
+      values = getIsolatedOrderValues(params as EIP712IsolatedOrderParams);
       break;
     case 'list_trigger_orders':
       values = getListTriggerOrdersValues(
@@ -147,6 +152,15 @@ function getOrderValues(params: EIP712OrderParams): EIP712OrderValues {
     amount: BigInt(params.amount).toString(),
     expiration: BigInt(params.expiration).toString(),
     nonce: BigInt(params.nonce).toString(),
+  };
+}
+
+function getIsolatedOrderValues(
+  params: EIP712IsolatedOrderParams,
+): EIP712IsolatedOrderValues {
+  return {
+    ...getOrderValues(params),
+    margin: BigInt(params.margin).toString(),
   };
 }
 
