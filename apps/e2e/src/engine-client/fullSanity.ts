@@ -5,6 +5,7 @@ import {
   depositCollateral,
   Endpoint__factory,
   getChainIdFromSigner,
+  getIsolatedOrderDigest,
   getOrderDigest,
   getOrderNonce,
   IClearinghouse__factory,
@@ -17,12 +18,14 @@ import {
 } from '@vertex-protocol/contracts';
 import {
   EngineClient,
+  EngineIsolatedOrderParams,
   EngineOrderParams,
 } from '@vertex-protocol/engine-client';
 import {
   TimeInSeconds,
   toBigDecimal,
   toFixedPoint,
+  toX18,
 } from '@vertex-protocol/utils';
 import { Wallet, ZeroAddress } from 'ethers';
 import { getExpiration } from '../utils/getExpiration';
@@ -103,34 +106,60 @@ async function fullSanity(context: RunContext) {
   prettyPrint('Health groups', healthGroups);
 
   console.log('Placing order');
-  const productId = 1;
-  const orderbookAddr = await client.getOrderbookAddress(productId);
-  const order: EngineOrderParams = {
+  const spotProductId = 1;
+  const spotOrderbookAddr = await client.getOrderbookAddress(spotProductId);
+  const spotOrder: EngineOrderParams = {
     subaccountOwner: signer.address,
     subaccountName: 'default',
     amount: toFixedPoint(-0.03),
     expiration: getExpiration(),
-    price: 60000,
+    price: 110000,
   };
-  const placeResult = await client.placeOrder({
-    verifyingAddr: orderbookAddr,
+  const spotPlaceOrderResult = await client.placeOrder({
+    verifyingAddr: spotOrderbookAddr,
     chainId,
-    productId,
-    order,
+    productId: spotProductId,
+    order: spotOrder,
     nonce: getOrderNonce(),
   });
-  const orderDigest = getOrderDigest({
-    order: placeResult.orderParams,
-    verifyingAddr: orderbookAddr,
+  const spotOrderDigest = getOrderDigest({
+    order: spotPlaceOrderResult.orderParams,
+    verifyingAddr: spotOrderbookAddr,
     chainId,
   });
-  prettyPrint('Done placing spot order', placeResult);
+  prettyPrint('Done placing spot order', spotPlaceOrderResult);
 
-  if (orderDigest !== placeResult.data.digest) {
+  if (spotOrderDigest !== spotPlaceOrderResult.data.digest) {
     throw Error(
-      `Computed and returned order digests do not match. Computed: ${orderDigest}. Returned: ${placeResult.data.digest}`,
+      `Computed and returned order digests do not match. Computed: ${spotOrderDigest}. Returned: ${spotPlaceOrderResult.data.digest}`,
     );
   }
+
+  console.log('Placing isolated order');
+  const perpProductId = 2;
+  const perpOrderbookAddr = await client.getOrderbookAddress(perpProductId);
+  const isolatedOrder: EngineIsolatedOrderParams = {
+    subaccountOwner: signer.address,
+    subaccountName: 'default',
+    amount: toX18(-0.03),
+    expiration: getExpiration(),
+    price: 110000,
+    // 10x leverage
+    margin: toX18((0.03 * 110000) / 10),
+  };
+  const perpPlaceIsolatedOrderResult = await client.placeIsolatedOrder({
+    verifyingAddr: perpOrderbookAddr,
+    chainId,
+    productId: perpProductId,
+    order: isolatedOrder,
+    nonce: getOrderNonce(),
+  });
+  prettyPrint('Done placing isolated order', perpPlaceIsolatedOrderResult);
+  const perpOrderDigest = getIsolatedOrderDigest({
+    order: perpPlaceIsolatedOrderResult.orderParams,
+    verifyingAddr: perpOrderbookAddr,
+    chainId,
+  });
 
   const subaccountOrders = await client.getSubaccountOrders({
     productId: 2,
@@ -141,17 +170,17 @@ async function fullSanity(context: RunContext) {
 
   const marketLiquidity = await client.getMarketLiquidity({
     depth: 10,
-    productId,
+    productId: spotProductId,
   });
   prettyPrint('Market liquidity', marketLiquidity);
 
   const marketPrice = await client.getMarketPrice({
-    productId,
+    productId: spotProductId,
   });
   prettyPrint('Market price', marketPrice);
 
   const marketPrices = await client.getMarketPrices({
-    productIds: [productId, 2, 3],
+    productIds: [spotProductId, 2, 3],
   });
   prettyPrint('Market prices', marketPrices);
 
@@ -164,7 +193,7 @@ async function fullSanity(context: RunContext) {
   const maxOrderSize = await client.getMaxOrderSize({
     subaccountOwner: signer.address,
     subaccountName: 'default',
-    productId,
+    productId: spotProductId,
     price: toBigDecimal(28000),
     side: 'long',
   });
@@ -189,31 +218,36 @@ async function fullSanity(context: RunContext) {
   );
 
   const queriedOrder = await client.getOrder({
-    digest: orderDigest,
-    productId,
+    digest: spotOrderDigest,
+    productId: spotProductId,
   });
-  prettyPrint('Queried order', queriedOrder);
+  const queriedIsolatedOrder = await client.getOrder({
+    digest: perpOrderDigest,
+    productId: perpProductId,
+  });
+  prettyPrint('Queried spot order', queriedOrder);
+  prettyPrint('Queried perp isolated order', queriedIsolatedOrder);
 
   const queriedOrders = await client.getSubaccountMultiProductOrders({
     subaccountOwner: signer.address,
     subaccountName: 'default',
-    productIds: [productId],
+    productIds: [spotProductId, perpProductId],
   });
   prettyPrint('Queried orders', queriedOrders);
 
-  console.log('Cancelling order');
+  console.log('Cancelling orders');
   const cancelResult = await client.cancelOrders({
     subaccountName: 'default',
     subaccountOwner: signer.address,
-    productIds: [productId],
-    digests: [orderDigest],
+    productIds: [spotProductId],
+    digests: [spotOrderDigest, perpOrderDigest],
     verifyingAddr: endpointAddr,
     chainId,
   });
-  prettyPrint('Done cancelling order', cancelResult);
+  prettyPrint('Done cancelling orders', cancelResult);
 
   const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
-    productId,
+    productId: spotProductId,
     subaccountOwner: signer.address,
     subaccountName: 'default',
   });
@@ -266,6 +300,31 @@ async function fullSanity(context: RunContext) {
   );
 
   client.setLinkedSigner(linkedSignerWallet);
+
+  // Open an iso position
+  const createIsoPositionOrder: EngineIsolatedOrderParams = {
+    subaccountOwner: signer.address,
+    subaccountName: 'default',
+    amount: toX18(0.03),
+    expiration: getExpiration('fok'),
+    price: 110000,
+    // 10x leverage
+    margin: toX18((0.03 * 110000) / 10),
+  };
+  const createIsoPositionOrderResult = await client.placeIsolatedOrder({
+    verifyingAddr: perpOrderbookAddr,
+    chainId,
+    productId: perpProductId,
+    order: createIsoPositionOrder,
+    nonce: getOrderNonce(),
+  });
+  prettyPrint('Done creating isolated position', createIsoPositionOrderResult);
+
+  const isoPositions = await client.getIsolatedPositions({
+    subaccountOwner: signer.address,
+    subaccountName: 'default',
+  });
+  prettyPrint('Isolated positions', isoPositions);
 
   const mintSpotLpResult = await client.mintLp({
     subaccountOwner: signer.address,
@@ -337,7 +396,7 @@ async function fullSanity(context: RunContext) {
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
   // places order for multiple products
-  for (const productId of [1, 2]) {
+  for (const productId of [spotProductId, perpProductId]) {
     console.log('Placing order for product', productId);
     const orderbookAddr = await client.getOrderbookAddress(productId);
     const order: EngineOrderParams = {
@@ -378,7 +437,7 @@ async function fullSanity(context: RunContext) {
   });
   prettyPrint('Cancel Product Orders', cancelProductOrdersRes);
 
-  for (const productId of [1, 2]) {
+  for (const productId of [spotProductId, perpProductId]) {
     const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
       productId,
       subaccountOwner: signer.address,
