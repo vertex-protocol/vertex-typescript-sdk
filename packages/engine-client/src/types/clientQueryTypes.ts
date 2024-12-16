@@ -1,23 +1,37 @@
 import {
   BalanceSide,
+  EIP712OrderParams,
   GetAllMarketsResponse,
   GetSubaccountSummaryParams,
   HealthGroup,
   OrderExpirationType,
-  EIP712OrderParams,
+  PerpBalanceWithProduct,
   ProductEngineType,
   SignedEIP712OrderParams,
+  SpotBalanceWithProduct,
   Subaccount,
   SubaccountSummaryResponse,
 } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
+import { BigNumberish } from 'ethers';
 import {
   EngineServerNoncesParams,
   EngineServerTimeResponse,
 } from './serverQueryTypes';
-import { BigNumberish } from 'ethers';
+
+export type GetEngineSubaccountSummaryResponse = SubaccountSummaryResponse;
 
 export type GetEngineSubaccountSummaryParams = GetSubaccountSummaryParams;
+
+export type GetEngineIsolatedPositionsParams = Subaccount;
+
+export interface SubaccountIsolatedPosition {
+  subaccount: Subaccount;
+  quoteBalance: SpotBalanceWithProduct;
+  baseBalance: PerpBalanceWithProduct;
+}
+
+export type GetEngineIsolatedPositionsResponse = SubaccountIsolatedPosition[];
 
 export type SubaccountTx =
   | {
@@ -69,8 +83,6 @@ export interface GetEngineNoncesResponse {
   txNonce: string;
 }
 
-export type GetEngineSubaccountSummaryResponse = SubaccountSummaryResponse;
-
 export interface GetEngineSymbolsParams {
   productType?: ProductEngineType;
   productIds?: number[];
@@ -115,6 +127,8 @@ export interface EngineOrder extends Subaccount {
   // Amount still unfilled
   unfilledAmount: BigDecimal;
   expiration: BigDecimal;
+  // Margin being transferred for the order, will be null if not an iso order
+  margin: BigDecimal | null;
   nonce: string;
   digest: string;
   orderParams: EIP712OrderParams;

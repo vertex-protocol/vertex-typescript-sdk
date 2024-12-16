@@ -1,20 +1,22 @@
 import {
+  EIP712IsolatedOrderParams,
+  EIP712OrderParams,
   getOrderNonce,
   getVertexEIP712Values,
-  EIP712OrderParams,
   SignableRequestType,
   SignableRequestTypeToParams,
 } from '@vertex-protocol/contracts';
+import { hexlify } from 'ethers';
 import { EngineBaseClient } from './EngineBaseClient';
 import {
   EngineExecuteRequestParamsByType,
+  EngineServerExecutePlaceIsolatedOrderPayload,
   EngineServerExecutePlaceOrderPayload,
   EngineServerExecuteRequestByType,
   SignatureParams,
   WithBaseEngineExecuteParams,
   WithSignature,
 } from './types';
-import { hexlify } from 'ethers';
 
 /**
  * Builds execute payloads as expected by the server.
@@ -179,6 +181,64 @@ export class EngineExecuteBuilder {
         },
         signature: clientParams.signature,
         spot_leverage: clientParams.spotLeverage ?? null,
+      },
+      orderParams: clientParams.order,
+    };
+  }
+
+  /**
+   * Builds server payload for the `place_isolated_order` execute action.
+   *
+   * @param clientParams Client PlaceIsolatedOrder params.
+   * @returns `place_isolated_order` payload
+   */
+  async buildIsolatedPlaceOrderPayload(
+    clientParams: EngineExecuteRequestParamsByType['place_isolated_order'],
+  ): Promise<EngineServerExecutePlaceIsolatedOrderPayload> {
+    const nonce = this.getOrderNonceIfNeeded(clientParams);
+    const orderWithNonce = { ...clientParams.order, nonce };
+
+    const signature = await this.getSignatureIfNeeded('place_isolated_order', {
+      // Gets expected type
+      ...clientParams,
+      ...orderWithNonce,
+    });
+
+    return this.buildPlaceIsolatedOrderPayloadSync({
+      ...clientParams,
+      order: orderWithNonce,
+      signature,
+    });
+  }
+
+  /**
+   * Synchronously builds server payload for the `place_isolated_order` execute action.
+   *
+   * @param clientParams Client PlaceIsolatedOrder params.
+   * @returns `place_isolated_order` payload
+   */
+  buildPlaceIsolatedOrderPayloadSync(
+    clientParams: WithSignature<
+      EngineExecuteRequestParamsByType['place_isolated_order'] & {
+        order: EIP712IsolatedOrderParams;
+      }
+    >,
+  ): EngineServerExecutePlaceIsolatedOrderPayload {
+    const isolatedOrderEIP712Values = getVertexEIP712Values(
+      'place_isolated_order',
+      clientParams.order,
+    );
+
+    return {
+      payload: {
+        id: clientParams.id ?? null,
+        product_id: clientParams.productId,
+        isolated_order: {
+          ...isolatedOrderEIP712Values,
+          sender: hexlify(isolatedOrderEIP712Values.sender),
+        },
+        signature: clientParams.signature,
+        borrow_margin: clientParams.borrowMargin ?? null,
       },
       orderParams: clientParams.order,
     };

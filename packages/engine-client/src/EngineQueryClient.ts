@@ -1,4 +1,3 @@
-import { EngineBaseClient } from './EngineBaseClient';
 import {
   encodeSignedOrder,
   MarketWithProduct,
@@ -10,6 +9,8 @@ import {
   toBigDecimal,
   toX18,
 } from '@vertex-protocol/utils';
+import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
+import { EngineBaseClient } from './EngineBaseClient';
 import {
   EngineServerStatusResponse,
   EngineServerSubaccountInfoQueryParams,
@@ -19,6 +20,8 @@ import {
   GetEngineEstimatedSubaccountSummaryParams,
   GetEngineHealthGroupsResponse,
   GetEngineInsuranceResponse,
+  GetEngineIsolatedPositionsParams,
+  GetEngineIsolatedPositionsResponse,
   GetEngineLinkedSignerParams,
   GetEngineLinkedSignerResponse,
   GetEngineMarketLiquidityParams,
@@ -50,8 +53,10 @@ import {
   ValidateEngineOrderResponse,
   ValidateSignedEngineOrderParams,
 } from './types';
+import { mapProductEngineType } from './utils/productEngineTypeMappers';
 import {
   mapEngineMarketPrice,
+  mapEngineServerIsolatedPositions,
   mapEngineServerOrder,
   mapEngineServerPerpProduct,
   mapEngineServerSpotProduct,
@@ -59,8 +64,6 @@ import {
   mapEngineServerTickLiquidity,
   mapSubaccountSummary,
 } from './utils/queryDataMappers';
-import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
-import { mapProductEngineType } from './utils/productEngineTypeMappers';
 
 export class EngineQueryClient extends EngineBaseClient {
   /**
@@ -100,6 +103,25 @@ export class EngineQueryClient extends EngineBaseClient {
     });
 
     return mapSubaccountSummary(baseResponse);
+  }
+
+  /**
+   * Retrieves a list of isolated positions
+   *
+   * @param params
+   */
+  async getIsolatedPositions(
+    params: GetEngineIsolatedPositionsParams,
+  ): Promise<GetEngineIsolatedPositionsResponse> {
+    const subaccount = subaccountToHex({
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.subaccountName,
+    });
+    const baseResponse = await this.query('isolated_positions', {
+      subaccount,
+    });
+
+    return mapEngineServerIsolatedPositions(baseResponse);
   }
 
   /**

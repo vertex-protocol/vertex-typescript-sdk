@@ -86,6 +86,7 @@ export function mapIndexerOrder(order: IndexerServerOrder): IndexerOrder {
   return {
     amount: toBigDecimal(order.amount),
     digest: order.digest,
+    isolated: order.isolated,
     rawExpiration: expiration,
     isReduceOnly: expirationEncodedData.reduceOnly,
     expiration: expirationEncodedData.expirationTime,
@@ -132,6 +133,8 @@ export function mapIndexerEvent(event: IndexerServerEvent): IndexerEvent {
   return {
     eventType: event.event_type,
     productId: event.product_id,
+    isolated: event.isolated,
+    isolatedProductId: event.isolated_product_id,
     state: eventState,
     subaccount: event.subaccount,
     submissionIndex: event.submission_idx,

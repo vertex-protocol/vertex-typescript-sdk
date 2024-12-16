@@ -2,6 +2,7 @@ import {
   EIP712BurnLpParams,
   EIP712CancelOrdersParams,
   EIP712CancelProductOrdersParams,
+  EIP712IsolatedOrderParams,
   EIP712LinkSignerParams,
   EIP712LiquidateSubaccountParams,
   EIP712MintLpParams,
@@ -52,6 +53,16 @@ export type EnginePlaceOrderParams = WithBaseEngineExecuteParams<{
   spotLeverage?: boolean;
 }>;
 
+export type EngineIsolatedOrderParams = WithoutNonce<EIP712IsolatedOrderParams>;
+
+export type EnginePlaceIsolatedOrderParams = WithBaseEngineExecuteParams<{
+  id?: number;
+  productId: number;
+  order: EngineIsolatedOrderParams;
+  // Whether the cross subaccount can borrow quote for the margin transfer into the isolated subaccount. If not given, engine defaults to false
+  borrowMargin?: boolean;
+}>;
+
 export type EngineLiquidateSubaccountParams =
   WithBaseEngineExecuteParams<EIP712LiquidateSubaccountParams>;
 
@@ -89,6 +100,7 @@ export interface EngineExecuteRequestParamsByType {
   withdraw_collateral: EngineWithdrawCollateralParams;
   burn_lp: EngineBurnLpParams;
   place_order: EnginePlaceOrderParams;
+  place_isolated_order: EnginePlaceIsolatedOrderParams;
   cancel_orders: EngineCancelOrdersParams;
   cancel_and_place: EngineCancelAndPlaceParams;
   cancel_product_orders: EngineCancelProductOrdersParams;
@@ -99,4 +111,9 @@ export interface EngineExecuteRequestParamsByType {
 export type EnginePlaceOrderResult =
   EngineServerExecuteSuccessResult<'place_order'> & {
     orderParams: EIP712OrderParams;
+  };
+
+export type EnginePlaceIsolatedOrderResult =
+  EngineServerExecuteSuccessResult<'place_isolated_order'> & {
+    orderParams: EIP712IsolatedOrderParams;
   };

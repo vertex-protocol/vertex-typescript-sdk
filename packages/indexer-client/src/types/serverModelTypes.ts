@@ -56,6 +56,9 @@ export interface IndexerServerProductSnapshot {
 
 export interface IndexerServerEvent {
   subaccount: string;
+  isolated: boolean;
+  // The product ID associated with the isolated perp market. This is only used when product_id === QUOTE_PRODUCT_ID and isolated === true
+  isolated_product_id: number | null;
   product_id: number;
   submission_idx: string;
   event_type: IndexerEventType;
@@ -84,6 +87,7 @@ export interface IndexerServerTx {
 
 export interface IndexerServerOrder {
   digest: string;
+  isolated: boolean;
   subaccount: string;
   product_id: number;
   submission_idx: string;
@@ -104,6 +108,7 @@ export interface IndexerServerOrder {
 
 export interface IndexerServerMatchEvent {
   digest: string;
+  isolated: boolean;
   order: EIP712OrderValues;
   base_filled: string;
   // Includes fee
