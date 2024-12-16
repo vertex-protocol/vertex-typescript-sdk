@@ -1,6 +1,6 @@
-import { PerpProduct, ProductEngineType, SpotProduct } from './productTypes';
 import { BigDecimal } from '@vertex-protocol/utils';
 import { HealthType } from './healthTypes';
+import { PerpProduct, ProductEngineType, SpotProduct } from './productTypes';
 
 export type BalanceSide = 'long' | 'short';
 
@@ -35,7 +35,7 @@ export interface PerpBalance extends BaseBalance {
 export type PerpBalanceWithProduct = PerpBalance & PerpProduct;
 
 /**
- * Balance for a spot product
+ * Balance fo r a spot product
  */
 export interface SpotBalance extends BaseBalance {
   type: ProductEngineType.SPOT;

@@ -56,6 +56,7 @@ export interface IndexerServerProductSnapshot {
 
 export interface IndexerServerEvent {
   subaccount: string;
+  isolated: boolean;
   product_id: number;
   submission_idx: string;
   event_type: IndexerEventType;
@@ -84,6 +85,7 @@ export interface IndexerServerTx {
 
 export interface IndexerServerOrder {
   digest: string;
+  isolated: boolean;
   subaccount: string;
   product_id: number;
   submission_idx: string;
@@ -104,6 +106,7 @@ export interface IndexerServerOrder {
 
 export interface IndexerServerMatchEvent {
   digest: string;
+  isolated: boolean;
   order: EIP712OrderValues;
   base_filled: string;
   // Includes fee

@@ -1,17 +1,17 @@
+import { BigNumberish } from 'ethers';
 import {
   EIP712BurnLpParams,
+  EIP712CancelOrdersParams,
+  EIP712CancelProductOrdersParams,
+  EIP712LeaderboardAuthenticationParams,
   EIP712LinkSignerParams,
   EIP712LiquidateSubaccountParams,
   EIP712ListTriggerOrdersParams,
   EIP712MintLpParams,
-  EIP712CancelOrdersParams,
   EIP712OrderParams,
-  EIP712CancelProductOrdersParams,
-  EIP712WithdrawCollateralParams,
   EIP712TransferQuoteParams,
-  EIP712LeaderboardAuthenticationParams,
+  EIP712WithdrawCollateralParams,
 } from './signatureParamTypes';
-import { BigNumberish } from 'ethers';
 
 type WithEIP712Sender<
   T extends { subaccountOwner: string; subaccountName: string },
@@ -40,6 +40,10 @@ export type EIP712OrderValues = Omit<
   'price'
 > & {
   priceX18: BigNumberish;
+};
+
+export type EIP712IsolatedOrderValues = EIP712OrderValues & {
+  margin: BigNumberish;
 };
 
 export type EIP712ListTriggerOrdersValues =
@@ -72,6 +76,7 @@ export interface SignableRequestTypeToEIP712Values {
   mint_lp: EIP712MintLpValues;
   burn_lp: EIP712BurnLpValues;
   place_order: EIP712OrderValues;
+  place_isolated_order: EIP712IsolatedOrderValues;
   list_trigger_orders: EIP712ListTriggerOrdersValues;
   cancel_orders: EIP712OrderCancellationValues;
   cancel_product_orders: EIP712ProductOrdersCancellationValues;

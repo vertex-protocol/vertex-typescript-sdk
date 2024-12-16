@@ -1,15 +1,16 @@
 import {
   EIP712BurnLpParams,
+  EIP712CancelOrdersParams,
+  EIP712CancelProductOrdersParams,
+  EIP712IsolatedOrderParams,
+  EIP712LeaderboardAuthenticationParams,
   EIP712LinkSignerParams,
   EIP712LiquidateSubaccountParams,
   EIP712ListTriggerOrdersParams,
   EIP712MintLpParams,
-  EIP712CancelOrdersParams,
   EIP712OrderParams,
-  EIP712CancelProductOrdersParams,
-  EIP712WithdrawCollateralParams,
   EIP712TransferQuoteParams,
-  EIP712LeaderboardAuthenticationParams,
+  EIP712WithdrawCollateralParams,
 } from './signatureParamTypes';
 
 /**
@@ -20,6 +21,7 @@ export interface SignableRequestTypeToParams {
   mint_lp: EIP712MintLpParams;
   burn_lp: EIP712BurnLpParams;
   place_order: EIP712OrderParams;
+  place_isolated_order: EIP712IsolatedOrderParams;
   list_trigger_orders: EIP712ListTriggerOrdersParams;
   cancel_orders: EIP712CancelOrdersParams;
   cancel_product_orders: EIP712CancelProductOrdersParams;

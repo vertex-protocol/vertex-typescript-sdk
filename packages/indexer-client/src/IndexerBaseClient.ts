@@ -203,6 +203,7 @@ export class IndexerBaseClient {
                 productId: mappedEvent.productId,
                 state: mappedEvent.state,
                 trackedVars: mappedEvent.trackedVars,
+                isolated: mappedEvent.isolated,
               };
             },
           );
@@ -565,6 +566,7 @@ export class IndexerBaseClient {
 
       return {
         productId,
+        isolated: matchEvent.isolated,
         totalFee: toBigDecimal(matchEvent.fee),
         sequencerFee: toBigDecimal(matchEvent.sequencer_fee),
         baseFilled: toBigDecimal(matchEvent.base_filled),

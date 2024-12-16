@@ -1,4 +1,3 @@
-import { BaseVertexAPI } from '../base';
 import {
   getSubaccountSummary,
   GetSubaccountSummaryParams,
@@ -6,14 +5,16 @@ import {
 } from '@vertex-protocol/contracts';
 import {
   GetEngineEstimatedSubaccountSummaryParams,
+  GetEngineIsolatedPositionsParams,
   GetEngineSubaccountFeeRatesParams,
   GetEngineSubaccountSummaryParams,
 } from '@vertex-protocol/engine-client';
-import { GetSubaccountIdParams } from './types';
 import {
   GetIndexerLinkedSignerParams,
   GetIndexerReferralCodeParams,
 } from '@vertex-protocol/indexer-client';
+import { BaseVertexAPI } from '../base';
+import { GetSubaccountIdParams } from './types';
 
 export class SubaccountQueryAPI extends BaseVertexAPI {
   /**
@@ -54,6 +55,14 @@ export class SubaccountQueryAPI extends BaseVertexAPI {
     params: GetEngineEstimatedSubaccountSummaryParams,
   ) {
     return this.context.engineClient.getEstimatedSubaccountSummary(params);
+  }
+
+  /**
+   * Gets the isolated positions for a subaccount
+   * @param params
+   */
+  async getIsolatedPositions(params: GetEngineIsolatedPositionsParams) {
+    return this.context.engineClient.getIsolatedPositions(params);
   }
 
   /**
