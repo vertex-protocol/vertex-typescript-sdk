@@ -84,6 +84,7 @@ export interface IndexerSnapshotBalance {
   productId: number;
   state: IndexerEventBalanceStateSnapshot;
   trackedVars: IndexerBalanceTrackedVars;
+  isolated: boolean;
 }
 
 export interface IndexerSubaccountSnapshot {
@@ -307,6 +308,7 @@ export interface IndexerEvent<
     IndexerEventBalanceStateSnapshot = IndexerEventBalanceStateSnapshot,
 > {
   subaccount: string;
+  isolated: boolean;
   productId: number;
   submissionIndex: string;
   eventType: IndexerEventType;
@@ -342,6 +344,7 @@ export interface GetIndexerOrdersParams {
 export interface IndexerOrder {
   digest: string;
   subaccount: string;
+  isolated: boolean;
   productId: number;
   submissionIndex: string;
   amount: BigDecimal;
@@ -387,6 +390,7 @@ export interface IndexerMatchEventBalances {
 export interface IndexerMatchEvent extends Subaccount {
   productId: number;
   digest: string;
+  isolated: boolean;
   order: EIP712OrderValues;
   baseFilled: BigDecimal;
   quoteFilled: BigDecimal;

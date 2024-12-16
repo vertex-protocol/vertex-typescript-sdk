@@ -165,6 +165,7 @@ export function calcSubaccountMarginUsageFractions(
 }
 
 /**
+ * // TODO: Remove this (and maybe remove entire file?
  * Calculates margin used for a single balance. The health contribution given is negative if a balance is a liability,
  * so the margin consumed is max(0, -healthContribution)
  *

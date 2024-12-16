@@ -2,6 +2,7 @@ import { EngineBaseClient, EngineClientOpts } from './EngineBaseClient';
 import { EngineExecuteBuilder } from './EngineExecuteBuilder';
 import {
   EngineExecuteRequestParamsByType,
+  EnginePlaceIsolatedOrderResult,
   EnginePlaceOrderResult,
 } from './types';
 
@@ -52,6 +53,20 @@ export class EngineExecuteClient extends EngineBaseClient {
       await this.payloadBuilder.buildPlaceOrderPayload(params);
     return {
       ...(await this.execute('place_order', placeOrderPayload.payload)),
+      orderParams: placeOrderPayload.orderParams,
+    };
+  }
+
+  async placeIsolatedOrder(
+    params: EngineExecuteRequestParamsByType['place_isolated_order'],
+  ): Promise<EnginePlaceIsolatedOrderResult> {
+    const placeOrderPayload =
+      await this.payloadBuilder.buildIsolatedPlaceOrderPayload(params);
+    return {
+      ...(await this.execute(
+        'place_isolated_order',
+        placeOrderPayload.payload,
+      )),
       orderParams: placeOrderPayload.orderParams,
     };
   }

@@ -13,6 +13,7 @@ import {
   EngineMarketPrice,
   EngineOrder,
   EnginePriceTickLiquidity,
+  EngineServerIsolatedPositionsResponse,
   EngineServerMarketPrice,
   EngineServerOrderResponse,
   EngineServerPerpProduct,
@@ -23,6 +24,7 @@ import {
   EngineServerSymbolsResponse,
   EngineSymbol,
   EngineSymbolsResponse,
+  GetEngineIsolatedPositionsResponse,
   GetEngineSubaccountSummaryResponse,
 } from '../types';
 import { mapEngineServerProductType } from './productEngineTypeMappers';
@@ -50,6 +52,7 @@ export function mapEngineServerOrder(
     subaccountName: subaccount.subaccountName,
     totalAmount: toBigDecimal(order.amount),
     unfilledAmount: toBigDecimal(order.unfilled_amount),
+    margin: order.margin ? toBigDecimal(order.margin) : null,
     // Standardizes from hex
     // toFixed is required as toString gives values with `e`
     orderParams: {
@@ -210,6 +213,25 @@ export function mapSubaccountSummary(
       },
     },
   };
+}
+
+export function mapEngineServerIsolatedPositions(
+  baseResponse: EngineServerIsolatedPositionsResponse,
+): GetEngineIsolatedPositionsResponse {
+  return baseResponse.map((position) => {
+    return {
+      // TODO
+      subaccount: subaccountFromHex(position.subaccount),
+      baseBalance: {
+        productId: position.base_balance.product_id,
+        amount: toBigDecimal(position.base_balance.balance.amount),
+      },
+      quoteBalance: {
+        productId: position.quote_balance.product_id,
+        amount: toBigDecimal(position.quote_balance.balance.amount),
+      },
+    };
+  });
 }
 
 export function mapEngineServerSymbols(
