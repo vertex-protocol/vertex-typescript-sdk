@@ -11,4 +11,5 @@ export type ChainEnv =
   | 'baseTestnet'
   | 'base'
   | 'sonicTestnet'
+  | 'sonic'
   | 'beraTestnet';
