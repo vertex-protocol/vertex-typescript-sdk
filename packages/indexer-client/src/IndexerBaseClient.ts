@@ -764,7 +764,8 @@ export class IndexerBaseClient {
       tradingPoints: toBigDecimal(baseResponse.trading_points),
       referralPoints: toBigDecimal(baseResponse.referral_points),
       rank: toBigDecimal(baseResponse.rank),
-      totalVolume: toBigDecimal(baseResponse.total_volume),
+      takerVolume: toBigDecimal(baseResponse.taker_volumes),
+      makerVolume: toBigDecimal(baseResponse.maker_volumes),
       usersReferred: toBigDecimal(baseResponse.users_referred),
     };
   }
@@ -779,12 +780,20 @@ export class IndexerBaseClient {
 
     return {
       positions: baseResponse.positions.map(
-        ({ rank, trading_points, referral_points, total_volume, address }) => {
+        ({
+          rank,
+          trading_points,
+          referral_points,
+          taker_volumes,
+          maker_volumes,
+          address,
+        }) => {
           return {
             rank: toBigDecimal(rank),
             tradingPoints: toBigDecimal(trading_points),
             referralPoints: toBigDecimal(referral_points),
-            totalVolume: toBigDecimal(total_volume),
+            takerVolume: toBigDecimal(taker_volumes),
+            makerVolume: toBigDecimal(maker_volumes),
             address,
           };
         },
@@ -804,6 +813,9 @@ export class IndexerBaseClient {
       initialPoints: toBigDecimal(baseResponse.initial_points),
       referralPoints: toBigDecimal(baseResponse.referral_points),
       tradingPoints: toBigDecimal(baseResponse.trading_points),
+      takerVolume: toBigDecimal(baseResponse.taker_volumes),
+      makerVolume: toBigDecimal(baseResponse.maker_volumes),
+      usersReferred: toBigDecimal(baseResponse.users_referred),
       phase2Epochs: baseResponse.phase2_points.map(
         ({
           epoch,
@@ -812,6 +824,8 @@ export class IndexerBaseClient {
           referral_points,
           start_time,
           trading_points,
+          taker_volumes,
+          maker_volumes,
         }) => {
           return {
             epoch,
@@ -820,6 +834,8 @@ export class IndexerBaseClient {
             period: toBigDecimal(period),
             tradingPoints: toBigDecimal(trading_points),
             referralPoints: toBigDecimal(referral_points),
+            takerVolume: toBigDecimal(taker_volumes),
+            makerVolume: toBigDecimal(maker_volumes),
           };
         },
       ),
@@ -854,12 +870,21 @@ export class IndexerBaseClient {
 
     return {
       positions: baseResponse.positions.map(
-        ({ rank, trading_points, referral_points, address }) => {
+        ({
+          address,
+          rank,
+          trading_points,
+          referral_points,
+          taker_volumes,
+          maker_volumes,
+        }) => {
           return {
+            address,
             rank: toBigDecimal(rank),
             tradingPoints: toBigDecimal(trading_points),
             referralPoints: toBigDecimal(referral_points),
-            address,
+            takerVolume: toBigDecimal(taker_volumes),
+            makerVolume: toBigDecimal(maker_volumes),
           };
         },
       ),

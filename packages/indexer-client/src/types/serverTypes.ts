@@ -172,11 +172,11 @@ export interface IndexerServerClaimFoundationRewardsMerkleProofsParams {
   address: string;
 }
 
-export interface IndexerServerBlitzPointsParams {
+export interface IndexerServerBlastPointsParams {
   address: string;
 }
 
-export interface IndexerServerBlastPointsParams {
+export interface IndexerServerBlitzPointsParams {
   address: string;
 }
 
@@ -195,8 +195,8 @@ export interface IndexerServerSonicPointsParams {
 }
 
 export interface IndexerServerSonicPointsLeaderboardParams {
-  start: number;
-  limit: number;
+  start?: number;
+  limit?: number;
 }
 
 export interface IndexerServerMakerStatisticsParams {
@@ -242,6 +242,8 @@ export interface IndexerServerQueryRequestByType {
   blast_points: IndexerServerBlastPointsParams;
   blitz_points: IndexerServerBlitzPointsParams;
   blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardParams;
+  sonic_points: IndexerServerSonicPointsParams;
+  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardParams;
   candlesticks: IndexerServerCandlesticksParams;
   edge_candlesticks: IndexerEdgeServerCandlesticksParams;
   events: IndexerServerEventsParams;
@@ -262,8 +264,6 @@ export interface IndexerServerQueryRequestByType {
   products: IndexerServerProductsParams;
   referral_code: IndexerServerReferralCodeParams;
   rewards: IndexerServerRewardsParams;
-  sonic_points: IndexerServerSonicPointsParams;
-  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardParams;
   subaccounts: IndexerServerListSubaccountsParams;
   taker_rewards: IndexerServerTakerRewardsParams;
   usdc_price: Record<string, never>;
@@ -417,14 +417,19 @@ export interface IndexerServerBlitzPointsResponse {
   initial_points: string;
   trading_points: string;
   referral_points: string;
+  maker_volumes: string;
+  taker_volumes: string;
+  users_referred: string;
   phase2_points: Array<{
-    rank: string;
     epoch: number;
     // in seconds
     start_time: string;
     period: string;
     trading_points: string;
     referral_points: string;
+    taker_volumes: string;
+    maker_volumes: string;
+    rank: string;
   }>;
 }
 
@@ -434,12 +439,9 @@ export interface IndexerServerBlitzPointsLeaderboardResponse {
     trading_points: string;
     referral_points: string;
     rank: string;
+    taker_volumes: string;
+    maker_volumes: string;
   }>;
-}
-
-export interface IndexerServerBlastPointsResponse {
-  points: string;
-  gold: string;
 }
 
 export interface IndexerServerBlitzInitialDropConditionsResponse {
@@ -450,12 +452,18 @@ export interface IndexerServerBlitzInitialDropConditionsResponse {
   tweeted: boolean;
 }
 
+export interface IndexerServerBlastPointsResponse {
+  points: string;
+  gold: string;
+}
+
 export interface IndexerServerSonicPointsResponse {
   trading_points: string;
   referral_points: string;
   rank: string;
   users_referred: string;
-  total_volume: string;
+  taker_volumes: string;
+  maker_volumes: string;
 }
 
 export interface IndexerServerSonicPointsLeaderboardResponse {
@@ -464,7 +472,8 @@ export interface IndexerServerSonicPointsLeaderboardResponse {
     trading_points: string;
     referral_points: string;
     rank: string;
-    total_volume: string;
+    taker_volumes: string;
+    maker_volumes: string;
   }>;
 }
 
@@ -508,6 +517,8 @@ export interface IndexerServerQueryResponseByType {
   blast_points: IndexerServerBlastPointsResponse;
   blitz_points: IndexerServerBlitzPointsResponse;
   blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardResponse;
+  sonic_points: IndexerServerSonicPointsResponse;
+  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardResponse;
   candlesticks: IndexerServerCandlesticksResponse;
   edge_candlesticks: IndexerEdgeServerCandlesticksResponse;
   events: IndexerServerEventsResponse;
@@ -532,8 +543,6 @@ export interface IndexerServerQueryResponseByType {
   taker_rewards: IndexerServerTakerRewardsResponse;
   usdc_price: IndexerServerUsdcPriceResponse;
   vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsResponse;
-  sonic_points: IndexerServerSonicPointsResponse;
-  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardResponse;
   leaderboard: IndexerServerLeaderboardResponse;
   leaderboard_rank: IndexerServerLeaderboardRankResponse;
   leaderboard_contests: IndexerServerLeaderboardContestsResponse;

@@ -601,15 +601,21 @@ export type GetIndexerClaimFoundationRewardsMerkleProofsResponse =
  */
 
 export interface GetIndexerSonicPointsParams {
+  // Subaccount address
   address: string;
 }
 
 export interface GetIndexerSonicPointsResponse {
   tradingPoints: BigDecimal;
   referralPoints: BigDecimal;
-  totalVolume: BigDecimal;
-  rank: BigDecimal;
+  // Total taker volume in quote asset
+  takerVolume: BigDecimal;
+  // Total maker volume in quote asset
+  makerVolume: BigDecimal;
+  // Total users referred by subaccount
   usersReferred: BigDecimal;
+  // Leaderboard rank of subaccount
+  rank: BigDecimal;
 }
 
 export interface GetIndexerSonicPointsLeaderboardParams {
@@ -619,11 +625,12 @@ export interface GetIndexerSonicPointsLeaderboardParams {
 }
 
 export interface IndexerSonicPointsLeaderboardPosition {
-  rank: BigDecimal;
   address: string;
   referralPoints: BigDecimal;
   tradingPoints: BigDecimal;
-  totalVolume: BigDecimal;
+  rank: BigDecimal;
+  takerVolume: BigDecimal;
+  makerVolume: BigDecimal;
 }
 
 export interface GetIndexerSonicPointsLeaderboardResponse {
@@ -639,7 +646,6 @@ export interface GetIndexerBlitzPointsParams {
 }
 
 export interface IndexerBlitzPointsEpoch {
-  rank: BigDecimal;
   epoch: number;
   // Start time of the epoch in seconds
   startTime: BigDecimal;
@@ -647,6 +653,9 @@ export interface IndexerBlitzPointsEpoch {
   period: BigDecimal;
   tradingPoints: BigDecimal;
   referralPoints: BigDecimal;
+  takerVolume: BigDecimal;
+  makerVolume: BigDecimal;
+  rank: BigDecimal;
 }
 
 export interface GetIndexerBlitzPointsResponse {
@@ -656,17 +665,14 @@ export interface GetIndexerBlitzPointsResponse {
   tradingPoints: BigDecimal;
   // Total accrued points from referrals for phase 1 & phase 2
   referralPoints: BigDecimal;
+  // Total taker volume in quote asset
+  takerVolume: BigDecimal;
+  // Total maker volume in quote asset
+  makerVolume: BigDecimal;
+  // Total users referred
+  usersReferred: BigDecimal;
   // Epoch-based data for phase 2, in descending order
   phase2Epochs: IndexerBlitzPointsEpoch[];
-}
-
-export interface GetIndexerBlastPointsParams {
-  address: string;
-}
-
-export interface GetIndexerBlastPointsResponse {
-  points: BigDecimal;
-  gold: BigDecimal;
 }
 
 export interface GetIndexerBlitzInitialDropConditionsParams {
@@ -694,14 +700,29 @@ export interface GetIndexerBlitzPointsLeaderboardParams {
 }
 
 export interface IndexerBlitzPointsLeaderboardPosition {
-  rank: BigDecimal;
   address: string;
   referralPoints: BigDecimal;
   tradingPoints: BigDecimal;
+  rank: BigDecimal;
+  takerVolume: BigDecimal;
+  makerVolume: BigDecimal;
 }
 
 export interface GetIndexerBlitzPointsLeaderboardResponse {
   positions: IndexerBlitzPointsLeaderboardPosition[];
+}
+
+/**
+ * Blast points
+ */
+
+export interface GetIndexerBlastPointsParams {
+  address: string;
+}
+
+export interface GetIndexerBlastPointsResponse {
+  points: BigDecimal;
+  gold: BigDecimal;
 }
 
 /**
