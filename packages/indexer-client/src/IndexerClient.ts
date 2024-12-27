@@ -18,6 +18,7 @@ import {
   GetIndexerPaginatedOrdersResponse,
   GetIndexerPaginatedRewardsParams,
   GetIndexerPaginatedRewardsResponse,
+  GetIndexerPaginatedSonicPointsLeaderboardResponse,
   GetIndexerSubaccountCollateralEventsParams,
   GetIndexerSubaccountCollateralEventsResponse,
   GetIndexerSubaccountInterestFundingPaymentsParams,
@@ -35,6 +36,7 @@ import {
   IndexerEventWithTx,
   IndexerLiquidationEvent,
   IndexerLpEvent,
+  IndexerPaginationParams,
   IndexerSettlementEvent,
   PaginatedIndexerEventsResponse,
 } from './types';
@@ -469,6 +471,35 @@ export class IndexerClient extends IndexerBaseClient {
 
     const baseResponse = await this.getBlitzPointsLeaderboard({
       epoch: params.epoch,
+      // Query for 1 more result for proper pagination
+      limit: requestedLimit + 1,
+      // Start cursor is the next rank number
+      startCursor: params.startCursor,
+    });
+
+    return {
+      ...baseResponse,
+      // Truncate the response to the requested limit
+      positions: baseResponse.positions.slice(0, requestedLimit),
+      meta: {
+        hasMore: baseResponse.positions.length > requestedLimit,
+        // Next cursor is the rank number of the (requestedLimit+1)th item
+        nextCursor: baseResponse.positions[requestedLimit]?.rank.toFixed(),
+      },
+    };
+  }
+
+  /**
+   * Paginated sonic points leaderboard query that paginates on rank number.
+   *
+   * @param params
+   */
+  async getPaginatedSonicPointsLeaderboard(
+    params: IndexerPaginationParams,
+  ): Promise<GetIndexerPaginatedSonicPointsLeaderboardResponse> {
+    const requestedLimit = params.limit;
+
+    const baseResponse = await this.getSonicPointsLeaderboard({
       // Query for 1 more result for proper pagination
       limit: requestedLimit + 1,
       // Start cursor is the next rank number

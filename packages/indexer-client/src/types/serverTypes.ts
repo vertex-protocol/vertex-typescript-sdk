@@ -190,6 +190,15 @@ export interface IndexerServerBlitzInitialDropConditionsParams {
   address: string;
 }
 
+export interface IndexerServerSonicPointsParams {
+  address: string;
+}
+
+export interface IndexerServerSonicPointsLeaderboardParams {
+  start: number;
+  limit: number;
+}
+
 export interface IndexerServerMakerStatisticsParams {
   product_id: number;
   epoch: number;
@@ -253,6 +262,8 @@ export interface IndexerServerQueryRequestByType {
   products: IndexerServerProductsParams;
   referral_code: IndexerServerReferralCodeParams;
   rewards: IndexerServerRewardsParams;
+  sonic_points: IndexerServerSonicPointsParams;
+  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardParams;
   subaccounts: IndexerServerListSubaccountsParams;
   taker_rewards: IndexerServerTakerRewardsParams;
   usdc_price: Record<string, never>;
@@ -439,6 +450,24 @@ export interface IndexerServerBlitzInitialDropConditionsResponse {
   tweeted: boolean;
 }
 
+export interface IndexerServerSonicPointsResponse {
+  trading_points: string;
+  referral_points: string;
+  rank: string;
+  users_referred: string;
+  total_volume: string;
+}
+
+export interface IndexerServerSonicPointsLeaderboardResponse {
+  positions: Array<{
+    address: string;
+    trading_points: string;
+    referral_points: string;
+    rank: string;
+    total_volume: string;
+  }>;
+}
+
 export interface IndexerServerMakerStatisticsResponse {
   reward_coefficient: string;
   makers: IndexerServerMaker[];
@@ -503,6 +532,8 @@ export interface IndexerServerQueryResponseByType {
   taker_rewards: IndexerServerTakerRewardsResponse;
   usdc_price: IndexerServerUsdcPriceResponse;
   vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsResponse;
+  sonic_points: IndexerServerSonicPointsResponse;
+  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardResponse;
   leaderboard: IndexerServerLeaderboardResponse;
   leaderboard_rank: IndexerServerLeaderboardRankResponse;
   leaderboard_contests: IndexerServerLeaderboardContestsResponse;

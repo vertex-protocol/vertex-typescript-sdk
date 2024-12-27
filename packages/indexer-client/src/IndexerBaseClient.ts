@@ -102,6 +102,10 @@ import {
   GetIndexerReferralCodeResponse,
   GetIndexerRewardsParams,
   GetIndexerRewardsResponse,
+  GetIndexerSonicPointsLeaderboardParams,
+  GetIndexerSonicPointsLeaderboardResponse,
+  GetIndexerSonicPointsParams,
+  GetIndexerSonicPointsResponse,
   GetIndexerTakerRewardsParams,
   GetIndexerTakerRewardsResponse,
   GetIndexerVrtxTokenInfoParams,
@@ -744,6 +748,48 @@ export class IndexerBaseClient {
         totalAmount: toBigDecimal(proof.total_amount),
       };
     });
+  }
+
+  /**
+   * Retrieve Sonic Points of a subaccount
+   *
+   * @param params
+   */
+  async getSonicPoints(
+    params: GetIndexerSonicPointsParams,
+  ): Promise<GetIndexerSonicPointsResponse> {
+    const baseResponse = await this.query('sonic_points', params);
+
+    return {
+      tradingPoints: toBigDecimal(baseResponse.trading_points),
+      referralPoints: toBigDecimal(baseResponse.referral_points),
+      rank: toBigDecimal(baseResponse.rank),
+      totalVolume: toBigDecimal(baseResponse.total_volume),
+      usersReferred: toBigDecimal(baseResponse.users_referred),
+    };
+  }
+
+  async getSonicPointsLeaderboard(
+    params: GetIndexerSonicPointsLeaderboardParams,
+  ): Promise<GetIndexerSonicPointsLeaderboardResponse> {
+    const baseResponse = await this.query('sonic_points_leaderboard', {
+      start: Number(params.startCursor),
+      limit: params.limit,
+    });
+
+    return {
+      positions: baseResponse.positions.map(
+        ({ rank, trading_points, referral_points, total_volume, address }) => {
+          return {
+            rank: toBigDecimal(rank),
+            tradingPoints: toBigDecimal(trading_points),
+            referralPoints: toBigDecimal(referral_points),
+            totalVolume: toBigDecimal(total_volume),
+            address,
+          };
+        },
+      ),
+    };
   }
 
   /**

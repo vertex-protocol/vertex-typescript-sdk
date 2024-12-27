@@ -597,6 +597,40 @@ export type GetIndexerClaimFoundationRewardsMerkleProofsResponse =
   GetIndexerClaimVrtxMerkleProofsResponse;
 
 /**
+ * Sonic Points
+ */
+
+export interface GetIndexerSonicPointsParams {
+  address: string;
+}
+
+export interface GetIndexerSonicPointsResponse {
+  tradingPoints: BigDecimal;
+  referralPoints: BigDecimal;
+  totalVolume: BigDecimal;
+  rank: BigDecimal;
+  usersReferred: BigDecimal;
+}
+
+export interface GetIndexerSonicPointsLeaderboardParams {
+  // Minimum rank, inclusive
+  startCursor?: string;
+  limit: number;
+}
+
+export interface IndexerSonicPointsLeaderboardPosition {
+  rank: BigDecimal;
+  address: string;
+  referralPoints: BigDecimal;
+  tradingPoints: BigDecimal;
+  totalVolume: BigDecimal;
+}
+
+export interface GetIndexerSonicPointsLeaderboardResponse {
+  positions: IndexerSonicPointsLeaderboardPosition[];
+}
+
+/**
  * Blitz points
  */
 
