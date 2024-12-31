@@ -102,6 +102,10 @@ import {
   GetIndexerReferralCodeResponse,
   GetIndexerRewardsParams,
   GetIndexerRewardsResponse,
+  GetIndexerSonicPointsLeaderboardParams,
+  GetIndexerSonicPointsLeaderboardResponse,
+  GetIndexerSonicPointsParams,
+  GetIndexerSonicPointsResponse,
   GetIndexerTakerRewardsParams,
   GetIndexerTakerRewardsResponse,
   GetIndexerVrtxTokenInfoParams,
@@ -747,6 +751,57 @@ export class IndexerBaseClient {
   }
 
   /**
+   * Retrieve Sonic Points of a subaccount
+   *
+   * @param params
+   */
+  async getSonicPoints(
+    params: GetIndexerSonicPointsParams,
+  ): Promise<GetIndexerSonicPointsResponse> {
+    const baseResponse = await this.query('sonic_points', params);
+
+    return {
+      tradingPoints: toBigDecimal(baseResponse.trading_points),
+      referralPoints: toBigDecimal(baseResponse.referral_points),
+      rank: toBigDecimal(baseResponse.rank),
+      takerVolume: toBigDecimal(baseResponse.taker_volumes),
+      makerVolume: toBigDecimal(baseResponse.maker_volumes),
+      usersReferred: toBigDecimal(baseResponse.users_referred),
+    };
+  }
+
+  async getSonicPointsLeaderboard(
+    params: GetIndexerSonicPointsLeaderboardParams,
+  ): Promise<GetIndexerSonicPointsLeaderboardResponse> {
+    const baseResponse = await this.query('sonic_points_leaderboard', {
+      start: Number(params.startCursor),
+      limit: params.limit,
+    });
+
+    return {
+      positions: baseResponse.positions.map(
+        ({
+          rank,
+          trading_points,
+          referral_points,
+          taker_volumes,
+          maker_volumes,
+          address,
+        }) => {
+          return {
+            rank: toBigDecimal(rank),
+            tradingPoints: toBigDecimal(trading_points),
+            referralPoints: toBigDecimal(referral_points),
+            takerVolume: toBigDecimal(taker_volumes),
+            makerVolume: toBigDecimal(maker_volumes),
+            address,
+          };
+        },
+      ),
+    };
+  }
+
+  /**
    * Retrieve blitz points for the address
    */
   async getBlitzPoints(
@@ -758,6 +813,9 @@ export class IndexerBaseClient {
       initialPoints: toBigDecimal(baseResponse.initial_points),
       referralPoints: toBigDecimal(baseResponse.referral_points),
       tradingPoints: toBigDecimal(baseResponse.trading_points),
+      takerVolume: toBigDecimal(baseResponse.taker_volumes),
+      makerVolume: toBigDecimal(baseResponse.maker_volumes),
+      usersReferred: toBigDecimal(baseResponse.users_referred),
       phase2Epochs: baseResponse.phase2_points.map(
         ({
           epoch,
@@ -766,6 +824,8 @@ export class IndexerBaseClient {
           referral_points,
           start_time,
           trading_points,
+          taker_volumes,
+          maker_volumes,
         }) => {
           return {
             epoch,
@@ -774,6 +834,8 @@ export class IndexerBaseClient {
             period: toBigDecimal(period),
             tradingPoints: toBigDecimal(trading_points),
             referralPoints: toBigDecimal(referral_points),
+            takerVolume: toBigDecimal(taker_volumes),
+            makerVolume: toBigDecimal(maker_volumes),
           };
         },
       ),
@@ -808,12 +870,21 @@ export class IndexerBaseClient {
 
     return {
       positions: baseResponse.positions.map(
-        ({ rank, trading_points, referral_points, address }) => {
+        ({
+          address,
+          rank,
+          trading_points,
+          referral_points,
+          taker_volumes,
+          maker_volumes,
+        }) => {
           return {
+            address,
             rank: toBigDecimal(rank),
             tradingPoints: toBigDecimal(trading_points),
             referralPoints: toBigDecimal(referral_points),
-            address,
+            takerVolume: toBigDecimal(taker_volumes),
+            makerVolume: toBigDecimal(maker_volumes),
           };
         },
       ),

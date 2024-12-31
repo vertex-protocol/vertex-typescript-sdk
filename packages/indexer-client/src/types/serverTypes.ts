@@ -172,11 +172,11 @@ export interface IndexerServerClaimFoundationRewardsMerkleProofsParams {
   address: string;
 }
 
-export interface IndexerServerBlitzPointsParams {
+export interface IndexerServerBlastPointsParams {
   address: string;
 }
 
-export interface IndexerServerBlastPointsParams {
+export interface IndexerServerBlitzPointsParams {
   address: string;
 }
 
@@ -188,6 +188,15 @@ export interface IndexerServerBlitzPointsLeaderboardParams {
 
 export interface IndexerServerBlitzInitialDropConditionsParams {
   address: string;
+}
+
+export interface IndexerServerSonicPointsParams {
+  address: string;
+}
+
+export interface IndexerServerSonicPointsLeaderboardParams {
+  start?: number;
+  limit?: number;
 }
 
 export interface IndexerServerMakerStatisticsParams {
@@ -233,6 +242,8 @@ export interface IndexerServerQueryRequestByType {
   blast_points: IndexerServerBlastPointsParams;
   blitz_points: IndexerServerBlitzPointsParams;
   blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardParams;
+  sonic_points: IndexerServerSonicPointsParams;
+  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardParams;
   candlesticks: IndexerServerCandlesticksParams;
   edge_candlesticks: IndexerEdgeServerCandlesticksParams;
   events: IndexerServerEventsParams;
@@ -406,14 +417,19 @@ export interface IndexerServerBlitzPointsResponse {
   initial_points: string;
   trading_points: string;
   referral_points: string;
+  maker_volumes: string;
+  taker_volumes: string;
+  users_referred: string;
   phase2_points: Array<{
-    rank: string;
     epoch: number;
     // in seconds
     start_time: string;
     period: string;
     trading_points: string;
     referral_points: string;
+    taker_volumes: string;
+    maker_volumes: string;
+    rank: string;
   }>;
 }
 
@@ -423,12 +439,9 @@ export interface IndexerServerBlitzPointsLeaderboardResponse {
     trading_points: string;
     referral_points: string;
     rank: string;
+    taker_volumes: string;
+    maker_volumes: string;
   }>;
-}
-
-export interface IndexerServerBlastPointsResponse {
-  points: string;
-  gold: string;
 }
 
 export interface IndexerServerBlitzInitialDropConditionsResponse {
@@ -437,6 +450,31 @@ export interface IndexerServerBlitzInitialDropConditionsResponse {
   account_value_reached: boolean;
   perp_trades_done: boolean;
   tweeted: boolean;
+}
+
+export interface IndexerServerBlastPointsResponse {
+  points: string;
+  gold: string;
+}
+
+export interface IndexerServerSonicPointsResponse {
+  trading_points: string;
+  referral_points: string;
+  rank: string;
+  users_referred: string;
+  taker_volumes: string;
+  maker_volumes: string;
+}
+
+export interface IndexerServerSonicPointsLeaderboardResponse {
+  positions: Array<{
+    address: string;
+    trading_points: string;
+    referral_points: string;
+    rank: string;
+    taker_volumes: string;
+    maker_volumes: string;
+  }>;
 }
 
 export interface IndexerServerMakerStatisticsResponse {
@@ -479,6 +517,8 @@ export interface IndexerServerQueryResponseByType {
   blast_points: IndexerServerBlastPointsResponse;
   blitz_points: IndexerServerBlitzPointsResponse;
   blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardResponse;
+  sonic_points: IndexerServerSonicPointsResponse;
+  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardResponse;
   candlesticks: IndexerServerCandlesticksResponse;
   edge_candlesticks: IndexerEdgeServerCandlesticksResponse;
   events: IndexerServerEventsResponse;

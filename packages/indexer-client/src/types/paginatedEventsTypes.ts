@@ -9,6 +9,7 @@ import {
   GetIndexerLeaderboardResponse,
   GetIndexerRewardsParams,
   GetIndexerRewardsResponse,
+  GetIndexerSonicPointsLeaderboardResponse,
   IndexerEventBalanceStateSnapshot,
   IndexerEventPerpStateSnapshot,
   IndexerEventSpotStateSnapshot,
@@ -221,6 +222,9 @@ export type GetIndexerPaginatedBlitzPointsLeaderboardParams =
 
 export type GetIndexerPaginatedBlitzPointsLeaderboardResponse =
   WithPaginationMeta & GetIndexerBlitzPointsLeaderboardResponse;
+
+export type GetIndexerPaginatedSonicPointsLeaderboardResponse =
+  WithPaginationMeta & GetIndexerSonicPointsLeaderboardResponse;
 
 /**
  * Paginated rewards query - these paginate on epoch #, which is `number`, but for consistency we use the
