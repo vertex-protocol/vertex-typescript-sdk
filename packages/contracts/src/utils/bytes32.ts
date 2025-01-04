@@ -19,24 +19,19 @@ import {
  */
 export function subaccountToBytes32(subaccount: Subaccount): SubaccountBytes32 {
   const address = getBytes(subaccount.subaccountOwner);
-  // If the subaccount name is a hex string, then assume that it's a hexlified representation of a non-utf8 string
-  let name: Uint8Array;
-  if (isHexString(subaccount.subaccountName)) {
-    name = getBytes(subaccount.subaccountName);
-  } else {
-    name = toUtf8Bytes(subaccount.subaccountName);
-  }
 
   if (address.length != 20) {
     throw new Error(`owner must be 20 bytes, but found ${address.length}`);
   }
 
+  const nameBytes = subaccountNameToBytes12(subaccount.subaccountName);
+
   const bytes32 = new Uint8Array(32);
   for (let i = 0; i < address.length; i++) {
     bytes32[i] = address[i];
   }
-  for (let i = 0; i < name.length; i++) {
-    bytes32[i + 20] = name[i];
+  for (let i = 0; i < nameBytes.length; i++) {
+    bytes32[i + 20] = nameBytes[i];
   }
 
   return bytes32;
@@ -65,7 +60,7 @@ export function subaccountFromBytes32(bytes: SubaccountBytes32): Subaccount {
 
   let subaccountName: string;
   try {
-    subaccountName = bytesToUtf8Str(name);
+    subaccountName = subaccountNameBytesToUtf8Str(name);
   } catch (_e) {
     subaccountName = hexlify(name);
   }
@@ -84,7 +79,19 @@ export function subaccountFromBytes32(bytes: SubaccountBytes32): Subaccount {
  * @returns bytes12 representation of a subaccount name.
  */
 export function subaccountNameToBytes12(name: string): SubaccountNameBytes12 {
-  return strToBytes(name, 12);
+  // If the subaccount name is a hex string, then assume that it's a hexlified representation of a non-utf8 string
+  let bytes: Uint8Array;
+  if (isHexString(name)) {
+    bytes = getBytes(name);
+  } else {
+    bytes = toUtf8Bytes(name);
+  }
+
+  const buffer = new Uint8Array(12);
+  for (let i = 0; i < bytes.length; i++) {
+    buffer[i] = bytes[i];
+  }
+  return buffer;
 }
 
 /**
@@ -107,20 +114,13 @@ export function subaccountFromHex(subaccount: string): Subaccount {
   return subaccountFromBytes32(getBytes(subaccount));
 }
 
-export function strToBytes(input: string, bytesLen: number): Bytes {
-  const bytes = toUtf8Bytes(input);
-  const buffer = new Uint8Array(bytesLen);
-  for (let i = 0; i < bytes.length; i++) {
-    buffer[i] = bytes[i];
-  }
-  return buffer;
-}
-
 /**
  * Converts a bytes buffer to a utf8 string. Will throw if the bytes is not a valid UTF8 string
  * @param input
  */
-export function bytesToUtf8Str(input: Bytes): string {
-  // toUtf8String will replace zero bytes with \0, so strip them out here
-  return toUtf8String(input).replace(/\0/g, '');
+function subaccountNameBytesToUtf8Str(input: Bytes): string {
+  // toUtf8String will replace zero bytes with \0
+  // strip out any trailing bytes for a readable name
+  // however, we need to leave any leading bytes otherwise reverse conversion to bytes will not work
+  return toUtf8String(input).replace(/\0*$/, '');
 }
