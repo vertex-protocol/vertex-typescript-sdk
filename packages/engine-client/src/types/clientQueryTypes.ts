@@ -251,6 +251,8 @@ export interface GetEngineLinkedSignerResponse {
   signer: string;
 }
 
+export type GetEngineInsuranceResponse = BigDecimal;
+
 export interface EngineMinDepositRate {
   productId: number;
   minDepositRate: BigDecimal;

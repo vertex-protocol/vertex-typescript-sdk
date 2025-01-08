@@ -18,6 +18,7 @@ import {
   GetEngineContractsResponse,
   GetEngineEstimatedSubaccountSummaryParams,
   GetEngineHealthGroupsResponse,
+  GetEngineInsuranceResponse,
   GetEngineLinkedSignerParams,
   GetEngineLinkedSignerResponse,
   GetEngineMarketLiquidityParams,
@@ -526,6 +527,16 @@ export class EngineQueryClient extends EngineBaseClient {
     return {
       signer: baseResponse.linked_signer,
     };
+  }
+
+  /**
+   * Gets the insurance funds
+   * @returns
+   */
+  public async getInsurance(): Promise<GetEngineInsuranceResponse> {
+    const baseResponse = await this.query('insurance', {});
+
+    return toBigDecimal(baseResponse.insurance);
   }
 
   /**
