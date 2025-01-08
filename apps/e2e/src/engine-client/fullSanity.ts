@@ -102,6 +102,9 @@ async function fullSanity(context: RunContext) {
   const healthGroups = await client.getHealthGroups();
   prettyPrint('Health groups', healthGroups);
 
+  const insurance = await client.getInsurance();
+  prettyPrint('Insurance', insurance);
+
   console.log('Placing order');
   const productId = 1;
   const orderbookAddr = await client.getOrderbookAddress(productId);
