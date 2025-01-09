@@ -15,4 +15,5 @@ export const INDEXER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   sonicTestnet: 'https://archive.sonic-test.vertexprotocol.com/v1',
   sonic: 'https://archive.sonic-prod.vertexprotocol.com/v1',
   beraTestnet: 'https://archive.bera-test.vertexprotocol.com/v1',
+  abstractTestnet: 'https://archive.abstract-test.vertexprotocol.com/v1',
 };
