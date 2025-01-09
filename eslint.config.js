@@ -2,6 +2,7 @@ const tseslint = require('typescript-eslint');
 const eslint = require('@eslint/js');
 const prettierPluginRecommended = require('eslint-plugin-prettier/recommended');
 const typescriptEslint = require('@typescript-eslint/eslint-plugin');
+const jestPlugin = require('eslint-plugin-jest');
 const globals = require('globals');
 
 module.exports = tseslint.config(
@@ -12,6 +13,7 @@ module.exports = tseslint.config(
     files: ['**/*.{ts,tsx}'],
     plugins: {
       '@typescript-eslint': typescriptEslint,
+      jest: jestPlugin,
     },
     languageOptions: {
       parser: tseslint.parser,

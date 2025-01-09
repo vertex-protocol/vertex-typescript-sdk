@@ -87,11 +87,11 @@ export function subaccountNameToBytes12(name: string): SubaccountNameBytes12 {
     bytes = toUtf8Bytes(name);
   }
 
-  const buffer = new Uint8Array(12);
+  const bytes12 = new Uint8Array(12);
   for (let i = 0; i < bytes.length; i++) {
-    buffer[i] = bytes[i];
+    bytes12[i] = bytes[i];
   }
-  return buffer;
+  return bytes12;
 }
 
 /**
