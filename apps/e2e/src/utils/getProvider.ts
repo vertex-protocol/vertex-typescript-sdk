@@ -70,5 +70,10 @@ export function getProvider(chainEnv: ChainEnv): Provider {
         name: 'bera-testnet',
         chainId: 80084,
       });
+    case 'abstractTestnet':
+      return new JsonRpcProvider('https://api.testnet.abs.xyz', {
+        name: 'abstract-testnet',
+        chainId: 11124,
+      });
   }
 }
