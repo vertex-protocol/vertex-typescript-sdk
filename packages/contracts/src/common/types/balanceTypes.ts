@@ -1,6 +1,6 @@
-import { PerpProduct, ProductEngineType, SpotProduct } from './productTypes';
 import { BigDecimal } from '@vertex-protocol/utils';
 import { HealthType } from './healthTypes';
+import { PerpProduct, ProductEngineType, SpotProduct } from './productTypes';
 
 export type BalanceSide = 'long' | 'short';
 
