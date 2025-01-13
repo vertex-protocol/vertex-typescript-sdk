@@ -15,4 +15,5 @@ export const TRIGGER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   sonicTestnet: 'https://trigger.sonic-test.vertexprotocol.com/v1',
   sonic: 'https://trigger.sonic-prod.vertexprotocol.com/v1',
   beraTestnet: 'https://trigger.bera-test.vertexprotocol.com/v1',
+  abstractTestnet: 'https://trigger.abstract-test.vertexprotocol.com/v1',
 };
