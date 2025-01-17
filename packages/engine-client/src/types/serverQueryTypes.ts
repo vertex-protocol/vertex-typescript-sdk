@@ -1,4 +1,5 @@
 import {
+  EngineServerHealths,
   EngineServerPerpBalance,
   EngineServerPerpProduct,
   EngineServerProductType,
@@ -38,6 +39,10 @@ export interface EngineServerSubaccountInfoQueryParams {
         };
       }
   >;
+}
+
+export interface EngineServerIsolatedPositionsQueryParams {
+  subaccount: string;
 }
 
 export interface EngineServerSymbolsQueryParams {
@@ -111,31 +116,32 @@ export interface EngineServerLinkedSignerParams {
 }
 
 export interface EngineServerQueryRequestByType {
-  contracts: Record<string, never>;
-  status: Record<string, never>;
-  nonces: EngineServerNoncesParams;
-  symbols: EngineServerSymbolsQueryParams;
   all_products: Record<string, never>;
+  contracts: Record<string, never>;
   edge_all_products: Record<string, never>;
+  fee_rates: EngineServerSubaccountFeeRatesParams;
   health_groups: Record<string, never>;
+  insurance: Record<string, never>;
+  isolated_positions: EngineServerIsolatedPositionsQueryParams;
+  linked_signer: EngineServerLinkedSignerParams;
+  market_liquidity: EngineServerMarketLiquidityQueryParams;
+  market_price: EngineServerMarketPriceQueryParams;
+  market_prices: EngineServerMarketPricesQueryParams;
+  max_lp_mintable: EngineServerMaxMintLpQueryParams;
+  max_order_size: EngineServerMaxOrderSizeQueryParams;
+  max_withdrawable: EngineServerMaxWithdrawableQueryParams;
+  min_deposit_rates: Record<string, never>;
+  nonces: EngineServerNoncesParams;
+  order: EngineServerGetOrderQueryParams;
+  orders: EngineServerOrdersQueryParams;
+  status: Record<string, never>;
   subaccount_info: Omit<EngineServerSubaccountInfoQueryParams, 'txns'> & {
     // JSON serialized txns
     txns?: string;
   };
-  market_price: EngineServerMarketPriceQueryParams;
-  market_prices: EngineServerMarketPricesQueryParams;
-  order: EngineServerGetOrderQueryParams;
-  orders: EngineServerOrdersQueryParams;
-  validate_order: EngineServerValidateOrderQueryParams;
-  fee_rates: EngineServerSubaccountFeeRatesParams;
   subaccount_orders: EngineServerSubaccountOrdersQueryParams;
-  market_liquidity: EngineServerMarketLiquidityQueryParams;
-  max_order_size: EngineServerMaxOrderSizeQueryParams;
-  max_withdrawable: EngineServerMaxWithdrawableQueryParams;
-  max_lp_mintable: EngineServerMaxMintLpQueryParams;
-  linked_signer: EngineServerLinkedSignerParams;
-  min_deposit_rates: Record<string, never>;
-  insurance: Record<string, never>;
+  symbols: EngineServerSymbolsQueryParams;
+  validate_order: EngineServerValidateOrderQueryParams;
 }
 
 export type EngineServerQueryRequestType = keyof EngineServerQueryRequestByType;
@@ -170,11 +176,7 @@ export interface EngineServerNoncesResponse {
 export interface EngineServerSubaccountInfoResponse {
   exists: boolean;
   subaccount: string;
-  healths: {
-    health: string;
-    assets: string;
-    liabilities: string;
-  }[];
+  healths: EngineServerHealths;
   // First index is product ID, each subarray is of length 3 [initial, maintenance, unweighted]
   health_contributions: string[][];
   spot_count: number;
@@ -184,6 +186,21 @@ export interface EngineServerSubaccountInfoResponse {
   spot_products: EngineServerSpotProduct[];
   perp_products: EngineServerPerpProduct[];
 }
+
+export interface EngineServerIsolatedPosition {
+  subaccount: string;
+  healths: EngineServerHealths;
+  quote_healths: EngineServerHealths;
+  base_healths: EngineServerHealths;
+  quote_balance: EngineServerSpotBalance;
+  base_balance: EngineServerPerpBalance;
+  quote_product: EngineServerSpotProduct;
+  base_product: EngineServerPerpProduct;
+}
+
+export type EngineServerIsolatedPositionsResponse = {
+  isolated_positions: EngineServerIsolatedPosition[];
+};
 
 export interface EngineServerSymbol {
   type: EngineServerProductType;
@@ -270,6 +287,7 @@ export interface EngineServerOrder {
   digest: string;
   placed_at: number;
   order_type: string;
+  margin: string | null;
 }
 
 export type EngineServerOrderResponse = EngineServerOrder;
@@ -324,28 +342,29 @@ export interface EngineServerEdgeAllProductsResponse {
 }
 
 export interface EngineServerQueryResponseByType {
-  contracts: EngineServerContractsResponse;
-  status: EngineServerStatusResponse;
-  nonces: EngineServerNoncesResponse;
-  subaccount_info: EngineServerSubaccountInfoResponse;
-  symbols: EngineServerSymbolsResponse;
   all_products: EngineServerAllProductsResponse;
+  contracts: EngineServerContractsResponse;
   edge_all_products: EngineServerEdgeAllProductsResponse;
-  health_groups: EngineServerHealthGroupsResponse;
-  order: EngineServerOrderResponse;
-  orders: EngineServerProductOrdersResponse;
-  validate_order: EngineServerValidateOrderResponse;
-  subaccount_orders: EngineServerSubaccountOrdersResponse;
   fee_rates: EngineServerFeeRatesResponse;
+  health_groups: EngineServerHealthGroupsResponse;
+  insurance: EngineInsuranceResponse;
+  isolated_positions: EngineServerIsolatedPositionsResponse;
+  linked_signer: EngineServerLinkedSignerResponse;
   market_liquidity: EngineServerMarketLiquidityResponse;
   market_price: EngineServerMarketPriceResponse;
   market_prices: EngineServerMarketPricesResponse;
+  max_lp_mintable: EngineServerMaxMintLpResponse;
   max_order_size: EngineServerMaxOrderSizeResponse;
   max_withdrawable: EngineServerMaxWithdrawableResponse;
-  max_lp_mintable: EngineServerMaxMintLpResponse;
   min_deposit_rates: EngineServerMinDepositRatesResponse;
-  linked_signer: EngineServerLinkedSignerResponse;
-  insurance: EngineInsuranceResponse;
+  nonces: EngineServerNoncesResponse;
+  order: EngineServerOrderResponse;
+  orders: EngineServerProductOrdersResponse;
+  status: EngineServerStatusResponse;
+  subaccount_info: EngineServerSubaccountInfoResponse;
+  subaccount_orders: EngineServerSubaccountOrdersResponse;
+  symbols: EngineServerSymbolsResponse;
+  validate_order: EngineServerValidateOrderResponse;
 }
 
 export interface EngineServerQuerySuccessResponse<

@@ -1,4 +1,5 @@
 import { BaseVertexAPI } from '../base';
+import { OptionalSignatureParams } from '../types';
 import {
   BurnLpParams,
   CancelAndPlaceOrderParams,
@@ -7,10 +8,10 @@ import {
   CancelTriggerOrdersParams,
   CancelTriggerProductOrdersParams,
   MintLpParams,
+  PlaceIsolatedOrderParams,
   PlaceOrderParams,
   PlaceTriggerOrderParams,
 } from './types';
-import { OptionalSignatureParams } from '../types';
 
 export class MarketExecuteAPI extends BaseVertexAPI {
   /**
@@ -56,6 +57,27 @@ export class MarketExecuteAPI extends BaseVertexAPI {
       verifyingAddr: await this.getOrderbookVerifyingAddressIfNeeded(params),
       productId,
       spotLeverage: params.spotLeverage,
+      nonce,
+    });
+  }
+
+  /**
+   * Places an isolated order through the engine
+   * @param params
+   */
+  async placeIsolatedOrder(params: PlaceIsolatedOrderParams) {
+    const { id: orderId, productId, order, nonce, borrowMargin } = params;
+
+    return this.context.engineClient.placeIsolatedOrder({
+      id: orderId,
+      order: {
+        ...order,
+        subaccountOwner: await this.getSubaccountOwnerIfNeeded(params.order),
+      },
+      chainId: await this.getSignerChainIdIfNeeded(params),
+      verifyingAddr: await this.getOrderbookVerifyingAddressIfNeeded(params),
+      productId,
+      borrowMargin,
       nonce,
     });
   }

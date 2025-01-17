@@ -2,8 +2,10 @@ import {
   EngineBurnLpParams,
   EngineCancelOrdersParams,
   EngineCancelProductOrdersParams,
+  EngineIsolatedOrderParams,
   EngineMintLpParams,
   EngineOrderParams,
+  EnginePlaceIsolatedOrderParams,
   EnginePlaceOrderParams,
 } from '@vertex-protocol/engine-client';
 import {
@@ -19,6 +21,14 @@ type ClientOrderParams<T> = Omit<OptionalSignatureParams<T>, 'order'> & {
 };
 
 export type PlaceOrderParams = ClientOrderParams<EnginePlaceOrderParams>;
+
+// Same as PlaceOrderParams but with isolated fields
+export type PlaceIsolatedOrderParams = Omit<
+  OptionalSignatureParams<EnginePlaceIsolatedOrderParams>,
+  'order'
+> & {
+  order: OptionalSubaccountOwner<EngineIsolatedOrderParams>;
+};
 
 export type CancelOrdersParams = OptionalSignatureParams<
   OptionalSubaccountOwner<EngineCancelOrdersParams>

@@ -54,6 +54,11 @@ export interface EIP712OrderParams extends Subaccount {
   nonce: string;
 }
 
+export interface EIP712IsolatedOrderParams extends EIP712OrderParams {
+  // Amount of quote margin to transfer when the order fills
+  margin: BigNumberish;
+}
+
 export interface EIP712ListTriggerOrdersParams extends Subaccount {
   recvTime: BigNumberish;
 }
