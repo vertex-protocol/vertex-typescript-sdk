@@ -191,6 +191,7 @@ export class IndexerBaseClient {
     const baseResponse = await this.query('account_snapshots', {
       subaccounts: subaccountHexIds,
       timestamps: params.timestamps,
+      isolated: params.isolated,
     });
 
     const snapshotsBySubaccount = mapValues(
@@ -483,6 +484,7 @@ export class IndexerBaseClient {
           })
         : undefined,
       product_ids: params.productIds,
+      isolated: params.isolated,
       event_types: params.eventTypes,
       max_time: params.maxTimestampInclusive,
       desc: params.desc,
@@ -517,6 +519,7 @@ export class IndexerBaseClient {
           })
         : undefined,
       product_ids: params.productIds,
+      isolated: params.isolated,
       digests: params.digests,
       max_time: params.maxTimestampInclusive,
       limit: params.limit,
@@ -543,6 +546,7 @@ export class IndexerBaseClient {
           })
         : undefined,
       product_ids: params.productIds,
+      isolated: params.isolated,
       max_time: params.maxTimestampInclusive,
       limit: params.limit,
       idx: params.startCursor,

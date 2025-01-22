@@ -42,6 +42,8 @@ export interface IndexerServerMultiSubaccountSnapshotsParams {
   // Subaccount hex identifiers
   subaccounts: string[];
   timestamps: number[];
+  // If not given, will return both isolated & non-iso balances
+  isolated?: boolean;
 }
 
 export interface IndexerServerRewardsParams {
@@ -104,6 +106,8 @@ export interface IndexerServerMultiProductsParams {
 export interface IndexerServerEventsParams {
   subaccount?: string;
   product_ids?: number[];
+  // If not given, will return both isolated & non-iso events
+  isolated?: boolean;
   event_types?: IndexerEventType[];
   // Descending order for idx (time), defaults to true
   desc?: boolean;
@@ -125,6 +129,8 @@ export interface IndexerServerOrdersParams {
   digests?: string[];
   max_time?: number;
   limit?: number;
+  // If not given, will return both isolated & non-iso orders
+  isolated?: boolean;
   // submission_idx for pagination, inclusive
   idx?: string;
 }
@@ -132,6 +138,8 @@ export interface IndexerServerOrdersParams {
 export interface IndexerServerMatchEventsParams {
   subaccount?: string;
   product_ids?: number[];
+  // If not given, will return both isolated & non-iso events
+  isolated?: boolean;
   max_time?: number;
   limit: number;
   // submission_idx for pagination, inclusive
