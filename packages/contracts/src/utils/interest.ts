@@ -6,15 +6,14 @@ import {
   TimeInSeconds,
   toBigDecimal,
 } from '@vertex-protocol/utils';
-import { BigNumberish } from 'ethers';
 import { SpotProduct } from '../common';
 
 /**
  * Calculate amount total borrowed for a product
  */
 export function calcTotalBorrowed(
-  totalBorrowsNormalized: BigNumberish,
-  cumulativeBorrowsMultiplierX18: BigNumberish,
+  totalBorrowsNormalized: string | bigint,
+  cumulativeBorrowsMultiplierX18: string | bigint,
 ): BigDecimal {
   return toBigDecimal(totalBorrowsNormalized).multipliedBy(
     fromX18(cumulativeBorrowsMultiplierX18),
@@ -25,8 +24,8 @@ export function calcTotalBorrowed(
  * Calculate amount total deposited for a product.
  */
 export function calcTotalDeposited(
-  totalDepositsNormalized: BigNumberish,
-  cumulativeDepositsMultiplierX18: BigNumberish,
+  totalDepositsNormalized: string | bigint,
+  cumulativeDepositsMultiplierX18: string | bigint,
 ): BigDecimal {
   return toBigDecimal(totalDepositsNormalized).multipliedBy(
     fromX18(cumulativeDepositsMultiplierX18),

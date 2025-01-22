@@ -1,7 +1,5 @@
-import { BigNumberish } from 'ethers';
-
 export interface VrtxTokenAmountParams {
-  amount: BigNumberish;
+  amount: string;
 }
 
 export type ClaimTokensToLbaParams = VrtxTokenAmountParams;

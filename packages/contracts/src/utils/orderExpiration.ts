@@ -1,5 +1,3 @@
-import { BigNumberish } from 'ethers';
-
 // All valid "special" order expiration types
 export type OrderExpirationType = 'default' | 'ioc' | 'fok' | 'post_only';
 
@@ -48,7 +46,7 @@ export function getExpirationTimestamp(config: OrderExpirationConfig): bigint {
  * @param rawExpiration
  */
 export function parseRawExpirationTimestamp(
-  rawExpiration: BigNumberish,
+  rawExpiration: string,
 ): Required<OrderExpirationConfig> {
   const bigIntRawExpiration = BigInt(rawExpiration);
   const largestTwoBits = bigIntRawExpiration >> 62n;

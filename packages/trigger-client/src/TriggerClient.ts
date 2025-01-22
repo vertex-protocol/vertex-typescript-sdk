@@ -12,7 +12,7 @@ import {
   SignableRequestTypeToParams,
 } from '@vertex-protocol/contracts';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { BigNumberish, Signer } from 'ethers';
+import { Signer } from 'ethers';
 import { mapServerOrderInfo, mapTriggerCriteria } from './dataMappers';
 import {
   TriggerCancelOrdersParams,
@@ -154,6 +154,7 @@ export class TriggerClient {
     const signatureParams: EIP712ListTriggerOrdersParams = {
       // Default to 90 seconds from now if no recvTime is provided
       recvTime: params.recvTime?.toFixed() ?? getDefaultRecvTime().toFixed(),
+
       subaccountName: params.subaccountName,
       subaccountOwner: params.subaccountOwner,
     };
@@ -193,7 +194,7 @@ export class TriggerClient {
   protected async sign<T extends SignableRequestType>(
     requestType: T,
     verifyingContract: string,
-    chainId: BigNumberish,
+    chainId: number,
     params: SignableRequestTypeToParams[T],
   ) {
     // Use the linked signer if provided, otherwise use the default signer provided to the engine

@@ -13,7 +13,6 @@ import {
   SubaccountSummaryResponse,
 } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
-import { BigNumberish } from 'ethers';
 import {
   EngineServerNoncesParams,
   EngineServerTimeResponse,
@@ -66,7 +65,7 @@ export interface SubaccountProductDeltaTx {
 }
 
 export interface GetEngineContractsResponse {
-  chainId: BigNumberish;
+  chainId: number;
   endpointAddr: string;
   orderbookAddrs: string[];
 }
@@ -146,7 +145,7 @@ export interface ValidateSignedEngineOrderParams {
 export interface ValidateEngineOrderParams {
   productId: number;
   orderbookAddr: string;
-  chainId: BigNumberish;
+  chainId: number;
   order: EIP712OrderParams;
 }
 

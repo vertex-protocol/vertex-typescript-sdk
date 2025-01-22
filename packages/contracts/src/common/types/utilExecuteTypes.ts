@@ -1,10 +1,8 @@
-import { BigNumberish } from 'ethers';
-
 import { Bytes } from './bytes';
 
 export interface MintMockERC20Params {
-  productId: BigNumberish;
-  amount: BigNumberish;
+  productId: number;
+  amount: string;
 }
 
 export interface SettlePnlParams {

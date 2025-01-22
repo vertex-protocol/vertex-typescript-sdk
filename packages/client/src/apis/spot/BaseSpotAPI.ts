@@ -12,7 +12,7 @@ export class BaseSpotAPI extends BaseVertexAPI {
     let tokenAddress: string;
     if ('productId' in params) {
       const config = await this.context.contracts.spotEngine.getConfig(
-        params.productId,
+        BigInt(params.productId),
       );
       tokenAddress = config.token;
     } else {

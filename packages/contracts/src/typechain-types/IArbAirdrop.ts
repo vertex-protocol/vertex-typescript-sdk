@@ -3,7 +3,6 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -23,8 +22,8 @@ import type {
 
 export declare namespace IArbAirdrop {
   export type ClaimProofStruct = {
-    week: BigNumberish;
-    totalAmount: BigNumberish;
+    week: bigint;
+    totalAmount: bigint;
     proof: BytesLike[];
   };
 

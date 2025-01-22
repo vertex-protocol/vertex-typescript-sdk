@@ -3,7 +3,6 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -42,7 +41,7 @@ export interface IERC20Interface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "approve",
-    values: [AddressLike, BigNumberish]
+    values: [AddressLike, bigint]
   ): string;
   encodeFunctionData(
     functionFragment: "balanceOf",
@@ -54,11 +53,11 @@ export interface IERC20Interface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "transfer",
-    values: [AddressLike, BigNumberish]
+    values: [AddressLike, bigint]
   ): string;
   encodeFunctionData(
     functionFragment: "transferFrom",
-    values: [AddressLike, AddressLike, BigNumberish]
+    values: [AddressLike, AddressLike, bigint]
   ): string;
 
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
@@ -79,7 +78,7 @@ export namespace ApprovalEvent {
   export type InputTuple = [
     owner: AddressLike,
     spender: AddressLike,
-    value: BigNumberish
+    value: bigint
   ];
   export type OutputTuple = [owner: string, spender: string, value: bigint];
   export interface OutputObject {
@@ -97,7 +96,7 @@ export namespace TransferEvent {
   export type InputTuple = [
     from: AddressLike,
     to: AddressLike,
-    value: BigNumberish
+    value: bigint
   ];
   export type OutputTuple = [from: string, to: string, value: bigint];
   export interface OutputObject {
@@ -161,7 +160,7 @@ export interface IERC20 extends BaseContract {
   >;
 
   approve: TypedContractMethod<
-    [spender: AddressLike, amount: BigNumberish],
+    [spender: AddressLike, amount: bigint],
     [boolean],
     "nonpayable"
   >;
@@ -171,13 +170,13 @@ export interface IERC20 extends BaseContract {
   totalSupply: TypedContractMethod<[], [bigint], "view">;
 
   transfer: TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish],
+    [to: AddressLike, amount: bigint],
     [boolean],
     "nonpayable"
   >;
 
   transferFrom: TypedContractMethod<
-    [from: AddressLike, to: AddressLike, amount: BigNumberish],
+    [from: AddressLike, to: AddressLike, amount: bigint],
     [boolean],
     "nonpayable"
   >;
@@ -196,7 +195,7 @@ export interface IERC20 extends BaseContract {
   getFunction(
     nameOrSignature: "approve"
   ): TypedContractMethod<
-    [spender: AddressLike, amount: BigNumberish],
+    [spender: AddressLike, amount: bigint],
     [boolean],
     "nonpayable"
   >;
@@ -209,14 +208,14 @@ export interface IERC20 extends BaseContract {
   getFunction(
     nameOrSignature: "transfer"
   ): TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish],
+    [to: AddressLike, amount: bigint],
     [boolean],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "transferFrom"
   ): TypedContractMethod<
-    [from: AddressLike, to: AddressLike, amount: BigNumberish],
+    [from: AddressLike, to: AddressLike, amount: bigint],
     [boolean],
     "nonpayable"
   >;

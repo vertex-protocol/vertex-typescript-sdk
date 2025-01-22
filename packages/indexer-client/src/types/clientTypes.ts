@@ -10,7 +10,6 @@ import {
   Subaccount,
 } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils';
-import { BigNumberish } from 'ethers';
 import { CandlestickPeriod } from './CandlestickPeriod';
 import { IndexerEventType } from './IndexerEventType';
 import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
@@ -806,7 +805,7 @@ export interface GetIndexerLeaderboardParticipantResponse {
 interface LeaderboardSignatureParams {
   // endpoint address
   verifyingAddr: string;
-  chainId: BigNumberish;
+  chainId: number;
 }
 
 export interface GetIndexerLeaderboardRegistrationParams extends Subaccount {

@@ -3,7 +3,6 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -25,10 +24,10 @@ import type {
 
 export declare namespace IProductEngine {
   export type ProductDeltaStruct = {
-    productId: BigNumberish;
+    productId: bigint;
     subaccount: BytesLike;
-    amountDelta: BigNumberish;
-    vQuoteDelta: BigNumberish;
+    amountDelta: bigint;
+    vQuoteDelta: bigint;
   };
 
   export type ProductDeltaStructOutput = [
@@ -46,8 +45,8 @@ export declare namespace IProductEngine {
 
 export declare namespace ISpotEngine {
   export type BalanceStruct = {
-    amount: BigNumberish;
-    lastCumulativeMultiplierX18: BigNumberish;
+    amount: bigint;
+    lastCumulativeMultiplierX18: bigint;
   };
 
   export type BalanceStructOutput = [
@@ -55,16 +54,16 @@ export declare namespace ISpotEngine {
     lastCumulativeMultiplierX18: bigint
   ] & { amount: bigint; lastCumulativeMultiplierX18: bigint };
 
-  export type LpBalanceStruct = { amount: BigNumberish };
+  export type LpBalanceStruct = { amount: bigint };
 
   export type LpBalanceStructOutput = [amount: bigint] & { amount: bigint };
 
   export type ConfigStruct = {
     token: AddressLike;
-    interestInflectionUtilX18: BigNumberish;
-    interestFloorX18: BigNumberish;
-    interestSmallCapX18: BigNumberish;
-    interestLargeCapX18: BigNumberish;
+    interestInflectionUtilX18: bigint;
+    interestFloorX18: bigint;
+    interestSmallCapX18: bigint;
+    interestLargeCapX18: bigint;
   };
 
   export type ConfigStructOutput = [
@@ -82,7 +81,7 @@ export declare namespace ISpotEngine {
   };
 
   export type LpStateStruct = {
-    supply: BigNumberish;
+    supply: bigint;
     quote: ISpotEngine.BalanceStruct;
     base: ISpotEngine.BalanceStruct;
   };
@@ -98,10 +97,10 @@ export declare namespace ISpotEngine {
   };
 
   export type StateStruct = {
-    cumulativeDepositsMultiplierX18: BigNumberish;
-    cumulativeBorrowsMultiplierX18: BigNumberish;
-    totalDepositsNormalized: BigNumberish;
-    totalBorrowsNormalized: BigNumberish;
+    cumulativeDepositsMultiplierX18: bigint;
+    cumulativeBorrowsMultiplierX18: bigint;
+    totalDepositsNormalized: bigint;
+    totalBorrowsNormalized: bigint;
   };
 
   export type StateStructOutput = [
@@ -154,7 +153,7 @@ export interface ISpotEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "burnLp",
-    values: [BigNumberish, BytesLike, BigNumberish]
+    values: [bigint, BytesLike, bigint]
   ): string;
   encodeFunctionData(
     functionFragment: "decomposeLps",
@@ -162,15 +161,15 @@ export interface ISpotEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getBalance",
-    values: [BigNumberish, BytesLike]
+    values: [bigint, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getBalanceAmount",
-    values: [BigNumberish, BytesLike]
+    values: [bigint, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getBalances",
-    values: [BigNumberish, BytesLike]
+    values: [bigint, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getClearinghouse",
@@ -178,7 +177,7 @@ export interface ISpotEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getConfig",
-    values: [BigNumberish]
+    values: [bigint]
   ): string;
   encodeFunctionData(
     functionFragment: "getEngineType",
@@ -186,11 +185,11 @@ export interface ISpotEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getLpState",
-    values: [BigNumberish]
+    values: [bigint]
   ): string;
   encodeFunctionData(
     functionFragment: "getOrderbook",
-    values: [BigNumberish]
+    values: [bigint]
   ): string;
   encodeFunctionData(
     functionFragment: "getProductIds",
@@ -198,19 +197,19 @@ export interface ISpotEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getStateAndBalance",
-    values: [BigNumberish, BytesLike]
+    values: [bigint, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getStatesAndBalances",
-    values: [BigNumberish, BytesLike]
+    values: [bigint, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getWithdrawFee",
-    values: [BigNumberish]
+    values: [bigint]
   ): string;
   encodeFunctionData(
     functionFragment: "hasBalance",
-    values: [BigNumberish, BytesLike]
+    values: [bigint, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
@@ -218,11 +217,11 @@ export interface ISpotEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "manualAssert",
-    values: [BigNumberish[], BigNumberish[]]
+    values: [bigint[], bigint[]]
   ): string;
   encodeFunctionData(
     functionFragment: "mintLp",
-    values: [BigNumberish, BytesLike, BigNumberish, BigNumberish, BigNumberish]
+    values: [bigint, BytesLike, bigint, bigint, bigint]
   ): string;
   encodeFunctionData(
     functionFragment: "socializeSubaccount",
@@ -230,16 +229,16 @@ export interface ISpotEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "swapLp(uint32,int128,int128)",
-    values: [BigNumberish, BigNumberish, BigNumberish]
+    values: [bigint, bigint, bigint]
   ): string;
   encodeFunctionData(
     functionFragment: "swapLp(uint32,int128,int128,int128,int128)",
     values: [
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish
+      bigint,
+      bigint,
+      bigint,
+      bigint,
+      bigint
     ]
   ): string;
   encodeFunctionData(
@@ -248,7 +247,7 @@ export interface ISpotEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "updateStates",
-    values: [BigNumberish]
+    values: [bigint]
   ): string;
 
   decodeFunctionResult(
@@ -329,7 +328,7 @@ export interface ISpotEngineInterface extends Interface {
 }
 
 export namespace AddProductEvent {
-  export type InputTuple = [productId: BigNumberish];
+  export type InputTuple = [productId: bigint];
   export type OutputTuple = [productId: bigint];
   export interface OutputObject {
     productId: bigint;
@@ -390,7 +389,7 @@ export interface ISpotEngine extends BaseContract {
   >;
 
   burnLp: TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
+    [productId: bigint, subaccount: BytesLike, amountLp: bigint],
     [[bigint, bigint]],
     "nonpayable"
   >;
@@ -402,19 +401,19 @@ export interface ISpotEngine extends BaseContract {
   >;
 
   getBalance: TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
+    [productId: bigint, subaccount: BytesLike],
     [ISpotEngine.BalanceStructOutput],
     "view"
   >;
 
   getBalanceAmount: TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
+    [productId: bigint, subaccount: BytesLike],
     [bigint],
     "view"
   >;
 
   getBalances: TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
+    [productId: bigint, subaccount: BytesLike],
     [[ISpotEngine.LpBalanceStructOutput, ISpotEngine.BalanceStructOutput]],
     "view"
   >;
@@ -422,7 +421,7 @@ export interface ISpotEngine extends BaseContract {
   getClearinghouse: TypedContractMethod<[], [string], "view">;
 
   getConfig: TypedContractMethod<
-    [productId: BigNumberish],
+    [productId: bigint],
     [ISpotEngine.ConfigStructOutput],
     "view"
   >;
@@ -430,13 +429,13 @@ export interface ISpotEngine extends BaseContract {
   getEngineType: TypedContractMethod<[], [bigint], "view">;
 
   getLpState: TypedContractMethod<
-    [productId: BigNumberish],
+    [productId: bigint],
     [ISpotEngine.LpStateStructOutput],
     "view"
   >;
 
   getOrderbook: TypedContractMethod<
-    [productId: BigNumberish],
+    [productId: bigint],
     [string],
     "view"
   >;
@@ -444,13 +443,13 @@ export interface ISpotEngine extends BaseContract {
   getProductIds: TypedContractMethod<[], [bigint[]], "view">;
 
   getStateAndBalance: TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
+    [productId: bigint, subaccount: BytesLike],
     [[ISpotEngine.StateStructOutput, ISpotEngine.BalanceStructOutput]],
     "view"
   >;
 
   getStatesAndBalances: TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
+    [productId: bigint, subaccount: BytesLike],
     [
       [
         ISpotEngine.LpStateStructOutput,
@@ -463,13 +462,13 @@ export interface ISpotEngine extends BaseContract {
   >;
 
   getWithdrawFee: TypedContractMethod<
-    [productId: BigNumberish],
+    [productId: bigint],
     [bigint],
     "view"
   >;
 
   hasBalance: TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
+    [productId: bigint, subaccount: BytesLike],
     [boolean],
     "view"
   >;
@@ -487,18 +486,18 @@ export interface ISpotEngine extends BaseContract {
   >;
 
   manualAssert: TypedContractMethod<
-    [totalDeposits: BigNumberish[], totalBorrows: BigNumberish[]],
+    [totalDeposits: bigint[], totalBorrows: bigint[]],
     [void],
     "view"
   >;
 
   mintLp: TypedContractMethod<
     [
-      productId: BigNumberish,
+      productId: bigint,
       subaccount: BytesLike,
-      amountBase: BigNumberish,
-      quoteAmountLow: BigNumberish,
-      quoteAmountHigh: BigNumberish
+      amountBase: bigint,
+      quoteAmountLow: bigint,
+      quoteAmountHigh: bigint
     ],
     [void],
     "nonpayable"
@@ -512,9 +511,9 @@ export interface ISpotEngine extends BaseContract {
 
   "swapLp(uint32,int128,int128)": TypedContractMethod<
     [
-      productId: BigNumberish,
-      baseDelta: BigNumberish,
-      quoteDelta: BigNumberish
+      productId: bigint,
+      baseDelta: bigint,
+      quoteDelta: bigint
     ],
     [[bigint, bigint]],
     "nonpayable"
@@ -522,11 +521,11 @@ export interface ISpotEngine extends BaseContract {
 
   "swapLp(uint32,int128,int128,int128,int128)": TypedContractMethod<
     [
-      productId: BigNumberish,
-      amount: BigNumberish,
-      priceX18: BigNumberish,
-      sizeIncrement: BigNumberish,
-      lpSpreadX18: BigNumberish
+      productId: bigint,
+      amount: bigint,
+      priceX18: bigint,
+      sizeIncrement: bigint,
+      lpSpreadX18: bigint
     ],
     [[bigint, bigint]],
     "nonpayable"
@@ -534,7 +533,7 @@ export interface ISpotEngine extends BaseContract {
 
   updateProduct: TypedContractMethod<[txn: BytesLike], [void], "nonpayable">;
 
-  updateStates: TypedContractMethod<[dt: BigNumberish], [void], "nonpayable">;
+  updateStates: TypedContractMethod<[dt: bigint], [void], "nonpayable">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -550,7 +549,7 @@ export interface ISpotEngine extends BaseContract {
   getFunction(
     nameOrSignature: "burnLp"
   ): TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
+    [productId: bigint, subaccount: BytesLike, amountLp: bigint],
     [[bigint, bigint]],
     "nonpayable"
   >;
@@ -564,21 +563,21 @@ export interface ISpotEngine extends BaseContract {
   getFunction(
     nameOrSignature: "getBalance"
   ): TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
+    [productId: bigint, subaccount: BytesLike],
     [ISpotEngine.BalanceStructOutput],
     "view"
   >;
   getFunction(
     nameOrSignature: "getBalanceAmount"
   ): TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
+    [productId: bigint, subaccount: BytesLike],
     [bigint],
     "view"
   >;
   getFunction(
     nameOrSignature: "getBalances"
   ): TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
+    [productId: bigint, subaccount: BytesLike],
     [[ISpotEngine.LpBalanceStructOutput, ISpotEngine.BalanceStructOutput]],
     "view"
   >;
@@ -588,7 +587,7 @@ export interface ISpotEngine extends BaseContract {
   getFunction(
     nameOrSignature: "getConfig"
   ): TypedContractMethod<
-    [productId: BigNumberish],
+    [productId: bigint],
     [ISpotEngine.ConfigStructOutput],
     "view"
   >;
@@ -598,27 +597,27 @@ export interface ISpotEngine extends BaseContract {
   getFunction(
     nameOrSignature: "getLpState"
   ): TypedContractMethod<
-    [productId: BigNumberish],
+    [productId: bigint],
     [ISpotEngine.LpStateStructOutput],
     "view"
   >;
   getFunction(
     nameOrSignature: "getOrderbook"
-  ): TypedContractMethod<[productId: BigNumberish], [string], "view">;
+  ): TypedContractMethod<[productId: bigint], [string], "view">;
   getFunction(
     nameOrSignature: "getProductIds"
   ): TypedContractMethod<[], [bigint[]], "view">;
   getFunction(
     nameOrSignature: "getStateAndBalance"
   ): TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
+    [productId: bigint, subaccount: BytesLike],
     [[ISpotEngine.StateStructOutput, ISpotEngine.BalanceStructOutput]],
     "view"
   >;
   getFunction(
     nameOrSignature: "getStatesAndBalances"
   ): TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
+    [productId: bigint, subaccount: BytesLike],
     [
       [
         ISpotEngine.LpStateStructOutput,
@@ -631,11 +630,11 @@ export interface ISpotEngine extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "getWithdrawFee"
-  ): TypedContractMethod<[productId: BigNumberish], [bigint], "view">;
+  ): TypedContractMethod<[productId: bigint], [bigint], "view">;
   getFunction(
     nameOrSignature: "hasBalance"
   ): TypedContractMethod<
-    [productId: BigNumberish, subaccount: BytesLike],
+    [productId: bigint, subaccount: BytesLike],
     [boolean],
     "view"
   >;
@@ -655,7 +654,7 @@ export interface ISpotEngine extends BaseContract {
   getFunction(
     nameOrSignature: "manualAssert"
   ): TypedContractMethod<
-    [totalDeposits: BigNumberish[], totalBorrows: BigNumberish[]],
+    [totalDeposits: bigint[], totalBorrows: bigint[]],
     [void],
     "view"
   >;
@@ -663,11 +662,11 @@ export interface ISpotEngine extends BaseContract {
     nameOrSignature: "mintLp"
   ): TypedContractMethod<
     [
-      productId: BigNumberish,
+      productId: bigint,
       subaccount: BytesLike,
-      amountBase: BigNumberish,
-      quoteAmountLow: BigNumberish,
-      quoteAmountHigh: BigNumberish
+      amountBase: bigint,
+      quoteAmountLow: bigint,
+      quoteAmountHigh: bigint
     ],
     [void],
     "nonpayable"
@@ -679,9 +678,9 @@ export interface ISpotEngine extends BaseContract {
     nameOrSignature: "swapLp(uint32,int128,int128)"
   ): TypedContractMethod<
     [
-      productId: BigNumberish,
-      baseDelta: BigNumberish,
-      quoteDelta: BigNumberish
+      productId: bigint,
+      baseDelta: bigint,
+      quoteDelta: bigint
     ],
     [[bigint, bigint]],
     "nonpayable"
@@ -690,11 +689,11 @@ export interface ISpotEngine extends BaseContract {
     nameOrSignature: "swapLp(uint32,int128,int128,int128,int128)"
   ): TypedContractMethod<
     [
-      productId: BigNumberish,
-      amount: BigNumberish,
-      priceX18: BigNumberish,
-      sizeIncrement: BigNumberish,
-      lpSpreadX18: BigNumberish
+      productId: bigint,
+      amount: bigint,
+      priceX18: bigint,
+      sizeIncrement: bigint,
+      lpSpreadX18: bigint
     ],
     [[bigint, bigint]],
     "nonpayable"
@@ -704,7 +703,7 @@ export interface ISpotEngine extends BaseContract {
   ): TypedContractMethod<[txn: BytesLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "updateStates"
-  ): TypedContractMethod<[dt: BigNumberish], [void], "nonpayable">;
+  ): TypedContractMethod<[dt: bigint], [void], "nonpayable">;
 
   getEvent(
     key: "AddProduct"

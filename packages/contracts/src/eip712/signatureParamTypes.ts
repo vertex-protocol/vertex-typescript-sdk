@@ -1,4 +1,3 @@
-import { BigNumberish } from 'ethers';
 import { Subaccount } from '../common';
 
 export interface SignedTx<TBaseTx> {
@@ -13,21 +12,21 @@ export interface SignedEIP712OrderParams {
 
 export interface EIP712WithdrawCollateralParams extends Subaccount {
   productId: number;
-  amount: BigNumberish;
+  amount: string;
   nonce: string;
 }
 
 export interface EIP712MintLpParams extends Subaccount {
   productId: number;
-  amountBase: BigNumberish;
-  quoteAmountLow: BigNumberish;
-  quoteAmountHigh: BigNumberish;
+  amountBase: string;
+  quoteAmountLow: string;
+  quoteAmountHigh: string;
   nonce: string;
 }
 
 export interface EIP712BurnLpParams extends Subaccount {
   productId: number;
-  amount: BigNumberish;
+  amount: string;
   nonce: string;
 }
 
@@ -38,29 +37,29 @@ export interface EIP712LiquidateSubaccountParams extends Subaccount {
   // 0 = spread, 1 = long, 2 = short
   mode: number;
   // Spot & perp pair
-  healthGroup: BigNumberish;
-  amount: BigNumberish;
+  healthGroup: string;
+  amount: string;
   nonce: string;
 }
 
 export interface EIP712OrderParams extends Subaccount {
   // Expiration time in seconds, with order type encoded if relevant
-  expiration: BigNumberish;
+  expiration: string;
   // Limit price
-  price: BigNumberish;
+  price: string;
   // Positive for buy, negative for sell
-  amount: BigNumberish;
+  amount: string;
   // A unique nonce to identify the order
   nonce: string;
 }
 
 export interface EIP712IsolatedOrderParams extends EIP712OrderParams {
   // Amount of quote margin to transfer when the order fills
-  margin: BigNumberish;
+  margin: string;
 }
 
 export interface EIP712ListTriggerOrdersParams extends Subaccount {
-  recvTime: BigNumberish;
+  recvTime: string;
 }
 
 export interface EIP712CancelOrdersParams extends Subaccount {
@@ -81,10 +80,10 @@ export interface EIP712LinkSignerParams extends Subaccount {
 
 export interface EIP712TransferQuoteParams extends Subaccount {
   recipientSubaccountName: string;
-  amount: BigNumberish;
+  amount: string;
   nonce: string;
 }
 
 export interface EIP712LeaderboardAuthenticationParams extends Subaccount {
-  expiration: BigNumberish;
+  expiration: string;
 }

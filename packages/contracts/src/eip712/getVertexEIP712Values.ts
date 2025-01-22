@@ -111,8 +111,8 @@ function getWithdrawCollateralValues(
       subaccountName: params.subaccountName,
     }),
     productId: params.productId,
-    amount: BigInt(params.amount).toString(),
-    nonce: BigInt(params.nonce).toString(),
+    amount: params.amount,
+    nonce: params.nonce,
   };
 }
 
@@ -123,10 +123,10 @@ function getMintLpValues(params: EIP712MintLpParams): EIP712MintLpValues {
       subaccountName: params.subaccountName,
     }),
     productId: params.productId,
-    amountBase: params.amountBase.toString(),
-    quoteAmountLow: params.quoteAmountLow.toString(),
-    quoteAmountHigh: params.quoteAmountHigh.toString(),
-    nonce: BigInt(params.nonce).toString(),
+    amountBase: params.amountBase,
+    quoteAmountLow: params.quoteAmountLow,
+    quoteAmountHigh: params.quoteAmountHigh,
+    nonce: params.nonce,
   };
 }
 
@@ -137,8 +137,8 @@ function getBurnLpValues(params: EIP712BurnLpParams): EIP712BurnLpValues {
       subaccountName: params.subaccountName,
     }),
     productId: params.productId,
-    amount: params.amount.toString(),
-    nonce: BigInt(params.nonce).toString(),
+    amount: params.amount,
+    nonce: params.nonce,
   };
 }
 
@@ -148,10 +148,10 @@ function getOrderValues(params: EIP712OrderParams): EIP712OrderValues {
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
-    priceX18: toX18(params.price).toString(),
-    amount: BigInt(params.amount).toString(),
-    expiration: BigInt(params.expiration).toString(),
-    nonce: BigInt(params.nonce).toString(),
+    priceX18: toX18(params.price),
+    amount: params.amount,
+    expiration: params.expiration,
+    nonce: params.nonce,
   };
 }
 
@@ -160,7 +160,7 @@ function getIsolatedOrderValues(
 ): EIP712IsolatedOrderValues {
   return {
     ...getOrderValues(params),
-    margin: BigInt(params.margin).toString(),
+    margin: params.margin,
   };
 }
 
@@ -168,7 +168,7 @@ function getListTriggerOrdersValues(
   params: EIP712ListTriggerOrdersParams,
 ): EIP712ListTriggerOrdersValues {
   return {
-    recvTime: BigInt(params.recvTime).toString(),
+    recvTime: params.recvTime,
     sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
@@ -216,8 +216,8 @@ function getLiquidateSubaccountValues(
       subaccountName: params.liquidateeName,
     }),
     mode: params.mode,
-    healthGroup: params.healthGroup.toString(),
-    amount: BigInt(params.amount).toString(),
+    healthGroup: params.healthGroup,
+    amount: params.amount,
     nonce: BigInt(params.nonce).toString(),
   };
 }
@@ -247,7 +247,7 @@ function getTransferQuoteValues(
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.recipientSubaccountName,
     }),
-    amount: BigInt(params.amount).toString(),
+    amount: params.amount,
     nonce: BigInt(params.nonce).toString(),
   };
 }
@@ -260,6 +260,6 @@ function getLeaderboardAuthenticationValues(
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
-    expiration: BigInt(params.expiration).toString(),
+    expiration: params.expiration,
   };
 }

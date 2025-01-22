@@ -3,7 +3,6 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -25,10 +24,10 @@ import type {
 
 export declare namespace IStakingV2 {
   export type ConfigStruct = {
-    withdrawLockingTime: BigNumberish;
-    minimumStakingPeriod: BigNumberish;
-    toDistributeRatio: BigNumberish;
-    toTreasuryRatio: BigNumberish;
+    withdrawLockingTime: bigint;
+    minimumStakingPeriod: bigint;
+    toDistributeRatio: bigint;
+    toTreasuryRatio: bigint;
   };
 
   export type ConfigStructOutput = [
@@ -44,11 +43,11 @@ export declare namespace IStakingV2 {
   };
 
   export type GlobalYieldsBreakdownStruct = {
-    distributionTime: BigNumberish;
-    baseYieldAmount: BigNumberish;
-    feesYieldAmount: BigNumberish;
-    totalVrtxBalance: BigNumberish;
-    usdcAmount: BigNumberish;
+    distributionTime: bigint;
+    baseYieldAmount: bigint;
+    feesYieldAmount: bigint;
+    totalVrtxBalance: bigint;
+    usdcAmount: bigint;
   };
 
   export type GlobalYieldsBreakdownStructOutput = [
@@ -66,8 +65,8 @@ export declare namespace IStakingV2 {
   };
 
   export type LastActionTimesStruct = {
-    lastStakeTime: BigNumberish;
-    lastWithdrawTime: BigNumberish;
+    lastStakeTime: bigint;
+    lastWithdrawTime: bigint;
   };
 
   export type LastActionTimesStructOutput = [
@@ -76,8 +75,8 @@ export declare namespace IStakingV2 {
   ] & { lastStakeTime: bigint; lastWithdrawTime: bigint };
 
   export type ReleaseScheduleStruct = {
-    releaseTime: BigNumberish;
-    amount: BigNumberish;
+    releaseTime: bigint;
+    amount: bigint;
   };
 
   export type ReleaseScheduleStructOutput = [
@@ -86,10 +85,10 @@ export declare namespace IStakingV2 {
   ] & { releaseTime: bigint; amount: bigint };
 
   export type StateStruct = {
-    cumulativeStakedAmount: BigNumberish;
-    cumulativeWithdrawnAmount: BigNumberish;
-    cumulativeBurnedAmount: BigNumberish;
-    currentStakedAmount: BigNumberish;
+    cumulativeStakedAmount: bigint;
+    cumulativeWithdrawnAmount: bigint;
+    cumulativeBurnedAmount: bigint;
+    currentStakedAmount: bigint;
   };
 
   export type StateStructOutput = [
@@ -186,12 +185,12 @@ export interface IStakingV2Interface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "migrate",
-    values: [AddressLike, BigNumberish, BigNumberish]
+    values: [AddressLike, bigint, bigint]
   ): string;
-  encodeFunctionData(functionFragment: "stake", values: [BigNumberish]): string;
+  encodeFunctionData(functionFragment: "stake", values: [bigint]): string;
   encodeFunctionData(
     functionFragment: "stakeAs",
-    values: [AddressLike, BigNumberish]
+    values: [AddressLike, bigint]
   ): string;
   encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
   encodeFunctionData(
@@ -271,8 +270,8 @@ export namespace ConnectTradingWalletEvent {
 export namespace ModifyStakeEvent {
   export type InputTuple = [
     account: AddressLike,
-    vrtxDelta: BigNumberish,
-    liquidDelta: BigNumberish
+    vrtxDelta: bigint,
+    liquidDelta: bigint
   ];
   export type OutputTuple = [
     account: string,
@@ -396,15 +395,15 @@ export interface IStakingV2 extends BaseContract {
   >;
 
   migrate: TypedContractMethod<
-    [staker: AddressLike, amount: BigNumberish, bonus: BigNumberish],
+    [staker: AddressLike, amount: bigint, bonus: bigint],
     [void],
     "nonpayable"
   >;
 
-  stake: TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
+  stake: TypedContractMethod<[amount: bigint], [void], "nonpayable">;
 
   stakeAs: TypedContractMethod<
-    [staker: AddressLike, amount: BigNumberish],
+    [staker: AddressLike, amount: bigint],
     [void],
     "nonpayable"
   >;
@@ -479,17 +478,17 @@ export interface IStakingV2 extends BaseContract {
   getFunction(
     nameOrSignature: "migrate"
   ): TypedContractMethod<
-    [staker: AddressLike, amount: BigNumberish, bonus: BigNumberish],
+    [staker: AddressLike, amount: bigint, bonus: bigint],
     [void],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "stake"
-  ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
+  ): TypedContractMethod<[amount: bigint], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "stakeAs"
   ): TypedContractMethod<
-    [staker: AddressLike, amount: BigNumberish],
+    [staker: AddressLike, amount: bigint],
     [void],
     "nonpayable"
   >;

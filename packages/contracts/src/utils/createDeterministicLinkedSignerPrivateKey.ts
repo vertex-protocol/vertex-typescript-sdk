@@ -1,11 +1,11 @@
 import { Subaccount } from '../common';
 import { getVertexEIP712Domain } from '../eip712';
 import { subaccountToHex } from './bytes32';
-import { BigNumberish, keccak256, Signer } from 'ethers';
+import { keccak256, Signer } from 'ethers';
 
 interface Params extends Subaccount {
   signer: Signer;
-  chainId: BigNumberish;
+  chainId: number;
   endpointAddress: string;
 }
 

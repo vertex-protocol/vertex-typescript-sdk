@@ -3,7 +3,6 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -48,7 +47,7 @@ export interface MockERC20Interface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "approve",
-    values: [AddressLike, BigNumberish]
+    values: [AddressLike, bigint]
   ): string;
   encodeFunctionData(
     functionFragment: "balanceOf",
@@ -57,15 +56,15 @@ export interface MockERC20Interface extends Interface {
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
-    values: [AddressLike, BigNumberish]
+    values: [AddressLike, bigint]
   ): string;
   encodeFunctionData(
     functionFragment: "increaseAllowance",
-    values: [AddressLike, BigNumberish]
+    values: [AddressLike, bigint]
   ): string;
   encodeFunctionData(
     functionFragment: "mint",
-    values: [AddressLike, BigNumberish]
+    values: [AddressLike, bigint]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
@@ -75,11 +74,11 @@ export interface MockERC20Interface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "transfer",
-    values: [AddressLike, BigNumberish]
+    values: [AddressLike, bigint]
   ): string;
   encodeFunctionData(
     functionFragment: "transferFrom",
-    values: [AddressLike, AddressLike, BigNumberish]
+    values: [AddressLike, AddressLike, bigint]
   ): string;
 
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
@@ -112,7 +111,7 @@ export namespace ApprovalEvent {
   export type InputTuple = [
     owner: AddressLike,
     spender: AddressLike,
-    value: BigNumberish
+    value: bigint
   ];
   export type OutputTuple = [owner: string, spender: string, value: bigint];
   export interface OutputObject {
@@ -130,7 +129,7 @@ export namespace TransferEvent {
   export type InputTuple = [
     from: AddressLike,
     to: AddressLike,
-    value: BigNumberish
+    value: bigint
   ];
   export type OutputTuple = [from: string, to: string, value: bigint];
   export interface OutputObject {
@@ -194,7 +193,7 @@ export interface MockERC20 extends BaseContract {
   >;
 
   approve: TypedContractMethod<
-    [spender: AddressLike, amount: BigNumberish],
+    [spender: AddressLike, amount: bigint],
     [boolean],
     "nonpayable"
   >;
@@ -204,19 +203,19 @@ export interface MockERC20 extends BaseContract {
   decimals: TypedContractMethod<[], [bigint], "view">;
 
   decreaseAllowance: TypedContractMethod<
-    [spender: AddressLike, subtractedValue: BigNumberish],
+    [spender: AddressLike, subtractedValue: bigint],
     [boolean],
     "nonpayable"
   >;
 
   increaseAllowance: TypedContractMethod<
-    [spender: AddressLike, addedValue: BigNumberish],
+    [spender: AddressLike, addedValue: bigint],
     [boolean],
     "nonpayable"
   >;
 
   mint: TypedContractMethod<
-    [account: AddressLike, amount: BigNumberish],
+    [account: AddressLike, amount: bigint],
     [void],
     "nonpayable"
   >;
@@ -228,13 +227,13 @@ export interface MockERC20 extends BaseContract {
   totalSupply: TypedContractMethod<[], [bigint], "view">;
 
   transfer: TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish],
+    [to: AddressLike, amount: bigint],
     [boolean],
     "nonpayable"
   >;
 
   transferFrom: TypedContractMethod<
-    [from: AddressLike, to: AddressLike, amount: BigNumberish],
+    [from: AddressLike, to: AddressLike, amount: bigint],
     [boolean],
     "nonpayable"
   >;
@@ -253,7 +252,7 @@ export interface MockERC20 extends BaseContract {
   getFunction(
     nameOrSignature: "approve"
   ): TypedContractMethod<
-    [spender: AddressLike, amount: BigNumberish],
+    [spender: AddressLike, amount: bigint],
     [boolean],
     "nonpayable"
   >;
@@ -266,21 +265,21 @@ export interface MockERC20 extends BaseContract {
   getFunction(
     nameOrSignature: "decreaseAllowance"
   ): TypedContractMethod<
-    [spender: AddressLike, subtractedValue: BigNumberish],
+    [spender: AddressLike, subtractedValue: bigint],
     [boolean],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "increaseAllowance"
   ): TypedContractMethod<
-    [spender: AddressLike, addedValue: BigNumberish],
+    [spender: AddressLike, addedValue: bigint],
     [boolean],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "mint"
   ): TypedContractMethod<
-    [account: AddressLike, amount: BigNumberish],
+    [account: AddressLike, amount: bigint],
     [void],
     "nonpayable"
   >;
@@ -296,14 +295,14 @@ export interface MockERC20 extends BaseContract {
   getFunction(
     nameOrSignature: "transfer"
   ): TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish],
+    [to: AddressLike, amount: bigint],
     [boolean],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "transferFrom"
   ): TypedContractMethod<
-    [from: AddressLike, to: AddressLike, amount: BigNumberish],
+    [from: AddressLike, to: AddressLike, amount: bigint],
     [boolean],
     "nonpayable"
   >;

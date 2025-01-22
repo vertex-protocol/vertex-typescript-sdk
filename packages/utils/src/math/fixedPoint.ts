@@ -1,4 +1,3 @@
-import { BigNumberish } from 'ethers';
 import { BigDecimal, BigDecimalish, toBigDecimal } from './bigDecimal';
 
 /**
@@ -15,7 +14,7 @@ export function toX18(val: BigDecimalish): bigint {
  *
  * @param val
  */
-export function fromX18(val: BigNumberish): BigDecimal {
+export function fromX18(val: bigint | string): BigDecimal {
   return fromFixedPoint(val, 18);
 }
 
@@ -27,7 +26,10 @@ export function fromX18(val: BigNumberish): BigDecimal {
  * @param val
  * @param decimals number of fixed point decimal places in `val`
  */
-export function fromFixedPoint(val: BigNumberish, decimals = 18): BigDecimal {
+export function fromFixedPoint(
+  val: bigint | string,
+  decimals = 18,
+): BigDecimal {
   return toBigDecimal(val).div(toBigDecimal(10).pow(decimals));
 }
 
