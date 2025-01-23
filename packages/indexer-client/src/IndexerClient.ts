@@ -51,6 +51,8 @@ export class IndexerClient extends IndexerBaseClient {
       limit: requestedLimit,
       subaccountName,
       subaccountOwner,
+      isolated,
+      productIds,
     } = params;
 
     const limit = requestedLimit + 1;
@@ -59,7 +61,8 @@ export class IndexerClient extends IndexerBaseClient {
       maxTimestampInclusive,
       limit,
       subaccount: { subaccountName, subaccountOwner },
-      productIds: params.productIds,
+      productIds,
+      isolated,
     });
 
     return this.getPaginationEventsResponse(events, requestedLimit);
@@ -162,13 +165,15 @@ export class IndexerClient extends IndexerBaseClient {
       limit: requestedLimit,
       subaccountName,
       subaccountOwner,
+      eventTypes,
+      isolated,
     } = params;
 
     const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
       maxTimestampInclusive,
-      eventTypes: params.eventTypes ?? [
+      eventTypes: eventTypes ?? [
         'deposit_collateral',
         'withdraw_collateral',
         'transfer_quote',
@@ -178,6 +183,7 @@ export class IndexerClient extends IndexerBaseClient {
         value: limit,
       },
       subaccount: { subaccountName, subaccountOwner },
+      isolated,
     });
 
     const events = baseResponse.map((event): IndexerCollateralEvent => {
@@ -213,6 +219,7 @@ export class IndexerClient extends IndexerBaseClient {
       subaccountName,
       subaccountOwner,
       productIds,
+      isolated,
     } = params;
 
     const limit = requestedLimit + 1;
@@ -222,6 +229,7 @@ export class IndexerClient extends IndexerBaseClient {
       subaccount: { subaccountName, subaccountOwner },
       limit,
       productIds,
+      isolated,
     });
 
     // Same pagination meta logic as events, but duplicate for now as this return type is slightly different

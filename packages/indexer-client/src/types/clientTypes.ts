@@ -78,6 +78,8 @@ export interface GetIndexerMultiSubaccountSnapshotsParams {
   subaccounts: Subaccount[];
   // A series of timestamps for which to return a summary of each subaccount
   timestamps: number[];
+  // If not given, will return both isolated & non-iso balances
+  isolated?: boolean;
 }
 
 export interface IndexerSnapshotBalance {
@@ -294,6 +296,8 @@ export interface GetIndexerEventsParams {
   startCursor?: string;
   subaccount?: Subaccount;
   productIds?: number[];
+  // If not given, will return both isolated & non-iso events
+  isolated?: boolean;
   eventTypes?: IndexerEventType[];
   maxTimestampInclusive?: number;
   // Descending order for idx (time), defaults to true
@@ -341,6 +345,8 @@ export interface GetIndexerOrdersParams {
   maxTimestampInclusive?: number;
   limit?: number;
   productIds?: number[];
+  // If not given, will return both isolated & non-iso orders
+  isolated?: boolean;
   digests?: string[];
 }
 
@@ -378,6 +384,8 @@ export interface GetIndexerMatchEventsParams {
   // When not given, will return all maker events
   subaccount?: Subaccount;
   productIds?: number[];
+  // If not given, will return both isolated & non-iso events
+  isolated?: boolean;
   maxTimestampInclusive?: number;
   limit: number;
   // Max submission index, inclusive
