@@ -979,7 +979,8 @@ export class IndexerBaseClient {
   ): Promise<UpdateIndexerLeaderboardRegistrationResponse> {
     const signatureParams: EIP712LeaderboardAuthenticationParams = {
       // Default to 90 seconds from now if no recvTime is provided
-      expiration: params.recvTime?.toFixed() ?? getDefaultRecvTime().toFixed(),
+      expiration:
+        params.recvTime?.toFixed(0) ?? getDefaultRecvTime().toFixed(0),
       subaccountName: params.subaccountName,
       subaccountOwner: params.subaccountOwner,
     };

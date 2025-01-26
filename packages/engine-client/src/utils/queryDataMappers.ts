@@ -56,10 +56,10 @@ export function mapEngineServerOrder(
     // Standardizes from hex
     // toFixed is required as toString gives values with `e`
     orderParams: {
-      amount: toBigDecimal(order.amount).toFixed(),
-      expiration: toBigDecimal(order.expiration).toFixed(),
+      amount: toBigDecimal(order.amount).toFixed(0),
+      expiration: toBigDecimal(order.expiration).toFixed(0),
       nonce: order.nonce,
-      price: fromX18(order.price_x18).toFixed(),
+      price: fromX18(order.price_x18).toFixed(0),
       subaccountOwner: subaccount.subaccountOwner,
       subaccountName: subaccount.subaccountName,
     },
