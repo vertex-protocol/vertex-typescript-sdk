@@ -1,4 +1,5 @@
 import {
+  BalanceHealthContributions,
   BalanceSide,
   EIP712OrderParams,
   GetAllMarketsResponse,
@@ -27,6 +28,7 @@ export type GetEngineIsolatedPositionsParams = Subaccount;
 
 export interface SubaccountIsolatedPosition {
   subaccount: Subaccount;
+  healths: BalanceHealthContributions;
   quoteBalance: SpotBalanceWithProduct;
   baseBalance: PerpBalanceWithProduct;
 }

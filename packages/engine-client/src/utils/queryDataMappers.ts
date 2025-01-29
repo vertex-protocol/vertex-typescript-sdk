@@ -224,15 +224,20 @@ export function mapEngineServerIsolatedPositions(
 
     return {
       subaccount: subaccountFromHex(position.subaccount),
+      healths: {
+        initial: toBigDecimal(position.healths[0]),
+        maintenance: toBigDecimal(position.healths[1]),
+        unweighted: toBigDecimal(position.healths[2]),
+      },
       baseBalance: {
         amount: toBigDecimal(perpBalance.balance.amount),
         lpAmount: toBigDecimal(perpBalance.lp_balance.amount),
         vQuoteBalance: toBigDecimal(perpBalance.balance.v_quote_balance),
         // Health contributions === healths for an isolated position
         healthContributions: {
-          initial: toBigDecimal(position.base_healths[0].health),
-          maintenance: toBigDecimal(position.base_healths[1].health),
-          unweighted: toBigDecimal(position.base_healths[2].health),
+          initial: toBigDecimal(position.base_healths[0]),
+          maintenance: toBigDecimal(position.base_healths[1]),
+          unweighted: toBigDecimal(position.base_healths[2]),
         },
         ...mapEngineServerPerpProduct(position.base_product).product,
       },
@@ -240,9 +245,9 @@ export function mapEngineServerIsolatedPositions(
         amount: toBigDecimal(quoteBalance.balance.amount),
         lpAmount: toBigDecimal(quoteBalance.lp_balance.amount),
         healthContributions: {
-          initial: toBigDecimal(position.quote_healths[0].health),
-          maintenance: toBigDecimal(position.quote_healths[1].health),
-          unweighted: toBigDecimal(position.quote_healths[2].health),
+          initial: toBigDecimal(position.quote_healths[0]),
+          maintenance: toBigDecimal(position.quote_healths[1]),
+          unweighted: toBigDecimal(position.quote_healths[2]),
         },
         ...mapEngineServerSpotProduct(position.quote_product).product,
       },

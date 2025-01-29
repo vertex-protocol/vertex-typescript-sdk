@@ -1,5 +1,5 @@
 import {
-  EngineServerHealths,
+  EngineServerHealthBreakdown,
   EngineServerPerpBalance,
   EngineServerPerpProduct,
   EngineServerProductType,
@@ -176,7 +176,11 @@ export interface EngineServerNoncesResponse {
 export interface EngineServerSubaccountInfoResponse {
   exists: boolean;
   subaccount: string;
-  healths: EngineServerHealths;
+  healths: [
+    initial: EngineServerHealthBreakdown,
+    maintenance: EngineServerHealthBreakdown,
+    unweighted: EngineServerHealthBreakdown,
+  ];
   // First index is product ID, each subarray is of length 3 [initial, maintenance, unweighted]
   health_contributions: string[][];
   spot_count: number;
@@ -189,9 +193,9 @@ export interface EngineServerSubaccountInfoResponse {
 
 export interface EngineServerIsolatedPosition {
   subaccount: string;
-  healths: EngineServerHealths;
-  quote_healths: EngineServerHealths;
-  base_healths: EngineServerHealths;
+  healths: [initial: string, maintenance: string, unweighted: string];
+  quote_healths: [initial: string, maintenance: string, unweighted: string];
+  base_healths: [initial: string, maintenance: string, unweighted: string];
   quote_balance: EngineServerSpotBalance;
   base_balance: EngineServerPerpBalance;
   quote_product: EngineServerSpotProduct;

@@ -4,12 +4,6 @@ export interface EngineServerHealthBreakdown {
   liabilities: string;
 }
 
-export type EngineServerHealths = [
-  initial: EngineServerHealthBreakdown,
-  maintenance: EngineServerHealthBreakdown,
-  unweighted: EngineServerHealthBreakdown,
-];
-
 export interface EngineServerSpotBalanceData {
   amount: string;
   last_cumulative_multiplier_x18: string;
