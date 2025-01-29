@@ -462,7 +462,7 @@ export class IndexerClient extends IndexerBaseClient {
       meta: {
         hasMore: baseResponse.epochs.length > requestedLimit,
         // Next cursor is the epoch number of the (requestedLimit+1)th item
-        nextCursor: baseResponse.epochs[requestedLimit]?.epoch.toFixed(),
+        nextCursor: baseResponse.epochs[requestedLimit]?.epoch.toFixed(0),
       },
     };
   }
@@ -492,7 +492,7 @@ export class IndexerClient extends IndexerBaseClient {
       meta: {
         hasMore: baseResponse.positions.length > requestedLimit,
         // Next cursor is the rank number of the (requestedLimit+1)th item
-        nextCursor: baseResponse.positions[requestedLimit]?.rank.toFixed(),
+        nextCursor: baseResponse.positions[requestedLimit]?.rank.toFixed(0),
       },
     };
   }
@@ -521,7 +521,7 @@ export class IndexerClient extends IndexerBaseClient {
       meta: {
         hasMore: baseResponse.positions.length > requestedLimit,
         // Next cursor is the rank number of the (requestedLimit+1)th item
-        nextCursor: baseResponse.positions[requestedLimit]?.rank.toFixed(),
+        nextCursor: baseResponse.positions[requestedLimit]?.rank.toFixed(0),
       },
     };
   }
@@ -554,8 +554,8 @@ export class IndexerClient extends IndexerBaseClient {
         // Next cursor is the rank number of the (requestedLimit+1)th item
         nextCursor:
           params.rankType == 'pnl'
-            ? baseResponse.participants[requestedLimit]?.pnlRank.toFixed()
-            : baseResponse.participants[requestedLimit]?.roiRank.toFixed(),
+            ? baseResponse.participants[requestedLimit]?.pnlRank.toFixed(0)
+            : baseResponse.participants[requestedLimit]?.roiRank.toFixed(0),
       },
     };
   }

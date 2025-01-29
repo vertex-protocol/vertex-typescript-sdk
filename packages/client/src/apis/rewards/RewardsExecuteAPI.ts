@@ -23,7 +23,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
 
     return this.context.contracts.vrtxAirdrop.claimToLBA(
       params.amount,
-      totalAmount.toFixed(),
+      totalAmount.toFixed(0),
       proof,
     );
   }
@@ -172,7 +172,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
       if (item.totalAmount.gt(0) && claimed[idx] === 0n) {
         proofsToClaim.push({
           proof: item.proof,
-          totalAmount: item.totalAmount.toFixed(),
+          totalAmount: item.totalAmount.toFixed(0),
           week: idx,
         });
       }
@@ -211,9 +211,9 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
         amountsClaimed.at(params.epoch)?.toString() ?? 0,
       );
 
-      return availableAmount.toFixed();
+      return availableAmount.toFixed(0);
     })();
 
-    return [params.epoch, amountToClaim, totalAmount.toFixed(), proof];
+    return [params.epoch, amountToClaim, totalAmount.toFixed(0), proof];
   }
 }

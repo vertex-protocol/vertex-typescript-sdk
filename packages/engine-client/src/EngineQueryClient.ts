@@ -150,7 +150,7 @@ export class EngineQueryClient extends EngineBaseClient {
                 burn_lp: {
                   product_id: tx.tx.productId,
                   subaccount,
-                  amount_lp: tx.tx.amountLp.toFixed(),
+                  amount_lp: tx.tx.amountLp.toFixed(0),
                 },
               };
             case 'apply_delta':
@@ -158,8 +158,8 @@ export class EngineQueryClient extends EngineBaseClient {
                 apply_delta: {
                   product_id: tx.tx.productId,
                   subaccount,
-                  amount_delta: tx.tx.amountDelta.toFixed(),
-                  v_quote_delta: tx.tx.vQuoteDelta.toFixed(),
+                  amount_delta: tx.tx.amountDelta.toFixed(0),
+                  v_quote_delta: tx.tx.vQuoteDelta.toFixed(0),
                 },
               };
             case 'mint_lp':
@@ -167,9 +167,9 @@ export class EngineQueryClient extends EngineBaseClient {
                 mint_lp: {
                   product_id: tx.tx.productId,
                   subaccount,
-                  amount_base: tx.tx.amountBase.toFixed(),
-                  quote_amount_low: tx.tx.amountQuoteLow.toFixed(),
-                  quote_amount_high: tx.tx.amountQuoteHigh.toFixed(),
+                  amount_base: tx.tx.amountBase.toFixed(0),
+                  quote_amount_low: tx.tx.amountQuoteLow.toFixed(0),
+                  quote_amount_high: tx.tx.amountQuoteHigh.toFixed(0),
                 },
               };
           }
