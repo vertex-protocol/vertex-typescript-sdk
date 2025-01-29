@@ -75,5 +75,10 @@ export function getProvider(chainEnv: ChainEnv): Provider {
         name: 'abstract-testnet',
         chainId: 11124,
       });
+    case 'abstract':
+      return new JsonRpcProvider('https://api.mainnet.abs.xyz', {
+        name: 'abstract',
+        chainId: 2741,
+      });
   }
 }
