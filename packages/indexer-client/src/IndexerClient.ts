@@ -285,6 +285,7 @@ export class IndexerClient extends IndexerBaseClient {
           quoteDelta: event.state.preBalance.vQuoteBalance.minus(
             event.state.postBalance.vQuoteBalance,
           ),
+          isolated: event.isolated,
           tx: event.tx,
           ...subaccountFromHex(event.subaccount),
         };
