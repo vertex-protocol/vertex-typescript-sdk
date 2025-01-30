@@ -190,6 +190,7 @@ export interface IndexerSettlementEvent extends BaseIndexerPaginatedEvent {
   // Quote delta for the subaccount being settled
   quoteDelta: BigDecimal;
   snapshot: IndexerEventPerpStateSnapshot;
+  isolated: boolean;
 }
 
 export type GetIndexerSubaccountSettlementEventsResponse =
