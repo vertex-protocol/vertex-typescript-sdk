@@ -51,6 +51,8 @@ export class IndexerClient extends IndexerBaseClient {
       limit: requestedLimit,
       subaccountName,
       subaccountOwner,
+      isolated,
+      productIds,
     } = params;
 
     const limit = requestedLimit + 1;
@@ -59,7 +61,8 @@ export class IndexerClient extends IndexerBaseClient {
       maxTimestampInclusive,
       limit,
       subaccount: { subaccountName, subaccountOwner },
-      productIds: params.productIds,
+      productIds,
+      isolated,
     });
 
     return this.getPaginationEventsResponse(events, requestedLimit);
@@ -162,13 +165,15 @@ export class IndexerClient extends IndexerBaseClient {
       limit: requestedLimit,
       subaccountName,
       subaccountOwner,
+      eventTypes,
+      isolated,
     } = params;
 
     const limit = requestedLimit + 1;
     const baseResponse = await this.getEvents({
       startCursor,
       maxTimestampInclusive,
-      eventTypes: params.eventTypes ?? [
+      eventTypes: eventTypes ?? [
         'deposit_collateral',
         'withdraw_collateral',
         'transfer_quote',
@@ -178,6 +183,7 @@ export class IndexerClient extends IndexerBaseClient {
         value: limit,
       },
       subaccount: { subaccountName, subaccountOwner },
+      isolated,
     });
 
     const events = baseResponse.map((event): IndexerCollateralEvent => {
@@ -213,6 +219,7 @@ export class IndexerClient extends IndexerBaseClient {
       subaccountName,
       subaccountOwner,
       productIds,
+      isolated,
     } = params;
 
     const limit = requestedLimit + 1;
@@ -222,6 +229,7 @@ export class IndexerClient extends IndexerBaseClient {
       subaccount: { subaccountName, subaccountOwner },
       limit,
       productIds,
+      isolated,
     });
 
     // Same pagination meta logic as events, but duplicate for now as this return type is slightly different
@@ -277,6 +285,7 @@ export class IndexerClient extends IndexerBaseClient {
           quoteDelta: event.state.preBalance.vQuoteBalance.minus(
             event.state.postBalance.vQuoteBalance,
           ),
+          isolated: event.isolated,
           tx: event.tx,
           ...subaccountFromHex(event.subaccount),
         };
@@ -454,7 +463,7 @@ export class IndexerClient extends IndexerBaseClient {
       meta: {
         hasMore: baseResponse.epochs.length > requestedLimit,
         // Next cursor is the epoch number of the (requestedLimit+1)th item
-        nextCursor: baseResponse.epochs[requestedLimit]?.epoch.toFixed(),
+        nextCursor: baseResponse.epochs[requestedLimit]?.epoch.toFixed(0),
       },
     };
   }
@@ -484,7 +493,7 @@ export class IndexerClient extends IndexerBaseClient {
       meta: {
         hasMore: baseResponse.positions.length > requestedLimit,
         // Next cursor is the rank number of the (requestedLimit+1)th item
-        nextCursor: baseResponse.positions[requestedLimit]?.rank.toFixed(),
+        nextCursor: baseResponse.positions[requestedLimit]?.rank.toFixed(0),
       },
     };
   }
@@ -513,7 +522,7 @@ export class IndexerClient extends IndexerBaseClient {
       meta: {
         hasMore: baseResponse.positions.length > requestedLimit,
         // Next cursor is the rank number of the (requestedLimit+1)th item
-        nextCursor: baseResponse.positions[requestedLimit]?.rank.toFixed(),
+        nextCursor: baseResponse.positions[requestedLimit]?.rank.toFixed(0),
       },
     };
   }
@@ -546,8 +555,8 @@ export class IndexerClient extends IndexerBaseClient {
         // Next cursor is the rank number of the (requestedLimit+1)th item
         nextCursor:
           params.rankType == 'pnl'
-            ? baseResponse.participants[requestedLimit]?.pnlRank.toFixed()
-            : baseResponse.participants[requestedLimit]?.roiRank.toFixed(),
+            ? baseResponse.participants[requestedLimit]?.pnlRank.toFixed(0)
+            : baseResponse.participants[requestedLimit]?.roiRank.toFixed(0),
       },
     };
   }

@@ -153,8 +153,7 @@ export class TriggerClient {
   ): Promise<TriggerListOrdersResponse> {
     const signatureParams: EIP712ListTriggerOrdersParams = {
       // Default to 90 seconds from now if no recvTime is provided
-      recvTime: params.recvTime?.toFixed() ?? getDefaultRecvTime().toFixed(),
-
+      recvTime: params.recvTime?.toFixed(0) ?? getDefaultRecvTime().toFixed(0),
       subaccountName: params.subaccountName,
       subaccountOwner: params.subaccountOwner,
     };

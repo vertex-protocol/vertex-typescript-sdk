@@ -7,6 +7,8 @@ import {
   GetIndexerInterestFundingPaymentsResponse,
   GetIndexerLeaderboardParams,
   GetIndexerLeaderboardResponse,
+  GetIndexerMatchEventsParams,
+  GetIndexerOrdersParams,
   GetIndexerRewardsParams,
   GetIndexerRewardsResponse,
   GetIndexerSonicPointsLeaderboardResponse,
@@ -61,6 +63,8 @@ export interface PaginatedIndexerEventsResponse<
 export interface GetIndexerSubaccountCollateralEventsParams
   extends BaseSubaccountPaginationParams {
   eventTypes?: CollateralEventType[];
+  // If not given, will return both isolated & non-iso events
+  isolated?: boolean;
 }
 
 export interface IndexerCollateralEvent extends BaseIndexerPaginatedEvent {
@@ -100,11 +104,9 @@ export type GetIndexerSubaccountLpEventsResponse =
  * Match events
  */
 
-export interface GetIndexerSubaccountMatchEventParams
-  extends BaseSubaccountPaginationParams {
-  // If not given, defaults to all products
-  productIds?: number[];
-}
+export type GetIndexerSubaccountMatchEventParams =
+  BaseSubaccountPaginationParams &
+    Pick<GetIndexerMatchEventsParams, 'productIds' | 'isolated'>;
 
 export type GetIndexerSubaccountMatchEventsResponse =
   PaginatedIndexerEventsResponse<IndexerMatchEvent>;
@@ -113,11 +115,8 @@ export type GetIndexerSubaccountMatchEventsResponse =
  * Orders
  */
 
-export interface GetIndexerPaginatedOrdersParams
-  extends BaseSubaccountPaginationParams {
-  // If not given, defaults to all products
-  productIds?: number[];
-}
+export type GetIndexerPaginatedOrdersParams = BaseSubaccountPaginationParams &
+  Pick<GetIndexerOrdersParams, 'productIds' | 'isolated'>;
 
 export interface GetIndexerPaginatedOrdersResponse {
   orders: IndexerOrder[];
@@ -190,6 +189,7 @@ export interface IndexerSettlementEvent extends BaseIndexerPaginatedEvent {
   // Quote delta for the subaccount being settled
   quoteDelta: BigDecimal;
   snapshot: IndexerEventPerpStateSnapshot;
+  isolated: boolean;
 }
 
 export type GetIndexerSubaccountSettlementEventsResponse =

@@ -46,7 +46,7 @@ export function toFixedPoint(val: BigDecimalish, decimals = 18): bigint {
   // toFixed is required here to avoid exponential notation
   const valToParse = bigDecimalVal
     .times(toBigDecimal(10).pow(decimals))
-    .toFixed();
+    .toFixed(0);
 
   return BigInt(valToParse);
 }

@@ -14,6 +14,7 @@ export const ALL_CHAIN_ENVS = [
   'sonic',
   'beraTestnet',
   'abstractTestnet',
+  'abstract',
 ] as const;
 
 export type ChainEnv = (typeof ALL_CHAIN_ENVS)[number];

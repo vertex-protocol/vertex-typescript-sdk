@@ -23,7 +23,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
 
     return this.context.contracts.vrtxAirdrop.claimToLBA(
       BigInt(params.amount),
-      BigInt(totalAmount.toFixed()),
+      BigInt(totalAmount.toFixed(0)),
       proof,
     );
   }
@@ -174,7 +174,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
       if (item.totalAmount.gt(0) && claimed[idx] === 0n) {
         proofsToClaim.push({
           proof: item.proof,
-          totalAmount: BigInt(item.totalAmount.toFixed()),
+          totalAmount: BigInt(item.totalAmount.toFixed(0)),
           week: BigInt(idx),
         });
       }
@@ -213,13 +213,13 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
         amountsClaimed.at(params.epoch)?.toString() ?? 0,
       );
 
-      return availableAmount.toFixed();
+      return availableAmount.toFixed(0);
     })();
 
     return [
       BigInt(params.epoch),
       BigInt(amountToClaim),
-      BigInt(totalAmount.toFixed()),
+      BigInt(totalAmount.toFixed(0)),
       proof,
     ];
   }

@@ -16,6 +16,7 @@ export const ENGINE_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   sonic: 'https://gateway.sonic-prod.vertexprotocol.com/v1',
   beraTestnet: 'https://gateway.bera-test.vertexprotocol.com/v1',
   abstractTestnet: 'https://gateway.abstract-test.vertexprotocol.com/v1',
+  abstract: 'https://gateway.abstract-prod.vertexprotocol.com/v1',
 };
 
 export const ENGINE_WS_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
@@ -34,6 +35,7 @@ export const ENGINE_WS_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   sonic: 'wss://gateway.sonic-prod.vertexprotocol.com/v1/ws',
   beraTestnet: 'wss://gateway.bera-test.vertexprotocol.com/v1/ws',
   abstractTestnet: 'wss://gateway.abstract-test.vertexprotocol.com/v1/ws',
+  abstract: 'wss://gateway.abstract-prod.vertexprotocol.com/v1/ws',
 };
 
 export const ENGINE_WS_SUBSCRIPTION_CLIENT_ENDPOINTS: Record<ChainEnv, string> =
@@ -55,4 +57,5 @@ export const ENGINE_WS_SUBSCRIPTION_CLIENT_ENDPOINTS: Record<ChainEnv, string> =
     beraTestnet: 'wss://gateway.bera-test.vertexprotocol.com/v1/subscribe',
     abstractTestnet:
       'wss://gateway.abstract-test.vertexprotocol.com/v1/subscribe',
+    abstract: 'wss://gateway.abstract-prod.vertexprotocol.com/v1/subscribe',
   };
