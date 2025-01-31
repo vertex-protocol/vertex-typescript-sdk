@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -22,8 +23,8 @@ import type {
 
 export declare namespace IStaking {
   export type GlobalRewardsBreakdownStruct = {
-    distributionTime: bigint;
-    rewardsAmount: bigint;
+    distributionTime: BigNumberish;
+    rewardsAmount: BigNumberish;
   };
 
   export type GlobalRewardsBreakdownStructOutput = [
@@ -32,8 +33,8 @@ export declare namespace IStaking {
   ] & { distributionTime: bigint; rewardsAmount: bigint };
 
   export type LastActionTimesStruct = {
-    lastStakeTime: bigint;
-    lastWithdrawTime: bigint;
+    lastStakeTime: BigNumberish;
+    lastWithdrawTime: BigNumberish;
   };
 
   export type LastActionTimesStructOutput = [
@@ -42,8 +43,8 @@ export declare namespace IStaking {
   ] & { lastStakeTime: bigint; lastWithdrawTime: bigint };
 
   export type WithdrawnVrtxStatesStruct = {
-    vrtxClaimable: bigint;
-    vrtxPendingUnlock: bigint;
+    vrtxClaimable: BigNumberish;
+    vrtxPendingUnlock: BigNumberish;
   };
 
   export type WithdrawnVrtxStatesStructOutput = [
@@ -149,14 +150,14 @@ export interface IStakingInterface extends Interface {
     functionFragment: "migrateToV2WithNewWallet",
     values: [AddressLike]
   ): string;
-  encodeFunctionData(functionFragment: "stake", values: [bigint]): string;
+  encodeFunctionData(functionFragment: "stake", values: [BigNumberish]): string;
   encodeFunctionData(
     functionFragment: "stakeAs",
-    values: [AddressLike, bigint]
+    values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
 
   decodeFunctionResult(functionFragment: "claimUsdc", data: BytesLike): Result;
@@ -337,15 +338,15 @@ export interface IStaking extends BaseContract {
     "nonpayable"
   >;
 
-  stake: TypedContractMethod<[amount: bigint], [void], "nonpayable">;
+  stake: TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
 
   stakeAs: TypedContractMethod<
-    [staker: AddressLike, amount: bigint],
+    [staker: AddressLike, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
 
-  withdraw: TypedContractMethod<[amount: bigint], [void], "nonpayable">;
+  withdraw: TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -422,17 +423,17 @@ export interface IStaking extends BaseContract {
   ): TypedContractMethod<[staker: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "stake"
-  ): TypedContractMethod<[amount: bigint], [void], "nonpayable">;
+  ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "stakeAs"
   ): TypedContractMethod<
-    [staker: AddressLike, amount: bigint],
+    [staker: AddressLike, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "withdraw"
-  ): TypedContractMethod<[amount: bigint], [void], "nonpayable">;
+  ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
 
   filters: {};
 }

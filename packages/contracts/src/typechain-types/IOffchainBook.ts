@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -25,10 +26,10 @@ import type {
 export declare namespace IEndpoint {
   export type OrderStruct = {
     sender: BytesLike;
-    priceX18: bigint;
-    amount: bigint;
-    expiration: bigint;
-    nonce: bigint;
+    priceX18: BigNumberish;
+    amount: BigNumberish;
+    expiration: BigNumberish;
+    nonce: BigNumberish;
   };
 
   export type OrderStructOutput = [
@@ -56,9 +57,9 @@ export declare namespace IEndpoint {
   ] & { order: IEndpoint.OrderStructOutput; signature: string };
 
   export type MatchOrderAMMStruct = {
-    productId: bigint;
-    baseDelta: bigint;
-    quoteDelta: bigint;
+    productId: BigNumberish;
+    baseDelta: BigNumberish;
+    quoteDelta: BigNumberish;
     taker: IEndpoint.SignedOrderStruct;
   };
 
@@ -75,7 +76,7 @@ export declare namespace IEndpoint {
   };
 
   export type MatchOrdersStruct = {
-    productId: bigint;
+    productId: BigNumberish;
     amm: boolean;
     taker: IEndpoint.SignedOrderStruct;
     maker: IEndpoint.SignedOrderStruct;
@@ -111,9 +112,9 @@ export declare namespace IEndpoint {
 
   export type SwapAMMStruct = {
     sender: BytesLike;
-    productId: bigint;
-    amount: bigint;
-    priceX18: bigint;
+    productId: BigNumberish;
+    amount: BigNumberish;
+    priceX18: BigNumberish;
   };
 
   export type SwapAMMStructOutput = [
@@ -126,12 +127,12 @@ export declare namespace IEndpoint {
 
 export declare namespace IOffchainBook {
   export type MarketStruct = {
-    productId: bigint;
-    sizeIncrement: bigint;
-    priceIncrementX18: bigint;
-    lpSpreadX18: bigint;
-    collectedFees: bigint;
-    sequencerFees: bigint;
+    productId: BigNumberish;
+    sizeIncrement: BigNumberish;
+    priceIncrementX18: BigNumberish;
+    lpSpreadX18: BigNumberish;
+    collectedFees: BigNumberish;
+    sequencerFees: BigNumberish;
   };
 
   export type MarketStructOutput = [
@@ -195,11 +196,11 @@ export interface IOffchainBookInterface extends Interface {
       AddressLike,
       AddressLike,
       AddressLike,
-      bigint,
-      bigint,
-      bigint,
-      bigint,
-      bigint
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish
     ]
   ): string;
   encodeFunctionData(
@@ -212,7 +213,7 @@ export interface IOffchainBookInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "modifyConfig",
-    values: [bigint, bigint, bigint, bigint]
+    values: [BigNumberish, BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "swapAMM",
@@ -248,14 +249,14 @@ export namespace FillOrderEvent {
   export type InputTuple = [
     digest: BytesLike,
     subaccount: BytesLike,
-    priceX18: bigint,
-    amount: bigint,
-    expiration: bigint,
-    nonce: bigint,
+    priceX18: BigNumberish,
+    amount: BigNumberish,
+    expiration: BigNumberish,
+    nonce: BigNumberish,
     isTaker: boolean,
-    feeAmount: bigint,
-    baseDelta: bigint,
-    quoteDelta: bigint
+    feeAmount: BigNumberish,
+    baseDelta: BigNumberish,
+    quoteDelta: BigNumberish
   ];
   export type OutputTuple = [
     digest: string,
@@ -357,11 +358,11 @@ export interface IOffchainBook extends BaseContract {
       _endpoint: AddressLike,
       _admin: AddressLike,
       _fees: AddressLike,
-      _productId: bigint,
-      _sizeIncrement: bigint,
-      _priceIncrementX18: bigint,
-      _minSize: bigint,
-      _lpSpreadX18: bigint
+      _productId: BigNumberish,
+      _sizeIncrement: BigNumberish,
+      _priceIncrementX18: BigNumberish,
+      _minSize: BigNumberish,
+      _lpSpreadX18: BigNumberish
     ],
     [void],
     "nonpayable"
@@ -381,10 +382,10 @@ export interface IOffchainBook extends BaseContract {
 
   modifyConfig: TypedContractMethod<
     [
-      _sizeIncrement: bigint,
-      _priceIncrementX18: bigint,
-      _minSize: bigint,
-      _lpSpreadX18: bigint
+      _sizeIncrement: BigNumberish,
+      _priceIncrementX18: BigNumberish,
+      _minSize: BigNumberish,
+      _lpSpreadX18: BigNumberish
     ],
     [void],
     "nonpayable"
@@ -427,11 +428,11 @@ export interface IOffchainBook extends BaseContract {
       _endpoint: AddressLike,
       _admin: AddressLike,
       _fees: AddressLike,
-      _productId: bigint,
-      _sizeIncrement: bigint,
-      _priceIncrementX18: bigint,
-      _minSize: bigint,
-      _lpSpreadX18: bigint
+      _productId: BigNumberish,
+      _sizeIncrement: BigNumberish,
+      _priceIncrementX18: BigNumberish,
+      _minSize: BigNumberish,
+      _lpSpreadX18: BigNumberish
     ],
     [void],
     "nonpayable"
@@ -454,10 +455,10 @@ export interface IOffchainBook extends BaseContract {
     nameOrSignature: "modifyConfig"
   ): TypedContractMethod<
     [
-      _sizeIncrement: bigint,
-      _priceIncrementX18: bigint,
-      _minSize: bigint,
-      _lpSpreadX18: bigint
+      _sizeIncrement: BigNumberish,
+      _priceIncrementX18: BigNumberish,
+      _minSize: BigNumberish,
+      _lpSpreadX18: BigNumberish
     ],
     [void],
     "nonpayable"

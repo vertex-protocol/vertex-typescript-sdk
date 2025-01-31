@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -22,11 +23,11 @@ import type {
 
 export declare namespace RiskHelper {
   export type RiskStruct = {
-    longWeightInitialX18: bigint;
-    shortWeightInitialX18: bigint;
-    longWeightMaintenanceX18: bigint;
-    shortWeightMaintenanceX18: bigint;
-    largePositionPenaltyX18: bigint;
+    longWeightInitialX18: BigNumberish;
+    shortWeightInitialX18: BigNumberish;
+    longWeightMaintenanceX18: BigNumberish;
+    shortWeightMaintenanceX18: BigNumberish;
+    largePositionPenaltyX18: BigNumberish;
   };
 
   export type RiskStructOutput = [
@@ -47,10 +48,10 @@ export declare namespace RiskHelper {
 export declare namespace ISpotEngine {
   export type ConfigStruct = {
     token: AddressLike;
-    interestInflectionUtilX18: bigint;
-    interestFloorX18: bigint;
-    interestSmallCapX18: bigint;
-    interestLargeCapX18: bigint;
+    interestInflectionUtilX18: BigNumberish;
+    interestFloorX18: BigNumberish;
+    interestSmallCapX18: BigNumberish;
+    interestLargeCapX18: BigNumberish;
   };
 
   export type ConfigStructOutput = [
@@ -68,10 +69,10 @@ export declare namespace ISpotEngine {
   };
 
   export type StateStruct = {
-    cumulativeDepositsMultiplierX18: bigint;
-    cumulativeBorrowsMultiplierX18: bigint;
-    totalDepositsNormalized: bigint;
-    totalBorrowsNormalized: bigint;
+    cumulativeDepositsMultiplierX18: BigNumberish;
+    cumulativeBorrowsMultiplierX18: BigNumberish;
+    totalDepositsNormalized: BigNumberish;
+    totalBorrowsNormalized: BigNumberish;
   };
 
   export type StateStructOutput = [
@@ -87,8 +88,8 @@ export declare namespace ISpotEngine {
   };
 
   export type BalanceStruct = {
-    amount: bigint;
-    lastCumulativeMultiplierX18: bigint;
+    amount: BigNumberish;
+    lastCumulativeMultiplierX18: BigNumberish;
   };
 
   export type BalanceStructOutput = [
@@ -97,7 +98,7 @@ export declare namespace ISpotEngine {
   ] & { amount: bigint; lastCumulativeMultiplierX18: bigint };
 
   export type LpStateStruct = {
-    supply: bigint;
+    supply: BigNumberish;
     quote: ISpotEngine.BalanceStruct;
     base: ISpotEngine.BalanceStruct;
   };
@@ -112,18 +113,18 @@ export declare namespace ISpotEngine {
     base: ISpotEngine.BalanceStructOutput;
   };
 
-  export type LpBalanceStruct = { amount: bigint };
+  export type LpBalanceStruct = { amount: BigNumberish };
 
   export type LpBalanceStructOutput = [amount: bigint] & { amount: bigint };
 }
 
 export declare namespace FQuerier {
   export type BookInfoStruct = {
-    sizeIncrement: bigint;
-    priceIncrementX18: bigint;
-    minSize: bigint;
-    collectedFees: bigint;
-    lpSpreadX18: bigint;
+    sizeIncrement: BigNumberish;
+    priceIncrementX18: BigNumberish;
+    minSize: BigNumberish;
+    collectedFees: BigNumberish;
+    lpSpreadX18: BigNumberish;
   };
 
   export type BookInfoStructOutput = [
@@ -141,8 +142,8 @@ export declare namespace FQuerier {
   };
 
   export type SpotProductStruct = {
-    productId: bigint;
-    oraclePriceX18: bigint;
+    productId: BigNumberish;
+    oraclePriceX18: BigNumberish;
     risk: RiskHelper.RiskStruct;
     config: ISpotEngine.ConfigStruct;
     state: ISpotEngine.StateStruct;
@@ -169,8 +170,8 @@ export declare namespace FQuerier {
   };
 
   export type PerpProductStruct = {
-    productId: bigint;
-    oraclePriceX18: bigint;
+    productId: BigNumberish;
+    oraclePriceX18: BigNumberish;
     risk: RiskHelper.RiskStruct;
     state: IPerpEngine.StateStruct;
     lpState: IPerpEngine.LpStateStruct;
@@ -207,7 +208,7 @@ export declare namespace FQuerier {
   };
 
   export type PerpBalanceStruct = {
-    productId: bigint;
+    productId: BigNumberish;
     lpBalance: IPerpEngine.LpBalanceStruct;
     balance: IPerpEngine.BalanceStruct;
   };
@@ -223,7 +224,7 @@ export declare namespace FQuerier {
   };
 
   export type SpotBalanceStruct = {
-    productId: bigint;
+    productId: BigNumberish;
     lpBalance: ISpotEngine.LpBalanceStruct;
     balance: ISpotEngine.BalanceStruct;
   };
@@ -239,9 +240,9 @@ export declare namespace FQuerier {
   };
 
   export type HealthInfoStruct = {
-    assets: bigint;
-    liabilities: bigint;
-    health: bigint;
+    assets: BigNumberish;
+    liabilities: BigNumberish;
+    health: BigNumberish;
   };
 
   export type HealthInfoStructOutput = [
@@ -254,9 +255,9 @@ export declare namespace FQuerier {
     subaccount: BytesLike;
     exists: boolean;
     healths: FQuerier.HealthInfoStruct[];
-    healthContributions: bigint[][];
-    spotCount: bigint;
-    perpCount: bigint;
+    healthContributions: BigNumberish[][];
+    spotCount: BigNumberish;
+    perpCount: BigNumberish;
     spotBalances: FQuerier.SpotBalanceStruct[];
     perpBalances: FQuerier.PerpBalanceStruct[];
     spotProducts: FQuerier.SpotProductStruct[];
@@ -290,10 +291,10 @@ export declare namespace FQuerier {
 
 export declare namespace IPerpEngine {
   export type StateStruct = {
-    cumulativeFundingLongX18: bigint;
-    cumulativeFundingShortX18: bigint;
-    availableSettle: bigint;
-    openInterest: bigint;
+    cumulativeFundingLongX18: BigNumberish;
+    cumulativeFundingShortX18: BigNumberish;
+    availableSettle: BigNumberish;
+    openInterest: BigNumberish;
   };
 
   export type StateStructOutput = [
@@ -309,11 +310,11 @@ export declare namespace IPerpEngine {
   };
 
   export type LpStateStruct = {
-    supply: bigint;
-    lastCumulativeFundingX18: bigint;
-    cumulativeFundingPerLpX18: bigint;
-    base: bigint;
-    quote: bigint;
+    supply: BigNumberish;
+    lastCumulativeFundingX18: BigNumberish;
+    cumulativeFundingPerLpX18: BigNumberish;
+    base: BigNumberish;
+    quote: BigNumberish;
   };
 
   export type LpStateStructOutput = [
@@ -331,8 +332,8 @@ export declare namespace IPerpEngine {
   };
 
   export type LpBalanceStruct = {
-    amount: bigint;
-    lastCumulativeFundingX18: bigint;
+    amount: BigNumberish;
+    lastCumulativeFundingX18: BigNumberish;
   };
 
   export type LpBalanceStructOutput = [
@@ -341,9 +342,9 @@ export declare namespace IPerpEngine {
   ] & { amount: bigint; lastCumulativeFundingX18: bigint };
 
   export type BalanceStruct = {
-    amount: bigint;
-    vQuoteBalance: bigint;
-    lastCumulativeFundingX18: bigint;
+    amount: BigNumberish;
+    vQuoteBalance: BigNumberish;
+    lastCumulativeFundingX18: BigNumberish;
   };
 
   export type BalanceStructOutput = [
@@ -382,7 +383,7 @@ export interface FQuerierInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getBookInfo",
-    values: [bigint, AddressLike]
+    values: [BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getClearinghouse",
@@ -390,35 +391,35 @@ export interface FQuerierInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getPerpBalance",
-    values: [BytesLike, bigint]
+    values: [BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getPerpBalances",
-    values: [BytesLike, bigint[]]
+    values: [BytesLike, BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "getPerpProduct",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getPerpProducts",
-    values: [bigint[]]
+    values: [BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "getSpotBalance",
-    values: [BytesLike, bigint]
+    values: [BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getSpotBalances",
-    values: [BytesLike, bigint[]]
+    values: [BytesLike, BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "getSpotProduct",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getSpotProducts",
-    values: [bigint[]]
+    values: [BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "getSubaccountInfo",
@@ -535,7 +536,7 @@ export interface FQuerier extends BaseContract {
   >;
 
   getBookInfo: TypedContractMethod<
-    [productId: bigint, engine: AddressLike],
+    [productId: BigNumberish, engine: AddressLike],
     [FQuerier.BookInfoStructOutput],
     "view"
   >;
@@ -543,49 +544,49 @@ export interface FQuerier extends BaseContract {
   getClearinghouse: TypedContractMethod<[], [string], "view">;
 
   getPerpBalance: TypedContractMethod<
-    [subaccount: BytesLike, productId: bigint],
+    [subaccount: BytesLike, productId: BigNumberish],
     [FQuerier.PerpBalanceStructOutput],
     "view"
   >;
 
   getPerpBalances: TypedContractMethod<
-    [subaccount: BytesLike, productIds: bigint[]],
+    [subaccount: BytesLike, productIds: BigNumberish[]],
     [FQuerier.PerpBalanceStructOutput[]],
     "view"
   >;
 
   getPerpProduct: TypedContractMethod<
-    [productId: bigint],
+    [productId: BigNumberish],
     [FQuerier.PerpProductStructOutput],
     "view"
   >;
 
   getPerpProducts: TypedContractMethod<
-    [productIds: bigint[]],
+    [productIds: BigNumberish[]],
     [FQuerier.PerpProductStructOutput[]],
     "view"
   >;
 
   getSpotBalance: TypedContractMethod<
-    [subaccount: BytesLike, productId: bigint],
+    [subaccount: BytesLike, productId: BigNumberish],
     [FQuerier.SpotBalanceStructOutput],
     "view"
   >;
 
   getSpotBalances: TypedContractMethod<
-    [subaccount: BytesLike, productIds: bigint[]],
+    [subaccount: BytesLike, productIds: BigNumberish[]],
     [FQuerier.SpotBalanceStructOutput[]],
     "view"
   >;
 
   getSpotProduct: TypedContractMethod<
-    [productId: bigint],
+    [productId: BigNumberish],
     [FQuerier.SpotProductStructOutput],
     "view"
   >;
 
   getSpotProducts: TypedContractMethod<
-    [productIds: bigint[]],
+    [productIds: BigNumberish[]],
     [FQuerier.SpotProductStructOutput[]],
     "view"
   >;
@@ -614,7 +615,7 @@ export interface FQuerier extends BaseContract {
   getFunction(
     nameOrSignature: "getBookInfo"
   ): TypedContractMethod<
-    [productId: bigint, engine: AddressLike],
+    [productId: BigNumberish, engine: AddressLike],
     [FQuerier.BookInfoStructOutput],
     "view"
   >;
@@ -624,56 +625,56 @@ export interface FQuerier extends BaseContract {
   getFunction(
     nameOrSignature: "getPerpBalance"
   ): TypedContractMethod<
-    [subaccount: BytesLike, productId: bigint],
+    [subaccount: BytesLike, productId: BigNumberish],
     [FQuerier.PerpBalanceStructOutput],
     "view"
   >;
   getFunction(
     nameOrSignature: "getPerpBalances"
   ): TypedContractMethod<
-    [subaccount: BytesLike, productIds: bigint[]],
+    [subaccount: BytesLike, productIds: BigNumberish[]],
     [FQuerier.PerpBalanceStructOutput[]],
     "view"
   >;
   getFunction(
     nameOrSignature: "getPerpProduct"
   ): TypedContractMethod<
-    [productId: bigint],
+    [productId: BigNumberish],
     [FQuerier.PerpProductStructOutput],
     "view"
   >;
   getFunction(
     nameOrSignature: "getPerpProducts"
   ): TypedContractMethod<
-    [productIds: bigint[]],
+    [productIds: BigNumberish[]],
     [FQuerier.PerpProductStructOutput[]],
     "view"
   >;
   getFunction(
     nameOrSignature: "getSpotBalance"
   ): TypedContractMethod<
-    [subaccount: BytesLike, productId: bigint],
+    [subaccount: BytesLike, productId: BigNumberish],
     [FQuerier.SpotBalanceStructOutput],
     "view"
   >;
   getFunction(
     nameOrSignature: "getSpotBalances"
   ): TypedContractMethod<
-    [subaccount: BytesLike, productIds: bigint[]],
+    [subaccount: BytesLike, productIds: BigNumberish[]],
     [FQuerier.SpotBalanceStructOutput[]],
     "view"
   >;
   getFunction(
     nameOrSignature: "getSpotProduct"
   ): TypedContractMethod<
-    [productId: bigint],
+    [productId: BigNumberish],
     [FQuerier.SpotProductStructOutput],
     "view"
   >;
   getFunction(
     nameOrSignature: "getSpotProducts"
   ): TypedContractMethod<
-    [productIds: bigint[]],
+    [productIds: BigNumberish[]],
     [FQuerier.SpotProductStructOutput[]],
     "view"
   >;

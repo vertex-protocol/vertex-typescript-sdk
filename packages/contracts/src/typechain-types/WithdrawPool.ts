@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -45,29 +46,29 @@ export interface WithdrawPoolInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "checkMarkedIdxs",
-    values: [bigint[]]
+    values: [BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "checkProductBalances",
-    values: [bigint[]]
+    values: [BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "fastWithdrawalFeeAmount",
-    values: [AddressLike, bigint, bigint]
+    values: [AddressLike, BigNumberish, BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "fees", values: [bigint]): string;
+  encodeFunctionData(functionFragment: "fees", values: [BigNumberish]): string;
   encodeFunctionData(
     functionFragment: "initialize",
     values: [AddressLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "markedIdxs",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "removeLiquidity",
-    values: [bigint, bigint, AddressLike]
+    values: [BigNumberish, BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
@@ -75,11 +76,11 @@ export interface WithdrawPoolInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "submitFastWithdrawal",
-    values: [bigint, BytesLike, BytesLike[]]
+    values: [BigNumberish, BytesLike, BytesLike[]]
   ): string;
   encodeFunctionData(
     functionFragment: "submitWithdrawal",
-    values: [AddressLike, AddressLike, bigint, bigint]
+    values: [AddressLike, AddressLike, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
@@ -125,7 +126,7 @@ export interface WithdrawPoolInterface extends Interface {
 }
 
 export namespace InitializedEvent {
-  export type InputTuple = [version: bigint];
+  export type InputTuple = [version: BigNumberish];
   export type OutputTuple = [version: bigint];
   export interface OutputObject {
     version: bigint;
@@ -193,24 +194,24 @@ export interface WithdrawPool extends BaseContract {
   ): Promise<this>;
 
   checkMarkedIdxs: TypedContractMethod<
-    [idxs: bigint[]],
+    [idxs: BigNumberish[]],
     [boolean[]],
     "view"
   >;
 
   checkProductBalances: TypedContractMethod<
-    [productIds: bigint[]],
+    [productIds: BigNumberish[]],
     [bigint[]],
     "view"
   >;
 
   fastWithdrawalFeeAmount: TypedContractMethod<
-    [token: AddressLike, productId: bigint, amount: bigint],
+    [token: AddressLike, productId: BigNumberish, amount: BigNumberish],
     [bigint],
     "view"
   >;
 
-  fees: TypedContractMethod<[arg0: bigint], [bigint], "view">;
+  fees: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
 
   initialize: TypedContractMethod<
     [_clearinghouse: AddressLike, _verifier: AddressLike],
@@ -218,12 +219,12 @@ export interface WithdrawPool extends BaseContract {
     "nonpayable"
   >;
 
-  markedIdxs: TypedContractMethod<[arg0: bigint], [boolean], "view">;
+  markedIdxs: TypedContractMethod<[arg0: BigNumberish], [boolean], "view">;
 
   owner: TypedContractMethod<[], [string], "view">;
 
   removeLiquidity: TypedContractMethod<
-    [productId: bigint, amount: bigint, sendTo: AddressLike],
+    [productId: BigNumberish, amount: BigNumberish, sendTo: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -231,7 +232,7 @@ export interface WithdrawPool extends BaseContract {
   renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
 
   submitFastWithdrawal: TypedContractMethod<
-    [idx: bigint, transaction: BytesLike, signatures: BytesLike[]],
+    [idx: BigNumberish, transaction: BytesLike, signatures: BytesLike[]],
     [void],
     "nonpayable"
   >;
@@ -240,8 +241,8 @@ export interface WithdrawPool extends BaseContract {
     [
       token: AddressLike,
       sendTo: AddressLike,
-      amount: bigint,
-      idx: bigint
+      amount: BigNumberish,
+      idx: BigNumberish
     ],
     [void],
     "nonpayable"
@@ -259,20 +260,20 @@ export interface WithdrawPool extends BaseContract {
 
   getFunction(
     nameOrSignature: "checkMarkedIdxs"
-  ): TypedContractMethod<[idxs: bigint[]], [boolean[]], "view">;
+  ): TypedContractMethod<[idxs: BigNumberish[]], [boolean[]], "view">;
   getFunction(
     nameOrSignature: "checkProductBalances"
-  ): TypedContractMethod<[productIds: bigint[]], [bigint[]], "view">;
+  ): TypedContractMethod<[productIds: BigNumberish[]], [bigint[]], "view">;
   getFunction(
     nameOrSignature: "fastWithdrawalFeeAmount"
   ): TypedContractMethod<
-    [token: AddressLike, productId: bigint, amount: bigint],
+    [token: AddressLike, productId: BigNumberish, amount: BigNumberish],
     [bigint],
     "view"
   >;
   getFunction(
     nameOrSignature: "fees"
-  ): TypedContractMethod<[arg0: bigint], [bigint], "view">;
+  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "initialize"
   ): TypedContractMethod<
@@ -282,14 +283,14 @@ export interface WithdrawPool extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "markedIdxs"
-  ): TypedContractMethod<[arg0: bigint], [boolean], "view">;
+  ): TypedContractMethod<[arg0: BigNumberish], [boolean], "view">;
   getFunction(
     nameOrSignature: "owner"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "removeLiquidity"
   ): TypedContractMethod<
-    [productId: bigint, amount: bigint, sendTo: AddressLike],
+    [productId: BigNumberish, amount: BigNumberish, sendTo: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -299,7 +300,7 @@ export interface WithdrawPool extends BaseContract {
   getFunction(
     nameOrSignature: "submitFastWithdrawal"
   ): TypedContractMethod<
-    [idx: bigint, transaction: BytesLike, signatures: BytesLike[]],
+    [idx: BigNumberish, transaction: BytesLike, signatures: BytesLike[]],
     [void],
     "nonpayable"
   >;
@@ -309,8 +310,8 @@ export interface WithdrawPool extends BaseContract {
     [
       token: AddressLike,
       sendTo: AddressLike,
-      amount: bigint,
-      idx: bigint
+      amount: BigNumberish,
+      idx: BigNumberish
     ],
     [void],
     "nonpayable"

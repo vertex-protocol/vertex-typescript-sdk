@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -37,15 +38,15 @@ export interface IVestingInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getVestable",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getVested",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "registerVesting",
-    values: [AddressLike, bigint, bigint]
+    values: [AddressLike, BigNumberish, BigNumberish]
   ): string;
 
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
@@ -112,19 +113,19 @@ export interface IVesting extends BaseContract {
   getClaimable: TypedContractMethod<[account: AddressLike], [bigint], "view">;
 
   getVestable: TypedContractMethod<
-    [vestingScheduleId: bigint],
+    [vestingScheduleId: BigNumberish],
     [bigint],
     "view"
   >;
 
   getVested: TypedContractMethod<
-    [vestingScheduleId: bigint],
+    [vestingScheduleId: BigNumberish],
     [bigint],
     "view"
   >;
 
   registerVesting: TypedContractMethod<
-    [account: AddressLike, amount: bigint, period: bigint],
+    [account: AddressLike, amount: BigNumberish, period: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -141,14 +142,14 @@ export interface IVesting extends BaseContract {
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
     nameOrSignature: "getVestable"
-  ): TypedContractMethod<[vestingScheduleId: bigint], [bigint], "view">;
+  ): TypedContractMethod<[vestingScheduleId: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "getVested"
-  ): TypedContractMethod<[vestingScheduleId: bigint], [bigint], "view">;
+  ): TypedContractMethod<[vestingScheduleId: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "registerVesting"
   ): TypedContractMethod<
-    [account: AddressLike, amount: bigint, period: bigint],
+    [account: AddressLike, amount: BigNumberish, period: BigNumberish],
     [void],
     "nonpayable"
   >;

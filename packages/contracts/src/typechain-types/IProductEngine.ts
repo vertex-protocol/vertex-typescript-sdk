@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -24,10 +25,10 @@ import type {
 
 export declare namespace IProductEngine {
   export type ProductDeltaStruct = {
-    productId: bigint;
+    productId: BigNumberish;
     subaccount: BytesLike;
-    amountDelta: bigint;
-    vQuoteDelta: bigint;
+    amountDelta: BigNumberish;
+    vQuoteDelta: BigNumberish;
   };
 
   export type ProductDeltaStructOutput = [
@@ -69,7 +70,7 @@ export interface IProductEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "burnLp",
-    values: [bigint, BytesLike, bigint]
+    values: [BigNumberish, BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "decomposeLps",
@@ -77,7 +78,7 @@ export interface IProductEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getBalanceAmount",
-    values: [bigint, BytesLike]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getClearinghouse",
@@ -89,7 +90,7 @@ export interface IProductEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getOrderbook",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getProductIds",
@@ -101,20 +102,20 @@ export interface IProductEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "mintLp",
-    values: [bigint, BytesLike, bigint, bigint, bigint]
+    values: [BigNumberish, BytesLike, BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "swapLp(uint32,int128,int128)",
-    values: [bigint, bigint, bigint]
+    values: [BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "swapLp(uint32,int128,int128,int128,int128)",
     values: [
-      bigint,
-      bigint,
-      bigint,
-      bigint,
-      bigint
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish
     ]
   ): string;
   encodeFunctionData(
@@ -168,7 +169,7 @@ export interface IProductEngineInterface extends Interface {
 }
 
 export namespace AddProductEvent {
-  export type InputTuple = [productId: bigint];
+  export type InputTuple = [productId: BigNumberish];
   export type OutputTuple = [productId: bigint];
   export interface OutputObject {
     productId: bigint;
@@ -229,7 +230,7 @@ export interface IProductEngine extends BaseContract {
   >;
 
   burnLp: TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike, amountLp: bigint],
+    [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
     [[bigint, bigint]],
     "nonpayable"
   >;
@@ -241,7 +242,7 @@ export interface IProductEngine extends BaseContract {
   >;
 
   getBalanceAmount: TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [bigint],
     "view"
   >;
@@ -251,7 +252,7 @@ export interface IProductEngine extends BaseContract {
   getEngineType: TypedContractMethod<[], [bigint], "view">;
 
   getOrderbook: TypedContractMethod<
-    [productId: bigint],
+    [productId: BigNumberish],
     [string],
     "view"
   >;
@@ -272,11 +273,11 @@ export interface IProductEngine extends BaseContract {
 
   mintLp: TypedContractMethod<
     [
-      productId: bigint,
+      productId: BigNumberish,
       subaccount: BytesLike,
-      amountBase: bigint,
-      quoteAmountLow: bigint,
-      quoteAmountHigh: bigint
+      amountBase: BigNumberish,
+      quoteAmountLow: BigNumberish,
+      quoteAmountHigh: BigNumberish
     ],
     [void],
     "nonpayable"
@@ -284,9 +285,9 @@ export interface IProductEngine extends BaseContract {
 
   "swapLp(uint32,int128,int128)": TypedContractMethod<
     [
-      productId: bigint,
-      baseDelta: bigint,
-      quoteDelta: bigint
+      productId: BigNumberish,
+      baseDelta: BigNumberish,
+      quoteDelta: BigNumberish
     ],
     [[bigint, bigint]],
     "nonpayable"
@@ -294,11 +295,11 @@ export interface IProductEngine extends BaseContract {
 
   "swapLp(uint32,int128,int128,int128,int128)": TypedContractMethod<
     [
-      productId: bigint,
-      amount: bigint,
-      priceX18: bigint,
-      sizeIncrement: bigint,
-      lpSpreadX18: bigint
+      productId: BigNumberish,
+      amount: BigNumberish,
+      priceX18: BigNumberish,
+      sizeIncrement: BigNumberish,
+      lpSpreadX18: BigNumberish
     ],
     [[bigint, bigint]],
     "nonpayable"
@@ -320,7 +321,7 @@ export interface IProductEngine extends BaseContract {
   getFunction(
     nameOrSignature: "burnLp"
   ): TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike, amountLp: bigint],
+    [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
     [[bigint, bigint]],
     "nonpayable"
   >;
@@ -334,7 +335,7 @@ export interface IProductEngine extends BaseContract {
   getFunction(
     nameOrSignature: "getBalanceAmount"
   ): TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [bigint],
     "view"
   >;
@@ -346,7 +347,7 @@ export interface IProductEngine extends BaseContract {
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "getOrderbook"
-  ): TypedContractMethod<[productId: bigint], [string], "view">;
+  ): TypedContractMethod<[productId: BigNumberish], [string], "view">;
   getFunction(
     nameOrSignature: "getProductIds"
   ): TypedContractMethod<[], [bigint[]], "view">;
@@ -367,11 +368,11 @@ export interface IProductEngine extends BaseContract {
     nameOrSignature: "mintLp"
   ): TypedContractMethod<
     [
-      productId: bigint,
+      productId: BigNumberish,
       subaccount: BytesLike,
-      amountBase: bigint,
-      quoteAmountLow: bigint,
-      quoteAmountHigh: bigint
+      amountBase: BigNumberish,
+      quoteAmountLow: BigNumberish,
+      quoteAmountHigh: BigNumberish
     ],
     [void],
     "nonpayable"
@@ -380,9 +381,9 @@ export interface IProductEngine extends BaseContract {
     nameOrSignature: "swapLp(uint32,int128,int128)"
   ): TypedContractMethod<
     [
-      productId: bigint,
-      baseDelta: bigint,
-      quoteDelta: bigint
+      productId: BigNumberish,
+      baseDelta: BigNumberish,
+      quoteDelta: BigNumberish
     ],
     [[bigint, bigint]],
     "nonpayable"
@@ -391,11 +392,11 @@ export interface IProductEngine extends BaseContract {
     nameOrSignature: "swapLp(uint32,int128,int128,int128,int128)"
   ): TypedContractMethod<
     [
-      productId: bigint,
-      amount: bigint,
-      priceX18: bigint,
-      sizeIncrement: bigint,
-      lpSpreadX18: bigint
+      productId: BigNumberish,
+      amount: BigNumberish,
+      priceX18: BigNumberish,
+      sizeIncrement: BigNumberish,
+      lpSpreadX18: BigNumberish
     ],
     [[bigint, bigint]],
     "nonpayable"

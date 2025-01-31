@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -24,10 +25,10 @@ import type {
 
 export declare namespace IProductEngine {
   export type ProductDeltaStruct = {
-    productId: bigint;
+    productId: BigNumberish;
     subaccount: BytesLike;
-    amountDelta: bigint;
-    vQuoteDelta: bigint;
+    amountDelta: BigNumberish;
+    vQuoteDelta: BigNumberish;
   };
 
   export type ProductDeltaStructOutput = [
@@ -45,9 +46,9 @@ export declare namespace IProductEngine {
 
 export declare namespace IPerpEngine {
   export type BalanceStruct = {
-    amount: bigint;
-    vQuoteBalance: bigint;
-    lastCumulativeFundingX18: bigint;
+    amount: BigNumberish;
+    vQuoteBalance: BigNumberish;
+    lastCumulativeFundingX18: BigNumberish;
   };
 
   export type BalanceStructOutput = [
@@ -61,8 +62,8 @@ export declare namespace IPerpEngine {
   };
 
   export type LpBalanceStruct = {
-    amount: bigint;
-    lastCumulativeFundingX18: bigint;
+    amount: BigNumberish;
+    lastCumulativeFundingX18: BigNumberish;
   };
 
   export type LpBalanceStructOutput = [
@@ -71,11 +72,11 @@ export declare namespace IPerpEngine {
   ] & { amount: bigint; lastCumulativeFundingX18: bigint };
 
   export type LpStateStruct = {
-    supply: bigint;
-    lastCumulativeFundingX18: bigint;
-    cumulativeFundingPerLpX18: bigint;
-    base: bigint;
-    quote: bigint;
+    supply: BigNumberish;
+    lastCumulativeFundingX18: BigNumberish;
+    cumulativeFundingPerLpX18: BigNumberish;
+    base: BigNumberish;
+    quote: BigNumberish;
   };
 
   export type LpStateStructOutput = [
@@ -93,10 +94,10 @@ export declare namespace IPerpEngine {
   };
 
   export type StateStruct = {
-    cumulativeFundingLongX18: bigint;
-    cumulativeFundingShortX18: bigint;
-    availableSettle: bigint;
-    openInterest: bigint;
+    cumulativeFundingLongX18: BigNumberish;
+    cumulativeFundingShortX18: BigNumberish;
+    availableSettle: BigNumberish;
+    openInterest: BigNumberish;
   };
 
   export type StateStructOutput = [
@@ -150,7 +151,7 @@ export interface IPerpEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "burnLp",
-    values: [bigint, BytesLike, bigint]
+    values: [BigNumberish, BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "decomposeLps",
@@ -158,15 +159,15 @@ export interface IPerpEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getBalance",
-    values: [bigint, BytesLike]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getBalanceAmount",
-    values: [bigint, BytesLike]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getBalances",
-    values: [bigint, BytesLike]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getClearinghouse",
@@ -178,15 +179,15 @@ export interface IPerpEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getLpState",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getOrderbook",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getPositionPnl",
-    values: [bigint, BytesLike]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getProductIds",
@@ -194,19 +195,19 @@ export interface IPerpEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getSettlementState",
-    values: [bigint, BytesLike]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getStateAndBalance",
-    values: [bigint, BytesLike]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getStatesAndBalances",
-    values: [bigint, BytesLike]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "hasBalance",
-    values: [bigint, BytesLike]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
@@ -214,32 +215,32 @@ export interface IPerpEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "manualAssert",
-    values: [bigint[]]
+    values: [BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "mintLp",
-    values: [bigint, BytesLike, bigint, bigint, bigint]
+    values: [BigNumberish, BytesLike, BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "settlePnl",
-    values: [BytesLike, bigint]
+    values: [BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "socializeSubaccount",
-    values: [BytesLike, bigint]
+    values: [BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "swapLp(uint32,int128,int128)",
-    values: [bigint, bigint, bigint]
+    values: [BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "swapLp(uint32,int128,int128,int128,int128)",
     values: [
-      bigint,
-      bigint,
-      bigint,
-      bigint,
-      bigint
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish
     ]
   ): string;
   encodeFunctionData(
@@ -248,7 +249,7 @@ export interface IPerpEngineInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "updateStates",
-    values: [bigint, bigint[]]
+    values: [BigNumberish, BigNumberish[]]
   ): string;
 
   decodeFunctionResult(
@@ -333,7 +334,7 @@ export interface IPerpEngineInterface extends Interface {
 }
 
 export namespace AddProductEvent {
-  export type InputTuple = [productId: bigint];
+  export type InputTuple = [productId: BigNumberish];
   export type OutputTuple = [productId: bigint];
   export interface OutputObject {
     productId: bigint;
@@ -394,7 +395,7 @@ export interface IPerpEngine extends BaseContract {
   >;
 
   burnLp: TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike, amountLp: bigint],
+    [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
     [[bigint, bigint]],
     "nonpayable"
   >;
@@ -406,19 +407,19 @@ export interface IPerpEngine extends BaseContract {
   >;
 
   getBalance: TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [IPerpEngine.BalanceStructOutput],
     "view"
   >;
 
   getBalanceAmount: TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [bigint],
     "view"
   >;
 
   getBalances: TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [[IPerpEngine.LpBalanceStructOutput, IPerpEngine.BalanceStructOutput]],
     "view"
   >;
@@ -428,19 +429,19 @@ export interface IPerpEngine extends BaseContract {
   getEngineType: TypedContractMethod<[], [bigint], "view">;
 
   getLpState: TypedContractMethod<
-    [productId: bigint],
+    [productId: BigNumberish],
     [IPerpEngine.LpStateStructOutput],
     "view"
   >;
 
   getOrderbook: TypedContractMethod<
-    [productId: bigint],
+    [productId: BigNumberish],
     [string],
     "view"
   >;
 
   getPositionPnl: TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [bigint],
     "view"
   >;
@@ -448,7 +449,7 @@ export interface IPerpEngine extends BaseContract {
   getProductIds: TypedContractMethod<[], [bigint[]], "view">;
 
   getSettlementState: TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [
       [
         bigint,
@@ -468,13 +469,13 @@ export interface IPerpEngine extends BaseContract {
   >;
 
   getStateAndBalance: TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [[IPerpEngine.StateStructOutput, IPerpEngine.BalanceStructOutput]],
     "view"
   >;
 
   getStatesAndBalances: TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [
       [
         IPerpEngine.LpStateStructOutput,
@@ -487,7 +488,7 @@ export interface IPerpEngine extends BaseContract {
   >;
 
   hasBalance: TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [boolean],
     "view"
   >;
@@ -505,40 +506,40 @@ export interface IPerpEngine extends BaseContract {
   >;
 
   manualAssert: TypedContractMethod<
-    [openInterests: bigint[]],
+    [openInterests: BigNumberish[]],
     [void],
     "view"
   >;
 
   mintLp: TypedContractMethod<
     [
-      productId: bigint,
+      productId: BigNumberish,
       subaccount: BytesLike,
-      amountBase: bigint,
-      quoteAmountLow: bigint,
-      quoteAmountHigh: bigint
+      amountBase: BigNumberish,
+      quoteAmountLow: BigNumberish,
+      quoteAmountHigh: BigNumberish
     ],
     [void],
     "nonpayable"
   >;
 
   settlePnl: TypedContractMethod<
-    [subaccount: BytesLike, productIds: bigint],
+    [subaccount: BytesLike, productIds: BigNumberish],
     [bigint],
     "nonpayable"
   >;
 
   socializeSubaccount: TypedContractMethod<
-    [subaccount: BytesLike, insurance: bigint],
+    [subaccount: BytesLike, insurance: BigNumberish],
     [bigint],
     "nonpayable"
   >;
 
   "swapLp(uint32,int128,int128)": TypedContractMethod<
     [
-      productId: bigint,
-      baseDelta: bigint,
-      quoteDelta: bigint
+      productId: BigNumberish,
+      baseDelta: BigNumberish,
+      quoteDelta: BigNumberish
     ],
     [[bigint, bigint]],
     "nonpayable"
@@ -546,11 +547,11 @@ export interface IPerpEngine extends BaseContract {
 
   "swapLp(uint32,int128,int128,int128,int128)": TypedContractMethod<
     [
-      productId: bigint,
-      amount: bigint,
-      priceX18: bigint,
-      sizeIncrement: bigint,
-      lpSpreadX18: bigint
+      productId: BigNumberish,
+      amount: BigNumberish,
+      priceX18: BigNumberish,
+      sizeIncrement: BigNumberish,
+      lpSpreadX18: BigNumberish
     ],
     [[bigint, bigint]],
     "nonpayable"
@@ -559,7 +560,7 @@ export interface IPerpEngine extends BaseContract {
   updateProduct: TypedContractMethod<[txn: BytesLike], [void], "nonpayable">;
 
   updateStates: TypedContractMethod<
-    [dt: bigint, avgPriceDiffs: bigint[]],
+    [dt: BigNumberish, avgPriceDiffs: BigNumberish[]],
     [void],
     "nonpayable"
   >;
@@ -578,7 +579,7 @@ export interface IPerpEngine extends BaseContract {
   getFunction(
     nameOrSignature: "burnLp"
   ): TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike, amountLp: bigint],
+    [productId: BigNumberish, subaccount: BytesLike, amountLp: BigNumberish],
     [[bigint, bigint]],
     "nonpayable"
   >;
@@ -592,21 +593,21 @@ export interface IPerpEngine extends BaseContract {
   getFunction(
     nameOrSignature: "getBalance"
   ): TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [IPerpEngine.BalanceStructOutput],
     "view"
   >;
   getFunction(
     nameOrSignature: "getBalanceAmount"
   ): TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [bigint],
     "view"
   >;
   getFunction(
     nameOrSignature: "getBalances"
   ): TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [[IPerpEngine.LpBalanceStructOutput, IPerpEngine.BalanceStructOutput]],
     "view"
   >;
@@ -619,17 +620,17 @@ export interface IPerpEngine extends BaseContract {
   getFunction(
     nameOrSignature: "getLpState"
   ): TypedContractMethod<
-    [productId: bigint],
+    [productId: BigNumberish],
     [IPerpEngine.LpStateStructOutput],
     "view"
   >;
   getFunction(
     nameOrSignature: "getOrderbook"
-  ): TypedContractMethod<[productId: bigint], [string], "view">;
+  ): TypedContractMethod<[productId: BigNumberish], [string], "view">;
   getFunction(
     nameOrSignature: "getPositionPnl"
   ): TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [bigint],
     "view"
   >;
@@ -639,7 +640,7 @@ export interface IPerpEngine extends BaseContract {
   getFunction(
     nameOrSignature: "getSettlementState"
   ): TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [
       [
         bigint,
@@ -660,14 +661,14 @@ export interface IPerpEngine extends BaseContract {
   getFunction(
     nameOrSignature: "getStateAndBalance"
   ): TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [[IPerpEngine.StateStructOutput, IPerpEngine.BalanceStructOutput]],
     "view"
   >;
   getFunction(
     nameOrSignature: "getStatesAndBalances"
   ): TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [
       [
         IPerpEngine.LpStateStructOutput,
@@ -681,7 +682,7 @@ export interface IPerpEngine extends BaseContract {
   getFunction(
     nameOrSignature: "hasBalance"
   ): TypedContractMethod<
-    [productId: bigint, subaccount: BytesLike],
+    [productId: BigNumberish, subaccount: BytesLike],
     [boolean],
     "view"
   >;
@@ -700,16 +701,16 @@ export interface IPerpEngine extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "manualAssert"
-  ): TypedContractMethod<[openInterests: bigint[]], [void], "view">;
+  ): TypedContractMethod<[openInterests: BigNumberish[]], [void], "view">;
   getFunction(
     nameOrSignature: "mintLp"
   ): TypedContractMethod<
     [
-      productId: bigint,
+      productId: BigNumberish,
       subaccount: BytesLike,
-      amountBase: bigint,
-      quoteAmountLow: bigint,
-      quoteAmountHigh: bigint
+      amountBase: BigNumberish,
+      quoteAmountLow: BigNumberish,
+      quoteAmountHigh: BigNumberish
     ],
     [void],
     "nonpayable"
@@ -717,14 +718,14 @@ export interface IPerpEngine extends BaseContract {
   getFunction(
     nameOrSignature: "settlePnl"
   ): TypedContractMethod<
-    [subaccount: BytesLike, productIds: bigint],
+    [subaccount: BytesLike, productIds: BigNumberish],
     [bigint],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "socializeSubaccount"
   ): TypedContractMethod<
-    [subaccount: BytesLike, insurance: bigint],
+    [subaccount: BytesLike, insurance: BigNumberish],
     [bigint],
     "nonpayable"
   >;
@@ -732,9 +733,9 @@ export interface IPerpEngine extends BaseContract {
     nameOrSignature: "swapLp(uint32,int128,int128)"
   ): TypedContractMethod<
     [
-      productId: bigint,
-      baseDelta: bigint,
-      quoteDelta: bigint
+      productId: BigNumberish,
+      baseDelta: BigNumberish,
+      quoteDelta: BigNumberish
     ],
     [[bigint, bigint]],
     "nonpayable"
@@ -743,11 +744,11 @@ export interface IPerpEngine extends BaseContract {
     nameOrSignature: "swapLp(uint32,int128,int128,int128,int128)"
   ): TypedContractMethod<
     [
-      productId: bigint,
-      amount: bigint,
-      priceX18: bigint,
-      sizeIncrement: bigint,
-      lpSpreadX18: bigint
+      productId: BigNumberish,
+      amount: BigNumberish,
+      priceX18: BigNumberish,
+      sizeIncrement: BigNumberish,
+      lpSpreadX18: BigNumberish
     ],
     [[bigint, bigint]],
     "nonpayable"
@@ -758,7 +759,7 @@ export interface IPerpEngine extends BaseContract {
   getFunction(
     nameOrSignature: "updateStates"
   ): TypedContractMethod<
-    [dt: bigint, avgPriceDiffs: bigint[]],
+    [dt: BigNumberish, avgPriceDiffs: BigNumberish[]],
     [void],
     "nonpayable"
   >;

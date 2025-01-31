@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -24,8 +25,8 @@ import type {
 
 export declare namespace IEndpoint {
   export type PricesStruct = {
-    spotPriceX18: bigint;
-    perpPriceX18: bigint;
+    spotPriceX18: BigNumberish;
+    perpPriceX18: BigNumberish;
   };
 
   export type PricesStructOutput = [
@@ -84,23 +85,23 @@ export interface EndpointInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "depositCollateral",
-    values: [BytesLike, bigint, bigint]
+    values: [BytesLike, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "depositCollateralWithReferral(bytes32,uint32,uint128,string)",
-    values: [BytesLike, bigint, bigint, string]
+    values: [BytesLike, BigNumberish, BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "depositCollateralWithReferral(bytes12,uint32,uint128,string)",
-    values: [BytesLike, bigint, bigint, string]
+    values: [BytesLike, BigNumberish, BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "executeSlowModeTransactions",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getBook",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getNonce",
@@ -108,11 +109,11 @@ export interface EndpointInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getPriceX18",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getPricesX18",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getSequencer",
@@ -133,9 +134,9 @@ export interface EndpointInterface extends Interface {
       AddressLike,
       AddressLike,
       AddressLike,
-      bigint,
-      bigint,
-      bigint[]
+      BigNumberish,
+      BigNumberish,
+      BigNumberish[]
     ]
   ): string;
   encodeFunctionData(
@@ -165,7 +166,7 @@ export interface EndpointInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "sequencerFee",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "sequencerFees",
@@ -173,7 +174,7 @@ export interface EndpointInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "setBook",
-    values: [bigint, AddressLike]
+    values: [BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "setSequencer",
@@ -185,7 +186,7 @@ export interface EndpointInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "slowModeTxs",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "submitSlowModeTransaction",
@@ -197,11 +198,11 @@ export interface EndpointInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "submitTransactionsChecked",
-    values: [bigint, BytesLike[]]
+    values: [BigNumberish, BytesLike[]]
   ): string;
   encodeFunctionData(
     functionFragment: "submitTransactionsCheckedWithGasLimit",
-    values: [bigint, BytesLike[], bigint]
+    values: [BigNumberish, BytesLike[], BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
@@ -318,7 +319,7 @@ export interface EndpointInterface extends Interface {
 }
 
 export namespace InitializedEvent {
-  export type InputTuple = [version: bigint];
+  export type InputTuple = [version: BigNumberish];
   export type OutputTuple = [version: bigint];
   export interface OutputObject {
     version: bigint;
@@ -398,7 +399,7 @@ export interface Endpoint extends BaseContract {
   clearinghouse: TypedContractMethod<[], [string], "view">;
 
   depositCollateral: TypedContractMethod<
-    [subaccountName: BytesLike, productId: bigint, amount: bigint],
+    [subaccountName: BytesLike, productId: BigNumberish, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -406,8 +407,8 @@ export interface Endpoint extends BaseContract {
   "depositCollateralWithReferral(bytes32,uint32,uint128,string)": TypedContractMethod<
     [
       subaccount: BytesLike,
-      productId: bigint,
-      amount: bigint,
+      productId: BigNumberish,
+      amount: BigNumberish,
       referralCode: string
     ],
     [void],
@@ -417,8 +418,8 @@ export interface Endpoint extends BaseContract {
   "depositCollateralWithReferral(bytes12,uint32,uint128,string)": TypedContractMethod<
     [
       subaccountName: BytesLike,
-      productId: bigint,
-      amount: bigint,
+      productId: BigNumberish,
+      amount: BigNumberish,
       referralCode: string
     ],
     [void],
@@ -426,19 +427,19 @@ export interface Endpoint extends BaseContract {
   >;
 
   executeSlowModeTransactions: TypedContractMethod<
-    [count: bigint],
+    [count: BigNumberish],
     [void],
     "nonpayable"
   >;
 
-  getBook: TypedContractMethod<[productId: bigint], [string], "view">;
+  getBook: TypedContractMethod<[productId: BigNumberish], [string], "view">;
 
   getNonce: TypedContractMethod<[sender: AddressLike], [bigint], "view">;
 
-  getPriceX18: TypedContractMethod<[productId: bigint], [bigint], "view">;
+  getPriceX18: TypedContractMethod<[productId: BigNumberish], [bigint], "view">;
 
   getPricesX18: TypedContractMethod<
-    [healthGroup: bigint],
+    [healthGroup: BigNumberish],
     [IEndpoint.PricesStructOutput],
     "view"
   >;
@@ -460,9 +461,9 @@ export interface Endpoint extends BaseContract {
       _sanctions: AddressLike,
       _sequencer: AddressLike,
       _clearinghouse: AddressLike,
-      slowModeTimeout: bigint,
-      _time: bigint,
-      _prices: bigint[]
+      slowModeTimeout: BigNumberish,
+      _time: BigNumberish,
+      _prices: BigNumberish[]
     ],
     [void],
     "nonpayable"
@@ -494,12 +495,12 @@ export interface Endpoint extends BaseContract {
     "view"
   >;
 
-  sequencerFee: TypedContractMethod<[arg0: bigint], [bigint], "view">;
+  sequencerFee: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
 
   sequencerFees: TypedContractMethod<[], [bigint], "view">;
 
   setBook: TypedContractMethod<
-    [productId: bigint, book: AddressLike],
+    [productId: BigNumberish, book: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -523,7 +524,7 @@ export interface Endpoint extends BaseContract {
   >;
 
   slowModeTxs: TypedContractMethod<
-    [arg0: bigint],
+    [arg0: BigNumberish],
     [
       [bigint, string, string] & {
         executableAt: bigint;
@@ -547,13 +548,13 @@ export interface Endpoint extends BaseContract {
   >;
 
   submitTransactionsChecked: TypedContractMethod<
-    [idx: bigint, transactions: BytesLike[]],
+    [idx: BigNumberish, transactions: BytesLike[]],
     [void],
     "nonpayable"
   >;
 
   submitTransactionsCheckedWithGasLimit: TypedContractMethod<
-    [idx: bigint, transactions: BytesLike[], gasLimit: bigint],
+    [idx: BigNumberish, transactions: BytesLike[], gasLimit: BigNumberish],
     [[bigint, bigint]],
     "nonpayable"
   >;
@@ -574,7 +575,7 @@ export interface Endpoint extends BaseContract {
   getFunction(
     nameOrSignature: "depositCollateral"
   ): TypedContractMethod<
-    [subaccountName: BytesLike, productId: bigint, amount: bigint],
+    [subaccountName: BytesLike, productId: BigNumberish, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -583,8 +584,8 @@ export interface Endpoint extends BaseContract {
   ): TypedContractMethod<
     [
       subaccount: BytesLike,
-      productId: bigint,
-      amount: bigint,
+      productId: BigNumberish,
+      amount: BigNumberish,
       referralCode: string
     ],
     [void],
@@ -595,8 +596,8 @@ export interface Endpoint extends BaseContract {
   ): TypedContractMethod<
     [
       subaccountName: BytesLike,
-      productId: bigint,
-      amount: bigint,
+      productId: BigNumberish,
+      amount: BigNumberish,
       referralCode: string
     ],
     [void],
@@ -604,20 +605,20 @@ export interface Endpoint extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "executeSlowModeTransactions"
-  ): TypedContractMethod<[count: bigint], [void], "nonpayable">;
+  ): TypedContractMethod<[count: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "getBook"
-  ): TypedContractMethod<[productId: bigint], [string], "view">;
+  ): TypedContractMethod<[productId: BigNumberish], [string], "view">;
   getFunction(
     nameOrSignature: "getNonce"
   ): TypedContractMethod<[sender: AddressLike], [bigint], "view">;
   getFunction(
     nameOrSignature: "getPriceX18"
-  ): TypedContractMethod<[productId: bigint], [bigint], "view">;
+  ): TypedContractMethod<[productId: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "getPricesX18"
   ): TypedContractMethod<
-    [healthGroup: bigint],
+    [healthGroup: BigNumberish],
     [IEndpoint.PricesStructOutput],
     "view"
   >;
@@ -640,9 +641,9 @@ export interface Endpoint extends BaseContract {
       _sanctions: AddressLike,
       _sequencer: AddressLike,
       _clearinghouse: AddressLike,
-      slowModeTimeout: bigint,
-      _time: bigint,
-      _prices: bigint[]
+      slowModeTimeout: BigNumberish,
+      _time: BigNumberish,
+      _prices: BigNumberish[]
     ],
     [void],
     "nonpayable"
@@ -678,14 +679,14 @@ export interface Endpoint extends BaseContract {
   ): TypedContractMethod<[subaccount: BytesLike], [void], "view">;
   getFunction(
     nameOrSignature: "sequencerFee"
-  ): TypedContractMethod<[arg0: bigint], [bigint], "view">;
+  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "sequencerFees"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "setBook"
   ): TypedContractMethod<
-    [productId: bigint, book: AddressLike],
+    [productId: BigNumberish, book: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -708,7 +709,7 @@ export interface Endpoint extends BaseContract {
   getFunction(
     nameOrSignature: "slowModeTxs"
   ): TypedContractMethod<
-    [arg0: bigint],
+    [arg0: BigNumberish],
     [
       [bigint, string, string] & {
         executableAt: bigint;
@@ -727,14 +728,14 @@ export interface Endpoint extends BaseContract {
   getFunction(
     nameOrSignature: "submitTransactionsChecked"
   ): TypedContractMethod<
-    [idx: bigint, transactions: BytesLike[]],
+    [idx: BigNumberish, transactions: BytesLike[]],
     [void],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "submitTransactionsCheckedWithGasLimit"
   ): TypedContractMethod<
-    [idx: bigint, transactions: BytesLike[], gasLimit: bigint],
+    [idx: BigNumberish, transactions: BytesLike[], gasLimit: BigNumberish],
     [[bigint, bigint]],
     "nonpayable"
   >;

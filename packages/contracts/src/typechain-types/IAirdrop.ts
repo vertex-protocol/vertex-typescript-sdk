@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -36,15 +37,15 @@ export interface IAirdropInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "claim",
-    values: [bigint, bigint, bigint, BytesLike[]]
+    values: [BigNumberish, BigNumberish, BigNumberish, BytesLike[]]
   ): string;
   encodeFunctionData(
     functionFragment: "claimAndStake",
-    values: [bigint, bigint, bigint, BytesLike[]]
+    values: [BigNumberish, BigNumberish, BigNumberish, BytesLike[]]
   ): string;
   encodeFunctionData(
     functionFragment: "claimToLBA",
-    values: [bigint, bigint, BytesLike[]]
+    values: [BigNumberish, BigNumberish, BytesLike[]]
   ): string;
   encodeFunctionData(
     functionFragment: "getClaimed",
@@ -71,8 +72,8 @@ export interface IAirdropInterface extends Interface {
 export namespace ClaimVrtxEvent {
   export type InputTuple = [
     account: AddressLike,
-    epoch: bigint,
-    amount: bigint
+    epoch: BigNumberish,
+    amount: BigNumberish
   ];
   export type OutputTuple = [account: string, epoch: bigint, amount: bigint];
   export interface OutputObject {
@@ -131,9 +132,9 @@ export interface IAirdrop extends BaseContract {
 
   claim: TypedContractMethod<
     [
-      epoch: bigint,
-      amount: bigint,
-      totalAmount: bigint,
+      epoch: BigNumberish,
+      amount: BigNumberish,
+      totalAmount: BigNumberish,
       proof: BytesLike[]
     ],
     [void],
@@ -142,9 +143,9 @@ export interface IAirdrop extends BaseContract {
 
   claimAndStake: TypedContractMethod<
     [
-      epoch: bigint,
-      amount: bigint,
-      totalAmount: bigint,
+      epoch: BigNumberish,
+      amount: BigNumberish,
+      totalAmount: BigNumberish,
       proof: BytesLike[]
     ],
     [void],
@@ -152,7 +153,7 @@ export interface IAirdrop extends BaseContract {
   >;
 
   claimToLBA: TypedContractMethod<
-    [amount: bigint, totalAmount: bigint, proof: BytesLike[]],
+    [amount: BigNumberish, totalAmount: BigNumberish, proof: BytesLike[]],
     [void],
     "nonpayable"
   >;
@@ -169,9 +170,9 @@ export interface IAirdrop extends BaseContract {
     nameOrSignature: "claim"
   ): TypedContractMethod<
     [
-      epoch: bigint,
-      amount: bigint,
-      totalAmount: bigint,
+      epoch: BigNumberish,
+      amount: BigNumberish,
+      totalAmount: BigNumberish,
       proof: BytesLike[]
     ],
     [void],
@@ -181,9 +182,9 @@ export interface IAirdrop extends BaseContract {
     nameOrSignature: "claimAndStake"
   ): TypedContractMethod<
     [
-      epoch: bigint,
-      amount: bigint,
-      totalAmount: bigint,
+      epoch: BigNumberish,
+      amount: BigNumberish,
+      totalAmount: BigNumberish,
       proof: BytesLike[]
     ],
     [void],
@@ -192,7 +193,7 @@ export interface IAirdrop extends BaseContract {
   getFunction(
     nameOrSignature: "claimToLBA"
   ): TypedContractMethod<
-    [amount: bigint, totalAmount: bigint, proof: BytesLike[]],
+    [amount: BigNumberish, totalAmount: BigNumberish, proof: BytesLike[]],
     [void],
     "nonpayable"
   >;
