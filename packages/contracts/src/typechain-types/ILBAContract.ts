@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -22,11 +23,11 @@ import type {
 
 export declare namespace ILBA {
   export type ConfigStruct = {
-    depositStartTime: bigint;
-    depositEndTime: bigint;
-    withdrawEndTime: bigint;
-    lpVestStartTime: bigint;
-    lpVestEndTime: bigint;
+    depositStartTime: BigNumberish;
+    depositEndTime: BigNumberish;
+    withdrawEndTime: BigNumberish;
+    lpVestStartTime: BigNumberish;
+    lpVestEndTime: BigNumberish;
   };
 
   export type ConfigStructOutput = [
@@ -44,10 +45,10 @@ export declare namespace ILBA {
   };
 
   export type StateStruct = {
-    totalVrtxDeposited: bigint;
-    totalUsdcDeposited: bigint;
-    totalLpMinted: bigint;
-    totalLpWithdrawn: bigint;
+    totalVrtxDeposited: BigNumberish;
+    totalUsdcDeposited: BigNumberish;
+    totalLpMinted: BigNumberish;
+    totalLpWithdrawn: BigNumberish;
   };
 
   export type StateStructOutput = [
@@ -82,11 +83,11 @@ export interface ILBAContractInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "depositUsdc",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "depositVrtx",
-    values: [AddressLike, bigint]
+    values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "getConfig", values?: undefined): string;
   encodeFunctionData(functionFragment: "getStage", values?: undefined): string;
@@ -109,11 +110,11 @@ export interface ILBAContractInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawLiquidity",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawUsdc",
-    values: [bigint]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawableLpBalance",
@@ -202,13 +203,13 @@ export interface ILBAContract extends BaseContract {
   ): Promise<this>;
 
   depositUsdc: TypedContractMethod<
-    [amount: bigint],
+    [amount: BigNumberish],
     [void],
     "nonpayable"
   >;
 
   depositVrtx: TypedContractMethod<
-    [account: AddressLike, amount: bigint],
+    [account: AddressLike, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -236,13 +237,13 @@ export interface ILBAContract extends BaseContract {
   vrtxInitialPriceX18: TypedContractMethod<[], [bigint], "view">;
 
   withdrawLiquidity: TypedContractMethod<
-    [lpAmount: bigint],
+    [lpAmount: BigNumberish],
     [void],
     "nonpayable"
   >;
 
   withdrawUsdc: TypedContractMethod<
-    [amount: bigint],
+    [amount: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -259,11 +260,11 @@ export interface ILBAContract extends BaseContract {
 
   getFunction(
     nameOrSignature: "depositUsdc"
-  ): TypedContractMethod<[amount: bigint], [void], "nonpayable">;
+  ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "depositVrtx"
   ): TypedContractMethod<
-    [account: AddressLike, amount: bigint],
+    [account: AddressLike, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -290,10 +291,10 @@ export interface ILBAContract extends BaseContract {
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "withdrawLiquidity"
-  ): TypedContractMethod<[lpAmount: bigint], [void], "nonpayable">;
+  ): TypedContractMethod<[lpAmount: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "withdrawUsdc"
-  ): TypedContractMethod<[amount: bigint], [void], "nonpayable">;
+  ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "withdrawableLpBalance"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
