@@ -190,6 +190,8 @@ export interface IndexerServerProductPayment {
   balance_amount: string;
   rate_x18: string;
   oracle_price_x18: string;
+  isolated: boolean;
+  isolated_product_id: number | null;
 }
 
 /**

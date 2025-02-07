@@ -473,6 +473,9 @@ export interface IndexerProductPayment {
   // Represents the annually interest rate for spots and annually funding rate for perps.
   annualPaymentRate: BigDecimal;
   oraclePrice: BigDecimal;
+  isolated: boolean;
+  // isolated product is null when not isolated.
+  isolatedProductId: number | null;
 }
 
 export interface GetIndexerInterestFundingPaymentsResponse {
