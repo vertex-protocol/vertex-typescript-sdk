@@ -58,7 +58,7 @@ async function fullSanity(context: RunContext) {
 
   // Deposit collateral
   const depositTx = await depositCollateral({
-    amount: toFixedPoint(10000, 6).toString(),
+    amount: toFixedPoint(10000, 6),
     endpoint,
     productId: 0,
     subaccountName: 'default',
@@ -114,9 +114,9 @@ async function fullSanity(context: RunContext) {
   const spotOrder: EngineOrderParams = {
     subaccountOwner: signer.address,
     subaccountName: 'default',
-    amount: toFixedPoint(-0.03).toString(),
+    amount: toFixedPoint(-0.03),
     expiration: getExpiration(),
-    price: '110000',
+    price: toBigDecimal(110000),
   };
   const spotPlaceOrderResult = await client.placeOrder({
     verifyingAddr: spotOrderbookAddr,
@@ -144,11 +144,11 @@ async function fullSanity(context: RunContext) {
   const isolatedOrder: EngineIsolatedOrderParams = {
     subaccountOwner: signer.address,
     subaccountName: 'default',
-    amount: toX18(-0.03).toString(),
+    amount: toX18(-0.03),
     expiration: getExpiration(),
-    price: '110000',
+    price: toBigDecimal(110000),
     // 10x leverage
-    margin: toX18((0.03 * 110000) / 10).toString(),
+    margin: toX18((0.03 * 110000) / 10),
   };
   const perpPlaceIsolatedOrderResult = await client.placeIsolatedOrder({
     verifyingAddr: perpOrderbookAddr,
@@ -315,11 +315,11 @@ async function fullSanity(context: RunContext) {
   const createIsoPositionOrder: EngineIsolatedOrderParams = {
     subaccountOwner: signer.address,
     subaccountName: 'default',
-    amount: toX18(0.03).toString(),
+    amount: toX18(0.03),
     expiration: getExpiration('fok'),
-    price: '110000',
+    price: toBigDecimal(110000),
     // 10x leverage
-    margin: toX18((0.03 * 110000) / 10).toString(),
+    margin: toX18((0.03 * 110000) / 10),
   };
   const createIsoPositionOrderResult = await client.placeIsolatedOrder({
     verifyingAddr: perpOrderbookAddr,
@@ -340,9 +340,9 @@ async function fullSanity(context: RunContext) {
     subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 3,
-    amountBase: toFixedPoint(1, 18).toString(),
-    quoteAmountLow: toFixedPoint(3000, 18).toString(),
-    quoteAmountHigh: toFixedPoint(6000, 18).toString(),
+    amountBase: toFixedPoint(1, 18),
+    quoteAmountLow: toFixedPoint(3000, 18),
+    quoteAmountHigh: toFixedPoint(6000, 18),
     verifyingAddr: endpointAddr,
     chainId,
   });
@@ -358,7 +358,7 @@ async function fullSanity(context: RunContext) {
     subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 3,
-    amount: toFixedPoint(1, 18).toString(),
+    amount: toFixedPoint(1, 18),
     verifyingAddr: endpointAddr,
     chainId,
   });
@@ -370,7 +370,7 @@ async function fullSanity(context: RunContext) {
     subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 4,
-    amount: toFixedPoint(1, 6).toString(),
+    amount: toFixedPoint(1, 6),
     verifyingAddr: endpointAddr,
     chainId,
   });
@@ -400,9 +400,9 @@ async function fullSanity(context: RunContext) {
     const order: EngineOrderParams = {
       subaccountOwner: signer.address,
       subaccountName: 'default',
-      amount: toFixedPoint(-0.01).toString(),
+      amount: toFixedPoint(-0.01),
       expiration: getExpiration(),
-      price: '38000',
+      price: toBigDecimal(38000),
     };
     const placeResult = await client.placeOrder({
       verifyingAddr: orderbookAddr,
@@ -452,7 +452,7 @@ async function fullSanity(context: RunContext) {
     subaccountOwner: signer.address,
     subaccountName: 'default',
     productId: 0,
-    amount: toFixedPoint(4999, 6).toString(),
+    amount: toFixedPoint(4999, 6),
     verifyingAddr: endpointAddr,
     chainId,
   });
@@ -499,7 +499,7 @@ async function fullSanity(context: RunContext) {
     recipientSubaccountName: 'transfer1',
     subaccountOwner: signer.address,
     subaccountName: 'default',
-    amount: toFixedPoint(50).toString(), // amount must be x18
+    amount: toFixedPoint(50), // amount must be x18
     verifyingAddr: endpointAddr,
   });
   prettyPrint('Done transferring quote', transferQuoteResult);

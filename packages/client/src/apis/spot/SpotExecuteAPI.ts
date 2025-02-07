@@ -7,6 +7,7 @@ import {
 } from '@vertex-protocol/contracts';
 import { BaseSpotAPI } from './BaseSpotAPI';
 import { ApproveAllowanceParams, WithdrawCollateralParams } from './types';
+import { toBigDecimal } from '@vertex-protocol/utils';
 
 export class SpotExecuteAPI extends BaseSpotAPI {
   async deposit(params: DepositCollateralParams) {
@@ -46,7 +47,7 @@ export class SpotExecuteAPI extends BaseSpotAPI {
     );
     return erc20.mint(
       await this.getChainSignerAddress(),
-      BigInt(params.amount),
+      BigInt(toBigDecimal(params.amount).toFixed(0)),
     );
   }
 }

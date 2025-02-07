@@ -1,3 +1,4 @@
+import { BigDecimalish } from '@vertex-protocol/utils';
 import { Subaccount } from '../common';
 
 export interface SignedTx<TBaseTx> {
@@ -12,21 +13,21 @@ export interface SignedEIP712OrderParams {
 
 export interface EIP712WithdrawCollateralParams extends Subaccount {
   productId: number;
-  amount: string;
+  amount: BigDecimalish;
   nonce: string;
 }
 
 export interface EIP712MintLpParams extends Subaccount {
   productId: number;
-  amountBase: string;
-  quoteAmountLow: string;
-  quoteAmountHigh: string;
+  amountBase: BigDecimalish;
+  quoteAmountLow: BigDecimalish;
+  quoteAmountHigh: BigDecimalish;
   nonce: string;
 }
 
 export interface EIP712BurnLpParams extends Subaccount {
   productId: number;
-  amount: string;
+  amount: BigDecimalish;
   nonce: string;
 }
 
@@ -46,16 +47,16 @@ export interface EIP712OrderParams extends Subaccount {
   // Expiration time in seconds, with order type encoded if relevant
   expiration: string;
   // Limit price
-  price: string;
+  price: BigDecimalish;
   // Positive for buy, negative for sell
-  amount: string;
+  amount: BigDecimalish;
   // A unique nonce to identify the order
   nonce: string;
 }
 
 export interface EIP712IsolatedOrderParams extends EIP712OrderParams {
   // Amount of quote margin to transfer when the order fills
-  margin: string;
+  margin: BigDecimalish;
 }
 
 export interface EIP712ListTriggerOrdersParams extends Subaccount {
@@ -80,7 +81,7 @@ export interface EIP712LinkSignerParams extends Subaccount {
 
 export interface EIP712TransferQuoteParams extends Subaccount {
   recipientSubaccountName: string;
-  amount: string;
+  amount: BigDecimalish;
   nonce: string;
 }
 
