@@ -1,3 +1,5 @@
+import { BigDecimalish, toBigDecimal } from '@vertex-protocol/utils';
+
 // All valid "special" order expiration types
 export type OrderExpirationType = 'default' | 'ioc' | 'fok' | 'post_only';
 
@@ -24,17 +26,17 @@ const EXPIRATION_TYPE_TO_MS2B: Record<OrderExpirationType, bigint> = {
  *
  * @param config
  */
-export function getExpirationTimestamp(config: OrderExpirationConfig): string {
+export function getExpirationTimestamp(config: OrderExpirationConfig): bigint {
   const expirationWithType =
     BigInt(config.expirationTime.toFixed(0)) |
     (EXPIRATION_TYPE_TO_MS2B[config.type] << 62n);
 
   if (!config.reduceOnly) {
-    return expirationWithType.toString();
+    return expirationWithType;
   }
 
   // 3rd MSB denotes the boolean value of reduce-only
-  return (expirationWithType | (1n << 61n)).toString();
+  return expirationWithType | (1n << 61n);
 }
 
 /**
@@ -46,9 +48,9 @@ export function getExpirationTimestamp(config: OrderExpirationConfig): string {
  * @param rawExpiration
  */
 export function parseRawExpirationTimestamp(
-  rawExpiration: string,
+  rawExpiration: BigDecimalish,
 ): Required<OrderExpirationConfig> {
-  const bigIntRawExpiration = BigInt(rawExpiration);
+  const bigIntRawExpiration = BigInt(toBigDecimal(rawExpiration).toFixed(0));
   const largestTwoBits = bigIntRawExpiration >> 62n;
   const reduceOnlyBitValue = (bigIntRawExpiration >> 61n) & 1n;
 

@@ -1,8 +1,9 @@
 import { IERC20 } from '../typechain-types';
 import { WithContract } from '../common';
+import { BigDecimalish, toBigDecimal } from '@vertex-protocol/utils';
 
 export interface ApproveDepositAllowanceParams {
-  amount: string;
+  amount: BigDecimalish;
   tokenContract: IERC20;
 }
 
@@ -14,5 +15,8 @@ export async function approveDepositAllowance({
   amount,
   tokenContract,
 }: WithContract<'endpoint', ApproveDepositAllowanceParams>) {
-  return tokenContract.approve(await endpoint.getAddress(), BigInt(amount));
+  return tokenContract.approve(
+    await endpoint.getAddress(),
+    toBigDecimal(amount).toFixed(0),
+  );
 }

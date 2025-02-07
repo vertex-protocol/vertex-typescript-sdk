@@ -38,14 +38,14 @@ export interface EIP712LiquidateSubaccountParams extends Subaccount {
   // 0 = spread, 1 = long, 2 = short
   mode: number;
   // Spot & perp pair
-  healthGroup: string;
-  amount: string;
+  healthGroup: BigDecimalish;
+  amount: BigDecimalish;
   nonce: string;
 }
 
 export interface EIP712OrderParams extends Subaccount {
   // Expiration time in seconds, with order type encoded if relevant
-  expiration: string;
+  expiration: BigDecimalish;
   // Limit price
   price: BigDecimalish;
   // Positive for buy, negative for sell
@@ -60,7 +60,7 @@ export interface EIP712IsolatedOrderParams extends EIP712OrderParams {
 }
 
 export interface EIP712ListTriggerOrdersParams extends Subaccount {
-  recvTime: string;
+  recvTime: BigDecimalish;
 }
 
 export interface EIP712CancelOrdersParams extends Subaccount {
@@ -86,5 +86,5 @@ export interface EIP712TransferQuoteParams extends Subaccount {
 }
 
 export interface EIP712LeaderboardAuthenticationParams extends Subaccount {
-  expiration: string;
+  expiration: BigDecimalish;
 }

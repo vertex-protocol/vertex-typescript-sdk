@@ -11,6 +11,7 @@ import {
   EIP712WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
 import { EngineServerExecuteSuccessResult } from './serverExecuteTypes';
+import { BigDecimalish } from '@vertex-protocol/utils';
 
 /**
  * Either verifying address or signature must be provided;
@@ -20,7 +21,7 @@ export type SignatureParams =
   | {
       // Endpoint address for all executes except order placement
       verifyingAddr: string;
-      chainId: number;
+      chainId: BigDecimalish;
     }
   | {
       signature: string;

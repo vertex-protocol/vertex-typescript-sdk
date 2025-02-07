@@ -4,6 +4,7 @@ import {
 } from '@vertex-protocol/contracts';
 import { VertexClientContext } from '../context';
 import { isSigner } from '../utils';
+import { BigNumberish } from 'ethers';
 
 export class BaseVertexAPI {
   readonly context: VertexClientContext;
@@ -24,8 +25,8 @@ export class BaseVertexAPI {
   }
 
   protected async getSignerChainIdIfNeeded(params: {
-    chainId?: number;
-  }): Promise<number> {
+    chainId?: BigNumberish;
+  }): Promise<BigNumberish> {
     if (params.chainId) {
       return params.chainId;
     }

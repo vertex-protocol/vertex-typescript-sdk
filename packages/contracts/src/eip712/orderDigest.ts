@@ -6,11 +6,12 @@ import {
   EIP712IsolatedOrderParams,
   EIP712OrderParams,
 } from './signatureParamTypes';
+import { BigDecimalish } from '@vertex-protocol/utils';
 
 interface OrderDigestParams {
   order: EIP712OrderParams;
   verifyingAddr: string;
-  chainId: number;
+  chainId: BigDecimalish;
 }
 
 /**
@@ -30,7 +31,7 @@ export function getOrderDigest(params: OrderDigestParams): string {
 interface IsolatedOrderDigestParams {
   order: EIP712IsolatedOrderParams;
   verifyingAddr: string;
-  chainId: number;
+  chainId: BigDecimalish;
 }
 
 /**

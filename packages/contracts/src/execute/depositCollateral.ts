@@ -27,15 +27,15 @@ export async function depositCollateral({
       'depositCollateralWithReferral(bytes12,uint32,uint128,string)'
     ](
       bytesSubaccountName,
-      BigInt(productId),
-      BigInt(toBigDecimal(amount).toFixed(0)),
+      productId,
+      toBigDecimal(amount).toFixed(0),
       referralCode,
     );
   } else {
     return endpoint.depositCollateral(
       bytesSubaccountName,
-      BigInt(productId),
-      BigInt(toBigDecimal(amount).toFixed(0)),
+      productId,
+      toBigDecimal(amount).toFixed(0),
     );
   }
 }

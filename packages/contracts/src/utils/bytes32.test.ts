@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+
 import { expect, it } from '@jest/globals';
 import { describe } from 'node:test';
 import { Subaccount } from '../common';
@@ -10,7 +12,6 @@ import {
 } from './bytes32';
 
 const TEST_ADDRESS = '0xb92EFcF519EDC2f1FE60b4491Ef51d97Ed4d7685';
-
 describe('bytes32', () => {
   it('converts a subaccount to bytes', () => {
     const expectedBytes = new Uint8Array([

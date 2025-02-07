@@ -1,4 +1,4 @@
-import { toX18 } from '@vertex-protocol/utils';
+import { toBigDecimal, toX18 } from '@vertex-protocol/utils';
 import { subaccountToHex } from '../utils';
 import {
   EIP712BurnLpValues,
@@ -111,8 +111,8 @@ function getWithdrawCollateralValues(
       subaccountName: params.subaccountName,
     }),
     productId: params.productId,
-    amount: params.amount,
-    nonce: params.nonce,
+    amount: toBigDecimal(params.amount).toFixed(0),
+    nonce: toBigDecimal(params.nonce).toFixed(0),
   };
 }
 
@@ -123,9 +123,9 @@ function getMintLpValues(params: EIP712MintLpParams): EIP712MintLpValues {
       subaccountName: params.subaccountName,
     }),
     productId: params.productId,
-    amountBase: params.amountBase,
-    quoteAmountLow: params.quoteAmountLow,
-    quoteAmountHigh: params.quoteAmountHigh,
+    amountBase: toBigDecimal(params.amountBase).toFixed(0),
+    quoteAmountLow: toBigDecimal(params.quoteAmountLow).toFixed(0),
+    quoteAmountHigh: toBigDecimal(params.quoteAmountHigh).toFixed(0),
     nonce: params.nonce,
   };
 }
@@ -137,7 +137,7 @@ function getBurnLpValues(params: EIP712BurnLpParams): EIP712BurnLpValues {
       subaccountName: params.subaccountName,
     }),
     productId: params.productId,
-    amount: params.amount,
+    amount: toBigDecimal(params.amount).toFixed(),
     nonce: params.nonce,
   };
 }
@@ -148,9 +148,9 @@ function getOrderValues(params: EIP712OrderParams): EIP712OrderValues {
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
-    priceX18: toX18(params.price),
-    amount: params.amount,
-    expiration: params.expiration,
+    priceX18: toX18(params.price).toString(),
+    amount: toBigDecimal(params.amount).toFixed(0),
+    expiration: toBigDecimal(params.expiration).toFixed(0),
     nonce: params.nonce,
   };
 }
@@ -160,7 +160,7 @@ function getIsolatedOrderValues(
 ): EIP712IsolatedOrderValues {
   return {
     ...getOrderValues(params),
-    margin: params.margin,
+    margin: toBigDecimal(params.margin).toFixed(0),
   };
 }
 
@@ -186,7 +186,7 @@ function getOrderCancellationValues(
     }),
     productIds: params.productIds,
     digests: params.digests,
-    nonce: BigInt(params.nonce).toString(),
+    nonce: params.nonce,
   };
 }
 
@@ -199,7 +199,7 @@ function getProductOrdersCancellationValues(
       subaccountName: params.subaccountName,
     }),
     productIds: params.productIds,
-    nonce: BigInt(params.nonce).toString(),
+    nonce: params.nonce,
   };
 }
 
@@ -216,9 +216,9 @@ function getLiquidateSubaccountValues(
       subaccountName: params.liquidateeName,
     }),
     mode: params.mode,
-    healthGroup: params.healthGroup,
-    amount: params.amount,
-    nonce: BigInt(params.nonce).toString(),
+    healthGroup: toBigDecimal(params.healthGroup).toFixed(0),
+    amount: toBigDecimal(params.amount).toFixed(0),
+    nonce: params.nonce,
   };
 }
 
@@ -231,7 +231,7 @@ function getLinkSignerValues(
       subaccountName: params.subaccountName,
     }),
     signer: params.signer,
-    nonce: BigInt(params.nonce).toString(),
+    nonce: params.nonce,
   };
 }
 
@@ -247,8 +247,8 @@ function getTransferQuoteValues(
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.recipientSubaccountName,
     }),
-    amount: params.amount,
-    nonce: BigInt(params.nonce).toString(),
+    amount: toBigDecimal(params.amount).toFixed(0),
+    nonce: params.nonce,
   };
 }
 
@@ -260,6 +260,6 @@ function getLeaderboardAuthenticationValues(
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
-    expiration: params.expiration,
+    expiration: toBigDecimal(params.expiration).toFixed(0),
   };
 }

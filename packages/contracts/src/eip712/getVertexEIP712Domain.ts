@@ -1,3 +1,4 @@
+import { BigDecimalish, toBigDecimal } from '@vertex-protocol/utils';
 import { TypedDataDomain } from 'ethers';
 
 /**
@@ -8,12 +9,12 @@ import { TypedDataDomain } from 'ethers';
  */
 export function getVertexEIP712Domain(
   contractAddress: string,
-  chainId: number,
+  chainId: BigDecimalish,
 ): TypedDataDomain {
   return {
     name: 'Vertex',
     version: '0.0.1',
-    chainId,
+    chainId: toBigDecimal(chainId).toFixed(0),
     verifyingContract: contractAddress,
   };
 }

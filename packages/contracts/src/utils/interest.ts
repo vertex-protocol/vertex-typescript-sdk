@@ -12,8 +12,8 @@ import { SpotProduct } from '../common';
  * Calculate amount total borrowed for a product
  */
 export function calcTotalBorrowed(
-  totalBorrowsNormalized: string | bigint,
-  cumulativeBorrowsMultiplierX18: string | bigint,
+  totalBorrowsNormalized: BigDecimalish,
+  cumulativeBorrowsMultiplierX18: BigDecimalish,
 ): BigDecimal {
   return toBigDecimal(totalBorrowsNormalized).multipliedBy(
     fromX18(cumulativeBorrowsMultiplierX18),
@@ -24,8 +24,8 @@ export function calcTotalBorrowed(
  * Calculate amount total deposited for a product.
  */
 export function calcTotalDeposited(
-  totalDepositsNormalized: string | bigint,
-  cumulativeDepositsMultiplierX18: string | bigint,
+  totalDepositsNormalized: BigDecimalish,
+  cumulativeDepositsMultiplierX18: BigDecimalish,
 ): BigDecimal {
   return toBigDecimal(totalDepositsNormalized).multipliedBy(
     fromX18(cumulativeDepositsMultiplierX18),
