@@ -392,7 +392,7 @@ export function mapIndexerMarketSnapshot(
     cumulativeVolumes: mapValues(snapshot.cumulative_volumes, toBigDecimal),
     depositRates: mapValues(snapshot.deposit_rates, fromX18),
     fundingRates: mapValues(snapshot.funding_rates, fromX18),
-    openInterestsQuote: mapValues(snapshot.open_interests, fromX18),
+    openInterestsQuote: mapValues(snapshot.open_interests, toBigDecimal),
     totalBorrows: mapValues(snapshot.total_borrows, toBigDecimal),
     totalDeposits: mapValues(snapshot.total_deposits, toBigDecimal),
     cumulativeTradeSizes: mapValues(
