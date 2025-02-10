@@ -474,7 +474,7 @@ export interface IndexerProductPayment {
   annualPaymentRate: BigDecimal;
   oraclePrice: BigDecimal;
   isolated: boolean;
-  // Only defined when primaryQuoteProduct (productId=0) and isolated=true otherwise null.
+  // The product ID associated with the isolated perp market. This is only used when product_id === QUOTE_PRODUCT_ID and isolated === true
   isolatedProductId: number | null;
 }
 
