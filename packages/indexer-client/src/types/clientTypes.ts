@@ -474,7 +474,7 @@ export interface IndexerProductPayment {
   annualPaymentRate: BigDecimal;
   oraclePrice: BigDecimal;
   isolated: boolean;
-  // isolated product is null when not isolated.
+  // Only defined when primaryQuoteProduct (productId=0) and isolated=true otherwise null.
   isolatedProductId: number | null;
 }
 
