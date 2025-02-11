@@ -185,7 +185,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
       if (item.totalAmount.gt(0) && claimed[idx] === 0n) {
         proofsToClaim.push({
           proof: item.proof,
-          totalAmount: item.totalAmount.toFixed(0),
+          totalAmount: toIntegerString(item.totalAmount),
           week: idx,
         });
       }
@@ -230,7 +230,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
     return [
       params.epoch,
       toIntegerString(amountToClaim),
-      totalAmount.toFixed(0),
+      toIntegerString(totalAmount),
       proof,
     ];
   }
