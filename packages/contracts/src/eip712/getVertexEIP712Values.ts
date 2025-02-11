@@ -168,7 +168,7 @@ function getListTriggerOrdersValues(
   params: EIP712ListTriggerOrdersParams,
 ): EIP712ListTriggerOrdersValues {
   return {
-    recvTime: params.recvTime,
+    recvTime: toIntegerString(params.recvTime),
     sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
