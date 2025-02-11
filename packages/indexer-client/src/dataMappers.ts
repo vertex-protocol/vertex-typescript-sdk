@@ -183,7 +183,9 @@ export function mapIndexerProductPayment(
     balanceAmount: toBigDecimal(payment.balance_amount),
     annualPaymentRate: fromX18(payment.rate_x18),
     oraclePrice: fromX18(payment.oracle_price_x18),
+    isolated: payment.isolated,
     productId: payment.product_id,
+    isolatedProductId: payment.isolated_product_id,
   };
 }
 
