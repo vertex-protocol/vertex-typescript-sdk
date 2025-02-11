@@ -1,4 +1,4 @@
-import { BigDecimalish, toBigDecimal } from '@vertex-protocol/utils';
+import { BigDecimalish, toIntegerString } from '@vertex-protocol/utils';
 
 // All valid "special" order expiration types
 export type OrderExpirationType = 'default' | 'ioc' | 'fok' | 'post_only';
@@ -50,7 +50,7 @@ export function getExpirationTimestamp(config: OrderExpirationConfig): bigint {
 export function parseRawExpirationTimestamp(
   rawExpiration: BigDecimalish,
 ): Required<OrderExpirationConfig> {
-  const bigIntRawExpiration = BigInt(toBigDecimal(rawExpiration).toFixed(0));
+  const bigIntRawExpiration = BigInt(toIntegerString(rawExpiration));
   const largestTwoBits = bigIntRawExpiration >> 62n;
   const reduceOnlyBitValue = (bigIntRawExpiration >> 61n) & 1n;
 

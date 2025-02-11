@@ -9,7 +9,7 @@ import {
   getOrderNonce,
   getVertexEIP712Values,
 } from '@vertex-protocol/contracts';
-import { toBigDecimal, toFixedPoint } from '@vertex-protocol/utils';
+import { toFixedPoint } from '@vertex-protocol/utils';
 import { AbiCoder, getBytes, solidityPacked } from 'ethers';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
@@ -70,7 +70,7 @@ async function fullSanity(context: RunContext) {
     subaccountName: 'default',
     expiration: getExpiration('post_only', 60).toString(),
     // Limit price
-    price: toBigDecimal(3000),
+    price: 3000,
     amount: toFixedPoint(-3.5),
   };
 
@@ -91,7 +91,7 @@ async function fullSanity(context: RunContext) {
       subaccountName: 'default',
       expiration: getExpiration('post_only', 60).toString(),
       // Limit price
-      price: toBigDecimal(3000),
+      price: 3000,
       amount: toFixedPoint(-3.5),
     },
     // Product you're sending the order for

@@ -9,7 +9,7 @@ import {
   SpotMarket,
   Subaccount,
 } from '@vertex-protocol/contracts';
-import { BigDecimal, BigDecimalish } from '@vertex-protocol/utils';
+import { BigDecimal } from '@vertex-protocol/utils';
 import { CandlestickPeriod } from './CandlestickPeriod';
 import { IndexerEventType } from './IndexerEventType';
 import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
@@ -816,7 +816,7 @@ export interface GetIndexerLeaderboardParticipantResponse {
 interface LeaderboardSignatureParams {
   // endpoint address
   verifyingAddr: string;
-  chainId: BigDecimalish;
+  chainId: number;
 }
 
 export interface GetIndexerLeaderboardRegistrationParams extends Subaccount {

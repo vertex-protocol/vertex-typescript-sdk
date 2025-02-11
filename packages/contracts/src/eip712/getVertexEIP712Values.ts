@@ -1,4 +1,4 @@
-import { toBigDecimal, toX18 } from '@vertex-protocol/utils';
+import { toIntegerString, toX18 } from '@vertex-protocol/utils';
 import { subaccountToHex } from '../utils';
 import {
   EIP712BurnLpValues,
@@ -111,8 +111,8 @@ function getWithdrawCollateralValues(
       subaccountName: params.subaccountName,
     }),
     productId: params.productId,
-    amount: toBigDecimal(params.amount).toFixed(0),
-    nonce: toBigDecimal(params.nonce).toFixed(0),
+    amount: toIntegerString(params.amount),
+    nonce: params.nonce,
   };
 }
 
@@ -123,9 +123,9 @@ function getMintLpValues(params: EIP712MintLpParams): EIP712MintLpValues {
       subaccountName: params.subaccountName,
     }),
     productId: params.productId,
-    amountBase: toBigDecimal(params.amountBase).toFixed(0),
-    quoteAmountLow: toBigDecimal(params.quoteAmountLow).toFixed(0),
-    quoteAmountHigh: toBigDecimal(params.quoteAmountHigh).toFixed(0),
+    amountBase: toIntegerString(params.amountBase),
+    quoteAmountLow: toIntegerString(params.quoteAmountLow),
+    quoteAmountHigh: toIntegerString(params.quoteAmountHigh),
     nonce: params.nonce,
   };
 }
@@ -137,7 +137,7 @@ function getBurnLpValues(params: EIP712BurnLpParams): EIP712BurnLpValues {
       subaccountName: params.subaccountName,
     }),
     productId: params.productId,
-    amount: toBigDecimal(params.amount).toFixed(),
+    amount: toIntegerString(params.amount),
     nonce: params.nonce,
   };
 }
@@ -148,9 +148,9 @@ function getOrderValues(params: EIP712OrderParams): EIP712OrderValues {
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
-    priceX18: toX18(params.price).toString(),
-    amount: toBigDecimal(params.amount).toFixed(0),
-    expiration: toBigDecimal(params.expiration).toFixed(0),
+    priceX18: toIntegerString(toX18(params.price)),
+    amount: toIntegerString(params.amount),
+    expiration: toIntegerString(params.expiration),
     nonce: params.nonce,
   };
 }
@@ -160,7 +160,7 @@ function getIsolatedOrderValues(
 ): EIP712IsolatedOrderValues {
   return {
     ...getOrderValues(params),
-    margin: toBigDecimal(params.margin).toFixed(0),
+    margin: toIntegerString(params.margin),
   };
 }
 
@@ -216,8 +216,8 @@ function getLiquidateSubaccountValues(
       subaccountName: params.liquidateeName,
     }),
     mode: params.mode,
-    healthGroup: toBigDecimal(params.healthGroup).toFixed(0),
-    amount: toBigDecimal(params.amount).toFixed(0),
+    healthGroup: toIntegerString(params.healthGroup),
+    amount: toIntegerString(params.amount),
     nonce: params.nonce,
   };
 }
@@ -247,7 +247,7 @@ function getTransferQuoteValues(
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.recipientSubaccountName,
     }),
-    amount: toBigDecimal(params.amount).toFixed(0),
+    amount: toIntegerString(params.amount),
     nonce: params.nonce,
   };
 }
@@ -260,6 +260,6 @@ function getLeaderboardAuthenticationValues(
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
-    expiration: toBigDecimal(params.expiration).toFixed(0),
+    expiration: toIntegerString(params.expiration),
   };
 }

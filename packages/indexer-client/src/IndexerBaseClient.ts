@@ -11,7 +11,6 @@ import {
   subaccountToHex,
 } from '@vertex-protocol/contracts';
 import {
-  BigDecimalish,
   fromX18,
   mapValues,
   nowInSeconds,
@@ -1114,7 +1113,7 @@ export class IndexerBaseClient {
   protected async sign<T extends SignableRequestType>(
     requestType: T,
     verifyingContract: string,
-    chainId: BigDecimalish,
+    chainId: number,
     params: SignableRequestTypeToParams[T],
   ) {
     const signer = this.opts.signer;

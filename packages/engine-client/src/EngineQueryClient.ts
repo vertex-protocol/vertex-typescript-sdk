@@ -72,7 +72,7 @@ export class EngineQueryClient extends EngineBaseClient {
   async getContracts(): Promise<GetEngineContractsResponse> {
     const baseResponse = await this.query('contracts', {});
     return {
-      chainId: baseResponse.chain_id,
+      chainId: Number(baseResponse.chain_id),
       endpointAddr: baseResponse.endpoint_addr,
       orderbookAddrs: baseResponse.book_addrs,
     };

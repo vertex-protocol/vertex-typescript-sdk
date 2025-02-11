@@ -116,7 +116,7 @@ async function fullSanity(context: RunContext) {
     subaccountName: 'default',
     amount: toFixedPoint(-0.03),
     expiration: getExpiration(),
-    price: toBigDecimal(110000),
+    price: 110000,
   };
   const spotPlaceOrderResult = await client.placeOrder({
     verifyingAddr: spotOrderbookAddr,
@@ -146,7 +146,7 @@ async function fullSanity(context: RunContext) {
     subaccountName: 'default',
     amount: toX18(-0.03),
     expiration: getExpiration(),
-    price: toBigDecimal(110000),
+    price: 110000,
     // 10x leverage
     margin: toX18((0.03 * 110000) / 10),
   };
@@ -317,7 +317,7 @@ async function fullSanity(context: RunContext) {
     subaccountName: 'default',
     amount: toX18(0.03),
     expiration: getExpiration('fok'),
-    price: toBigDecimal(110000),
+    price: 110000,
     // 10x leverage
     margin: toX18((0.03 * 110000) / 10),
   };
@@ -402,7 +402,7 @@ async function fullSanity(context: RunContext) {
       subaccountName: 'default',
       amount: toFixedPoint(-0.01),
       expiration: getExpiration(),
-      price: toBigDecimal(38000),
+      price: 38000,
     };
     const placeResult = await client.placeOrder({
       verifyingAddr: orderbookAddr,

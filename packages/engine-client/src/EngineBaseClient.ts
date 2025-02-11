@@ -20,7 +20,6 @@ import {
   GetEngineNoncesResponse,
 } from './types';
 import { EngineServerFailureError } from './types/EngineServerFailureError';
-import { BigDecimalish } from '@vertex-protocol/utils';
 
 export interface EngineClientOpts {
   // Server URL
@@ -179,7 +178,7 @@ export class EngineBaseClient {
   public async sign<T extends SignableRequestType>(
     requestType: T,
     verifyingContract: string,
-    chainId: BigDecimalish,
+    chainId: number,
     params: SignableRequestTypeToParams[T],
   ) {
     // Use the linked signer if provided, otherwise use the default signer provided to the engine

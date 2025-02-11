@@ -32,7 +32,6 @@ import {
   TriggerServerQuerySuccessResponse,
 } from './types';
 import { TriggerServerFailureError } from './types/TriggerServerFailureError';
-import { BigDecimalish } from '@vertex-protocol/utils';
 
 export interface TriggerClientOpts {
   // Server URL
@@ -194,7 +193,7 @@ export class TriggerClient {
   protected async sign<T extends SignableRequestType>(
     requestType: T,
     verifyingContract: string,
-    chainId: BigDecimalish,
+    chainId: number,
     params: SignableRequestTypeToParams[T],
   ) {
     // Use the linked signer if provided, otherwise use the default signer provided to the engine

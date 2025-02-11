@@ -1,4 +1,3 @@
-import { BigDecimalish } from '@vertex-protocol/utils';
 import { Subaccount } from '../common';
 import { getVertexEIP712Domain } from '../eip712';
 import { subaccountToHex } from './bytes32';
@@ -6,7 +5,7 @@ import { keccak256, Signer } from 'ethers';
 
 interface Params extends Subaccount {
   signer: Signer;
-  chainId: BigDecimalish;
+  chainId: number;
   endpointAddress: string;
 }
 

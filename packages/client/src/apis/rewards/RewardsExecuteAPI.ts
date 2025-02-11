@@ -9,7 +9,7 @@ import {
   ClaimTokensToLbaParams,
   VrtxTokenAmountParams,
 } from './types';
-import { toBigDecimal } from '@vertex-protocol/utils';
+import { toIntegerString } from '@vertex-protocol/utils';
 
 export class RewardsExecuteAPI extends BaseVertexAPI {
   /**
@@ -23,8 +23,8 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
     )[LBA_AIRDROP_EPOCH];
 
     return this.context.contracts.vrtxAirdrop.claimToLBA(
-      toBigDecimal(params.amount).toFixed(0),
-      toBigDecimal(totalAmount).toFixed(0),
+      toIntegerString(params.amount),
+      toIntegerString(totalAmount),
       proof,
     );
   }
@@ -34,7 +34,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    */
   async depositLbaUsdc(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxLba.depositUsdc(
-      toBigDecimal(params.amount).toFixed(0),
+      toIntegerString(params.amount),
     );
   }
 
@@ -43,7 +43,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    */
   async withdrawLbaUsdc(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxLba.withdrawUsdc(
-      toBigDecimal(params.amount).toFixed(0),
+      toIntegerString(params.amount),
     );
   }
 
@@ -52,7 +52,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    */
   async withdrawLbaLiquidity(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxLba.withdrawLiquidity(
-      toBigDecimal(params.amount).toFixed(0),
+      toIntegerString(params.amount),
     );
   }
 
@@ -93,7 +93,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    */
   async stake(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxStaking.stake(
-      toBigDecimal(params.amount).toFixed(0),
+      toIntegerString(params.amount),
     );
   }
 
@@ -102,7 +102,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    */
   async stakeV2(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxStakingV2.stake(
-      toBigDecimal(params.amount).toFixed(0),
+      toIntegerString(params.amount),
     );
   }
 
@@ -111,7 +111,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    */
   async unstake(params: VrtxTokenAmountParams) {
     return this.context.contracts.vrtxStaking.withdraw(
-      toBigDecimal(params.amount).toFixed(0),
+      toIntegerString(params.amount),
     );
   }
 
@@ -185,8 +185,8 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
       if (item.totalAmount.gt(0) && claimed[idx] === 0n) {
         proofsToClaim.push({
           proof: item.proof,
-          totalAmount: toBigDecimal(item.totalAmount).toFixed(0),
-          week: toBigDecimal(idx).toFixed(0),
+          totalAmount: item.totalAmount.toFixed(0),
+          week: idx,
         });
       }
     });
@@ -228,8 +228,8 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
     })();
 
     return [
-      toBigDecimal(params.epoch).toFixed(),
-      toBigDecimal(amountToClaim).toFixed(0),
+      params.epoch,
+      toIntegerString(amountToClaim),
       totalAmount.toFixed(0),
       proof,
     ];

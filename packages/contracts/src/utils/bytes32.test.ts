@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
-
 import { expect, it } from '@jest/globals';
 import { describe } from 'node:test';
 import { Subaccount } from '../common';
