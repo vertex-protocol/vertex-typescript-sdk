@@ -1,4 +1,8 @@
-import { BigDecimalish, toIntegerString } from '@vertex-protocol/utils';
+import {
+  BigDecimalish,
+  toBigInt,
+  toIntegerString,
+} from '@vertex-protocol/utils';
 import { WithContract } from '../common';
 import { subaccountNameToBytes12 } from '../utils';
 
@@ -30,7 +34,7 @@ export async function depositCollateral({
     return endpoint.depositCollateral(
       bytesSubaccountName,
       productId,
-      toIntegerString(amount),
+      toBigInt(amount),
     );
   }
 }

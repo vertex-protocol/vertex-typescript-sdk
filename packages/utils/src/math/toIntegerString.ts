@@ -1,7 +1,7 @@
 import { BigDecimalish, toBigDecimal } from './bigDecimal';
 
 /**
- * Converts a big decimalish value to string
+ * Converts a BigDecimalish value to string
  *
  * @param val
  */
