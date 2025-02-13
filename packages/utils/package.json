@@ -30,11 +30,13 @@
   },
   "peerDependencies": {
     "bignumber.js": "^9.1.2",
-    "ethers": "*"
+    "ethers": "*",
+    "viem": "*"
   },
   "devDependencies": {
     "bignumber.js": "^9.1.2",
-    "ethers": "*"
+    "ethers": "*",
+    "viem": "*"
   },
   "gitHead": "88119393c0d18cf3be1578e2a3a60b10e18b09f6"
 }

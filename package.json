@@ -44,6 +44,7 @@
     "typescript-eslint": "^8.16.0"
   },
   "resolutions": {
+    "viem": "2.23.1",
     "ethers": "6.13.4",
     "axios": "^1.7.2",
     "ts-mixer": "^6.0.4"

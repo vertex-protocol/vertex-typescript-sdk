@@ -4,15 +4,15 @@ import {
   EIP712WithdrawCollateralParams,
 } from './eip712';
 import { toX18 } from '@vertex-protocol/utils';
-import { AbiCoder } from 'ethers';
+import { encodeAbiParameters, parseAbiParameters } from 'viem';
 
 export function encodeSignedWithdrawCollateralTx(
   signed: SignedTx<EIP712WithdrawCollateralParams>,
 ) {
-  return AbiCoder.defaultAbiCoder().encode(
-    [
-      'tuple(tuple(address sender, string subaccountName, uint32 productId, uint128 amount, uint64 nonce), bytes signature)',
-    ],
+  return encodeAbiParameters(
+    parseAbiParameters(
+      '(tuple(address sender, string subaccountName, uint32 productId, uint128 amount, uint64 nonce), bytes signature)',
+    ),
     [
       [
         [
@@ -29,10 +29,10 @@ export function encodeSignedWithdrawCollateralTx(
 }
 
 export function encodeSignedOrder(signed: SignedEIP712OrderParams) {
-  return AbiCoder.defaultAbiCoder().encode(
-    [
-      'tuple(tuple(address sender, string subaccountName, int128 priceX18, int128 amount, uint64 expiration, uint64 nonce) order, bytes signature)',
-    ],
+  return encodeAbiParameters(
+    parseAbiParameters(
+      '(tuple(tuple(address sender, string subaccountName, int128 priceX18, int128 amount, uint64 expiration, uint64 nonce), bytes signature))',
+    ),
     [
       [
         [

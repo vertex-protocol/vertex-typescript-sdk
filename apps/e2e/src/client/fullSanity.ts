@@ -9,12 +9,13 @@ import {
   getOrderNonce,
   getVertexEIP712Values,
 } from '@vertex-protocol/contracts';
-import { toFixedPoint } from '@vertex-protocol/utils';
-import { AbiCoder, getBytes, solidityPacked } from 'ethers';
+import { toBigDecimal, toFixedPoint } from '@vertex-protocol/utils';
+import { getBytes, solidityPacked } from 'ethers';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
+import { Address, encodeAbiParameters, parseAbiParameters } from 'viem';
 
 async function fullSanity(context: RunContext) {
   const signer = context.getWallet();
@@ -242,19 +243,16 @@ async function fullSanity(context: RunContext) {
     subaccountOwner: await signer.getAddress(),
   });
 
-  const encodedTx = AbiCoder.defaultAbiCoder().encode(
+  const encodedTx = encodeAbiParameters(
+    parseAbiParameters('bytes32, uint32, uint128, uint64'),
     [
-      // Sender
-      'bytes32',
-      // Product ID
-      'uint32',
-      // Amount
-      'uint128',
-      // Nonce
-      'uint64',
+      tx.sender as Address,
+      tx.productId,
+      BigInt(toBigDecimal(tx.amount).toFixed(0)),
+      BigInt(toBigDecimal(tx.nonce).toFixed(0)),
     ],
-    [tx.sender, tx.productId, tx.amount, tx.nonce],
   );
+
   const encodedSlowModeTx = solidityPacked(
     ['uint8', 'bytes'],
     [
