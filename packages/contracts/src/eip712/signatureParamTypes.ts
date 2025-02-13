@@ -1,4 +1,4 @@
-import { BigNumberish } from 'ethers';
+import { BigDecimalish } from '@vertex-protocol/utils';
 import { Subaccount } from '../common';
 
 export interface SignedTx<TBaseTx> {
@@ -13,21 +13,21 @@ export interface SignedEIP712OrderParams {
 
 export interface EIP712WithdrawCollateralParams extends Subaccount {
   productId: number;
-  amount: BigNumberish;
+  amount: BigDecimalish;
   nonce: string;
 }
 
 export interface EIP712MintLpParams extends Subaccount {
   productId: number;
-  amountBase: BigNumberish;
-  quoteAmountLow: BigNumberish;
-  quoteAmountHigh: BigNumberish;
+  amountBase: BigDecimalish;
+  quoteAmountLow: BigDecimalish;
+  quoteAmountHigh: BigDecimalish;
   nonce: string;
 }
 
 export interface EIP712BurnLpParams extends Subaccount {
   productId: number;
-  amount: BigNumberish;
+  amount: BigDecimalish;
   nonce: string;
 }
 
@@ -38,29 +38,29 @@ export interface EIP712LiquidateSubaccountParams extends Subaccount {
   // 0 = spread, 1 = long, 2 = short
   mode: number;
   // Spot & perp pair
-  healthGroup: BigNumberish;
-  amount: BigNumberish;
+  healthGroup: BigDecimalish;
+  amount: BigDecimalish;
   nonce: string;
 }
 
 export interface EIP712OrderParams extends Subaccount {
   // Expiration time in seconds, with order type encoded if relevant
-  expiration: BigNumberish;
+  expiration: BigDecimalish;
   // Limit price
-  price: BigNumberish;
+  price: BigDecimalish;
   // Positive for buy, negative for sell
-  amount: BigNumberish;
+  amount: BigDecimalish;
   // A unique nonce to identify the order
   nonce: string;
 }
 
 export interface EIP712IsolatedOrderParams extends EIP712OrderParams {
   // Amount of quote margin to transfer when the order fills
-  margin: BigNumberish;
+  margin: BigDecimalish;
 }
 
 export interface EIP712ListTriggerOrdersParams extends Subaccount {
-  recvTime: BigNumberish;
+  recvTime: BigDecimalish;
 }
 
 export interface EIP712CancelOrdersParams extends Subaccount {
@@ -81,10 +81,10 @@ export interface EIP712LinkSignerParams extends Subaccount {
 
 export interface EIP712TransferQuoteParams extends Subaccount {
   recipientSubaccountName: string;
-  amount: BigNumberish;
+  amount: BigDecimalish;
   nonce: string;
 }
 
 export interface EIP712LeaderboardAuthenticationParams extends Subaccount {
-  expiration: BigNumberish;
+  expiration: BigDecimalish;
 }

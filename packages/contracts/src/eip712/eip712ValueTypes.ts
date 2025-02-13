@@ -1,4 +1,4 @@
-import { BigNumberish } from 'ethers';
+import { BigDecimalish } from '@vertex-protocol/utils';
 import {
   EIP712BurnLpParams,
   EIP712CancelOrdersParams,
@@ -39,11 +39,11 @@ export type EIP712OrderValues = Omit<
   WithEIP712Sender<EIP712OrderParams>,
   'price'
 > & {
-  priceX18: BigNumberish;
+  priceX18: BigDecimalish;
 };
 
 export type EIP712IsolatedOrderValues = EIP712OrderValues & {
-  margin: BigNumberish;
+  margin: BigDecimalish;
 };
 
 export type EIP712ListTriggerOrdersValues =

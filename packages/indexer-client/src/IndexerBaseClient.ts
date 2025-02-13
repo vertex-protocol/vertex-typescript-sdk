@@ -17,7 +17,7 @@ import {
   toBigDecimal,
 } from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { BigNumberish, Signer } from 'ethers';
+import { Signer } from 'ethers';
 import {
   mapIndexerCandlesticks,
   mapIndexerEvent,
@@ -1113,7 +1113,7 @@ export class IndexerBaseClient {
   protected async sign<T extends SignableRequestType>(
     requestType: T,
     verifyingContract: string,
-    chainId: BigNumberish,
+    chainId: number,
     params: SignableRequestTypeToParams[T],
   ) {
     const signer = this.opts.signer;

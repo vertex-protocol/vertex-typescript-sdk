@@ -8,7 +8,6 @@ import {
   EngineServerExecuteResult,
 } from '@vertex-protocol/engine-client';
 import { BigDecimal, BigDecimalish } from '@vertex-protocol/utils';
-import { BigNumberish } from 'ethers';
 import { TriggerServerOrder } from './serverQueryTypes';
 
 type WithOptionalNonce<T> = Omit<T, 'nonce'> & { nonce?: string };
@@ -44,7 +43,7 @@ export type TriggerOrderStatus =
 interface SignatureParams {
   // Orderbook address for placement, endpoint address for cancellation & listing
   verifyingAddr: string;
-  chainId: BigNumberish;
+  chainId: number;
 }
 
 /**

@@ -1,16 +1,15 @@
 import { BigNumber as BigDecimal } from 'bignumber.js';
-import { BigNumberish } from 'ethers';
 
 // Renames `BigNumber` type from `bignumber.js`.
 export { BigNumber as BigDecimal } from 'bignumber.js';
 
 /**
- * BigDecimal is a renamed `BigNumber` type from `bignumber.js`. BigDecimalish is akin to `BigNumberish`, but
- * includes valid values & instances for BigDecimal.
+ * BigDecimal is a renamed `BigNumber` type from `bignumber.js`.
+ * Includes valid values & instances for BigDecimal.
  *
  * @see https://mikemcl.github.io/bignumber.js/
  */
-export type BigDecimalish = BigDecimal | BigDecimal.Value | BigNumberish;
+export type BigDecimalish = BigDecimal | BigDecimal.Value | bigint;
 
 /**
  * Converts a value to an instance of BigDecimal

@@ -10,7 +10,6 @@ import {
   EIP712TransferQuoteParams,
   EIP712WithdrawCollateralParams,
 } from '@vertex-protocol/contracts';
-import { BigNumberish } from 'ethers';
 import { EngineServerExecuteSuccessResult } from './serverExecuteTypes';
 
 /**
@@ -21,7 +20,7 @@ export type SignatureParams =
   | {
       // Endpoint address for all executes except order placement
       verifyingAddr: string;
-      chainId: BigNumberish;
+      chainId: number;
     }
   | {
       signature: string;

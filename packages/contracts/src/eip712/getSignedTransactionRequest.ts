@@ -5,13 +5,13 @@ import {
 import { getVertexEIP712Domain } from './getVertexEIP712Domain';
 import { getVertexEIP712Types } from './getVertexEIP712Types';
 import { getVertexEIP712Values } from './getVertexEIP712Values';
-import { BigNumberish, Signer } from 'ethers';
+import { Signer } from 'ethers';
 
 interface Params<TReqType extends SignableRequestType> {
   requestType: TReqType;
   requestParams: SignableRequestTypeToParams[TReqType];
   // Allow explicit definition of `chainId` to enable signing for different chains
-  chainId: BigNumberish;
+  chainId: number;
   // Orderbook for orders, Sequencer for other requests
   verifyingContract: string;
   signer: Signer;
