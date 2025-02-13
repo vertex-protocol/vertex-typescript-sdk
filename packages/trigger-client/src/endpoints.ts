@@ -17,4 +17,5 @@ export const TRIGGER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   beraTestnet: 'https://trigger.bera-test.vertexprotocol.com/v1',
   abstractTestnet: 'https://trigger.abstract-test.vertexprotocol.com/v1',
   abstract: 'https://trigger.abstract-prod.vertexprotocol.com/v1',
+  bera: 'https://trigger.bera-prod.vertexprotocol.com/v1',
 };

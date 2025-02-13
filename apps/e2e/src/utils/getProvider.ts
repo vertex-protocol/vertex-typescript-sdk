@@ -65,11 +65,6 @@ export function getProvider(chainEnv: ChainEnv): Provider {
         name: 'sonic',
         chainId: 146,
       });
-    case 'beraTestnet':
-      return new JsonRpcProvider('https://bartio.rpc.berachain.com', {
-        name: 'bera-testnet',
-        chainId: 80084,
-      });
     case 'abstractTestnet':
       return new JsonRpcProvider('https://api.testnet.abs.xyz', {
         name: 'abstract-testnet',
@@ -79,6 +74,16 @@ export function getProvider(chainEnv: ChainEnv): Provider {
       return new JsonRpcProvider('https://api.mainnet.abs.xyz', {
         name: 'abstract',
         chainId: 2741,
+      });
+    case 'beraTestnet':
+      return new JsonRpcProvider('https://bartio.rpc.berachain.com', {
+        name: 'bera-testnet',
+        chainId: 80084,
+      });
+    case 'bera':
+      return new JsonRpcProvider('https://rpc.berachain.com', {
+        name: 'bera',
+        chainId: 80094,
       });
   }
 }
