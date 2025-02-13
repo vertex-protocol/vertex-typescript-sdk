@@ -209,6 +209,7 @@ export class IndexerBaseClient {
                 state: mappedEvent.state,
                 trackedVars: mappedEvent.trackedVars,
                 isolated: mappedEvent.isolated,
+                isolatedProductId: mappedEvent.isolatedProductId,
               };
             },
           );

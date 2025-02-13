@@ -87,6 +87,8 @@ export interface IndexerSnapshotBalance {
   state: IndexerEventBalanceStateSnapshot;
   trackedVars: IndexerBalanceTrackedVars;
   isolated: boolean;
+  // The product ID associated with the isolated perp market. This is only used when productId === QUOTE_PRODUCT_ID and isolated === true
+  isolatedProductId: number | null;
 }
 
 export interface IndexerSubaccountSnapshot {
