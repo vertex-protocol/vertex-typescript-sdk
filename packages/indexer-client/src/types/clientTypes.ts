@@ -60,6 +60,29 @@ export interface IndexerBalanceTrackedVars {
   netEntryLpCumulative: BigDecimal;
 }
 
+export interface IndexerEvent<
+  TStateType extends
+    IndexerEventBalanceStateSnapshot = IndexerEventBalanceStateSnapshot,
+> {
+  subaccount: string;
+  isolated: boolean;
+  // The product ID associated with the isolated perp market. This is only used when productId === QUOTE_PRODUCT_ID and isolated === true
+  isolatedProductId: number | null;
+  productId: number;
+  submissionIndex: string;
+  eventType: IndexerEventType;
+  state: TStateType;
+  trackedVars: IndexerBalanceTrackedVars;
+}
+
+export interface IndexerEventWithTx<
+  TStateType extends
+    IndexerEventBalanceStateSnapshot = IndexerEventBalanceStateSnapshot,
+> extends IndexerEvent<TStateType> {
+  timestamp: BigDecimal;
+  tx: VertexTx;
+}
+
 /**
  * List subaccounts
  */
@@ -82,14 +105,10 @@ export interface GetIndexerMultiSubaccountSnapshotsParams {
   isolated?: boolean;
 }
 
-export interface IndexerSnapshotBalance {
-  productId: number;
-  state: IndexerEventBalanceStateSnapshot;
-  trackedVars: IndexerBalanceTrackedVars;
-  isolated: boolean;
-  // The product ID associated with the isolated perp market. This is only used when productId === QUOTE_PRODUCT_ID and isolated === true
-  isolatedProductId: number | null;
-}
+export type IndexerSnapshotBalance<
+  TStateType extends
+    IndexerEventBalanceStateSnapshot = IndexerEventBalanceStateSnapshot,
+> = IndexerEvent<TStateType>;
 
 export interface IndexerSubaccountSnapshot {
   timestamp: BigDecimal;
@@ -308,29 +327,6 @@ export interface GetIndexerEventsParams {
     type: GetIndexerEventsLimitType;
     value: number;
   };
-}
-
-export interface IndexerEvent<
-  TStateType extends
-    IndexerEventBalanceStateSnapshot = IndexerEventBalanceStateSnapshot,
-> {
-  subaccount: string;
-  isolated: boolean;
-  // The product ID associated with the isolated perp market. This is only used when productId === QUOTE_PRODUCT_ID and isolated === true
-  isolatedProductId: number | null;
-  productId: number;
-  submissionIndex: string;
-  eventType: IndexerEventType;
-  state: TStateType;
-  trackedVars: IndexerBalanceTrackedVars;
-}
-
-export interface IndexerEventWithTx<
-  TStateType extends
-    IndexerEventBalanceStateSnapshot = IndexerEventBalanceStateSnapshot,
-> extends IndexerEvent<TStateType> {
-  timestamp: BigDecimal;
-  tx: VertexTx;
 }
 
 export type GetIndexerEventsResponse = IndexerEventWithTx[];

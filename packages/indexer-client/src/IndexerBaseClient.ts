@@ -201,18 +201,8 @@ export class IndexerBaseClient {
           {};
 
         Object.entries(balanceSnapshots).forEach(([timestamp, events]) => {
-          const balances: IndexerSnapshotBalance[] = events.map(
-            (event): IndexerSnapshotBalance => {
-              const mappedEvent = mapIndexerEvent(event);
-              return {
-                productId: mappedEvent.productId,
-                state: mappedEvent.state,
-                trackedVars: mappedEvent.trackedVars,
-                isolated: mappedEvent.isolated,
-                isolatedProductId: mappedEvent.isolatedProductId,
-              };
-            },
-          );
+          const balances: IndexerSnapshotBalance[] =
+            events.map(mapIndexerEvent);
 
           snapshotByTimestamp[timestamp] = {
             timestamp: toBigDecimal(timestamp),
