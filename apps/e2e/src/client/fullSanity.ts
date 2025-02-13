@@ -9,7 +9,7 @@ import {
   getOrderNonce,
   getVertexEIP712Values,
 } from '@vertex-protocol/contracts';
-import { toBigDecimal, toFixedPoint } from '@vertex-protocol/utils';
+import { toBigInt, toFixedPoint } from '@vertex-protocol/utils';
 import { getBytes, solidityPacked } from 'ethers';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
@@ -248,8 +248,8 @@ async function fullSanity(context: RunContext) {
     [
       tx.sender as Address,
       tx.productId,
-      BigInt(toBigDecimal(tx.amount).toFixed(0)),
-      BigInt(toBigDecimal(tx.nonce).toFixed(0)),
+      toBigInt(tx.amount),
+      toBigInt(tx.nonce),
     ],
   );
 
