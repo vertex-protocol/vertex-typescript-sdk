@@ -203,6 +203,14 @@ export function createClientContext(
         triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.abstract,
       };
     }
+    if (opts === 'bera') {
+      return {
+        contractAddresses: VERTEX_DEPLOYMENTS.bera,
+        engineEndpoint: ENGINE_CLIENT_ENDPOINTS.bera,
+        indexerEndpoint: INDEXER_CLIENT_ENDPOINTS.bera,
+        triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS.bera,
+      };
+    }
     if (opts === 'local') {
       return {
         contractAddresses: VERTEX_DEPLOYMENTS.local,

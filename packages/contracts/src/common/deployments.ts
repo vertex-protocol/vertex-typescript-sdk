@@ -11,9 +11,10 @@ import BaseTestnetCoreDeployment from './deployments/core/deployment.baseTestnet
 import BaseMainnetCoreDeployment from './deployments/core/deployment.baseMainnet.json';
 import SonicTestnetCoreDeployment from './deployments/core/deployment.sonicTestnet.json';
 import SonicMainnetCoreDeployment from './deployments/core/deployment.sonicMainnet.json';
-import BeraTestnetCoreDeployment from './deployments/core/deployment.beraTestnet.json';
 import AbstractTestnetCoreDeployment from './deployments/core/deployment.abstractTestnet.json';
 import AbstractMainnetCoreDeployment from './deployments/core/deployment.abstractMainnet.json';
+import BeraTestnetCoreDeployment from './deployments/core/deployment.beraTestnet.json';
+import BeraMainnetCoreDeployment from './deployments/core/deployment.beraMainnet.json';
 
 import ArbitrumOneLbaDeployment from './deployments/vrtx/deployment.arbitrumOne.json';
 import ArbitrumSepoliaLbaDeployment from './deployments/vrtx/deployment.arbitrumSepolia.json';
@@ -28,9 +29,10 @@ import BaseTestnetLbaDeployment from './deployments/vrtx/deployment.baseTestnet.
 import BaseMainnetLbaDeployment from './deployments/vrtx/deployment.baseMainnet.json';
 import SonicTestnetLbaDeployment from './deployments/vrtx/deployment.sonicTestnet.json';
 import SonicMainnetLbaDeployment from './deployments/vrtx/deployment.sonicMainnet.json';
-import BeraTestnetLbaDeployment from './deployments/vrtx/deployment.beraTestnet.json';
 import AbstractTestnetLbaDeployment from './deployments/vrtx/deployment.abstractTestnet.json';
 import AbstractMainnetLbaDeployment from './deployments/vrtx/deployment.abstractMainnet.json';
+import BeraTestnetLbaDeployment from './deployments/vrtx/deployment.beraTestnet.json';
+import BeraMainnetLbaDeployment from './deployments/vrtx/deployment.beraMainnet.json';
 
 import { ChainEnv } from './types';
 import { VertexContracts } from './vertexContracts';
@@ -91,10 +93,6 @@ export const VERTEX_DEPLOYMENTS: Record<ChainEnv, VertexDeploymentAddresses> = {
     ...SonicMainnetLbaDeployment,
     ...SonicMainnetCoreDeployment,
   },
-  beraTestnet: {
-    ...BeraTestnetLbaDeployment,
-    ...BeraTestnetCoreDeployment,
-  },
   abstractTestnet: {
     ...AbstractTestnetLbaDeployment,
     ...AbstractTestnetCoreDeployment,
@@ -102,6 +100,14 @@ export const VERTEX_DEPLOYMENTS: Record<ChainEnv, VertexDeploymentAddresses> = {
   abstract: {
     ...AbstractMainnetLbaDeployment,
     ...AbstractMainnetCoreDeployment,
+  },
+  beraTestnet: {
+    ...BeraTestnetLbaDeployment,
+    ...BeraTestnetCoreDeployment,
+  },
+  bera: {
+    ...BeraMainnetLbaDeployment,
+    ...BeraMainnetCoreDeployment,
   },
   local: {
     ...LocalLbaDeployment,
