@@ -18,4 +18,5 @@ export const INDEXER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   abstractTestnet: 'https://archive.abstract-test.vertexprotocol.com/v1',
   abstract: 'https://archive.abstract-prod.vertexprotocol.com/v1',
   bera: 'https://archive.bera-prod.vertexprotocol.com/v1',
+  avaxTestnet: 'https://archive.avax-test.vertexprotocol.com/v1',
 };

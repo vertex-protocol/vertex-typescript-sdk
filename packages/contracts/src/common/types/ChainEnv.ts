@@ -9,6 +9,7 @@ export const TESTNET_CHAIN_ENVS = [
   'sonicTestnet',
   'beraTestnet',
   'abstractTestnet',
+  'avaxTestnet',
 ] as const satisfies string[];
 
 export const MAINNET_CHAIN_ENVS = [

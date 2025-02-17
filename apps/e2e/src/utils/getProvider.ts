@@ -85,5 +85,10 @@ export function getProvider(chainEnv: ChainEnv): Provider {
         name: 'bera',
         chainId: 80094,
       });
+    case 'avaxTestnet':
+      return new JsonRpcProvider('https://api.avax-test.network/ext/bc/C/rpc', {
+        name: 'avax-testnet',
+        chainId: 43113,
+      });
   }
 }
