@@ -18,6 +18,7 @@ export const ENGINE_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   abstractTestnet: 'https://gateway.abstract-test.vertexprotocol.com/v1',
   abstract: 'https://gateway.abstract-prod.vertexprotocol.com/v1',
   bera: 'https://gateway.bera-prod.vertexprotocol.com/v1',
+  avaxTestnet: 'https://gateway.avax-test.vertexprotocol.com/v1',
 };
 
 export const ENGINE_WS_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
@@ -38,6 +39,7 @@ export const ENGINE_WS_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   abstractTestnet: 'wss://gateway.abstract-test.vertexprotocol.com/v1/ws',
   abstract: 'wss://gateway.abstract-prod.vertexprotocol.com/v1/ws',
   bera: 'wss://gateway.bera-prod.vertexprotocol.com/v1/ws',
+  avaxTestnet: 'wss://gateway.avax-test.vertexprotocol.com/v1/ws',
 };
 
 export const ENGINE_WS_SUBSCRIPTION_CLIENT_ENDPOINTS: Record<ChainEnv, string> =
@@ -61,4 +63,5 @@ export const ENGINE_WS_SUBSCRIPTION_CLIENT_ENDPOINTS: Record<ChainEnv, string> =
       'wss://gateway.abstract-test.vertexprotocol.com/v1/subscribe',
     abstract: 'wss://gateway.abstract-prod.vertexprotocol.com/v1/subscribe',
     bera: 'wss://gateway.bera-prod.vertexprotocol.com/v1/subscribe',
+    avaxTestnet: 'wss://gateway.avax-test.vertexprotocol.com/v1/subscribe',
   };
