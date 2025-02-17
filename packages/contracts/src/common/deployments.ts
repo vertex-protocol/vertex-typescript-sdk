@@ -15,6 +15,7 @@ import AbstractTestnetCoreDeployment from './deployments/core/deployment.abstrac
 import AbstractMainnetCoreDeployment from './deployments/core/deployment.abstractMainnet.json';
 import BeraTestnetCoreDeployment from './deployments/core/deployment.beraTestnet.json';
 import BeraMainnetCoreDeployment from './deployments/core/deployment.beraMainnet.json';
+import AvaxTestnetCoreDeployment from './deployments/core/deployment.avaxTestnet.json';
 
 import ArbitrumOneLbaDeployment from './deployments/vrtx/deployment.arbitrumOne.json';
 import ArbitrumSepoliaLbaDeployment from './deployments/vrtx/deployment.arbitrumSepolia.json';
@@ -33,6 +34,7 @@ import AbstractTestnetLbaDeployment from './deployments/vrtx/deployment.abstract
 import AbstractMainnetLbaDeployment from './deployments/vrtx/deployment.abstractMainnet.json';
 import BeraTestnetLbaDeployment from './deployments/vrtx/deployment.beraTestnet.json';
 import BeraMainnetLbaDeployment from './deployments/vrtx/deployment.beraMainnet.json';
+import AvaxTestnetLbaDeployment from './deployments/vrtx/deployment.avaxTestnet.json';
 
 import { ChainEnv } from './types';
 import { VertexContracts } from './vertexContracts';
@@ -108,6 +110,10 @@ export const VERTEX_DEPLOYMENTS: Record<ChainEnv, VertexDeploymentAddresses> = {
   bera: {
     ...BeraMainnetLbaDeployment,
     ...BeraMainnetCoreDeployment,
+  },
+  avaxTestnet: {
+    ...AvaxTestnetLbaDeployment,
+    ...AvaxTestnetCoreDeployment,
   },
   local: {
     ...LocalLbaDeployment,
