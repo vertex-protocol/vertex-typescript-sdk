@@ -1,6 +1,6 @@
 import { EngineWithdrawCollateralParams } from '@vertex-protocol/engine-client';
-import { BigNumberish } from 'ethers';
 import { OptionalSignatureParams, OptionalSubaccountOwner } from '../types';
+import { BigDecimalish } from '@vertex-protocol/utils';
 
 export type ProductIdOrTokenAddress =
   | {
@@ -15,7 +15,7 @@ type TokenQueryParams = {
 } & ProductIdOrTokenAddress;
 
 export type ApproveAllowanceParams = ProductIdOrTokenAddress & {
-  amount: BigNumberish;
+  amount: BigDecimalish;
 };
 
 export type GetTokenWalletBalanceParams = TokenQueryParams;

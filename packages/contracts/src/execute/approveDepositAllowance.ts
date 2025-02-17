@@ -1,9 +1,9 @@
-import { BigNumberish } from 'ethers';
 import { IERC20 } from '../typechain-types';
 import { WithContract } from '../common';
+import { BigDecimalish, toBigInt } from '@vertex-protocol/utils';
 
 export interface ApproveDepositAllowanceParams {
-  amount: BigNumberish;
+  amount: BigDecimalish;
   tokenContract: IERC20;
 }
 
@@ -15,5 +15,5 @@ export async function approveDepositAllowance({
   amount,
   tokenContract,
 }: WithContract<'endpoint', ApproveDepositAllowanceParams>) {
-  return tokenContract.approve(await endpoint.getAddress(), amount);
+  return tokenContract.approve(await endpoint.getAddress(), toBigInt(amount));
 }

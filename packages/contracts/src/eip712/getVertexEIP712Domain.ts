@@ -1,5 +1,4 @@
 import { TypedDataDomain } from 'ethers';
-import { BigNumberish } from 'ethers/lib.esm/utils';
 
 /**
  * Gives the EIP712 data domain for order signing
@@ -9,12 +8,12 @@ import { BigNumberish } from 'ethers/lib.esm/utils';
  */
 export function getVertexEIP712Domain(
   contractAddress: string,
-  chainId: BigNumberish,
+  chainId: number,
 ): TypedDataDomain {
   return {
     name: 'Vertex',
     version: '0.0.1',
-    chainId: chainId,
+    chainId,
     verifyingContract: contractAddress,
   };
 }

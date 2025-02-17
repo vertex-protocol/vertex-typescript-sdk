@@ -2,7 +2,6 @@ import {
   getChainIdFromSigner,
   WithContracts,
 } from '@vertex-protocol/contracts';
-import { BigNumberish } from 'ethers/lib.esm';
 import { VertexClientContext } from '../context';
 import { isSigner } from '../utils';
 
@@ -25,8 +24,8 @@ export class BaseVertexAPI {
   }
 
   protected async getSignerChainIdIfNeeded(params: {
-    chainId?: BigNumberish;
-  }): Promise<BigNumberish> {
+    chainId?: number;
+  }): Promise<number> {
     if (params.chainId) {
       return params.chainId;
     }

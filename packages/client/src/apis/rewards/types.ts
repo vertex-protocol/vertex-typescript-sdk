@@ -1,7 +1,7 @@
-import { BigNumberish } from 'ethers';
+import { BigDecimalish } from '@vertex-protocol/utils';
 
 export interface VrtxTokenAmountParams {
-  amount: BigNumberish;
+  amount: BigDecimalish;
 }
 
 export type ClaimTokensToLbaParams = VrtxTokenAmountParams;

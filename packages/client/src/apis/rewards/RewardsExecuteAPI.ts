@@ -9,6 +9,7 @@ import {
   ClaimTokensToLbaParams,
   VrtxTokenAmountParams,
 } from './types';
+import { toBigInt } from '@vertex-protocol/utils';
 
 export class RewardsExecuteAPI extends BaseVertexAPI {
   /**
@@ -22,8 +23,8 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
     )[LBA_AIRDROP_EPOCH];
 
     return this.context.contracts.vrtxAirdrop.claimToLBA(
-      params.amount,
-      totalAmount.toFixed(0),
+      toBigInt(params.amount),
+      toBigInt(totalAmount),
       proof,
     );
   }
@@ -32,21 +33,23 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    * Deposit USDC into the LBA pool
    */
   async depositLbaUsdc(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxLba.depositUsdc(params.amount);
+    return this.context.contracts.vrtxLba.depositUsdc(toBigInt(params.amount));
   }
 
   /**
    * Withdraw USDC from the LBA pool
    */
   async withdrawLbaUsdc(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxLba.withdrawUsdc(params.amount);
+    return this.context.contracts.vrtxLba.withdrawUsdc(toBigInt(params.amount));
   }
 
   /**
    * Withdraw LP liquidity tokens from the LBA pool after the AMM has been created
    */
   async withdrawLbaLiquidity(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxLba.withdrawLiquidity(params.amount);
+    return this.context.contracts.vrtxLba.withdrawLiquidity(
+      toBigInt(params.amount),
+    );
   }
 
   /**
@@ -85,21 +88,21 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    * Stake VRTX tokens
    */
   async stake(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxStaking.stake(params.amount);
+    return this.context.contracts.vrtxStaking.stake(toBigInt(params.amount));
   }
 
   /**
    * Stake V2 VRTX tokens
    */
   async stakeV2(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxStakingV2.stake(params.amount);
+    return this.context.contracts.vrtxStakingV2.stake(toBigInt(params.amount));
   }
 
   /**
    * Unstake VRTX tokens, unstaked tokens that are unlocked will need to be withdrawn
    */
   async unstake(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxStaking.withdraw(params.amount);
+    return this.context.contracts.vrtxStaking.withdraw(toBigInt(params.amount));
   }
 
   /**
@@ -172,7 +175,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
       if (item.totalAmount.gt(0) && claimed[idx] === 0n) {
         proofsToClaim.push({
           proof: item.proof,
-          totalAmount: item.totalAmount.toFixed(0),
+          totalAmount: toBigInt(item.totalAmount),
           week: idx,
         });
       }
@@ -214,6 +217,11 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
       return availableAmount.toFixed(0);
     })();
 
-    return [params.epoch, amountToClaim, totalAmount.toFixed(0), proof];
+    return [
+      params.epoch,
+      toBigInt(amountToClaim),
+      toBigInt(totalAmount),
+      proof,
+    ];
   }
 }

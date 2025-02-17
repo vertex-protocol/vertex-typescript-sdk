@@ -1,10 +1,9 @@
-import { BigNumberish } from 'ethers';
-
+import { BigDecimalish } from '@vertex-protocol/utils';
 import { Bytes } from './bytes';
 
 export interface MintMockERC20Params {
-  productId: BigNumberish;
-  amount: BigNumberish;
+  productId: number;
+  amount: BigDecimalish;
 }
 
 export interface SettlePnlParams {

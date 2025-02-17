@@ -1,4 +1,4 @@
-import { BigNumberish, TypedDataEncoder } from 'ethers';
+import { TypedDataEncoder } from 'ethers';
 import { getVertexEIP712Domain } from './getVertexEIP712Domain';
 import { getVertexEIP712Types } from './getVertexEIP712Types';
 import { getVertexEIP712Values } from './getVertexEIP712Values';
@@ -10,7 +10,7 @@ import {
 interface OrderDigestParams {
   order: EIP712OrderParams;
   verifyingAddr: string;
-  chainId: BigNumberish;
+  chainId: number;
 }
 
 /**
@@ -30,7 +30,7 @@ export function getOrderDigest(params: OrderDigestParams): string {
 interface IsolatedOrderDigestParams {
   order: EIP712IsolatedOrderParams;
   verifyingAddr: string;
-  chainId: BigNumberish;
+  chainId: number;
 }
 
 /**
