@@ -1,5 +1,9 @@
 import { EngineBaseClient } from './EngineBaseClient';
-import { EngineServerIpBlockResponse, GetEngineTimeResponse } from './types';
+import {
+  EngineServerIpBlockResponse,
+  GetEngineIpBlockStatusResponse,
+  GetEngineTimeResponse,
+} from './types';
 
 /**
  * Queries that talk directly to web, _not_ the engine. Placing here in the `engine-client` as we don't have enough
@@ -7,9 +11,9 @@ import { EngineServerIpBlockResponse, GetEngineTimeResponse } from './types';
  */
 export class EngineWebClient extends EngineBaseClient {
   /**
-   * Determines whether client IP is blocked from interacting with the engine
+   * Determines the IP block status for the current client
    */
-  async getIsBlockedIp(): Promise<boolean> {
+  async getIpBlockStatus(): Promise<GetEngineIpBlockStatusResponse> {
     return (
       this.axiosInstance
         // Use the /time endpoint and listen to 403 responses
@@ -21,11 +25,15 @@ export class EngineWebClient extends EngineBaseClient {
         })
         .then((res) => {
           if (res.status !== 403) {
-            return false;
+            return null;
           }
           const resData = res.data as EngineServerIpBlockResponse;
 
-          return Boolean(resData.blocked && resData.reason === 'ip');
+          if (!resData.blocked) {
+            return null;
+          }
+
+          return resData.reason === 'ip_query_only' ? 'query_only' : 'blocked';
         })
     );
   }

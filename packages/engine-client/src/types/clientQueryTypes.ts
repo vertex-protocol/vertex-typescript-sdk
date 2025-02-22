@@ -277,3 +277,11 @@ export interface EngineMinDepositRate {
 export interface GetEngineMinDepositRatesResponse {
   minDepositRates: Record<number, EngineMinDepositRate>;
 }
+
+/**
+ * Given an IP, backend will either:
+ * - Allow queries only through archive / engine (query_only)
+ * - Block all requests (blocked)
+ * - Allow all requests (null)
+ */
+export type GetEngineIpBlockStatusResponse = 'query_only' | 'blocked' | null;
