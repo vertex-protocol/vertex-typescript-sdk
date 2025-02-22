@@ -28,13 +28,14 @@
     "build": "tsc -b",
     "dev": "tsc -w"
   },
-  "peerDependencies": {
-    "bignumber.js": "^9.1.2",
+  "dependencies": {
     "ethers": "*"
   },
+  "peerDependencies": {
+    "bignumber.js": "^9.1.2"
+  },
   "devDependencies": {
-    "bignumber.js": "^9.1.2",
-    "ethers": "*"
+    "bignumber.js": "^9.1.2"
   },
   "gitHead": "88119393c0d18cf3be1578e2a3a60b10e18b09f6"
 }

@@ -25,13 +25,12 @@
     "@vertex-protocol/contracts": "^0.78.0",
     "@vertex-protocol/utils": "^0.78.0",
     "axios": "*",
+    "ethers": "*",
     "ts-mixer": "*"
   },
   "peerDependencies": {
-    "ethers": "*"
   },
   "devDependencies": {
-    "ethers": "*"
   },
   "gitHead": "88119393c0d18cf3be1578e2a3a60b10e18b09f6"
 }
