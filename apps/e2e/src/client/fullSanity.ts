@@ -71,7 +71,7 @@ async function fullSanity(context: RunContext) {
     expiration: getExpiration('post_only', 60).toString(),
     // Limit price
     price: 3000,
-    amount: toFixedPoint(-3.5).toString(),
+    amount: toFixedPoint(-3.5),
   };
 
   const orderResult = await vertexClient.market.placeOrder({
@@ -92,7 +92,7 @@ async function fullSanity(context: RunContext) {
       expiration: getExpiration('post_only', 60).toString(),
       // Limit price
       price: 3000,
-      amount: toFixedPoint(-3.5).toString(),
+      amount: toFixedPoint(-3.5),
     },
     // Product you're sending the order for
     productId: 3,

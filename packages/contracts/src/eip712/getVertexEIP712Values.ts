@@ -1,4 +1,4 @@
-import { toX18 } from '@vertex-protocol/utils';
+import { toIntegerString, toX18 } from '@vertex-protocol/utils';
 import { subaccountToHex } from '../utils';
 import {
   EIP712BurnLpValues,
@@ -111,8 +111,8 @@ function getWithdrawCollateralValues(
       subaccountName: params.subaccountName,
     }),
     productId: params.productId,
-    amount: BigInt(params.amount).toString(),
-    nonce: BigInt(params.nonce).toString(),
+    amount: toIntegerString(params.amount),
+    nonce: params.nonce,
   };
 }
 
@@ -123,10 +123,10 @@ function getMintLpValues(params: EIP712MintLpParams): EIP712MintLpValues {
       subaccountName: params.subaccountName,
     }),
     productId: params.productId,
-    amountBase: params.amountBase.toString(),
-    quoteAmountLow: params.quoteAmountLow.toString(),
-    quoteAmountHigh: params.quoteAmountHigh.toString(),
-    nonce: BigInt(params.nonce).toString(),
+    amountBase: toIntegerString(params.amountBase),
+    quoteAmountLow: toIntegerString(params.quoteAmountLow),
+    quoteAmountHigh: toIntegerString(params.quoteAmountHigh),
+    nonce: params.nonce,
   };
 }
 
@@ -137,8 +137,8 @@ function getBurnLpValues(params: EIP712BurnLpParams): EIP712BurnLpValues {
       subaccountName: params.subaccountName,
     }),
     productId: params.productId,
-    amount: params.amount.toString(),
-    nonce: BigInt(params.nonce).toString(),
+    amount: toIntegerString(params.amount),
+    nonce: params.nonce,
   };
 }
 
@@ -148,10 +148,10 @@ function getOrderValues(params: EIP712OrderParams): EIP712OrderValues {
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
-    priceX18: toX18(params.price).toString(),
-    amount: BigInt(params.amount).toString(),
-    expiration: BigInt(params.expiration).toString(),
-    nonce: BigInt(params.nonce).toString(),
+    priceX18: toIntegerString(toX18(params.price)),
+    amount: toIntegerString(params.amount),
+    expiration: toIntegerString(params.expiration),
+    nonce: params.nonce,
   };
 }
 
@@ -160,7 +160,7 @@ function getIsolatedOrderValues(
 ): EIP712IsolatedOrderValues {
   return {
     ...getOrderValues(params),
-    margin: BigInt(params.margin).toString(),
+    margin: toIntegerString(params.margin),
   };
 }
 
@@ -168,7 +168,7 @@ function getListTriggerOrdersValues(
   params: EIP712ListTriggerOrdersParams,
 ): EIP712ListTriggerOrdersValues {
   return {
-    recvTime: BigInt(params.recvTime).toString(),
+    recvTime: toIntegerString(params.recvTime),
     sender: subaccountToHex({
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
@@ -186,7 +186,7 @@ function getOrderCancellationValues(
     }),
     productIds: params.productIds,
     digests: params.digests,
-    nonce: BigInt(params.nonce).toString(),
+    nonce: params.nonce,
   };
 }
 
@@ -199,7 +199,7 @@ function getProductOrdersCancellationValues(
       subaccountName: params.subaccountName,
     }),
     productIds: params.productIds,
-    nonce: BigInt(params.nonce).toString(),
+    nonce: params.nonce,
   };
 }
 
@@ -216,9 +216,9 @@ function getLiquidateSubaccountValues(
       subaccountName: params.liquidateeName,
     }),
     mode: params.mode,
-    healthGroup: params.healthGroup.toString(),
-    amount: BigInt(params.amount).toString(),
-    nonce: BigInt(params.nonce).toString(),
+    healthGroup: toIntegerString(params.healthGroup),
+    amount: toIntegerString(params.amount),
+    nonce: params.nonce,
   };
 }
 
@@ -231,7 +231,7 @@ function getLinkSignerValues(
       subaccountName: params.subaccountName,
     }),
     signer: params.signer,
-    nonce: BigInt(params.nonce).toString(),
+    nonce: params.nonce,
   };
 }
 
@@ -247,8 +247,8 @@ function getTransferQuoteValues(
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.recipientSubaccountName,
     }),
-    amount: BigInt(params.amount).toString(),
-    nonce: BigInt(params.nonce).toString(),
+    amount: toIntegerString(params.amount),
+    nonce: params.nonce,
   };
 }
 
@@ -260,6 +260,6 @@ function getLeaderboardAuthenticationValues(
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
-    expiration: BigInt(params.expiration).toString(),
+    expiration: toIntegerString(params.expiration),
   };
 }
