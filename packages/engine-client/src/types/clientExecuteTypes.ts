@@ -58,7 +58,7 @@ export type EnginePlaceIsolatedOrderParams = WithBaseEngineExecuteParams<{
   id?: number;
   productId: number;
   order: EngineIsolatedOrderParams;
-  // Whether the cross subaccount can borrow quote for the margin transfer into the isolated subaccount. If not given, engine defaults to false
+  // Whether the cross subaccount can borrow quote for the margin transfer into the isolated subaccount. If not given, engine defaults to true.
   borrowMargin?: boolean;
 }>;
 
