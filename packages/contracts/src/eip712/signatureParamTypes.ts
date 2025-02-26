@@ -1,4 +1,5 @@
 import { BigDecimalish } from '@vertex-protocol/utils';
+import { Address } from 'viem';
 import { Subaccount } from '../common';
 
 export interface SignedTx<TBaseTx> {
@@ -75,7 +76,7 @@ export interface EIP712CancelProductOrdersParams extends Subaccount {
 }
 
 export interface EIP712LinkSignerParams extends Subaccount {
-  signer: string;
+  signer: Address;
   nonce: string;
 }
 

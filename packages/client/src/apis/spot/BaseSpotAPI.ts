@@ -1,5 +1,7 @@
+import { ContractInstance, ERC20_ABI } from '@vertex-protocol/contracts';
+import { getValidatedAddress } from '@vertex-protocol/utils';
+import { getContract } from 'viem';
 import { BaseVertexAPI } from '../base';
-import { IERC20, IERC20__factory } from '@vertex-protocol/contracts';
 import { ProductIdOrTokenAddress } from './types';
 
 export class BaseSpotAPI extends BaseVertexAPI {
@@ -8,16 +10,21 @@ export class BaseSpotAPI extends BaseVertexAPI {
    */
   async getTokenContractForProduct(
     params: ProductIdOrTokenAddress,
-  ): Promise<IERC20> {
+  ): Promise<ContractInstance<typeof ERC20_ABI>> {
     let tokenAddress: string;
     if ('productId' in params) {
-      const config = await this.context.contracts.spotEngine.getConfig(
+      const config = await this.context.contracts.spotEngine.read.getConfig([
         params.productId,
-      );
+      ]);
       tokenAddress = config.token;
     } else {
       tokenAddress = params.tokenAddress;
     }
-    return IERC20__factory.connect(tokenAddress, this.context.signerOrProvider);
+
+    return getContract({
+      abi: ERC20_ABI,
+      address: getValidatedAddress(tokenAddress),
+      client: this.context.walletClient ?? this.context.publicClient,
+    });
   }
 }

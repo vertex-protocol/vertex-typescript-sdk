@@ -1,4 +1,5 @@
 import { BigDecimalish } from '@vertex-protocol/utils';
+import { Hex } from 'viem';
 import {
   EIP712BurnLpParams,
   EIP712CancelOrdersParams,
@@ -17,7 +18,7 @@ type WithEIP712Sender<
   T extends { subaccountOwner: string; subaccountName: string },
 > = Omit<T, 'subaccountOwner' | 'subaccountName'> & {
   // Hex encoded bytes32
-  sender: string;
+  sender: Hex;
 };
 
 export type EIP712WithdrawCollateralValues =

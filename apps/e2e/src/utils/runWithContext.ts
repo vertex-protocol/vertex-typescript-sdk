@@ -1,25 +1,39 @@
-import { RunContext, RunFn } from './types';
-import { getProvider } from './getProvider';
-import { env } from './env';
-import { Wallet } from 'ethers';
+import {
+  CHAIN_ENV_TO_CHAIN,
+  VERTEX_DEPLOYMENTS,
+} from '@vertex-protocol/contracts';
 import { ENGINE_CLIENT_ENDPOINTS } from '@vertex-protocol/engine-client';
 import { INDEXER_CLIENT_ENDPOINTS } from '@vertex-protocol/indexer-client';
-import { VERTEX_DEPLOYMENTS } from '@vertex-protocol/contracts';
 import { TRIGGER_CLIENT_ENDPOINTS } from '@vertex-protocol/trigger-client';
+import { createPublicClient, createWalletClient, http } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+import { env } from './env';
+import { RunContext, RunFn } from './types';
 
 export function runWithContext(runFn: RunFn) {
-  const provider = getProvider(env.chainEnv);
-  const getWallet = () => {
+  const getWalletClient = () => {
     if (!env.privateKey) {
       throw new Error('No private key found. Please check .env');
     }
-    return new Wallet(env.privateKey, provider);
+    const account = privateKeyToAccount(env.privateKey);
+
+    return createWalletClient({
+      account,
+      chain: CHAIN_ENV_TO_CHAIN[env.chainEnv],
+      transport: http(),
+    });
   };
 
+  const publicClient = createPublicClient({
+    chain: CHAIN_ENV_TO_CHAIN[env.chainEnv],
+    transport: http(),
+    // The cast below is needed for some reason
+  }) as RunContext['publicClient'];
+
   const context: RunContext = {
-    provider,
     env,
-    getWallet,
+    getWalletClient,
+    publicClient,
     endpoints: {
       engine: ENGINE_CLIENT_ENDPOINTS[env.chainEnv],
       indexer: INDEXER_CLIENT_ENDPOINTS[env.chainEnv],

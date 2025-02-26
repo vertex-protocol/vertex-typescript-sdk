@@ -1,19 +1,18 @@
-import { IERC20 } from '../typechain-types';
-import { WithContract } from '../common';
 import { BigDecimalish, toBigInt } from '@vertex-protocol/utils';
+import { ERC20_ABI, WithContract, WriteableContractInstance } from '../common';
 
 export interface ApproveDepositAllowanceParams {
   amount: BigDecimalish;
-  tokenContract: IERC20;
+  tokenContract: WriteableContractInstance<typeof ERC20_ABI>;
 }
 
 /**
  * Approves the endpoint contract to spend the amount of tokens specified
  */
-export async function approveDepositAllowance({
+export function approveDepositAllowance({
   endpoint,
   amount,
   tokenContract,
 }: WithContract<'endpoint', ApproveDepositAllowanceParams>) {
-  return tokenContract.approve(await endpoint.getAddress(), toBigInt(amount));
+  return tokenContract.write.approve([endpoint.address, toBigInt(amount)]);
 }

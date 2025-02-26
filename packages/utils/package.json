@@ -29,7 +29,6 @@
     "dev": "tsc -w"
   },
   "dependencies": {
-    "ethers": "*"
   },
   "peerDependencies": {
     "bignumber.js": "^9.1.2",

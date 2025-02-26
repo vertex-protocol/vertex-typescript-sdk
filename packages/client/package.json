@@ -27,7 +27,6 @@
     "@vertex-protocol/indexer-client": "^0.80.0",
     "@vertex-protocol/trigger-client": "^0.80.0",
     "@vertex-protocol/utils": "^0.80.0",
-    "ethers": "*",
     "ts-mixer": "*"
   },
   "peerDependencies": {

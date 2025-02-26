@@ -10,6 +10,7 @@ import {
   Subaccount,
 } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils';
+import { Hex } from 'viem';
 import { CandlestickPeriod } from './CandlestickPeriod';
 import { IndexerEventType } from './IndexerEventType';
 import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
@@ -565,7 +566,7 @@ export interface GetIndexerReferralCodeResponse {
  */
 
 export interface IndexerMerkleProof {
-  proof: string[];
+  proof: Hex[];
   totalAmount: BigDecimal;
 }
 
@@ -893,8 +894,8 @@ export type GetIndexerFastWithdrawalSignatureParams =
   IndexerServerFastWithdrawalSignatureParams;
 
 export interface GetIndexerFastWithdrawalSignatureResponse {
-  idx: string;
+  idx: bigint;
   tx: VertexWithdrawCollateralTx['withdraw_collateral'];
-  txBytes: string;
-  signatures: string[];
+  txBytes: Hex;
+  signatures: Hex[];
 }

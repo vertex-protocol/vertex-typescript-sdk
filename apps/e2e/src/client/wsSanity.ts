@@ -4,7 +4,6 @@ import {
   VertexClient,
 } from '@vertex-protocol/client';
 import {
-  getChainIdFromSigner,
   getOrderDigest,
   getOrderNonce,
   subaccountToHex,
@@ -14,12 +13,15 @@ import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 
 async function wsSanity(context: RunContext) {
-  const signer = context.getWallet();
+  const walletClient = context.getWalletClient();
+  const publicClient = context.publicClient;
   const vertexClient: VertexClient = createVertexClient(context.env.chainEnv, {
-    signerOrProvider: signer,
+    walletClient,
+    publicClient,
   });
 
-  const chainId = await getChainIdFromSigner(signer);
+  const chainId = walletClient.chain.id;
+  const walletClientAddress = walletClient.account.address;
 
   const orderParams: PlaceOrderParams['order'] = {
     subaccountName: 'default',
@@ -37,7 +39,7 @@ async function wsSanity(context: RunContext) {
   // Websocket payloads
   const wsOrder = {
     ...orderParams,
-    subaccountOwner: await signer.getAddress(),
+    subaccountOwner: walletClientAddress,
     nonce: getOrderNonce(),
   };
 
@@ -67,7 +69,7 @@ async function wsSanity(context: RunContext) {
   });
 
   const wsCancelOrdersReq = vertexClient.ws.execute.buildCancelOrdersMessage({
-    subaccountOwner: await signer.getAddress(),
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productIds: [1],
     digests: [wsOrderDigest],
@@ -81,7 +83,7 @@ async function wsSanity(context: RunContext) {
 
   const wsMintLpReq = await vertexClient.ws.execute.buildMintLpMessage({
     productId: 1,
-    subaccountOwner: await signer.getAddress(),
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     amountBase: toFixedPoint(1, 18),
     quoteAmountLow: toFixedPoint(1000, 18),
@@ -93,7 +95,7 @@ async function wsSanity(context: RunContext) {
 
   const wsBurnLpReq = await vertexClient.ws.execute.buildBurnLpMessage({
     productId: 1,
-    subaccountOwner: await signer.getAddress(),
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     amount: toFixedPoint(1, 18),
     signature: '',
@@ -103,7 +105,7 @@ async function wsSanity(context: RunContext) {
 
   const wsWithdrawCollateralReq =
     await vertexClient.ws.execute.buildWithdrawCollateralMessage({
-      subaccountOwner: signer.address,
+      subaccountOwner: walletClientAddress,
       subaccountName: 'default',
       productId: 0,
       amount: toFixedPoint(4999, 6),
@@ -122,7 +124,7 @@ async function wsSanity(context: RunContext) {
     'subaccount_info',
     {
       subaccount: subaccountToHex({
-        subaccountOwner: signer.address,
+        subaccountOwner: walletClientAddress,
         subaccountName: 'default',
       }),
     },

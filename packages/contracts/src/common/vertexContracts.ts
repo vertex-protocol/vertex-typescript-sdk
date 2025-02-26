@@ -1,37 +1,12 @@
-import {
-  Endpoint,
-  FQuerier,
-  IAirdrop,
-  IArbAirdrop,
-  IClearinghouse,
-  IERC20,
-  ILBA,
-  IPerpEngine,
-  ISpotEngine,
-  IStaking,
-  IStakingV2,
-  IVesting,
-  WithdrawPool,
-} from '../typechain-types';
+import { WriteableContractInstance } from './types';
+import { VertexAbis, VertexContractName } from './vertexAbis';
 
 /**
- * Encapsulates the set of Vertex contracts required for querying and executing
+ * Encapsulates the set of Vertex contracts required for querying and executing, assumes that a wallet client is connected
  */
-export interface VertexContracts {
-  querier: FQuerier;
-  endpoint: Endpoint;
-  clearinghouse: IClearinghouse;
-  spotEngine: ISpotEngine;
-  perpEngine: IPerpEngine;
-  foundationRewardsAirdrop: IArbAirdrop;
-  withdrawPool: WithdrawPool;
-  vrtxToken: IERC20;
-  vrtxAirdrop: IAirdrop;
-  vrtxLba: ILBA;
-  vrtxVesting: IVesting;
-  vrtxStaking: IStaking;
-  vrtxStakingV2: IStakingV2;
-}
+export type VertexContracts = {
+  [name in VertexContractName]: WriteableContractInstance<VertexAbis[name]>;
+};
 
 // Utility types to bundle parameters with contracts
 export type WithContracts<T> = T & VertexContracts;

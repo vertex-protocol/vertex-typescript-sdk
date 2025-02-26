@@ -4,86 +4,98 @@ import {
   VertexClient,
 } from '@vertex-protocol/client';
 import {
-  getChainIdFromSigner,
   getOrderDigest,
   getOrderNonce,
   getVertexEIP712Values,
 } from '@vertex-protocol/contracts';
 import { toBigInt, toFixedPoint } from '@vertex-protocol/utils';
-import {
-  Address,
-  encodeAbiParameters,
-  encodePacked,
-  parseAbiParameters,
-  toBytes,
-} from 'viem';
+import { encodeAbiParameters, encodePacked, parseAbiParameters } from 'viem';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
+import { waitForTransaction } from '../utils/waitForTransaction';
 
 async function fullSanity(context: RunContext) {
-  const signer = context.getWallet();
+  const walletClient = context.getWalletClient();
+  const publicClient = context.publicClient;
+
   const vertexClient: VertexClient = createVertexClient(context.env.chainEnv, {
-    signerOrProvider: signer,
+    walletClient,
+    publicClient,
   });
 
-  const chainId = await getChainIdFromSigner(signer);
+  const chainId = walletClient.chain.id;
+  const walletClientAddress = walletClient.account.address;
 
   console.log('Minting tokens...');
-  const mintTx = await vertexClient.spot._mintMockERC20({
-    // 20000 tokens
-    amount: toFixedPoint(20000, 6),
-    productId: 0,
-  });
-  await mintTx.wait();
+  await waitForTransaction(
+    vertexClient.spot._mintMockERC20({
+      // 20000 tokens
+      amount: toFixedPoint(20000, 6),
+      productId: 0,
+    }),
+    publicClient,
+  );
 
   console.log('Approving allowance...');
-  const approveTx = await vertexClient.spot.approveAllowance({
-    amount: toFixedPoint(20000, 6),
-    productId: 0,
-  });
-  await approveTx.wait();
+  await waitForTransaction(
+    vertexClient.spot.approveAllowance({
+      amount: toFixedPoint(20000, 6),
+      productId: 0,
+    }),
+    publicClient,
+  );
 
   console.log('Depositing tokens with referral code...');
-  const depositWithReferralTx = await vertexClient.spot.deposit({
-    subaccountName: 'default',
-    productId: 0,
-    amount: toFixedPoint(10000, 6),
-    referralCode: 'Blk23MeZU3',
-  });
-  await depositWithReferralTx.wait();
+  await waitForTransaction(
+    vertexClient.spot.deposit({
+      subaccountName: 'default',
+      productId: 0,
+      amount: toFixedPoint(10000, 6),
+      referralCode: 'Blk23MeZU3',
+    }),
+    publicClient,
+  );
 
   const referralCode =
-    await vertexClient.context.contracts.endpoint.referralCodes(
-      await signer.getAddress(),
-    );
+    await vertexClient.context.contracts.endpoint.read.referralCodes([
+      walletClientAddress,
+    ]);
 
   prettyPrint('Referral code', referralCode);
 
   console.log('Depositing tokens...');
-  const depositTx = await vertexClient.spot.deposit({
-    subaccountName: 'default',
-    productId: 0,
-    amount: toFixedPoint(10000, 6),
-  });
-  await depositTx.wait();
+  await waitForTransaction(
+    vertexClient.spot.deposit({
+      subaccountName: 'default',
+      productId: 0,
+      amount: toFixedPoint(10000, 6),
+    }),
+    publicClient,
+  );
+
+  const allMarkets = await vertexClient.market.getAllMarkets();
 
   console.log('Placing order...');
+  const spotOrderProductId = 4;
+  const spotOrderProductOraclePrice = allMarkets.find(
+    (market) => market.productId === spotOrderProductId,
+  )!.product.oraclePrice;
+  const spotOrderShortLimitPrice = spotOrderProductOraclePrice
+    .multipliedBy(1.1)
+    .decimalPlaces(0);
   const orderNonce = getOrderNonce();
-
   const orderParams: PlaceOrderParams['order'] = {
     subaccountName: 'default',
     expiration: getExpiration('post_only', 60).toString(),
-    // Limit price
-    price: 3000,
+    price: spotOrderShortLimitPrice,
     amount: toFixedPoint(-3.5),
   };
 
   const orderResult = await vertexClient.market.placeOrder({
     order: orderParams,
-    // Product you're sending the order for
-    productId: 3,
+    productId: spotOrderProductId,
     nonce: orderNonce,
   });
 
@@ -96,12 +108,10 @@ async function fullSanity(context: RunContext) {
     order: {
       subaccountName: 'default',
       expiration: getExpiration('post_only', 60).toString(),
-      // Limit price
-      price: 3000,
+      price: spotOrderShortLimitPrice,
       amount: toFixedPoint(-3.5),
     },
-    // Product you're sending the order for
-    productId: 3,
+    productId: spotOrderProductId,
     nonce: getOrderNonce(),
   });
 
@@ -109,15 +119,17 @@ async function fullSanity(context: RunContext) {
 
   const subaccountOrders =
     await vertexClient.context.engineClient.getSubaccountOrders({
-      productId: 3,
+      productId: spotOrderProductId,
       subaccountName: 'default',
-      subaccountOwner: signer.address,
+      subaccountOwner: walletClientAddress,
     });
 
   prettyPrint('Subaccount orders', subaccountOrders);
 
   const verifyingAddr =
-    await vertexClient.context.engineClient.getOrderbookAddress(3);
+    await vertexClient.context.engineClient.getOrderbookAddress(
+      spotOrderProductId,
+    );
 
   const digest = getOrderDigest({
     order: orderResult.orderParams,
@@ -130,15 +142,17 @@ async function fullSanity(context: RunContext) {
   console.log(`Cancelling order`);
   const cancelResult = await vertexClient.market.cancelOrders({
     digests: [digest],
-    productIds: [3],
+    productIds: [spotOrderProductId],
     subaccountName: 'default',
   });
 
   prettyPrint('Cancel order result', cancelResult);
 
+  const perpOrderProductId = 4;
+
   const perpOrderResult = await vertexClient.market.placeOrder({
     order: orderParams,
-    productId: 4,
+    productId: perpOrderProductId,
     nonce: getOrderNonce(),
   });
 
@@ -147,7 +161,9 @@ async function fullSanity(context: RunContext) {
   const perpOrderDigest = getOrderDigest({
     order: perpOrderResult.orderParams,
     verifyingAddr:
-      await vertexClient.context.engineClient.getOrderbookAddress(4),
+      await vertexClient.context.engineClient.getOrderbookAddress(
+        perpOrderProductId,
+      ),
     chainId,
   });
 
@@ -155,12 +171,12 @@ async function fullSanity(context: RunContext) {
   const cancelAndPlaceResult = await vertexClient.market.cancelAndPlace({
     cancelOrders: {
       digests: [perpOrderDigest],
-      productIds: [4],
+      productIds: [perpOrderProductId],
       subaccountName: 'default',
     },
     placeOrder: {
       order: orderParams,
-      productId: 3,
+      productId: spotOrderProductId,
       nonce: getOrderNonce(),
     },
   });
@@ -183,22 +199,22 @@ async function fullSanity(context: RunContext) {
 
   // Subaccount state from engine
   await vertexClient.subaccount.getEngineSubaccountSummary({
-    subaccountOwner: await signer.getAddress(),
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
   // Subaccount state from Arbitrum
   await vertexClient.subaccount.getSubaccountSummary({
-    subaccountOwner: await signer.getAddress(),
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
 
   await vertexClient.market.getOpenSubaccountOrders({
-    subaccountOwner: await signer.getAddress(),
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    productId: 3,
+    productId: spotOrderProductId,
   });
   await vertexClient.market.getOpenSubaccountMultiProductOrders({
-    subaccountOwner: await signer.getAddress(),
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productIds: [1, 2, 3],
   });
@@ -209,7 +225,7 @@ async function fullSanity(context: RunContext) {
   });
 
   const nSubmissions =
-    await vertexClient.context.contracts.endpoint.nSubmissions();
+    await vertexClient.context.contracts.endpoint.read.nSubmissions();
 
   prettyPrint('nSubmissions', nSubmissions);
 
@@ -233,11 +249,13 @@ async function fullSanity(context: RunContext) {
   console.log('Slow mode withdrawal');
   // 1. approve 1 USDC for submitting slow-mode tx
   console.log('Approving 1 USDC allowance...');
-  const approveSlowModeTx = await vertexClient.spot.approveAllowance({
-    amount: toFixedPoint(1, 6),
-    productId: 0,
-  });
-  await approveSlowModeTx.wait();
+  await waitForTransaction(
+    vertexClient.spot.approveAllowance({
+      amount: toFixedPoint(1, 6),
+      productId: 0,
+    }),
+    publicClient,
+  );
 
   // 2. generate withdraw collateral tx
   const tx = getVertexEIP712Values('withdraw_collateral', {
@@ -245,17 +263,12 @@ async function fullSanity(context: RunContext) {
     nonce: await vertexClient.context.engineClient.getTxNonce(),
     productId: 0,
     subaccountName: 'default',
-    subaccountOwner: await signer.getAddress(),
+    subaccountOwner: walletClientAddress,
   });
 
   const encodedTx = encodeAbiParameters(
     parseAbiParameters('bytes32, uint32, uint128, uint64'),
-    [
-      tx.sender as Address,
-      tx.productId,
-      toBigInt(tx.amount),
-      toBigInt(tx.nonce),
-    ],
+    [tx.sender, tx.productId, toBigInt(tx.amount), toBigInt(tx.nonce)],
   );
   const encodedSlowModeTx = encodePacked(
     ['uint8', 'bytes'],
@@ -269,8 +282,8 @@ async function fullSanity(context: RunContext) {
   console.log('Submitting Slow mode withdrawal...');
   // 3. submit via slow-mode
   const txResp =
-    await vertexClient.context.contracts.endpoint.submitSlowModeTransaction(
-      toBytes(encodedSlowModeTx),
+    await vertexClient.context.contracts.endpoint.write.submitSlowModeTransaction(
+      [encodedSlowModeTx],
     );
 
   prettyPrint('Slow mode withdrawal Tx Response', txResp);
