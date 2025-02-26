@@ -27,7 +27,8 @@ import {
   toFixedPoint,
   toX18,
 } from '@vertex-protocol/utils';
-import { Wallet, ZeroAddress } from 'ethers';
+import { Wallet } from 'ethers';
+import { zeroAddress } from 'viem';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
@@ -380,7 +381,7 @@ async function fullSanity(context: RunContext) {
   const revokeSignerResult = await client.linkSigner({
     chainId,
     signer: subaccountToHex({
-      subaccountOwner: ZeroAddress,
+      subaccountOwner: zeroAddress,
       subaccountName: '',
     }),
     subaccountOwner: signer.address,

@@ -1,4 +1,5 @@
-import { TypedDataDomain } from 'ethers';
+import { TypedDataDomain } from 'abitype';
+import { Address } from 'viem';
 
 /**
  * Gives the EIP712 data domain for order signing
@@ -14,6 +15,6 @@ export function getVertexEIP712Domain(
     name: 'Vertex',
     version: '0.0.1',
     chainId,
-    verifyingContract: contractAddress,
+    verifyingContract: contractAddress as Address,
   };
 }
