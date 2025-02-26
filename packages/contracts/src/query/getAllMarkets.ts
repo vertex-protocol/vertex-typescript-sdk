@@ -1,6 +1,6 @@
+import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 import { MarketWithProduct, ProductEngineType, WithContracts } from '../common';
 import { mapContractPerpProduct, mapContractSpotProduct } from './utils';
-import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
 
 export type GetAllMarketsResponse = MarketWithProduct[];
 
@@ -11,7 +11,7 @@ export type GetAllMarketsResponse = MarketWithProduct[];
 export async function getAllMarkets({
   querier,
 }: WithContracts<unknown>): Promise<GetAllMarketsResponse> {
-  const contractData = await querier.getAllProducts();
+  const contractData = await querier.read.getAllProducts();
   const markets: MarketWithProduct[] = [];
 
   contractData.spotProducts.forEach((productInfo) => {

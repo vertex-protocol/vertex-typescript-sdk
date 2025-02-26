@@ -1,22 +1,12 @@
 import {
   ChainEnv,
-  Endpoint__factory,
-  FQuerier__factory,
-  IAirdrop__factory,
-  IArbAirdrop__factory,
-  IClearinghouse__factory,
-  IERC20__factory,
-  ILBA__factory,
-  IPerpEngine__factory,
-  ISpotEngine__factory,
-  IStaking__factory,
-  IStakingV2__factory,
-  IVesting__factory,
   VERTEX_DEPLOYMENTS,
+  VertexContractName,
   VertexContracts,
   VertexDeploymentAddresses,
-  WithdrawPool__factory,
+  WalletClientWithAccount,
 } from '@vertex-protocol/contracts';
+import { VERTEX_ABIS } from '@vertex-protocol/contracts/dist/common/vertexAbis';
 import {
   ENGINE_CLIENT_ENDPOINTS,
   EngineClient,
@@ -29,17 +19,15 @@ import {
   TRIGGER_CLIENT_ENDPOINTS,
   TriggerClient,
 } from '@vertex-protocol/trigger-client';
-import { Provider, Signer } from 'ethers';
-import { isSigner } from './utils';
+import { Address, getContract } from 'viem';
 
 /**
  * Context required to use the Vertex client.
  */
 export interface VertexClientContext {
-  // Must be a signer to use any executions
-  signerOrProvider: Signer | Provider;
-  // Used to sign engine transactions if provided, instead of signerOrProvider
-  linkedSigner?: Signer;
+  walletClient: WalletClientWithAccount;
+  // If provided, this is used to sign engine transactions instead of the account associated with walletClient
+  linkedSignerWalletClient?: WalletClientWithAccount;
   contracts: VertexContracts;
   contractAddresses: VertexDeploymentAddresses;
   engineClient: EngineClient;
@@ -60,9 +48,9 @@ interface VertexClientContextOpts {
 /**
  * Args for signing configuration for creating a context
  */
-export type CreateVertexClientContextSignerOpts = Pick<
+export type CreateVertexClientContextAccountOpts = Pick<
   VertexClientContext,
-  'signerOrProvider' | 'linkedSigner'
+  'walletClient' | 'linkedSignerWalletClient'
 >;
 
 export type CreateVertexClientContextOpts = VertexClientContextOpts | ChainEnv;
@@ -71,11 +59,11 @@ export type CreateVertexClientContextOpts = VertexClientContextOpts | ChainEnv;
  * Utility function to create client context from options
  *
  * @param opts
- * @param signerOpts
+ * @param accountOpts
  */
 export function createClientContext(
   opts: CreateVertexClientContextOpts,
-  signerOpts: CreateVertexClientContextSignerOpts,
+  accountOpts: CreateVertexClientContextAccountOpts,
 ): VertexClientContext {
   const {
     contractAddresses,
@@ -96,81 +84,108 @@ export function createClientContext(
       triggerEndpoint: TRIGGER_CLIENT_ENDPOINTS[chainEnv],
     };
   })();
-  const { signerOrProvider, linkedSigner } = signerOpts;
-
-  const validSigner = isSigner(signerOrProvider) ? signerOrProvider : undefined;
+  const { walletClient, linkedSignerWalletClient } = accountOpts;
 
   return {
-    signerOrProvider,
-    linkedSigner,
+    walletClient,
+    linkedSignerWalletClient,
     contracts: {
-      querier: FQuerier__factory.connect(
-        contractAddresses.querier,
-        signerOrProvider,
-      ),
-      clearinghouse: IClearinghouse__factory.connect(
-        contractAddresses.clearinghouse,
-        signerOrProvider,
-      ),
-      endpoint: Endpoint__factory.connect(
-        contractAddresses.endpoint,
-        signerOrProvider,
-      ),
-      spotEngine: ISpotEngine__factory.connect(
-        contractAddresses.spotEngine,
-        signerOrProvider,
-      ),
-      perpEngine: IPerpEngine__factory.connect(
-        contractAddresses.perpEngine,
-        signerOrProvider,
-      ),
-      foundationRewardsAirdrop: IArbAirdrop__factory.connect(
-        contractAddresses.foundationRewardsAirdrop,
-        signerOrProvider,
-      ),
-      withdrawPool: WithdrawPool__factory.connect(
-        contractAddresses.withdrawPool,
-        signerOrProvider,
-      ),
-      vrtxToken: IERC20__factory.connect(
-        contractAddresses.vrtxToken,
-        signerOrProvider,
-      ),
-      vrtxAirdrop: IAirdrop__factory.connect(
-        contractAddresses.vrtxAirdrop,
-        signerOrProvider,
-      ),
-      vrtxLba: ILBA__factory.connect(
-        contractAddresses.vrtxLba,
-        signerOrProvider,
-      ),
-      vrtxVesting: IVesting__factory.connect(
-        contractAddresses.vrtxVesting,
-        signerOrProvider,
-      ),
-      vrtxStaking: IStaking__factory.connect(
-        contractAddresses.vrtxStaking,
-        signerOrProvider,
-      ),
-      vrtxStakingV2: IStakingV2__factory.connect(
-        contractAddresses.vrtxStakingV2,
-        signerOrProvider,
-      ),
+      querier: getVertexContract({
+        contractAddresses,
+        contractName: 'querier',
+        walletClient,
+      }),
+      clearinghouse: getVertexContract({
+        contractAddresses,
+        contractName: 'clearinghouse',
+        walletClient,
+      }),
+      endpoint: getVertexContract({
+        contractAddresses,
+        contractName: 'endpoint',
+        walletClient,
+      }),
+      spotEngine: getVertexContract({
+        contractAddresses,
+        contractName: 'spotEngine',
+        walletClient,
+      }),
+      perpEngine: getVertexContract({
+        contractAddresses,
+        contractName: 'perpEngine',
+        walletClient,
+      }),
+      foundationRewardsAirdrop: getVertexContract({
+        contractAddresses,
+        contractName: 'foundationRewardsAirdrop',
+        walletClient,
+      }),
+      withdrawPool: getVertexContract({
+        contractAddresses,
+        contractName: 'withdrawPool',
+        walletClient,
+      }),
+      vrtxToken: getVertexContract({
+        contractAddresses,
+        contractName: 'vrtxToken',
+        walletClient,
+      }),
+      vrtxAirdrop: getVertexContract({
+        contractAddresses,
+        contractName: 'vrtxAirdrop',
+        walletClient,
+      }),
+      vrtxLba: getVertexContract({
+        contractAddresses,
+        contractName: 'vrtxLba',
+        walletClient,
+      }),
+      vrtxVesting: getVertexContract({
+        contractAddresses,
+        contractName: 'vrtxVesting',
+        walletClient,
+      }),
+      vrtxStaking: getVertexContract({
+        contractAddresses,
+        contractName: 'vrtxStaking',
+        walletClient,
+      }),
+      vrtxStakingV2: getVertexContract({
+        contractAddresses,
+        contractName: 'vrtxStakingV2',
+        walletClient,
+      }),
     },
     contractAddresses,
     engineClient: new EngineClient({
       url: engineEndpoint,
-      signer: validSigner,
-      linkedSigner: signerOpts.linkedSigner,
+      walletClient,
+      linkedSignerWalletClient,
     }),
     indexerClient: new IndexerClient({
       url: indexerEndpoint,
-      signer: validSigner,
+      walletClient,
     }),
     triggerClient: new TriggerClient({
       url: triggerEndpoint,
-      signer: validSigner,
-      linkedSigner: signerOpts.linkedSigner,
+      walletClient,
+      linkedSignerWalletClient,
     }),
   };
+}
+
+function getVertexContract<T extends VertexContractName>({
+  contractAddresses,
+  contractName,
+  walletClient,
+}: {
+  contractAddresses: VertexDeploymentAddresses;
+  contractName: T;
+  walletClient: WalletClientWithAccount;
+}): VertexContracts[T] {
+  return getContract({
+    address: contractAddresses[contractName] as Address,
+    abi: VERTEX_ABIS[contractName],
+    client: walletClient,
+  }) as VertexContracts[T];
 }

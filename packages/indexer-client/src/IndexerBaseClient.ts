@@ -9,6 +9,7 @@ import {
   SignedTx,
   subaccountFromHex,
   subaccountToHex,
+  WalletClientWithAccount,
 } from '@vertex-protocol/contracts';
 import {
   fromX18,
@@ -17,7 +18,6 @@ import {
   toBigDecimal,
 } from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { Signer } from 'ethers';
 import {
   mapIndexerCandlesticks,
   mapIndexerEvent,
@@ -130,8 +130,8 @@ export interface IndexerClientOpts {
   // Server URLs
   url: string;
   v2Url?: string;
-  // Signer for EIP712 signing, if not provided, requests that require signatures will error
-  signer?: Signer;
+  // Wallet Client for EIP712 signing
+  walletClient: WalletClientWithAccount;
 }
 
 type IndexerQueryRequestBody = Partial<IndexerServerQueryRequestByType>;
@@ -1107,15 +1107,13 @@ export class IndexerBaseClient {
     chainId: number,
     params: SignableRequestTypeToParams[T],
   ) {
-    const signer = this.opts.signer;
-    if (signer == null) {
-      throw Error('No signer provided');
-    }
+    const walletClient = this.opts.walletClient;
+
     return getSignedTransactionRequest({
       chainId,
       requestParams: params,
       requestType,
-      signer,
+      walletClient,
       verifyingContract,
     });
   }

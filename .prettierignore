@@ -5,9 +5,6 @@
 
 dist/
 
-# Individual repos
-packages/contracts/src/typechain-types
-
 # dependencies
 node_modules
 .pnp
