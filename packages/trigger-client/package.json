@@ -26,7 +26,6 @@
     "@vertex-protocol/engine-client": "^0.80.0",
     "@vertex-protocol/utils": "^0.80.0",
     "axios": "*",
-    "ethers": "*",
     "ts-mixer": "*"
   },
   "peerDependencies": {

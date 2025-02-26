@@ -1,7 +1,6 @@
 import {
   getSubaccountSummary,
   GetSubaccountSummaryParams,
-  subaccountToBytes32,
 } from '@vertex-protocol/contracts';
 import {
   GetEngineEstimatedSubaccountSummaryParams,
@@ -14,22 +13,8 @@ import {
   GetIndexerReferralCodeParams,
 } from '@vertex-protocol/indexer-client';
 import { BaseVertexAPI } from '../base';
-import { GetSubaccountIdParams } from './types';
 
 export class SubaccountQueryAPI extends BaseVertexAPI {
-  /**
-   * Calls contract directly to get a subaccount ID, returns a number to make things easier
-   */
-  async getSubaccountId(params: GetSubaccountIdParams): Promise<number> {
-    const bnId = await this.context.contracts.endpoint.getSubaccountId(
-      subaccountToBytes32({
-        subaccountOwner: params.address,
-        subaccountName: params.name,
-      }),
-    );
-    return Number(bnId);
-  }
-
   /**
    * Returns a comprehensive summary for a subaaccount, including its balances and health
    *

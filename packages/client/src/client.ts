@@ -1,4 +1,4 @@
-import { Signer } from 'ethers';
+import { WalletClientWithAccount } from '@vertex-protocol/contracts';
 import { MarketAPI } from './apis/market';
 import { PerpAPI } from './apis/perp';
 import { RewardsAPI } from './apis/rewards';
@@ -26,22 +26,21 @@ export class VertexClient {
 
   /**
    * Sets the linked signer for the client. Set to null to revert to the chain signer.
-   * @param linkedSigner
+   * @param linkedSignerWalletClient
    */
-  setLinkedSigner(linkedSigner: Signer | null) {
+  setLinkedSigner(linkedSignerWalletClient: WalletClientWithAccount | null) {
     // This is a bit ugly, but works for now
-    this.context.linkedSigner = linkedSigner ?? undefined;
-    this.context.engineClient.setLinkedSigner(linkedSigner);
-    this.context.triggerClient.setLinkedSigner(linkedSigner);
+    this.context.linkedSignerWalletClient =
+      linkedSignerWalletClient ?? undefined;
+    this.context.engineClient.setLinkedSigner(linkedSignerWalletClient);
+    this.context.triggerClient.setLinkedSigner(linkedSignerWalletClient);
   }
 
   /**
-   * Sets the signer or provider for the client. Will cause a full reload of the current context.
-   * @param signerOrProvider
+   * Sets the WalletClient for the client. Will cause a full reload of the current context.
+   * @param walletClient
    */
-  setSignerOrProvider(
-    signerOrProvider: VertexClientContext['signerOrProvider'],
-  ) {
+  setWalletClient(walletClient: VertexClientContext['walletClient']) {
     const newContext = createClientContext(
       {
         contractAddresses: this.context.contractAddresses,
@@ -50,9 +49,10 @@ export class VertexClient {
         triggerEndpoint: this.context.triggerClient.opts.url,
       },
       {
-        signerOrProvider,
+        walletClient,
         // No need to call setLinkedSigner as this property doesn't change
-        linkedSigner: this.context.linkedSigner,
+        linkedSignerWalletClient: this.context.linkedSignerWalletClient,
+        publicClient: this.context.publicClient,
       },
     );
     this.setupFromContext(newContext);

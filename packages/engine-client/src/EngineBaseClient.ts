@@ -2,9 +2,9 @@ import {
   getSignedTransactionRequest,
   SignableRequestType,
   SignableRequestTypeToParams,
+  WalletClientWithAccount,
 } from '@vertex-protocol/contracts';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { Signer } from 'ethers';
 import {
   EngineServerExecuteRequestByType,
   EngineServerExecuteRequestType,
@@ -24,10 +24,10 @@ import { EngineServerFailureError } from './types/EngineServerFailureError';
 export interface EngineClientOpts {
   // Server URL
   url: string;
-  // Signer for EIP712 signing, if not provided, execute requests will error
-  signer?: Signer;
+  // Wallet client for EIP712 signing
+  walletClient?: WalletClientWithAccount;
   // Linked signer registered through the engine, if provided, execute requests will use this signer
-  linkedSigner?: Signer;
+  linkedSignerWalletClient?: WalletClientWithAccount;
 }
 
 // Only 1 key can be defined per execute request
@@ -54,17 +54,21 @@ export class EngineBaseClient {
   /**
    * Sets the linked signer for execute requests
    *
-   * @param linkedSigner The linkedSigner to use for all signatures. Set to null to revert to the chain signer
+   * @param linkedSignerWalletClient The linkedSigner to use for all signatures. Set to null to revert to the chain signer
    */
-  public setLinkedSigner(linkedSigner: Signer | null) {
-    this.opts.linkedSigner = linkedSigner ?? undefined;
+  public setLinkedSigner(
+    linkedSignerWalletClient: WalletClientWithAccount | null,
+  ) {
+    this.opts.linkedSignerWalletClient = linkedSignerWalletClient ?? undefined;
   }
 
   public async getTxNonce(address?: string): Promise<string> {
-    const addr = address ?? (await this.opts.signer?.getAddress());
+    const addr = address ?? this.opts.walletClient?.account.address;
+
     if (!addr) {
-      throw Error('No current signer in opts and no address provided');
+      throw new Error('No address provided and no wallet client available');
     }
+
     return (
       await this.getNonces({
         address: addr,
@@ -182,15 +186,18 @@ export class EngineBaseClient {
     params: SignableRequestTypeToParams[T],
   ) {
     // Use the linked signer if provided, otherwise use the default signer provided to the engine
-    const signer = this.opts.linkedSigner ?? this.opts.signer;
-    if (signer == null) {
-      throw Error('No signer provided');
+    const walletClient =
+      this.opts.linkedSignerWalletClient ?? this.opts.walletClient;
+
+    if (!walletClient) {
+      throw new Error('No wallet client provided');
     }
+
     return getSignedTransactionRequest({
       chainId,
       requestParams: params,
       requestType,
-      signer,
+      walletClient,
       verifyingContract,
     });
   }

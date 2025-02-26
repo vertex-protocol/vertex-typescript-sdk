@@ -1,16 +1,16 @@
+import { toBigDecimal } from '@vertex-protocol/utils';
 import {
   BalanceWithProduct,
   HealthStatusByType,
   Subaccount,
   WithContract,
 } from '../common';
-import { toBigDecimal } from '@vertex-protocol/utils';
+import { subaccountToHex } from '../utils/bytes32';
 import {
   mapContractPerpProduct,
   mapContractSpotProduct,
   mapHealthContributions,
 } from './utils';
-import { subaccountToBytes32 } from '../utils/bytes32';
 
 /**
  * Encapsulates health for an account or an account balance
@@ -37,11 +37,11 @@ export async function getSubaccountSummary({
   'querier',
   GetSubaccountSummaryParams
 >): Promise<SubaccountSummaryResponse> {
-  const subaccount = subaccountToBytes32({
+  const subaccount = subaccountToHex({
     subaccountOwner: subaccountOwner,
     subaccountName: subaccountName,
   });
-  const subaccountInfo = await querier.getSubaccountInfo(subaccount);
+  const subaccountInfo = await querier.read.getSubaccountInfo([subaccount]);
 
   const balances: SubaccountSummaryResponse['balances'] = [];
 
