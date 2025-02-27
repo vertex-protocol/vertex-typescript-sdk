@@ -1,9 +1,3 @@
-import {
-  createDeterministicLinkedSignerPrivateKey,
-  getChainIdFromSigner,
-  Subaccount,
-} from '@vertex-protocol/contracts';
-import { Wallet } from 'ethers';
 import { BaseVertexAPI } from '../base';
 import {
   LinkSignerParams,
@@ -20,9 +14,9 @@ export class SubaccountExecuteAPI extends BaseVertexAPI {
   async liquidateSubaccount(params: LiquidateSubaccountParams) {
     return this.context.engineClient.liquidateSubaccount({
       ...params,
-      subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
+      subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
       verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
-      chainId: await this.getSignerChainIdIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
     });
   }
 
@@ -34,9 +28,9 @@ export class SubaccountExecuteAPI extends BaseVertexAPI {
   async linkSigner(params: LinkSignerParams) {
     return this.context.engineClient.linkSigner({
       ...params,
-      subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
+      subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
       verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
-      chainId: await this.getSignerChainIdIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
     });
   }
 
@@ -48,30 +42,9 @@ export class SubaccountExecuteAPI extends BaseVertexAPI {
   async transferQuote(params: TransferQuoteParams) {
     return this.context.engineClient.transferQuote({
       ...params,
-      subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
+      subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
       verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
-      chainId: await this.getSignerChainIdIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
     });
-  }
-
-  /**
-   * Utility fn to get a deterministic private key for a chain signer
-   */
-  async createDeterministicLinkedSigner(
-    params: Pick<Subaccount, 'subaccountName'>,
-  ) {
-    const chainSigner = this.getChainSigner();
-
-    const chainId = await getChainIdFromSigner(chainSigner);
-    const address = await chainSigner.getAddress();
-    const privateKey = await createDeterministicLinkedSignerPrivateKey({
-      chainId,
-      signer: chainSigner,
-      endpointAddress: this.getEndpointAddress(),
-      subaccountOwner: address,
-      subaccountName: params.subaccountName,
-    });
-
-    return new Wallet(privateKey, chainSigner.provider);
   }
 }

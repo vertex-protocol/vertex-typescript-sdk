@@ -1,7 +1,6 @@
 export * from './createVertexClient';
 export * from './client';
 export * from './context';
-export * from './utils';
 
 export * from './apis/market';
 export * from './apis/perp';

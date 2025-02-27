@@ -90,7 +90,7 @@ export class MarketQueryAPI extends BaseVertexAPI {
   async getTriggerOrders(params: GetTriggerOrdersParams) {
     return this.context.triggerClient.listOrders({
       ...params,
-      chainId: await this.getSignerChainIdIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
       verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
     });
   }

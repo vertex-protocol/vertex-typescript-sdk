@@ -1,4 +1,4 @@
-import { getChainIdFromSigner, Subaccount } from '@vertex-protocol/contracts';
+import { Subaccount } from '@vertex-protocol/contracts';
 import {
   CandlestickPeriod,
   IndexerClient,
@@ -10,18 +10,18 @@ import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 
 async function fullSanity(context: RunContext) {
-  const signer = context.getWallet();
-  const chainId = await getChainIdFromSigner(signer);
+  const walletClient = context.getWalletClient();
+  const chainId = walletClient.chain.id;
   const endpointAddr = context.contracts.endpoint;
 
   const client = new IndexerClient({
     url: context.endpoints.indexer,
-    signer,
+    walletClient,
   });
 
   const subaccount: Subaccount = {
     subaccountName: 'default',
-    subaccountOwner: context.getWallet().address,
+    subaccountOwner: walletClient.account.address,
   };
 
   const summary = await client.getMultiSubaccountSnapshots({
