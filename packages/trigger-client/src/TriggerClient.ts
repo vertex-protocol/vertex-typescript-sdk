@@ -10,9 +10,9 @@ import {
   getVertexEIP712Values,
   SignableRequestType,
   SignableRequestTypeToParams,
+  WalletClientWithAccount,
 } from '@vertex-protocol/contracts';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { Signer } from 'ethers';
 import { mapServerOrderInfo, mapTriggerCriteria } from './dataMappers';
 import {
   TriggerCancelOrdersParams,
@@ -36,10 +36,10 @@ import { TriggerServerFailureError } from './types/TriggerServerFailureError';
 export interface TriggerClientOpts {
   // Server URL
   url: string;
-  // Signer for EIP712 signing, if not provided, requests that require signatures will error
-  signer?: Signer;
+  // Wallet client for EIP712 signing
+  walletClient?: WalletClientWithAccount;
   // Linked signer registered through the engine, if provided, execute requests will use this signer
-  linkedSigner?: Signer;
+  linkedSignerWalletClient?: WalletClientWithAccount;
 }
 
 /**
@@ -57,10 +57,12 @@ export class TriggerClient {
   /**
    * Sets the linked signer for requests
    *
-   * @param linkedSigner The linkedSigner to use for all signatures. Set to null to revert to the chain signer
+   * @param linkedSignerWalletClient The linkedSigner to use for all signatures. Set to null to revert to the chain signer
    */
-  public setLinkedSigner(linkedSigner: Signer | null) {
-    this.opts.linkedSigner = linkedSigner ?? undefined;
+  public setLinkedSigner(
+    linkedSignerWalletClient: WalletClientWithAccount | null,
+  ) {
+    this.opts.linkedSignerWalletClient = linkedSignerWalletClient ?? undefined;
   }
 
   /*
@@ -197,15 +199,18 @@ export class TriggerClient {
     params: SignableRequestTypeToParams[T],
   ) {
     // Use the linked signer if provided, otherwise use the default signer provided to the engine
-    const signer = this.opts.linkedSigner ?? this.opts.signer;
-    if (signer == null) {
-      throw Error('No signer provided');
+    const walletClient =
+      this.opts.linkedSignerWalletClient ?? this.opts.walletClient;
+
+    if (walletClient == null) {
+      throw new Error('No wallet client provided');
     }
+
     return getSignedTransactionRequest({
       chainId,
       requestParams: params,
       requestType,
-      signer,
+      walletClient,
       verifyingContract,
     });
   }

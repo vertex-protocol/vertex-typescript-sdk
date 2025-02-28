@@ -1,15 +1,21 @@
 import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
+import { ReadContractReturnType } from 'viem';
 import {
   BalanceHealthContributions,
   PerpProduct,
   ProductEngineType,
   SpotProduct,
+  VertexAbis,
 } from '../common';
-import { FQuerier } from '../typechain-types';
 import { calcTotalBorrowed, calcTotalDeposited } from '../utils';
 
+type GetAllProductsResponse = ReadContractReturnType<
+  VertexAbis['querier'],
+  'getAllProducts'
+>;
+
 export function mapContractSpotProduct(
-  product: FQuerier.SpotProductStructOutput,
+  product: GetAllProductsResponse['spotProducts'][number],
 ): SpotProduct {
   return {
     productId: Number(product.productId),
@@ -39,7 +45,7 @@ export function mapContractSpotProduct(
 }
 
 export function mapContractPerpProduct(
-  product: FQuerier.PerpProductStructOutput,
+  product: GetAllProductsResponse['perpProducts'][number],
 ): PerpProduct {
   return {
     productId: Number(product.productId),
@@ -59,7 +65,7 @@ export function mapContractPerpProduct(
 }
 
 export function mapHealthContributions(
-  contributionsForProduct: bigint[],
+  contributionsForProduct: readonly bigint[],
 ): BalanceHealthContributions {
   // Initial, maint, unweighted
   return {
