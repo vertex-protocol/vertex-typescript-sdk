@@ -78,7 +78,7 @@ async function fullSanity(context: RunContext) {
   const allMarkets = await vertexClient.market.getAllMarkets();
 
   console.log('Placing order...');
-  const spotOrderProductId = 4;
+  const spotOrderProductId = 3;
   const spotOrderProductOraclePrice = allMarkets.find(
     (market) => market.productId === spotOrderProductId,
   )!.product.oraclePrice;
