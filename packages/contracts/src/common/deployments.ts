@@ -13,7 +13,6 @@ import SonicTestnetCoreDeployment from './deployments/core/deployment.sonicTestn
 import SonicMainnetCoreDeployment from './deployments/core/deployment.sonicMainnet.json';
 import AbstractTestnetCoreDeployment from './deployments/core/deployment.abstractTestnet.json';
 import AbstractMainnetCoreDeployment from './deployments/core/deployment.abstractMainnet.json';
-import BeraTestnetCoreDeployment from './deployments/core/deployment.beraTestnet.json';
 import BeraMainnetCoreDeployment from './deployments/core/deployment.beraMainnet.json';
 import AvaxTestnetCoreDeployment from './deployments/core/deployment.avaxTestnet.json';
 
@@ -32,7 +31,6 @@ import SonicTestnetLbaDeployment from './deployments/vrtx/deployment.sonicTestne
 import SonicMainnetLbaDeployment from './deployments/vrtx/deployment.sonicMainnet.json';
 import AbstractTestnetLbaDeployment from './deployments/vrtx/deployment.abstractTestnet.json';
 import AbstractMainnetLbaDeployment from './deployments/vrtx/deployment.abstractMainnet.json';
-import BeraTestnetLbaDeployment from './deployments/vrtx/deployment.beraTestnet.json';
 import BeraMainnetLbaDeployment from './deployments/vrtx/deployment.beraMainnet.json';
 import AvaxTestnetLbaDeployment from './deployments/vrtx/deployment.avaxTestnet.json';
 
@@ -102,10 +100,6 @@ export const VERTEX_DEPLOYMENTS: Record<ChainEnv, VertexDeploymentAddresses> = {
   abstract: {
     ...AbstractMainnetLbaDeployment,
     ...AbstractMainnetCoreDeployment,
-  },
-  beraTestnet: {
-    ...BeraTestnetLbaDeployment,
-    ...BeraTestnetCoreDeployment,
   },
   bera: {
     ...BeraMainnetLbaDeployment,

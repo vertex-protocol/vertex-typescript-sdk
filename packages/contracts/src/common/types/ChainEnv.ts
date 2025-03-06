@@ -7,7 +7,6 @@ export const TESTNET_CHAIN_ENVS = [
   'seiTestnet',
   'baseTestnet',
   'sonicTestnet',
-  'beraTestnet',
   'abstractTestnet',
   'avaxTestnet',
 ] as const satisfies string[];

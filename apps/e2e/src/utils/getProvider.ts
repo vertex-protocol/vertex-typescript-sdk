@@ -75,11 +75,6 @@ export function getProvider(chainEnv: ChainEnv): Provider {
         name: 'abstract',
         chainId: 2741,
       });
-    case 'beraTestnet':
-      return new JsonRpcProvider('https://bartio.rpc.berachain.com', {
-        name: 'bera-testnet',
-        chainId: 80084,
-      });
     case 'bera':
       return new JsonRpcProvider('https://rpc.berachain.com', {
         name: 'bera',
