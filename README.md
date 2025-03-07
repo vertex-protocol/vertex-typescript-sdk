@@ -5,20 +5,36 @@ for interacting with the Vertex API and contracts.
 
 [SDK Docs](https://vertex-protocol.github.io/vertex-typescript-sdk/index.html)
 
+## 0.x.x → 1.x.x Breaking Changes
+
+`1.x.x` now uses `viem` instead of `ethers`. When upgrading to `1.x.x`:
+
+- Remove `ethers` and add `viem` as dependencies
+- The `ethers` `Wallet` instance has been replaced with `viem`'s `WalletClient`
+- The `ethers` `Provider` instance has been replaced with `viem`'s `PublicClient`
+
 ## Packages
 
 ### `@vertex-protocol/client`
 
-Exposes `VertexClient`, which composes utils for API & contract interaction.
+Exposes the top-level `VertexClient`, which composes subpackages for API & contract interaction.
 
-### `@vertex-protocol/contracts`
+### `@vertex-protocol/engine-client`
 
-Exports ABIs, types, and utility functions for interacting with contracts
+Exports queries & executes that talk to the off-chain matching engine.
+
+### `@vertex-protocol/indexer-client`
+
+Exports queries that talk to the indexer.
+
+### `@vertex-protocol/trigger-client`
+
+Exports queries and executes that talk to the trigger service (used for stop & TP/SL orders).
 
 ### `@vertex-protocol/utils`
 
-Common utilities, including our BigNumber library of choice at
-Vertex, [`bignumber.js`](https://mikemcl.github.io/bignumber.js/)
+Common utilities, including [`bignumber.js`](https://mikemcl.github.io/bignumber.js/), which is used for representing
+large numbers.
 
 ## Development
 
