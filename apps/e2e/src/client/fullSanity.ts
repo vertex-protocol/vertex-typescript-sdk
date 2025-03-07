@@ -9,8 +9,14 @@ import {
   getOrderNonce,
   getVertexEIP712Values,
 } from '@vertex-protocol/contracts';
-import { toFixedPoint } from '@vertex-protocol/utils';
-import { AbiCoder, getBytes, solidityPacked } from 'ethers';
+import { toBigInt, toFixedPoint } from '@vertex-protocol/utils';
+import {
+  Address,
+  encodeAbiParameters,
+  encodePacked,
+  parseAbiParameters,
+  toBytes,
+} from 'viem';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
@@ -242,20 +248,16 @@ async function fullSanity(context: RunContext) {
     subaccountOwner: await signer.getAddress(),
   });
 
-  const encodedTx = AbiCoder.defaultAbiCoder().encode(
+  const encodedTx = encodeAbiParameters(
+    parseAbiParameters('bytes32, uint32, uint128, uint64'),
     [
-      // Sender
-      'bytes32',
-      // Product ID
-      'uint32',
-      // Amount
-      'uint128',
-      // Nonce
-      'uint64',
+      tx.sender as Address,
+      tx.productId,
+      toBigInt(tx.amount),
+      toBigInt(tx.nonce),
     ],
-    [tx.sender, tx.productId, tx.amount, tx.nonce],
   );
-  const encodedSlowModeTx = solidityPacked(
+  const encodedSlowModeTx = encodePacked(
     ['uint8', 'bytes'],
     [
       // Withdraw collateral enum value
@@ -268,7 +270,7 @@ async function fullSanity(context: RunContext) {
   // 3. submit via slow-mode
   const txResp =
     await vertexClient.context.contracts.endpoint.submitSlowModeTransaction(
-      getBytes(encodedSlowModeTx),
+      toBytes(encodedSlowModeTx),
     );
 
   prettyPrint('Slow mode withdrawal Tx Response', txResp);

@@ -1,5 +1,9 @@
-import { TypedDataField } from 'ethers';
 import { SignableRequestType } from './signableRequestType';
+
+interface TypedDataField {
+  name: string;
+  type: string;
+}
 
 /**
  * Return the EIP712 types for a given request

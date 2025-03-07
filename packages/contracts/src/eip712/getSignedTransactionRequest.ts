@@ -1,11 +1,11 @@
+import { Signer } from 'ethers';
+import { getVertexEIP712Domain } from './getVertexEIP712Domain';
+import { getVertexEIP712Types } from './getVertexEIP712Types';
+import { getVertexEIP712Values } from './getVertexEIP712Values';
 import {
   SignableRequestType,
   SignableRequestTypeToParams,
 } from './signableRequestType';
-import { getVertexEIP712Domain } from './getVertexEIP712Domain';
-import { getVertexEIP712Types } from './getVertexEIP712Types';
-import { getVertexEIP712Values } from './getVertexEIP712Values';
-import { Signer } from 'ethers';
 
 interface Params<TReqType extends SignableRequestType> {
   requestType: TReqType;

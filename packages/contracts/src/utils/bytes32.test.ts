@@ -4,6 +4,7 @@ import { Subaccount } from '../common';
 import {
   subaccountFromBytes32,
   subaccountFromHex,
+  subaccountNameBytesToStr,
   subaccountNameToBytes12,
   subaccountToBytes32,
   subaccountToHex,
@@ -108,5 +109,10 @@ describe('bytes32', () => {
     expect(subaccountFromHex(subaccountHex).subaccountName).toBe(
       '\u0000\u0000\u0002\u0000iso',
     );
+  });
+
+  it('handles converting non-utf8 byte sequences by converting bytes to a hex string', () => {
+    const invalidUtf8Array = new Uint8Array([0x80, 0x81, 0x82]);
+    expect(subaccountNameBytesToStr(invalidUtf8Array)).toBe('0x808182');
   });
 });

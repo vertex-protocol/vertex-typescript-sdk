@@ -30,5 +30,11 @@
     "ethers": "*",
     "ts-mixer": "*"
   },
+  "peerDependencies": {
+    "viem": "*"
+  },
+  "devDependencies": {
+    "viem": "*"
+  },
   "gitHead": "88119393c0d18cf3be1578e2a3a60b10e18b09f6"
 }
