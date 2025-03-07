@@ -1,4 +1,5 @@
 import { BigDecimalish, toBigInt } from '@vertex-protocol/utils';
+import { toHex } from 'viem';
 import { WithContract } from '../common';
 import { subaccountNameToBytes12 } from '../utils';
 
@@ -21,16 +22,23 @@ export async function depositCollateral({
   amount,
   referralCode,
 }: WithContract<'endpoint', DepositCollateralParams>) {
-  const bytesSubaccountName = subaccountNameToBytes12(subaccountName);
+  const subaccountNameHex = toHex(subaccountNameToBytes12(subaccountName));
   if (referralCode) {
-    return endpoint[
-      'depositCollateralWithReferral(bytes12,uint32,uint128,string)'
-    ](bytesSubaccountName, productId, toBigInt(amount), referralCode);
+    return endpoint.write.depositCollateralWithReferral([
+      // bytes12
+      subaccountNameHex,
+      // uint32
+      productId,
+      // uint128
+      toBigInt(amount),
+      // string
+      referralCode,
+    ]);
   } else {
-    return endpoint.depositCollateral(
-      bytesSubaccountName,
+    return endpoint.write.depositCollateral([
+      subaccountNameHex,
       productId,
       toBigInt(amount),
-    );
+    ]);
   }
 }

@@ -1,12 +1,10 @@
 import {
   depositCollateral,
-  Endpoint__factory,
-  getChainIdFromSigner,
   getOrderDigest,
   getTriggerOrderNonce,
-  IClearinghouse__factory,
-  MockERC20__factory,
+  VERTEX_ABIS,
 } from '@vertex-protocol/contracts';
+import { MOCK_ERC20_ABI } from '@vertex-protocol/contracts/dist/common/abis/MockERC20';
 import {
   EngineClient,
   EngineOrderParams,
@@ -16,50 +14,67 @@ import {
   TriggerPlaceOrderParams,
 } from '@vertex-protocol/trigger-client';
 import { toFixedPoint, toX18 } from '@vertex-protocol/utils';
+import { getContract } from 'viem';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
+import { waitForTransaction } from '../utils/waitForTransaction';
 
 async function fullSanity(context: RunContext) {
-  const signer = context.getWallet();
-  const chainId = await getChainIdFromSigner(signer);
+  const walletClient = context.getWalletClient();
+  const publicClient = context.publicClient;
+  const chainId = walletClient.chain.id;
 
   const engineClient = new EngineClient({
     url: context.endpoints.engine,
-    signer,
+    walletClient,
   });
 
   const client = new TriggerClient({
     url: context.endpoints.trigger,
-    signer,
+    walletClient,
   });
 
-  const clearinghouse = IClearinghouse__factory.connect(
-    context.contracts.clearinghouse,
-    signer,
-  );
-  const quote = MockERC20__factory.connect(
-    await clearinghouse.getQuote(),
-    signer,
-  );
+  const clearinghouse = getContract({
+    abi: VERTEX_ABIS.clearinghouse,
+    address: context.contracts.clearinghouse,
+    client: walletClient,
+  });
+  const quote = getContract({
+    abi: MOCK_ERC20_ABI,
+    address: await clearinghouse.read.getQuote(),
+    client: walletClient,
+  });
   const endpointAddr = context.contracts.endpoint;
-  const endpoint = Endpoint__factory.connect(endpointAddr, signer);
+  const endpoint = getContract({
+    abi: VERTEX_ABIS.endpoint,
+    address: endpointAddr,
+    client: walletClient,
+  });
 
   const depositAmount = toFixedPoint(10000, 6);
 
-  const subaccountOwner = signer.address;
+  const subaccountOwner = walletClient.account.address;
   const subaccountName = 'default';
 
-  await (await quote.mint(signer.address, depositAmount)).wait();
-  await (await quote.approve(context.contracts.endpoint, depositAmount)).wait();
-  const depositTx = await depositCollateral({
-    amount: depositAmount,
-    endpoint,
-    productId: 0,
-    subaccountName,
-  });
-  await depositTx.wait();
+  await waitForTransaction(
+    quote.write.mint([walletClient.account.address, depositAmount]),
+    publicClient,
+  );
+  await waitForTransaction(
+    quote.write.approve([context.contracts.endpoint, depositAmount]),
+    publicClient,
+  );
+  await waitForTransaction(
+    depositCollateral({
+      amount: depositAmount,
+      endpoint,
+      productId: 0,
+      subaccountName,
+    }),
+    publicClient,
+  );
 
   console.log('Done depositing collateral, placing stop orders');
 
@@ -108,7 +123,7 @@ async function fullSanity(context: RunContext) {
     nonce: longStopNonce,
     amount: toX18(0.01),
     expiration: getExpiration('fok'),
-    price: 50000,
+    price: 60000,
     subaccountName,
     subaccountOwner,
   };
@@ -125,7 +140,7 @@ async function fullSanity(context: RunContext) {
     productId: btcPerpProductId,
     triggerCriteria: {
       type: 'oracle_price_below',
-      triggerPrice: 10000,
+      triggerPrice: 60000,
     },
     verifyingAddr: btcPerpOrderbookAddr,
     nonce: longStopNonce,

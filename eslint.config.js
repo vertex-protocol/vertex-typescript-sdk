@@ -55,7 +55,6 @@ module.exports = tseslint.config(
   {
     ignores: [
       '**/.nx/',
-      'packages/contracts/src/typechain-types',
       '**/node_modules/',
       '**/dist',
     ],

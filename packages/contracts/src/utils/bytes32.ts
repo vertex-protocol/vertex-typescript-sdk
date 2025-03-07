@@ -1,4 +1,4 @@
-import { bytesToString, toBytes, toHex } from 'viem';
+import { bytesToString, Hex, toBytes, toHex } from 'viem';
 import {
   Bytes,
   Subaccount,
@@ -78,7 +78,7 @@ export function subaccountNameToBytes12(name: string): SubaccountNameBytes12 {
  * @param subaccount subaccount object (owner + name)
  * @returns hex string representation of a subaccount
  */
-export function subaccountToHex(subaccount: Subaccount): string {
+export function subaccountToHex(subaccount: Subaccount): Hex {
   return toHex(subaccountToBytes32(subaccount));
 }
 

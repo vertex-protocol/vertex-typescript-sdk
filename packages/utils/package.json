@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/utils",
-  "version": "0.80.0",
+  "version": "1.0.0-alpha.0",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -27,9 +27,6 @@
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "dev": "tsc -w"
-  },
-  "dependencies": {
-    "ethers": "*"
   },
   "peerDependencies": {
     "bignumber.js": "^9.1.2",

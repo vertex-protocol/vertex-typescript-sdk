@@ -1,8 +1,8 @@
 import { VertexClient } from './client';
 import {
   createClientContext,
+  CreateVertexClientContextAccountOpts,
   CreateVertexClientContextOpts,
-  CreateVertexClientContextSignerOpts,
 } from './context';
 
 /**
@@ -10,11 +10,11 @@ import {
  * {@label CLIENT}
  *
  * @param opts
- * @param signerOpts
+ * @param accountOpts
  */
 export function createVertexClient(
   opts: CreateVertexClientContextOpts,
-  signerOpts: CreateVertexClientContextSignerOpts,
+  accountOpts: CreateVertexClientContextAccountOpts,
 ): VertexClient {
-  return new VertexClient(createClientContext(opts, signerOpts));
+  return new VertexClient(createClientContext(opts, accountOpts));
 }

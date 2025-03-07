@@ -1,63 +1,25 @@
-import {
-  IAirdrop,
-  IArbAirdrop,
-  LBA_AIRDROP_EPOCH,
-} from '@vertex-protocol/contracts';
-import { BaseVertexAPI } from '../base';
-import {
-  ClaimLiquidTokensParams,
-  ClaimTokensToLbaParams,
-  VrtxTokenAmountParams,
-} from './types';
+import { VertexAbis } from '@vertex-protocol/contracts';
 import { toBigInt } from '@vertex-protocol/utils';
+import { Hex, WriteContractParameters } from 'viem';
+import { BaseVertexAPI } from '../base';
+import { ClaimLiquidTokensParams, VrtxTokenAmountParams } from './types';
 
 export class RewardsExecuteAPI extends BaseVertexAPI {
-  /**
-   * Claim VRTX tokens received during the airdrop phase to be deposited into the LBA pool
-   */
-  async claimTokensToLba(params: ClaimTokensToLbaParams) {
-    const { totalAmount, proof } = (
-      await this.context.indexerClient.getClaimVrtxMerkleProofs({
-        address: await this.getChainSignerAddress(),
-      })
-    )[LBA_AIRDROP_EPOCH];
-
-    return this.context.contracts.vrtxAirdrop.claimToLBA(
-      toBigInt(params.amount),
-      toBigInt(totalAmount),
-      proof,
-    );
-  }
-
-  /**
-   * Deposit USDC into the LBA pool
-   */
-  async depositLbaUsdc(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxLba.depositUsdc(toBigInt(params.amount));
-  }
-
-  /**
-   * Withdraw USDC from the LBA pool
-   */
-  async withdrawLbaUsdc(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxLba.withdrawUsdc(toBigInt(params.amount));
-  }
-
   /**
    * Withdraw LP liquidity tokens from the LBA pool after the AMM has been created
    */
   async withdrawLbaLiquidity(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxLba.withdrawLiquidity(
+    return this.context.contracts.vrtxLba.write.withdrawLiquidity([
       toBigInt(params.amount),
-    );
+    ]);
   }
 
   /**
    * Claim earned VRTX tokens
    */
   async claimLiquidTokens(params: ClaimLiquidTokensParams) {
-    return this.context.contracts.vrtxAirdrop.claim(
-      ...(await this.getClaimLiquidTokensContractParams(params)),
+    return this.context.contracts.vrtxAirdrop.write.claim(
+      await this.getClaimLiquidTokensContractParams(params),
     );
   }
 
@@ -65,8 +27,8 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    * Claim earned VRTX tokens and stake them
    */
   async claimAndStakeLiquidTokens(params: ClaimLiquidTokensParams) {
-    return this.context.contracts.vrtxAirdrop.claimAndStake(
-      ...(await this.getClaimLiquidTokensContractParams(params)),
+    return this.context.contracts.vrtxAirdrop.write.claimAndStake(
+      await this.getClaimLiquidTokensContractParams(params),
     );
   }
 
@@ -74,42 +36,48 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    * Claim VRTX rewards associated with keeping liquidity in the LBA
    */
   async claimLbaRewards() {
-    return this.context.contracts.vrtxLba.claimRewards();
+    return this.context.contracts.vrtxLba.write.claimRewards();
   }
 
   /**
    * Migrate VRTX tokens from the old staking contract to the new staking contract
    */
   async migrateStakingV2() {
-    return this.context.contracts.vrtxStaking.migrateToV2();
+    return this.context.contracts.vrtxStaking.write.migrateToV2();
   }
 
   /**
    * Stake VRTX tokens
    */
   async stake(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxStaking.stake(toBigInt(params.amount));
+    return this.context.contracts.vrtxStaking.write.stake([
+      toBigInt(params.amount),
+    ]);
   }
 
   /**
    * Stake V2 VRTX tokens
    */
   async stakeV2(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxStakingV2.stake(toBigInt(params.amount));
+    return this.context.contracts.vrtxStakingV2.write.stake([
+      toBigInt(params.amount),
+    ]);
   }
 
   /**
    * Unstake VRTX tokens, unstaked tokens that are unlocked will need to be withdrawn
    */
   async unstake(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxStaking.withdraw(toBigInt(params.amount));
+    return this.context.contracts.vrtxStaking.write.withdraw([
+      toBigInt(params.amount),
+    ]);
   }
 
   /**
    * Unstake V2 VRTX tokens, unstake tokens instantly with a penalty that is redistributed
    */
   async unstakeV2() {
-    return this.context.contracts.vrtxStakingV2.withdraw();
+    return this.context.contracts.vrtxStakingV2.write.withdraw();
   }
 
   /**
@@ -117,35 +85,35 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    * after 21 day locking period
    */
   async unstakeV2Slow() {
-    return this.context.contracts.vrtxStakingV2.withdrawSlow();
+    return this.context.contracts.vrtxStakingV2.write.withdrawSlow();
   }
 
   /**
    * Claim unlocked tokens that were previously unstaked
    */
   async withdrawUnstakedTokens() {
-    return this.context.contracts.vrtxStaking.claimVrtx();
+    return this.context.contracts.vrtxStaking.write.claimVrtx();
   }
 
   /**
    * Claim unlocked V2 tokens that were previously unstaked
    */
   async withdrawUnstakedV2Tokens() {
-    return this.context.contracts.vrtxStakingV2.claimWithdraw();
+    return this.context.contracts.vrtxStakingV2.write.claimWithdraw();
   }
 
   /**
    * Claim staking rewards (in USDC)
    */
   async claimStakingRewards() {
-    return this.context.contracts.vrtxStaking.claimUsdc();
+    return this.context.contracts.vrtxStaking.write.claimUsdc();
   }
 
   /**
    * Claim staking rewards (in USDC), swap for VRTX, and stake the VRTX
    */
   async claimAndStakeStakingRewards() {
-    return this.context.contracts.vrtxStaking.claimUsdcAndStake();
+    return this.context.contracts.vrtxStaking.write.claimUsdcAndStake();
   }
 
   /**
@@ -153,18 +121,24 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    * Typically, foundations for these chains will issue rewards for us to give to users.
    */
   async claimFoundationRewards() {
-    const address = await this.getChainSignerAddress();
+    const address = this.getWalletClientAddress();
 
     // Get claimed to determine which weeks haven't yet been claimed
     const claimed =
-      await this.context.contracts.foundationRewardsAirdrop.getClaimed(address);
+      await this.context.contracts.foundationRewardsAirdrop.read.getClaimed([
+        address,
+      ]);
     const proofs =
       await this.context.indexerClient.getClaimFoundationRewardsMerkleProofs({
         address,
       });
 
     // Get proofs for all weeks that haven't yet been claimed
-    const proofsToClaim: IArbAirdrop.ClaimProofStruct[] = [];
+    const proofsToClaim: {
+      week: number;
+      totalAmount: bigint;
+      proof: Hex[];
+    }[] = [];
     proofs.forEach((item, idx) => {
       if (idx === 0) {
         // week 0 is invalid
@@ -181,7 +155,9 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
       }
     });
 
-    return this.context.contracts.foundationRewardsAirdrop.claim(proofsToClaim);
+    return this.context.contracts.foundationRewardsAirdrop.write.claim([
+      proofsToClaim,
+    ]);
   }
 
   /**
@@ -191,8 +167,10 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
    */
   private async getClaimLiquidTokensContractParams(
     params: ClaimLiquidTokensParams,
-  ): Promise<Parameters<IAirdrop['claimAndStake']>> {
-    const address = await this.getChainSignerAddress();
+  ): Promise<
+    WriteContractParameters<VertexAbis['vrtxAirdrop'], 'claimAndStake'>['args']
+  > {
+    const address = this.getWalletClientAddress();
 
     const { totalAmount, proof } = (
       await this.context.indexerClient.getClaimVrtxMerkleProofs({
@@ -206,7 +184,7 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
       if ('amount' in params) {
         return params.amount;
       }
-      const amountsClaimed = await airdropContract.getClaimed(address);
+      const amountsClaimed = await airdropContract.read.getClaimed([address]);
 
       const availableAmount = totalAmount.minus(
         // Some wallets seem to throw a `RangeError` here if we do amountsClaimed[params.epoch]

@@ -4,8 +4,6 @@ export interface VrtxTokenAmountParams {
   amount: BigDecimalish;
 }
 
-export type ClaimTokensToLbaParams = VrtxTokenAmountParams;
-
 // Either specify the amount, or attempt to claim all available tokens
 type AmountOrAllParams =
   | VrtxTokenAmountParams
