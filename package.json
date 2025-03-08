@@ -11,12 +11,12 @@
     "clean": "npx lerna run clean",
     "dev": "npx lerna run dev",
     "gen-typedoc": "npx typedoc",
-    "link-local": "lerna exec -- yarn link",
+    "link-local": "./setup-yarn-links.sh",
     "lint": "eslint './**/*.{ts,tsx}' --fix && prettier --write './**/*.{ts,tsx}'",
     "prepare": "husky",
     "publish-all": "yarn build && npx lerna publish --force-publish --no-private",
     "test": "jest",
-    "unlink-local": "lerna exec -- yarn unlink"
+    "unlink-local": "UNLINK=true ./setup-yarn-links.sh"
   },
   "lint-staged": {
     "*.{ts,tsx}": "yarn lint"
@@ -44,7 +44,7 @@
     "typescript-eslint": "^8.16.0"
   },
   "resolutions": {
-    "ethers": "6.13.4",
+    "viem": "2.23.2",
     "axios": "^1.7.2",
     "ts-mixer": "^6.0.4"
   },

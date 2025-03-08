@@ -21,9 +21,9 @@ export class MarketExecuteAPI extends BaseVertexAPI {
   async mintLp(params: MintLpParams) {
     return this.context.engineClient.mintLp({
       ...params,
-      chainId: await this.getSignerChainIdIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
       verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
-      subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
+      subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
     });
   }
 
@@ -34,9 +34,9 @@ export class MarketExecuteAPI extends BaseVertexAPI {
   async burnLp(params: BurnLpParams) {
     return this.context.engineClient.burnLp({
       ...params,
-      chainId: await this.getSignerChainIdIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
       verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
-      subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
+      subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
     });
   }
 
@@ -51,9 +51,9 @@ export class MarketExecuteAPI extends BaseVertexAPI {
       id: orderId,
       order: {
         ...order,
-        subaccountOwner: await this.getSubaccountOwnerIfNeeded(params.order),
+        subaccountOwner: this.getSubaccountOwnerIfNeeded(params.order),
       },
-      chainId: await this.getSignerChainIdIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
       verifyingAddr: await this.getOrderbookVerifyingAddressIfNeeded(params),
       productId,
       spotLeverage: params.spotLeverage,
@@ -72,9 +72,9 @@ export class MarketExecuteAPI extends BaseVertexAPI {
       id: orderId,
       order: {
         ...order,
-        subaccountOwner: await this.getSubaccountOwnerIfNeeded(params.order),
+        subaccountOwner: this.getSubaccountOwnerIfNeeded(params.order),
       },
-      chainId: await this.getSignerChainIdIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
       verifyingAddr: await this.getOrderbookVerifyingAddressIfNeeded(params),
       productId,
       borrowMargin,
@@ -89,8 +89,8 @@ export class MarketExecuteAPI extends BaseVertexAPI {
   async cancelOrders(params: CancelOrdersParams) {
     return this.context.engineClient.cancelOrders({
       ...params,
-      chainId: await this.getSignerChainIdIfNeeded(params),
-      subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
+      subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
       verifyingAddr: this.getEndpointAddress(),
     });
   }
@@ -101,10 +101,10 @@ export class MarketExecuteAPI extends BaseVertexAPI {
    */
   async cancelAndPlace(params: CancelAndPlaceOrderParams) {
     const { productId, order, nonce, spotLeverage } = params.placeOrder;
-    const subaccountOwner = await this.getSubaccountOwnerIfNeeded(
+    const subaccountOwner = this.getSubaccountOwnerIfNeeded(
       params.cancelOrders,
     );
-    const chainId = await this.getSignerChainIdIfNeeded(params.cancelOrders);
+    const chainId = this.getWalletClientChainIdIfNeeded(params.cancelOrders);
 
     return this.context.engineClient.cancelAndPlace({
       cancelOrders: {
@@ -137,8 +137,8 @@ export class MarketExecuteAPI extends BaseVertexAPI {
   async cancelProductOrders(params: CancelProductOrdersParams) {
     return this.context.engineClient.cancelProductOrders({
       ...params,
-      chainId: await this.getSignerChainIdIfNeeded(params),
-      subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
+      subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
       verifyingAddr: this.getEndpointAddress(),
     });
   }
@@ -150,10 +150,10 @@ export class MarketExecuteAPI extends BaseVertexAPI {
   async placeTriggerOrder(params: PlaceTriggerOrderParams) {
     return this.context.triggerClient.placeTriggerOrder({
       ...params,
-      chainId: await this.getSignerChainIdIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
       verifyingAddr: await this.getOrderbookVerifyingAddressIfNeeded(params),
       order: {
-        subaccountOwner: await this.getSubaccountOwnerIfNeeded(params.order),
+        subaccountOwner: this.getSubaccountOwnerIfNeeded(params.order),
         ...params.order,
       },
     });
@@ -166,8 +166,8 @@ export class MarketExecuteAPI extends BaseVertexAPI {
   async cancelTriggerOrders(params: CancelTriggerOrdersParams) {
     return this.context.triggerClient.cancelTriggerOrders({
       ...params,
-      chainId: await this.getSignerChainIdIfNeeded(params),
-      subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
+      subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
       verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
     });
   }
@@ -179,8 +179,8 @@ export class MarketExecuteAPI extends BaseVertexAPI {
   async cancelTriggerProductOrders(params: CancelTriggerProductOrdersParams) {
     return this.context.triggerClient.cancelProductOrders({
       ...params,
-      chainId: await this.getSignerChainIdIfNeeded(params),
-      subaccountOwner: await this.getSubaccountOwnerIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
+      subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
       verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
     });
   }

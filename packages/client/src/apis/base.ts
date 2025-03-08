@@ -1,9 +1,5 @@
-import {
-  getChainIdFromSigner,
-  WithContracts,
-} from '@vertex-protocol/contracts';
+import { WithContracts } from '@vertex-protocol/contracts';
 import { VertexClientContext } from '../context';
-import { isSigner } from '../utils';
 
 export class BaseVertexAPI {
   readonly context: VertexClientContext;
@@ -12,28 +8,23 @@ export class BaseVertexAPI {
     this.context = context;
   }
 
-  protected getChainSigner() {
-    if (isSigner(this.context.signerOrProvider)) {
-      return this.context.signerOrProvider;
+  protected getWalletClientAddress() {
+    if (!this.context.walletClient) {
+      throw new Error('Wallet client not provided');
     }
-    throw Error('Current context does not have a chain signer');
+    return this.context.walletClient.account.address;
   }
 
-  protected async getChainSignerAddress() {
-    return this.getChainSigner().getAddress();
-  }
-
-  protected async getSignerChainIdIfNeeded(params: {
+  protected getWalletClientChainIdIfNeeded(params: {
     chainId?: number;
-  }): Promise<number> {
+  }): number {
     if (params.chainId) {
       return params.chainId;
     }
-    return this.getSignerChainId();
-  }
-
-  protected async getSignerChainId() {
-    return getChainIdFromSigner(this.getChainSigner());
+    if (!this.context.walletClient) {
+      throw new Error('Wallet client not provided');
+    }
+    return this.context.walletClient.chain.id;
   }
 
   protected getEndpointAddress() {
@@ -44,10 +35,10 @@ export class BaseVertexAPI {
     return this.context.engineClient.getOrderbookAddress(productId);
   }
 
-  protected async getSubaccountOwnerIfNeeded(params: {
+  protected getSubaccountOwnerIfNeeded(params: {
     subaccountOwner?: string;
-  }): Promise<string> {
-    return params.subaccountOwner ?? (await this.getChainSignerAddress());
+  }): string {
+    return params.subaccountOwner ?? this.getWalletClientAddress();
   }
 
   protected paramsWithContracts<T>(params: T): WithContracts<T> {

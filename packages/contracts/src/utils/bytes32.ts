@@ -1,10 +1,4 @@
-import {
-  getBytes,
-  hexlify,
-  isHexString,
-  toUtf8Bytes,
-  toUtf8String,
-} from 'ethers';
+import { bytesToString, Hex, toBytes, toHex } from 'viem';
 import {
   Bytes,
   Subaccount,
@@ -18,7 +12,7 @@ import {
  * @returns bytes32 representation of a subaccount
  */
 export function subaccountToBytes32(subaccount: Subaccount): SubaccountBytes32 {
-  const address = getBytes(subaccount.subaccountOwner);
+  const address = toBytes(subaccount.subaccountOwner);
 
   if (address.length != 20) {
     throw new Error(`owner must be 20 bytes, but found ${address.length}`);
@@ -58,16 +52,9 @@ export function subaccountFromBytes32(bytes: SubaccountBytes32): Subaccount {
     }
   }
 
-  let subaccountName: string;
-  try {
-    subaccountName = subaccountNameBytesToUtf8Str(name);
-  } catch (_e) {
-    subaccountName = hexlify(name);
-  }
-
   return {
-    subaccountOwner: hexlify(address),
-    subaccountName,
+    subaccountOwner: toHex(address),
+    subaccountName: subaccountNameBytesToStr(name),
   };
 }
 
@@ -79,19 +66,9 @@ export function subaccountFromBytes32(bytes: SubaccountBytes32): Subaccount {
  * @returns bytes12 representation of a subaccount name.
  */
 export function subaccountNameToBytes12(name: string): SubaccountNameBytes12 {
-  // If the subaccount name is a hex string, then assume that it's a hexlified representation of a non-utf8 string
-  let bytes: Uint8Array;
-  if (isHexString(name)) {
-    bytes = getBytes(name);
-  } else {
-    bytes = toUtf8Bytes(name);
-  }
-
-  const bytes12 = new Uint8Array(12);
-  for (let i = 0; i < bytes.length; i++) {
-    bytes12[i] = bytes[i];
-  }
-  return bytes12;
+  return toBytes(name, {
+    size: 12,
+  });
 }
 
 /**
@@ -101,8 +78,8 @@ export function subaccountNameToBytes12(name: string): SubaccountNameBytes12 {
  * @param subaccount subaccount object (owner + name)
  * @returns hex string representation of a subaccount
  */
-export function subaccountToHex(subaccount: Subaccount): string {
-  return hexlify(subaccountToBytes32(subaccount));
+export function subaccountToHex(subaccount: Subaccount): Hex {
+  return toHex(subaccountToBytes32(subaccount));
 }
 
 /**
@@ -111,16 +88,23 @@ export function subaccountToHex(subaccount: Subaccount): string {
  * @returns subaccount object (owner + name)
  */
 export function subaccountFromHex(subaccount: string): Subaccount {
-  return subaccountFromBytes32(getBytes(subaccount));
+  return subaccountFromBytes32(toBytes(subaccount));
 }
 
 /**
- * Converts a bytes buffer to a utf8 string. Will throw if the bytes is not a valid UTF8 string
+ * Converts Bytes to a string. If the bytes represent a valid UTF-8 string, then a string is returned, if not,
+ * then the hex representation is returned.
+ *
  * @param input
  */
-function subaccountNameBytesToUtf8Str(input: Bytes): string {
-  // toUtf8String will replace zero bytes with \0
+export function subaccountNameBytesToStr(input: Bytes): string {
+  // bytesToString will replace zero bytes with \0
   // strip out any trailing bytes for a readable name
   // however, we need to leave any leading bytes otherwise reverse conversion to bytes will not work
-  return toUtf8String(input).replace(/\0*$/, '');
+  const toStringResult = bytesToString(input).replace(/\0*$/, '');
+  // bytesToString will replace invalid byte sequences with �, so default to converting to hex string if � is present
+  if (toStringResult.includes('�')) {
+    return toHex(input);
+  }
+  return toStringResult;
 }

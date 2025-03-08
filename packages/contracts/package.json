@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/contracts",
-  "version": "0.80.0",
+  "version": "1.0.0",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -15,22 +15,21 @@
   "scripts": {
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
-    "dev": "tsc -w",
-    "generate-types": "typechain --target ethers-v6 --out-dir 'src/typechain-types' './abis/*.json'"
+    "dev": "tsc -w"
   },
   "files": [
     "dist",
-    "src",
-    "abis"
+    "src"
   ],
   "dependencies": {
-    "@vertex-protocol/utils": "^0.80.0",
-    "ethers": "*"
+    "@vertex-protocol/utils": "^1.0.0"
+  },
+  "peerDependencies": {
+    "viem": "*"
   },
   "devDependencies": {
-    "@typechain/ethers-v6": "^0.4.0",
     "env-cmd": "^10.1.0",
-    "typechain": "^8.2.0"
+    "viem": "*"
   },
   "gitHead": "88119393c0d18cf3be1578e2a3a60b10e18b09f6"
 }

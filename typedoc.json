@@ -13,9 +13,6 @@
     "**/node_modules/**/*",
     "**/dist/**/*"
   ],
-  "externalPattern": [
-    "./packages/contracts/src/typechain-types/**"
-  ],
   "out": "apps/docs",
   "internalModule": "Internal",
   "sort": [

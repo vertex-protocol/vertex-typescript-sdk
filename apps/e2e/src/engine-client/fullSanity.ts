@@ -1,81 +1,89 @@
 import {
-  calcBorrowRateForTimeRange,
-  calcRealizedDepositRateForTimeRange,
   createDeterministicLinkedSignerPrivateKey,
   depositCollateral,
-  Endpoint__factory,
-  getChainIdFromSigner,
   getIsolatedOrderDigest,
   getOrderDigest,
   getOrderNonce,
-  IClearinghouse__factory,
-  MockERC20__factory,
-  ProductEngineType,
   subaccountFromBytes32,
   subaccountFromHex,
   subaccountToBytes32,
   subaccountToHex,
+  VERTEX_ABIS,
 } from '@vertex-protocol/contracts';
+import { MOCK_ERC20_ABI } from '@vertex-protocol/contracts/dist/common/abis/MockERC20';
 import {
   EngineClient,
   EngineIsolatedOrderParams,
   EngineOrderParams,
 } from '@vertex-protocol/engine-client';
-import {
-  TimeInSeconds,
-  toBigDecimal,
-  toFixedPoint,
-  toX18,
-} from '@vertex-protocol/utils';
-import { Wallet, ZeroAddress } from 'ethers';
+import { toBigDecimal, toFixedPoint, toX18 } from '@vertex-protocol/utils';
+import { createWalletClient, getContract, http, zeroAddress } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
+import { waitForTransaction } from '../utils/waitForTransaction';
 
 async function fullSanity(context: RunContext) {
-  const signer = context.getWallet();
-  const chainId = await getChainIdFromSigner(signer);
+  const walletClient = context.getWalletClient();
+  const publicClient = context.publicClient;
+  const chainId = walletClient.chain.id;
 
   const client = new EngineClient({
     url: context.endpoints.engine,
-    signer,
+    walletClient,
+  });
+  const walletClientAddress = walletClient.account.address;
+
+  const clearinghouse = getContract({
+    abi: VERTEX_ABIS.clearinghouse,
+    address: context.contracts.clearinghouse,
+    client: walletClient,
+  });
+  const quote = getContract({
+    abi: MOCK_ERC20_ABI,
+    address: await clearinghouse.read.getQuote(),
+    client: walletClient,
+  });
+  const endpointAddr = await clearinghouse.read.getEndpoint();
+  const endpoint = getContract({
+    abi: VERTEX_ABIS.endpoint,
+    address: endpointAddr,
+    client: walletClient,
   });
 
-  const clearinghouseAddr = context.contracts.clearinghouse;
-  const clearinghouse = IClearinghouse__factory.connect(
-    clearinghouseAddr,
-    signer,
+  await waitForTransaction(
+    quote.write.mint([walletClientAddress, toFixedPoint(10000, 6)]),
+    publicClient,
   );
-  const quote = MockERC20__factory.connect(
-    await clearinghouse.getQuote(),
-    signer,
+  await waitForTransaction(
+    quote.write.approve([endpointAddr, toFixedPoint(10000, 6)]),
+    publicClient,
   );
-  const endpointAddr = await clearinghouse.getEndpoint();
-  const endpoint = Endpoint__factory.connect(endpointAddr, signer);
-  await (await quote.mint(signer.address, toFixedPoint(10000, 6))).wait();
-  await (await quote.approve(endpointAddr, toFixedPoint(10000, 6))).wait();
 
   // Deposit collateral
-  const depositTx = await depositCollateral({
-    amount: toFixedPoint(10000, 6),
-    endpoint,
-    productId: 0,
-    subaccountName: 'default',
-  });
-  await depositTx.wait();
+  await waitForTransaction(
+    depositCollateral({
+      amount: toFixedPoint(10000, 6),
+      endpoint,
+      productId: 0,
+      subaccountName: 'default',
+    }),
+    publicClient,
+  );
   console.log('Done depositing collateral');
 
   // Wait for slow mode
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  console.log(`subaccount (in): ${signer.address}; default`);
+  console.log(`subaccount (in): ${walletClientAddress}; default`);
   const subaccountBytes32 = subaccountToBytes32({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
   const subaccountHex = subaccountToHex({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
   console.log(`subaccountBytes32: ${String(subaccountBytes32)}`);
@@ -91,7 +99,7 @@ async function fullSanity(context: RunContext) {
 
   console.log('Querying subaccount');
   const subaccountInfo = await client.getSubaccountSummary({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
   prettyPrint('Subaccount info', subaccountInfo);
@@ -111,12 +119,17 @@ async function fullSanity(context: RunContext) {
   console.log('Placing order');
   const spotProductId = 1;
   const spotOrderbookAddr = await client.getOrderbookAddress(spotProductId);
+  const spotOraclePrice = products.find(
+    (market) => market.productId === spotProductId,
+  )!.product.oraclePrice;
+  const shortLimitPrice = spotOraclePrice.multipliedBy(1.1).decimalPlaces(0);
+
   const spotOrder: EngineOrderParams = {
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     amount: toFixedPoint(-0.03),
     expiration: getExpiration(),
-    price: 110000,
+    price: shortLimitPrice,
   };
   const spotPlaceOrderResult = await client.placeOrder({
     verifyingAddr: spotOrderbookAddr,
@@ -142,13 +155,13 @@ async function fullSanity(context: RunContext) {
   const perpProductId = 2;
   const perpOrderbookAddr = await client.getOrderbookAddress(perpProductId);
   const isolatedOrder: EngineIsolatedOrderParams = {
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     amount: toX18(-0.03),
     expiration: getExpiration(),
-    price: 110000,
+    price: shortLimitPrice,
     // 10x leverage
-    margin: toX18((0.03 * 110000) / 10),
+    margin: toX18(shortLimitPrice.multipliedBy(0.03).div(10)),
   };
   const perpPlaceIsolatedOrderResult = await client.placeIsolatedOrder({
     verifyingAddr: perpOrderbookAddr,
@@ -173,7 +186,7 @@ async function fullSanity(context: RunContext) {
   const subaccountOrders = await client.getSubaccountOrders({
     productId: 2,
     subaccountName: 'default',
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
   });
   prettyPrint('Subaccount orders', subaccountOrders);
 
@@ -195,12 +208,12 @@ async function fullSanity(context: RunContext) {
 
   const feeRates = await client.getSubaccountFeeRates({
     subaccountName: 'default',
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
   });
   prettyPrint('Fee rates', feeRates);
 
   const maxOrderSize = await client.getMaxOrderSize({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: spotProductId,
     price: toBigDecimal(100000),
@@ -209,14 +222,14 @@ async function fullSanity(context: RunContext) {
   prettyPrint('Max order size', maxOrderSize);
 
   const maxWithdrawable = await client.getMaxWithdrawable({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: 0,
   });
   prettyPrint('Max withdrawable', maxWithdrawable);
 
   const maxWithdrawableNoSpotLeverage = await client.getMaxWithdrawable({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: 0,
     spotLeverage: false,
@@ -239,7 +252,7 @@ async function fullSanity(context: RunContext) {
   prettyPrint('Queried perp isolated order', queriedIsolatedOrder);
 
   const queriedOrders = await client.getSubaccountMultiProductOrders({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productIds: [spotProductId, perpProductId],
   });
@@ -248,7 +261,7 @@ async function fullSanity(context: RunContext) {
   console.log('Cancelling orders');
   const cancelResult = await client.cancelOrders({
     subaccountName: 'default',
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     productIds: [spotProductId, perpProductId],
     digests: [spotOrderDigest, perpIsolatedOrderDigest],
     verifyingAddr: endpointAddr,
@@ -258,13 +271,13 @@ async function fullSanity(context: RunContext) {
 
   const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
     productId: spotProductId,
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
   prettyPrint('Subaccount orders after cancel', subaccountOrdersAfterCancel);
 
   const maxWithdrawableAfterCancel = await client.getMaxWithdrawable({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: 0,
   });
@@ -274,34 +287,35 @@ async function fullSanity(context: RunContext) {
     await createDeterministicLinkedSignerPrivateKey({
       chainId,
       endpointAddress: endpointAddr,
-      signer,
-      subaccountOwner: signer.address,
+      walletClient,
+      subaccountOwner: walletClientAddress,
       subaccountName: 'default',
     });
-  const linkedSignerWallet = new Wallet(
-    linkedSignerWalletPrivKey,
-    signer.provider,
-  );
+  const linkedSignerWalletClient = createWalletClient({
+    chain: walletClient.chain,
+    account: privateKeyToAccount(linkedSignerWalletPrivKey),
+    transport: http(),
+  });
   console.log(
     "Linked signer's wallet",
-    linkedSignerWallet.address,
-    linkedSignerWallet.privateKey,
+    linkedSignerWalletClient.account.address,
+    linkedSignerWalletPrivKey,
   );
 
   const linkSignerResult = await client.linkSigner({
     chainId,
     signer: subaccountToHex({
-      subaccountOwner: linkedSignerWallet.address,
+      subaccountOwner: linkedSignerWalletClient.account.address,
       subaccountName: '',
     }),
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     verifyingAddr: endpointAddr,
   });
   prettyPrint('Done linking signer', linkSignerResult);
 
   const linkedSignerQueryResponse = await client.getLinkedSigner({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
   prettyPrint(
@@ -309,17 +323,18 @@ async function fullSanity(context: RunContext) {
     linkedSignerQueryResponse,
   );
 
-  client.setLinkedSigner(linkedSignerWallet);
+  client.setLinkedSigner(linkedSignerWalletClient);
 
   // Open an iso position
   const createIsoPositionOrder: EngineIsolatedOrderParams = {
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     amount: toX18(0.03),
     expiration: getExpiration('fok'),
-    price: 110000,
+    // Use the short limit price here to ensure a fill when opening a long
+    price: shortLimitPrice,
     // 10x leverage
-    margin: toX18((0.03 * 110000) / 10),
+    margin: toX18(shortLimitPrice.multipliedBy(0.03).div(10)),
   };
   const createIsoPositionOrderResult = await client.placeIsolatedOrder({
     verifyingAddr: perpOrderbookAddr,
@@ -331,17 +346,17 @@ async function fullSanity(context: RunContext) {
   prettyPrint('Done creating isolated position', createIsoPositionOrderResult);
 
   const isoPositions = await client.getIsolatedPositions({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
   prettyPrint('Isolated positions', isoPositions);
 
   const mintSpotLpResult = await client.mintLp({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: 3,
     amountBase: toFixedPoint(1, 18),
-    quoteAmountLow: toFixedPoint(3000, 18),
+    quoteAmountLow: toFixedPoint(1000, 18),
     quoteAmountHigh: toFixedPoint(6000, 18),
     verifyingAddr: endpointAddr,
     chainId,
@@ -349,13 +364,13 @@ async function fullSanity(context: RunContext) {
   prettyPrint('Done minting spot lp', mintSpotLpResult);
 
   const subaccountInfoAfterMintingLp = await client.getSubaccountSummary({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
   prettyPrint('Subaccount info after LP mint', subaccountInfoAfterMintingLp);
 
   const burnSpotLpResult = await client.burnLp({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: 3,
     amount: toFixedPoint(1, 18),
@@ -366,24 +381,14 @@ async function fullSanity(context: RunContext) {
   await new Promise((resolve) => setTimeout(resolve, 5000));
   prettyPrint('Done burning spot lp', burnSpotLpResult);
 
-  const burnPerpLpResult = await client.burnLp({
-    subaccountOwner: signer.address,
-    subaccountName: 'default',
-    productId: 4,
-    amount: toFixedPoint(1, 6),
-    verifyingAddr: endpointAddr,
-    chainId,
-  });
-  prettyPrint('Done burning perp lp', burnPerpLpResult);
-
   // Revoke signer
   const revokeSignerResult = await client.linkSigner({
     chainId,
     signer: subaccountToHex({
-      subaccountOwner: ZeroAddress,
+      subaccountOwner: zeroAddress,
       subaccountName: '',
     }),
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     verifyingAddr: endpointAddr,
   });
@@ -398,11 +403,11 @@ async function fullSanity(context: RunContext) {
     console.log('Placing order for product', productId);
     const orderbookAddr = await client.getOrderbookAddress(productId);
     const order: EngineOrderParams = {
-      subaccountOwner: signer.address,
+      subaccountOwner: walletClientAddress,
       subaccountName: 'default',
       amount: toFixedPoint(-0.01),
       expiration: getExpiration(),
-      price: 38000,
+      price: shortLimitPrice,
     };
     const placeResult = await client.placeOrder({
       verifyingAddr: orderbookAddr,
@@ -415,7 +420,7 @@ async function fullSanity(context: RunContext) {
 
     const subaccountOrdersAfterPlace = await client.getSubaccountOrders({
       productId,
-      subaccountOwner: signer.address,
+      subaccountOwner: walletClientAddress,
       subaccountName: 'default',
     });
 
@@ -428,8 +433,8 @@ async function fullSanity(context: RunContext) {
   // cancels orders for all products
   const cancelProductOrdersRes = await client.cancelProductOrders({
     subaccountName: 'default',
-    subaccountOwner: signer.address,
-    productIds: [],
+    subaccountOwner: walletClientAddress,
+    productIds: [spotProductId, perpProductId],
     verifyingAddr: endpointAddr,
     chainId,
   });
@@ -438,7 +443,7 @@ async function fullSanity(context: RunContext) {
   for (const productId of [spotProductId, perpProductId]) {
     const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
       productId,
-      subaccountOwner: signer.address,
+      subaccountOwner: walletClientAddress,
       subaccountName: 'default',
     });
 
@@ -449,7 +454,7 @@ async function fullSanity(context: RunContext) {
   }
 
   const withdrawResult = await client.withdrawCollateral({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: 0,
     amount: toFixedPoint(4999, 6),
@@ -459,7 +464,7 @@ async function fullSanity(context: RunContext) {
   prettyPrint('Done withdrawing collateral, result', withdrawResult);
 
   const subaccountInfoAtEnd = await client.getSubaccountSummary({
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
   prettyPrint('Subaccount info after withdraw collateral', subaccountInfoAtEnd);
@@ -468,36 +473,10 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Min deposit rates', minDepositRates);
 
-  subaccountInfoAtEnd.balances.forEach((balance) => {
-    if (balance.type == ProductEngineType.SPOT) {
-      const minDepositRate =
-        minDepositRates.minDepositRates[balance.productId].minDepositRate;
-      console.log('product', balance.productId);
-      console.log('min Deposit Rate', minDepositRate.toNumber());
-      console.log(
-        'deposit APR',
-        calcRealizedDepositRateForTimeRange(
-          balance,
-          TimeInSeconds.YEAR,
-          0.2,
-          minDepositRate,
-        ).toNumber() * 100,
-      );
-      console.log(
-        'borrow APR',
-        calcBorrowRateForTimeRange(
-          balance,
-          TimeInSeconds.YEAR,
-          minDepositRate,
-        ).toNumber() * 100,
-      );
-    }
-  });
-
   const transferQuoteResult = await client.transferQuote({
     chainId,
     recipientSubaccountName: 'transfer1',
-    subaccountOwner: signer.address,
+    subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     amount: toFixedPoint(50), // amount must be x18
     verifyingAddr: endpointAddr,

@@ -1,11 +1,12 @@
+import { WalletClientWithAccount } from '../common';
+import { getVertexEIP712Domain } from './getVertexEIP712Domain';
+import { getVertexEIP712PrimaryType } from './getVertexEIP712PrimaryType';
+import { getVertexEIP712Types } from './getVertexEIP712Types';
+import { getVertexEIP712Values } from './getVertexEIP712Values';
 import {
   SignableRequestType,
   SignableRequestTypeToParams,
 } from './signableRequestType';
-import { getVertexEIP712Domain } from './getVertexEIP712Domain';
-import { getVertexEIP712Types } from './getVertexEIP712Types';
-import { getVertexEIP712Values } from './getVertexEIP712Values';
-import { Signer } from 'ethers';
 
 interface Params<TReqType extends SignableRequestType> {
   requestType: TReqType;
@@ -14,15 +15,16 @@ interface Params<TReqType extends SignableRequestType> {
   chainId: number;
   // Orderbook for orders, Sequencer for other requests
   verifyingContract: string;
-  signer: Signer;
+  walletClient: WalletClientWithAccount;
 }
 
 export function getSignedTransactionRequest<
   TReqType extends SignableRequestType,
 >(params: Params<TReqType>) {
-  return params.signer.signTypedData(
-    getVertexEIP712Domain(params.verifyingContract, params.chainId),
-    getVertexEIP712Types(params.requestType),
-    getVertexEIP712Values(params.requestType, params.requestParams),
-  );
+  return params.walletClient.signTypedData({
+    domain: getVertexEIP712Domain(params.verifyingContract, params.chainId),
+    types: getVertexEIP712Types(params.requestType),
+    primaryType: getVertexEIP712PrimaryType(params.requestType),
+    message: getVertexEIP712Values(params.requestType, params.requestParams),
+  });
 }

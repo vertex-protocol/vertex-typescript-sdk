@@ -1,18 +1,18 @@
 import {
   ChainEnv,
   VertexDeploymentAddresses,
+  WalletClientWithAccount,
 } from '@vertex-protocol/contracts';
-import { Provider, Wallet } from 'ethers';
+import { Hex, PublicClient } from 'viem';
 
 export interface Env {
   chainEnv: ChainEnv;
-  privateKey: string;
+  privateKey: Hex;
 }
 
 export interface RunContext {
   env: Env;
-  // For the configured chain env
-  provider: Provider;
+  publicClient: PublicClient;
   endpoints: {
     engine: string;
     trigger: string;
@@ -21,7 +21,7 @@ export interface RunContext {
   contracts: VertexDeploymentAddresses;
 
   // Throws on invalid / non-existent private key
-  getWallet(): Wallet;
+  getWalletClient(): WalletClientWithAccount;
 }
 
 export type RunFn = (ctx: RunContext) => Promise<void> | void;

@@ -1,10 +1,10 @@
-import { Subaccount } from '../common';
+import { keccak256 } from 'viem';
+import { Subaccount, WalletClientWithAccount } from '../common';
 import { getVertexEIP712Domain } from '../eip712';
 import { subaccountToHex } from './bytes32';
-import { keccak256, Signer } from 'ethers';
 
 interface Params extends Subaccount {
-  signer: Signer;
+  walletClient: WalletClientWithAccount;
   chainId: number;
   endpointAddress: string;
 }
@@ -19,21 +19,27 @@ interface Params extends Subaccount {
 export async function createDeterministicLinkedSignerPrivateKey(
   params: Params,
 ) {
-  const { chainId, endpointAddress, signer, subaccountName, subaccountOwner } =
-    params;
+  const {
+    chainId,
+    endpointAddress,
+    walletClient,
+    subaccountName,
+    subaccountOwner,
+  } = params;
 
-  const signedMessage = await signer.signTypedData(
-    getVertexEIP712Domain(endpointAddress, chainId),
-    {
+  const signedMessage = await walletClient.signTypedData({
+    domain: getVertexEIP712Domain(endpointAddress, chainId),
+    types: {
       CreateLinkedSignerWallet: [{ name: 'subaccount', type: 'bytes32' }],
     },
-    {
+    primaryType: 'CreateLinkedSignerWallet',
+    message: {
       subaccount: subaccountToHex({
         subaccountOwner,
         subaccountName,
       }),
     },
-  );
+  });
 
   return keccak256(signedMessage);
 }

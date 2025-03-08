@@ -6,7 +6,6 @@ import {
   SignableRequestType,
   SignableRequestTypeToParams,
 } from '@vertex-protocol/contracts';
-import { hexlify } from 'ethers';
 import { EngineBaseClient } from './EngineBaseClient';
 import {
   EngineExecuteRequestParamsByType,
@@ -49,11 +48,7 @@ export class EngineExecuteBuilder {
 
     return {
       signature,
-      tx: {
-        ...tx,
-        liquidatee: hexlify(tx.liquidatee),
-        sender: hexlify(tx.sender),
-      },
+      tx,
     };
   }
 
@@ -175,10 +170,7 @@ export class EngineExecuteBuilder {
       payload: {
         id: clientParams.id ?? null,
         product_id: clientParams.productId,
-        order: {
-          ...orderEIP712Values,
-          sender: hexlify(orderEIP712Values.sender),
-        },
+        order: orderEIP712Values,
         signature: clientParams.signature,
         spot_leverage: clientParams.spotLeverage ?? null,
       },
@@ -233,10 +225,7 @@ export class EngineExecuteBuilder {
       payload: {
         id: clientParams.id ?? null,
         product_id: clientParams.productId,
-        isolated_order: {
-          ...isolatedOrderEIP712Values,
-          sender: hexlify(isolatedOrderEIP712Values.sender),
-        },
+        isolated_order: isolatedOrderEIP712Values,
         signature: clientParams.signature,
         borrow_margin: clientParams.borrowMargin ?? null,
       },

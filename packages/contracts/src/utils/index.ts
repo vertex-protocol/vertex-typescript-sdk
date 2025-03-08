@@ -6,5 +6,5 @@ export * from './orderExpiration';
 export * from './orderNonce';
 export * from './bytes32';
 export * from './createDeterministicLinkedSignerPrivateKey';
-export * from './getChainIdFromSigner';
 export * from './recvTime';
+export * from './isWriteableContract';
