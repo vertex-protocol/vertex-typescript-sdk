@@ -2,12 +2,14 @@ import { toIntegerString, toX18 } from '@vertex-protocol/utils';
 import { subaccountToHex } from '../utils';
 import {
   EIP712BurnLpValues,
+  EIP712BurnVlpValues,
   EIP712IsolatedOrderValues,
   EIP712LeaderboardAuthenticationValues,
   EIP712LinkSignerValues,
   EIP712LiquidateSubaccountValues,
   EIP712ListTriggerOrdersValues,
   EIP712MintLpValues,
+  EIP712MintVlpValues,
   EIP712OrderCancellationValues,
   EIP712OrderValues,
   EIP712ProductOrdersCancellationValues,
@@ -21,6 +23,7 @@ import {
 } from './signableRequestType';
 import {
   EIP712BurnLpParams,
+  EIP712BurnVlpParams,
   EIP712CancelOrdersParams,
   EIP712CancelProductOrdersParams,
   EIP712IsolatedOrderParams,
@@ -29,6 +32,7 @@ import {
   EIP712LiquidateSubaccountParams,
   EIP712ListTriggerOrdersParams,
   EIP712MintLpParams,
+  EIP712MintVlpParams,
   EIP712OrderParams,
   EIP712TransferQuoteParams,
   EIP712WithdrawCollateralParams,
@@ -95,8 +99,14 @@ export function getVertexEIP712Values<TReqType extends SignableRequestType>(
         params as EIP712LeaderboardAuthenticationParams,
       );
       break;
+    case 'mint_vlp':
+      values = getMintVlpValues(params as EIP712MintVlpParams);
+      break;
+    case 'burn_vlp':
+      values = getBurnVlpValues(params as EIP712BurnVlpParams);
+      break;
     default:
-      throw Error(`Unknown request type: ${requestType}`);
+      throw new Error(`Unsupported request type: ${requestType}`);
   }
 
   return values as SignableRequestTypeToEIP712Values[TReqType];
@@ -261,5 +271,27 @@ function getLeaderboardAuthenticationValues(
       subaccountName: params.subaccountName,
     }),
     expiration: toIntegerString(params.expiration),
+  };
+}
+
+function getMintVlpValues(params: EIP712MintVlpParams): EIP712MintVlpValues {
+  return {
+    sender: subaccountToHex({
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.subaccountName,
+    }),
+    quoteAmount: toIntegerString(params.quoteAmount),
+    nonce: params.nonce,
+  };
+}
+
+function getBurnVlpValues(params: EIP712BurnVlpParams): EIP712BurnVlpValues {
+  return {
+    sender: subaccountToHex({
+      subaccountOwner: params.subaccountOwner,
+      subaccountName: params.subaccountName,
+    }),
+    vlpAmount: toIntegerString(params.vlpAmount),
+    nonce: params.nonce,
   };
 }

@@ -345,6 +345,53 @@ export class EngineExecuteBuilder {
     };
   }
 
+  /**
+   * Builds server payload for the `mint_vlp` execute action.
+   * @param clientParams Client MintVlp params.
+   * @returns `mint_vlp` payload
+   */
+  async buildMintVlpPayload(
+    clientParams: EngineExecuteRequestParamsByType['mint_vlp'],
+  ): Promise<EngineServerExecuteRequestByType['mint_vlp']> {
+    const nonce = await this.getTxNonceIfNeeded(clientParams);
+    const paramsWithNonce = { ...clientParams, nonce };
+
+    const tx = getVertexEIP712Values('mint_vlp', paramsWithNonce);
+    const signature = await this.getSignatureIfNeeded(
+      'mint_vlp',
+      paramsWithNonce,
+    );
+
+    return {
+      signature,
+      tx,
+      spot_leverage: clientParams.spotLeverage ?? null,
+    };
+  }
+
+  /**
+   * Builds server payload for the `burn_vlp` execute action.
+   * @param clientParams Client BurnVlp params.
+   * @returns `burn_vlp` payload
+   */
+  async buildBurnVlpPayload(
+    clientParams: EngineExecuteRequestParamsByType['burn_vlp'],
+  ): Promise<EngineServerExecuteRequestByType['burn_vlp']> {
+    const nonce = await this.getTxNonceIfNeeded(clientParams);
+    const paramsWithNonce = { ...clientParams, nonce };
+
+    const tx = getVertexEIP712Values('burn_vlp', paramsWithNonce);
+    const signature = await this.getSignatureIfNeeded(
+      'burn_vlp',
+      paramsWithNonce,
+    );
+
+    return {
+      signature,
+      tx,
+    };
+  }
+
   protected async getSignatureIfNeeded<T extends SignableRequestType>(
     requestType: T,
     paramsWithNonce: SignatureParams & SignableRequestTypeToParams[T],
