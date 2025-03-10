@@ -32,6 +32,8 @@ import {
   GetEngineMarketPricesResponse,
   GetEngineMaxMintLpAmountParams,
   GetEngineMaxMintLpAmountResponse,
+  GetEngineMaxMintVlpAmountParams,
+  GetEngineMaxMintVlpAmountResponse,
   GetEngineMaxOrderSizeParams,
   GetEngineMaxOrderSizeResponse,
   GetEngineMaxWithdrawableParams,
@@ -508,7 +510,7 @@ export class EngineQueryClient extends EngineBaseClient {
   }
 
   /**
-   * Retrieves the estimated max base amount for minting LPs for a product
+   * Retrieves the estimated max base & quote amounts for minting LPs
    *
    * @param params
    */
@@ -517,6 +519,30 @@ export class EngineQueryClient extends EngineBaseClient {
   ): Promise<GetEngineMaxMintLpAmountResponse> {
     const baseResponse = await this.query('max_lp_mintable', {
       product_id: params.productId,
+      sender: subaccountToHex({
+        subaccountOwner: params.subaccountOwner,
+        subaccountName: params.subaccountName,
+      }),
+      spot_leverage:
+        params.spotLeverage != null ? String(params.spotLeverage) : null,
+    });
+
+    return {
+      maxBaseAmount: toBigDecimal(baseResponse.max_base_amount),
+      maxQuoteAmount: toBigDecimal(baseResponse.max_quote_amount),
+    };
+  }
+
+  /**
+   * Retrieves the estimated max base * quote amounts for minting VLP. Only the quote amount is
+   * used for minting. The maximum quote amount includes the sequencer fee of 1 USDC
+   *
+   * @param params
+   */
+  async getMaxMintVlpAmount(
+    params: GetEngineMaxMintVlpAmountParams,
+  ): Promise<GetEngineMaxMintVlpAmountResponse> {
+    const baseResponse = await this.query('max_vlp_mintable', {
       sender: subaccountToHex({
         subaccountOwner: params.subaccountOwner,
         subaccountName: params.subaccountName,

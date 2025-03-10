@@ -7,3 +7,4 @@ export * from './subaccountTypes';
 export * from './ChainEnv';
 export * from './bytes';
 export * from './viemTypes';
+export * from './vertexContractTypes';

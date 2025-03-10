@@ -1,9 +1,11 @@
 import {
   EIP712BurnLpValues,
+  EIP712BurnVlpValues,
   EIP712IsolatedOrderParams,
   EIP712LinkSignerValues,
   EIP712LiquidateSubaccountValues,
   EIP712MintLpValues,
+  EIP712MintVlpValues,
   EIP712OrderCancellationValues,
   EIP712OrderParams,
   EIP712OrderValues,
@@ -23,17 +25,19 @@ export interface EngineServerCancelOrdersResponse {
 }
 
 export interface EngineServerExecuteResponseDataByType {
-  liquidate_subaccount: null;
-  withdraw_collateral: null;
-  mint_lp: null;
   burn_lp: null;
-  place_order: EngineServerPlaceOrderResponse;
-  place_isolated_order: EngineServerPlaceOrderResponse;
-  cancel_product_orders: EngineServerCancelOrdersResponse;
-  cancel_orders: EngineServerCancelOrdersResponse;
+  burn_vlp: null;
   cancel_and_place: EngineServerPlaceOrderResponse;
+  cancel_orders: EngineServerCancelOrdersResponse;
+  cancel_product_orders: EngineServerCancelOrdersResponse;
   link_signer: null;
+  liquidate_subaccount: null;
+  mint_lp: null;
+  mint_vlp: null;
+  place_isolated_order: EngineServerPlaceOrderResponse;
+  place_order: EngineServerPlaceOrderResponse;
   transfer_quote: null;
+  withdraw_collateral: null;
 }
 
 export interface EngineServerExecuteSuccessResult<
@@ -104,16 +108,10 @@ type WithSpotLeverage<T> = T & {
 };
 
 export interface EngineServerExecuteRequestByType {
-  liquidate_subaccount: SignedTx<EIP712LiquidateSubaccountValues>;
-  withdraw_collateral: WithSpotLeverage<
-    SignedTx<EIP712WithdrawCollateralValues>
-  >;
-  mint_lp: WithSpotLeverage<SignedTx<EIP712MintLpValues>>;
   burn_lp: SignedTx<EIP712BurnLpValues>;
-  place_order: EngineServerPlaceOrderParams;
-  place_isolated_order: EngineServerPlaceIsolatedOrderParams;
-  cancel_orders: EngineServerCancelOrdersParams;
+  burn_vlp: SignedTx<EIP712BurnVlpValues>;
   cancel_and_place: EngineServiceCancelAndPlaceParams;
+  cancel_orders: EngineServerCancelOrdersParams;
   cancel_product_orders: SignedTx<
     Omit<EIP712ProductOrdersCancellationValues, 'productIds'> & {
       // number[] is technically assignable to "Bytes", so we need to override the ByteFieldsToHex result here
@@ -121,7 +119,15 @@ export interface EngineServerExecuteRequestByType {
     }
   >;
   link_signer: SignedTx<EIP712LinkSignerValues>;
+  liquidate_subaccount: SignedTx<EIP712LiquidateSubaccountValues>;
+  mint_lp: WithSpotLeverage<SignedTx<EIP712MintLpValues>>;
+  mint_vlp: WithSpotLeverage<SignedTx<EIP712MintVlpValues>>;
+  place_isolated_order: EngineServerPlaceIsolatedOrderParams;
+  place_order: EngineServerPlaceOrderParams;
   transfer_quote: SignedTx<EIP712TransferQuoteValues>;
+  withdraw_collateral: WithSpotLeverage<
+    SignedTx<EIP712WithdrawCollateralValues>
+  >;
 }
 
 export type EngineServerExecuteRequestType =
