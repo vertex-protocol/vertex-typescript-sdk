@@ -89,3 +89,13 @@ export interface EIP712TransferQuoteParams extends Subaccount {
 export interface EIP712LeaderboardAuthenticationParams extends Subaccount {
   expiration: BigDecimalish;
 }
+
+export interface EIP712MintVlpParams extends Subaccount {
+  quoteAmount: BigDecimalish;
+  nonce: string;
+}
+
+export interface EIP712BurnVlpParams extends Subaccount {
+  vlpAmount: BigDecimalish;
+  nonce: string;
+}

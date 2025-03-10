@@ -267,6 +267,15 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Paginated LP events', lpEvents);
 
+  const vlpEvents = await client.getPaginatedSubaccountVlpEvents({
+    limit: 1,
+    startCursor: undefined,
+    subaccountName: subaccount.subaccountName,
+    subaccountOwner: subaccount.subaccountOwner,
+  });
+
+  prettyPrint('Paginated VLP events', vlpEvents);
+
   const leaderboard = await client.getLeaderboard({
     limit: 5,
     startCursor: undefined,

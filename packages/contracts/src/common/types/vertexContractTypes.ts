@@ -1,5 +1,5 @@
-import { WriteableContractInstance } from './types';
-import { VertexAbis, VertexContractName } from './vertexAbis';
+import { VertexAbis, VertexContractName } from '../vertexAbis';
+import { WriteableContractInstance } from './viemTypes';
 
 /**
  * Encapsulates the set of Vertex contracts required for querying and executing, assumes that a wallet client is connected

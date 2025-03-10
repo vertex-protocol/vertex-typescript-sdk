@@ -1,11 +1,13 @@
 import {
   EIP712BurnLpParams,
+  EIP712BurnVlpParams,
   EIP712CancelOrdersParams,
   EIP712CancelProductOrdersParams,
   EIP712IsolatedOrderParams,
   EIP712LinkSignerParams,
   EIP712LiquidateSubaccountParams,
   EIP712MintLpParams,
+  EIP712MintVlpParams,
   EIP712OrderParams,
   EIP712TransferQuoteParams,
   EIP712WithdrawCollateralParams,
@@ -93,18 +95,27 @@ export type EngineLinkSignerParams =
 export type EngineTransferQuoteParams =
   WithBaseEngineExecuteParams<EIP712TransferQuoteParams>;
 
+export type EngineMintVlpParams = WithBaseEngineExecuteParams<
+  WithSpotLeverage<EIP712MintVlpParams>
+>;
+
+export type EngineBurnVlpParams =
+  WithBaseEngineExecuteParams<EIP712BurnVlpParams>;
+
 export interface EngineExecuteRequestParamsByType {
-  liquidate_subaccount: EngineLiquidateSubaccountParams;
-  mint_lp: EngineMintLpParams;
-  withdraw_collateral: EngineWithdrawCollateralParams;
   burn_lp: EngineBurnLpParams;
-  place_order: EnginePlaceOrderParams;
-  place_isolated_order: EnginePlaceIsolatedOrderParams;
-  cancel_orders: EngineCancelOrdersParams;
+  burn_vlp: EngineBurnVlpParams;
   cancel_and_place: EngineCancelAndPlaceParams;
+  cancel_orders: EngineCancelOrdersParams;
   cancel_product_orders: EngineCancelProductOrdersParams;
   link_signer: EngineLinkSignerParams;
+  liquidate_subaccount: EngineLiquidateSubaccountParams;
+  mint_lp: EngineMintLpParams;
+  mint_vlp: EngineMintVlpParams;
+  place_isolated_order: EnginePlaceIsolatedOrderParams;
+  place_order: EnginePlaceOrderParams;
   transfer_quote: EngineTransferQuoteParams;
+  withdraw_collateral: EngineWithdrawCollateralParams;
 }
 
 export type EnginePlaceOrderResult =

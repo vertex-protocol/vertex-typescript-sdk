@@ -119,4 +119,18 @@ export class EngineExecuteClient extends EngineBaseClient {
       await this.payloadBuilder.buildTransferQuotePayload(params),
     );
   }
+
+  async mintVlp(params: EngineExecuteRequestParamsByType['mint_vlp']) {
+    return this.execute(
+      'mint_vlp',
+      await this.payloadBuilder.buildMintVlpPayload(params),
+    );
+  }
+
+  async burnVlp(params: EngineExecuteRequestParamsByType['burn_vlp']) {
+    return this.execute(
+      'burn_vlp',
+      await this.payloadBuilder.buildBurnVlpPayload(params),
+    );
+  }
 }

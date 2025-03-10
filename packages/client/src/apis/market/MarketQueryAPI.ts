@@ -115,10 +115,10 @@ export class MarketQueryAPI extends BaseVertexAPI {
   }
 
   /**
-   * Queries engine to determine maximum base amount contribution for minting LPs
+   * Queries engine to determine maximum base & quote amounts for minting LPs
    * @param params
    */
-  async getMaxMintLp(params: GetEngineMaxMintLpAmountParams) {
+  async getMaxMintLpAmount(params: GetEngineMaxMintLpAmountParams) {
     return this.context.engineClient.getMaxMintLpAmount(params);
   }
 

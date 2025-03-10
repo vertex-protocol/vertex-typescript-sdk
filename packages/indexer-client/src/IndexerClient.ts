@@ -2,6 +2,7 @@ import {
   ProductEngineType,
   QUOTE_PRODUCT_ID,
   subaccountFromHex,
+  VLP_PRODUCT_ID,
 } from '@vertex-protocol/contracts';
 import { toBigDecimal } from '@vertex-protocol/utils';
 
@@ -30,6 +31,8 @@ import {
   GetIndexerSubaccountMatchEventsResponse,
   GetIndexerSubaccountSettlementEventsParams,
   GetIndexerSubaccountSettlementEventsResponse,
+  GetIndexerSubaccountVlpEventsParams,
+  GetIndexerSubaccountVlpEventsResponse,
   IndexerCollateralEvent,
   IndexerEventPerpStateSnapshot,
   IndexerEventSpotStateSnapshot,
@@ -38,6 +41,7 @@ import {
   IndexerLpEvent,
   IndexerPaginationParams,
   IndexerSettlementEvent,
+  IndexerVlpEvent,
   PaginatedIndexerEventsResponse,
 } from './types';
 
@@ -149,6 +153,72 @@ export class IndexerClient extends IndexerBaseClient {
       mappedEvent.lpDelta = lpBalanceDelta;
       mappedEvent.baseDelta = balanceDelta;
       mappedEvent.baseSnapshot = event.state;
+    });
+
+    // Force cast to get rid of the `Partial`
+    const events = Array.from(eventsBySubmissionIdx.values());
+    return this.getPaginationEventsResponse(events, requestedLimit);
+  }
+
+  async getPaginatedSubaccountVlpEvents(
+    params: GetIndexerSubaccountVlpEventsParams,
+  ): Promise<GetIndexerSubaccountVlpEventsResponse> {
+    const {
+      startCursor,
+      maxTimestampInclusive,
+      limit: requestedLimit,
+      subaccountName,
+      subaccountOwner,
+    } = params;
+
+    // There are 2 events per mint/burn for spot - one associated with the VLP product & the other with the primary quote
+    const limit = requestedLimit + 1;
+    const baseResponse = await this.getEvents({
+      startCursor,
+      maxTimestampInclusive,
+      eventTypes: ['mint_vlp', 'burn_vlp'],
+      limit: {
+        type: 'txs',
+        value: limit,
+      },
+      subaccount: { subaccountName, subaccountOwner },
+    });
+
+    // Now aggregate results by the submission index, use map to maintain insertion order
+    const eventsBySubmissionIdx = new Map<string, IndexerVlpEvent>();
+
+    baseResponse.forEach((event) => {
+      const mappedEvent = (() => {
+        const existingEvent = eventsBySubmissionIdx.get(event.submissionIndex);
+        if (existingEvent) {
+          return existingEvent;
+        }
+
+        const newEvent: IndexerVlpEvent = {
+          vlpDelta: toBigDecimal(0),
+          primaryQuoteDelta: toBigDecimal(0),
+          timestamp: event.timestamp,
+          submissionIndex: event.submissionIndex,
+          tx: event.tx,
+          ...subaccountFromHex(event.subaccount),
+        };
+        eventsBySubmissionIdx.set(event.submissionIndex, newEvent);
+
+        return newEvent;
+      })();
+
+      const balanceDelta = event.state.postBalance.amount.minus(
+        event.state.preBalance.amount,
+      );
+
+      const productId = event.state.market.productId;
+      if (productId === QUOTE_PRODUCT_ID) {
+        mappedEvent.primaryQuoteDelta = balanceDelta;
+      } else if (productId === VLP_PRODUCT_ID) {
+        mappedEvent.vlpDelta = balanceDelta;
+      } else {
+        throw Error(`Invalid product ID for VLP event ${productId}`);
+      }
     });
 
     // Force cast to get rid of the `Partial`
