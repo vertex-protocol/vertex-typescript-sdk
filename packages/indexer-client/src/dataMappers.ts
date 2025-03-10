@@ -11,7 +11,12 @@ import {
   mapEngineServerPerpProduct,
   mapEngineServerSpotProduct,
 } from '@vertex-protocol/engine-client';
-import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
+import {
+  fromX18,
+  getValidatedAddress,
+  mapValues,
+  toBigDecimal,
+} from '@vertex-protocol/utils';
 import {
   Candlestick,
   IndexerEvent,
@@ -47,8 +52,12 @@ import {
   IndexerServerProduct,
   IndexerServerProductPayment,
   IndexerServerRewardsEpoch,
+  IndexerServerStakingV2PoolSnapshot,
+  IndexerServerStakingV2Staker,
   IndexerServerTx,
   IndexerSpotBalance,
+  IndexerStakingV2PoolSnapshot,
+  IndexerStakingV2Staker,
   IndexerSubaccountFoundationTakerRewardsForProduct,
   IndexerSubaccountRewardsForProduct,
 } from './types';
@@ -402,5 +411,26 @@ export function mapIndexerMarketSnapshot(
     cumulativeInflows: mapValues(snapshot.cumulative_inflows, toBigDecimal),
     cumulativeOutflows: mapValues(snapshot.cumulative_outflows, toBigDecimal),
     oraclePrices: mapValues(snapshot.oracle_prices, fromX18),
+  };
+}
+
+export function mapIndexerStakingV2PoolSnapshot(
+  snapshot: IndexerServerStakingV2PoolSnapshot,
+): IndexerStakingV2PoolSnapshot {
+  return {
+    timestamp: toBigDecimal(snapshot.timestamp),
+    cumulativeStaked: toBigDecimal(snapshot.cumulative_staked),
+    cumulativeUnstaked: toBigDecimal(snapshot.cumulative_unstaked),
+    numberOfStakers: toBigDecimal(snapshot.number_of_stakers),
+  };
+}
+
+export function mapIndexerStakingV2Staker(
+  staker: IndexerServerStakingV2Staker,
+): IndexerStakingV2Staker {
+  return {
+    address: getValidatedAddress(staker.address),
+    stakedAmount: toBigDecimal(staker.staked_amount),
+    poolShare: toBigDecimal(staker.pool_share),
   };
 }

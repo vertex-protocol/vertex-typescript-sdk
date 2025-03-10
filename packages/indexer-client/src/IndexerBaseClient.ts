@@ -37,6 +37,8 @@ import {
   mapIndexerProductPayment,
   mapIndexerRewardsEpoch,
   mapIndexerServerProduct,
+  mapIndexerStakingV2PoolSnapshot,
+  mapIndexerStakingV2Staker,
 } from './dataMappers';
 import {
   GetIndexerBlastPointsParams,
@@ -108,6 +110,10 @@ import {
   GetIndexerSonicPointsLeaderboardResponse,
   GetIndexerSonicPointsParams,
   GetIndexerSonicPointsResponse,
+  GetIndexerStakingV2PoolSnapshotsParams,
+  GetIndexerStakingV2PoolSnapshotsResponse,
+  GetIndexerStakingV2TopStakersParams,
+  GetIndexerStakingV2TopStakersResponse,
   GetIndexerTakerRewardsParams,
   GetIndexerTakerRewardsResponse,
   GetIndexerVrtxTokenInfoParams,
@@ -1085,6 +1091,37 @@ export class IndexerBaseClient {
     this.checkResponseStatus(response);
 
     return response.data as GetIndexerVrtxTokenInfoResponse;
+  }
+
+  /**
+   *
+   *
+   * @param params
+   */
+  async getStakingV2TopStakers(
+    params: GetIndexerStakingV2TopStakersParams,
+  ): Promise<GetIndexerStakingV2TopStakersResponse> {
+    const baseResponse = await this.query('staking_v2_top_stakers', {
+      limit: params.limit,
+    });
+
+    return {
+      stakers: baseResponse.stakers.map(mapIndexerStakingV2Staker),
+    };
+  }
+
+  async getStakingV2PoolSnapshots(
+    params: GetIndexerStakingV2PoolSnapshotsParams,
+  ): Promise<GetIndexerStakingV2PoolSnapshotsResponse> {
+    const baseResponse = await this.query('staking_v2_pool_snapshots', {
+      limit: params.limit,
+      max_time: params.maxTimeInclusive,
+      granularity: params.granularity,
+    });
+
+    return {
+      snapshots: baseResponse.snapshots.map(mapIndexerStakingV2PoolSnapshot),
+    };
   }
 
   protected async query<TRequestType extends IndexerServerQueryRequestType>(
