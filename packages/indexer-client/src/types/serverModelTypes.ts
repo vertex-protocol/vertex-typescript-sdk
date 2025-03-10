@@ -178,6 +178,19 @@ export interface IndexerServerMarketSnapshot {
   oracle_prices: Record<string, string>;
 }
 
+export interface IndexerServerStakingV2PoolSnapshot {
+  timestamp: string;
+  cumulative_staked: string;
+  cumulative_unstaked: string;
+  number_of_stakers: string;
+}
+
+export interface IndexerServerStakingV2Staker {
+  address: string;
+  staked_amount: string;
+  pool_share: string;
+}
+
 /**
  * Interest / funding
  */
