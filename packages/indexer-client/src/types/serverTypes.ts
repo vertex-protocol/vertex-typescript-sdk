@@ -22,6 +22,7 @@ import {
   IndexerServerProductSnapshot,
   IndexerServerRewardsEpoch,
   IndexerServerStakingV2PoolSnapshot,
+  IndexerServerStakingV2PoolSnapshotsInterval,
   IndexerServerStakingV2Staker,
   IndexerServerTakerRewardsEpoch,
   IndexerServerTx,
@@ -245,10 +246,7 @@ export interface IndexerServerFastWithdrawalSignatureParams {
 }
 
 export interface IndexerServerStakingV2PoolSnapshotsParams {
-  limit: number;
-  // Currently accepts any granularity, time distance (in seconds) between data points
-  granularity: number;
-  max_time: number | undefined;
+  interval: IndexerServerStakingV2PoolSnapshotsInterval;
 }
 
 export interface IndexerServerStakingV2TopStakersParams {

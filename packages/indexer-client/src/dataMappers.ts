@@ -430,7 +430,7 @@ export function mapIndexerStakingV2Staker(
 ): IndexerStakingV2Staker {
   return {
     address: getValidatedAddress(staker.address),
-    stakedAmount: toBigDecimal(staker.staked_amount),
+    stakedAmount: toBigDecimal(staker.stake_amount),
     poolShare: toBigDecimal(staker.pool_share),
   };
 }

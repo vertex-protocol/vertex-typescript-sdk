@@ -187,7 +187,7 @@ export interface IndexerServerStakingV2PoolSnapshot {
 
 export interface IndexerServerStakingV2Staker {
   address: string;
-  staked_amount: string;
+  stake_amount: string;
   pool_share: string;
 }
 
@@ -341,4 +341,11 @@ export interface IndexerServerLeaderboardRegistration {
   subaccount: string;
   contest_id: number;
   update_time: string;
+}
+
+export interface IndexerServerStakingV2PoolSnapshotsInterval {
+  count: number;
+  // Currently accepts any granularity, time distance (in seconds) between data points
+  granularity: number;
+  max_time?: string;
 }

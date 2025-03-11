@@ -1114,9 +1114,11 @@ export class IndexerBaseClient {
     params: GetIndexerStakingV2PoolSnapshotsParams,
   ): Promise<GetIndexerStakingV2PoolSnapshotsResponse> {
     const baseResponse = await this.query('staking_v2_pool_snapshots', {
-      limit: params.limit,
-      max_time: params.maxTimeInclusive,
-      granularity: params.granularity,
+      interval: {
+        count: params.limit,
+        max_time: params.maxTimeInclusive?.toString(),
+        granularity: params.granularity,
+      },
     });
 
     return {
