@@ -1094,7 +1094,7 @@ export class IndexerBaseClient {
   }
 
   /**
-   *
+   * Retrieves staking top stakers.
    *
    * @param params
    */
@@ -1110,6 +1110,11 @@ export class IndexerBaseClient {
     };
   }
 
+  /**
+   * Retrieves staking v2 pool snapshots.
+   *
+   * @param params
+   */
   async getStakingV2PoolSnapshots(
     params: GetIndexerStakingV2PoolSnapshotsParams,
   ): Promise<GetIndexerStakingV2PoolSnapshotsResponse> {
