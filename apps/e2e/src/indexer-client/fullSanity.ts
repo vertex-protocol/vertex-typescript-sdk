@@ -324,6 +324,19 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('VRTX Circulating Supply', vrtxCirculatingSupply);
 
+  const stakingV2PoolSnapshots = await client.getStakingV2PoolSnapshots({
+    granularity: TimeInSeconds.DAY,
+    limit: 5,
+  });
+
+  prettyPrint('Staking V2 Pool Snapshots', stakingV2PoolSnapshots);
+
+  const stakingV2TopStakers = await client.getStakingV2TopStakers({
+    limit: 20,
+  });
+
+  prettyPrint('Staking V2 Top Stakers', stakingV2TopStakers);
+
   const latestWithdrawal = await client.getEvents({
     eventTypes: ['withdraw_collateral'],
     limit: {
