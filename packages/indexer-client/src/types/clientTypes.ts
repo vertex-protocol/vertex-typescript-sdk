@@ -914,6 +914,7 @@ export interface GetIndexerStakingV2PoolSnapshotsParams {
   maxTimeInclusive?: number;
   limit: number;
 }
+
 export interface GetIndexerStakingV2PoolSnapshotsResponse {
   snapshots: IndexerStakingV2PoolSnapshot[];
 }
@@ -921,13 +922,14 @@ export interface GetIndexerStakingV2PoolSnapshotsResponse {
 export interface IndexerStakingV2Staker {
   address: Address;
   stakedAmount: BigDecimal;
-  poolShare: BigDecimal;
+  /** Address pool share as fraction ex. 0.01 */
+  poolShare: number;
 }
 
 export interface GetIndexerStakingV2TopStakersParams {
   limit: number;
 }
 
-export type GetIndexerStakingV2TopStakersResponse = {
+export interface GetIndexerStakingV2TopStakersResponse {
   stakers: IndexerStakingV2Staker[];
-};
+}

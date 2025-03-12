@@ -431,6 +431,6 @@ export function mapIndexerStakingV2Staker(
   return {
     address: getValidatedAddress(staker.address),
     stakedAmount: toBigDecimal(staker.stake_amount),
-    poolShare: toBigDecimal(staker.pool_share),
+    poolShare: staker.pool_share,
   };
 }

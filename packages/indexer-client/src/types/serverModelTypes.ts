@@ -188,7 +188,7 @@ export interface IndexerServerStakingV2PoolSnapshot {
 export interface IndexerServerStakingV2Staker {
   address: string;
   stake_amount: string;
-  pool_share: string;
+  pool_share: number;
 }
 
 /**
