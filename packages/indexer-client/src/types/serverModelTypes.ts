@@ -182,7 +182,7 @@ export interface IndexerServerStakingV2PoolSnapshot {
   timestamp: string;
   cumulative_staked: string;
   cumulative_unstaked: string;
-  number_of_stakers: string;
+  number_of_stakers: number;
 }
 
 export interface IndexerServerStakingV2Staker {
