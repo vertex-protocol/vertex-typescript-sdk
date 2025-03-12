@@ -178,6 +178,19 @@ export interface IndexerServerMarketSnapshot {
   oracle_prices: Record<string, string>;
 }
 
+export interface IndexerServerStakingV2PoolSnapshot {
+  timestamp: string;
+  cumulative_staked: string;
+  cumulative_unstaked: string;
+  number_of_stakers: number;
+}
+
+export interface IndexerServerStakingV2Staker {
+  address: string;
+  stake_amount: string;
+  pool_share: number;
+}
+
 /**
  * Interest / funding
  */
@@ -328,4 +341,11 @@ export interface IndexerServerLeaderboardRegistration {
   subaccount: string;
   contest_id: number;
   update_time: string;
+}
+
+export interface IndexerServerStakingV2PoolSnapshotsInterval {
+  count: number;
+  // Currently accepts any granularity, time distance (in seconds) between data points
+  granularity: number;
+  max_time?: string;
 }

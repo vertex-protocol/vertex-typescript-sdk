@@ -21,6 +21,9 @@ import {
   IndexerServerProductPayment,
   IndexerServerProductSnapshot,
   IndexerServerRewardsEpoch,
+  IndexerServerStakingV2PoolSnapshot,
+  IndexerServerStakingV2PoolSnapshotsInterval,
+  IndexerServerStakingV2Staker,
   IndexerServerTakerRewardsEpoch,
   IndexerServerTx,
 } from './serverModelTypes';
@@ -242,6 +245,14 @@ export interface IndexerServerFastWithdrawalSignatureParams {
   idx: number | string;
 }
 
+export interface IndexerServerStakingV2PoolSnapshotsParams {
+  interval: IndexerServerStakingV2PoolSnapshotsInterval;
+}
+
+export interface IndexerServerStakingV2TopStakersParams {
+  limit: number;
+}
+
 // Request
 export interface IndexerServerQueryRequestByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
@@ -281,6 +292,8 @@ export interface IndexerServerQueryRequestByType {
   leaderboard_contests: IndexerServerLeaderboardContestsParams;
   leaderboard_registration: IndexerServerLeaderboardRegistrationParams;
   fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureParams;
+  staking_v2_top_stakers: IndexerServerStakingV2TopStakersParams;
+  staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -517,6 +530,14 @@ export interface IndexerServerFastWithdrawalSignatureResponse {
   signatures: string[];
 }
 
+export interface IndexerServerStakingV2TopStakersResponse {
+  stakers: IndexerServerStakingV2Staker[];
+}
+
+export interface IndexerServerStakingV2PoolSnapshotsResponse {
+  snapshots: IndexerServerStakingV2PoolSnapshot[];
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
@@ -556,4 +577,6 @@ export interface IndexerServerQueryResponseByType {
   leaderboard_contests: IndexerServerLeaderboardContestsResponse;
   leaderboard_registration: IndexerServerLeaderboardRegistrationResponse;
   fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureResponse;
+  staking_v2_top_stakers: IndexerServerStakingV2TopStakersResponse;
+  staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsResponse;
 }

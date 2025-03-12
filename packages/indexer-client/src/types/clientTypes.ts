@@ -10,7 +10,7 @@ import {
   Subaccount,
 } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils';
-import { Hex } from 'viem';
+import { Address, Hex } from 'viem';
 import { CandlestickPeriod } from './CandlestickPeriod';
 import { IndexerEventType } from './IndexerEventType';
 import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
@@ -898,4 +898,38 @@ export interface GetIndexerFastWithdrawalSignatureResponse {
   tx: VertexWithdrawCollateralTx['withdraw_collateral'];
   txBytes: Hex;
   signatures: Hex[];
+}
+
+export interface IndexerStakingV2PoolSnapshot {
+  timestamp: BigDecimal;
+  cumulativeStaked: BigDecimal;
+  cumulativeUnstaked: BigDecimal;
+  numberOfStakers: BigDecimal;
+}
+
+export interface GetIndexerStakingV2PoolSnapshotsParams {
+  // Currently accepts all integers, in seconds
+  granularity: number;
+  // Seconds
+  maxTimeInclusive?: number;
+  limit: number;
+}
+
+export interface GetIndexerStakingV2PoolSnapshotsResponse {
+  snapshots: IndexerStakingV2PoolSnapshot[];
+}
+
+export interface IndexerStakingV2Staker {
+  address: Address;
+  stakedAmount: BigDecimal;
+  /** Address pool share as fraction ex. 0.01 */
+  poolShare: number;
+}
+
+export interface GetIndexerStakingV2TopStakersParams {
+  limit: number;
+}
+
+export interface GetIndexerStakingV2TopStakersResponse {
+  stakers: IndexerStakingV2Staker[];
 }
