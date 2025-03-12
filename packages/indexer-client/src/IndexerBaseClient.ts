@@ -666,7 +666,7 @@ export class IndexerBaseClient {
     const baseResponse = await this.query('market_snapshots', {
       interval: {
         granularity: params.granularity,
-        max_time: params.maxTimeInclusive?.toString(),
+        max_time: params.maxTimeInclusive?.toFixed(),
         count: params.limit,
       },
       product_ids: params.productIds,
@@ -685,7 +685,7 @@ export class IndexerBaseClient {
     const baseResponse = await this.query('edge_market_snapshots', {
       interval: {
         granularity: params.granularity,
-        max_time: params.maxTimeInclusive?.toString(),
+        max_time: params.maxTimeInclusive?.toFixed(),
         count: params.limit,
       },
     });
@@ -1121,7 +1121,7 @@ export class IndexerBaseClient {
     const baseResponse = await this.query('staking_v2_pool_snapshots', {
       interval: {
         count: params.limit,
-        max_time: params.maxTimeInclusive?.toString(),
+        max_time: params.maxTimeInclusive?.toFixed(),
         granularity: params.granularity,
       },
     });
