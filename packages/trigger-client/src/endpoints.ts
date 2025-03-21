@@ -19,4 +19,5 @@ export const TRIGGER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   abstract: 'https://trigger.abstract-prod.vertexprotocol.com/v1',
   bera: 'https://trigger.bera-prod.vertexprotocol.com/v1',
   avaxTestnet: 'https://trigger.avax-test.vertexprotocol.com/v1',
+  avax: 'https://trigger.avax-prod.vertexprotocol.com/v1',
 };
