@@ -4,6 +4,7 @@ import AbstractMainnetCoreDeployment from './deployments/core/deployment.abstrac
 import AbstractTestnetCoreDeployment from './deployments/core/deployment.abstractTestnet.json';
 import ArbitrumOneCoreDeployment from './deployments/core/deployment.arbitrumOne.json';
 import ArbitrumSepoliaCoreDeployment from './deployments/core/deployment.arbitrumSepolia.json';
+import AvaxMainnetCoreDeployment from './deployments/core/deployment.avaxMainnet.json';
 import AvaxTestnetCoreDeployment from './deployments/core/deployment.avaxTestnet.json';
 import BaseMainnetCoreDeployment from './deployments/core/deployment.baseMainnet.json';
 import BaseTestnetCoreDeployment from './deployments/core/deployment.baseTestnet.json';
@@ -23,6 +24,7 @@ import AbstractTestnetLbaDeployment from './deployments/vrtx/deployment.abstract
 
 import ArbitrumOneLbaDeployment from './deployments/vrtx/deployment.arbitrumOne.json';
 import ArbitrumSepoliaLbaDeployment from './deployments/vrtx/deployment.arbitrumSepolia.json';
+import AvaxMainnetLbaDeployment from './deployments/vrtx/deployment.avaxMainnet.json';
 import AvaxTestnetLbaDeployment from './deployments/vrtx/deployment.avaxTestnet.json';
 import BaseMainnetLbaDeployment from './deployments/vrtx/deployment.baseMainnet.json';
 import BaseTestnetLbaDeployment from './deployments/vrtx/deployment.baseTestnet.json';
@@ -116,6 +118,10 @@ export const VERTEX_DEPLOYMENTS: Record<ChainEnv, VertexDeploymentAddresses> = {
   avaxTestnet: validateDeployment({
     ...AvaxTestnetLbaDeployment,
     ...AvaxTestnetCoreDeployment,
+  }),
+  avax: validateDeployment({
+    ...AvaxMainnetLbaDeployment,
+    ...AvaxMainnetCoreDeployment,
   }),
   local: validateDeployment({
     ...LocalLbaDeployment,

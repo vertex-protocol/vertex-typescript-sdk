@@ -21,6 +21,7 @@ export const MAINNET_CHAIN_ENVS = [
   'sonic',
   'abstract',
   'bera',
+  'avax',
 ] as const satisfies string[];
 
 export const ALL_CHAIN_ENVS = [
