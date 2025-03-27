@@ -4,6 +4,7 @@ import {
   abstractTestnet,
   arbitrum,
   arbitrumSepolia,
+  avalanche,
   avalancheFuji,
   base,
   baseSepolia,
@@ -40,6 +41,7 @@ export const CHAIN_ENV_TO_CHAIN = {
   abstractTestnet: abstractTestnet,
   abstract: abstract,
   avaxTestnet: avalancheFuji,
+  avax: avalanche,
 } as const satisfies Record<ChainEnv, Chain>;
 
 export const CHAIN_ID_TO_CHAIN_ENV = Object.fromEntries(

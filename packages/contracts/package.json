@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/contracts",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -22,7 +22,7 @@
     "src"
   ],
   "dependencies": {
-    "@vertex-protocol/utils": "^1.0.0"
+    "@vertex-protocol/utils": "^1.1.1"
   },
   "peerDependencies": {
     "viem": "*"
