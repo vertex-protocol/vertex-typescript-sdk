@@ -123,5 +123,21 @@ export function getVertexEIP712Types(
           { name: 'expiration', type: 'uint64' },
         ],
       };
+    case 'mint_vlp':
+      return {
+        MintVlp: [
+          { name: 'sender', type: 'bytes32' },
+          { name: 'quoteAmount', type: 'uint128' },
+          { name: 'nonce', type: 'uint64' },
+        ],
+      };
+    case 'burn_vlp':
+      return {
+        BurnVlp: [
+          { name: 'sender', type: 'bytes32' },
+          { name: 'vlpAmount', type: 'uint128' },
+          { name: 'nonce', type: 'uint64' },
+        ],
+      };
   }
 }

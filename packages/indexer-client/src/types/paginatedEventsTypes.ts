@@ -101,6 +101,20 @@ export type GetIndexerSubaccountLpEventsResponse =
   PaginatedIndexerEventsResponse<IndexerLpEvent>;
 
 /**
+ * VLP
+ */
+export type GetIndexerSubaccountVlpEventsParams =
+  BaseSubaccountPaginationParams;
+
+export interface IndexerVlpEvent extends BaseIndexerPaginatedEvent {
+  vlpDelta: BigDecimal;
+  primaryQuoteDelta: BigDecimal;
+}
+
+export type GetIndexerSubaccountVlpEventsResponse =
+  PaginatedIndexerEventsResponse<IndexerVlpEvent>;
+
+/**
  * Match events
  */
 

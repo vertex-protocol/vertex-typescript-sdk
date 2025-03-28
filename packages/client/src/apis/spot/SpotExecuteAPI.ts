@@ -8,7 +8,12 @@ import {
 import { MOCK_ERC20_ABI } from '@vertex-protocol/contracts/dist/common/abis/MockERC20';
 import { toBigInt } from '@vertex-protocol/utils';
 import { BaseSpotAPI } from './BaseSpotAPI';
-import { ApproveAllowanceParams, WithdrawCollateralParams } from './types';
+import {
+  ApproveAllowanceParams,
+  BurnVlpParams,
+  MintVlpParams,
+  WithdrawCollateralParams,
+} from './types';
 
 export class SpotExecuteAPI extends BaseSpotAPI {
   async deposit(params: DepositCollateralParams) {
@@ -42,6 +47,24 @@ export class SpotExecuteAPI extends BaseSpotAPI {
       amount: params.amount,
       endpoint: this.context.contracts.endpoint,
       tokenContract,
+    });
+  }
+
+  async mintVlp(params: MintVlpParams) {
+    return this.context.engineClient.mintVlp({
+      ...params,
+      subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
+      verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
+    });
+  }
+
+  async burnVlp(params: BurnVlpParams) {
+    return this.context.engineClient.burnVlp({
+      ...params,
+      subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
+      verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
     });
   }
 

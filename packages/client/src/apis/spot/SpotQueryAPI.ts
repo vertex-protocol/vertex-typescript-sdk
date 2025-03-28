@@ -1,4 +1,7 @@
-import { GetEngineMaxWithdrawableParams } from '@vertex-protocol/engine-client';
+import {
+  GetEngineMaxMintVlpAmountParams,
+  GetEngineMaxWithdrawableParams,
+} from '@vertex-protocol/engine-client';
 import {
   BigDecimal,
   getValidatedAddress,
@@ -14,6 +17,15 @@ export class SpotQueryAPI extends BaseSpotAPI {
    */
   async getMaxWithdrawable(params: GetEngineMaxWithdrawableParams) {
     return this.context.engineClient.getMaxWithdrawable(params);
+  }
+
+  /**
+   * Queries engine to determine maximum quote amount for minting VLP.
+   *
+   * @param params
+   */
+  async getMaxMintVlpAmount(params: GetEngineMaxMintVlpAmountParams) {
+    return this.context.engineClient.getMaxMintVlpAmount(params);
   }
 
   /**

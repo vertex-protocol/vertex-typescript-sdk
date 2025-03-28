@@ -32,6 +32,8 @@ import {
   GetEngineMarketPricesResponse,
   GetEngineMaxMintLpAmountParams,
   GetEngineMaxMintLpAmountResponse,
+  GetEngineMaxMintVlpAmountParams,
+  GetEngineMaxMintVlpAmountResponse,
   GetEngineMaxOrderSizeParams,
   GetEngineMaxOrderSizeResponse,
   GetEngineMaxWithdrawableParams,
@@ -508,7 +510,7 @@ export class EngineQueryClient extends EngineBaseClient {
   }
 
   /**
-   * Retrieves the estimated max base amount for minting LPs for a product
+   * Retrieves the estimated max base & quote amounts for minting LPs
    *
    * @param params
    */
@@ -529,6 +531,26 @@ export class EngineQueryClient extends EngineBaseClient {
       maxBaseAmount: toBigDecimal(baseResponse.max_base_amount),
       maxQuoteAmount: toBigDecimal(baseResponse.max_quote_amount),
     };
+  }
+
+  /**
+   * Retrieves the estimated max quote amount for minting VLP.
+   *
+   * @param params
+   */
+  async getMaxMintVlpAmount(
+    params: GetEngineMaxMintVlpAmountParams,
+  ): Promise<GetEngineMaxMintVlpAmountResponse> {
+    const baseResponse = await this.query('max_vlp_mintable', {
+      sender: subaccountToHex({
+        subaccountOwner: params.subaccountOwner,
+        subaccountName: params.subaccountName,
+      }),
+      spot_leverage:
+        params.spotLeverage != null ? String(params.spotLeverage) : null,
+    });
+
+    return toBigDecimal(baseResponse.max_quote_amount);
   }
 
   /**
