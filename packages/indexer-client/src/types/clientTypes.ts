@@ -933,3 +933,33 @@ export interface GetIndexerStakingV2TopStakersParams {
 export interface GetIndexerStakingV2TopStakersResponse {
   stakers: IndexerStakingV2Staker[];
 }
+
+export interface GetIndexerVrtxSupplySnapshotsParams {
+  // Currently accepts all integers, in seconds
+  granularity: number;
+  // Seconds
+  maxTimeInclusive?: number;
+  limit: number;
+}
+
+export interface IndexerVrtxSupplySnapshot {
+  timestamp: BigDecimal;
+  /** VRTX token price in primary quote. */
+  vrtxOraclePrice: BigDecimal;
+  /** Total VRTX tokens distributed as staking incentives. */
+  cumulativeIncentives: BigDecimal;
+  /** Total VRTX tokens distributed during the LBA (Liquidity Bootstrapping Auction). */
+  cumulativeLba: BigDecimal;
+  /** Total VRTX tokens allocated to the ecosystem. */
+  cumulativeSupplyEcosystem: BigDecimal;
+  /** Total VRTX tokens allocated to the treasury. */
+  cumulativeSupplyTreasury: BigDecimal;
+  /** Total VRTX tokens allocated to investors. */
+  cumulativeInvestorsSupply: BigDecimal;
+  /** Total VRTX tokens allocated to the team. */
+  cumulativeTeamSupply: BigDecimal;
+}
+
+export interface GetIndexerVrtxSupplySnapshotsResponse {
+  snapshots: IndexerVrtxSupplySnapshot[];
+}

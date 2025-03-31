@@ -39,6 +39,7 @@ import {
   mapIndexerServerProduct,
   mapIndexerStakingV2PoolSnapshot,
   mapIndexerStakingV2Staker,
+  mapIndexerVrtxSupplySnapshot,
 } from './dataMappers';
 import {
   GetIndexerBlastPointsParams,
@@ -116,6 +117,7 @@ import {
   GetIndexerStakingV2TopStakersResponse,
   GetIndexerTakerRewardsParams,
   GetIndexerTakerRewardsResponse,
+  GetIndexerVrtxSupplySnapshotsParams,
   GetIndexerVrtxTokenInfoParams,
   GetIndexerVrtxTokenInfoResponse,
   IndexerEventWithTx,
@@ -1128,6 +1130,20 @@ export class IndexerBaseClient {
 
     return {
       snapshots: baseResponse.snapshots.map(mapIndexerStakingV2PoolSnapshot),
+    };
+  }
+
+  async getVrtxSupplySnapshots(params: GetIndexerVrtxSupplySnapshotsParams) {
+    const baseResponse = await this.query('vrtx_supply_snapshots', {
+      interval: {
+        count: params.limit,
+        max_time: params.maxTimeInclusive?.toFixed(0),
+        granularity: params.granularity,
+      },
+    });
+
+    return {
+      snapshots: baseResponse.snapshots.map(mapIndexerVrtxSupplySnapshot),
     };
   }
 

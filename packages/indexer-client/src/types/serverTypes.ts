@@ -26,6 +26,8 @@ import {
   IndexerServerStakingV2Staker,
   IndexerServerTakerRewardsEpoch,
   IndexerServerTx,
+  IndexerServerVrtxSupplySnapshot,
+  IndexerServerVrtxSupplySnapshotsInterval,
 } from './serverModelTypes';
 import { VertexWithdrawCollateralTx } from './VertexTx';
 
@@ -253,6 +255,10 @@ export interface IndexerServerStakingV2TopStakersParams {
   limit: number;
 }
 
+export interface IndexerServerVrtxSupplySnapshotsParams {
+  interval: IndexerServerVrtxSupplySnapshotsInterval;
+}
+
 // Request
 export interface IndexerServerQueryRequestByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
@@ -294,6 +300,7 @@ export interface IndexerServerQueryRequestByType {
   fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureParams;
   staking_v2_top_stakers: IndexerServerStakingV2TopStakersParams;
   staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsParams;
+  vrtx_supply_snapshots: IndexerServerVrtxSupplySnapshotsParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -538,6 +545,10 @@ export interface IndexerServerStakingV2PoolSnapshotsResponse {
   snapshots: IndexerServerStakingV2PoolSnapshot[];
 }
 
+export interface IndexerServerVrtxSupplySnapshotsResponse {
+  snapshots: IndexerServerVrtxSupplySnapshot[];
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
@@ -579,4 +590,5 @@ export interface IndexerServerQueryResponseByType {
   fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureResponse;
   staking_v2_top_stakers: IndexerServerStakingV2TopStakersResponse;
   staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsResponse;
+  vrtx_supply_snapshots: IndexerServerVrtxSupplySnapshotsResponse;
 }

@@ -178,6 +178,10 @@ export interface IndexerServerMarketSnapshot {
   oracle_prices: Record<string, string>;
 }
 
+/**
+ * Staking
+ */
+
 export interface IndexerServerStakingV2PoolSnapshot {
   timestamp: string;
   cumulative_staked: string;
@@ -189,6 +193,17 @@ export interface IndexerServerStakingV2Staker {
   address: string;
   stake_amount: string;
   pool_share: number;
+}
+
+export interface IndexerServerVrtxSupplySnapshot {
+  timestamp: string;
+  vrtx_oracle_price: string;
+  cumulative_incentives: string;
+  cumulative_lba: string;
+  cumulative_supply_ecosystem: string;
+  cumulative_supply_treasury: string;
+  cumulative_investors_supply: string;
+  cumulative_team_supply: string;
 }
 
 /**
@@ -344,6 +359,13 @@ export interface IndexerServerLeaderboardRegistration {
 }
 
 export interface IndexerServerStakingV2PoolSnapshotsInterval {
+  count: number;
+  // Currently accepts any granularity, time distance (in seconds) between data points
+  granularity: number;
+  max_time?: string;
+}
+
+export interface IndexerServerVrtxSupplySnapshotsInterval {
   count: number;
   // Currently accepts any granularity, time distance (in seconds) between data points
   granularity: number;

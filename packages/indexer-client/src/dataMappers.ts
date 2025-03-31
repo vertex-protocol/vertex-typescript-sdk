@@ -55,11 +55,13 @@ import {
   IndexerServerStakingV2PoolSnapshot,
   IndexerServerStakingV2Staker,
   IndexerServerTx,
+  IndexerServerVrtxSupplySnapshot,
   IndexerSpotBalance,
   IndexerStakingV2PoolSnapshot,
   IndexerStakingV2Staker,
   IndexerSubaccountFoundationTakerRewardsForProduct,
   IndexerSubaccountRewardsForProduct,
+  IndexerVrtxSupplySnapshot,
 } from './types';
 
 export function mapIndexerServerProduct(product: IndexerServerProduct): Market {
@@ -432,5 +434,24 @@ export function mapIndexerStakingV2Staker(
     address: getValidatedAddress(staker.address),
     stakedAmount: toBigDecimal(staker.stake_amount),
     poolShare: staker.pool_share,
+  };
+}
+
+export function mapIndexerVrtxSupplySnapshot(
+  snapshot: IndexerServerVrtxSupplySnapshot,
+): IndexerVrtxSupplySnapshot {
+  return {
+    timestamp: toBigDecimal(snapshot.timestamp),
+    vrtxOraclePrice: toBigDecimal(snapshot.vrtx_oracle_price),
+    cumulativeIncentives: toBigDecimal(snapshot.cumulative_incentives),
+    cumulativeLba: toBigDecimal(snapshot.cumulative_lba),
+    cumulativeSupplyEcosystem: toBigDecimal(
+      snapshot.cumulative_supply_ecosystem,
+    ),
+    cumulativeSupplyTreasury: toBigDecimal(snapshot.cumulative_supply_treasury),
+    cumulativeInvestorsSupply: toBigDecimal(
+      snapshot.cumulative_investors_supply,
+    ),
+    cumulativeTeamSupply: toBigDecimal(snapshot.cumulative_team_supply),
   };
 }
