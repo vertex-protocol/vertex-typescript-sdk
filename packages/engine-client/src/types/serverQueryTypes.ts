@@ -1,3 +1,4 @@
+import { HealthStatus } from '@vertex-protocol/contracts';
 import {
   EngineServerHealthBreakdown,
   EngineServerPerpBalance,
@@ -200,7 +201,11 @@ export interface EngineServerSubaccountInfoResponse {
 
 export interface EngineServerIsolatedPosition {
   subaccount: string;
-  healths: [initial: string, maintenance: string, unweighted: string];
+  healths: [
+    initial: HealthStatus,
+    maintenance: HealthStatus,
+    unweighted: HealthStatus,
+  ];
   quote_healths: [initial: string, maintenance: string, unweighted: string];
   base_healths: [initial: string, maintenance: string, unweighted: string];
   quote_balance: EngineServerSpotBalance;

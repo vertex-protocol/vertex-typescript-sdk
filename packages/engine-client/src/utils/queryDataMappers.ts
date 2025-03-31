@@ -225,9 +225,9 @@ export function mapEngineServerIsolatedPositions(
     return {
       subaccount: subaccountFromHex(position.subaccount),
       healths: {
-        initial: toBigDecimal(position.healths[0]),
-        maintenance: toBigDecimal(position.healths[1]),
-        unweighted: toBigDecimal(position.healths[2]),
+        initial: toBigDecimal(position.healths[0].health),
+        maintenance: toBigDecimal(position.healths[1].health),
+        unweighted: toBigDecimal(position.healths[2].health),
       },
       baseBalance: {
         amount: toBigDecimal(perpBalance.balance.amount),
