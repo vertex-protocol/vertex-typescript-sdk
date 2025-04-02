@@ -252,18 +252,22 @@ export type GetIndexerMultiProductSnapshotsResponse = Record<
   Record<number, IndexerProductSnapshot>
 >;
 
-/**
- * Market snapshots
- */
-
-export interface GetIndexerMarketSnapshotsParams {
-  // Defaults to all
-  productIds?: number[];
+export interface IndexerSnapshotsIntervalParams {
   // Currently accepts all integers, in seconds
   granularity: number;
   // Seconds
   maxTimeInclusive?: number;
   limit: number;
+}
+
+/**
+ * Market snapshots
+ */
+
+export interface GetIndexerMarketSnapshotsParams
+  extends IndexerSnapshotsIntervalParams {
+  // Defaults to all
+  productIds?: number[];
 }
 
 export interface IndexerMarketSnapshot {
@@ -291,13 +295,8 @@ export interface IndexerMarketSnapshot {
 
 export type GetIndexerMarketSnapshotsResponse = IndexerMarketSnapshot[];
 
-export interface GetIndexerEdgeMarketSnapshotsParams {
-  // Currently accepts all integers, in seconds
-  granularity: number;
-  // Seconds
-  maxTimeInclusive?: number;
-  limit: number;
-}
+export type GetIndexerEdgeMarketSnapshotsParams =
+  IndexerSnapshotsIntervalParams;
 
 // Map of chain id -> IndexerMarketSnapshot[]
 export type GetIndexerEdgeMarketSnapshotResponse = Record<
@@ -907,13 +906,8 @@ export interface IndexerStakingV2PoolSnapshot {
   numberOfStakers: BigDecimal;
 }
 
-export interface GetIndexerStakingV2PoolSnapshotsParams {
-  // Currently accepts all integers, in seconds
-  granularity: number;
-  // Seconds
-  maxTimeInclusive?: number;
-  limit: number;
-}
+export type GetIndexerStakingV2PoolSnapshotsParams =
+  IndexerSnapshotsIntervalParams;
 
 export interface GetIndexerStakingV2PoolSnapshotsResponse {
   snapshots: IndexerStakingV2PoolSnapshot[];
@@ -932,4 +926,42 @@ export interface GetIndexerStakingV2TopStakersParams {
 
 export interface GetIndexerStakingV2TopStakersResponse {
   stakers: IndexerStakingV2Staker[];
+}
+
+export type GetIndexerVrtxSupplySnapshotsParams =
+  IndexerSnapshotsIntervalParams;
+
+export interface IndexerVrtxSupplySnapshot {
+  timestamp: BigDecimal;
+  /** VRTX token price in primary quote. */
+  vrtxOraclePrice: BigDecimal;
+  /** Total VRTX tokens distributed as staking incentives. */
+  cumulativeIncentives: BigDecimal;
+  /** Total VRTX tokens distributed during the LBA (Liquidity Bootstrapping Auction). */
+  cumulativeLba: BigDecimal;
+  /** Total VRTX tokens allocated to the ecosystem. */
+  cumulativeEcosystemSupply: BigDecimal;
+  /** Total VRTX tokens allocated to the treasury. */
+  cumulativeTreasurySupply: BigDecimal;
+  /** Total VRTX tokens allocated to investors. */
+  cumulativeInvestorsSupply: BigDecimal;
+  /** Total VRTX tokens allocated to the team. */
+  cumulativeTeamSupply: BigDecimal;
+}
+
+export interface GetIndexerVrtxSupplySnapshotsResponse {
+  snapshots: IndexerVrtxSupplySnapshot[];
+}
+
+export type GetIndexerFoundationTokenIncentivesSnapshotsParams =
+  IndexerSnapshotsIntervalParams;
+
+export interface IndexerFoundationTokenIncentivesSnapshot {
+  timestamp: BigDecimal;
+  /** Total distributed foundation token incentives. */
+  cumulativeFoundationTokenIncentives: BigDecimal;
+  /** Foundation token oracle price. */
+  foundationTokenOraclePrice: BigDecimal;
+  /** Foundation token product. */
+  foundationTokenProductId: number;
 }
