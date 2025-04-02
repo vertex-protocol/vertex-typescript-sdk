@@ -8,6 +8,13 @@ import {
 import { IndexerEventType } from './IndexerEventType';
 import { VertexTx } from './VertexTx';
 
+export interface IndexerServerSnapshotsInterval {
+  count: number;
+  // Currently accepts any granularity, time distance (in seconds) between data points
+  granularity: number;
+  max_time?: string;
+}
+
 export type IndexerServerProduct =
   | {
       spot: EngineServerSpotProduct;
@@ -206,13 +213,6 @@ export interface IndexerServerVrtxSupplySnapshot {
   cumulative_team_supply: string;
 }
 
-export interface IndexerServerFoundationTokenIncentivesSnapshot {
-  timestamp: string;
-  cumulative_foundation_token_incentives: string;
-  foundation_token_oracle_price: string;
-  foundation_token_product_id: number;
-}
-
 /**
  * Interest / funding
  */
@@ -278,7 +278,7 @@ export interface IndexerServerTakerRewardsEpoch {
 }
 
 /**
- * Arb rewards
+ * Foundation token rewards
  */
 
 export interface IndexerServerFoundationTakerRewardsForProduct {
@@ -302,6 +302,13 @@ export interface IndexerServerFoundationTakerRewardsWeek {
   // Per product ID
   address_rewards: IndexerServerFoundationTakerRewardsForProduct[];
   global_rewards: IndexerServerFoundationTakerGlobalRewardsForProduct[];
+}
+
+export interface IndexerServerFoundationTokenIncentivesSnapshot {
+  timestamp: string;
+  cumulative_foundation_token_incentives: string;
+  foundation_token_oracle_price: string;
+  foundation_token_product_id: number;
 }
 
 /**
@@ -363,11 +370,4 @@ export interface IndexerServerLeaderboardRegistration {
   subaccount: string;
   contest_id: number;
   update_time: string;
-}
-
-export interface IndexerServerSnapshotsInterval {
-  count: number;
-  // Currently accepts any granularity, time distance (in seconds) between data points
-  granularity: number;
-  max_time?: string;
 }
