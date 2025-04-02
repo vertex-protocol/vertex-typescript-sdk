@@ -940,9 +940,9 @@ export interface IndexerVrtxSupplySnapshot {
   /** Total VRTX tokens distributed during the LBA (Liquidity Bootstrapping Auction). */
   cumulativeLba: BigDecimal;
   /** Total VRTX tokens allocated to the ecosystem. */
-  cumulativeSupplyEcosystem: BigDecimal;
+  cumulativeEcosystemSupply: BigDecimal;
   /** Total VRTX tokens allocated to the treasury. */
-  cumulativeSupplyTreasury: BigDecimal;
+  cumulativeTreasurySupply: BigDecimal;
   /** Total VRTX tokens allocated to investors. */
   cumulativeInvestorsSupply: BigDecimal;
   /** Total VRTX tokens allocated to the team. */
@@ -951,4 +951,17 @@ export interface IndexerVrtxSupplySnapshot {
 
 export interface GetIndexerVrtxSupplySnapshotsResponse {
   snapshots: IndexerVrtxSupplySnapshot[];
+}
+
+export type GetIndexerFoundationTokenIncentivesSnapshotsParams =
+  IndexerSnapshotsIntervalParams;
+
+export interface IndexerFoundationTokenIncentivesSnapshot {
+  timestamp: BigDecimal;
+  /** Total distributed foundation token incentives. */
+  cumulativeFoundationTokenIncentives: BigDecimal;
+  /** Foundation token oracle price. */
+  foundationTokenOraclePrice: BigDecimal;
+  /** Foundation token product. */
+  foundationTokenProductId: number;
 }

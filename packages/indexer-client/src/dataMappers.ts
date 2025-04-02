@@ -23,6 +23,7 @@ import {
   IndexerEventWithTx,
   IndexerFoundationTakerGlobalRewardsForProduct,
   IndexerFoundationTakerRewardsWeek,
+  IndexerFoundationTokenIncentivesSnapshot,
   IndexerFundingRate,
   IndexerGlobalRewardsForProduct,
   IndexerLeaderboardContest,
@@ -40,6 +41,7 @@ import {
   IndexerServerCandlestick,
   IndexerServerEvent,
   IndexerServerFoundationTakerRewardsWeek,
+  IndexerServerFoundationTokenIncentivesSnapshot,
   IndexerServerFundingRate,
   IndexerServerLeaderboardContest,
   IndexerServerLeaderboardPosition,
@@ -445,13 +447,28 @@ export function mapIndexerVrtxSupplySnapshot(
     vrtxOraclePrice: toBigDecimal(snapshot.vrtx_oracle_price),
     cumulativeIncentives: toBigDecimal(snapshot.cumulative_incentives),
     cumulativeLba: toBigDecimal(snapshot.cumulative_lba),
-    cumulativeSupplyEcosystem: toBigDecimal(
-      snapshot.cumulative_supply_ecosystem,
+    cumulativeEcosystemSupply: toBigDecimal(
+      snapshot.cumulative_ecosystem_supply,
     ),
-    cumulativeSupplyTreasury: toBigDecimal(snapshot.cumulative_supply_treasury),
+    cumulativeTreasurySupply: toBigDecimal(snapshot.cumulative_treasury_supply),
     cumulativeInvestorsSupply: toBigDecimal(
       snapshot.cumulative_investors_supply,
     ),
     cumulativeTeamSupply: toBigDecimal(snapshot.cumulative_team_supply),
+  };
+}
+
+export function mapIndexerFoundationTokenSnapshot(
+  snapshot: IndexerServerFoundationTokenIncentivesSnapshot,
+): IndexerFoundationTokenIncentivesSnapshot {
+  return {
+    timestamp: toBigDecimal(snapshot.timestamp),
+    cumulativeFoundationTokenIncentives: toBigDecimal(
+      snapshot.cumulative_foundation_token_incentives,
+    ),
+    foundationTokenOraclePrice: toBigDecimal(
+      snapshot.foundation_token_oracle_price,
+    ),
+    foundationTokenProductId: snapshot.foundation_token_product_id,
   };
 }

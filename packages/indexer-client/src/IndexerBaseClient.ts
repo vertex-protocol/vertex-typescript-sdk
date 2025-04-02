@@ -26,6 +26,7 @@ import {
   mapIndexerEvent,
   mapIndexerEventWithTx,
   mapIndexerFoundationTakerRewardsWeek,
+  mapIndexerFoundationTokenSnapshot,
   mapIndexerFundingRate,
   mapIndexerLeaderboardContest,
   mapIndexerLeaderboardPosition,
@@ -67,6 +68,7 @@ import {
   GetIndexerFastWithdrawalSignatureResponse,
   GetIndexerFoundationTakerRewardsParams,
   GetIndexerFoundationTakerRewardsResponse,
+  GetIndexerFoundationTokenIncentivesSnapshotsParams,
   GetIndexerFundingRateParams,
   GetIndexerFundingRateResponse,
   GetIndexerInterestFundingPaymentsParams,
@@ -1153,6 +1155,27 @@ export class IndexerBaseClient {
 
     return {
       snapshots: baseResponse.snapshots.map(mapIndexerVrtxSupplySnapshot),
+    };
+  }
+
+  async getFoundationTokenIncentivesSnapshots(
+    params: GetIndexerFoundationTokenIncentivesSnapshotsParams,
+  ) {
+    const baseResponse = await this.query(
+      'foundation_token_incentives_snapshots',
+      {
+        interval: {
+          count: params.limit,
+          max_time: params.maxTimeInclusive
+            ? toIntegerString(params.maxTimeInclusive)
+            : undefined,
+          granularity: params.granularity,
+        },
+      },
+    );
+
+    return {
+      snapshots: baseResponse.snapshots.map(mapIndexerFoundationTokenSnapshot),
     };
   }
 

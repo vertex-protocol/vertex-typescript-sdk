@@ -200,10 +200,17 @@ export interface IndexerServerVrtxSupplySnapshot {
   vrtx_oracle_price: string;
   cumulative_incentives: string;
   cumulative_lba: string;
-  cumulative_supply_ecosystem: string;
-  cumulative_supply_treasury: string;
+  cumulative_ecosystem_supply: string;
+  cumulative_treasury_supply: string;
   cumulative_investors_supply: string;
   cumulative_team_supply: string;
+}
+
+export interface IndexerServerFoundationTokenIncentivesSnapshot {
+  timestamp: string;
+  cumulative_foundation_token_incentives: string;
+  foundation_token_oracle_price: string;
+  foundation_token_product_id: number;
 }
 
 /**

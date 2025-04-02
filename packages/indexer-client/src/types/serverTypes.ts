@@ -8,6 +8,7 @@ import {
   IndexerServerCandlestick,
   IndexerServerEvent,
   IndexerServerFoundationTakerRewardsWeek,
+  IndexerServerFoundationTokenIncentivesSnapshot,
   IndexerServerLeaderboardContest,
   IndexerServerLeaderboardPosition,
   IndexerServerLeaderboardRegistration,
@@ -258,6 +259,10 @@ export interface IndexerServerVrtxSupplySnapshotsParams {
   interval: IndexerServerSnapshotsInterval;
 }
 
+export interface IndexerServerFoundationTokenIncentivesSnapshotsParams {
+  interval: IndexerServerSnapshotsInterval;
+}
+
 // Request
 export interface IndexerServerQueryRequestByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
@@ -300,6 +305,7 @@ export interface IndexerServerQueryRequestByType {
   staking_v2_top_stakers: IndexerServerStakingV2TopStakersParams;
   staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsParams;
   vrtx_supply_snapshots: IndexerServerVrtxSupplySnapshotsParams;
+  foundation_token_incentives_snapshots: IndexerServerFoundationTokenIncentivesSnapshotsParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -548,6 +554,10 @@ export interface IndexerServerVrtxSupplySnapshotsResponse {
   snapshots: IndexerServerVrtxSupplySnapshot[];
 }
 
+export interface IndexerServerFoundationTokenIncentivesSnapshotsResponse {
+  snapshots: IndexerServerFoundationTokenIncentivesSnapshot[];
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
@@ -590,4 +600,5 @@ export interface IndexerServerQueryResponseByType {
   staking_v2_top_stakers: IndexerServerStakingV2TopStakersResponse;
   staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsResponse;
   vrtx_supply_snapshots: IndexerServerVrtxSupplySnapshotsResponse;
+  foundation_token_incentives_snapshots: IndexerServerFoundationTokenIncentivesSnapshotsResponse;
 }
