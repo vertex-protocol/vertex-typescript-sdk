@@ -358,14 +358,7 @@ export interface IndexerServerLeaderboardRegistration {
   update_time: string;
 }
 
-export interface IndexerServerStakingV2PoolSnapshotsInterval {
-  count: number;
-  // Currently accepts any granularity, time distance (in seconds) between data points
-  granularity: number;
-  max_time?: string;
-}
-
-export interface IndexerServerVrtxSupplySnapshotsInterval {
+export interface IndexerServerSnapshotsInterval {
   count: number;
   // Currently accepts any granularity, time distance (in seconds) between data points
   granularity: number;

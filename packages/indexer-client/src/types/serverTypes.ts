@@ -21,13 +21,12 @@ import {
   IndexerServerProductPayment,
   IndexerServerProductSnapshot,
   IndexerServerRewardsEpoch,
+  IndexerServerSnapshotsInterval,
   IndexerServerStakingV2PoolSnapshot,
-  IndexerServerStakingV2PoolSnapshotsInterval,
   IndexerServerStakingV2Staker,
   IndexerServerTakerRewardsEpoch,
   IndexerServerTx,
   IndexerServerVrtxSupplySnapshot,
-  IndexerServerVrtxSupplySnapshotsInterval,
 } from './serverModelTypes';
 import { VertexWithdrawCollateralTx } from './VertexTx';
 
@@ -248,7 +247,7 @@ export interface IndexerServerFastWithdrawalSignatureParams {
 }
 
 export interface IndexerServerStakingV2PoolSnapshotsParams {
-  interval: IndexerServerStakingV2PoolSnapshotsInterval;
+  interval: IndexerServerSnapshotsInterval;
 }
 
 export interface IndexerServerStakingV2TopStakersParams {
@@ -256,7 +255,7 @@ export interface IndexerServerStakingV2TopStakersParams {
 }
 
 export interface IndexerServerVrtxSupplySnapshotsParams {
-  interval: IndexerServerVrtxSupplySnapshotsInterval;
+  interval: IndexerServerSnapshotsInterval;
 }
 
 // Request

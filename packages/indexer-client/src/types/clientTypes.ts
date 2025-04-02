@@ -252,18 +252,22 @@ export type GetIndexerMultiProductSnapshotsResponse = Record<
   Record<number, IndexerProductSnapshot>
 >;
 
-/**
- * Market snapshots
- */
-
-export interface GetIndexerMarketSnapshotsParams {
-  // Defaults to all
-  productIds?: number[];
+export interface IndexerSnapshotsIntervalParams {
   // Currently accepts all integers, in seconds
   granularity: number;
   // Seconds
   maxTimeInclusive?: number;
   limit: number;
+}
+
+/**
+ * Market snapshots
+ */
+
+export interface GetIndexerMarketSnapshotsParams
+  extends IndexerSnapshotsIntervalParams {
+  // Defaults to all
+  productIds?: number[];
 }
 
 export interface IndexerMarketSnapshot {
@@ -291,13 +295,8 @@ export interface IndexerMarketSnapshot {
 
 export type GetIndexerMarketSnapshotsResponse = IndexerMarketSnapshot[];
 
-export interface GetIndexerEdgeMarketSnapshotsParams {
-  // Currently accepts all integers, in seconds
-  granularity: number;
-  // Seconds
-  maxTimeInclusive?: number;
-  limit: number;
-}
+export type GetIndexerEdgeMarketSnapshotsParams =
+  IndexerSnapshotsIntervalParams;
 
 // Map of chain id -> IndexerMarketSnapshot[]
 export type GetIndexerEdgeMarketSnapshotResponse = Record<
@@ -907,13 +906,8 @@ export interface IndexerStakingV2PoolSnapshot {
   numberOfStakers: BigDecimal;
 }
 
-export interface GetIndexerStakingV2PoolSnapshotsParams {
-  // Currently accepts all integers, in seconds
-  granularity: number;
-  // Seconds
-  maxTimeInclusive?: number;
-  limit: number;
-}
+export type GetIndexerStakingV2PoolSnapshotsParams =
+  IndexerSnapshotsIntervalParams;
 
 export interface GetIndexerStakingV2PoolSnapshotsResponse {
   snapshots: IndexerStakingV2PoolSnapshot[];
@@ -934,13 +928,8 @@ export interface GetIndexerStakingV2TopStakersResponse {
   stakers: IndexerStakingV2Staker[];
 }
 
-export interface GetIndexerVrtxSupplySnapshotsParams {
-  // Currently accepts all integers, in seconds
-  granularity: number;
-  // Seconds
-  maxTimeInclusive?: number;
-  limit: number;
-}
+export type GetIndexerVrtxSupplySnapshotsParams =
+  IndexerSnapshotsIntervalParams;
 
 export interface IndexerVrtxSupplySnapshot {
   timestamp: BigDecimal;

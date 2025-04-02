@@ -18,6 +18,7 @@ import {
   nowInSeconds,
   toBigDecimal,
   toBigInt,
+  toIntegerString,
 } from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
@@ -668,7 +669,9 @@ export class IndexerBaseClient {
     const baseResponse = await this.query('market_snapshots', {
       interval: {
         granularity: params.granularity,
-        max_time: params.maxTimeInclusive?.toFixed(0),
+        max_time: params.maxTimeInclusive
+          ? toIntegerString(params.maxTimeInclusive)
+          : undefined,
         count: params.limit,
       },
       product_ids: params.productIds,
@@ -687,7 +690,9 @@ export class IndexerBaseClient {
     const baseResponse = await this.query('edge_market_snapshots', {
       interval: {
         granularity: params.granularity,
-        max_time: params.maxTimeInclusive?.toFixed(0),
+        max_time: params.maxTimeInclusive
+          ? toIntegerString(params.maxTimeInclusive)
+          : undefined,
         count: params.limit,
       },
     });
@@ -1122,9 +1127,11 @@ export class IndexerBaseClient {
   ): Promise<GetIndexerStakingV2PoolSnapshotsResponse> {
     const baseResponse = await this.query('staking_v2_pool_snapshots', {
       interval: {
-        count: params.limit,
-        max_time: params.maxTimeInclusive?.toFixed(0),
         granularity: params.granularity,
+        max_time: params.maxTimeInclusive
+          ? toIntegerString(params.maxTimeInclusive)
+          : undefined,
+        count: params.limit,
       },
     });
 
@@ -1137,7 +1144,9 @@ export class IndexerBaseClient {
     const baseResponse = await this.query('vrtx_supply_snapshots', {
       interval: {
         count: params.limit,
-        max_time: params.maxTimeInclusive?.toFixed(0),
+        max_time: params.maxTimeInclusive
+          ? toIntegerString(params.maxTimeInclusive)
+          : undefined,
         granularity: params.granularity,
       },
     });
