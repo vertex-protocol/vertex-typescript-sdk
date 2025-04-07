@@ -8,7 +8,11 @@ import {
   getOrderNonce,
   getVertexEIP712Values,
 } from '@vertex-protocol/contracts';
-import { toBigInt, toFixedPoint } from '@vertex-protocol/utils';
+import {
+  toBigInt,
+  toFixedPoint,
+  toIntegerString,
+} from '@vertex-protocol/utils';
 import { encodeAbiParameters, encodePacked, parseAbiParameters } from 'viem';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
@@ -88,7 +92,7 @@ async function fullSanity(context: RunContext) {
   const orderNonce = getOrderNonce();
   const orderParams: PlaceOrderParams['order'] = {
     subaccountName: 'default',
-    expiration: getExpiration('post_only', 60).toString(),
+    expiration: toIntegerString(getExpiration('post_only', 60)),
     price: spotOrderShortLimitPrice,
     amount: toFixedPoint(-3.5),
   };
@@ -107,7 +111,7 @@ async function fullSanity(context: RunContext) {
     id: 100,
     order: {
       subaccountName: 'default',
-      expiration: getExpiration('post_only', 60).toString(),
+      expiration: toIntegerString(getExpiration('post_only', 60)),
       price: spotOrderShortLimitPrice,
       amount: toFixedPoint(-3.5),
     },

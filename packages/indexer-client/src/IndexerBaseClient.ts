@@ -18,6 +18,7 @@ import {
   nowInSeconds,
   toBigDecimal,
   toBigInt,
+  toIntegerString,
 } from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
@@ -666,7 +667,9 @@ export class IndexerBaseClient {
     const baseResponse = await this.query('market_snapshots', {
       interval: {
         granularity: params.granularity,
-        max_time: params.maxTimeInclusive?.toFixed(0),
+        max_time: params.maxTimeInclusive
+          ? toIntegerString(params.maxTimeInclusive)
+          : undefined,
         count: params.limit,
       },
       product_ids: params.productIds,
@@ -685,7 +688,9 @@ export class IndexerBaseClient {
     const baseResponse = await this.query('edge_market_snapshots', {
       interval: {
         granularity: params.granularity,
-        max_time: params.maxTimeInclusive?.toFixed(0),
+        max_time: params.maxTimeInclusive
+          ? toIntegerString(params.maxTimeInclusive)
+          : undefined,
         count: params.limit,
       },
     });
@@ -982,8 +987,7 @@ export class IndexerBaseClient {
   ): Promise<UpdateIndexerLeaderboardRegistrationResponse> {
     const signatureParams: EIP712LeaderboardAuthenticationParams = {
       // Default to 90 seconds from now if no recvTime is provided
-      expiration:
-        params.recvTime?.toFixed(0) ?? getDefaultRecvTime().toFixed(0),
+      expiration: toIntegerString(params.recvTime ?? getDefaultRecvTime()),
       subaccountName: params.subaccountName,
       subaccountOwner: params.subaccountOwner,
     };
@@ -1121,7 +1125,9 @@ export class IndexerBaseClient {
     const baseResponse = await this.query('staking_v2_pool_snapshots', {
       interval: {
         count: params.limit,
-        max_time: params.maxTimeInclusive?.toFixed(0),
+        max_time: params.maxTimeInclusive
+          ? toIntegerString(params.maxTimeInclusive)
+          : undefined,
         granularity: params.granularity,
       },
     });

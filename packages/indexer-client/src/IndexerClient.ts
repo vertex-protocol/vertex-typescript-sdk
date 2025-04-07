@@ -4,7 +4,7 @@ import {
   subaccountFromHex,
   VLP_PRODUCT_ID,
 } from '@vertex-protocol/contracts';
-import { toBigDecimal } from '@vertex-protocol/utils';
+import { toBigDecimal, toIntegerString } from '@vertex-protocol/utils';
 
 import { IndexerBaseClient } from './IndexerBaseClient';
 import {
@@ -526,6 +526,8 @@ export class IndexerClient extends IndexerBaseClient {
       start: Number(params.startCursor),
     });
 
+    const nextCursor = baseResponse.epochs[requestedLimit]?.epoch;
+
     // Truncate the response to the requested limit
     return {
       ...baseResponse,
@@ -533,7 +535,8 @@ export class IndexerClient extends IndexerBaseClient {
       meta: {
         hasMore: baseResponse.epochs.length > requestedLimit,
         // Next cursor is the epoch number of the (requestedLimit+1)th item
-        nextCursor: baseResponse.epochs[requestedLimit]?.epoch.toFixed(0),
+        nextCursor:
+          nextCursor !== undefined ? toIntegerString(nextCursor) : undefined,
       },
     };
   }
@@ -556,14 +559,17 @@ export class IndexerClient extends IndexerBaseClient {
       startCursor: params.startCursor,
     });
 
+    // Next cursor is the rank number of the (requestedLimit+1)th item
+    const nextCursor = baseResponse.positions[requestedLimit]?.rank;
+
     return {
       ...baseResponse,
       // Truncate the response to the requested limit
       positions: baseResponse.positions.slice(0, requestedLimit),
       meta: {
         hasMore: baseResponse.positions.length > requestedLimit,
-        // Next cursor is the rank number of the (requestedLimit+1)th item
-        nextCursor: baseResponse.positions[requestedLimit]?.rank.toFixed(0),
+        nextCursor:
+          nextCursor !== undefined ? toIntegerString(nextCursor) : undefined,
       },
     };
   }
@@ -585,14 +591,17 @@ export class IndexerClient extends IndexerBaseClient {
       startCursor: params.startCursor,
     });
 
+    // Next cursor is the rank number of the (requestedLimit+1)th item
+    const nextCursor = baseResponse.positions[requestedLimit]?.rank;
+
     return {
       ...baseResponse,
       // Truncate the response to the requested limit
       positions: baseResponse.positions.slice(0, requestedLimit),
       meta: {
         hasMore: baseResponse.positions.length > requestedLimit,
-        // Next cursor is the rank number of the (requestedLimit+1)th item
-        nextCursor: baseResponse.positions[requestedLimit]?.rank.toFixed(0),
+        nextCursor:
+          nextCursor !== undefined ? toIntegerString(nextCursor) : undefined,
       },
     };
   }
@@ -616,17 +625,20 @@ export class IndexerClient extends IndexerBaseClient {
       startCursor: params.startCursor,
     });
 
+    // Next cursor is the rank number of the (requestedLimit+1)th item
+    const nextCursor =
+      params.rankType === 'pnl'
+        ? baseResponse.participants[requestedLimit]?.pnlRank
+        : baseResponse.participants[requestedLimit]?.roiRank;
+
     return {
       ...baseResponse,
       // Truncate the response to the requested limit
       participants: baseResponse.participants.slice(0, requestedLimit),
       meta: {
         hasMore: baseResponse.participants.length > requestedLimit,
-        // Next cursor is the rank number of the (requestedLimit+1)th item
         nextCursor:
-          params.rankType == 'pnl'
-            ? baseResponse.participants[requestedLimit]?.pnlRank.toFixed(0)
-            : baseResponse.participants[requestedLimit]?.roiRank.toFixed(0),
+          nextCursor !== undefined ? toIntegerString(nextCursor) : undefined,
       },
     };
   }

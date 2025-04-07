@@ -7,6 +7,7 @@ import {
   fromX18,
   mapValues,
   toBigDecimal,
+  toIntegerString,
   toX18,
 } from '@vertex-protocol/utils';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
@@ -152,7 +153,7 @@ export class EngineQueryClient extends EngineBaseClient {
                 burn_lp: {
                   product_id: tx.tx.productId,
                   subaccount,
-                  amount_lp: tx.tx.amountLp.toFixed(0),
+                  amount_lp: toIntegerString(tx.tx.amountLp),
                 },
               };
             case 'apply_delta':
@@ -160,8 +161,8 @@ export class EngineQueryClient extends EngineBaseClient {
                 apply_delta: {
                   product_id: tx.tx.productId,
                   subaccount,
-                  amount_delta: tx.tx.amountDelta.toFixed(0),
-                  v_quote_delta: tx.tx.vQuoteDelta.toFixed(0),
+                  amount_delta: toIntegerString(tx.tx.amountDelta),
+                  v_quote_delta: toIntegerString(tx.tx.vQuoteDelta),
                 },
               };
             case 'mint_lp':
@@ -169,9 +170,9 @@ export class EngineQueryClient extends EngineBaseClient {
                 mint_lp: {
                   product_id: tx.tx.productId,
                   subaccount,
-                  amount_base: tx.tx.amountBase.toFixed(0),
-                  quote_amount_low: tx.tx.amountQuoteLow.toFixed(0),
-                  quote_amount_high: tx.tx.amountQuoteHigh.toFixed(0),
+                  amount_base: toIntegerString(tx.tx.amountBase),
+                  quote_amount_low: toIntegerString(tx.tx.amountQuoteLow),
+                  quote_amount_high: toIntegerString(tx.tx.amountQuoteHigh),
                 },
               };
           }
@@ -476,7 +477,7 @@ export class EngineQueryClient extends EngineBaseClient {
   ): Promise<GetEngineMaxOrderSizeResponse> {
     const baseResponse = await this.query('max_order_size', {
       direction: params.side,
-      price_x18: toX18(params.price).toString(),
+      price_x18: toIntegerString(toX18(params.price)),
       product_id: params.productId,
       sender: subaccountToHex({
         subaccountOwner: params.subaccountOwner,
