@@ -1174,7 +1174,9 @@ export class IndexerBaseClient {
     );
 
     return {
-      snapshots: baseResponse.snapshots.map(mapIndexerFoundationTokenSnapshot),
+      snapshots: mapValues(baseResponse.snapshots, (snapshots) =>
+        snapshots.map(mapIndexerFoundationTokenSnapshot),
+      ),
     };
   }
 

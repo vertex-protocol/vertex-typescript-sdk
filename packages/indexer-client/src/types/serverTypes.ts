@@ -555,7 +555,8 @@ export interface IndexerServerVrtxSupplySnapshotsResponse {
 }
 
 export interface IndexerServerFoundationTokenIncentivesSnapshotsResponse {
-  snapshots: IndexerServerFoundationTokenIncentivesSnapshot[];
+  /** chainId -> IndexerServerFoundationTokenIncentivesSnapshot[]*/
+  snapshots: Record<number, IndexerServerFoundationTokenIncentivesSnapshot[]>;
 }
 
 // Response
