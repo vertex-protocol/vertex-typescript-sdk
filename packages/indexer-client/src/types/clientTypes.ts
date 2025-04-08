@@ -455,6 +455,7 @@ export interface GetIndexerLinkedSignerResponse {
 export interface GetIndexerInterestFundingPaymentsParams {
   subaccount: Subaccount;
   productIds: number[];
+  maxTimestampInclusive?: number;
   limit: number;
   // Max submission index, inclusive
   startCursor?: string;

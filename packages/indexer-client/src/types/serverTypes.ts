@@ -166,9 +166,10 @@ export interface IndexerEdgeServerMarketSnapshotsParams {
 export interface IndexerServerInterestFundingParams {
   subaccount: string;
   product_ids: number[];
-  // If not given, defaults to latest
-  max_idx?: string;
+  max_time?: number;
   limit: number;
+  // submission_idx for pagination, inclusive
+  idx?: string;
 }
 
 export interface IndexerServerClaimVrtxMerkleProofsParams {
