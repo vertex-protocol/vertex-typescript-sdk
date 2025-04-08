@@ -224,7 +224,7 @@ async function fullSanity(context: RunContext) {
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: spotProductId,
-    price: toBigDecimal(100000),
+    price: toBigDecimal(70000),
     side: 'long',
   });
   prettyPrint('Max order size', maxOrderSize);

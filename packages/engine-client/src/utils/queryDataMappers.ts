@@ -8,7 +8,12 @@ import {
   SpotMarket,
   subaccountFromHex,
 } from '@vertex-protocol/contracts';
-import { fromX18, mapValues, toBigDecimal } from '@vertex-protocol/utils';
+import {
+  fromX18,
+  mapValues,
+  toBigDecimal,
+  toIntegerString,
+} from '@vertex-protocol/utils';
 import {
   EngineMarketPrice,
   EngineOrder,
@@ -56,10 +61,10 @@ export function mapEngineServerOrder(
     // Standardizes from hex
     // toFixed is required as toString gives values with `e`
     orderParams: {
-      amount: toBigDecimal(order.amount).toFixed(0),
-      expiration: toBigDecimal(order.expiration).toFixed(0),
+      amount: toIntegerString(order.amount),
+      expiration: toIntegerString(order.expiration),
       nonce: order.nonce,
-      price: fromX18(order.price_x18).toFixed(0),
+      price: toIntegerString(fromX18(order.price_x18)),
       subaccountOwner: subaccount.subaccountOwner,
       subaccountName: subaccount.subaccountName,
     },
