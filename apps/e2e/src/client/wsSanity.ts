@@ -8,7 +8,11 @@ import {
   getOrderNonce,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
-import { nowInSeconds, toFixedPoint } from '@vertex-protocol/utils';
+import {
+  nowInSeconds,
+  toFixedPoint,
+  toIntegerString,
+} from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 
@@ -30,7 +34,7 @@ async function wsSanity(context: RunContext) {
     expiration: nowInSeconds() + 60,
     // Limit price
     price: 28000,
-    amount: toFixedPoint(0.01).toString(),
+    amount: toIntegerString(toFixedPoint(0.01)),
   };
 
   const verifyingAddr = (await vertexClient.context.engineClient.getContracts())

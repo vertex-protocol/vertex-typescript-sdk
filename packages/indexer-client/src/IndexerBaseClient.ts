@@ -991,8 +991,7 @@ export class IndexerBaseClient {
   ): Promise<UpdateIndexerLeaderboardRegistrationResponse> {
     const signatureParams: EIP712LeaderboardAuthenticationParams = {
       // Default to 90 seconds from now if no recvTime is provided
-      expiration:
-        params.recvTime?.toFixed(0) ?? getDefaultRecvTime().toFixed(0),
+      expiration: toIntegerString(params.recvTime ?? getDefaultRecvTime()),
       subaccountName: params.subaccountName,
       subaccountOwner: params.subaccountOwner,
     };
@@ -1129,11 +1128,11 @@ export class IndexerBaseClient {
   ): Promise<GetIndexerStakingV2PoolSnapshotsResponse> {
     const baseResponse = await this.query('staking_v2_pool_snapshots', {
       interval: {
-        granularity: params.granularity,
+        count: params.limit,
         max_time: params.maxTimeInclusive
           ? toIntegerString(params.maxTimeInclusive)
           : undefined,
-        count: params.limit,
+        granularity: params.granularity,
       },
     });
 

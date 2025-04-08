@@ -1,3 +1,4 @@
+import { toIntegerString } from '@vertex-protocol/utils';
 import { getDefaultRecvTime } from './recvTime';
 
 /**
@@ -9,7 +10,7 @@ export function getOrderNonce(
   recvTimeMillis: number = getDefaultRecvTime(),
   randomInt: number = Math.floor(Math.random() * 1000),
 ): string {
-  return getOrderNonceBigInt(recvTimeMillis, randomInt).toString();
+  return toIntegerString(getOrderNonceBigInt(recvTimeMillis, randomInt));
 }
 
 /**
@@ -26,7 +27,7 @@ export function getTriggerOrderNonce(
   const regularOrderNonce = getOrderNonceBigInt(recvTimeMillis, randomInt);
   const triggerOrderNonce = regularOrderNonce | (1n << 63n);
 
-  return triggerOrderNonce.toString();
+  return toIntegerString(triggerOrderNonce);
 }
 
 /**

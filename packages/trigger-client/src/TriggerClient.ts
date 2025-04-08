@@ -12,6 +12,7 @@ import {
   SignableRequestTypeToParams,
   WalletClientWithAccount,
 } from '@vertex-protocol/contracts';
+import { toIntegerString } from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { mapServerOrderInfo, mapTriggerCriteria } from './dataMappers';
 import {
@@ -155,7 +156,7 @@ export class TriggerClient {
   ): Promise<TriggerListOrdersResponse> {
     const signatureParams: EIP712ListTriggerOrdersParams = {
       // Default to 90 seconds from now if no recvTime is provided
-      recvTime: params.recvTime?.toFixed(0) ?? getDefaultRecvTime().toFixed(0),
+      recvTime: toIntegerString(params.recvTime ?? getDefaultRecvTime()),
       subaccountName: params.subaccountName,
       subaccountOwner: params.subaccountOwner,
     };

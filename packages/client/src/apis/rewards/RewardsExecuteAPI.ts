@@ -1,5 +1,9 @@
 import { VertexAbis } from '@vertex-protocol/contracts';
-import { toBigInt } from '@vertex-protocol/utils';
+import {
+  toBigDecimal,
+  toBigInt,
+  toIntegerString,
+} from '@vertex-protocol/utils';
 import { Hex, WriteContractParameters } from 'viem';
 import { BaseVertexAPI } from '../base';
 import { ClaimLiquidTokensParams, VrtxTokenAmountParams } from './types';
@@ -189,10 +193,10 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
       const availableAmount = totalAmount.minus(
         // Some wallets seem to throw a `RangeError` here if we do amountsClaimed[params.epoch]
         // Likely because `amountsClaimed` isn't a simple array but a proxy
-        amountsClaimed.at(params.epoch)?.toString() ?? 0,
+        toBigDecimal(amountsClaimed.at(params.epoch) ?? 0),
       );
 
-      return availableAmount.toFixed(0);
+      return toIntegerString(availableAmount);
     })();
 
     return [

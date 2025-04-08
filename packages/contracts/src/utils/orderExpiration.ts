@@ -28,7 +28,7 @@ const EXPIRATION_TYPE_TO_MS2B: Record<OrderExpirationType, bigint> = {
  */
 export function getExpirationTimestamp(config: OrderExpirationConfig): bigint {
   const expirationWithType =
-    BigInt(config.expirationTime.toFixed(0)) |
+    toBigInt(config.expirationTime) |
     (EXPIRATION_TYPE_TO_MS2B[config.type] << 62n);
 
   if (!config.reduceOnly) {
