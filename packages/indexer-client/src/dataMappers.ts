@@ -444,7 +444,7 @@ export function mapIndexerVrtxSupplySnapshot(
 ): IndexerVrtxSupplySnapshot {
   return {
     timestamp: toBigDecimal(snapshot.timestamp),
-    vrtxOraclePrice: toBigDecimal(snapshot.vrtx_oracle_price),
+    vrtxOraclePrice: fromX18(snapshot.vrtx_oracle_price),
     cumulativeIncentives: toBigDecimal(snapshot.cumulative_incentives),
     cumulativeLba: toBigDecimal(snapshot.cumulative_lba),
     cumulativeEcosystemSupply: toBigDecimal(
@@ -466,9 +466,7 @@ export function mapIndexerFoundationTokenIncentivesSnapshot(
     cumulativeFoundationTokenIncentives: toBigDecimal(
       snapshot.cumulative_foundation_token_incentives,
     ),
-    foundationTokenOraclePrice: toBigDecimal(
-      snapshot.foundation_token_oracle_price,
-    ),
+    foundationTokenOraclePrice: fromX18(snapshot.foundation_token_oracle_price),
     foundationTokenProductId: snapshot.foundation_token_product_id,
   };
 }
