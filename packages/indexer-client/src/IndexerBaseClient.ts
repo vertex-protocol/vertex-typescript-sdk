@@ -614,6 +614,7 @@ export class IndexerBaseClient {
         subaccountName: params.subaccount.subaccountName,
       }),
       product_ids: params.productIds,
+      max_time: params.maxTimestampInclusive,
       limit: params.limit,
       max_idx: params.startCursor,
     });
