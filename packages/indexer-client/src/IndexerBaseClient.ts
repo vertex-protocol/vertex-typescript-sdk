@@ -26,7 +26,7 @@ import {
   mapIndexerEvent,
   mapIndexerEventWithTx,
   mapIndexerFoundationTakerRewardsWeek,
-  mapIndexerFoundationTokenSnapshot,
+  mapIndexerFoundationTokenIncentivesSnapshot,
   mapIndexerFundingRate,
   mapIndexerLeaderboardContest,
   mapIndexerLeaderboardPosition,
@@ -1175,7 +1175,7 @@ export class IndexerBaseClient {
 
     return {
       snapshots: mapValues(baseResponse.snapshots, (snapshots) =>
-        snapshots.map(mapIndexerFoundationTokenSnapshot),
+        snapshots.map(mapIndexerFoundationTokenIncentivesSnapshot),
       ),
     };
   }

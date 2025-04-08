@@ -458,7 +458,7 @@ export function mapIndexerVrtxSupplySnapshot(
   };
 }
 
-export function mapIndexerFoundationTokenSnapshot(
+export function mapIndexerFoundationTokenIncentivesSnapshot(
   snapshot: IndexerServerFoundationTokenIncentivesSnapshot,
 ): IndexerFoundationTokenIncentivesSnapshot {
   return {
