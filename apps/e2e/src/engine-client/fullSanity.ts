@@ -60,12 +60,14 @@ async function fullSanity(context: RunContext) {
     client: walletClient,
   });
 
+  const amount = toBigInt(addDecimals(10000, 6));
+
   await waitForTransaction(
-    quote.write.mint([walletClientAddress, toBigInt(addDecimals(10000, 6))]),
+    quote.write.mint([walletClientAddress, amount]),
     publicClient,
   );
   await waitForTransaction(
-    quote.write.approve([endpointAddr, toBigInt(addDecimals(10000, 6))]),
+    quote.write.approve([endpointAddr, amount]),
     publicClient,
   );
 
