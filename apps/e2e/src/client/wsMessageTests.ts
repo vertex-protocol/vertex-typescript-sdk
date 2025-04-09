@@ -13,10 +13,11 @@ import {
   toFixedPoint,
   toIntegerString,
 } from '@vertex-protocol/utils';
+import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 
-async function wsSanity(context: RunContext) {
+async function wsMessageTests(context: RunContext) {
   const walletClient = context.getWalletClient();
   const publicClient = context.publicClient;
   const vertexClient: VertexClient = createVertexClient(context.env.chainEnv, {
@@ -29,26 +30,20 @@ async function wsSanity(context: RunContext) {
 
   const orderParams: PlaceOrderParams['order'] = {
     subaccountName: 'default',
-    // `nowInSeconds` is exposed by the `@vertex-protocol/utils` package
-    // This gives 60s before the order expires
     expiration: nowInSeconds() + 60,
-    // Limit price
     price: 28000,
     amount: toIntegerString(toFixedPoint(0.01)),
   };
 
-  const verifyingAddr = (await vertexClient.context.engineClient.getContracts())
-    .orderbookAddrs[1];
+  const contracts = await vertexClient.context.engineClient.getContracts();
+  // Address for product ID of 1
+  const verifyingAddr = contracts.orderbookAddrs[1];
 
-  // Websocket payloads
   const wsOrder = {
     ...orderParams,
     subaccountOwner: walletClientAddress,
     nonce: getOrderNonce(),
   };
-
-  console.log(`WS Order ${JSON.stringify(wsOrder, null, 2)}`);
-
   const wsOrderSig = await vertexClient.context.engineClient.sign(
     'place_order',
     verifyingAddr,
@@ -62,9 +57,7 @@ async function wsSanity(context: RunContext) {
     signature: wsOrderSig,
   }).payload;
 
-  console.log(
-    `Place Order WS request: ${JSON.stringify(wsPlaceOrderReq, null, 2)}`,
-  );
+  prettyPrint('Place Order WS request', wsPlaceOrderReq);
 
   const wsOrderDigest = getOrderDigest({
     order: wsOrder,
@@ -81,31 +74,29 @@ async function wsSanity(context: RunContext) {
     nonce: getOrderNonce(),
   });
 
-  console.log(
-    `Cancel Orders WS request: ${JSON.stringify(wsCancelOrdersReq, null, 2)}`,
-  );
+  prettyPrint('Cancel Order WS request', wsCancelOrdersReq);
 
   const wsMintLpReq = await vertexClient.ws.execute.buildMintLpMessage({
     productId: 1,
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    amountBase: toFixedPoint(1, 18),
-    quoteAmountLow: toFixedPoint(1000, 18),
-    quoteAmountHigh: toFixedPoint(2000, 18),
+    amountBase: toFixedPoint(1),
+    quoteAmountLow: toFixedPoint(1000),
+    quoteAmountHigh: toFixedPoint(2000),
     signature: '',
   });
 
-  console.log(`Mint LP WS request: ${JSON.stringify(wsMintLpReq, null, 2)}`);
+  prettyPrint('Mint LP WS request', wsMintLpReq);
 
   const wsBurnLpReq = await vertexClient.ws.execute.buildBurnLpMessage({
     productId: 1,
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    amount: toFixedPoint(1, 18),
+    amount: toFixedPoint(1),
     signature: '',
   });
 
-  console.log(`Burn LP WS request: ${JSON.stringify(wsBurnLpReq, null, 2)}`);
+  prettyPrint('Burn LP WS request', wsBurnLpReq);
 
   const wsWithdrawCollateralReq =
     await vertexClient.ws.execute.buildWithdrawCollateralMessage({
@@ -116,13 +107,7 @@ async function wsSanity(context: RunContext) {
       signature: '',
     });
 
-  console.log(
-    `Withdraw collateral WS request: ${JSON.stringify(
-      wsWithdrawCollateralReq,
-      null,
-      2,
-    )}`,
-  );
+  prettyPrint('Withdraw Collateral WS request', wsWithdrawCollateralReq);
 
   const wsQuerySubaccountInfoReq = vertexClient.ws.query.buildQueryMessage(
     'subaccount_info',
@@ -134,13 +119,7 @@ async function wsSanity(context: RunContext) {
     },
   );
 
-  console.log(
-    `Query subaccount info WS request: ${JSON.stringify(
-      wsQuerySubaccountInfoReq,
-      null,
-      2,
-    )}`,
-  );
+  prettyPrint('Query subaccount info WS request', wsQuerySubaccountInfoReq);
 
   const wsTradeStream = vertexClient.ws.subscription.buildSubscriptionParams(
     'trade',
@@ -154,14 +133,7 @@ async function wsSanity(context: RunContext) {
       'subscribe',
       wsTradeStream,
     );
-
-  console.log(
-    `Trade subscription WS request: ${JSON.stringify(
-      wsTradeSubscriptionReq,
-      null,
-      2,
-    )}`,
-  );
+  prettyPrint('Trade subscription WS request', wsTradeSubscriptionReq);
 
   const wsFillStream = vertexClient.ws.subscription.buildSubscriptionParams(
     'fill',
@@ -178,24 +150,12 @@ async function wsSanity(context: RunContext) {
       wsFillStream,
     );
 
-  console.log(
-    `Fill unsubscribe WS request: ${JSON.stringify(
-      wsFillUnsubscribeReq,
-      null,
-      2,
-    )}`,
-  );
+  prettyPrint('Fill unsubscribe WS request', wsFillUnsubscribeReq);
 
   const wsListSubscriptionsReq =
     vertexClient.ws.subscription.buildSubscriptionMessage(1, 'list', {});
 
-  console.log(
-    `Lists subscriptions WS request: ${JSON.stringify(
-      wsListSubscriptionsReq,
-      null,
-      2,
-    )}`,
-  );
+  prettyPrint('List subscriptions WS request', wsListSubscriptionsReq);
 }
 
-runWithContext(wsSanity);
+runWithContext(wsMessageTests);

@@ -18,9 +18,8 @@ import {
   EngineOrderParams,
 } from '@vertex-protocol/engine-client';
 import {
-  addDecimals,
   BigDecimals,
-  removeDecimals,
+  fromFixedPoint,
   toBigDecimal,
   toFixedPoint,
   toX18,
@@ -501,7 +500,7 @@ async function fullSanity(context: RunContext) {
   const mintVlpResult = await client.mintVlp({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    quoteAmount: addDecimals(10),
+    quoteAmount: toFixedPoint(10),
     verifyingAddr: endpointAddr,
     chainId,
   });
@@ -515,7 +514,7 @@ async function fullSanity(context: RunContext) {
     subaccountInfoAfterVlpMint.balances.find(
       (bal) => bal.productId === VLP_PRODUCT_ID,
     )?.amount ?? BigDecimals.ZERO;
-  prettyPrint('VLP Balance', removeDecimals(vlpBalanceAmount));
+  prettyPrint('VLP Balance', fromFixedPoint(vlpBalanceAmount));
 
   const burnVlpResult = await client.burnVlp({
     subaccountOwner: walletClientAddress,

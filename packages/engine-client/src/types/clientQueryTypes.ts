@@ -69,6 +69,9 @@ export interface SubaccountProductDeltaTx {
 export interface GetEngineContractsResponse {
   chainId: number;
   endpointAddr: string;
+  /**
+   * Address for the orderbook contract, with the product ID being the index
+   */
   orderbookAddrs: string[];
 }
 
