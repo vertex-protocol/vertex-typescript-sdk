@@ -22,8 +22,7 @@ import {
   BigDecimals,
   removeDecimals,
   toBigDecimal,
-  toFixedPoint,
-  toX18,
+  toBigInt,
 } from '@vertex-protocol/utils';
 import { createWalletClient, getContract, http, zeroAddress } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
@@ -62,18 +61,18 @@ async function fullSanity(context: RunContext) {
   });
 
   await waitForTransaction(
-    quote.write.mint([walletClientAddress, toFixedPoint(10000, 6)]),
+    quote.write.mint([walletClientAddress, toBigInt(addDecimals(10000, 6))]),
     publicClient,
   );
   await waitForTransaction(
-    quote.write.approve([endpointAddr, toFixedPoint(10000, 6)]),
+    quote.write.approve([endpointAddr, toBigInt(addDecimals(10000, 6))]),
     publicClient,
   );
 
   // Deposit collateral
   await waitForTransaction(
     depositCollateral({
-      amount: toFixedPoint(10000, 6),
+      amount: addDecimals(10000, 6),
       endpoint,
       productId: 0,
       subaccountName: 'default',
@@ -135,7 +134,7 @@ async function fullSanity(context: RunContext) {
   const spotOrder: EngineOrderParams = {
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    amount: toFixedPoint(-0.03),
+    amount: addDecimals(-0.03),
     expiration: getExpiration(),
     price: shortLimitPrice,
   };
@@ -165,11 +164,11 @@ async function fullSanity(context: RunContext) {
   const isolatedOrder: EngineIsolatedOrderParams = {
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    amount: toX18(-0.03),
+    amount: addDecimals(-0.03),
     expiration: getExpiration(),
     price: shortLimitPrice,
     // 10x leverage
-    margin: toX18(shortLimitPrice.multipliedBy(0.03).div(10)),
+    margin: addDecimals(shortLimitPrice.multipliedBy(0.03).div(10)),
   };
   const perpPlaceIsolatedOrderResult = await client.placeIsolatedOrder({
     verifyingAddr: perpOrderbookAddr,
@@ -337,12 +336,12 @@ async function fullSanity(context: RunContext) {
   const createIsoPositionOrder: EngineIsolatedOrderParams = {
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    amount: toX18(0.03),
+    amount: addDecimals(0.03),
     expiration: getExpiration('fok'),
     // Use the short limit price here to ensure a fill when opening a long
     price: shortLimitPrice,
     // 10x leverage
-    margin: toX18(shortLimitPrice.multipliedBy(0.03).div(10)),
+    margin: addDecimals(shortLimitPrice.multipliedBy(0.03).div(10)),
   };
   const createIsoPositionOrderResult = await client.placeIsolatedOrder({
     verifyingAddr: perpOrderbookAddr,
@@ -363,9 +362,9 @@ async function fullSanity(context: RunContext) {
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: 3,
-    amountBase: toFixedPoint(1, 18),
-    quoteAmountLow: toFixedPoint(1000, 18),
-    quoteAmountHigh: toFixedPoint(6000, 18),
+    amountBase: addDecimals(1),
+    quoteAmountLow: addDecimals(1000),
+    quoteAmountHigh: addDecimals(6000),
     verifyingAddr: endpointAddr,
     chainId,
   });
@@ -381,7 +380,7 @@ async function fullSanity(context: RunContext) {
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: 3,
-    amount: toFixedPoint(1, 18),
+    amount: addDecimals(1),
     verifyingAddr: endpointAddr,
     chainId,
   });
@@ -413,7 +412,7 @@ async function fullSanity(context: RunContext) {
     const order: EngineOrderParams = {
       subaccountOwner: walletClientAddress,
       subaccountName: 'default',
-      amount: toFixedPoint(-0.01),
+      amount: addDecimals(-0.01),
       expiration: getExpiration(),
       price: shortLimitPrice,
     };
@@ -465,7 +464,7 @@ async function fullSanity(context: RunContext) {
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: 0,
-    amount: toFixedPoint(4999, 6),
+    amount: addDecimals(4999, 6),
     verifyingAddr: endpointAddr,
     chainId,
   });
@@ -486,7 +485,7 @@ async function fullSanity(context: RunContext) {
     recipientSubaccountName: 'transfer1',
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    amount: toFixedPoint(50), // amount must be x18
+    amount: addDecimals(50), // amount must be x18
     verifyingAddr: endpointAddr,
   });
   prettyPrint('Done transferring quote', transferQuoteResult);

@@ -1,4 +1,3 @@
-export * from './fixedPoint';
 export * from './bigDecimal';
 export * from './toIntegerString';
 export * from './toBigInt';

@@ -8,11 +8,7 @@ import {
   getOrderNonce,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
-import {
-  nowInSeconds,
-  toFixedPoint,
-  toIntegerString,
-} from '@vertex-protocol/utils';
+import { addDecimals, nowInSeconds } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 
@@ -34,7 +30,7 @@ async function wsSanity(context: RunContext) {
     expiration: nowInSeconds() + 60,
     // Limit price
     price: 28000,
-    amount: toIntegerString(toFixedPoint(0.01)),
+    amount: addDecimals(0.01),
   };
 
   const verifyingAddr = (await vertexClient.context.engineClient.getContracts())
@@ -89,9 +85,9 @@ async function wsSanity(context: RunContext) {
     productId: 1,
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    amountBase: toFixedPoint(1, 18),
-    quoteAmountLow: toFixedPoint(1000, 18),
-    quoteAmountHigh: toFixedPoint(2000, 18),
+    amountBase: addDecimals(1),
+    quoteAmountLow: addDecimals(1000),
+    quoteAmountHigh: addDecimals(2000),
     signature: '',
   });
 
@@ -101,7 +97,7 @@ async function wsSanity(context: RunContext) {
     productId: 1,
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    amount: toFixedPoint(1, 18),
+    amount: addDecimals(1),
     signature: '',
   });
 
@@ -112,7 +108,7 @@ async function wsSanity(context: RunContext) {
       subaccountOwner: walletClientAddress,
       subaccountName: 'default',
       productId: 0,
-      amount: toFixedPoint(4999, 6),
+      amount: addDecimals(4999),
       signature: '',
     });
 

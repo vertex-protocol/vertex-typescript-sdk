@@ -8,11 +8,7 @@ import {
   getOrderNonce,
   getVertexEIP712Values,
 } from '@vertex-protocol/contracts';
-import {
-  toBigInt,
-  toFixedPoint,
-  toIntegerString,
-} from '@vertex-protocol/utils';
+import { addDecimals, toBigInt, toIntegerString } from '@vertex-protocol/utils';
 import { encodeAbiParameters, encodePacked, parseAbiParameters } from 'viem';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
@@ -36,7 +32,7 @@ async function fullSanity(context: RunContext) {
   await waitForTransaction(
     vertexClient.spot._mintMockERC20({
       // 20000 tokens
-      amount: toFixedPoint(20000, 6),
+      amount: addDecimals(20000, 6),
       productId: 0,
     }),
     publicClient,
@@ -45,7 +41,7 @@ async function fullSanity(context: RunContext) {
   console.log('Approving allowance...');
   await waitForTransaction(
     vertexClient.spot.approveAllowance({
-      amount: toFixedPoint(20000, 6),
+      amount: addDecimals(20000, 6),
       productId: 0,
     }),
     publicClient,
@@ -56,7 +52,7 @@ async function fullSanity(context: RunContext) {
     vertexClient.spot.deposit({
       subaccountName: 'default',
       productId: 0,
-      amount: toFixedPoint(10000, 6),
+      amount: addDecimals(10000, 6),
       referralCode: 'Blk23MeZU3',
     }),
     publicClient,
@@ -74,7 +70,7 @@ async function fullSanity(context: RunContext) {
     vertexClient.spot.deposit({
       subaccountName: 'default',
       productId: 0,
-      amount: toFixedPoint(10000, 6),
+      amount: addDecimals(10000, 6),
     }),
     publicClient,
   );
@@ -94,7 +90,7 @@ async function fullSanity(context: RunContext) {
     subaccountName: 'default',
     expiration: toIntegerString(getExpiration('post_only', 60)),
     price: spotOrderShortLimitPrice,
-    amount: toFixedPoint(-3.5),
+    amount: addDecimals(-3.5),
   };
 
   const orderResult = await vertexClient.market.placeOrder({
@@ -113,7 +109,7 @@ async function fullSanity(context: RunContext) {
       subaccountName: 'default',
       expiration: toIntegerString(getExpiration('post_only', 60)),
       price: spotOrderShortLimitPrice,
-      amount: toFixedPoint(-3.5),
+      amount: addDecimals(-3.5),
     },
     productId: spotOrderProductId,
     nonce: getOrderNonce(),
@@ -225,7 +221,7 @@ async function fullSanity(context: RunContext) {
   await vertexClient.spot.withdraw({
     subaccountName: 'default',
     productId: 0,
-    amount: toFixedPoint(1000, 6),
+    amount: addDecimals(1000, 6),
   });
 
   const nSubmissions =
@@ -255,7 +251,7 @@ async function fullSanity(context: RunContext) {
   console.log('Approving 1 USDC allowance...');
   await waitForTransaction(
     vertexClient.spot.approveAllowance({
-      amount: toFixedPoint(1, 6),
+      amount: addDecimals(1, 6),
       productId: 0,
     }),
     publicClient,
@@ -263,7 +259,7 @@ async function fullSanity(context: RunContext) {
 
   // 2. generate withdraw collateral tx
   const tx = getVertexEIP712Values('withdraw_collateral', {
-    amount: toFixedPoint(1000, 6),
+    amount: addDecimals(1000, 6),
     nonce: await vertexClient.context.engineClient.getTxNonce(),
     productId: 0,
     subaccountName: 'default',

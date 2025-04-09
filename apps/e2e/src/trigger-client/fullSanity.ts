@@ -13,7 +13,7 @@ import {
   TriggerClient,
   TriggerPlaceOrderParams,
 } from '@vertex-protocol/trigger-client';
-import { toFixedPoint, toX18 } from '@vertex-protocol/utils';
+import { addDecimals, toBigInt, toX18 } from '@vertex-protocol/utils';
 import { getContract } from 'viem';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
@@ -53,7 +53,7 @@ async function fullSanity(context: RunContext) {
     client: walletClient,
   });
 
-  const depositAmount = toFixedPoint(10000, 6);
+  const depositAmount = toBigInt(addDecimals(10000, 6));
 
   const subaccountOwner = walletClient.account.address;
   const subaccountName = 'default';
