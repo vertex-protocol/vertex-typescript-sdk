@@ -8,6 +8,13 @@ import {
 import { IndexerEventType } from './IndexerEventType';
 import { VertexTx } from './VertexTx';
 
+export interface IndexerServerSnapshotsInterval {
+  count: number;
+  // Currently accepts any granularity, time distance (in seconds) between data points
+  granularity: number;
+  max_time?: string;
+}
+
 export type IndexerServerProduct =
   | {
       spot: EngineServerSpotProduct;
@@ -178,6 +185,10 @@ export interface IndexerServerMarketSnapshot {
   oracle_prices: Record<string, string>;
 }
 
+/**
+ * Staking
+ */
+
 export interface IndexerServerStakingV2PoolSnapshot {
   timestamp: string;
   cumulative_staked: string;
@@ -189,6 +200,17 @@ export interface IndexerServerStakingV2Staker {
   address: string;
   stake_amount: string;
   pool_share: number;
+}
+
+export interface IndexerServerVrtxSupplySnapshot {
+  timestamp: string;
+  vrtx_oracle_price: string;
+  cumulative_incentives: string;
+  cumulative_lba: string;
+  cumulative_ecosystem_supply: string;
+  cumulative_treasury_supply: string;
+  cumulative_investors_supply: string;
+  cumulative_team_supply: string;
 }
 
 /**
@@ -256,7 +278,7 @@ export interface IndexerServerTakerRewardsEpoch {
 }
 
 /**
- * Arb rewards
+ * Foundation token rewards
  */
 
 export interface IndexerServerFoundationTakerRewardsForProduct {
@@ -280,6 +302,13 @@ export interface IndexerServerFoundationTakerRewardsWeek {
   // Per product ID
   address_rewards: IndexerServerFoundationTakerRewardsForProduct[];
   global_rewards: IndexerServerFoundationTakerGlobalRewardsForProduct[];
+}
+
+export interface IndexerServerFoundationTokenIncentivesSnapshot {
+  timestamp: string;
+  cumulative_foundation_token_incentives: string;
+  foundation_token_oracle_price: string;
+  foundation_token_product_id: number;
 }
 
 /**
@@ -341,11 +370,4 @@ export interface IndexerServerLeaderboardRegistration {
   subaccount: string;
   contest_id: number;
   update_time: string;
-}
-
-export interface IndexerServerStakingV2PoolSnapshotsInterval {
-  count: number;
-  // Currently accepts any granularity, time distance (in seconds) between data points
-  granularity: number;
-  max_time?: string;
 }

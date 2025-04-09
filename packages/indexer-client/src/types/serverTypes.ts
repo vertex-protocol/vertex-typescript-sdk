@@ -8,6 +8,7 @@ import {
   IndexerServerCandlestick,
   IndexerServerEvent,
   IndexerServerFoundationTakerRewardsWeek,
+  IndexerServerFoundationTokenIncentivesSnapshot,
   IndexerServerLeaderboardContest,
   IndexerServerLeaderboardPosition,
   IndexerServerLeaderboardRegistration,
@@ -21,11 +22,12 @@ import {
   IndexerServerProductPayment,
   IndexerServerProductSnapshot,
   IndexerServerRewardsEpoch,
+  IndexerServerSnapshotsInterval,
   IndexerServerStakingV2PoolSnapshot,
-  IndexerServerStakingV2PoolSnapshotsInterval,
   IndexerServerStakingV2Staker,
   IndexerServerTakerRewardsEpoch,
   IndexerServerTx,
+  IndexerServerVrtxSupplySnapshot,
 } from './serverModelTypes';
 import { VertexWithdrawCollateralTx } from './VertexTx';
 
@@ -246,11 +248,19 @@ export interface IndexerServerFastWithdrawalSignatureParams {
 }
 
 export interface IndexerServerStakingV2PoolSnapshotsParams {
-  interval: IndexerServerStakingV2PoolSnapshotsInterval;
+  interval: IndexerServerSnapshotsInterval;
 }
 
 export interface IndexerServerStakingV2TopStakersParams {
   limit: number;
+}
+
+export interface IndexerServerVrtxSupplySnapshotsParams {
+  interval: IndexerServerSnapshotsInterval;
+}
+
+export interface IndexerServerFoundationTokenIncentivesSnapshotsParams {
+  interval: IndexerServerSnapshotsInterval;
 }
 
 // Request
@@ -294,6 +304,8 @@ export interface IndexerServerQueryRequestByType {
   fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureParams;
   staking_v2_top_stakers: IndexerServerStakingV2TopStakersParams;
   staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsParams;
+  vrtx_supply_snapshots: IndexerServerVrtxSupplySnapshotsParams;
+  foundation_token_incentives_snapshots: IndexerServerFoundationTokenIncentivesSnapshotsParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -538,6 +550,15 @@ export interface IndexerServerStakingV2PoolSnapshotsResponse {
   snapshots: IndexerServerStakingV2PoolSnapshot[];
 }
 
+export interface IndexerServerVrtxSupplySnapshotsResponse {
+  snapshots: IndexerServerVrtxSupplySnapshot[];
+}
+
+export interface IndexerServerFoundationTokenIncentivesSnapshotsResponse {
+  /** chainId -> IndexerServerFoundationTokenIncentivesSnapshot[]*/
+  snapshots: Record<number, IndexerServerFoundationTokenIncentivesSnapshot[]>;
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
@@ -579,4 +600,6 @@ export interface IndexerServerQueryResponseByType {
   fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureResponse;
   staking_v2_top_stakers: IndexerServerStakingV2TopStakersResponse;
   staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsResponse;
+  vrtx_supply_snapshots: IndexerServerVrtxSupplySnapshotsResponse;
+  foundation_token_incentives_snapshots: IndexerServerFoundationTokenIncentivesSnapshotsResponse;
 }

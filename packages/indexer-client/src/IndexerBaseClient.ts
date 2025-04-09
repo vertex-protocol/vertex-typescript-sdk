@@ -26,6 +26,7 @@ import {
   mapIndexerEvent,
   mapIndexerEventWithTx,
   mapIndexerFoundationTakerRewardsWeek,
+  mapIndexerFoundationTokenIncentivesSnapshot,
   mapIndexerFundingRate,
   mapIndexerLeaderboardContest,
   mapIndexerLeaderboardPosition,
@@ -40,6 +41,7 @@ import {
   mapIndexerServerProduct,
   mapIndexerStakingV2PoolSnapshot,
   mapIndexerStakingV2Staker,
+  mapIndexerVrtxSupplySnapshot,
 } from './dataMappers';
 import {
   GetIndexerBlastPointsParams,
@@ -66,6 +68,7 @@ import {
   GetIndexerFastWithdrawalSignatureResponse,
   GetIndexerFoundationTakerRewardsParams,
   GetIndexerFoundationTakerRewardsResponse,
+  GetIndexerFoundationTokenIncentivesSnapshotsParams,
   GetIndexerFundingRateParams,
   GetIndexerFundingRateResponse,
   GetIndexerInterestFundingPaymentsParams,
@@ -117,6 +120,7 @@ import {
   GetIndexerStakingV2TopStakersResponse,
   GetIndexerTakerRewardsParams,
   GetIndexerTakerRewardsResponse,
+  GetIndexerVrtxSupplySnapshotsParams,
   GetIndexerVrtxTokenInfoParams,
   GetIndexerVrtxTokenInfoResponse,
   IndexerEventWithTx,
@@ -1134,6 +1138,45 @@ export class IndexerBaseClient {
 
     return {
       snapshots: baseResponse.snapshots.map(mapIndexerStakingV2PoolSnapshot),
+    };
+  }
+
+  async getVrtxSupplySnapshots(params: GetIndexerVrtxSupplySnapshotsParams) {
+    const baseResponse = await this.query('vrtx_supply_snapshots', {
+      interval: {
+        count: params.limit,
+        max_time: params.maxTimeInclusive
+          ? toIntegerString(params.maxTimeInclusive)
+          : undefined,
+        granularity: params.granularity,
+      },
+    });
+
+    return {
+      snapshots: baseResponse.snapshots.map(mapIndexerVrtxSupplySnapshot),
+    };
+  }
+
+  async getFoundationTokenIncentivesSnapshots(
+    params: GetIndexerFoundationTokenIncentivesSnapshotsParams,
+  ) {
+    const baseResponse = await this.query(
+      'foundation_token_incentives_snapshots',
+      {
+        interval: {
+          count: params.limit,
+          max_time: params.maxTimeInclusive
+            ? toIntegerString(params.maxTimeInclusive)
+            : undefined,
+          granularity: params.granularity,
+        },
+      },
+    );
+
+    return {
+      snapshots: mapValues(baseResponse.snapshots, (snapshots) =>
+        snapshots.map(mapIndexerFoundationTokenIncentivesSnapshot),
+      ),
     };
   }
 

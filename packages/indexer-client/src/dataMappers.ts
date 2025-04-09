@@ -23,6 +23,7 @@ import {
   IndexerEventWithTx,
   IndexerFoundationTakerGlobalRewardsForProduct,
   IndexerFoundationTakerRewardsWeek,
+  IndexerFoundationTokenIncentivesSnapshot,
   IndexerFundingRate,
   IndexerGlobalRewardsForProduct,
   IndexerLeaderboardContest,
@@ -40,6 +41,7 @@ import {
   IndexerServerCandlestick,
   IndexerServerEvent,
   IndexerServerFoundationTakerRewardsWeek,
+  IndexerServerFoundationTokenIncentivesSnapshot,
   IndexerServerFundingRate,
   IndexerServerLeaderboardContest,
   IndexerServerLeaderboardPosition,
@@ -55,11 +57,13 @@ import {
   IndexerServerStakingV2PoolSnapshot,
   IndexerServerStakingV2Staker,
   IndexerServerTx,
+  IndexerServerVrtxSupplySnapshot,
   IndexerSpotBalance,
   IndexerStakingV2PoolSnapshot,
   IndexerStakingV2Staker,
   IndexerSubaccountFoundationTakerRewardsForProduct,
   IndexerSubaccountRewardsForProduct,
+  IndexerVrtxSupplySnapshot,
 } from './types';
 
 export function mapIndexerServerProduct(product: IndexerServerProduct): Market {
@@ -432,5 +436,37 @@ export function mapIndexerStakingV2Staker(
     address: getValidatedAddress(staker.address),
     stakedAmount: toBigDecimal(staker.stake_amount),
     poolShare: staker.pool_share,
+  };
+}
+
+export function mapIndexerVrtxSupplySnapshot(
+  snapshot: IndexerServerVrtxSupplySnapshot,
+): IndexerVrtxSupplySnapshot {
+  return {
+    timestamp: toBigDecimal(snapshot.timestamp),
+    vrtxOraclePrice: fromX18(snapshot.vrtx_oracle_price),
+    cumulativeIncentives: toBigDecimal(snapshot.cumulative_incentives),
+    cumulativeLba: toBigDecimal(snapshot.cumulative_lba),
+    cumulativeEcosystemSupply: toBigDecimal(
+      snapshot.cumulative_ecosystem_supply,
+    ),
+    cumulativeTreasurySupply: toBigDecimal(snapshot.cumulative_treasury_supply),
+    cumulativeInvestorsSupply: toBigDecimal(
+      snapshot.cumulative_investors_supply,
+    ),
+    cumulativeTeamSupply: toBigDecimal(snapshot.cumulative_team_supply),
+  };
+}
+
+export function mapIndexerFoundationTokenIncentivesSnapshot(
+  snapshot: IndexerServerFoundationTokenIncentivesSnapshot,
+): IndexerFoundationTokenIncentivesSnapshot {
+  return {
+    timestamp: toBigDecimal(snapshot.timestamp),
+    cumulativeFoundationTokenIncentives: toBigDecimal(
+      snapshot.cumulative_foundation_token_incentives,
+    ),
+    foundationTokenOraclePrice: fromX18(snapshot.foundation_token_oracle_price),
+    foundationTokenProductId: snapshot.foundation_token_product_id,
   };
 }
