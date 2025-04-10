@@ -487,12 +487,19 @@ export class IndexerClient extends IndexerBaseClient {
   async getPaginatedSubaccountInterestFundingPayments(
     params: GetIndexerSubaccountInterestFundingPaymentsParams,
   ): Promise<GetIndexerPaginatedInterestFundingPaymentsResponse> {
-    const { limit, productIds, startCursor, subaccountName, subaccountOwner } =
-      params;
+    const {
+      limit,
+      productIds,
+      startCursor,
+      maxTimestampInclusive,
+      subaccountName,
+      subaccountOwner,
+    } = params;
     const baseResponse = await this.getInterestFundingPayments({
       limit,
       productIds,
       startCursor,
+      maxTimestampInclusive,
       subaccount: {
         subaccountName,
         subaccountOwner,
