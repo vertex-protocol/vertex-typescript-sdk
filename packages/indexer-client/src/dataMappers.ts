@@ -16,6 +16,7 @@ import {
   getValidatedAddress,
   mapValues,
   toBigDecimal,
+  toIntegerString,
 } from '@vertex-protocol/utils';
 import {
   Candlestick,
@@ -54,10 +55,12 @@ import {
   IndexerServerProduct,
   IndexerServerProductPayment,
   IndexerServerRewardsEpoch,
+  IndexerServerSnapshotsInterval,
   IndexerServerStakingV2PoolSnapshot,
   IndexerServerStakingV2Staker,
   IndexerServerTx,
   IndexerServerVrtxSupplySnapshot,
+  IndexerSnapshotsIntervalParams,
   IndexerSpotBalance,
   IndexerStakingV2PoolSnapshot,
   IndexerStakingV2Staker,
@@ -90,6 +93,18 @@ export function mapIndexerServerBalance(
     productId: balance.perp.product_id,
     type: ProductEngineType.PERP,
     vQuoteBalance: toBigDecimal(balance.perp.balance.v_quote_balance),
+  };
+}
+
+export function mapSnapshotsIntervalToServerParams(
+  params: IndexerSnapshotsIntervalParams,
+): IndexerServerSnapshotsInterval {
+  return {
+    count: params.limit,
+    max_time: params.maxTimeInclusive
+      ? toIntegerString(params.maxTimeInclusive)
+      : undefined,
+    granularity: params.granularity,
   };
 }
 
