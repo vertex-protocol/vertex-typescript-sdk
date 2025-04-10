@@ -1,6 +1,7 @@
 import {
   EngineBurnVlpParams,
   EngineMintVlpParams,
+  EngineTransferQuoteParams,
   EngineWithdrawCollateralParams,
 } from '@vertex-protocol/engine-client';
 import { BigDecimalish } from '@vertex-protocol/utils';
@@ -28,6 +29,10 @@ export type GetTokenAllowanceParams = TokenQueryParams;
 
 export type WithdrawCollateralParams = OptionalSignatureParams<
   OptionalSubaccountOwner<EngineWithdrawCollateralParams>
+>;
+
+export type TransferQuoteParams = OptionalSignatureParams<
+  OptionalSubaccountOwner<EngineTransferQuoteParams>
 >;
 
 export type MintVlpParams = OptionalSignatureParams<

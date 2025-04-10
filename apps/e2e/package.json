@@ -10,8 +10,10 @@
   "source": "./src/index.ts",
   "repository": "https://github.com/vertex-protocol/vertex-typescript-sdk",
   "scripts": {
-    "client/full-sanity": "ts-node ./src/client/fullSanity.ts",
-    "client/ws-sanity": "ts-node ./src/client/wsSanity.ts",
+    "client/collateral-tests": "ts-node ./src/client/collateralTests.ts",
+    "client/order-tests": "ts-node ./src/client/orderTests.ts",
+    "client/query-tests": "ts-node ./src/client/queryTests.ts",
+    "client/ws-message-tests": "ts-node ./src/client/wsMessageTests.ts",
     "engine/full-sanity": "ts-node ./src/engine-client/fullSanity.ts",
     "indexer/full-sanity": "ts-node ./src/indexer-client/fullSanity.ts",
     "trigger/full-sanity": "ts-node ./src/trigger-client/fullSanity.ts"

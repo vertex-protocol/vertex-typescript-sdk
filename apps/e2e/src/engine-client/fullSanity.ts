@@ -18,8 +18,8 @@ import {
   EngineOrderParams,
 } from '@vertex-protocol/engine-client';
 import {
-  addDecimals,
   BigDecimals,
+  addDecimals,
   removeDecimals,
   toBigDecimal,
   toBigInt,

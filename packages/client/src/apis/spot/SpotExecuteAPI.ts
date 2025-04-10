@@ -12,6 +12,7 @@ import {
   ApproveAllowanceParams,
   BurnVlpParams,
   MintVlpParams,
+  TransferQuoteParams,
   WithdrawCollateralParams,
 } from './types';
 
@@ -47,6 +48,20 @@ export class SpotExecuteAPI extends BaseSpotAPI {
       amount: params.amount,
       endpoint: this.context.contracts.endpoint,
       tokenContract,
+    });
+  }
+
+  /**
+   * Transfers quote between subaccounts under the same wallet.
+   *
+   * @param params
+   */
+  async transferQuote(params: TransferQuoteParams) {
+    return this.context.engineClient.transferQuote({
+      ...params,
+      subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
+      verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
+      chainId: this.getWalletClientChainIdIfNeeded(params),
     });
   }
 

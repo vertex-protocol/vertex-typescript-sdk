@@ -1,9 +1,5 @@
 import { BaseVertexAPI } from '../base';
-import {
-  LinkSignerParams,
-  LiquidateSubaccountParams,
-  TransferQuoteParams,
-} from './types';
+import { LinkSignerParams, LiquidateSubaccountParams } from './types';
 
 export class SubaccountExecuteAPI extends BaseVertexAPI {
   /**
@@ -27,20 +23,6 @@ export class SubaccountExecuteAPI extends BaseVertexAPI {
    */
   async linkSigner(params: LinkSignerParams) {
     return this.context.engineClient.linkSigner({
-      ...params,
-      subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
-      verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
-      chainId: this.getWalletClientChainIdIfNeeded(params),
-    });
-  }
-
-  /**
-   * Transfers quote between subaccounts under the same wallet.
-   *
-   * @param params
-   */
-  async transferQuote(params: TransferQuoteParams) {
-    return this.context.engineClient.transferQuote({
       ...params,
       subaccountOwner: this.getSubaccountOwnerIfNeeded(params),
       verifyingAddr: params.verifyingAddr ?? this.getEndpointAddress(),
