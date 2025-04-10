@@ -339,6 +339,10 @@ export interface IndexerServerMaker {
   data: IndexerServerMakerData[];
 }
 
+/**
+ * Leaderboard
+ */
+
 export interface IndexerServerLeaderboardPosition {
   subaccount: string;
   contest_id: number;
@@ -370,4 +374,21 @@ export interface IndexerServerLeaderboardRegistration {
   subaccount: string;
   contest_id: number;
   update_time: string;
+}
+
+/**
+ * VLP
+ */
+
+export interface IndexerServerVlpSnapshot {
+  cumulative_burn_usdc: string;
+  cumulative_mint_usdc: string;
+  cumulative_pnl: string;
+  cumulative_trades: string;
+  cumulative_volume: string;
+  depositors: string;
+  oracle_price_x18: string;
+  submission_idx: string;
+  timestamp: string;
+  tvl: string;
 }

@@ -27,6 +27,7 @@ import {
   IndexerServerStakingV2Staker,
   IndexerServerTakerRewardsEpoch,
   IndexerServerTx,
+  IndexerServerVlpSnapshot,
   IndexerServerVrtxSupplySnapshot,
 } from './serverModelTypes';
 import { VertexWithdrawCollateralTx } from './VertexTx';
@@ -263,27 +264,35 @@ export interface IndexerServerFoundationTokenIncentivesSnapshotsParams {
   interval: IndexerServerSnapshotsInterval;
 }
 
+export interface IndexerServerVlpSnapshotsParams {
+  interval: IndexerServerSnapshotsInterval;
+}
+
 // Request
 export interface IndexerServerQueryRequestByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
-  foundation_rewards_merkle_proofs: IndexerServerClaimFoundationRewardsMerkleProofsParams;
-  foundation_taker_rewards: IndexerServerFoundationTakerRewardsParams;
   blast_points: IndexerServerBlastPointsParams;
   blitz_points: IndexerServerBlitzPointsParams;
   blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardParams;
-  sonic_points: IndexerServerSonicPointsParams;
-  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardParams;
   candlesticks: IndexerServerCandlesticksParams;
   edge_candlesticks: IndexerEdgeServerCandlesticksParams;
+  edge_market_snapshots: IndexerEdgeServerMarketSnapshotsParams;
   events: IndexerServerEventsParams;
+  fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureParams;
+  foundation_rewards_merkle_proofs: IndexerServerClaimFoundationRewardsMerkleProofsParams;
+  foundation_taker_rewards: IndexerServerFoundationTakerRewardsParams;
+  foundation_token_incentives_snapshots: IndexerServerFoundationTokenIncentivesSnapshotsParams;
   funding_rate: IndexerServerFundingRateParams;
   funding_rates: IndexerServerFundingRatesParams;
   initial_drop_conditions: IndexerServerBlitzInitialDropConditionsParams;
   interest_and_funding: IndexerServerInterestFundingParams;
+  leaderboard: IndexerServerLeaderboardParams;
+  leaderboard_contests: IndexerServerLeaderboardContestsParams;
+  leaderboard_rank: IndexerServerLeaderboardRankParams;
+  leaderboard_registration: IndexerServerLeaderboardRegistrationParams;
   linked_signer_rate_limit: IndexerServerLinkedSignerParams;
   maker_statistics: IndexerServerMakerStatisticsParams;
   market_snapshots: IndexerServerMarketSnapshotsParams;
-  edge_market_snapshots: IndexerEdgeServerMarketSnapshotsParams;
   matches: IndexerServerMatchEventsParams;
   oracle_price: IndexerServerOraclePricesParams;
   orders: IndexerServerOrdersParams;
@@ -293,19 +302,16 @@ export interface IndexerServerQueryRequestByType {
   products: IndexerServerProductsParams;
   referral_code: IndexerServerReferralCodeParams;
   rewards: IndexerServerRewardsParams;
+  sonic_points: IndexerServerSonicPointsParams;
+  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardParams;
+  staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsParams;
+  staking_v2_top_stakers: IndexerServerStakingV2TopStakersParams;
   subaccounts: IndexerServerListSubaccountsParams;
   taker_rewards: IndexerServerTakerRewardsParams;
   usdc_price: Record<string, never>;
+  vlp_snapshots: IndexerServerVlpSnapshotsParams;
   vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsParams;
-  leaderboard: IndexerServerLeaderboardParams;
-  leaderboard_rank: IndexerServerLeaderboardRankParams;
-  leaderboard_contests: IndexerServerLeaderboardContestsParams;
-  leaderboard_registration: IndexerServerLeaderboardRegistrationParams;
-  fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureParams;
-  staking_v2_top_stakers: IndexerServerStakingV2TopStakersParams;
-  staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsParams;
   vrtx_supply_snapshots: IndexerServerVrtxSupplySnapshotsParams;
-  foundation_token_incentives_snapshots: IndexerServerFoundationTokenIncentivesSnapshotsParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -555,31 +561,41 @@ export interface IndexerServerVrtxSupplySnapshotsResponse {
 }
 
 export interface IndexerServerFoundationTokenIncentivesSnapshotsResponse {
-  /** chainId -> IndexerServerFoundationTokenIncentivesSnapshot[]*/
+  /**
+   * Chain ID -> Snapshots
+   */
   snapshots: Record<number, IndexerServerFoundationTokenIncentivesSnapshot[]>;
+}
+
+export interface IndexerServerVlpSnapshotsResponse {
+  snapshots: IndexerServerVlpSnapshot[];
 }
 
 // Response
 export interface IndexerServerQueryResponseByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
-  foundation_rewards_merkle_proofs: IndexerServerClaimFoundationRewardsMerkleProofsResponse;
-  foundation_taker_rewards: IndexerServerFoundationTakerRewardsResponse;
   blast_points: IndexerServerBlastPointsResponse;
   blitz_points: IndexerServerBlitzPointsResponse;
   blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardResponse;
-  sonic_points: IndexerServerSonicPointsResponse;
-  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardResponse;
   candlesticks: IndexerServerCandlesticksResponse;
   edge_candlesticks: IndexerEdgeServerCandlesticksResponse;
+  edge_market_snapshots: IndexerEdgeServerMarketSnapshotsResponse;
   events: IndexerServerEventsResponse;
+  fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureResponse;
+  foundation_rewards_merkle_proofs: IndexerServerClaimFoundationRewardsMerkleProofsResponse;
+  foundation_taker_rewards: IndexerServerFoundationTakerRewardsResponse;
+  foundation_token_incentives_snapshots: IndexerServerFoundationTokenIncentivesSnapshotsResponse;
   funding_rate: IndexerServerFundingRateResponse;
   funding_rates: IndexerServerFundingRatesResponse;
   initial_drop_conditions: IndexerServerBlitzInitialDropConditionsResponse;
   interest_and_funding: IndexerServerInterestFundingResponse;
+  leaderboard: IndexerServerLeaderboardResponse;
+  leaderboard_contests: IndexerServerLeaderboardContestsResponse;
+  leaderboard_rank: IndexerServerLeaderboardRankResponse;
+  leaderboard_registration: IndexerServerLeaderboardRegistrationResponse;
   linked_signer_rate_limit: IndexerServerLinkedSignerResponse;
   maker_statistics: IndexerServerMakerStatisticsResponse;
   market_snapshots: IndexerServerMarketSnapshotsResponse;
-  edge_market_snapshots: IndexerEdgeServerMarketSnapshotsResponse;
   matches: IndexerServerMatchEventsResponse;
   oracle_price: IndexerServerOraclePricesResponse;
   orders: IndexerServerOrdersResponse;
@@ -589,17 +605,14 @@ export interface IndexerServerQueryResponseByType {
   products: IndexerServerProductsResponse;
   referral_code: IndexerServerReferralCodeResponse;
   rewards: IndexerServerRewardsResponse;
+  sonic_points: IndexerServerSonicPointsResponse;
+  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardResponse;
+  staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsResponse;
+  staking_v2_top_stakers: IndexerServerStakingV2TopStakersResponse;
   subaccounts: IndexerServerListSubaccountsResponse;
   taker_rewards: IndexerServerTakerRewardsResponse;
   usdc_price: IndexerServerUsdcPriceResponse;
+  vlp_snapshots: IndexerServerVlpSnapshotsResponse;
   vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsResponse;
-  leaderboard: IndexerServerLeaderboardResponse;
-  leaderboard_rank: IndexerServerLeaderboardRankResponse;
-  leaderboard_contests: IndexerServerLeaderboardContestsResponse;
-  leaderboard_registration: IndexerServerLeaderboardRegistrationResponse;
-  fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureResponse;
-  staking_v2_top_stakers: IndexerServerStakingV2TopStakersResponse;
-  staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsResponse;
   vrtx_supply_snapshots: IndexerServerVrtxSupplySnapshotsResponse;
-  foundation_token_incentives_snapshots: IndexerServerFoundationTokenIncentivesSnapshotsResponse;
 }
