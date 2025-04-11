@@ -13,7 +13,7 @@ import {
   TriggerClient,
   TriggerPlaceOrderParams,
 } from '@vertex-protocol/trigger-client';
-import { toFixedPoint, toX18 } from '@vertex-protocol/utils';
+import { addDecimals, toBigInt } from '@vertex-protocol/utils';
 import { getContract } from 'viem';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
@@ -53,7 +53,7 @@ async function fullSanity(context: RunContext) {
     client: walletClient,
   });
 
-  const depositAmount = toFixedPoint(10000, 6);
+  const depositAmount = toBigInt(addDecimals(10000, 6));
 
   const subaccountOwner = walletClient.account.address;
   const subaccountName = 'default';
@@ -83,7 +83,7 @@ async function fullSanity(context: RunContext) {
   const nonce = getTriggerOrderNonce();
 
   const shortStopOrder: EngineOrderParams & { nonce: string } = {
-    amount: toX18(-0.1),
+    amount: addDecimals(-0.1),
     expiration: getExpiration('fok'),
     nonce,
     price: 1000,
@@ -121,7 +121,7 @@ async function fullSanity(context: RunContext) {
 
   const longStopOrder: EngineOrderParams & { nonce: string } = {
     nonce: longStopNonce,
-    amount: toX18(0.01),
+    amount: addDecimals(0.01),
     expiration: getExpiration('fok'),
     price: 60000,
     subaccountName,

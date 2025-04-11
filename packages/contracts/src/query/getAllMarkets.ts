@@ -1,4 +1,4 @@
-import { fromX18, toBigDecimal } from '@vertex-protocol/utils';
+import { removeDecimals, toBigDecimal } from '@vertex-protocol/utils';
 import { MarketWithProduct, ProductEngineType, WithContracts } from '../common';
 import { mapContractPerpProduct, mapContractSpotProduct } from './utils';
 
@@ -20,7 +20,7 @@ export async function getAllMarkets({
       type: ProductEngineType.SPOT,
       product: mapContractSpotProduct(productInfo),
       minSize: toBigDecimal(productInfo.bookInfo.minSize),
-      priceIncrement: fromX18(productInfo.bookInfo.priceIncrementX18),
+      priceIncrement: removeDecimals(productInfo.bookInfo.priceIncrementX18),
       sizeIncrement: toBigDecimal(productInfo.bookInfo.sizeIncrement),
     });
   });
@@ -31,7 +31,7 @@ export async function getAllMarkets({
       type: ProductEngineType.PERP,
       product: mapContractPerpProduct(productInfo),
       minSize: toBigDecimal(productInfo.bookInfo.minSize),
-      priceIncrement: fromX18(productInfo.bookInfo.priceIncrementX18),
+      priceIncrement: removeDecimals(productInfo.bookInfo.priceIncrementX18),
       sizeIncrement: toBigDecimal(productInfo.bookInfo.sizeIncrement),
     });
   });

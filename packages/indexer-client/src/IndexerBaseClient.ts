@@ -12,10 +12,10 @@ import {
   WalletClientWithAccount,
 } from '@vertex-protocol/contracts';
 import {
-  fromX18,
   getValidatedHex,
   mapValues,
   nowInSeconds,
+  removeDecimals,
   toBigDecimal,
   toBigInt,
   toIntegerString,
@@ -373,7 +373,7 @@ export class IndexerBaseClient {
 
     return baseResponse.prices.map((price): IndexerOraclePrice => {
       return {
-        oraclePrice: fromX18(price.oracle_price_x18),
+        oraclePrice: removeDecimals(price.oracle_price_x18),
         updateTime: toBigDecimal(price.update_time),
         productId: price.product_id,
       };
@@ -641,7 +641,7 @@ export class IndexerBaseClient {
   async getQuotePrice(): Promise<GetIndexerQuotePriceResponse> {
     const baseResponse = await this.query('usdc_price', {});
     return {
-      price: fromX18(baseResponse.price_x18),
+      price: removeDecimals(baseResponse.price_x18),
     };
   }
 

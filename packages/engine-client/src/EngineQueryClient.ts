@@ -4,11 +4,11 @@ import {
   subaccountToHex,
 } from '@vertex-protocol/contracts';
 import {
-  fromX18,
+  addDecimals,
   mapValues,
+  removeDecimals,
   toBigDecimal,
   toIntegerString,
-  toX18,
 } from '@vertex-protocol/utils';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import { EngineBaseClient } from './EngineBaseClient';
@@ -271,7 +271,7 @@ export class EngineQueryClient extends EngineBaseClient {
       minDepositRates: mapValues(baseResponse.min_deposit_rates, (m) => {
         return {
           productId: m.product_id,
-          minDepositRate: fromX18(m.min_deposit_rate_x18),
+          minDepositRate: removeDecimals(m.min_deposit_rate_x18),
         };
       }),
     };
@@ -406,8 +406,8 @@ export class EngineQueryClient extends EngineBaseClient {
       orders: baseResponse.taker_fee_rates_x18.reduce(
         (acc, takerRateX18, currIndex) => {
           acc[currIndex] = {
-            taker: fromX18(takerRateX18),
-            maker: fromX18(baseResponse.maker_fee_rates_x18[currIndex]),
+            taker: removeDecimals(takerRateX18),
+            maker: removeDecimals(baseResponse.maker_fee_rates_x18[currIndex]),
           };
           return acc;
         },
@@ -477,7 +477,7 @@ export class EngineQueryClient extends EngineBaseClient {
   ): Promise<GetEngineMaxOrderSizeResponse> {
     const baseResponse = await this.query('max_order_size', {
       direction: params.side,
-      price_x18: toIntegerString(toX18(params.price)),
+      price_x18: toIntegerString(addDecimals(params.price)),
       product_id: params.productId,
       sender: subaccountToHex({
         subaccountOwner: params.subaccountOwner,
