@@ -1,4 +1,8 @@
-import { toIntegerString, toX18 } from '@vertex-protocol/utils';
+import {
+  addDecimals,
+  toBigDecimal,
+  toIntegerString,
+} from '@vertex-protocol/utils';
 import { subaccountToHex } from '../utils';
 import {
   EIP712BurnLpValues,
@@ -158,7 +162,7 @@ function getOrderValues(params: EIP712OrderParams): EIP712OrderValues {
       subaccountOwner: params.subaccountOwner,
       subaccountName: params.subaccountName,
     }),
-    priceX18: toIntegerString(toX18(params.price)),
+    priceX18: toIntegerString(addDecimals(toBigDecimal(params.price))),
     amount: toIntegerString(params.amount),
     expiration: toIntegerString(params.expiration),
     nonce: params.nonce,

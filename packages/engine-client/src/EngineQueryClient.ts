@@ -4,11 +4,11 @@ import {
   subaccountToHex,
 } from '@vertex-protocol/contracts';
 import {
+  addDecimals,
   fromX18,
   mapValues,
   toBigDecimal,
   toIntegerString,
-  toX18,
 } from '@vertex-protocol/utils';
 import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
 import { EngineBaseClient } from './EngineBaseClient';
@@ -477,7 +477,7 @@ export class EngineQueryClient extends EngineBaseClient {
   ): Promise<GetEngineMaxOrderSizeResponse> {
     const baseResponse = await this.query('max_order_size', {
       direction: params.side,
-      price_x18: toIntegerString(toX18(params.price)),
+      price_x18: toIntegerString(addDecimals(params.price)),
       product_id: params.productId,
       sender: subaccountToHex({
         subaccountOwner: params.subaccountOwner,

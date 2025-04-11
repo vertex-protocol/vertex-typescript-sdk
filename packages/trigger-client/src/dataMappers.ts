@@ -1,8 +1,8 @@
 import {
+  addDecimals,
   fromX18,
   toBigDecimal,
   toIntegerString,
-  toX18,
 } from '@vertex-protocol/utils';
 import {
   TriggerCriteria,
@@ -43,7 +43,9 @@ export function mapTriggerServerOrderStatus(
 export function mapTriggerCriteria(
   criteria: TriggerCriteria,
 ): TriggerServerTriggerCriteria {
-  const priceValue = toIntegerString(toX18(criteria.triggerPrice));
+  const priceValue = toIntegerString(
+    addDecimals(toBigDecimal(criteria.triggerPrice)),
+  );
   switch (criteria.type) {
     case 'oracle_price_above':
       return { price_above: priceValue };
