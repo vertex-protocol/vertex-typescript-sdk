@@ -42,6 +42,7 @@ import {
   mapIndexerStakingV2PoolSnapshot,
   mapIndexerStakingV2Staker,
   mapIndexerVrtxSupplySnapshot,
+  mapSnapshotsIntervalToServerParams,
 } from './dataMappers';
 import {
   GetIndexerBlastPointsParams,
@@ -669,13 +670,7 @@ export class IndexerBaseClient {
     params: GetIndexerMarketSnapshotsParams,
   ): Promise<GetIndexerMarketSnapshotsResponse> {
     const baseResponse = await this.query('market_snapshots', {
-      interval: {
-        granularity: params.granularity,
-        max_time: params.maxTimeInclusive
-          ? toIntegerString(params.maxTimeInclusive)
-          : undefined,
-        count: params.limit,
-      },
+      interval: mapSnapshotsIntervalToServerParams(params),
       product_ids: params.productIds,
     });
 
@@ -690,13 +685,7 @@ export class IndexerBaseClient {
     params: GetIndexerEdgeMarketSnapshotsParams,
   ): Promise<GetIndexerEdgeMarketSnapshotResponse> {
     const baseResponse = await this.query('edge_market_snapshots', {
-      interval: {
-        granularity: params.granularity,
-        max_time: params.maxTimeInclusive
-          ? toIntegerString(params.maxTimeInclusive)
-          : undefined,
-        count: params.limit,
-      },
+      interval: mapSnapshotsIntervalToServerParams(params),
     });
 
     return mapValues(baseResponse.snapshots, (snapshots) =>
@@ -1127,13 +1116,7 @@ export class IndexerBaseClient {
     params: GetIndexerStakingV2PoolSnapshotsParams,
   ): Promise<GetIndexerStakingV2PoolSnapshotsResponse> {
     const baseResponse = await this.query('staking_v2_pool_snapshots', {
-      interval: {
-        count: params.limit,
-        max_time: params.maxTimeInclusive
-          ? toIntegerString(params.maxTimeInclusive)
-          : undefined,
-        granularity: params.granularity,
-      },
+      interval: mapSnapshotsIntervalToServerParams(params),
     });
 
     return {
@@ -1143,13 +1126,7 @@ export class IndexerBaseClient {
 
   async getVrtxSupplySnapshots(params: GetIndexerVrtxSupplySnapshotsParams) {
     const baseResponse = await this.query('vrtx_supply_snapshots', {
-      interval: {
-        count: params.limit,
-        max_time: params.maxTimeInclusive
-          ? toIntegerString(params.maxTimeInclusive)
-          : undefined,
-        granularity: params.granularity,
-      },
+      interval: mapSnapshotsIntervalToServerParams(params),
     });
 
     return {
@@ -1163,13 +1140,7 @@ export class IndexerBaseClient {
     const baseResponse = await this.query(
       'foundation_token_incentives_snapshots',
       {
-        interval: {
-          count: params.limit,
-          max_time: params.maxTimeInclusive
-            ? toIntegerString(params.maxTimeInclusive)
-            : undefined,
-          granularity: params.granularity,
-        },
+        interval: mapSnapshotsIntervalToServerParams(params),
       },
     );
 
