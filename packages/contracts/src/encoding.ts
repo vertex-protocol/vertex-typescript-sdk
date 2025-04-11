@@ -1,4 +1,4 @@
-import { addDecimals, toBigDecimal, toBigInt } from '@vertex-protocol/utils';
+import { addDecimals, toBigInt } from '@vertex-protocol/utils';
 import { encodeAbiParameters, parseAbiParameters } from 'viem';
 import {
   EIP712WithdrawCollateralParams,
@@ -38,7 +38,7 @@ export function encodeSignedOrder(signed: SignedEIP712OrderParams) {
         [
           signed.order.subaccountOwner,
           signed.order.subaccountName,
-          toBigInt(addDecimals(toBigDecimal(signed.order.price))),
+          toBigInt(addDecimals(signed.order.price)),
           signed.order.amount,
           signed.order.expiration,
           signed.order.nonce,

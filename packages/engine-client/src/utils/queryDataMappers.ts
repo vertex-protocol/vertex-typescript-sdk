@@ -38,7 +38,7 @@ export function mapEngineServerTickLiquidity(
   tick: EngineServerPriceTickLiquidity,
 ): EnginePriceTickLiquidity {
   return {
-    price: removeDecimals(toBigDecimal(tick[0])),
+    price: removeDecimals(tick[0]),
     liquidity: toBigDecimal(tick[1]),
   };
 }
@@ -51,7 +51,7 @@ export function mapEngineServerOrder(
     digest: order.digest,
     expiration: toBigDecimal(order.expiration),
     nonce: order.nonce,
-    price: removeDecimals(toBigDecimal(order.price_x18)),
+    price: removeDecimals(order.price_x18),
     productId: order.product_id,
     subaccountOwner: subaccount.subaccountOwner,
     subaccountName: subaccount.subaccountName,
@@ -64,7 +64,7 @@ export function mapEngineServerOrder(
       amount: toIntegerString(order.amount),
       expiration: toIntegerString(order.expiration),
       nonce: order.nonce,
-      price: toIntegerString(removeDecimals(toBigDecimal(order.price_x18))),
+      price: toIntegerString(removeDecimals(order.price_x18)),
       subaccountOwner: subaccount.subaccountOwner,
       subaccountName: subaccount.subaccountName,
     },
@@ -80,9 +80,7 @@ export function mapEngineServerSpotProduct(
     type: ProductEngineType.SPOT,
     productId: product.product_id,
     minSize: toBigDecimal(product.book_info.min_size),
-    priceIncrement: removeDecimals(
-      toBigDecimal(product.book_info.price_increment_x18),
-    ),
+    priceIncrement: removeDecimals(product.book_info.price_increment_x18),
     sizeIncrement: toBigDecimal(product.book_info.size_increment),
     product: {
       productId: product.product_id,
@@ -95,30 +93,20 @@ export function mapEngineServerSpotProduct(
         product.state.total_deposits_normalized,
         product.state.cumulative_deposits_multiplier_x18,
       ),
-      oraclePrice: removeDecimals(toBigDecimal(product.oracle_price_x18)),
-      interestFloor: removeDecimals(
-        toBigDecimal(product.config.interest_floor_x18),
-      ),
+      oraclePrice: removeDecimals(product.oracle_price_x18),
+      interestFloor: removeDecimals(product.config.interest_floor_x18),
       interestInflectionUtil: removeDecimals(
-        toBigDecimal(product.config.interest_inflection_util_x18),
+        product.config.interest_inflection_util_x18,
       ),
-      interestLargeCap: removeDecimals(
-        toBigDecimal(product.config.interest_large_cap_x18),
-      ),
-      interestSmallCap: removeDecimals(
-        toBigDecimal(product.config.interest_small_cap_x18),
-      ),
-      longWeightInitial: removeDecimals(
-        toBigDecimal(product.risk.long_weight_initial_x18),
-      ),
+      interestLargeCap: removeDecimals(product.config.interest_large_cap_x18),
+      interestSmallCap: removeDecimals(product.config.interest_small_cap_x18),
+      longWeightInitial: removeDecimals(product.risk.long_weight_initial_x18),
       longWeightMaintenance: removeDecimals(
-        toBigDecimal(product.risk.long_weight_maintenance_x18),
+        product.risk.long_weight_maintenance_x18,
       ),
-      shortWeightInitial: removeDecimals(
-        toBigDecimal(product.risk.short_weight_initial_x18),
-      ),
+      shortWeightInitial: removeDecimals(product.risk.short_weight_initial_x18),
       shortWeightMaintenance: removeDecimals(
-        toBigDecimal(product.risk.short_weight_maintenance_x18),
+        product.risk.short_weight_maintenance_x18,
       ),
       tokenAddr: product.config.token,
       totalLpBaseAmount: toBigDecimal(product.lp_state.base.amount),
@@ -135,35 +123,29 @@ export function mapEngineServerPerpProduct(
     type: ProductEngineType.PERP,
     productId: product.product_id,
     minSize: toBigDecimal(product.book_info.min_size),
-    priceIncrement: removeDecimals(
-      toBigDecimal(product.book_info.price_increment_x18),
-    ),
+    priceIncrement: removeDecimals(product.book_info.price_increment_x18),
     sizeIncrement: toBigDecimal(product.book_info.size_increment),
     product: {
       productId: product.product_id,
       type: ProductEngineType.PERP,
-      oraclePrice: removeDecimals(toBigDecimal(product.oracle_price_x18)),
-      longWeightInitial: removeDecimals(
-        toBigDecimal(product.risk.long_weight_initial_x18),
-      ),
+      oraclePrice: removeDecimals(product.oracle_price_x18),
+      longWeightInitial: removeDecimals(product.risk.long_weight_initial_x18),
       longWeightMaintenance: removeDecimals(
-        toBigDecimal(product.risk.long_weight_maintenance_x18),
+        product.risk.long_weight_maintenance_x18,
       ),
-      shortWeightInitial: removeDecimals(
-        toBigDecimal(product.risk.short_weight_initial_x18),
-      ),
+      shortWeightInitial: removeDecimals(product.risk.short_weight_initial_x18),
       shortWeightMaintenance: removeDecimals(
-        toBigDecimal(product.risk.short_weight_maintenance_x18),
+        product.risk.short_weight_maintenance_x18,
       ),
       openInterest: toBigDecimal(product.state.open_interest),
       totalLpBaseAmount: toBigDecimal(product.lp_state.base),
       totalLpQuoteAmount: toBigDecimal(product.lp_state.quote),
       totalLpSupply: toBigDecimal(product.lp_state.supply),
       cumulativeFundingLong: removeDecimals(
-        toBigDecimal(product.state.cumulative_funding_long_x18),
+        product.state.cumulative_funding_long_x18,
       ),
       cumulativeFundingShort: removeDecimals(
-        toBigDecimal(product.state.cumulative_funding_short_x18),
+        product.state.cumulative_funding_short_x18,
       ),
     },
   };
@@ -304,26 +286,18 @@ export function mapEngineServerSymbol(
     type: mapEngineServerProductType(engineServerSymbol.type),
     productId: engineServerSymbol.product_id,
     symbol: engineServerSymbol.symbol,
-    priceIncrement: removeDecimals(
-      toBigDecimal(engineServerSymbol.price_increment_x18),
-    ),
+    priceIncrement: removeDecimals(engineServerSymbol.price_increment_x18),
     sizeIncrement: toBigDecimal(engineServerSymbol.size_increment),
     minSize: toBigDecimal(engineServerSymbol.min_size),
-    minDepth: removeDecimals(toBigDecimal(engineServerSymbol.min_depth_x18)),
-    maxSpreadRate: removeDecimals(
-      toBigDecimal(engineServerSymbol.max_spread_rate_x18),
-    ),
-    makerFeeRate: removeDecimals(
-      toBigDecimal(engineServerSymbol.maker_fee_rate_x18),
-    ),
-    takerFeeRate: removeDecimals(
-      toBigDecimal(engineServerSymbol.taker_fee_rate_x18),
-    ),
+    minDepth: removeDecimals(engineServerSymbol.min_depth_x18),
+    maxSpreadRate: removeDecimals(engineServerSymbol.max_spread_rate_x18),
+    makerFeeRate: removeDecimals(engineServerSymbol.maker_fee_rate_x18),
+    takerFeeRate: removeDecimals(engineServerSymbol.taker_fee_rate_x18),
     longWeightInitial: removeDecimals(
-      toBigDecimal(engineServerSymbol.long_weight_initial_x18),
+      engineServerSymbol.long_weight_initial_x18,
     ),
     longWeightMaintenance: removeDecimals(
-      toBigDecimal(engineServerSymbol.long_weight_maintenance_x18),
+      engineServerSymbol.long_weight_maintenance_x18,
     ),
   };
 }
@@ -332,8 +306,8 @@ export function mapEngineMarketPrice(
   baseResponse: EngineServerMarketPrice,
 ): EngineMarketPrice {
   return {
-    ask: removeDecimals(toBigDecimal(baseResponse.ask_x18)),
-    bid: removeDecimals(toBigDecimal(baseResponse.bid_x18)),
+    ask: removeDecimals(baseResponse.ask_x18),
+    bid: removeDecimals(baseResponse.bid_x18),
     productId: baseResponse.product_id,
   };
 }

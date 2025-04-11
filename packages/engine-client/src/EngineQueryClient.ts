@@ -271,7 +271,7 @@ export class EngineQueryClient extends EngineBaseClient {
       minDepositRates: mapValues(baseResponse.min_deposit_rates, (m) => {
         return {
           productId: m.product_id,
-          minDepositRate: removeDecimals(toBigDecimal(m.min_deposit_rate_x18)),
+          minDepositRate: removeDecimals(m.min_deposit_rate_x18),
         };
       }),
     };
@@ -406,10 +406,8 @@ export class EngineQueryClient extends EngineBaseClient {
       orders: baseResponse.taker_fee_rates_x18.reduce(
         (acc, takerRateX18, currIndex) => {
           acc[currIndex] = {
-            taker: removeDecimals(toBigDecimal(takerRateX18)),
-            maker: removeDecimals(
-              toBigDecimal(baseResponse.maker_fee_rates_x18[currIndex]),
-            ),
+            taker: removeDecimals(takerRateX18),
+            maker: removeDecimals(baseResponse.maker_fee_rates_x18[currIndex]),
           };
           return acc;
         },

@@ -372,7 +372,7 @@ export class IndexerBaseClient {
 
     return baseResponse.prices.map((price): IndexerOraclePrice => {
       return {
-        oraclePrice: removeDecimals(toBigDecimal(price.oracle_price_x18)),
+        oraclePrice: removeDecimals(price.oracle_price_x18),
         updateTime: toBigDecimal(price.update_time),
         productId: price.product_id,
       };
@@ -640,7 +640,7 @@ export class IndexerBaseClient {
   async getQuotePrice(): Promise<GetIndexerQuotePriceResponse> {
     const baseResponse = await this.query('usdc_price', {});
     return {
-      price: removeDecimals(toBigDecimal(baseResponse.price_x18)),
+      price: removeDecimals(baseResponse.price_x18),
     };
   }
 

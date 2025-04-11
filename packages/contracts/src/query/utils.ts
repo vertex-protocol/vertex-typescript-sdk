@@ -21,17 +21,11 @@ export function mapContractSpotProduct(
     productId: Number(product.productId),
     type: ProductEngineType.SPOT,
     tokenAddr: product.config.token,
-    interestSmallCap: removeDecimals(
-      toBigDecimal(product.config.interestSmallCapX18),
-    ),
-    interestLargeCap: removeDecimals(
-      toBigDecimal(product.config.interestLargeCapX18),
-    ),
-    interestFloor: removeDecimals(
-      toBigDecimal(product.config.interestFloorX18),
-    ),
+    interestSmallCap: removeDecimals(product.config.interestSmallCapX18),
+    interestLargeCap: removeDecimals(product.config.interestLargeCapX18),
+    interestFloor: removeDecimals(product.config.interestFloorX18),
     interestInflectionUtil: removeDecimals(
-      toBigDecimal(product.config.interestInflectionUtilX18),
+      product.config.interestInflectionUtilX18,
     ),
     totalBorrowed: calcTotalBorrowed(
       product.state.totalBorrowsNormalized,
@@ -41,19 +35,15 @@ export function mapContractSpotProduct(
       product.state.totalDepositsNormalized,
       product.state.cumulativeDepositsMultiplierX18,
     ),
-    shortWeightInitial: removeDecimals(
-      toBigDecimal(product.risk.shortWeightInitialX18),
-    ),
+    shortWeightInitial: removeDecimals(product.risk.shortWeightInitialX18),
     shortWeightMaintenance: removeDecimals(
-      toBigDecimal(product.risk.shortWeightMaintenanceX18),
+      product.risk.shortWeightMaintenanceX18,
     ),
-    longWeightInitial: removeDecimals(
-      toBigDecimal(product.risk.longWeightInitialX18),
-    ),
+    longWeightInitial: removeDecimals(product.risk.longWeightInitialX18),
     longWeightMaintenance: removeDecimals(
-      toBigDecimal(product.risk.longWeightMaintenanceX18),
+      product.risk.longWeightMaintenanceX18,
     ),
-    oraclePrice: removeDecimals(toBigDecimal(product.oraclePriceX18)),
+    oraclePrice: removeDecimals(product.oraclePriceX18),
     totalLpBaseAmount: toBigDecimal(product.lpState.base.amount),
     totalLpQuoteAmount: toBigDecimal(product.lpState.quote.amount),
     totalLpSupply: toBigDecimal(product.lpState.supply),
@@ -66,25 +56,21 @@ export function mapContractPerpProduct(
   return {
     productId: Number(product.productId),
     type: ProductEngineType.PERP,
-    shortWeightInitial: removeDecimals(
-      toBigDecimal(product.risk.shortWeightInitialX18),
-    ),
+    shortWeightInitial: removeDecimals(product.risk.shortWeightInitialX18),
     shortWeightMaintenance: removeDecimals(
-      toBigDecimal(product.risk.shortWeightMaintenanceX18),
+      product.risk.shortWeightMaintenanceX18,
     ),
-    longWeightInitial: removeDecimals(
-      toBigDecimal(product.risk.longWeightInitialX18),
-    ),
+    longWeightInitial: removeDecimals(product.risk.longWeightInitialX18),
     longWeightMaintenance: removeDecimals(
-      toBigDecimal(product.risk.longWeightMaintenanceX18),
+      product.risk.longWeightMaintenanceX18,
     ),
     cumulativeFundingLong: removeDecimals(
-      toBigDecimal(product.state.cumulativeFundingLongX18),
+      product.state.cumulativeFundingLongX18,
     ),
     cumulativeFundingShort: removeDecimals(
-      toBigDecimal(product.state.cumulativeFundingShortX18),
+      product.state.cumulativeFundingShortX18,
     ),
-    oraclePrice: removeDecimals(toBigDecimal(product.oraclePriceX18)),
+    oraclePrice: removeDecimals(product.oraclePriceX18),
     openInterest: toBigDecimal(product.state.openInterest),
     totalLpBaseAmount: toBigDecimal(product.lpState.base),
     totalLpQuoteAmount: toBigDecimal(product.lpState.quote),

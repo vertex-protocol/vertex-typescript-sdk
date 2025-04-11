@@ -43,9 +43,7 @@ export function mapTriggerServerOrderStatus(
 export function mapTriggerCriteria(
   criteria: TriggerCriteria,
 ): TriggerServerTriggerCriteria {
-  const priceValue = toIntegerString(
-    addDecimals(toBigDecimal(criteria.triggerPrice)),
-  );
+  const priceValue = toIntegerString(addDecimals(criteria.triggerPrice));
   switch (criteria.type) {
     case 'oracle_price_above':
       return { price_above: priceValue };
@@ -64,24 +62,24 @@ export function mapServerTriggerCriteria(
   if ('price_above' in criteria) {
     return {
       type: 'oracle_price_above',
-      triggerPrice: removeDecimals(toBigDecimal(criteria.price_above)),
+      triggerPrice: removeDecimals(criteria.price_above),
     };
   }
   if ('price_below' in criteria) {
     return {
       type: 'oracle_price_below',
-      triggerPrice: removeDecimals(toBigDecimal(criteria.price_below)),
+      triggerPrice: removeDecimals(criteria.price_below),
     };
   }
   if ('last_price_above' in criteria) {
     return {
       type: 'last_price_above',
-      triggerPrice: removeDecimals(toBigDecimal(criteria.last_price_above)),
+      triggerPrice: removeDecimals(criteria.last_price_above),
     };
   }
   return {
     type: 'last_price_below',
-    triggerPrice: removeDecimals(toBigDecimal(criteria.last_price_below)),
+    triggerPrice: removeDecimals(criteria.last_price_below),
   };
 }
 
@@ -93,7 +91,7 @@ export function mapServerOrderInfo(
     amount: toBigDecimal(serverOrder.order.amount),
     expiration: toBigDecimal(serverOrder.order.expiration),
     nonce: serverOrder.order.nonce,
-    price: removeDecimals(toBigDecimal(serverOrder.order.priceX18)),
+    price: removeDecimals(serverOrder.order.priceX18),
     digest: serverOrder.digest,
     productId: serverOrder.product_id,
     triggerCriteria: mapServerTriggerCriteria(serverOrder.trigger),

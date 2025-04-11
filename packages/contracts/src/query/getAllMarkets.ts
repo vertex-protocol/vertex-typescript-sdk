@@ -20,9 +20,7 @@ export async function getAllMarkets({
       type: ProductEngineType.SPOT,
       product: mapContractSpotProduct(productInfo),
       minSize: toBigDecimal(productInfo.bookInfo.minSize),
-      priceIncrement: removeDecimals(
-        toBigDecimal(productInfo.bookInfo.priceIncrementX18),
-      ),
+      priceIncrement: removeDecimals(productInfo.bookInfo.priceIncrementX18),
       sizeIncrement: toBigDecimal(productInfo.bookInfo.sizeIncrement),
     });
   });
@@ -33,9 +31,7 @@ export async function getAllMarkets({
       type: ProductEngineType.PERP,
       product: mapContractPerpProduct(productInfo),
       minSize: toBigDecimal(productInfo.bookInfo.minSize),
-      priceIncrement: removeDecimals(
-        toBigDecimal(productInfo.bookInfo.priceIncrementX18),
-      ),
+      priceIncrement: removeDecimals(productInfo.bookInfo.priceIncrementX18),
       sizeIncrement: toBigDecimal(productInfo.bookInfo.sizeIncrement),
     });
   });
