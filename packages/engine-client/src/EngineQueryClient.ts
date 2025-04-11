@@ -5,8 +5,8 @@ import {
 } from '@vertex-protocol/contracts';
 import {
   addDecimals,
-  fromX18,
   mapValues,
+  removeDecimals,
   toBigDecimal,
   toIntegerString,
 } from '@vertex-protocol/utils';
@@ -271,7 +271,7 @@ export class EngineQueryClient extends EngineBaseClient {
       minDepositRates: mapValues(baseResponse.min_deposit_rates, (m) => {
         return {
           productId: m.product_id,
-          minDepositRate: fromX18(m.min_deposit_rate_x18),
+          minDepositRate: removeDecimals(toBigDecimal(m.min_deposit_rate_x18)),
         };
       }),
     };
@@ -406,8 +406,10 @@ export class EngineQueryClient extends EngineBaseClient {
       orders: baseResponse.taker_fee_rates_x18.reduce(
         (acc, takerRateX18, currIndex) => {
           acc[currIndex] = {
-            taker: fromX18(takerRateX18),
-            maker: fromX18(baseResponse.maker_fee_rates_x18[currIndex]),
+            taker: removeDecimals(toBigDecimal(takerRateX18)),
+            maker: removeDecimals(
+              toBigDecimal(baseResponse.maker_fee_rates_x18[currIndex]),
+            ),
           };
           return acc;
         },

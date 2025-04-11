@@ -1,4 +1,4 @@
-import { BigDecimal, BigDecimalish, toBigDecimal } from './bigDecimal';
+import { BigDecimal, toBigDecimal } from './bigDecimal';
 
 // All Vertex balances have 18 decimals. Ex. 1e18 = 1.0
 export const VERTEX_PRODUCT_DECIMALS = 18;
@@ -49,13 +49,4 @@ export function removeDecimals<T extends number | BigDecimal | undefined>(
   };
 
   return getResult() as T;
-}
-
-/**
- * Converts X18 fixed point representation to a floating point value
- *
- * @param val
- */
-export function fromX18(val: BigDecimalish): BigDecimal {
-  return removeDecimals(toBigDecimal(val), 18);
 }
