@@ -69,6 +69,18 @@ import {
   IndexerVrtxSupplySnapshot,
 } from './types';
 
+export function mapSnapshotsIntervalToServerParams(
+  params: IndexerSnapshotsIntervalParams,
+): IndexerServerSnapshotsInterval {
+  return {
+    count: params.limit,
+    max_time: params.maxTimeInclusive
+      ? toIntegerString(params.maxTimeInclusive)
+      : undefined,
+    granularity: params.granularity,
+  };
+}
+
 export function mapIndexerServerProduct(product: IndexerServerProduct): Market {
   if ('spot' in product) {
     return mapEngineServerSpotProduct(product.spot);
@@ -93,18 +105,6 @@ export function mapIndexerServerBalance(
     productId: balance.perp.product_id,
     type: ProductEngineType.PERP,
     vQuoteBalance: toBigDecimal(balance.perp.balance.v_quote_balance),
-  };
-}
-
-export function mapSnapshotsIntervalToServerParams(
-  params: IndexerSnapshotsIntervalParams,
-): IndexerServerSnapshotsInterval {
-  return {
-    count: params.limit,
-    max_time: params.maxTimeInclusive
-      ? toIntegerString(params.maxTimeInclusive)
-      : undefined,
-    granularity: params.granularity,
   };
 }
 
