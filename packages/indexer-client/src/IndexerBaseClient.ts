@@ -41,6 +41,7 @@ import {
   mapIndexerServerProduct,
   mapIndexerStakingV2PoolSnapshot,
   mapIndexerStakingV2Staker,
+  mapIndexerVlpSnapshot,
   mapIndexerVrtxSupplySnapshot,
   mapSnapshotsIntervalToServerParams,
 } from './dataMappers';
@@ -70,6 +71,7 @@ import {
   GetIndexerFoundationTakerRewardsParams,
   GetIndexerFoundationTakerRewardsResponse,
   GetIndexerFoundationTokenIncentivesSnapshotsParams,
+  GetIndexerFoundationTokenIncentivesSnapshotsResponse,
   GetIndexerFundingRateParams,
   GetIndexerFundingRateResponse,
   GetIndexerInterestFundingPaymentsParams,
@@ -121,7 +123,10 @@ import {
   GetIndexerStakingV2TopStakersResponse,
   GetIndexerTakerRewardsParams,
   GetIndexerTakerRewardsResponse,
+  GetIndexerVlpSnapshotsParams,
+  GetIndexerVlpSnapshotsResponse,
   GetIndexerVrtxSupplySnapshotsParams,
+  GetIndexerVrtxSupplySnapshotsResponse,
   GetIndexerVrtxTokenInfoParams,
   GetIndexerVrtxTokenInfoResponse,
   IndexerEventWithTx,
@@ -1125,7 +1130,9 @@ export class IndexerBaseClient {
     };
   }
 
-  async getVrtxSupplySnapshots(params: GetIndexerVrtxSupplySnapshotsParams) {
+  async getVrtxSupplySnapshots(
+    params: GetIndexerVrtxSupplySnapshotsParams,
+  ): Promise<GetIndexerVrtxSupplySnapshotsResponse> {
     const baseResponse = await this.query('vrtx_supply_snapshots', {
       interval: mapSnapshotsIntervalToServerParams(params),
     });
@@ -1137,7 +1144,7 @@ export class IndexerBaseClient {
 
   async getFoundationTokenIncentivesSnapshots(
     params: GetIndexerFoundationTokenIncentivesSnapshotsParams,
-  ) {
+  ): Promise<GetIndexerFoundationTokenIncentivesSnapshotsResponse> {
     const baseResponse = await this.query(
       'foundation_token_incentives_snapshots',
       {
@@ -1149,6 +1156,24 @@ export class IndexerBaseClient {
       snapshots: mapValues(baseResponse.snapshots, (snapshots) =>
         snapshots.map(mapIndexerFoundationTokenIncentivesSnapshot),
       ),
+    };
+  }
+
+  async getVlpSnapshots(
+    params: GetIndexerVlpSnapshotsParams,
+  ): Promise<GetIndexerVlpSnapshotsResponse> {
+    const baseResponse = await this.query('vlp_snapshots', {
+      interval: {
+        count: params.limit,
+        max_time: params.maxTimeInclusive
+          ? toIntegerString(params.maxTimeInclusive)
+          : undefined,
+        granularity: params.granularity,
+      },
+    });
+
+    return {
+      snapshots: baseResponse.snapshots.map(mapIndexerVlpSnapshot),
     };
   }
 
