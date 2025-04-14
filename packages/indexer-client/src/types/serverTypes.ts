@@ -170,6 +170,7 @@ export interface IndexerServerInterestFundingParams {
   product_ids: number[];
   // If not given, defaults to latest
   max_idx?: string;
+  max_time?: number;
   limit: number;
 }
 
