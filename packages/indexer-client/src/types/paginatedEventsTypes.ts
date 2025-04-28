@@ -213,11 +213,9 @@ export type GetIndexerSubaccountSettlementEventsResponse =
  * Interest / Funding
  */
 
-export type GetIndexerSubaccountInterestFundingPaymentsParams = Omit<
-  BaseSubaccountPaginationParams,
-  'maxTimestampInclusive'
-> &
-  Pick<GetIndexerInterestFundingPaymentsParams, 'productIds' | 'startCursor'>;
+export type GetIndexerSubaccountInterestFundingPaymentsParams =
+  BaseSubaccountPaginationParams &
+    Pick<GetIndexerInterestFundingPaymentsParams, 'productIds' | 'startCursor'>;
 
 export interface GetIndexerPaginatedInterestFundingPaymentsResponse
   extends GetIndexerInterestFundingPaymentsResponse {

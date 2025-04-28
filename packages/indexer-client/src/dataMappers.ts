@@ -16,6 +16,7 @@ import {
   mapValues,
   removeDecimals,
   toBigDecimal,
+  toIntegerString,
 } from '@vertex-protocol/utils';
 import {
   Candlestick,
@@ -54,17 +55,33 @@ import {
   IndexerServerProduct,
   IndexerServerProductPayment,
   IndexerServerRewardsEpoch,
+  IndexerServerSnapshotsInterval,
   IndexerServerStakingV2PoolSnapshot,
   IndexerServerStakingV2Staker,
   IndexerServerTx,
+  IndexerServerVlpSnapshot,
   IndexerServerVrtxSupplySnapshot,
+  IndexerSnapshotsIntervalParams,
   IndexerSpotBalance,
   IndexerStakingV2PoolSnapshot,
   IndexerStakingV2Staker,
   IndexerSubaccountFoundationTakerRewardsForProduct,
   IndexerSubaccountRewardsForProduct,
+  IndexerVlpSnapshot,
   IndexerVrtxSupplySnapshot,
 } from './types';
+
+export function mapSnapshotsIntervalToServerParams(
+  params: IndexerSnapshotsIntervalParams,
+): IndexerServerSnapshotsInterval {
+  return {
+    count: params.limit,
+    max_time: params.maxTimeInclusive
+      ? toIntegerString(params.maxTimeInclusive)
+      : undefined,
+    granularity: params.granularity,
+  };
+}
 
 export function mapIndexerServerProduct(product: IndexerServerProduct): Market {
   if ('spot' in product) {
@@ -478,5 +495,22 @@ export function mapIndexerFoundationTokenIncentivesSnapshot(
       snapshot.foundation_token_oracle_price,
     ),
     foundationTokenProductId: snapshot.foundation_token_product_id,
+  };
+}
+
+export function mapIndexerVlpSnapshot(
+  snapshot: IndexerServerVlpSnapshot,
+): IndexerVlpSnapshot {
+  return {
+    submissionIndex: snapshot.submission_idx,
+    timestamp: toBigDecimal(snapshot.timestamp),
+    cumulativeBurnAmountUsdc: toBigDecimal(snapshot.cumulative_burn_usdc),
+    cumulativeMintAmountUsdc: toBigDecimal(snapshot.cumulative_mint_usdc),
+    cumulativePnl: toBigDecimal(snapshot.cumulative_pnl),
+    cumulativeTrades: toBigDecimal(snapshot.cumulative_trades),
+    cumulativeVolume: toBigDecimal(snapshot.cumulative_volume),
+    depositors: toBigDecimal(snapshot.depositors),
+    oraclePrice: fromX18(snapshot.oracle_price_x18),
+    tvl: toBigDecimal(snapshot.tvl),
   };
 }

@@ -454,6 +454,7 @@ export interface GetIndexerLinkedSignerResponse {
 export interface GetIndexerInterestFundingPaymentsParams {
   subaccount: Subaccount;
   productIds: number[];
+  maxTimestampInclusive?: number;
   limit: number;
   // Max submission index, inclusive
   startCursor?: string;
@@ -575,8 +576,9 @@ export type GetIndexerClaimVrtxMerkleProofsParams =
 export type GetIndexerClaimVrtxMerkleProofsResponse = IndexerMerkleProof[];
 
 /**
- * Arb Rewards
+ * Foundation rewards
  */
+
 export interface GetIndexerFoundationTakerRewardsParams {
   address: string;
 }
@@ -769,6 +771,10 @@ export interface GetIndexerMakerStatisticsResponse {
   makers: IndexerMaker[];
 }
 
+/**
+ * Leaderboards
+ */
+
 export interface GetIndexerLeaderboardParams {
   contestId: number;
   rankType: IndexerLeaderboardRankType;
@@ -883,7 +889,6 @@ export interface GetIndexerVrtxTokenInfoParams {
 /**
  * Represents the total or circulating supply of the VRTX token as a float number.
  *
- * @typedef {number} GetIndexerVrtxTokenInfoResponse
  * @remarks This value does not include token decimals. It is a base 10 number.
  *          For instance, 10 VRTX will be represented as 10.0, not 10*10^18.
  */
@@ -898,6 +903,10 @@ export interface GetIndexerFastWithdrawalSignatureResponse {
   txBytes: Hex;
   signatures: Hex[];
 }
+
+/**
+ * Staking
+ */
 
 export interface IndexerStakingV2PoolSnapshot {
   timestamp: BigDecimal;
@@ -927,6 +936,10 @@ export interface GetIndexerStakingV2TopStakersParams {
 export interface GetIndexerStakingV2TopStakersResponse {
   stakers: IndexerStakingV2Staker[];
 }
+
+/**
+ * VRTX Supply / incentives for stats dashboard
+ */
 
 export type GetIndexerVrtxSupplySnapshotsParams =
   IndexerSnapshotsIntervalParams;
@@ -964,4 +977,35 @@ export interface IndexerFoundationTokenIncentivesSnapshot {
   foundationTokenOraclePrice: BigDecimal;
   /** Foundation token product. */
   foundationTokenProductId: number;
+}
+
+export interface GetIndexerFoundationTokenIncentivesSnapshotsResponse {
+  /**
+   * Chain ID -> Snapshots
+   */
+  snapshots: Record<number, IndexerFoundationTokenIncentivesSnapshot[]>;
+}
+
+/**
+ * VLP
+ */
+
+export type GetIndexerVlpSnapshotsParams = IndexerSnapshotsIntervalParams;
+
+export interface IndexerVlpSnapshot {
+  submissionIndex: string;
+  timestamp: BigDecimal;
+  // Total volume traded by the VLP, in terms of the primary quote
+  cumulativeVolume: BigDecimal;
+  cumulativeTrades: BigDecimal;
+  cumulativeMintAmountUsdc: BigDecimal;
+  cumulativeBurnAmountUsdc: BigDecimal;
+  cumulativePnl: BigDecimal;
+  tvl: BigDecimal;
+  oraclePrice: BigDecimal;
+  depositors: BigDecimal;
+}
+
+export interface GetIndexerVlpSnapshotsResponse {
+  snapshots: IndexerVlpSnapshot[];
 }

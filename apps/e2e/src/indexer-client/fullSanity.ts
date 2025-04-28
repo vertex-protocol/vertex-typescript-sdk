@@ -378,6 +378,14 @@ async function fullSanity(context: RunContext) {
 
   prettyPrint('Fast Withdrawal Signature', fastWithdrawalSignature);
 
+  const vlpSnapshots = await client.getVlpSnapshots({
+    maxTimeInclusive: nowInSeconds(),
+    limit: 2,
+    granularity: TimeInSeconds.DAY,
+  });
+
+  prettyPrint('VLP snapshots', vlpSnapshots);
+
   try {
     const updateLeaderboardRegistrationResult =
       await client.updateLeaderboardRegistration({
