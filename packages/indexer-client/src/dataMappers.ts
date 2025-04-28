@@ -510,7 +510,7 @@ export function mapIndexerVlpSnapshot(
     cumulativeTrades: toBigDecimal(snapshot.cumulative_trades),
     cumulativeVolume: toBigDecimal(snapshot.cumulative_volume),
     depositors: toBigDecimal(snapshot.depositors),
-    oraclePrice: fromX18(snapshot.oracle_price_x18),
+    oraclePrice: removeDecimals(snapshot.oracle_price_x18),
     tvl: toBigDecimal(snapshot.tvl),
   };
 }

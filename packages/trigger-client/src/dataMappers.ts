@@ -91,7 +91,7 @@ export function mapServerOrderInfo(
     amount: toBigDecimal(serverOrder.order.amount),
     expiration: toBigDecimal(serverOrder.order.expiration),
     nonce: serverOrder.order.nonce,
-    price: removeDecimals(serverOrder.order.priceX18),
+    price: removeDecimals(toBigDecimal(serverOrder.order.priceX18)),
     digest: serverOrder.digest,
     productId: serverOrder.product_id,
     triggerCriteria: mapServerTriggerCriteria(serverOrder.trigger),
