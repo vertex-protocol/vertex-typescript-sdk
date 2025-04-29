@@ -19,9 +19,10 @@ import SeiMainnetCoreDeployment from './deployments/core/deployment.seiMainnet.j
 import SeiTestnetCoreDeployment from './deployments/core/deployment.seiTestnet.json';
 import SonicMainnetCoreDeployment from './deployments/core/deployment.sonicMainnet.json';
 import SonicTestnetCoreDeployment from './deployments/core/deployment.sonicTestnet.json';
+import XrplTestnetCoreDeployment from './deployments/core/deployment.xrplTestnet.json';
+
 import AbstractMainnetLbaDeployment from './deployments/vrtx/deployment.abstractMainnet.json';
 import AbstractTestnetLbaDeployment from './deployments/vrtx/deployment.abstractTestnet.json';
-
 import ArbitrumOneLbaDeployment from './deployments/vrtx/deployment.arbitrumOne.json';
 import ArbitrumSepoliaLbaDeployment from './deployments/vrtx/deployment.arbitrumSepolia.json';
 import AvaxMainnetLbaDeployment from './deployments/vrtx/deployment.avaxMainnet.json';
@@ -39,6 +40,7 @@ import SeiMainnetLbaDeployment from './deployments/vrtx/deployment.seiMainnet.js
 import SeiTestnetLbaDeployment from './deployments/vrtx/deployment.seiTestnet.json';
 import SonicMainnetLbaDeployment from './deployments/vrtx/deployment.sonicMainnet.json';
 import SonicTestnetLbaDeployment from './deployments/vrtx/deployment.sonicTestnet.json';
+import XrplTestnetLbaDeployment from './deployments/vrtx/deployment.xrplTestnet.json';
 
 import { ChainEnv } from './types';
 import { VertexContractName } from './vertexAbis';
@@ -122,6 +124,10 @@ export const VERTEX_DEPLOYMENTS: Record<ChainEnv, VertexDeploymentAddresses> = {
   avax: validateDeployment({
     ...AvaxMainnetLbaDeployment,
     ...AvaxMainnetCoreDeployment,
+  }),
+  xrplTestnet: validateDeployment({
+    ...XrplTestnetLbaDeployment,
+    ...XrplTestnetCoreDeployment,
   }),
   local: validateDeployment({
     ...LocalLbaDeployment,

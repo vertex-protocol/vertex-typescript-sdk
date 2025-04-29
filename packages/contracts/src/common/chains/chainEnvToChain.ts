@@ -18,6 +18,7 @@ import {
   sei,
   seiTestnet,
   sonic,
+  xrplevmTestnet,
 } from 'viem/chains';
 import { ChainEnv } from '../types';
 import { sonicTestnet } from './sonicTestnet';
@@ -42,6 +43,7 @@ export const CHAIN_ENV_TO_CHAIN = {
   abstract: abstract,
   avaxTestnet: avalancheFuji,
   avax: avalanche,
+  xrplTestnet: xrplevmTestnet,
 } as const satisfies Record<ChainEnv, Chain>;
 
 export const CHAIN_ID_TO_CHAIN_ENV = Object.fromEntries(

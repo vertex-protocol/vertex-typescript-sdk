@@ -20,4 +20,5 @@ export const INDEXER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   bera: 'https://archive.bera-prod.vertexprotocol.com/v1',
   avaxTestnet: 'https://archive.avax-test.vertexprotocol.com/v1',
   avax: 'https://archive.avax-prod.vertexprotocol.com/v1',
+  xrplTestnet: 'https://archive.xrpl-test.vertexprotocol.com/v1',
 };
