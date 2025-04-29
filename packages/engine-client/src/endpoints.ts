@@ -20,6 +20,7 @@ export const ENGINE_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   bera: 'https://gateway.bera-prod.vertexprotocol.com/v1',
   avaxTestnet: 'https://gateway.avax-test.vertexprotocol.com/v1',
   avax: 'https://gateway.avax-prod.vertexprotocol.com/v1',
+  xrplTestnet: 'https://gateway.xrpl-test.vertexprotocol.com/v1',
 };
 
 export const ENGINE_WS_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
@@ -42,6 +43,7 @@ export const ENGINE_WS_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   bera: 'wss://gateway.bera-prod.vertexprotocol.com/v1/ws',
   avaxTestnet: 'wss://gateway.avax-test.vertexprotocol.com/v1/ws',
   avax: 'wss://gateway.avax-prod.vertexprotocol.com/v1/ws',
+  xrplTestnet: 'wss://gateway.xrpl-test.vertexprotocol.com/v1/ws',
 };
 
 export const ENGINE_WS_SUBSCRIPTION_CLIENT_ENDPOINTS: Record<ChainEnv, string> =
@@ -67,4 +69,5 @@ export const ENGINE_WS_SUBSCRIPTION_CLIENT_ENDPOINTS: Record<ChainEnv, string> =
     bera: 'wss://gateway.bera-prod.vertexprotocol.com/v1/subscribe',
     avaxTestnet: 'wss://gateway.avax-test.vertexprotocol.com/v1/subscribe',
     avax: 'wss://gateway.avax-prod.vertexprotocol.com/v1/subscribe',
+    xrplTestnet: 'wss://gateway.xrpl-test.vertexprotocol.com/v1/subscribe',
   };
