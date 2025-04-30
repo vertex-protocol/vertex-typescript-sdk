@@ -3,8 +3,16 @@ import { BigDecimal, BigDecimalish, toBigDecimal } from './bigDecimal';
 // All Vertex balances have 18 decimals. Ex. 1e18 = 1.0
 export const VERTEX_PRODUCT_DECIMALS = 18;
 
+/**
+ * Determines the result type after adjusting decimals based on the input type `T`.
+ *
+ * - If `T` is `undefined`, the result is `undefined`.
+ * - If `T` is a `number`, the result is a `number`.
+ * - Otherwise, the result is a `BigDecimal`.
+ */
 type AdjustDecimalsResult<T extends BigDecimalish | undefined> =
   T extends undefined ? undefined : T extends number ? number : BigDecimal;
+
 /**
  * Adds the specified # of decimals to the number. For example, value = 1, decimals = 2, returns 100.
  *
