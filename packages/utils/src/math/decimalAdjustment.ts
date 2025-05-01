@@ -1,7 +1,17 @@
-import { BigDecimal, toBigDecimal } from './bigDecimal';
+import { BigDecimal, BigDecimalish, toBigDecimal } from './bigDecimal';
 
 // All Vertex balances have 18 decimals. Ex. 1e18 = 1.0
 export const VERTEX_PRODUCT_DECIMALS = 18;
+
+/**
+ * Determines the result type after adjusting decimals based on the input type `T`.
+ *
+ * - If `T` is `undefined`, the result is `undefined`.
+ * - If `T` is a `number`, the result is a `number`.
+ * - Otherwise, the result is a `BigDecimal`.
+ */
+type AdjustDecimalsResult<T extends BigDecimalish | undefined> =
+  T extends undefined ? undefined : T extends number ? number : BigDecimal;
 
 /**
  * Adds the specified # of decimals to the number. For example, value = 1, decimals = 2, returns 100.
@@ -9,10 +19,11 @@ export const VERTEX_PRODUCT_DECIMALS = 18;
  * @param value can be undefined for better developer experience. If undefined, returns undefined.
  * @param decimals number of decimal places to add, defaults to 18, which is the standard within Vertex
  */
-export function addDecimals<T extends number | BigDecimal | undefined>(
+
+export function addDecimals<T extends BigDecimalish | undefined>(
   value: T,
   decimals: number = VERTEX_PRODUCT_DECIMALS,
-): T {
+): AdjustDecimalsResult<T> {
   const getResult = () => {
     if (value == null) {
       return undefined;
@@ -24,7 +35,7 @@ export function addDecimals<T extends number | BigDecimal | undefined>(
     return typeof value === 'number' ? adjustedValue.toNumber() : adjustedValue;
   };
 
-  return getResult() as T;
+  return getResult() as AdjustDecimalsResult<T>;
 }
 
 /**
@@ -33,10 +44,10 @@ export function addDecimals<T extends number | BigDecimal | undefined>(
  * @param value can be undefined for better developer experience. If undefined, returns undefined.
  * @param decimals number of decimal places to remove, defaults to 18, which is the standard within Vertex
  */
-export function removeDecimals<T extends number | BigDecimal | undefined>(
+export function removeDecimals<T extends BigDecimalish | undefined>(
   value: T,
   decimals: number = VERTEX_PRODUCT_DECIMALS,
-): T {
+): AdjustDecimalsResult<T> {
   const getResult = () => {
     if (value == null) {
       return undefined;
@@ -48,5 +59,5 @@ export function removeDecimals<T extends number | BigDecimal | undefined>(
     return typeof value === 'number' ? adjustedValue.toNumber() : adjustedValue;
   };
 
-  return getResult() as T;
+  return getResult() as AdjustDecimalsResult<T>;
 }

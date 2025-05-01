@@ -1,6 +1,6 @@
 import { createVertexClient, VertexClient } from '@vertex-protocol/client';
 import { getVertexEIP712Values } from '@vertex-protocol/contracts';
-import { toBigInt, toFixedPoint } from '@vertex-protocol/utils';
+import { addDecimals, toBigInt } from '@vertex-protocol/utils';
 import { encodeAbiParameters, encodePacked, parseAbiParameters } from 'viem';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
@@ -22,7 +22,7 @@ async function collateralTests(context: RunContext) {
   await waitForTransaction(
     vertexClient.spot._mintMockERC20({
       // 100 tokens
-      amount: toFixedPoint(100, 6),
+      amount: addDecimals(100, 6),
       productId: 0,
     }),
     publicClient,
@@ -31,7 +31,7 @@ async function collateralTests(context: RunContext) {
   console.log('Approving allowance');
   await waitForTransaction(
     vertexClient.spot.approveAllowance({
-      amount: toFixedPoint(100, 6),
+      amount: addDecimals(100, 6),
       productId: 0,
     }),
     publicClient,
@@ -46,7 +46,7 @@ async function collateralTests(context: RunContext) {
     vertexClient.spot.deposit({
       subaccountName: 'default',
       productId: 0,
-      amount: toFixedPoint(50, 6),
+      amount: addDecimals(50, 6),
     }),
     publicClient,
   );
@@ -56,7 +56,7 @@ async function collateralTests(context: RunContext) {
     vertexClient.spot.deposit({
       subaccountName: 'default',
       productId: 0,
-      amount: toFixedPoint(50, 6),
+      amount: addDecimals(50, 6),
       referralCode: 'Blk23MeZU3',
     }),
     publicClient,
@@ -66,14 +66,14 @@ async function collateralTests(context: RunContext) {
   Transfer collateral
    */
   const transferResult1 = await vertexClient.spot.transferQuote({
-    amount: toFixedPoint(10),
+    amount: addDecimals(10),
     subaccountName: 'default',
     recipientSubaccountName: 'default2',
   });
   prettyPrint('Transfer result #1', transferResult1);
 
   const transferResult2 = await vertexClient.spot.transferQuote({
-    amount: toFixedPoint(10),
+    amount: addDecimals(10),
     subaccountName: 'default2',
     recipientSubaccountName: 'default',
   });
@@ -86,7 +86,7 @@ async function collateralTests(context: RunContext) {
   const withdrawalResult = await vertexClient.spot.withdraw({
     subaccountName: 'default',
     productId: 0,
-    amount: toFixedPoint(50, 6),
+    amount: addDecimals(50, 6),
   });
   prettyPrint('Withdrawal result', withdrawalResult);
 
@@ -94,14 +94,14 @@ async function collateralTests(context: RunContext) {
   // 1. approve 1 USDC for submitting slow-mode tx
   await waitForTransaction(
     vertexClient.spot.approveAllowance({
-      amount: toFixedPoint(1, 6),
+      amount: addDecimals(1, 6),
       productId: 0,
     }),
     publicClient,
   );
   // 2. generate withdraw collateral tx
   const tx = getVertexEIP712Values('withdraw_collateral', {
-    amount: toFixedPoint(50, 6),
+    amount: addDecimals(50, 6),
     nonce: await vertexClient.context.engineClient.getTxNonce(),
     productId: 0,
     subaccountName: 'default',

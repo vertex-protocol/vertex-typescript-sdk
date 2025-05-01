@@ -1,10 +1,10 @@
 import {
+  addDecimals,
   createVertexClient,
   PlaceOrderParams,
   VertexClient,
 } from '@vertex-protocol/client';
 import { getOrderDigest, getOrderNonce } from '@vertex-protocol/contracts';
-import { toFixedPoint } from '@vertex-protocol/utils';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
@@ -25,7 +25,7 @@ async function orderTests(context: RunContext) {
 
   console.log('Setting up account');
 
-  const initialDepositAmt = toFixedPoint(1000, 6);
+  const initialDepositAmt = addDecimals(1000, 6);
   await waitForTransaction(
     vertexClient.spot._mintMockERC20({
       amount: initialDepositAmt,
@@ -70,7 +70,7 @@ async function orderTests(context: RunContext) {
     subaccountName: 'default',
     expiration: getExpiration('post_only', 60).toString(),
     price: shortLimitPrice,
-    amount: toFixedPoint(-3.5),
+    amount: addDecimals(-3.5),
   };
 
   const orderResult = await vertexClient.market.placeOrder({
@@ -148,7 +148,7 @@ async function orderTests(context: RunContext) {
     subaccountName: 'default',
     productId: 0,
     // 1 USDC withdrawal fee
-    amount: initialDepositAmt - toFixedPoint(1, 6),
+    amount: initialDepositAmt - addDecimals(1, 6),
   });
 }
 

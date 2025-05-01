@@ -8,11 +8,7 @@ import {
   getOrderNonce,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
-import {
-  nowInSeconds,
-  toFixedPoint,
-  toIntegerString,
-} from '@vertex-protocol/utils';
+import { addDecimals, nowInSeconds } from '@vertex-protocol/utils';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
@@ -32,7 +28,7 @@ async function wsMessageTests(context: RunContext) {
     subaccountName: 'default',
     expiration: nowInSeconds() + 60,
     price: 28000,
-    amount: toIntegerString(toFixedPoint(0.01)),
+    amount: addDecimals(0.01),
   };
 
   const contracts = await vertexClient.context.engineClient.getContracts();
@@ -80,9 +76,9 @@ async function wsMessageTests(context: RunContext) {
     productId: 1,
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    amountBase: toFixedPoint(1),
-    quoteAmountLow: toFixedPoint(1000),
-    quoteAmountHigh: toFixedPoint(2000),
+    amountBase: addDecimals(1),
+    quoteAmountLow: addDecimals(1000),
+    quoteAmountHigh: addDecimals(2000),
     signature: '',
   });
 
@@ -92,7 +88,7 @@ async function wsMessageTests(context: RunContext) {
     productId: 1,
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    amount: toFixedPoint(1),
+    amount: addDecimals(1),
     signature: '',
   });
 
@@ -103,7 +99,7 @@ async function wsMessageTests(context: RunContext) {
       subaccountOwner: walletClientAddress,
       subaccountName: 'default',
       productId: 0,
-      amount: toFixedPoint(4999, 6),
+      amount: addDecimals(4999),
       signature: '',
     });
 

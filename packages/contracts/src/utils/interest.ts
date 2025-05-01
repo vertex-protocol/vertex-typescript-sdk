@@ -2,7 +2,7 @@ import {
   BigDecimal,
   BigDecimalish,
   BigDecimals,
-  fromX18,
+  removeDecimals,
   TimeInSeconds,
   toBigDecimal,
 } from '@vertex-protocol/utils';
@@ -16,7 +16,7 @@ export function calcTotalBorrowed(
   cumulativeBorrowsMultiplierX18: BigDecimalish,
 ): BigDecimal {
   return toBigDecimal(totalBorrowsNormalized).multipliedBy(
-    fromX18(cumulativeBorrowsMultiplierX18),
+    removeDecimals(cumulativeBorrowsMultiplierX18),
   );
 }
 
@@ -28,7 +28,7 @@ export function calcTotalDeposited(
   cumulativeDepositsMultiplierX18: BigDecimalish,
 ): BigDecimal {
   return toBigDecimal(totalDepositsNormalized).multipliedBy(
-    fromX18(cumulativeDepositsMultiplierX18),
+    removeDecimals(cumulativeDepositsMultiplierX18),
   );
 }
 

@@ -12,9 +12,9 @@ import {
   mapEngineServerSpotProduct,
 } from '@vertex-protocol/engine-client';
 import {
-  fromX18,
   getValidatedAddress,
   mapValues,
+  removeDecimals,
   toBigDecimal,
   toIntegerString,
 } from '@vertex-protocol/utils';
@@ -123,7 +123,7 @@ export function mapIndexerOrder(order: IndexerServerOrder): IndexerOrder {
     orderType: expirationEncodedData.type,
     nonce: toBigDecimal(order.nonce),
     recvTimeSeconds: getRecvTimeFromOrderNonce(order.nonce) / 1000,
-    price: fromX18(order.price_x18),
+    price: removeDecimals(order.price_x18),
     productId: order.product_id,
     subaccount: order.subaccount,
     submissionIndex: order.submission_idx,
@@ -211,8 +211,8 @@ export function mapIndexerProductPayment(
     timestamp: toBigDecimal(payment.timestamp),
     paymentAmount: toBigDecimal(payment.amount),
     balanceAmount: toBigDecimal(payment.balance_amount),
-    annualPaymentRate: fromX18(payment.rate_x18),
-    oraclePrice: fromX18(payment.oracle_price_x18),
+    annualPaymentRate: removeDecimals(payment.rate_x18),
+    oraclePrice: removeDecimals(payment.oracle_price_x18),
     isolated: payment.isolated,
     productId: payment.product_id,
     isolatedProductId: payment.isolated_product_id,
@@ -297,8 +297,8 @@ export function mapIndexerPerpPrices(
   perpPrices: IndexerServerPerpPrices,
 ): IndexerPerpPrices {
   return {
-    indexPrice: fromX18(perpPrices.index_price_x18),
-    markPrice: fromX18(perpPrices.mark_price_x18),
+    indexPrice: removeDecimals(perpPrices.index_price_x18),
+    markPrice: removeDecimals(perpPrices.mark_price_x18),
     updateTime: toBigDecimal(perpPrices.update_time),
     productId: perpPrices.product_id,
   };
@@ -308,7 +308,7 @@ export function mapIndexerFundingRate(
   fundingRate: IndexerServerFundingRate,
 ): IndexerFundingRate {
   return {
-    fundingRate: fromX18(fundingRate.funding_rate_x18),
+    fundingRate: removeDecimals(fundingRate.funding_rate_x18),
     updateTime: toBigDecimal(fundingRate.update_time),
     productId: fundingRate.product_id,
   };
@@ -384,10 +384,10 @@ export function mapIndexerCandlesticks(
   candlestick: IndexerServerCandlestick,
 ): Candlestick {
   return {
-    close: fromX18(candlestick.close_x18),
-    high: fromX18(candlestick.high_x18),
-    low: fromX18(candlestick.low_x18),
-    open: fromX18(candlestick.open_x18),
+    close: removeDecimals(candlestick.close_x18),
+    high: removeDecimals(candlestick.high_x18),
+    low: removeDecimals(candlestick.low_x18),
+    open: removeDecimals(candlestick.open_x18),
     time: toBigDecimal(candlestick.timestamp),
     volume: toBigDecimal(candlestick.volume),
   };
@@ -401,7 +401,9 @@ export function mapIndexerMarketSnapshot(
     cumulativeUsers: toBigDecimal(snapshot.cumulative_users),
     dailyActiveUsers: toBigDecimal(snapshot.daily_active_users),
     tvl: toBigDecimal(snapshot.tvl),
-    borrowRates: mapValues(snapshot.borrow_rates, fromX18),
+    borrowRates: mapValues(snapshot.borrow_rates, (value) =>
+      removeDecimals(value),
+    ),
     cumulativeLiquidationAmounts: mapValues(
       snapshot.cumulative_liquidation_amounts,
       toBigDecimal,
@@ -420,8 +422,12 @@ export function mapIndexerMarketSnapshot(
     ),
     cumulativeTrades: mapValues(snapshot.cumulative_trades, toBigDecimal),
     cumulativeVolumes: mapValues(snapshot.cumulative_volumes, toBigDecimal),
-    depositRates: mapValues(snapshot.deposit_rates, fromX18),
-    fundingRates: mapValues(snapshot.funding_rates, fromX18),
+    depositRates: mapValues(snapshot.deposit_rates, (value) =>
+      removeDecimals(value),
+    ),
+    fundingRates: mapValues(snapshot.funding_rates, (value) =>
+      removeDecimals(value),
+    ),
     openInterestsQuote: mapValues(snapshot.open_interests, toBigDecimal),
     totalBorrows: mapValues(snapshot.total_borrows, toBigDecimal),
     totalDeposits: mapValues(snapshot.total_deposits, toBigDecimal),
@@ -431,7 +437,9 @@ export function mapIndexerMarketSnapshot(
     ),
     cumulativeInflows: mapValues(snapshot.cumulative_inflows, toBigDecimal),
     cumulativeOutflows: mapValues(snapshot.cumulative_outflows, toBigDecimal),
-    oraclePrices: mapValues(snapshot.oracle_prices, fromX18),
+    oraclePrices: mapValues(snapshot.oracle_prices, (value) =>
+      removeDecimals(value),
+    ),
   };
 }
 
@@ -461,7 +469,7 @@ export function mapIndexerVrtxSupplySnapshot(
 ): IndexerVrtxSupplySnapshot {
   return {
     timestamp: toBigDecimal(snapshot.timestamp),
-    vrtxOraclePrice: fromX18(snapshot.vrtx_oracle_price),
+    vrtxOraclePrice: removeDecimals(snapshot.vrtx_oracle_price),
     cumulativeIncentives: toBigDecimal(snapshot.cumulative_incentives),
     cumulativeLba: toBigDecimal(snapshot.cumulative_lba),
     cumulativeEcosystemSupply: toBigDecimal(
@@ -483,7 +491,9 @@ export function mapIndexerFoundationTokenIncentivesSnapshot(
     cumulativeFoundationTokenIncentives: toBigDecimal(
       snapshot.cumulative_foundation_token_incentives,
     ),
-    foundationTokenOraclePrice: fromX18(snapshot.foundation_token_oracle_price),
+    foundationTokenOraclePrice: removeDecimals(
+      snapshot.foundation_token_oracle_price,
+    ),
     foundationTokenProductId: snapshot.foundation_token_product_id,
   };
 }
@@ -500,7 +510,7 @@ export function mapIndexerVlpSnapshot(
     cumulativeTrades: toBigDecimal(snapshot.cumulative_trades),
     cumulativeVolume: toBigDecimal(snapshot.cumulative_volume),
     depositors: toBigDecimal(snapshot.depositors),
-    oraclePrice: fromX18(snapshot.oracle_price_x18),
+    oraclePrice: removeDecimals(snapshot.oracle_price_x18),
     tvl: toBigDecimal(snapshot.tvl),
   };
 }
