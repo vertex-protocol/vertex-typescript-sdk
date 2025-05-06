@@ -154,4 +154,4 @@ async function wsMessageTests(context: RunContext) {
   prettyPrint('List subscriptions WS request', wsListSubscriptionsReq);
 }
 
-runWithContext(wsMessageTests);
+void runWithContext(wsMessageTests);

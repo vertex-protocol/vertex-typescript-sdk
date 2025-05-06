@@ -121,4 +121,4 @@ async function queryTests(context: RunContext) {
   );
 }
 
-runWithContext(queryTests);
+void runWithContext(queryTests);

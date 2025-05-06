@@ -1,129 +1,42 @@
 import {
   createDeterministicLinkedSignerPrivateKey,
-  depositCollateral,
   getIsolatedOrderDigest,
   getOrderDigest,
   getOrderNonce,
-  subaccountFromBytes32,
-  subaccountFromHex,
-  subaccountToBytes32,
   subaccountToHex,
   VERTEX_ABIS,
-  VLP_PRODUCT_ID,
 } from '@vertex-protocol/contracts';
-import { MOCK_ERC20_ABI } from '@vertex-protocol/contracts/dist/common/abis/MockERC20';
 import {
   EngineClient,
-  EngineIsolatedOrderParams,
   EngineOrderParams,
+  EngineIsolatedOrderParams,
 } from '@vertex-protocol/engine-client';
-import {
-  BigDecimals,
-  addDecimals,
-  removeDecimals,
-  toBigDecimal,
-  toBigInt,
-} from '@vertex-protocol/utils';
+import { addDecimals, toBigDecimal } from '@vertex-protocol/utils';
 import { createWalletClient, getContract, http, zeroAddress } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
-import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
-import { waitForTransaction } from '../utils/waitForTransaction';
 
-async function fullSanity(context: RunContext) {
+export async function signerAndOrderTests(context: RunContext) {
   const walletClient = context.getWalletClient();
-  const publicClient = context.publicClient;
+  const walletClientAddress = walletClient.account.address;
   const chainId = walletClient.chain.id;
 
   const client = new EngineClient({
     url: context.endpoints.engine,
     walletClient,
   });
-  const walletClientAddress = walletClient.account.address;
 
   const clearinghouse = getContract({
     abi: VERTEX_ABIS.clearinghouse,
     address: context.contracts.clearinghouse,
     client: walletClient,
   });
-  const quote = getContract({
-    abi: MOCK_ERC20_ABI,
-    address: await clearinghouse.read.getQuote(),
-    client: walletClient,
-  });
+
   const endpointAddr = await clearinghouse.read.getEndpoint();
-  const endpoint = getContract({
-    abi: VERTEX_ABIS.endpoint,
-    address: endpointAddr,
-    client: walletClient,
-  });
-
-  const amount = toBigInt(addDecimals(10000, 6));
-
-  await waitForTransaction(
-    quote.write.mint([walletClientAddress, amount]),
-    publicClient,
-  );
-  await waitForTransaction(
-    quote.write.approve([endpointAddr, amount]),
-    publicClient,
-  );
-
-  // Deposit collateral
-  await waitForTransaction(
-    depositCollateral({
-      amount: addDecimals(10000, 6),
-      endpoint,
-      productId: 0,
-      subaccountName: 'default',
-    }),
-    publicClient,
-  );
-  console.log('Done depositing collateral');
-
-  // Wait for slow mode
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-
-  console.log(`subaccount (in): ${walletClientAddress}; default`);
-  const subaccountBytes32 = subaccountToBytes32({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-  });
-  const subaccountHex = subaccountToHex({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-  });
-  console.log(`subaccountBytes32: ${String(subaccountBytes32)}`);
-  console.log(`subaccountHex: ${subaccountHex}`);
-  const subaccountFrom32BytesOut = subaccountFromBytes32(subaccountBytes32);
-  const subaccountFromHexOut = subaccountFromHex(subaccountHex);
-  console.log(
-    `subaccountFrom32Bytes (out): ${subaccountFrom32BytesOut.subaccountOwner}; ${subaccountFrom32BytesOut.subaccountName}`,
-  );
-  console.log(
-    `subaccountFromHex (out): ${subaccountFromHexOut.subaccountOwner}; ${subaccountFromHexOut.subaccountName}`,
-  );
-
-  console.log('Querying subaccount');
-  const subaccountInfo = await client.getSubaccountSummary({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-  });
-  prettyPrint('Subaccount info', subaccountInfo);
-
-  const symbols = await client.getSymbols({});
-  prettyPrint('Symbols', symbols);
-
   const products = await client.getAllMarkets();
   prettyPrint('All products', products);
-
-  const healthGroups = await client.getHealthGroups();
-  prettyPrint('Health groups', healthGroups);
-
-  const insurance = await client.getInsurance();
-  prettyPrint('Insurance', insurance);
 
   console.log('Placing order');
   const spotProductId = 1;
@@ -360,36 +273,6 @@ async function fullSanity(context: RunContext) {
   });
   prettyPrint('Isolated positions', isoPositions);
 
-  const mintSpotLpResult = await client.mintLp({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-    productId: 3,
-    amountBase: addDecimals(1),
-    quoteAmountLow: addDecimals(1000),
-    quoteAmountHigh: addDecimals(6000),
-    verifyingAddr: endpointAddr,
-    chainId,
-  });
-  prettyPrint('Done minting spot lp', mintSpotLpResult);
-
-  const subaccountInfoAfterMintingLp = await client.getSubaccountSummary({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-  });
-  prettyPrint('Subaccount info after LP mint', subaccountInfoAfterMintingLp);
-
-  const burnSpotLpResult = await client.burnLp({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-    productId: 3,
-    amount: addDecimals(1),
-    verifyingAddr: endpointAddr,
-    chainId,
-  });
-  // Delay for rate limit
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-  prettyPrint('Done burning spot lp', burnSpotLpResult);
-
   // Revoke signer
   const revokeSignerResult = await client.linkSigner({
     chainId,
@@ -461,71 +344,4 @@ async function fullSanity(context: RunContext) {
       subaccountOrdersAfterCancel,
     );
   }
-
-  const withdrawResult = await client.withdrawCollateral({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-    productId: 0,
-    amount: addDecimals(4999, 6),
-    verifyingAddr: endpointAddr,
-    chainId,
-  });
-  prettyPrint('Done withdrawing collateral, result', withdrawResult);
-
-  const subaccountInfoAtEnd = await client.getSubaccountSummary({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-  });
-  prettyPrint('Subaccount info after withdraw collateral', subaccountInfoAtEnd);
-
-  const minDepositRates = await client.getMinDepositRates();
-
-  prettyPrint('Min deposit rates', minDepositRates);
-
-  const transferQuoteResult = await client.transferQuote({
-    chainId,
-    recipientSubaccountName: 'transfer1',
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-    amount: addDecimals(50), // amount must be x18
-    verifyingAddr: endpointAddr,
-  });
-  prettyPrint('Done transferring quote', transferQuoteResult);
-
-  const maxMintVlpAmount = await client.getMaxMintVlpAmount({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-    spotLeverage: true,
-  });
-  prettyPrint('Max mint VLP amount', maxMintVlpAmount);
-
-  const mintVlpResult = await client.mintVlp({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-    quoteAmount: addDecimals(10),
-    verifyingAddr: endpointAddr,
-    chainId,
-  });
-  prettyPrint('Done minting VLP', mintVlpResult);
-
-  const subaccountInfoAfterVlpMint = await client.getSubaccountSummary({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-  });
-  const vlpBalanceAmount =
-    subaccountInfoAfterVlpMint.balances.find(
-      (bal) => bal.productId === VLP_PRODUCT_ID,
-    )?.amount ?? BigDecimals.ZERO;
-  prettyPrint('VLP Balance', removeDecimals(vlpBalanceAmount));
-
-  const burnVlpResult = await client.burnVlp({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-    vlpAmount: vlpBalanceAmount,
-    verifyingAddr: endpointAddr,
-    chainId,
-  });
-  prettyPrint('Done burning VLP', burnVlpResult);
 }
-
-runWithContext(fullSanity);

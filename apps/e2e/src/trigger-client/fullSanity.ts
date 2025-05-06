@@ -219,4 +219,4 @@ async function fullSanity(context: RunContext) {
   prettyPrint('List orders by digest result', ordersByDigest);
 }
 
-runWithContext(fullSanity);
+void runWithContext(fullSanity);

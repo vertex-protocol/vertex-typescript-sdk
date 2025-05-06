@@ -14,7 +14,7 @@
     "client/order-tests": "ts-node ./src/client/orderTests.ts",
     "client/query-tests": "ts-node ./src/client/queryTests.ts",
     "client/ws-message-tests": "ts-node ./src/client/wsMessageTests.ts",
-    "engine/full-sanity": "ts-node ./src/engine-client/fullSanity.ts",
+    "engine/all-tests": "ts-node ./src/engine-client/allTests.ts",
     "indexer/full-sanity": "ts-node ./src/indexer-client/fullSanity.ts",
     "trigger/full-sanity": "ts-node ./src/trigger-client/fullSanity.ts"
   },

@@ -152,4 +152,4 @@ async function orderTests(context: RunContext) {
   });
 }
 
-runWithContext(orderTests);
+void runWithContext(orderTests);

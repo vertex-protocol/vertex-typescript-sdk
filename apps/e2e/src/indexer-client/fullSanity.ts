@@ -426,4 +426,4 @@ async function fullSanity(context: RunContext) {
   }
 }
 
-runWithContext(fullSanity);
+void runWithContext(fullSanity);
