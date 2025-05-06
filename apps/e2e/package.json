@@ -14,9 +14,18 @@
     "client/order-tests": "ts-node ./src/client/orderTests.ts",
     "client/query-tests": "ts-node ./src/client/queryTests.ts",
     "client/ws-message-tests": "ts-node ./src/client/wsMessageTests.ts",
-    "engine/all-tests": "ts-node ./src/engine-client/allTests.ts",
-    "indexer/all-tests": "ts-node ./src/indexer-client/allTests.ts",
-    "trigger/all-tests": "ts-node ./src/trigger-client/allTests.ts"
+    "client/full-sanity": "run-s client/collateral-tests client/order-tests client/query-tests client/ws-message-tests",
+    "engine/collateral-tests": "ts-node ./src/engine-client/collateralTests.ts",
+    "engine/lp-tests": "ts-node ./src/engine-client/lpTests.ts",
+    "engine/query-tests": "ts-node ./src/engine-client/queryTests.ts",
+    "engine/signer-order-tests": "ts-node ./src/engine-client/signerAndOrderTests.ts",
+    "engine/vlp-tests": "ts-node ./src/engine-client/vlpTests.ts",
+    "engine/full-sanity": "run-s engine/query-tests engine/collateral-tests engine/signer-order-tests engine/lp-tests engine/vlp-tests",
+    "indexer/leaderboard-tests": "ts-node ./src/indexer-client/leaderboardTests.ts",
+    "indexer/market-queries-tests": "ts-node ./src/indexer-client/marketQueriesTests.ts",
+    "indexer/subaccount-queries-tests": "ts-node ./src/indexer-client/subaccountQueriesTests.ts",
+    "indexer/all-tests": "run-s indexer/subaccount-queries-tests indexer/market-queries-tests indexer/leaderboard-tests",
+    "trigger/full-sanity": "ts-node ./src/trigger-client/fullSanity.ts"
   },
   "dependencies": {
     "@vertex-protocol/client": "*",
@@ -28,5 +37,8 @@
     "dotenv": "^16.3.1",
     "viem": "*"
   },
-  "gitHead": "6d0f498829ddaf01a11d2f46f960811428b370f5"
+  "gitHead": "6d0f498829ddaf01a11d2f46f960811428b370f5",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
 }

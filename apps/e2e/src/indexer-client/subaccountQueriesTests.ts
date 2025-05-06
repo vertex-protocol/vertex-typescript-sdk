@@ -3,6 +3,7 @@ import { IndexerClient } from '@vertex-protocol/indexer-client';
 import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
+import { runWithContext } from '../utils/runWithContext';
 
 export async function subaccountQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -160,3 +161,6 @@ export async function subaccountQueriesTests(context: RunContext) {
 
   prettyPrint('Paginated VLP events', vlpEvents);
 }
+
+console.log('Running subaccount queries tests');
+runWithContext(subaccountQueriesTests);

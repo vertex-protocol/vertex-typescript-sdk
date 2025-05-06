@@ -5,6 +5,7 @@ import {
 import { RunContext } from '../utils/types';
 import { prettyPrint } from '../utils/prettyPrint';
 import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
+import { runWithContext } from '../utils/runWithContext';
 
 export async function marketQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -161,3 +162,6 @@ export async function marketQueriesTests(context: RunContext) {
 
   prettyPrint('VLP snapshots', vlpSnapshots);
 }
+
+console.log('Running market queries tests');
+runWithContext(marketQueriesTests);

@@ -8,6 +8,7 @@ import {
 } from '@vertex-protocol/utils';
 import { RunContext } from '../utils/types';
 import { getContract } from 'viem';
+import { runWithContext } from '../utils/runWithContext';
 
 export async function vlpTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -62,3 +63,6 @@ export async function vlpTests(context: RunContext) {
   });
   prettyPrint('Done burning VLP', burnVlpResult);
 }
+
+console.log('Running VLP tests');
+runWithContext(vlpTests);

@@ -17,6 +17,7 @@ import { privateKeyToAccount } from 'viem/accounts';
 import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
+import { runWithContext } from '../utils/runWithContext';
 
 export async function signerAndOrderTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -345,3 +346,6 @@ export async function signerAndOrderTests(context: RunContext) {
     );
   }
 }
+
+console.log('Running order tests');
+runWithContext(signerAndOrderTests);

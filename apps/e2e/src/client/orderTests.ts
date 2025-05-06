@@ -152,4 +152,5 @@ async function orderTests(context: RunContext) {
   });
 }
 
-void runWithContext(orderTests);
+console.log('Running order tests');
+runWithContext(orderTests);

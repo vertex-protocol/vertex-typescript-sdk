@@ -130,4 +130,5 @@ async function collateralTests(context: RunContext) {
   );
 }
 
-void runWithContext(collateralTests);
+console.log('Running collateral tests');
+runWithContext(collateralTests);

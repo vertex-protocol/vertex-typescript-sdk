@@ -3,6 +3,7 @@ import { IndexerClient } from '@vertex-protocol/indexer-client';
 import { getServerError } from '../utils/getServerError';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
+import { runWithContext } from '../utils/runWithContext';
 
 export async function leaderboardTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -129,3 +130,6 @@ export async function leaderboardTests(context: RunContext) {
     console.log('Failed to query leaderboard registration:', getServerError(e));
   }
 }
+
+console.log('Running leaderboard tests');
+runWithContext(leaderboardTests);

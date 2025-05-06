@@ -4,6 +4,7 @@ import { addDecimals } from '@vertex-protocol/utils';
 import { getContract } from 'viem';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
+import { runWithContext } from '../utils/runWithContext';
 
 export async function lpTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -53,3 +54,6 @@ export async function lpTests(context: RunContext) {
   await new Promise((resolve) => setTimeout(resolve, 5000));
   prettyPrint('Done burning spot lp', burnSpotLpResult);
 }
+
+console.log('Running LP tests');
+runWithContext(lpTests);
