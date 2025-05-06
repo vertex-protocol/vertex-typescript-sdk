@@ -21,7 +21,7 @@ import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { waitForTransaction } from '../utils/waitForTransaction';
 
-async function fullSanity(context: RunContext) {
+async function allTests(context: RunContext) {
   const walletClient = context.getWalletClient();
   const publicClient = context.publicClient;
   const chainId = walletClient.chain.id;
@@ -219,4 +219,4 @@ async function fullSanity(context: RunContext) {
   prettyPrint('List orders by digest result', ordersByDigest);
 }
 
-void runWithContext(fullSanity);
+void runWithContext(allTests);

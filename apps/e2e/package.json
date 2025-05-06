@@ -15,8 +15,8 @@
     "client/query-tests": "ts-node ./src/client/queryTests.ts",
     "client/ws-message-tests": "ts-node ./src/client/wsMessageTests.ts",
     "engine/all-tests": "ts-node ./src/engine-client/allTests.ts",
-    "indexer/full-sanity": "ts-node ./src/indexer-client/fullSanity.ts",
-    "trigger/full-sanity": "ts-node ./src/trigger-client/fullSanity.ts"
+    "indexer/all-tests": "ts-node ./src/indexer-client/allTests.ts",
+    "trigger/all-tests": "ts-node ./src/trigger-client/allTests.ts"
   },
   "dependencies": {
     "@vertex-protocol/client": "*",
