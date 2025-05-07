@@ -154,5 +154,5 @@ async function wsMessageTests(context: RunContext) {
   prettyPrint('List subscriptions WS request', wsListSubscriptionsReq);
 }
 
-console.log('Running WS message tests');
+console.log('[client]: Running WS message tests');
 runWithContext(wsMessageTests);

@@ -60,5 +60,5 @@ export async function queryTests(context: RunContext) {
   prettyPrint('Min deposit rates', minDepositRates);
 }
 
-console.log('Running query tests');
+console.log('[engine-client]: Running query tests');
 runWithContext(queryTests);

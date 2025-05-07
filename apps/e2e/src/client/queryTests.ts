@@ -121,5 +121,5 @@ async function queryTests(context: RunContext) {
   );
 }
 
-console.log('Running query tests');
+console.log('[client]: Running query tests');
 runWithContext(queryTests);

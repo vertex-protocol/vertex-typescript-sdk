@@ -163,5 +163,5 @@ export async function marketQueriesTests(context: RunContext) {
   prettyPrint('VLP snapshots', vlpSnapshots);
 }
 
-console.log('Running market queries tests');
+console.log('[indexer-client]: Running market queries tests');
 runWithContext(marketQueriesTests);

@@ -219,5 +219,5 @@ async function fullSanity(context: RunContext) {
   prettyPrint('List orders by digest result', ordersByDigest);
 }
 
-console.log('Running full sanity tests');
+console.log('[trigger-client]: Running full sanity tests');
 void runWithContext(fullSanity);

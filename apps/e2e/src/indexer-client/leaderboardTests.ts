@@ -131,5 +131,5 @@ export async function leaderboardTests(context: RunContext) {
   }
 }
 
-console.log('Running leaderboard tests');
+console.log('[indexer-client]: Running leaderboard tests');
 runWithContext(leaderboardTests);

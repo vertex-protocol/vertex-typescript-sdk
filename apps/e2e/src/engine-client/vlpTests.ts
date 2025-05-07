@@ -64,5 +64,5 @@ export async function vlpTests(context: RunContext) {
   prettyPrint('Done burning VLP', burnVlpResult);
 }
 
-console.log('Running VLP tests');
+console.log('[engine-client]: Running VLP tests');
 runWithContext(vlpTests);

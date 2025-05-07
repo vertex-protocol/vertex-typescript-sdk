@@ -152,5 +152,5 @@ async function orderTests(context: RunContext) {
   });
 }
 
-console.log('Running order tests');
+console.log('[client]: Running order tests');
 runWithContext(orderTests);

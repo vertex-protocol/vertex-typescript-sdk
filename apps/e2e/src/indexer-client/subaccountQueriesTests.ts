@@ -162,5 +162,5 @@ export async function subaccountQueriesTests(context: RunContext) {
   prettyPrint('Paginated VLP events', vlpEvents);
 }
 
-console.log('Running subaccount queries tests');
+console.log('[indexer-client]: Running subaccount queries tests');
 runWithContext(subaccountQueriesTests);

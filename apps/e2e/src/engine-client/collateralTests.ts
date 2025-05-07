@@ -91,5 +91,5 @@ export async function collateralTests(context: RunContext) {
   prettyPrint('Subaccount info after withdraw collateral', subaccountInfoAtEnd);
 }
 
-console.log('Running collateral tests');
+console.log('[engine-client]: Running collateral tests');
 runWithContext(collateralTests);

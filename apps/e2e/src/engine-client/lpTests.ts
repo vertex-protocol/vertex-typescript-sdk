@@ -53,5 +53,5 @@ export async function lpTests(context: RunContext) {
   prettyPrint('Done burning spot lp', burnSpotLpResult);
 }
 
-console.log('Running LP tests');
+console.log('[engine-client]: Running LP tests');
 runWithContext(lpTests);
