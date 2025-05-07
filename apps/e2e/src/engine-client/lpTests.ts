@@ -50,8 +50,6 @@ export async function lpTests(context: RunContext) {
     verifyingAddr: endpointAddr,
     chainId,
   });
-  // Delay for rate limit
-  await new Promise((resolve) => setTimeout(resolve, 5000));
   prettyPrint('Done burning spot lp', burnSpotLpResult);
 }
 

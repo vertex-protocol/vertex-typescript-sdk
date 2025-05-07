@@ -7,6 +7,7 @@ import { waitForTransaction } from '../utils/waitForTransaction';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
+import { delay } from '../utils/delay';
 
 export async function collateralTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -59,7 +60,7 @@ export async function collateralTests(context: RunContext) {
   console.log('Done depositing collateral');
 
   // Wait for slow mode delay
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  await delay(5000);
 
   // Transfer quote
   const transferQuoteResult = await client.transferQuote({
@@ -88,9 +89,6 @@ export async function collateralTests(context: RunContext) {
     subaccountName: 'default',
   });
   prettyPrint('Subaccount info after withdraw collateral', subaccountInfoAtEnd);
-
-  // Delay for rate limit
-  await new Promise((resolve) => setTimeout(resolve, 5000));
 }
 
 console.log('Running collateral tests');

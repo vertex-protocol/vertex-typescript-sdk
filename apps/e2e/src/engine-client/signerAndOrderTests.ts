@@ -18,6 +18,7 @@ import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
+import { delay } from '../utils/delay';
 
 export async function signerAndOrderTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -289,7 +290,7 @@ export async function signerAndOrderTests(context: RunContext) {
   prettyPrint('Done revoking signer', revokeSignerResult);
 
   // Delay for rate limit
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  await delay(5000);
 
   // places order for multiple products
   for (const productId of [spotProductId, perpProductId]) {
@@ -320,7 +321,7 @@ export async function signerAndOrderTests(context: RunContext) {
     prettyPrint('Subaccount Orders after place', subaccountOrdersAfterPlace);
 
     // Delay for rate limit
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await delay(5000);
   }
 
   // cancels orders for all products
