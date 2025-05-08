@@ -12,6 +12,7 @@ import BeraMainnetCoreDeployment from './deployments/core/deployment.beraMainnet
 import BeraTestnetCoreDeployment from './deployments/core/deployment.beraTestnet.json';
 import BlastMainnetCoreDeployment from './deployments/core/deployment.blastMainnet.json';
 import BlastSepoliaCoreDeployment from './deployments/core/deployment.blastSepolia.json';
+import KatanaTestnetCoreDeployment from './deployments/core/deployment.katanaTestnet.json';
 import LocalCoreDeployment from './deployments/core/deployment.localhost.json';
 import MantleMainnetCoreDeployment from './deployments/core/deployment.mantleMainnet.json';
 import MantleSepoliaCoreDeployment from './deployments/core/deployment.mantleSepolia.json';
@@ -33,6 +34,7 @@ import BeraMainnetLbaDeployment from './deployments/vrtx/deployment.beraMainnet.
 import BeraTestnetLbaDeployment from './deployments/vrtx/deployment.beraTestnet.json';
 import BlastMainnetLbaDeployment from './deployments/vrtx/deployment.blastMainnet.json';
 import BlastSepoliaLbaDeployment from './deployments/vrtx/deployment.blastSepolia.json';
+import KatanaTestnetLbaDeployment from './deployments/vrtx/deployment.katanaTestnet.json';
 import LocalLbaDeployment from './deployments/vrtx/deployment.localhost.json';
 import MantleMainnetLbaDeployment from './deployments/vrtx/deployment.mantleMainnet.json';
 import MantleSepoliaLbaDeployment from './deployments/vrtx/deployment.mantleSepolia.json';
@@ -128,6 +130,10 @@ export const VERTEX_DEPLOYMENTS: Record<ChainEnv, VertexDeploymentAddresses> = {
   xrplTestnet: validateDeployment({
     ...XrplTestnetLbaDeployment,
     ...XrplTestnetCoreDeployment,
+  }),
+  katanaTestnet: validateDeployment({
+    ...KatanaTestnetLbaDeployment,
+    ...KatanaTestnetCoreDeployment,
   }),
   local: validateDeployment({
     ...LocalLbaDeployment,
