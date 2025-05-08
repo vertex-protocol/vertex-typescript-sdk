@@ -16,7 +16,8 @@
     "client/ws-message-tests": "ts-node ./src/client/wsMessageTests.ts",
     "engine/full-sanity": "ts-node ./src/engine-client/fullSanity.ts",
     "indexer/full-sanity": "ts-node ./src/indexer-client/fullSanity.ts",
-    "trigger/full-sanity": "ts-node ./src/trigger-client/fullSanity.ts"
+    "trigger/full-sanity": "ts-node ./src/trigger-client/fullSanity.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@vertex-protocol/client": "*",

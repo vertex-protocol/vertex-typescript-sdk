@@ -26,7 +26,8 @@
   "scripts": {
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
-    "dev": "tsc -w"
+    "dev": "tsc -w",
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "bignumber.js": "^9.1.2",

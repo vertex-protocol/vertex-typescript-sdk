@@ -16,6 +16,7 @@
     "prepare": "husky",
     "publish-all": "yarn build && npx lerna publish --force-publish --no-private",
     "test": "jest",
+    "typecheck": "npx lerna run typecheck",
     "unlink-local": "UNLINK=true ./setup-yarn-links.sh",
     "depcruise:all": "depcruise packages/* apps/*"
   },
