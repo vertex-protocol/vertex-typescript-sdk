@@ -42,7 +42,7 @@ large numbers.
 
 This is a Lerna monorepo. See `package.json` for common tasks, some of which are:
 
-**clean/build/dev/lint**: Fairly common & self-explanatory tasks, operate on the entire repo
+**clean/build/dev/lint/typecheck**: Fairly common & self-explanatory tasks, operate on the entire repo
 
 **gen-typedoc**: Generates documentation using [TypeDoc](https://typedoc.org/)
 
@@ -52,3 +52,5 @@ to enable other local repos to consume Vertex packages without having to publish
 
 > When making a change to the SDK, you will need to build the SDK, then run `yarn install --force` on the consuming
 > repo for the changes to be picked up.
+
+**depcruise:all**: Run dependency-cruiser on all packages to check for dependency issues (incl. circular dependencies).
