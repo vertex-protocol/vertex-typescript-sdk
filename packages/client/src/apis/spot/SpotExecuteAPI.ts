@@ -4,8 +4,8 @@ import {
   DepositCollateralParams,
   isWriteableContract,
   MintMockERC20Params,
+  MOCK_ERC20_ABI,
 } from '@vertex-protocol/contracts';
-import { MOCK_ERC20_ABI } from '@vertex-protocol/contracts/dist/common/abis/MockERC20';
 import { toBigInt } from '@vertex-protocol/utils';
 import { BaseSpotAPI } from './BaseSpotAPI';
 import {

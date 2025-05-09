@@ -1,6 +1,7 @@
 {
   "name": "@vertex-protocol/utils",
   "version": "1.5.0",
+  "type": "module",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -18,6 +19,9 @@
     "dist",
     "src"
   ],
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/vertex-protocol/vertex-typescript-sdk",

@@ -1,5 +1,6 @@
 export * from './Vesting';
 export * from './ERC20';
+export * from './MockERC20';
 export * from './WithdrawPool';
 export * from './StakingV2';
 export * from './StakingV1';
