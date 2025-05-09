@@ -253,9 +253,13 @@ export type GetIndexerMultiProductSnapshotsResponse = Record<
 >;
 
 export interface IndexerSnapshotsIntervalParams {
-  /**  Currently accepts all integers, in second */
+  /** Currently accepts all integers, in seconds */
   granularity: number;
-  /** In seconds. If maxTimeInclusive is not set, the query may return the earlier timestamps near midnight UTC.*/
+  /**
+   * Optional upper bound for snapshot timestamps (in seconds).
+   * Without this, snapshots may default to align with UTC midnight,
+   * which can make "Last 24h" metrics inaccurate.
+   */
   maxTimeInclusive?: number;
   limit: number;
 }
