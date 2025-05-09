@@ -1,9 +1,9 @@
-const path = require('path');
+import path from 'path';
 
 /**
  * @type {import('lint-staged').Configuration}
  */
-module.exports = {
+const config = {
     // Type check, Lint check and prettify
     '!(dist/**/*)**/*.(ts|tsx|js)': (filenames) => {
         const relativeFiles = filenames.map((f) => path.relative(path.resolve('.'), f));
@@ -23,3 +23,5 @@ module.exports = {
         ];
     },
 };
+
+export default config;

@@ -1,11 +1,10 @@
-const tseslint = require('typescript-eslint');
-const eslint = require('@eslint/js');
-const prettierPluginRecommended = require('eslint-plugin-prettier/recommended');
-const typescriptEslint = require('@typescript-eslint/eslint-plugin');
-const jestPlugin = require('eslint-plugin-jest');
-const globals = require('globals');
+import tseslint from 'typescript-eslint';
+import eslint from '@eslint/js';
+import prettierPluginRecommended from 'eslint-plugin-prettier/recommended';
+import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import jestPlugin from 'eslint-plugin-jest';
 
-module.exports = tseslint.config(
+export default tseslint.config(
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   prettierPluginRecommended,
@@ -19,7 +18,7 @@ module.exports = tseslint.config(
       parser: tseslint.parser,
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: __dirname,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
     rules: {
@@ -43,10 +42,6 @@ module.exports = tseslint.config(
   },
   {
     files: ['eslint.config.js'],
-    languageOptions: {
-      // Ensures we can use global vars like `__dirname`.
-      globals: { ...globals.node },
-    },
     rules: {
       // Allows us to use `require`.
       '@typescript-eslint/no-require-imports': 'off',

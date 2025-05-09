@@ -1,6 +1,7 @@
 {
   "name": "vertex-sdk-monorepo",
   "version": "0.1.0",
+  "type": "module",
   "workspaces": [
     "packages/*",
     "apps/*"
