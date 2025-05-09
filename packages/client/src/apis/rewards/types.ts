@@ -14,3 +14,7 @@ type AmountOrAllParams =
 export type ClaimLiquidTokensParams = {
   epoch: number;
 } & AmountOrAllParams;
+
+export interface StakeV2SatelliteParams extends VrtxTokenAmountParams {
+  value: BigDecimalish;
+}
