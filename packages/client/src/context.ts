@@ -170,6 +170,12 @@ export function createClientContext(
         walletClient,
         publicClient,
       }),
+      vrtxStakingV2Satellite: getVertexContract({
+        contractAddresses,
+        contractName: 'vrtxStakingV2Satellite',
+        walletClient,
+        publicClient,
+      }),
     },
     contractAddresses,
     engineClient: new EngineClient({
