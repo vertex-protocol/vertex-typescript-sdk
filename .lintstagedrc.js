@@ -16,7 +16,7 @@ module.exports = {
     },
 
     // Prettify
-    '**/*.(md|css|json)': (filenames) => {
+    '**/*.(md|json)': (filenames) => {
         const relativeFiles = filenames.map((f) => path.relative(path.resolve('.'), f));
         return [
             `yarn prettier --write ${relativeFiles.join(' ')}`

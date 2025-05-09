@@ -20,9 +20,6 @@
     "unlink-local": "UNLINK=true ./setup-yarn-links.sh",
     "depcruise:all": "depcruise packages/* apps/*"
   },
-  "lint-staged": {
-    "*.{ts,tsx}": "yarn lint"
-  },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/node": "^18.6.5",
