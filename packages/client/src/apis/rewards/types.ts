@@ -4,6 +4,10 @@ export interface VrtxTokenAmountParams {
   amount: BigDecimalish;
 }
 
+export interface CcipStakingParams extends VrtxTokenAmountParams {
+  ccipFee: BigDecimalish;
+}
+
 // Either specify the amount, or attempt to claim all available tokens
 type AmountOrAllParams =
   | VrtxTokenAmountParams
@@ -11,6 +15,10 @@ type AmountOrAllParams =
       claimAll: true;
     };
 
-export type ClaimLiquidTokensParams = {
+export type ClaimLiquidTokensParams = AmountOrAllParams & {
   epoch: number;
-} & AmountOrAllParams;
+};
+
+export type ClaimCcipLiquidTokensParams = ClaimLiquidTokensParams & {
+  ccipFee: BigDecimalish;
+};
