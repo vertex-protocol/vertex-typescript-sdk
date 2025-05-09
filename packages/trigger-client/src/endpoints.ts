@@ -21,4 +21,5 @@ export const TRIGGER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   avaxTestnet: 'https://trigger.avax-test.vertexprotocol.com/v1',
   avax: 'https://trigger.avax-prod.vertexprotocol.com/v1',
   xrplTestnet: 'https://trigger.xrpl-test.vertexprotocol.com/v1',
+  katanaTestnet: 'https://trigger.katana-test.vertexprotocol.com/v1',
 };

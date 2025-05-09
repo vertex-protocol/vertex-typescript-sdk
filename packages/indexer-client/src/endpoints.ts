@@ -21,4 +21,5 @@ export const INDEXER_CLIENT_ENDPOINTS: Record<ChainEnv, string> = {
   avaxTestnet: 'https://archive.avax-test.vertexprotocol.com/v1',
   avax: 'https://archive.avax-prod.vertexprotocol.com/v1',
   xrplTestnet: 'https://archive.xrpl-test.vertexprotocol.com/v1',
+  katanaTestnet: 'https://archive.katana-test.vertexprotocol.com/v1',
 };

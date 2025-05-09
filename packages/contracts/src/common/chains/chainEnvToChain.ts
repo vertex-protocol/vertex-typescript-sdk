@@ -22,6 +22,7 @@ import {
 } from 'viem/chains';
 import { ChainEnv } from '../types';
 import { sonicTestnet } from './sonicTestnet';
+import { katanaTestnet } from './katanaTestnet';
 
 export const CHAIN_ENV_TO_CHAIN = {
   local: localhost,
@@ -44,6 +45,7 @@ export const CHAIN_ENV_TO_CHAIN = {
   avaxTestnet: avalancheFuji,
   avax: avalanche,
   xrplTestnet: xrplevmTestnet,
+  katanaTestnet: katanaTestnet,
 } as const satisfies Record<ChainEnv, Chain>;
 
 export const CHAIN_ID_TO_CHAIN_ENV = Object.fromEntries(
