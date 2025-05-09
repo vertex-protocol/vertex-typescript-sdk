@@ -6,9 +6,19 @@ import {
 } from '@vertex-protocol/utils';
 import { Hex, WriteContractParameters } from 'viem';
 import { BaseVertexAPI } from '../base';
-import { ClaimLiquidTokensParams, VrtxTokenAmountParams } from './types';
+import {
+  ClaimLiquidTokensParams,
+  StakeV2SatelliteParams,
+  VrtxTokenAmountParams,
+} from './types';
 
 export class RewardsExecuteAPI extends BaseVertexAPI {
+  /**
+   *
+   *  LBA/Airdrop
+   *
+   */
+
   /**
    * Withdraw LP liquidity tokens from the LBA pool after the AMM has been created
    */
@@ -44,6 +54,26 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
   }
 
   /**
+   *
+   *  V1
+   *
+   */
+
+  /**
+   * Claim unlocked tokens that were previously unstaked
+   */
+  async withdrawUnstakedTokens() {
+    return this.context.contracts.vrtxStaking.write.claimVrtx();
+  }
+
+  /**
+   * Claim staking rewards (in USDC)
+   */
+  async claimStakingRewards() {
+    return this.context.contracts.vrtxStaking.write.claimUsdc();
+  }
+
+  /**
    * Migrate VRTX tokens from the old staking contract to the new staking contract
    */
   async migrateStakingV2() {
@@ -60,19 +90,32 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
   }
 
   /**
-   * Stake V2 VRTX tokens
+   * Unstake VRTX tokens, unstaked tokens that are unlocked will need to be withdrawn
    */
-  async stakeV2(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxStakingV2.write.stake([
+  async unstake(params: VrtxTokenAmountParams) {
+    return this.context.contracts.vrtxStaking.write.withdraw([
       toBigInt(params.amount),
     ]);
   }
 
   /**
-   * Unstake VRTX tokens, unstaked tokens that are unlocked will need to be withdrawn
+   * Claim staking rewards (in USDC), swap for VRTX, and stake the VRTX
    */
-  async unstake(params: VrtxTokenAmountParams) {
-    return this.context.contracts.vrtxStaking.write.withdraw([
+  async claimAndStakeStakingRewards() {
+    return this.context.contracts.vrtxStaking.write.claimUsdcAndStake();
+  }
+
+  /**
+   *
+   *  V2
+   *
+   */
+
+  /**
+   * Stake V2 VRTX tokens
+   */
+  async stakeV2(params: VrtxTokenAmountParams) {
+    return this.context.contracts.vrtxStakingV2.write.stake([
       toBigInt(params.amount),
     ]);
   }
@@ -93,13 +136,6 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
   }
 
   /**
-   * Claim unlocked tokens that were previously unstaked
-   */
-  async withdrawUnstakedTokens() {
-    return this.context.contracts.vrtxStaking.write.claimVrtx();
-  }
-
-  /**
    * Claim unlocked V2 tokens that were previously unstaked
    */
   async withdrawUnstakedV2Tokens() {
@@ -107,18 +143,52 @@ export class RewardsExecuteAPI extends BaseVertexAPI {
   }
 
   /**
-   * Claim staking rewards (in USDC)
+   *
+   *  Satellite
+   *
    */
-  async claimStakingRewards() {
-    return this.context.contracts.vrtxStaking.write.claimUsdc();
+
+  /**
+   * Stake V2 VRTX tokens on non-canonical chains
+   */
+  async stakeV2Satellite(params: StakeV2SatelliteParams) {
+    const address = this.getWalletClientAddress();
+    return this.context.contracts.vrtxStakingV2Satellite.write.stakeAs(
+      [address, toBigInt(params.amount)],
+      { value: toBigInt(params.value) },
+    );
   }
 
   /**
-   * Claim staking rewards (in USDC), swap for VRTX, and stake the VRTX
+   * Claim unlocked V2 tokens that were previously unstaked on non-canonical chains
    */
-  async claimAndStakeStakingRewards() {
-    return this.context.contracts.vrtxStaking.write.claimUsdcAndStake();
+  async withdrawUnstakedV2SatelliteTokens() {
+    return this.context.contracts.vrtxStakingV2Satellite.write.claimWithdraw();
   }
+
+  /**
+   * Claim staking rewards (in USDC), swap for VRTX, and stake the VRTX on non-canonical chains
+   */
+  async claimSatelliteLiquidTokens(params: ClaimLiquidTokensParams) {
+    return this.context.contracts.vrtxStakingV2Satellite.write.claimAndStake(
+      await this.getClaimLiquidTokensContractParams(params),
+    );
+  }
+
+  /**
+   * Claim staking rewards (in USDC) on non-canonical chains
+   */
+  async claimAndStakeSatelliteLiquidTokens(params: ClaimLiquidTokensParams) {
+    return this.context.contracts.vrtxStakingV2Satellite.write.claimAndStake(
+      await this.getClaimLiquidTokensContractParams(params),
+    );
+  }
+
+  /**
+   *
+   *  Foundation Rewards
+   *
+   */
 
   /**
    * Claims all available foundation rewards. Foundation rewards are tokens associated with the chain. For example, ARB on Arbitrum.
