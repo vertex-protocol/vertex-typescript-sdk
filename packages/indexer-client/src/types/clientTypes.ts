@@ -253,9 +253,9 @@ export type GetIndexerMultiProductSnapshotsResponse = Record<
 >;
 
 export interface IndexerSnapshotsIntervalParams {
-  // Currently accepts all integers, in seconds
+  /**  Currently accepts all integers, in second */
   granularity: number;
-  // Seconds
+  /** In seconds. If maxTimeInclusive is not set, the query may return the earlier timestamps near midnight UTC.*/
   maxTimeInclusive?: number;
   limit: number;
 }
@@ -948,17 +948,17 @@ export interface IndexerVrtxSupplySnapshot {
   timestamp: BigDecimal;
   /** VRTX token price in primary quote. */
   vrtxOraclePrice: BigDecimal;
-  /** Total VRTX tokens distributed as staking incentives. */
+  /** Fraction of total VRTX supply distributed as staking incentives.  */
   cumulativeIncentives: BigDecimal;
-  /** Total VRTX tokens distributed during the LBA (Liquidity Bootstrapping Auction). */
+  /** Fraction of total VRTX supply distributed during the LBA (Liquidity Bootstrapping Auction). */
   cumulativeLba: BigDecimal;
-  /** Total VRTX tokens allocated to the ecosystem. */
+  /** Fraction of total VRTX supply allocated to the ecosystem. */
   cumulativeEcosystemSupply: BigDecimal;
-  /** Total VRTX tokens allocated to the treasury. */
+  /** Fraction of total VRTX supply allocated to the treasury. */
   cumulativeTreasurySupply: BigDecimal;
-  /** Total VRTX tokens allocated to investors. */
+  /** Fraction of total VRTX supply allocated to investors. */
   cumulativeInvestorsSupply: BigDecimal;
-  /** Total VRTX tokens allocated to the team. */
+  /** Fraction of total VRTX supply allocated to the team. */
   cumulativeTeamSupply: BigDecimal;
 }
 
