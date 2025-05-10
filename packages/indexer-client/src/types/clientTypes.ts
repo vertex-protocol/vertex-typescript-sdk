@@ -257,7 +257,7 @@ export interface IndexerSnapshotsIntervalParams {
   granularity: number;
   /**
    * Optional upper bound for snapshot timestamps (in seconds).
-   * Without this, snapshots may default to align with UTC midnight,
+   * Without this, snapshots will default to align with last UTC midnight,
    * which can make "Last 24h" metrics inaccurate.
    */
   maxTimeInclusive?: number;
