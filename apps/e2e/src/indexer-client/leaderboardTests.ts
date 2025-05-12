@@ -5,7 +5,7 @@ import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
 
-export async function leaderboardTests(context: RunContext) {
+async function leaderboardTests(context: RunContext) {
   const walletClient = context.getWalletClient();
   const chainId = walletClient.chain.id;
   const endpointAddr = context.contracts.endpoint;

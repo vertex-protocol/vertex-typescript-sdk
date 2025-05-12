@@ -9,7 +9,7 @@ import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
 import { delay } from '../utils/delay';
 
-export async function collateralTests(context: RunContext) {
+async function collateralTests(context: RunContext) {
   const walletClient = context.getWalletClient();
   const publicClient = context.publicClient;
   const walletClientAddress = walletClient.account.address;

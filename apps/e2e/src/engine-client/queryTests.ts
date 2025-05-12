@@ -9,7 +9,7 @@ import {
   subaccountToHex,
 } from '@vertex-protocol/contracts';
 
-export async function queryTests(context: RunContext) {
+async function queryTests(context: RunContext) {
   const walletClient = context.getWalletClient();
   const walletClientAddress = walletClient.account.address;
 

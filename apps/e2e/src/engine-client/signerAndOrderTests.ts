@@ -20,7 +20,7 @@ import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
 import { delay } from '../utils/delay';
 
-export async function signerAndOrderTests(context: RunContext) {
+async function signerAndOrderTests(context: RunContext) {
   const walletClient = context.getWalletClient();
   const walletClientAddress = walletClient.account.address;
   const chainId = walletClient.chain.id;

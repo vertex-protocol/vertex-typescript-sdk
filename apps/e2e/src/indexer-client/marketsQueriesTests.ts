@@ -7,7 +7,7 @@ import { prettyPrint } from '../utils/prettyPrint';
 import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 
-export async function marketQueriesTests(context: RunContext) {
+async function marketsQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
 
   const client = new IndexerClient({
@@ -96,72 +96,7 @@ export async function marketQueriesTests(context: RunContext) {
     'Multi timestamp and multi product snapshots',
     multiTimestampProductSnapshots,
   );
-
-  const foundationTokenIncentivesSnapshots =
-    await client.getFoundationTokenIncentivesSnapshots({
-      granularity: TimeInSeconds.DAY,
-      limit: 5,
-    });
-
-  prettyPrint(
-    'Foundation Token Incentives Snapshots',
-    foundationTokenIncentivesSnapshots,
-  );
-
-  const latestWithdrawal = await client.getEvents({
-    eventTypes: ['withdraw_collateral'],
-    limit: {
-      type: 'txs',
-      value: 1,
-    },
-  });
-
-  const vrtxTotalSupply = await client.getVrtxTokenInfo({
-    tokenInfoType: 'total_supply',
-  });
-
-  prettyPrint('VRTX Total Supply', vrtxTotalSupply);
-
-  const vrtxCirculatingSupply = await client.getVrtxTokenInfo({
-    tokenInfoType: 'circulating_supply',
-  });
-
-  prettyPrint('VRTX Circulating Supply', vrtxCirculatingSupply);
-
-  const stakingV2PoolSnapshots = await client.getStakingV2PoolSnapshots({
-    granularity: TimeInSeconds.DAY,
-    limit: 5,
-  });
-
-  prettyPrint('Staking V2 Pool Snapshots', stakingV2PoolSnapshots);
-
-  const stakingV2TopStakers = await client.getStakingV2TopStakers({
-    limit: 20,
-  });
-
-  prettyPrint('Staking V2 Top Stakers', stakingV2TopStakers);
-
-  const vrtxSupplySnapshots = await client.getVrtxSupplySnapshots({
-    granularity: TimeInSeconds.DAY,
-    limit: 5,
-  });
-
-  prettyPrint('Vrtx Supply Snapshots', vrtxSupplySnapshots);
-
-  const fastWithdrawalSignature = await client.getFastWithdrawalSignature({
-    idx: latestWithdrawal[0].submissionIndex,
-  });
-
-  prettyPrint('Fast Withdrawal Signature', fastWithdrawalSignature);
-
-  const vlpSnapshots = await client.getVlpSnapshots({
-    maxTimeInclusive: nowInSeconds(),
-    limit: 2,
-    granularity: TimeInSeconds.DAY,
-  });
-
-  prettyPrint('VLP snapshots', vlpSnapshots);
 }
 
-console.log('[indexer-client]: Running market queries tests');
-runWithContext(marketQueriesTests);
+console.log('[indexer-client]: Running markets queries tests');
+runWithContext(marketsQueriesTests);

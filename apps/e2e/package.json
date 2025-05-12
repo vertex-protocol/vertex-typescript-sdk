@@ -32,14 +32,18 @@
     "engine/query-tests": "ts-node ./src/engine-client/queryTests.ts",
     "engine/signer-order-tests": "ts-node ./src/engine-client/signerAndOrderTests.ts",
     "engine/vlp-tests": "ts-node ./src/engine-client/vlpTests.ts",
-    "indexer/full-sanity": "run-s indexer/subaccount-queries-tests indexer/market-queries-tests indexer/leaderboard-tests",
     "indexer/leaderboard-tests": "ts-node ./src/indexer-client/leaderboardTests.ts",
-    "indexer/market-queries-tests": "ts-node ./src/indexer-client/marketQueriesTests.ts",
+    "indexer/markets-queries-tests": "ts-node ./src/indexer-client/marketsQueriesTests.ts",
+    "indexer/full-sanity": "run-s indexer/subaccount-queries-tests indexer/markets-queries-tests indexer/markets-queries-tests indexer/rewards-queries-tests indexer/vlp-queries-tests indexer/leaderboard-tests",
     "indexer/subaccount-queries-tests": "ts-node ./src/indexer-client/subaccountQueriesTests.ts",
-    "trigger/full-sanity": "ts-node ./src/trigger-client/fullSanity.ts"
+    "indexer/staking-queries-tests": "ts-node ./src/indexer-client/stakingQueriesTests.ts",
+    "indexer/rewards-queries-tests": "ts-node ./src/indexer-client/rewardsQueriesTests.ts",
+    "indexer/vlp-queries-tests": "ts-node ./src/indexer-client/vlpQueriesTests.ts",
+    "trigger/full-sanity": "ts-node ./src/trigger-client/fullSanity.ts",
+    "typecheck": "tsc --noEmit"
   },
-  "source": "./src/index.ts",
   "type": "module",
   "types": "./dist/index.d.ts",
+  "source": "./src/index.ts",
   "version": "0.1.0"
 }

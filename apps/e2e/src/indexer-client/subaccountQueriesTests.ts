@@ -5,7 +5,7 @@ import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
 
-export async function subaccountQueriesTests(context: RunContext) {
+async function subaccountQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
 
   const client = new IndexerClient({
@@ -160,6 +160,20 @@ export async function subaccountQueriesTests(context: RunContext) {
   });
 
   prettyPrint('Paginated VLP events', vlpEvents);
+
+  const latestWithdrawal = await client.getEvents({
+    eventTypes: ['withdraw_collateral'],
+    limit: {
+      type: 'txs',
+      value: 1,
+    },
+  });
+
+  const fastWithdrawalSignature = await client.getFastWithdrawalSignature({
+    idx: latestWithdrawal[0].submissionIndex,
+  });
+
+  prettyPrint('Fast Withdrawal Signature', fastWithdrawalSignature);
 }
 
 console.log('[indexer-client]: Running subaccount queries tests');

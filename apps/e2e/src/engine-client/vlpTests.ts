@@ -10,7 +10,7 @@ import { RunContext } from '../utils/types';
 import { getContract } from 'viem';
 import { runWithContext } from '../utils/runWithContext';
 
-export async function vlpTests(context: RunContext) {
+async function vlpTests(context: RunContext) {
   const walletClient = context.getWalletClient();
   const walletClientAddress = walletClient.account.address;
   const chainId = walletClient.chain.id;
