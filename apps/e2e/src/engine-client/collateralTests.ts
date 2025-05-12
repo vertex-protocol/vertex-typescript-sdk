@@ -50,7 +50,7 @@ export async function collateralTests(context: RunContext) {
   // Deposit collateral
   await waitForTransaction(
     depositCollateral({
-      amount: addDecimals(10000, 6),
+      amount,
       endpoint,
       productId: 0,
       subaccountName: 'default',
