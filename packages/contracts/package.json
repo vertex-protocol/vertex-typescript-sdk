@@ -1,6 +1,7 @@
 {
   "name": "@vertex-protocol/contracts",
   "version": "1.5.0",
+  "type": "module",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -22,6 +23,9 @@
     "dist",
     "src"
   ],
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "dependencies": {
     "@vertex-protocol/utils": "^1.5.0"
   },
