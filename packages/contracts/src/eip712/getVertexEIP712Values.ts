@@ -1,5 +1,5 @@
 import { addDecimals, toIntegerString } from '@vertex-protocol/utils';
-import { subaccountToHex } from '../utils';
+import { subaccountToHex } from '../utils/bytes32';
 import {
   EIP712BurnLpValues,
   EIP712BurnVlpValues,

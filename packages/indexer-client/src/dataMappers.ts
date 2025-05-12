@@ -470,16 +470,18 @@ export function mapIndexerVrtxSupplySnapshot(
   return {
     timestamp: toBigDecimal(snapshot.timestamp),
     vrtxOraclePrice: removeDecimals(snapshot.vrtx_oracle_price),
-    cumulativeIncentives: toBigDecimal(snapshot.cumulative_incentives),
-    cumulativeLba: toBigDecimal(snapshot.cumulative_lba),
-    cumulativeEcosystemSupply: toBigDecimal(
+    cumulativeIncentivesFrac: toBigDecimal(snapshot.cumulative_incentives),
+    cumulativeLbaFrac: toBigDecimal(snapshot.cumulative_lba),
+    cumulativeEcosystemSupplyFrac: toBigDecimal(
       snapshot.cumulative_ecosystem_supply,
     ),
-    cumulativeTreasurySupply: toBigDecimal(snapshot.cumulative_treasury_supply),
-    cumulativeInvestorsSupply: toBigDecimal(
+    cumulativeTreasurySupplyFrac: toBigDecimal(
+      snapshot.cumulative_treasury_supply,
+    ),
+    cumulativeInvestorsSupplyFrac: toBigDecimal(
       snapshot.cumulative_investors_supply,
     ),
-    cumulativeTeamSupply: toBigDecimal(snapshot.cumulative_team_supply),
+    cumulativeTeamSupplyFrac: toBigDecimal(snapshot.cumulative_team_supply),
   };
 }
 

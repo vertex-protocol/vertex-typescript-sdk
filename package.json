@@ -1,6 +1,7 @@
 {
   "name": "vertex-sdk-monorepo",
   "version": "0.1.0",
+  "type": "module",
   "workspaces": [
     "packages/*",
     "apps/*"
@@ -12,20 +13,20 @@
     "dev": "npx lerna run dev",
     "gen-typedoc": "npx typedoc",
     "link-local": "./setup-yarn-links.sh",
-    "lint": "eslint './**/*.{ts,tsx}' --fix && prettier --write './**/*.{ts,tsx}'",
+    "lint": "eslint --cache --fix './**/*.{ts,tsx}' && prettier --write './**/*.{ts,tsx}'",
     "prepare": "husky",
     "publish-all": "yarn build && npx lerna publish --force-publish --no-private",
     "test": "jest",
-    "unlink-local": "UNLINK=true ./setup-yarn-links.sh"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": "yarn lint"
+    "typecheck": "npx lerna run typecheck",
+    "unlink-local": "UNLINK=true ./setup-yarn-links.sh",
+    "depcruise:all": "depcruise packages/* apps/*"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/node": "^18.6.5",
     "@typescript-eslint/eslint-plugin": "^8.16.0",
     "@typescript-eslint/parser": "^8.16.0",
+    "dependency-cruiser": "16.10.1",
     "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jest": "^28.10.0",

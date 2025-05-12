@@ -253,9 +253,13 @@ export type GetIndexerMultiProductSnapshotsResponse = Record<
 >;
 
 export interface IndexerSnapshotsIntervalParams {
-  // Currently accepts all integers, in seconds
+  /** Currently accepts all integers, in seconds */
   granularity: number;
-  // Seconds
+  /**
+   * Optional upper bound for snapshot timestamps (in seconds).
+   * Without this, snapshots will default to align with last UTC midnight,
+   * which can make "Last 24h" metrics inaccurate.
+   */
   maxTimeInclusive?: number;
   limit: number;
 }
@@ -948,18 +952,18 @@ export interface IndexerVrtxSupplySnapshot {
   timestamp: BigDecimal;
   /** VRTX token price in primary quote. */
   vrtxOraclePrice: BigDecimal;
-  /** Total VRTX tokens distributed as staking incentives. */
-  cumulativeIncentives: BigDecimal;
-  /** Total VRTX tokens distributed during the LBA (Liquidity Bootstrapping Auction). */
-  cumulativeLba: BigDecimal;
-  /** Total VRTX tokens allocated to the ecosystem. */
-  cumulativeEcosystemSupply: BigDecimal;
-  /** Total VRTX tokens allocated to the treasury. */
-  cumulativeTreasurySupply: BigDecimal;
-  /** Total VRTX tokens allocated to investors. */
-  cumulativeInvestorsSupply: BigDecimal;
-  /** Total VRTX tokens allocated to the team. */
-  cumulativeTeamSupply: BigDecimal;
+  /** Fraction of total VRTX supply distributed as staking incentives.  */
+  cumulativeIncentivesFrac: BigDecimal;
+  /** Fraction of total VRTX supply distributed during the LBA (Liquidity Bootstrapping Auction). */
+  cumulativeLbaFrac: BigDecimal;
+  /** Fraction of total VRTX supply allocated to the ecosystem. */
+  cumulativeEcosystemSupplyFrac: BigDecimal;
+  /** Fraction of total VRTX supply allocated to the treasury. */
+  cumulativeTreasurySupplyFrac: BigDecimal;
+  /** Fraction of total VRTX supply allocated to investors. */
+  cumulativeInvestorsSupplyFrac: BigDecimal;
+  /** Fraction of total VRTX supply allocated to the team. */
+  cumulativeTeamSupplyFrac: BigDecimal;
 }
 
 export interface GetIndexerVrtxSupplySnapshotsResponse {

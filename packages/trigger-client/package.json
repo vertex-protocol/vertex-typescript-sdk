@@ -1,6 +1,7 @@
 {
   "name": "@vertex-protocol/trigger-client",
-  "version": "1.5.0",
+  "version": "1.6.0",
+  "type": "module",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
@@ -15,16 +16,20 @@
   "scripts": {
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
-    "dev": "tsc -w"
+    "dev": "tsc -w",
+    "typecheck": "tsc --noEmit"
   },
   "files": [
     "dist",
     "src"
   ],
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "dependencies": {
-    "@vertex-protocol/contracts": "^1.5.0",
-    "@vertex-protocol/engine-client": "^1.5.0",
-    "@vertex-protocol/utils": "^1.5.0",
+    "@vertex-protocol/contracts": "^1.6.0",
+    "@vertex-protocol/engine-client": "^1.6.0",
+    "@vertex-protocol/utils": "^1.6.0",
     "axios": "*",
     "ts-mixer": "*"
   },
