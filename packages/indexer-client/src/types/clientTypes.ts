@@ -952,18 +952,18 @@ export interface IndexerVrtxSupplySnapshot {
   timestamp: BigDecimal;
   /** VRTX token price in primary quote. */
   vrtxOraclePrice: BigDecimal;
-  /** Fraction of total VRTX supply distributed as staking incentives.  */
-  cumulativeIncentivesFrac: BigDecimal;
-  /** Fraction of total VRTX supply distributed during the LBA (Liquidity Bootstrapping Auction). */
-  cumulativeLbaFrac: BigDecimal;
-  /** Fraction of total VRTX supply allocated to the ecosystem. */
-  cumulativeEcosystemSupplyFrac: BigDecimal;
-  /** Fraction of total VRTX supply allocated to the treasury. */
-  cumulativeTreasurySupplyFrac: BigDecimal;
-  /** Fraction of total VRTX supply allocated to investors. */
-  cumulativeInvestorsSupplyFrac: BigDecimal;
-  /** Fraction of total VRTX supply allocated to the team. */
-  cumulativeTeamSupplyFrac: BigDecimal;
+  /** Percentage of total VRTX supply distributed as staking incentives.  */
+  cumulativeIncentivesPercentage: BigDecimal;
+  /** Percentage of total VRTX supply distributed during the LBA (Liquidity Bootstrapping Auction). */
+  cumulativeLbaPercentage: BigDecimal;
+  /** Percentage of total VRTX supply allocated to the ecosystem. */
+  cumulativeEcosystemSupplyPercentage: BigDecimal;
+  /** Percentage of total VRTX supply allocated to the treasury. */
+  cumulativeTreasurySupplyPercentage: BigDecimal;
+  /** Percentage of total VRTX supply allocated to investors. */
+  cumulativeInvestorsSupplyPercentage: BigDecimal;
+  /** Percentage of total VRTX supply allocated to the team. */
+  cumulativeTeamSupplyPercentage: BigDecimal;
 }
 
 export interface GetIndexerVrtxSupplySnapshotsResponse {
