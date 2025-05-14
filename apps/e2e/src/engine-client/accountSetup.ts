@@ -7,8 +7,8 @@ import {
   subaccountFromHex,
   subaccountToBytes32,
   subaccountToHex,
+  MOCK_ERC20_ABI,
 } from '@vertex-protocol/contracts';
-import { MOCK_ERC20_ABI } from '@vertex-protocol/contracts/dist/common/abis/MockERC20';
 import { getContract } from 'viem';
 import { waitForTransaction } from '../utils/waitForTransaction';
 import { runWithContext } from '../utils/runWithContext';

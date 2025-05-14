@@ -3,8 +3,8 @@ import {
   getOrderDigest,
   getTriggerOrderNonce,
   VERTEX_ABIS,
+  MOCK_ERC20_ABI,
 } from '@vertex-protocol/contracts';
-import { MOCK_ERC20_ABI } from '@vertex-protocol/contracts/dist/common/abis/MockERC20';
 import {
   EngineClient,
   EngineOrderParams,
