@@ -2,12 +2,6 @@ import { EngineClient } from '@vertex-protocol/engine-client';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
-import {
-  subaccountFromBytes32,
-  subaccountFromHex,
-  subaccountToBytes32,
-  subaccountToHex,
-} from '@vertex-protocol/contracts';
 
 async function queryTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -17,26 +11,6 @@ async function queryTests(context: RunContext) {
     url: context.endpoints.engine,
     walletClient,
   });
-
-  console.log(`Subaccount (in): ${walletClientAddress}; default`);
-  const subaccountBytes32 = subaccountToBytes32({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-  });
-  const subaccountHex = subaccountToHex({
-    subaccountOwner: walletClientAddress,
-    subaccountName: 'default',
-  });
-  console.log(`subaccountBytes32: ${String(subaccountBytes32)}`);
-  console.log(`subaccountHex: ${subaccountHex}`);
-  const subaccountFrom32BytesOut = subaccountFromBytes32(subaccountBytes32);
-  const subaccountFromHexOut = subaccountFromHex(subaccountHex);
-  console.log(
-    `subaccountFrom32Bytes (out): ${subaccountFrom32BytesOut.subaccountOwner}; ${subaccountFrom32BytesOut.subaccountName}`,
-  );
-  console.log(
-    `subaccountFromHex (out): ${subaccountFromHexOut.subaccountOwner}; ${subaccountFromHexOut.subaccountName}`,
-  );
 
   const subaccountInfo = await client.getSubaccountSummary({
     subaccountOwner: walletClientAddress,

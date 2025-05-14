@@ -21,11 +21,13 @@
   "private": true,
   "repository": "https://github.com/vertex-protocol/vertex-typescript-sdk",
   "scripts": {
+    "client/account-setup": "ts-node ./src/client/accountSetup.ts",
     "client/collateral-tests": "ts-node ./src/client/collateralTests.ts",
     "client/full-sanity": "run-s client/collateral-tests client/order-tests client/query-tests client/ws-message-tests",
     "client/order-tests": "ts-node ./src/client/orderTests.ts",
     "client/query-tests": "ts-node ./src/client/queryTests.ts",
     "client/ws-message-tests": "ts-node ./src/client/wsMessageTests.ts",
+    "engine/account-setup": "ts-node ./src/engine-client/accountSetup.ts",
     "engine/collateral-tests": "ts-node ./src/engine-client/collateralTests.ts",
     "engine/full-sanity": "run-s engine/query-tests engine/collateral-tests engine/signer-order-tests engine/lp-tests engine/vlp-tests",
     "engine/lp-tests": "ts-node ./src/engine-client/lpTests.ts",

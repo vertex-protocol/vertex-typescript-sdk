@@ -18,45 +18,12 @@ async function collateralTests(context: RunContext) {
 
   const walletClientAddress = walletClient.account.address;
 
-  console.log('Minting tokens');
-  await waitForTransaction(
-    vertexClient.spot._mintMockERC20({
-      // 100 tokens
-      amount: addDecimals(100, 6),
-      productId: 0,
-    }),
-    publicClient,
-  );
-
-  console.log('Approving allowance');
-  await waitForTransaction(
-    vertexClient.spot.approveAllowance({
-      amount: addDecimals(100, 6),
-      productId: 0,
-    }),
-    publicClient,
-  );
-
-  /*
-  Deposit 50 via regular flow, and 50 with included referral code
-   */
-
-  console.log('Depositing tokens');
-  await waitForTransaction(
-    vertexClient.spot.deposit({
-      subaccountName: 'default',
-      productId: 0,
-      amount: addDecimals(50, 6),
-    }),
-    publicClient,
-  );
-
   console.log('Depositing tokens with referral code');
   await waitForTransaction(
     vertexClient.spot.deposit({
       subaccountName: 'default',
       productId: 0,
-      amount: addDecimals(50, 6),
+      amount: addDecimals(500, 6),
       referralCode: 'Blk23MeZU3',
     }),
     publicClient,
@@ -66,14 +33,14 @@ async function collateralTests(context: RunContext) {
   Transfer collateral
    */
   const transferResult1 = await vertexClient.spot.transferQuote({
-    amount: addDecimals(10),
+    amount: addDecimals(100),
     subaccountName: 'default',
     recipientSubaccountName: 'default2',
   });
   prettyPrint('Transfer result #1', transferResult1);
 
   const transferResult2 = await vertexClient.spot.transferQuote({
-    amount: addDecimals(10),
+    amount: addDecimals(100),
     subaccountName: 'default2',
     recipientSubaccountName: 'default',
   });

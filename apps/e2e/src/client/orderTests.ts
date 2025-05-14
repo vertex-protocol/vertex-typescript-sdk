@@ -9,7 +9,6 @@ import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
-import { waitForTransaction } from '../utils/waitForTransaction';
 
 async function orderTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -22,32 +21,6 @@ async function orderTests(context: RunContext) {
 
   const chainId = walletClient.chain.id;
   const walletClientAddress = walletClient.account.address;
-
-  console.log('Setting up account');
-
-  const initialDepositAmt = addDecimals(1000, 6);
-  await waitForTransaction(
-    vertexClient.spot._mintMockERC20({
-      amount: initialDepositAmt,
-      productId: 0,
-    }),
-    publicClient,
-  );
-  await waitForTransaction(
-    vertexClient.spot.approveAllowance({
-      amount: initialDepositAmt,
-      productId: 0,
-    }),
-    publicClient,
-  );
-  await waitForTransaction(
-    vertexClient.spot.deposit({
-      subaccountName: 'default',
-      productId: 0,
-      amount: initialDepositAmt,
-    }),
-    publicClient,
-  );
 
   // Query all markets for price information
   const allMarkets = await vertexClient.market.getAllMarkets();
@@ -148,7 +121,8 @@ async function orderTests(context: RunContext) {
     subaccountName: 'default',
     productId: 0,
     // 1 USDC withdrawal fee
-    amount: initialDepositAmt - addDecimals(1, 6),
+    // Deposit amount - 1 USDC
+    amount: addDecimals(1000, 6) - addDecimals(1, 6),
   });
 }
 
