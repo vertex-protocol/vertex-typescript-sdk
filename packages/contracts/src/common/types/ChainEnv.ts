@@ -11,6 +11,7 @@ export const TESTNET_CHAIN_ENVS = [
   'abstractTestnet',
   'avaxTestnet',
   'xrplTestnet',
+  'katanaTestnet',
 ] as const satisfies string[];
 
 export const MAINNET_CHAIN_ENVS = [
