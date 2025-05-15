@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/client",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "type": "module",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
@@ -27,11 +27,11 @@
     ".": "./dist/index.js"
   },
   "dependencies": {
-    "@vertex-protocol/contracts": "^1.8.0",
-    "@vertex-protocol/engine-client": "^1.8.0",
-    "@vertex-protocol/indexer-client": "^1.8.0",
-    "@vertex-protocol/trigger-client": "^1.8.0",
-    "@vertex-protocol/utils": "^1.8.0",
+    "@vertex-protocol/contracts": "^1.8.1",
+    "@vertex-protocol/engine-client": "^1.8.1",
+    "@vertex-protocol/indexer-client": "^1.8.1",
+    "@vertex-protocol/trigger-client": "^1.8.1",
+    "@vertex-protocol/utils": "^1.8.1",
     "ts-mixer": "*"
   },
   "peerDependencies": {
@@ -40,5 +40,5 @@
   "devDependencies": {
     "viem": "*"
   },
-  "gitHead": "88119393c0d18cf3be1578e2a3a60b10e18b09f6"
+  "gitHead": "494d15823821c58c8bd629e5945a4aa7a85a29f0"
 }

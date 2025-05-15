@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/utils",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "type": "module",
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
@@ -41,5 +41,5 @@
     "bignumber.js": "^9.1.2",
     "viem": "*"
   },
-  "gitHead": "88119393c0d18cf3be1578e2a3a60b10e18b09f6"
+  "gitHead": "494d15823821c58c8bd629e5945a4aa7a85a29f0"
 }
