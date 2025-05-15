@@ -4,7 +4,7 @@ import {
   getTriggerOrderNonce,
   VERTEX_ABIS,
 } from '@vertex-protocol/contracts';
-import { MOCK_ERC20_ABI } from '@vertex-protocol/contracts/dist/common/abis/MockERC20';
+import { MOCK_ERC20_ABI } from '@vertex-protocol/contracts';
 import {
   EngineClient,
   EngineOrderParams,
