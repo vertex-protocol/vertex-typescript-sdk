@@ -1,5 +1,5 @@
 import { Subaccount } from '@vertex-protocol/contracts';
-import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
+import { BigDecimal } from '@vertex-protocol/utils';
 import {
   GetIndexerBlitzPointsLeaderboardParams,
   GetIndexerBlitzPointsLeaderboardResponse,
