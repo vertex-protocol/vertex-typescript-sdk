@@ -10,7 +10,7 @@ import {
   toBigDecimal,
   toIntegerString,
 } from '@vertex-protocol/utils';
-import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
+import { BigDecimal } from '@vertex-protocol/utils';
 import { EngineBaseClient } from './EngineBaseClient';
 import {
   EngineServerStatusResponse,

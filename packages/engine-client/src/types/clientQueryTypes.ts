@@ -13,7 +13,7 @@ import {
   Subaccount,
   SubaccountSummaryResponse,
 } from '@vertex-protocol/contracts';
-import { BigDecimal } from '@vertex-protocol/utils/dist/math/bigDecimal';
+import { BigDecimal } from '@vertex-protocol/utils';
 import {
   EngineServerNoncesParams,
   EngineServerTimeResponse,
