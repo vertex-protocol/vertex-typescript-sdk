@@ -21,6 +21,7 @@ async function collateralTests(context: RunContext) {
   });
 
   const endpointAddr = await clearinghouse.read.getEndpoint();
+  const quoteProductId = 0;
 
   // Transfer quote
   const transferQuoteResult = await client.transferQuote({
@@ -37,7 +38,7 @@ async function collateralTests(context: RunContext) {
   const withdrawResult = await client.withdrawCollateral({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    productId: 0,
+    productId: quoteProductId,
     amount: addDecimals(4999, 6),
     verifyingAddr: endpointAddr,
     chainId: walletClient.chain.id,

@@ -11,7 +11,7 @@ import {
   EngineOrderParams,
   EngineIsolatedOrderParams,
 } from '@vertex-protocol/engine-client';
-import { addDecimals, toBigDecimal } from '@vertex-protocol/utils';
+import { addDecimals } from '@vertex-protocol/utils';
 import { createWalletClient, getContract, http, zeroAddress } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { getExpiration } from '../utils/getExpiration';
@@ -140,7 +140,7 @@ async function signerAndOrderTests(context: RunContext) {
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: spotProductId,
-    price: toBigDecimal(70000),
+    price: marketPrice.ask,
     side: 'long',
   });
   prettyPrint('Max order size', maxOrderSize);

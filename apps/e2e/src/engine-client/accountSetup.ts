@@ -18,6 +18,24 @@ async function accountSetup(context: RunContext) {
   const publicClient = context.publicClient;
   const walletClientAddress = walletClient.account.address;
 
+  const clearinghouse = getContract({
+    abi: VERTEX_ABIS.clearinghouse,
+    address: context.contracts.clearinghouse,
+    client: walletClient,
+  });
+  const quote = getContract({
+    abi: MOCK_ERC20_ABI,
+    address: await clearinghouse.read.getQuote(),
+    client: walletClient,
+  });
+  const endpointAddr = await clearinghouse.read.getEndpoint();
+  const endpoint = getContract({
+    abi: VERTEX_ABIS.endpoint,
+    address: endpointAddr,
+    client: walletClient,
+  });
+
+  // Log the subaccount information
   console.log(`Subaccount (in): ${walletClientAddress}; default`);
   const subaccountBytes32 = subaccountToBytes32({
     subaccountOwner: walletClientAddress,
@@ -38,41 +56,31 @@ async function accountSetup(context: RunContext) {
     `subaccountFromHex (out): ${subaccountFromHexOut.subaccountOwner}; ${subaccountFromHexOut.subaccountName}`,
   );
 
-  const clearinghouse = getContract({
-    abi: VERTEX_ABIS.clearinghouse,
-    address: context.contracts.clearinghouse,
-    client: walletClient,
-  });
-  const quote = getContract({
-    abi: MOCK_ERC20_ABI,
-    address: await clearinghouse.read.getQuote(),
-    client: walletClient,
-  });
-  const endpointAddr = await clearinghouse.read.getEndpoint();
-  const endpoint = getContract({
-    abi: VERTEX_ABIS.endpoint,
-    address: endpointAddr,
-    client: walletClient,
-  });
-
-  const amount = BigInt(addDecimals(10000, 6));
+  // Begin account setup
+  const quoteProductId = 0;
+  const depositAmount = BigInt(addDecimals(10000, 6));
 
   // Mint and approve quote
+  console.log('Minting tokens');
   await waitForTransaction(
-    quote.write.mint([walletClientAddress, amount]),
+    quote.write.mint([walletClientAddress, depositAmount]),
     publicClient,
   );
+
+  // Approve allowance
+  console.log('Approving allowance');
   await waitForTransaction(
-    quote.write.approve([endpointAddr, amount]),
+    quote.write.approve([endpointAddr, depositAmount]),
     publicClient,
   );
 
   // Deposit collateral
+  console.log('Depositing tokens');
   await waitForTransaction(
     depositCollateral({
-      amount,
+      amount: depositAmount,
       endpoint,
-      productId: 0,
+      productId: quoteProductId,
       subaccountName: 'default',
     }),
     publicClient,

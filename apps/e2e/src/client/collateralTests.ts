@@ -18,12 +18,15 @@ async function collateralTests(context: RunContext) {
 
   const walletClientAddress = walletClient.account.address;
 
+  const quoteProductId = 0;
+  const quoteDepositWithReferralAmount = addDecimals(500, 6);
+
   console.log('Depositing tokens with referral code');
   await waitForTransaction(
     vertexClient.spot.deposit({
       subaccountName: 'default',
-      productId: 0,
-      amount: addDecimals(500, 6),
+      productId: quoteProductId,
+      amount: quoteDepositWithReferralAmount,
       referralCode: 'Blk23MeZU3',
     }),
     publicClient,
@@ -32,15 +35,18 @@ async function collateralTests(context: RunContext) {
   /*
   Transfer collateral
    */
+
+  const quoteTransferAmount = addDecimals(100, 6);
+
   const transferResult1 = await vertexClient.spot.transferQuote({
-    amount: addDecimals(100),
+    amount: quoteTransferAmount,
     subaccountName: 'default',
     recipientSubaccountName: 'default2',
   });
   prettyPrint('Transfer result #1', transferResult1);
 
   const transferResult2 = await vertexClient.spot.transferQuote({
-    amount: addDecimals(100),
+    amount: quoteTransferAmount,
     subaccountName: 'default2',
     recipientSubaccountName: 'default',
   });
@@ -49,11 +55,15 @@ async function collateralTests(context: RunContext) {
   /*
   Withdraw 50 via regular flow, and 50 via slow-mode
    */
+
+  const withdrawAmount = addDecimals(50, 6);
+  const slowModeFeeAmount = addDecimals(1, 6);
+
   console.log('Withdrawing tokens');
   const withdrawalResult = await vertexClient.spot.withdraw({
     subaccountName: 'default',
-    productId: 0,
-    amount: addDecimals(50, 6),
+    productId: quoteProductId,
+    amount: withdrawAmount,
   });
   prettyPrint('Withdrawal result', withdrawalResult);
 
@@ -61,16 +71,16 @@ async function collateralTests(context: RunContext) {
   // 1. approve 1 USDC for submitting slow-mode tx
   await waitForTransaction(
     vertexClient.spot.approveAllowance({
-      amount: addDecimals(1, 6),
-      productId: 0,
+      amount: slowModeFeeAmount,
+      productId: quoteProductId,
     }),
     publicClient,
   );
   // 2. generate withdraw collateral tx
   const tx = getVertexEIP712Values('withdraw_collateral', {
-    amount: addDecimals(50, 6),
+    amount: withdrawAmount,
     nonce: await vertexClient.context.engineClient.getTxNonce(),
-    productId: 0,
+    productId: quoteProductId,
     subaccountName: 'default',
     subaccountOwner: walletClientAddress,
   });
