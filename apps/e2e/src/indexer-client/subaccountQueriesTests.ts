@@ -20,7 +20,7 @@ async function subaccountQueriesTests(context: RunContext) {
 
   const summary = await client.getMultiSubaccountSnapshots({
     subaccounts: [subaccount],
-    timestamps: [nowInSeconds(), nowInSeconds() - 60 * 60 * 24],
+    timestamps: [nowInSeconds(), nowInSeconds() - TimeInSeconds.DAY],
   });
 
   prettyPrint('Summary', summary);
