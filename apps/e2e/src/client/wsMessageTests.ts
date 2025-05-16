@@ -6,14 +6,18 @@ import {
 import {
   getOrderDigest,
   getOrderNonce,
+  QUOTE_PRODUCT_ID,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
 import { addDecimals, nowInSeconds } from '@vertex-protocol/utils';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
+import { accountSetup } from '../utils/accountSetup';
 
-async function wsMessageTests(context: RunContext) {
+export async function wsMessageTests(context: RunContext) {
+  console.log('[client]: Running WS message tests');
+
   const walletClient = context.getWalletClient();
   const publicClient = context.publicClient;
   const vertexClient: VertexClient = createVertexClient(context.env.chainEnv, {
@@ -98,7 +102,7 @@ async function wsMessageTests(context: RunContext) {
     await vertexClient.ws.execute.buildWithdrawCollateralMessage({
       subaccountOwner: walletClientAddress,
       subaccountName: 'default',
-      productId: 0,
+      productId: QUOTE_PRODUCT_ID,
       amount: addDecimals(4999),
       signature: '',
     });
@@ -120,7 +124,7 @@ async function wsMessageTests(context: RunContext) {
   const wsTradeStream = vertexClient.ws.subscription.buildSubscriptionParams(
     'trade',
     {
-      product_id: 0,
+      product_id: QUOTE_PRODUCT_ID,
     },
   );
   const wsTradeSubscriptionReq =
@@ -154,4 +158,10 @@ async function wsMessageTests(context: RunContext) {
   prettyPrint('List subscriptions WS request', wsListSubscriptionsReq);
 }
 
-runWithContext(wsMessageTests);
+// Run only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void (async function run() {
+    await runWithContext(accountSetup);
+    await runWithContext(wsMessageTests);
+  })();
+}

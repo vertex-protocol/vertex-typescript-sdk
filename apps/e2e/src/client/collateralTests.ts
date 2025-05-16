@@ -1,5 +1,8 @@
 import { createVertexClient, VertexClient } from '@vertex-protocol/client';
-import { getVertexEIP712Values } from '@vertex-protocol/contracts';
+import {
+  getVertexEIP712Values,
+  QUOTE_PRODUCT_ID,
+} from '@vertex-protocol/contracts';
 import { addDecimals, toBigInt } from '@vertex-protocol/utils';
 import { encodeAbiParameters, encodePacked, parseAbiParameters } from 'viem';
 import { prettyPrint } from '../utils/prettyPrint';
@@ -7,7 +10,9 @@ import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { waitForTransaction } from '../utils/waitForTransaction';
 
-async function collateralTests(context: RunContext) {
+export async function collateralTests(context: RunContext) {
+  console.log('[client]: Running collateral tests');
+
   const walletClient = context.getWalletClient();
   const publicClient = context.publicClient;
 
@@ -18,12 +23,15 @@ async function collateralTests(context: RunContext) {
 
   const walletClientAddress = walletClient.account.address;
 
+  const quoteMintAmount = addDecimals(1000, 6);
+  const quoteDepositWithReferralAmount = addDecimals(500, 6);
+  const quoteDepositAmount = addDecimals(500, 6);
+
   console.log('Minting tokens');
   await waitForTransaction(
     vertexClient.spot._mintMockERC20({
-      // 100 tokens
-      amount: addDecimals(100, 6),
-      productId: 0,
+      amount: quoteMintAmount,
+      productId: QUOTE_PRODUCT_ID,
     }),
     publicClient,
   );
@@ -31,22 +39,18 @@ async function collateralTests(context: RunContext) {
   console.log('Approving allowance');
   await waitForTransaction(
     vertexClient.spot.approveAllowance({
-      amount: addDecimals(100, 6),
-      productId: 0,
+      amount: quoteMintAmount,
+      productId: QUOTE_PRODUCT_ID,
     }),
     publicClient,
   );
-
-  /*
-  Deposit 50 via regular flow, and 50 with included referral code
-   */
 
   console.log('Depositing tokens');
   await waitForTransaction(
     vertexClient.spot.deposit({
       subaccountName: 'default',
-      productId: 0,
-      amount: addDecimals(50, 6),
+      productId: QUOTE_PRODUCT_ID,
+      amount: quoteDepositAmount,
     }),
     publicClient,
   );
@@ -55,8 +59,8 @@ async function collateralTests(context: RunContext) {
   await waitForTransaction(
     vertexClient.spot.deposit({
       subaccountName: 'default',
-      productId: 0,
-      amount: addDecimals(50, 6),
+      productId: QUOTE_PRODUCT_ID,
+      amount: quoteDepositWithReferralAmount,
       referralCode: 'Blk23MeZU3',
     }),
     publicClient,
@@ -65,15 +69,18 @@ async function collateralTests(context: RunContext) {
   /*
   Transfer collateral
    */
+
+  const quoteTransferAmount = addDecimals(100, 6);
+
   const transferResult1 = await vertexClient.spot.transferQuote({
-    amount: addDecimals(10),
+    amount: quoteTransferAmount,
     subaccountName: 'default',
     recipientSubaccountName: 'default2',
   });
   prettyPrint('Transfer result #1', transferResult1);
 
   const transferResult2 = await vertexClient.spot.transferQuote({
-    amount: addDecimals(10),
+    amount: quoteTransferAmount,
     subaccountName: 'default2',
     recipientSubaccountName: 'default',
   });
@@ -82,11 +89,15 @@ async function collateralTests(context: RunContext) {
   /*
   Withdraw 50 via regular flow, and 50 via slow-mode
    */
+
+  const withdrawAmount = addDecimals(50, 6);
+  const slowModeFeeAmount = addDecimals(1, 6);
+
   console.log('Withdrawing tokens');
   const withdrawalResult = await vertexClient.spot.withdraw({
     subaccountName: 'default',
-    productId: 0,
-    amount: addDecimals(50, 6),
+    productId: QUOTE_PRODUCT_ID,
+    amount: withdrawAmount,
   });
   prettyPrint('Withdrawal result', withdrawalResult);
 
@@ -94,16 +105,16 @@ async function collateralTests(context: RunContext) {
   // 1. approve 1 USDC for submitting slow-mode tx
   await waitForTransaction(
     vertexClient.spot.approveAllowance({
-      amount: addDecimals(1, 6),
-      productId: 0,
+      amount: slowModeFeeAmount,
+      productId: QUOTE_PRODUCT_ID,
     }),
     publicClient,
   );
   // 2. generate withdraw collateral tx
   const tx = getVertexEIP712Values('withdraw_collateral', {
-    amount: addDecimals(50, 6),
+    amount: withdrawAmount,
     nonce: await vertexClient.context.engineClient.getTxNonce(),
-    productId: 0,
+    productId: QUOTE_PRODUCT_ID,
     subaccountName: 'default',
     subaccountOwner: walletClientAddress,
   });
@@ -130,4 +141,7 @@ async function collateralTests(context: RunContext) {
   );
 }
 
-runWithContext(collateralTests);
+// Run only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void runWithContext(collateralTests);
+}

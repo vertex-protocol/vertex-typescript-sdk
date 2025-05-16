@@ -9,9 +9,11 @@ import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
-import { waitForTransaction } from '../utils/waitForTransaction';
+import { accountSetup } from '../utils/accountSetup';
 
-async function orderTests(context: RunContext) {
+export async function orderTests(context: RunContext) {
+  console.log('[client]: Running order tests');
+
   const walletClient = context.getWalletClient();
   const publicClient = context.publicClient;
 
@@ -22,32 +24,6 @@ async function orderTests(context: RunContext) {
 
   const chainId = walletClient.chain.id;
   const walletClientAddress = walletClient.account.address;
-
-  console.log('Setting up account');
-
-  const initialDepositAmt = addDecimals(1000, 6);
-  await waitForTransaction(
-    vertexClient.spot._mintMockERC20({
-      amount: initialDepositAmt,
-      productId: 0,
-    }),
-    publicClient,
-  );
-  await waitForTransaction(
-    vertexClient.spot.approveAllowance({
-      amount: initialDepositAmt,
-      productId: 0,
-    }),
-    publicClient,
-  );
-  await waitForTransaction(
-    vertexClient.spot.deposit({
-      subaccountName: 'default',
-      productId: 0,
-      amount: initialDepositAmt,
-    }),
-    publicClient,
-  );
 
   // Query all markets for price information
   const allMarkets = await vertexClient.market.getAllMarkets();
@@ -143,13 +119,12 @@ async function orderTests(context: RunContext) {
   });
 
   prettyPrint('Cancel and place order result', cancelAndPlaceResult);
-
-  await vertexClient.spot.withdraw({
-    subaccountName: 'default',
-    productId: 0,
-    // 1 USDC withdrawal fee
-    amount: initialDepositAmt - addDecimals(1, 6),
-  });
 }
 
-runWithContext(orderTests);
+// Run only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void (async function run() {
+    await runWithContext(accountSetup);
+    await runWithContext(orderTests);
+  })();
+}

@@ -3,8 +3,8 @@ import {
   getOrderDigest,
   getTriggerOrderNonce,
   VERTEX_ABIS,
+  MOCK_ERC20_ABI,
 } from '@vertex-protocol/contracts';
-import { MOCK_ERC20_ABI } from '@vertex-protocol/contracts';
 import {
   EngineClient,
   EngineOrderParams,
@@ -22,6 +22,8 @@ import { RunContext } from '../utils/types';
 import { waitForTransaction } from '../utils/waitForTransaction';
 
 async function fullSanity(context: RunContext) {
+  console.log('[trigger-client]: Running full sanity tests');
+
   const walletClient = context.getWalletClient();
   const publicClient = context.publicClient;
   const chainId = walletClient.chain.id;
@@ -219,4 +221,4 @@ async function fullSanity(context: RunContext) {
   prettyPrint('List orders by digest result', ordersByDigest);
 }
 
-runWithContext(fullSanity);
+void runWithContext(fullSanity);
