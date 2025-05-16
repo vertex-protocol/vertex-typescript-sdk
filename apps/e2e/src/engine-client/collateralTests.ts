@@ -1,5 +1,5 @@
 import { EngineClient } from '@vertex-protocol/engine-client';
-import { VERTEX_ABIS } from '@vertex-protocol/contracts';
+import { QUOTE_PRODUCT_ID, VERTEX_ABIS } from '@vertex-protocol/contracts';
 import { addDecimals } from '@vertex-protocol/utils';
 import { getContract } from 'viem';
 import { prettyPrint } from '../utils/prettyPrint';
@@ -21,7 +21,6 @@ async function collateralTests(context: RunContext) {
   });
 
   const endpointAddr = await clearinghouse.read.getEndpoint();
-  const quoteProductId = 0;
 
   // Transfer quote
   const transferQuoteResult = await client.transferQuote({
@@ -38,7 +37,7 @@ async function collateralTests(context: RunContext) {
   const withdrawResult = await client.withdrawCollateral({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    productId: quoteProductId,
+    productId: QUOTE_PRODUCT_ID,
     amount: addDecimals(4999, 6),
     verifyingAddr: endpointAddr,
     chainId: walletClient.chain.id,

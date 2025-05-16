@@ -6,6 +6,7 @@ import {
 import {
   getOrderDigest,
   getOrderNonce,
+  QUOTE_PRODUCT_ID,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
 import { addDecimals, nowInSeconds } from '@vertex-protocol/utils';
@@ -98,7 +99,7 @@ async function wsMessageTests(context: RunContext) {
     await vertexClient.ws.execute.buildWithdrawCollateralMessage({
       subaccountOwner: walletClientAddress,
       subaccountName: 'default',
-      productId: 0,
+      productId: QUOTE_PRODUCT_ID,
       amount: addDecimals(4999),
       signature: '',
     });
@@ -120,7 +121,7 @@ async function wsMessageTests(context: RunContext) {
   const wsTradeStream = vertexClient.ws.subscription.buildSubscriptionParams(
     'trade',
     {
-      product_id: 0,
+      product_id: QUOTE_PRODUCT_ID,
     },
   );
   const wsTradeSubscriptionReq =

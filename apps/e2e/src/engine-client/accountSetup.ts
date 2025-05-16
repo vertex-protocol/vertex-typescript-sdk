@@ -8,6 +8,7 @@ import {
   subaccountToBytes32,
   subaccountToHex,
   MOCK_ERC20_ABI,
+  QUOTE_PRODUCT_ID,
 } from '@vertex-protocol/contracts';
 import { getContract } from 'viem';
 import { waitForTransaction } from '../utils/waitForTransaction';
@@ -57,7 +58,6 @@ async function accountSetup(context: RunContext) {
   );
 
   // Begin account setup
-  const quoteProductId = 0;
   const depositAmount = BigInt(addDecimals(10000, 6));
 
   // Mint and approve quote
@@ -80,7 +80,7 @@ async function accountSetup(context: RunContext) {
     depositCollateral({
       amount: depositAmount,
       endpoint,
-      productId: quoteProductId,
+      productId: QUOTE_PRODUCT_ID,
       subaccountName: 'default',
     }),
     publicClient,

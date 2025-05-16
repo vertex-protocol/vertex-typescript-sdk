@@ -3,6 +3,7 @@ import {
   getIsolatedOrderDigest,
   getOrderDigest,
   getOrderNonce,
+  QUOTE_PRODUCT_ID,
   subaccountToHex,
   VERTEX_ABIS,
 } from '@vertex-protocol/contracts';
@@ -148,14 +149,14 @@ async function signerAndOrderTests(context: RunContext) {
   const maxWithdrawable = await client.getMaxWithdrawable({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    productId: 0,
+    productId: QUOTE_PRODUCT_ID,
   });
   prettyPrint('Max withdrawable', maxWithdrawable);
 
   const maxWithdrawableNoSpotLeverage = await client.getMaxWithdrawable({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    productId: 0,
+    productId: QUOTE_PRODUCT_ID,
     spotLeverage: false,
   });
   prettyPrint(
@@ -203,7 +204,7 @@ async function signerAndOrderTests(context: RunContext) {
   const maxWithdrawableAfterCancel = await client.getMaxWithdrawable({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    productId: 0,
+    productId: QUOTE_PRODUCT_ID,
   });
   prettyPrint('Max withdrawable after cancel', maxWithdrawableAfterCancel);
 

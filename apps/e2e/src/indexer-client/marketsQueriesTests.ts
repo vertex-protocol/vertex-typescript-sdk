@@ -6,6 +6,7 @@ import { RunContext } from '../utils/types';
 import { prettyPrint } from '../utils/prettyPrint';
 import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
+import { QUOTE_PRODUCT_ID } from '@vertex-protocol/contracts';
 
 async function marketsQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -84,7 +85,7 @@ async function marketsQueriesTests(context: RunContext) {
 
   const now = nowInSeconds();
   const multiTimestampProductSnapshots = await client.getMultiProductSnapshots({
-    productIds: [0, 2, 4],
+    productIds: [QUOTE_PRODUCT_ID, 2, 4],
     maxTimestampInclusive: [
       now,
       now - TimeInSeconds.HOUR,

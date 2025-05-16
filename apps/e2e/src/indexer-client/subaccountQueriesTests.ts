@@ -1,4 +1,4 @@
-import { Subaccount } from '@vertex-protocol/contracts';
+import { QUOTE_PRODUCT_ID, Subaccount } from '@vertex-protocol/contracts';
 import { IndexerClient } from '@vertex-protocol/indexer-client';
 import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
 import { prettyPrint } from '../utils/prettyPrint';
@@ -88,7 +88,7 @@ async function subaccountQueriesTests(context: RunContext) {
   const matchEvents = await client.getPaginatedSubaccountMatchEvents({
     subaccountName: subaccount.subaccountName,
     subaccountOwner: subaccount.subaccountOwner,
-    productIds: [0, 2, 3, 4],
+    productIds: [QUOTE_PRODUCT_ID, 2, 3, 4],
     limit: 10,
   });
 
@@ -98,7 +98,7 @@ async function subaccountQueriesTests(context: RunContext) {
     await client.getPaginatedSubaccountInterestFundingPayments({
       subaccountName: subaccount.subaccountName,
       subaccountOwner: subaccount.subaccountOwner,
-      productIds: [0, 2, 3, 4],
+      productIds: [QUOTE_PRODUCT_ID, 2, 3, 4],
       limit: 10,
     });
 

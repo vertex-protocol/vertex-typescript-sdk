@@ -22,9 +22,6 @@ async function orderTests(context: RunContext) {
   const chainId = walletClient.chain.id;
   const walletClientAddress = walletClient.account.address;
 
-  // Quote product id
-  const quoteProductId = 0;
-
   // Query all markets for price information
   const allMarkets = await vertexClient.market.getAllMarkets();
 
@@ -119,14 +116,6 @@ async function orderTests(context: RunContext) {
   });
 
   prettyPrint('Cancel and place order result', cancelAndPlaceResult);
-
-  await vertexClient.spot.withdraw({
-    subaccountName: 'default',
-    productId: quoteProductId,
-    // 1 USDC withdrawal fee
-    // Deposit amount - 1 USDC
-    amount: addDecimals(1000, 6) - addDecimals(1, 6),
-  });
 }
 
 console.log('[client]: Running order tests');

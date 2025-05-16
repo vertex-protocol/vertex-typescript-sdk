@@ -1,4 +1,8 @@
-import { createVertexClient, VertexClient } from '@vertex-protocol/client';
+import {
+  createVertexClient,
+  QUOTE_PRODUCT_ID,
+  VertexClient,
+} from '@vertex-protocol/client';
 import { addDecimals } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
@@ -13,7 +17,6 @@ async function accountSetup(context: RunContext) {
     publicClient,
   });
 
-  const quoteProductId = 0;
   const quoteMintAmount = addDecimals(1000, 6);
   const quoteDepositAmount = addDecimals(500, 6);
 
@@ -21,7 +24,7 @@ async function accountSetup(context: RunContext) {
   await waitForTransaction(
     vertexClient.spot._mintMockERC20({
       amount: quoteMintAmount,
-      productId: quoteProductId,
+      productId: QUOTE_PRODUCT_ID,
     }),
     publicClient,
   );
@@ -30,7 +33,7 @@ async function accountSetup(context: RunContext) {
   await waitForTransaction(
     vertexClient.spot.approveAllowance({
       amount: quoteMintAmount,
-      productId: quoteProductId,
+      productId: QUOTE_PRODUCT_ID,
     }),
     publicClient,
   );
@@ -39,7 +42,7 @@ async function accountSetup(context: RunContext) {
   await waitForTransaction(
     vertexClient.spot.deposit({
       subaccountName: 'default',
-      productId: quoteProductId,
+      productId: QUOTE_PRODUCT_ID,
       amount: quoteDepositAmount,
     }),
     publicClient,
