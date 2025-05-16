@@ -1,6 +1,6 @@
 import { EngineClient } from '@vertex-protocol/engine-client';
 import { VERTEX_ABIS } from '@vertex-protocol/contracts';
-import { addDecimals } from '@vertex-protocol/utils';
+import { addDecimals, BigDecimals } from '@vertex-protocol/utils';
 import { getContract } from 'viem';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
@@ -24,13 +24,23 @@ async function lpTests(context: RunContext) {
 
   const endpointAddr = await clearinghouse.read.getEndpoint();
 
+  const spotLpProductId = 3;
+
+  const allMarkets = await client.getAllMarkets();
+
+  const spotLpMarket = allMarkets.find(
+    (market) => market.productId === spotLpProductId,
+  );
+
+  const oraclePrice = spotLpMarket?.product.oraclePrice ?? BigDecimals.ZERO;
+
   const mintSpotLpResult = await client.mintLp({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    productId: 3,
+    productId: spotLpProductId,
     amountBase: addDecimals(1),
-    quoteAmountLow: addDecimals(1000),
-    quoteAmountHigh: addDecimals(6000),
+    quoteAmountLow: addDecimals(oraclePrice.times(0.5)),
+    quoteAmountHigh: addDecimals(oraclePrice.times(1.5)),
     verifyingAddr: endpointAddr,
     chainId,
   });
@@ -45,7 +55,7 @@ async function lpTests(context: RunContext) {
   const burnSpotLpResult = await client.burnLp({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
-    productId: 3,
+    productId: spotLpProductId,
     amount: addDecimals(1),
     verifyingAddr: endpointAddr,
     chainId,
