@@ -4,8 +4,11 @@ import { getServerError } from '../utils/getServerError';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
+import { accountSetup } from '../utils/accountSetup';
 
-async function leaderboardTests(context: RunContext) {
+export async function leaderboardTests(context: RunContext) {
+  console.log('[indexer-client]: Running leaderboard tests');
+
   const walletClient = context.getWalletClient();
   const chainId = walletClient.chain.id;
   const endpointAddr = context.contracts.endpoint;
@@ -105,5 +108,10 @@ async function leaderboardTests(context: RunContext) {
   }
 }
 
-console.log('[indexer-client]: Running leaderboard tests');
-runWithContext(leaderboardTests);
+// Run only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void (async function run() {
+    await runWithContext(accountSetup);
+    await runWithContext(leaderboardTests);
+  })();
+}

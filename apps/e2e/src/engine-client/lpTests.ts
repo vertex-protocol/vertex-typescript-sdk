@@ -5,8 +5,11 @@ import { getContract } from 'viem';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
+import { accountSetup } from '../utils/accountSetup';
 
-async function lpTests(context: RunContext) {
+export async function lpTests(context: RunContext) {
+  console.log('[engine-client]: Running LP tests');
+
   const walletClient = context.getWalletClient();
   const walletClientAddress = walletClient.account.address;
   const chainId = walletClient.chain.id;
@@ -63,5 +66,10 @@ async function lpTests(context: RunContext) {
   prettyPrint('Done burning spot lp', burnSpotLpResult);
 }
 
-console.log('[engine-client]: Running LP tests');
-runWithContext(lpTests);
+// Run only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void (async function run() {
+    await runWithContext(accountSetup);
+    await runWithContext(lpTests);
+  })();
+}

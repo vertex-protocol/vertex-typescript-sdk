@@ -8,7 +8,9 @@ import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { waitForTransaction } from '../utils/waitForTransaction';
 
-async function accountSetup(context: RunContext) {
+export async function accountSetup(context: RunContext) {
+  console.log('[utils]: Running account setup');
+
   const walletClient = context.getWalletClient();
   const publicClient = context.publicClient;
 
@@ -18,7 +20,7 @@ async function accountSetup(context: RunContext) {
   });
 
   const quoteMintAmount = addDecimals(1000, 6);
-  const quoteDepositAmount = addDecimals(500, 6);
+  const quoteDepositAmount = addDecimals(1000, 6);
 
   console.log('Minting tokens');
   await waitForTransaction(
@@ -49,5 +51,7 @@ async function accountSetup(context: RunContext) {
   );
 }
 
-console.log('[client]: Running account setup');
-runWithContext(accountSetup);
+// Run only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void runWithContext(accountSetup);
+}

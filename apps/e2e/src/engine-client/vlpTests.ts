@@ -9,8 +9,11 @@ import {
 import { RunContext } from '../utils/types';
 import { getContract } from 'viem';
 import { runWithContext } from '../utils/runWithContext';
+import { accountSetup } from '../utils/accountSetup';
 
-async function vlpTests(context: RunContext) {
+export async function vlpTests(context: RunContext) {
+  console.log('[engine-client]: Running VLP tests');
+
   const walletClient = context.getWalletClient();
   const walletClientAddress = walletClient.account.address;
   const chainId = walletClient.chain.id;
@@ -64,5 +67,10 @@ async function vlpTests(context: RunContext) {
   prettyPrint('Done burning VLP', burnVlpResult);
 }
 
-console.log('[engine-client]: Running VLP tests');
-runWithContext(vlpTests);
+// Run only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void (async function run() {
+    await runWithContext(accountSetup);
+    await runWithContext(vlpTests);
+  })();
+}

@@ -3,8 +3,11 @@ import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { TimeInSeconds } from '@vertex-protocol/utils';
 import { prettyPrint } from '../utils/prettyPrint';
+import { accountSetup } from '../utils/accountSetup';
 
-async function rewardsQueriesTests(context: RunContext) {
+export async function rewardsQueriesTests(context: RunContext) {
+  console.log('[indexer-client]: Running rewards queries tests');
+
   const walletClient = context.getWalletClient();
 
   const client = new IndexerClient({
@@ -97,5 +100,10 @@ async function rewardsQueriesTests(context: RunContext) {
   }
 }
 
-console.log('[indexer-client]: Running rewards queries tests');
-runWithContext(rewardsQueriesTests);
+// Run only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void (async function run() {
+    await runWithContext(accountSetup);
+    await runWithContext(rewardsQueriesTests);
+  })();
+}

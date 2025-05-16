@@ -11,22 +11,20 @@
   "source": "./src/index.ts",
   "repository": "https://github.com/vertex-protocol/vertex-typescript-sdk",
   "scripts": {
-    "client/account-setup": "tsx ./src/client/accountSetup.ts",
     "client/collateral-tests": "tsx ./src/client/collateralTests.ts",
-    "client/full-sanity": "run-s client/account-setup client/collateral-tests client/order-tests client/query-tests client/ws-message-tests",
+    "client/full-sanity": "tsx ./src/client/fullSanity.ts",
     "client/order-tests": "tsx ./src/client/orderTests.ts",
     "client/query-tests": "tsx ./src/client/queryTests.ts",
     "client/ws-message-tests": "tsx ./src/client/wsMessageTests.ts",
-    "engine/account-setup": "tsx ./src/engine-client/accountSetup.ts",
     "engine/collateral-tests": "tsx ./src/engine-client/collateralTests.ts",
-    "engine/full-sanity": "run-s engine/account-setup engine/query-tests engine/collateral-tests engine/signer-order-tests engine/lp-tests engine/vlp-tests",
+    "engine/full-sanity": "tsx ./src/engine-client/fullSanity.ts",
     "engine/lp-tests": "tsx ./src/engine-client/lpTests.ts",
     "engine/query-tests": "tsx ./src/engine-client/queryTests.ts",
     "engine/signer-order-tests": "tsx ./src/engine-client/signerAndOrderTests.ts",
     "engine/vlp-tests": "tsx ./src/engine-client/vlpTests.ts",
     "indexer/leaderboard-tests": "tsx ./src/indexer-client/leaderboardTests.ts",
     "indexer/markets-queries-tests": "tsx ./src/indexer-client/marketsQueriesTests.ts",
-    "indexer/full-sanity": "run-s indexer/subaccount-queries-tests indexer/markets-queries-tests indexer/markets-queries-tests indexer/rewards-queries-tests indexer/vlp-queries-tests indexer/leaderboard-tests",
+    "indexer/full-sanity": "tsx ./src/indexer-client/fullSanity.ts",
     "indexer/subaccount-queries-tests": "tsx ./src/indexer-client/subaccountQueriesTests.ts",
     "indexer/staking-queries-tests": "tsx ./src/indexer-client/stakingQueriesTests.ts",
     "indexer/rewards-queries-tests": "tsx ./src/indexer-client/rewardsQueriesTests.ts",
@@ -43,9 +41,6 @@
     "@vertex-protocol/utils": "*",
     "dotenv": "^16.3.1",
     "viem": "*"
-  },
-  "devDependencies": {
-    "npm-run-all": "^4.1.5"
   },
   "gitHead": "6d0f498829ddaf01a11d2f46f960811428b370f5"
 }

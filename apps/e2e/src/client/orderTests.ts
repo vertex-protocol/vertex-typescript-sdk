@@ -9,8 +9,11 @@ import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
+import { accountSetup } from '../utils/accountSetup';
 
-async function orderTests(context: RunContext) {
+export async function orderTests(context: RunContext) {
+  console.log('[client]: Running order tests');
+
   const walletClient = context.getWalletClient();
   const publicClient = context.publicClient;
 
@@ -118,5 +121,10 @@ async function orderTests(context: RunContext) {
   prettyPrint('Cancel and place order result', cancelAndPlaceResult);
 }
 
-console.log('[client]: Running order tests');
-runWithContext(orderTests);
+// Run only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void (async function run() {
+    await runWithContext(accountSetup);
+    await runWithContext(orderTests);
+  })();
+}

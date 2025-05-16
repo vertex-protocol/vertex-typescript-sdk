@@ -20,8 +20,11 @@ import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
 import { delay } from '../utils/delay';
+import { accountSetup } from '../utils/accountSetup';
 
-async function signerAndOrderTests(context: RunContext) {
+export async function signerAndOrderTests(context: RunContext) {
+  console.log('[engine-client]: Running order tests');
+
   const walletClient = context.getWalletClient();
   const walletClientAddress = walletClient.account.address;
   const chainId = walletClient.chain.id;
@@ -349,5 +352,10 @@ async function signerAndOrderTests(context: RunContext) {
   }
 }
 
-console.log('[engine-client]: Running order tests');
-runWithContext(signerAndOrderTests);
+// Run only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void (async function run() {
+    await runWithContext(accountSetup);
+    await runWithContext(signerAndOrderTests);
+  })();
+}

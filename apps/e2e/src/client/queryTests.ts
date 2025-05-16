@@ -2,8 +2,11 @@ import { createVertexClient, VertexClient } from '@vertex-protocol/client';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
+import { accountSetup } from '../utils/accountSetup';
 
-async function queryTests(context: RunContext) {
+export async function queryTests(context: RunContext) {
+  console.log('[client]: Running query tests');
+
   const walletClient = context.getWalletClient();
   const publicClient = context.publicClient;
 
@@ -121,5 +124,10 @@ async function queryTests(context: RunContext) {
   );
 }
 
-console.log('[client]: Running query tests');
-runWithContext(queryTests);
+// Run only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void (async function run() {
+    await runWithContext(accountSetup);
+    await runWithContext(queryTests);
+  })();
+}

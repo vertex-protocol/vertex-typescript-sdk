@@ -4,7 +4,9 @@ import { RunContext } from '../utils/types';
 import { TimeInSeconds } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 
-async function stakingQueriesTests(context: RunContext) {
+export async function stakingQueriesTests(context: RunContext) {
+  console.log('[indexer-client]: Running staking queries tests');
+
   const walletClient = context.getWalletClient();
 
   const client = new IndexerClient({
@@ -45,5 +47,7 @@ async function stakingQueriesTests(context: RunContext) {
   prettyPrint('Vrtx Supply Snapshots', vrtxSupplySnapshots);
 }
 
-console.log('[indexer-client]: Running staking queries tests');
-runWithContext(stakingQueriesTests);
+// Run only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void runWithContext(stakingQueriesTests);
+}

@@ -7,8 +7,11 @@ import { prettyPrint } from '../utils/prettyPrint';
 import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 import { QUOTE_PRODUCT_ID } from '@vertex-protocol/contracts';
+import { accountSetup } from '../utils/accountSetup';
 
-async function marketsQueriesTests(context: RunContext) {
+export async function marketsQueriesTests(context: RunContext) {
+  console.log('[indexer-client]: Running markets queries tests');
+
   const walletClient = context.getWalletClient();
 
   const client = new IndexerClient({
@@ -99,5 +102,10 @@ async function marketsQueriesTests(context: RunContext) {
   );
 }
 
-console.log('[indexer-client]: Running markets queries tests');
-runWithContext(marketsQueriesTests);
+// Run only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void (async function run() {
+    await runWithContext(accountSetup);
+    await runWithContext(marketsQueriesTests);
+  })();
+}
