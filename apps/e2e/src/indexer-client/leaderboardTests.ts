@@ -20,32 +20,6 @@ async function leaderboardTests(context: RunContext) {
     subaccountOwner: walletClient.account.address,
   };
 
-  if (
-    context.env.chainEnv === 'blastTestnet' ||
-    context.env.chainEnv === 'blast'
-  ) {
-    const blastPoints = await client.getBlastPoints({
-      address: subaccount.subaccountOwner,
-    });
-    const blitzPoints = await client.getBlitzPoints({
-      address: subaccount.subaccountOwner,
-    });
-
-    const blitzPointsLeaderboard =
-      await client.getPaginatedBlitzPointsLeaderboard({
-        startCursor: '2',
-        epoch: 1,
-        limit: 10,
-      });
-
-    prettyPrint('Blitz & Blast Points', {
-      blastPoints,
-      blitzPoints,
-    });
-
-    prettyPrint('Blitz Points Leaderboard', blitzPointsLeaderboard);
-  }
-
   const leaderboard = await client.getLeaderboard({
     limit: 5,
     startCursor: undefined,

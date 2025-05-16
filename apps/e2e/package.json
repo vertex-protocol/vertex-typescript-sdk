@@ -1,24 +1,14 @@
 {
+  "name": "vertex-sdk-e2e",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
   "author": "Frank Jia <frank@vertexprotocol.com>",
-  "dependencies": {
-    "@vertex-protocol/client": "*",
-    "@vertex-protocol/contracts": "*",
-    "@vertex-protocol/engine-client": "*",
-    "@vertex-protocol/indexer-client": "*",
-    "@vertex-protocol/trigger-client": "*",
-    "@vertex-protocol/utils": "*",
-    "dotenv": "^16.3.1",
-    "viem": "*"
-  },
-  "devDependencies": {
-    "npm-run-all": "^4.1.5"
-  },
-  "gitHead": "6d0f498829ddaf01a11d2f46f960811428b370f5",
   "homepage": "",
   "license": "ISC",
   "main": "./dist/index.js",
-  "name": "vertex-sdk-e2e",
-  "private": true,
+  "types": "./dist/index.d.ts",
+  "source": "./src/index.ts",
   "repository": "https://github.com/vertex-protocol/vertex-typescript-sdk",
   "scripts": {
     "client/account-setup": "tsx ./src/client/accountSetup.ts",
@@ -44,8 +34,18 @@
     "trigger/full-sanity": "tsx ./src/trigger-client/fullSanity.ts",
     "typecheck": "tsc --noEmit"
   },
-  "type": "module",
-  "types": "./dist/index.d.ts",
-  "source": "./src/index.ts",
-  "version": "0.1.0"
+  "dependencies": {
+    "@vertex-protocol/client": "*",
+    "@vertex-protocol/contracts": "*",
+    "@vertex-protocol/engine-client": "*",
+    "@vertex-protocol/indexer-client": "*",
+    "@vertex-protocol/trigger-client": "*",
+    "@vertex-protocol/utils": "*",
+    "dotenv": "^16.3.1",
+    "viem": "*"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  },
+  "gitHead": "6d0f498829ddaf01a11d2f46f960811428b370f5"
 }
