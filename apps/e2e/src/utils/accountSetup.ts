@@ -8,9 +8,7 @@ import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { waitForTransaction } from '../utils/waitForTransaction';
 
-export async function accountSetup(context: RunContext) {
-  console.log('[utils]: Running account setup');
-
+async function accountSetup(context: RunContext) {
   const walletClient = context.getWalletClient();
   const publicClient = context.publicClient;
 
@@ -51,7 +49,5 @@ export async function accountSetup(context: RunContext) {
   );
 }
 
-// Run only if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  void runWithContext(accountSetup);
-}
+console.log('[utils]: Running account setup');
+runWithContext(accountSetup);
