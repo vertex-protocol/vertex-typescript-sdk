@@ -3,10 +3,9 @@ import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
 import { prettyPrint } from '../utils/prettyPrint';
+import { it } from 'node:test';
 
-export async function vlpQueriesTests(context: RunContext) {
-  console.log('[indexer-client]: Running VLP queries tests');
-
+async function vlpQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
 
   const client = new IndexerClient({
@@ -23,7 +22,5 @@ export async function vlpQueriesTests(context: RunContext) {
   prettyPrint('VLP snapshots', vlpSnapshots);
 }
 
-// Run only if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  void runWithContext(vlpQueriesTests);
-}
+it('[indexer-client]: Running VLP queries tests', () =>
+  runWithContext(vlpQueriesTests));

@@ -13,11 +13,9 @@ import { addDecimals, nowInSeconds } from '@vertex-protocol/utils';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
-import { accountSetup } from '../utils/accountSetup';
+import { it } from 'node:test';
 
-export async function wsMessageTests(context: RunContext) {
-  console.log('[client]: Running WS message tests');
-
+async function wsMessageTests(context: RunContext) {
   const walletClient = context.getWalletClient();
   const publicClient = context.publicClient;
   const vertexClient: VertexClient = createVertexClient(context.env.chainEnv, {
@@ -158,10 +156,4 @@ export async function wsMessageTests(context: RunContext) {
   prettyPrint('List subscriptions WS request', wsListSubscriptionsReq);
 }
 
-// Run only if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  void (async function run() {
-    await runWithContext(accountSetup);
-    await runWithContext(wsMessageTests);
-  })();
-}
+it('[client]: Running WS message tests', () => runWithContext(wsMessageTests));

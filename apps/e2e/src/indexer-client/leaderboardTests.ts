@@ -4,11 +4,9 @@ import { getServerError } from '../utils/getServerError';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
-import { accountSetup } from '../utils/accountSetup';
+import { it } from 'node:test';
 
-export async function leaderboardTests(context: RunContext) {
-  console.log('[indexer-client]: Running leaderboard tests');
-
+async function leaderboardTests(context: RunContext) {
   const walletClient = context.getWalletClient();
   const chainId = walletClient.chain.id;
   const endpointAddr = context.contracts.endpoint;
@@ -108,10 +106,5 @@ export async function leaderboardTests(context: RunContext) {
   }
 }
 
-// Run only if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  void (async function run() {
-    await runWithContext(accountSetup);
-    await runWithContext(leaderboardTests);
-  })();
-}
+it('[indexer-client]: Running leaderboard tests', () =>
+  runWithContext(leaderboardTests));

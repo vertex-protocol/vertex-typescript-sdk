@@ -2,11 +2,9 @@ import { createVertexClient, VertexClient } from '@vertex-protocol/client';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
-import { accountSetup } from '../utils/accountSetup';
+import { it } from 'node:test';
 
-export async function queryTests(context: RunContext) {
-  console.log('[client]: Running query tests');
-
+async function queryTests(context: RunContext) {
   const walletClient = context.getWalletClient();
   const publicClient = context.publicClient;
 
@@ -41,7 +39,9 @@ export async function queryTests(context: RunContext) {
 
   prettyPrint(
     'Latest market prices',
-    await vertexClient.market.getLatestMarketPrices({ productIds: [1, 2, 3] }),
+    await vertexClient.market.getLatestMarketPrices({
+      productIds: [1, 2, 3],
+    }),
   );
   prettyPrint(
     'Market liquidity',
@@ -124,10 +124,4 @@ export async function queryTests(context: RunContext) {
   );
 }
 
-// Run only if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  void (async function run() {
-    await runWithContext(accountSetup);
-    await runWithContext(queryTests);
-  })();
-}
+it('[client]: Running query tests', () => runWithContext(queryTests));
