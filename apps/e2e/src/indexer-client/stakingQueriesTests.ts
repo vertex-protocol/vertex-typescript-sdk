@@ -3,7 +3,7 @@ import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { TimeInSeconds } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function stakingQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -46,5 +46,5 @@ async function stakingQueriesTests(context: RunContext) {
   prettyPrint('Vrtx Supply Snapshots', vrtxSupplySnapshots);
 }
 
-it('[indexer-client]: Running staking queries tests', () =>
+void test('[indexer-client]: Running staking queries tests', () =>
   runWithContext(stakingQueriesTests));

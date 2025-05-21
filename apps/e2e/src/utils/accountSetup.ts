@@ -50,4 +50,4 @@ async function accountSetup(context: RunContext) {
 }
 
 console.log('[utils]: Running account setup');
-runWithContext(accountSetup);
+void runWithContext(accountSetup);

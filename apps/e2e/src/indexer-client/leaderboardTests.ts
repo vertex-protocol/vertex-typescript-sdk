@@ -4,7 +4,7 @@ import { getServerError } from '../utils/getServerError';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function leaderboardTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -106,5 +106,5 @@ async function leaderboardTests(context: RunContext) {
   }
 }
 
-it('[indexer-client]: Running leaderboard tests', () =>
+void test('[indexer-client]: Running leaderboard tests', () =>
   runWithContext(leaderboardTests));

@@ -15,7 +15,7 @@ import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
 import { waitForTransaction } from '../utils/waitForTransaction';
-import { it } from 'node:test';
+import { test } from 'node:test';
 
 async function collateralTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -124,5 +124,5 @@ async function collateralTests(context: RunContext) {
   prettyPrint('Subaccount info after withdraw collateral', subaccountInfoAtEnd);
 }
 
-it('[engine-client]: Running collateral tests', () =>
+void test('[engine-client]: Running collateral tests', () =>
   runWithContext(collateralTests));

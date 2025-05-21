@@ -7,7 +7,7 @@ import { prettyPrint } from '../utils/prettyPrint';
 import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 import { QUOTE_PRODUCT_ID } from '@vertex-protocol/contracts';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function marketsQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -100,5 +100,5 @@ async function marketsQueriesTests(context: RunContext) {
   );
 }
 
-it('[indexer-client]: Running markets queries tests', () =>
+void test('[indexer-client]: Running markets queries tests', () =>
   runWithContext(marketsQueriesTests));

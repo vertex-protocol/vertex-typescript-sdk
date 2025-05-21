@@ -4,7 +4,7 @@ import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function subaccountQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -177,5 +177,5 @@ async function subaccountQueriesTests(context: RunContext) {
   prettyPrint('Fast Withdrawal Signature', fastWithdrawalSignature);
 }
 
-it('[indexer-client]: Running subaccount queries tests', () =>
+void test('[indexer-client]: Running subaccount queries tests', () =>
   runWithContext(subaccountQueriesTests));

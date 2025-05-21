@@ -13,7 +13,7 @@ import { addDecimals, nowInSeconds } from '@vertex-protocol/utils';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function wsMessageTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -156,4 +156,5 @@ async function wsMessageTests(context: RunContext) {
   prettyPrint('List subscriptions WS request', wsListSubscriptionsReq);
 }
 
-it('[client]: Running WS message tests', () => runWithContext(wsMessageTests));
+void test('[client]: Running WS message tests', () =>
+  runWithContext(wsMessageTests));

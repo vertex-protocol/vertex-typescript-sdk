@@ -9,7 +9,7 @@ import {
 import { RunContext } from '../utils/types';
 import { getContract } from 'viem';
 import { runWithContext } from '../utils/runWithContext';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function vlpTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -65,4 +65,4 @@ async function vlpTests(context: RunContext) {
   prettyPrint('Done burning VLP', burnVlpResult);
 }
 
-it('[engine-client]: Running VLP tests', () => runWithContext(vlpTests));
+void test('[engine-client]: Running VLP tests', () => runWithContext(vlpTests));

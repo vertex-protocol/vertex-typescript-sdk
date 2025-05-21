@@ -2,7 +2,7 @@ import { EngineClient } from '@vertex-protocol/engine-client';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function queryTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -35,4 +35,5 @@ async function queryTests(context: RunContext) {
   prettyPrint('Min deposit rates', minDepositRates);
 }
 
-it('[engine-client]: Running query tests', () => runWithContext(queryTests));
+void test('[engine-client]: Running query tests', () =>
+  runWithContext(queryTests));

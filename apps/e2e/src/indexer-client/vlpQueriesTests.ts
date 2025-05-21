@@ -3,7 +3,7 @@ import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
 import { prettyPrint } from '../utils/prettyPrint';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function vlpQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -22,5 +22,5 @@ async function vlpQueriesTests(context: RunContext) {
   prettyPrint('VLP snapshots', vlpSnapshots);
 }
 
-it('[indexer-client]: Running VLP queries tests', () =>
+void test('[indexer-client]: Running VLP queries tests', () =>
   runWithContext(vlpQueriesTests));

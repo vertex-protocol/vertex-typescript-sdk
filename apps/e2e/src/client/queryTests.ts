@@ -2,7 +2,7 @@ import { createVertexClient, VertexClient } from '@vertex-protocol/client';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function queryTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -124,4 +124,4 @@ async function queryTests(context: RunContext) {
   );
 }
 
-it('[client]: Running query tests', () => runWithContext(queryTests));
+void test('[client]: Running query tests', () => runWithContext(queryTests));

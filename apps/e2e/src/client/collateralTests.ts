@@ -9,7 +9,7 @@ import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { waitForTransaction } from '../utils/waitForTransaction';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function collateralTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -140,4 +140,5 @@ async function collateralTests(context: RunContext) {
   );
 }
 
-it('[client]: Running collateral tests', () => runWithContext(collateralTests));
+void test('[client]: Running collateral tests', () =>
+  runWithContext(collateralTests));

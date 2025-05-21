@@ -20,7 +20,7 @@ import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { waitForTransaction } from '../utils/waitForTransaction';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function fullSanity(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -220,5 +220,5 @@ async function fullSanity(context: RunContext) {
   prettyPrint('List orders by digest result', ordersByDigest);
 }
 
-it('[trigger-client]: Running full sanity test', () =>
+void test('[trigger-client]: Running full sanity test', () =>
   runWithContext(fullSanity));

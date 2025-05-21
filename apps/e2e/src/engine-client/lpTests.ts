@@ -5,7 +5,7 @@ import { getContract } from 'viem';
 import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function lpTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -64,4 +64,4 @@ async function lpTests(context: RunContext) {
   prettyPrint('Done burning spot lp', burnSpotLpResult);
 }
 
-it('[engine-client]: Running LP tests', () => runWithContext(lpTests));
+void test('[engine-client]: Running LP tests', () => runWithContext(lpTests));

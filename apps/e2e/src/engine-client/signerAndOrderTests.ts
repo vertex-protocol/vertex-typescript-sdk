@@ -20,7 +20,7 @@ import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
 import { delay } from '../utils/delay';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function signerAndOrderTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -350,5 +350,5 @@ async function signerAndOrderTests(context: RunContext) {
   }
 }
 
-it('[engine-client]: Running order tests', () =>
+void test('[engine-client]: Running order tests', () =>
   runWithContext(signerAndOrderTests));

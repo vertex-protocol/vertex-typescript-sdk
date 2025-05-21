@@ -3,7 +3,7 @@ import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { TimeInSeconds } from '@vertex-protocol/utils';
 import { prettyPrint } from '../utils/prettyPrint';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function rewardsQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -98,5 +98,5 @@ async function rewardsQueriesTests(context: RunContext) {
   }
 }
 
-it('[indexer-client]: Running rewards queries tests', () =>
+void test('[indexer-client]: Running rewards queries tests', () =>
   runWithContext(rewardsQueriesTests));

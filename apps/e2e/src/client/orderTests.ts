@@ -9,7 +9,7 @@ import { getExpiration } from '../utils/getExpiration';
 import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
-import { it } from 'node:test';
+import test from 'node:test';
 
 async function orderTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -119,4 +119,4 @@ async function orderTests(context: RunContext) {
   prettyPrint('Cancel and place order result', cancelAndPlaceResult);
 }
 
-it('[client]: Running order tests', () => runWithContext(orderTests));
+void test('[client]: Running order tests', () => runWithContext(orderTests));
