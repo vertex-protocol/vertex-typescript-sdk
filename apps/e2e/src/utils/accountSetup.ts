@@ -17,13 +17,12 @@ async function accountSetup(context: RunContext) {
     publicClient,
   });
 
-  const quoteMintAmount = addDecimals(1000, 6);
   const quoteDepositAmount = addDecimals(1000, 6);
 
   console.log('Minting tokens');
   await waitForTransaction(
     vertexClient.spot._mintMockERC20({
-      amount: quoteMintAmount,
+      amount: quoteDepositAmount,
       productId: QUOTE_PRODUCT_ID,
     }),
     publicClient,
@@ -32,7 +31,7 @@ async function accountSetup(context: RunContext) {
   console.log('Approving allowance');
   await waitForTransaction(
     vertexClient.spot.approveAllowance({
-      amount: quoteMintAmount,
+      amount: quoteDepositAmount,
       productId: QUOTE_PRODUCT_ID,
     }),
     publicClient,
