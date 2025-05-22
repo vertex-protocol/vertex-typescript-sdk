@@ -45,6 +45,6 @@ Before running any tests, make sure to initialize the environment and test accou
 
 ### Trigger Client Tests
 
-| Command      | Description                       |
-| ------------ | --------------------------------- |
-| yarn trigger | Runs all trigger-client E2E tests |
+| Command          | Description                       |
+| ---------------- | --------------------------------- |
+| yarn e2e:trigger | Runs all trigger-client E2E tests |
