@@ -10,6 +10,9 @@ Before running any tests, make sure to initialize the environment and test accou
 
 ## Running Tests
 
+To run all tests, use the following command:
+`yarn e2e`
+
 ### Client Tests
 
 | Command                          | Description                                                            |
