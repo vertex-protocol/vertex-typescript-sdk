@@ -12,6 +12,7 @@
   "repository": "https://github.com/vertex-protocol/vertex-typescript-sdk",
   "scripts": {
     "account-setup": "tsx ./src/utils/accountSetup.ts",
+    "e2e": "tsx --test ./src/**/*.test.ts",
     "e2e:client/collateral-tests": "tsx --test ./src/client/collateralTests.test.ts",
     "e2e:client": "tsx --test ./src/client/*.test.ts",
     "e2e:client/order-tests": "tsx --test ./src/client/orderTests.test.ts",
