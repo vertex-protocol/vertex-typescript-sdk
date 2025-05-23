@@ -3,11 +3,11 @@ import {
   IndexerClient,
 } from '@vertex-protocol/indexer-client';
 import { RunContext } from '../utils/types';
-import { prettyPrint } from '../utils/prettyPrint';
 import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
 import { runWithContext } from '../utils/runWithContext';
 import { QUOTE_PRODUCT_ID } from '@vertex-protocol/contracts';
 import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function marketsQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -21,35 +21,35 @@ async function marketsQueriesTests(context: RunContext) {
     productId: 2,
   });
 
-  prettyPrint('Funding rate', fundingRate.fundingRate.toString());
+  debugPrint('Funding rate', fundingRate.fundingRate.toString());
 
   const fundingRates = await client.getMultiProductFundingRates({
     productIds: [2, 4],
   });
 
-  prettyPrint('Multiple products funding rate', fundingRates);
+  debugPrint('Multiple products funding rate', fundingRates);
 
   const price = await client.getPerpPrices({
     productId: 2,
   });
 
-  prettyPrint('Perp prices', price);
+  debugPrint('Perp prices', price);
 
   const perpPrices = await client.getMultiProductPerpPrices({
     productIds: [2, 4, 6],
   });
 
-  prettyPrint('Multiple products perp prices', perpPrices);
+  debugPrint('Multiple products perp prices', perpPrices);
 
   const oraclePrices = await client.getOraclePrices({
     productIds: [1, 2, 3, 4],
   });
 
-  prettyPrint('Oracle Prices', oraclePrices);
+  debugPrint('Oracle Prices', oraclePrices);
 
   const usdcPrice = await client.getQuotePrice();
 
-  prettyPrint('USDC Price', usdcPrice);
+  debugPrint('USDC Price', usdcPrice);
 
   const candlesticks = await client.getCandlesticks({
     limit: 2,
@@ -57,7 +57,7 @@ async function marketsQueriesTests(context: RunContext) {
     period: CandlestickPeriod.DAY,
     productId: 3,
   });
-  prettyPrint('Candlesticks', candlesticks);
+  debugPrint('Candlesticks', candlesticks);
 
   const marketSnapshots = await client.getMarketSnapshots({
     granularity: TimeInSeconds.HOUR,
@@ -65,7 +65,7 @@ async function marketsQueriesTests(context: RunContext) {
     productIds: [2, 3, 4],
   });
 
-  prettyPrint('Market snapshots', marketSnapshots);
+  debugPrint('Market snapshots', marketSnapshots);
 
   const productSnapshots = await client.getProductSnapshots({
     limit: 2,
@@ -73,13 +73,13 @@ async function marketsQueriesTests(context: RunContext) {
     productId: 2,
   });
 
-  prettyPrint('Product snapshots', productSnapshots);
+  debugPrint('Product snapshots', productSnapshots);
 
   const multiProductSnapshots = await client.getMultiProductSnapshots({
     productIds: [2, 3],
   });
 
-  prettyPrint(
+  debugPrint(
     'Multiple products snapshots',
     Object.values(multiProductSnapshots).pop(),
   );
@@ -94,7 +94,7 @@ async function marketsQueriesTests(context: RunContext) {
     ],
   });
 
-  prettyPrint(
+  debugPrint(
     'Multi timestamp and multi product snapshots',
     multiTimestampProductSnapshots,
   );

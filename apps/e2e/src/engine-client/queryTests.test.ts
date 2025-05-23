@@ -1,8 +1,8 @@
 import { EngineClient } from '@vertex-protocol/engine-client';
-import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
 import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function queryTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -17,22 +17,22 @@ async function queryTests(context: RunContext) {
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
-  prettyPrint('Subaccount info', subaccountInfo);
+  debugPrint('Subaccount info', subaccountInfo);
 
   const symbols = await client.getSymbols({});
-  prettyPrint('Symbols', symbols);
+  debugPrint('Symbols', symbols);
 
   const products = await client.getAllMarkets();
-  prettyPrint('All products', products);
+  debugPrint('All products', products);
 
   const healthGroups = await client.getHealthGroups();
-  prettyPrint('Health groups', healthGroups);
+  debugPrint('Health groups', healthGroups);
 
   const insurance = await client.getInsurance();
-  prettyPrint('Insurance', insurance);
+  debugPrint('Insurance', insurance);
 
   const minDepositRates = await client.getMinDepositRates();
-  prettyPrint('Min deposit rates', minDepositRates);
+  debugPrint('Min deposit rates', minDepositRates);
 }
 
 void test('[engine-client]: Running query tests', () =>

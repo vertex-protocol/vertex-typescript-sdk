@@ -5,11 +5,11 @@ import {
 } from '@vertex-protocol/contracts';
 import { addDecimals, toBigInt } from '@vertex-protocol/utils';
 import { encodeAbiParameters, encodePacked, parseAbiParameters } from 'viem';
-import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { waitForTransaction } from '../utils/waitForTransaction';
 import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function collateralTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -76,14 +76,14 @@ async function collateralTests(context: RunContext) {
     subaccountName: 'default',
     recipientSubaccountName: 'default2',
   });
-  prettyPrint('Transfer result #1', transferResult1);
+  debugPrint('Transfer result #1', transferResult1);
 
   const transferResult2 = await vertexClient.spot.transferQuote({
     amount: quoteTransferAmount,
     subaccountName: 'default2',
     recipientSubaccountName: 'default',
   });
-  prettyPrint('Transfer result #2', transferResult2);
+  debugPrint('Transfer result #2', transferResult2);
 
   /*
   Withdraw 50 via regular flow, and 50 via slow-mode
@@ -98,7 +98,7 @@ async function collateralTests(context: RunContext) {
     productId: QUOTE_PRODUCT_ID,
     amount: withdrawAmount,
   });
-  prettyPrint('Withdrawal result', withdrawalResult);
+  debugPrint('Withdrawal result', withdrawalResult);
 
   console.log('Slow mode withdrawal');
   // 1. approve 1 USDC for submitting slow-mode tx

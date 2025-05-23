@@ -16,11 +16,11 @@ import {
 import { addDecimals, toBigInt } from '@vertex-protocol/utils';
 import { getContract } from 'viem';
 import { getExpiration } from '../utils/getExpiration';
-import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { waitForTransaction } from '../utils/waitForTransaction';
 import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function fullSanity(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -112,7 +112,7 @@ async function fullSanity(context: RunContext) {
     id: 1000,
   };
   const shortStopResult = await client.placeTriggerOrder(shortTriggerParams);
-  prettyPrint('Short stop order result', shortStopResult.data);
+  debugPrint('Short stop order result', shortStopResult.data);
 
   const btcPerpProductId = 2;
   const btcPerpOrderbookAddr =
@@ -149,7 +149,7 @@ async function fullSanity(context: RunContext) {
 
   const longStopResult = await client.placeTriggerOrder(longStopParams);
 
-  prettyPrint('Long stop order result', longStopResult);
+  debugPrint('Long stop order result', longStopResult);
 
   const pendingListOrdersResult = await client.listOrders({
     chainId,
@@ -159,7 +159,7 @@ async function fullSanity(context: RunContext) {
     verifyingAddr: endpointAddr,
   });
 
-  prettyPrint('Pending list orders result', pendingListOrdersResult);
+  debugPrint('Pending list orders result', pendingListOrdersResult);
 
   const pendingListOrdersForProductResult = await client.listOrders({
     chainId,
@@ -170,7 +170,7 @@ async function fullSanity(context: RunContext) {
     productId: ethProductId,
   });
 
-  prettyPrint(
+  debugPrint(
     'Pending list orders for product result',
     pendingListOrdersForProductResult,
   );
@@ -185,7 +185,7 @@ async function fullSanity(context: RunContext) {
     chainId,
   });
 
-  prettyPrint('Cancel via digest result', cancelViaDigestResult);
+  debugPrint('Cancel via digest result', cancelViaDigestResult);
 
   // Cancel orders via product
   const cancelViaProductResult = await client.cancelProductOrders({
@@ -196,7 +196,7 @@ async function fullSanity(context: RunContext) {
     chainId,
   });
 
-  prettyPrint('Cancel via product result', cancelViaProductResult);
+  debugPrint('Cancel via product result', cancelViaProductResult);
 
   const nonPendingListOrdersResult = await client.listOrders({
     chainId,
@@ -206,7 +206,7 @@ async function fullSanity(context: RunContext) {
     verifyingAddr: endpointAddr,
   });
 
-  prettyPrint('Non-pending list orders result', nonPendingListOrdersResult);
+  debugPrint('Non-pending list orders result', nonPendingListOrdersResult);
 
   const ordersByDigest = await client.listOrders({
     chainId,
@@ -217,7 +217,7 @@ async function fullSanity(context: RunContext) {
     digests: [shortStopDigest, longStopDigest],
   });
 
-  prettyPrint('List orders by digest result', ordersByDigest);
+  debugPrint('List orders by digest result', ordersByDigest);
 }
 
 void test('[trigger-client]: Running full sanity test', () =>

@@ -1,10 +1,10 @@
 import { Subaccount } from '@vertex-protocol/contracts';
 import { IndexerClient } from '@vertex-protocol/indexer-client';
 import { getServerError } from '../utils/getServerError';
-import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
 import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function leaderboardTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -28,7 +28,7 @@ async function leaderboardTests(context: RunContext) {
     rankType: 'pnl',
   });
 
-  prettyPrint('Leaderboard', leaderboard);
+  debugPrint('Leaderboard', leaderboard);
 
   const leaderboardParticipant = await client.getLeaderboardParticipant({
     subaccount: {
@@ -38,13 +38,13 @@ async function leaderboardTests(context: RunContext) {
     contestIds: [5, 6, 7],
   });
 
-  prettyPrint('Leaderboard Participant', leaderboardParticipant);
+  debugPrint('Leaderboard Participant', leaderboardParticipant);
 
   const leaderboardContests = await client.getLeaderboardContests({
     contestIds: [1],
   });
 
-  prettyPrint('Leaderboard Contests', leaderboardContests);
+  debugPrint('Leaderboard Contests', leaderboardContests);
 
   const leaderboardFirstPage = await client.getPaginatedLeaderboard({
     rankType: 'roi',
@@ -53,7 +53,7 @@ async function leaderboardTests(context: RunContext) {
     limit: 5,
   });
 
-  prettyPrint('Leaderboard First Page', leaderboardFirstPage);
+  debugPrint('Leaderboard First Page', leaderboardFirstPage);
 
   if (leaderboardFirstPage.meta.hasMore) {
     const leaderboardSecondPage = await client.getPaginatedLeaderboard({
@@ -63,7 +63,7 @@ async function leaderboardTests(context: RunContext) {
       limit: 5,
     });
 
-    prettyPrint('Leaderboard Second Page', leaderboardSecondPage);
+    debugPrint('Leaderboard Second Page', leaderboardSecondPage);
   }
 
   try {
@@ -78,7 +78,7 @@ async function leaderboardTests(context: RunContext) {
         },
       });
 
-    prettyPrint(
+    debugPrint(
       'Update leaderboard registration result',
       updateLeaderboardRegistrationResult,
     );
@@ -97,7 +97,7 @@ async function leaderboardTests(context: RunContext) {
         subaccountOwner: subaccount.subaccountOwner,
       });
 
-    prettyPrint(
+    debugPrint(
       'Leaderboard registration result',
       leaderboardRegistrationResult,
     );

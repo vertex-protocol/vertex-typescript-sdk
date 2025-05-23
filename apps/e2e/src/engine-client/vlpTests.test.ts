@@ -1,5 +1,4 @@
 import { EngineClient } from '@vertex-protocol/engine-client';
-import { prettyPrint } from '../utils/prettyPrint';
 import { VERTEX_ABIS, VLP_PRODUCT_ID } from '@vertex-protocol/contracts';
 import {
   addDecimals,
@@ -10,6 +9,7 @@ import { RunContext } from '../utils/types';
 import { getContract } from 'viem';
 import { runWithContext } from '../utils/runWithContext';
 import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function vlpTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -34,7 +34,7 @@ async function vlpTests(context: RunContext) {
     subaccountName: 'default',
     spotLeverage: true,
   });
-  prettyPrint('Max mint VLP amount', maxMintVlpAmount);
+  debugPrint('Max mint VLP amount', maxMintVlpAmount);
 
   const mintVlpResult = await client.mintVlp({
     subaccountOwner: walletClientAddress,
@@ -43,7 +43,7 @@ async function vlpTests(context: RunContext) {
     verifyingAddr: endpointAddr,
     chainId,
   });
-  prettyPrint('Done minting VLP', mintVlpResult);
+  debugPrint('Done minting VLP', mintVlpResult);
 
   const subaccountInfoAfterVlpMint = await client.getSubaccountSummary({
     subaccountOwner: walletClientAddress,
@@ -53,7 +53,7 @@ async function vlpTests(context: RunContext) {
     subaccountInfoAfterVlpMint.balances.find(
       (bal) => bal.productId === VLP_PRODUCT_ID,
     )?.amount ?? BigDecimals.ZERO;
-  prettyPrint('VLP Balance', removeDecimals(vlpBalanceAmount));
+  debugPrint('VLP Balance', removeDecimals(vlpBalanceAmount));
 
   const burnVlpResult = await client.burnVlp({
     subaccountOwner: walletClientAddress,
@@ -62,7 +62,7 @@ async function vlpTests(context: RunContext) {
     verifyingAddr: endpointAddr,
     chainId,
   });
-  prettyPrint('Done burning VLP', burnVlpResult);
+  debugPrint('Done burning VLP', burnVlpResult);
 }
 
 void test('[engine-client]: Running VLP tests', () => runWithContext(vlpTests));

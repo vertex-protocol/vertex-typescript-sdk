@@ -2,8 +2,8 @@ import { IndexerClient } from '@vertex-protocol/indexer-client';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { TimeInSeconds } from '@vertex-protocol/utils';
-import { prettyPrint } from '../utils/prettyPrint';
 import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function rewardsQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -18,7 +18,7 @@ async function rewardsQueriesTests(context: RunContext) {
     limit: 5,
   });
 
-  prettyPrint('Rewards', rewards);
+  debugPrint('Rewards', rewards);
 
   const foundationTokenIncentivesSnapshots =
     await client.getFoundationTokenIncentivesSnapshots({
@@ -26,7 +26,7 @@ async function rewardsQueriesTests(context: RunContext) {
       limit: 5,
     });
 
-  prettyPrint(
+  debugPrint(
     'Foundation Token Incentives Snapshots',
     foundationTokenIncentivesSnapshots,
   );
@@ -36,7 +36,7 @@ async function rewardsQueriesTests(context: RunContext) {
       address: walletClient.account.address,
     });
 
-  prettyPrint(
+  debugPrint(
     'Claim Foundation Rewards Merkle Proofs',
     claimFoundationRewardsMerkleProofs,
   );
@@ -46,13 +46,13 @@ async function rewardsQueriesTests(context: RunContext) {
     limit: 5,
   });
 
-  prettyPrint('Taker Rewards', takerRewards);
+  debugPrint('Taker Rewards', takerRewards);
 
   const claimVrtxMerkleProofs = await client.getClaimVrtxMerkleProofs({
     address: walletClient.account.address,
   });
 
-  prettyPrint('Claim Vrtx Merkle Proofs', claimVrtxMerkleProofs);
+  debugPrint('Claim Vrtx Merkle Proofs', claimVrtxMerkleProofs);
 
   if (
     context.env.chainEnv === 'blastTestnet' ||
@@ -72,12 +72,12 @@ async function rewardsQueriesTests(context: RunContext) {
         limit: 10,
       });
 
-    prettyPrint('Blitz & Blast Points', {
+    debugPrint('Blitz & Blast Points', {
       blastPoints,
       blitzPoints,
     });
 
-    prettyPrint('Blitz Points Leaderboard', blitzPointsLeaderboard);
+    debugPrint('Blitz Points Leaderboard', blitzPointsLeaderboard);
   }
 
   if (
@@ -93,8 +93,8 @@ async function rewardsQueriesTests(context: RunContext) {
         limit: 10,
       });
 
-    prettyPrint('Sonic Points', sonicPoints);
-    prettyPrint('Sonic Points Leaderboard', sonicPointsLeaderboard);
+    debugPrint('Sonic Points', sonicPoints);
+    debugPrint('Sonic Points Leaderboard', sonicPointsLeaderboard);
   }
 }
 

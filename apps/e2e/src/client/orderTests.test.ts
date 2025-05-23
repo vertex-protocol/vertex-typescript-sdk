@@ -6,10 +6,10 @@ import {
 } from '@vertex-protocol/client';
 import { getOrderDigest, getOrderNonce } from '@vertex-protocol/contracts';
 import { getExpiration } from '../utils/getExpiration';
-import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function orderTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -52,7 +52,7 @@ async function orderTests(context: RunContext) {
     productId: spotOrderProductId,
   });
 
-  prettyPrint('Place order result', orderResult);
+  debugPrint('Place order result', orderResult);
 
   const orderCustomIdResult = await vertexClient.market.placeOrder({
     id: 100,
@@ -60,7 +60,7 @@ async function orderTests(context: RunContext) {
     productId: spotOrderProductId,
   });
 
-  prettyPrint('Place order w/ custom id result', orderCustomIdResult);
+  debugPrint('Place order w/ custom id result', orderCustomIdResult);
 
   const subaccountOrders =
     await vertexClient.context.engineClient.getSubaccountOrders({
@@ -69,7 +69,7 @@ async function orderTests(context: RunContext) {
       subaccountOwner: walletClientAddress,
     });
 
-  prettyPrint('Subaccount orders', subaccountOrders);
+  debugPrint('Subaccount orders', subaccountOrders);
 
   console.log(`Cancelling order`);
   const cancelResult = await vertexClient.market.cancelOrders({
@@ -78,7 +78,7 @@ async function orderTests(context: RunContext) {
     subaccountName: 'default',
   });
 
-  prettyPrint('Cancel order result', cancelResult);
+  debugPrint('Cancel order result', cancelResult);
 
   const perpOrderProductId = 4;
 
@@ -87,7 +87,7 @@ async function orderTests(context: RunContext) {
     productId: perpOrderProductId,
   });
 
-  prettyPrint('Place perp order result', perpOrderResult);
+  debugPrint('Place perp order result', perpOrderResult);
 
   const perpOrderDigest = getOrderDigest({
     order: perpOrderResult.orderParams,
@@ -116,7 +116,7 @@ async function orderTests(context: RunContext) {
     },
   });
 
-  prettyPrint('Cancel and place order result', cancelAndPlaceResult);
+  debugPrint('Cancel and place order result', cancelAndPlaceResult);
 }
 
 void test('[client]: Running order tests', () => runWithContext(orderTests));

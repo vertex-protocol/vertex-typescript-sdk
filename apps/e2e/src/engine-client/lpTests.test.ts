@@ -2,10 +2,10 @@ import { EngineClient } from '@vertex-protocol/engine-client';
 import { VERTEX_ABIS } from '@vertex-protocol/contracts';
 import { addDecimals, BigDecimals } from '@vertex-protocol/utils';
 import { getContract } from 'viem';
-import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
 import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function lpTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -45,13 +45,13 @@ async function lpTests(context: RunContext) {
     verifyingAddr: endpointAddr,
     chainId,
   });
-  prettyPrint('Done minting spot lp', mintSpotLpResult);
+  debugPrint('Done minting spot lp', mintSpotLpResult);
 
   const subaccountInfoAfterMintingLp = await client.getSubaccountSummary({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
-  prettyPrint('Subaccount info after LP mint', subaccountInfoAfterMintingLp);
+  debugPrint('Subaccount info after LP mint', subaccountInfoAfterMintingLp);
 
   const burnSpotLpResult = await client.burnLp({
     subaccountOwner: walletClientAddress,
@@ -61,7 +61,7 @@ async function lpTests(context: RunContext) {
     verifyingAddr: endpointAddr,
     chainId,
   });
-  prettyPrint('Done burning spot lp', burnSpotLpResult);
+  debugPrint('Done burning spot lp', burnSpotLpResult);
 }
 
 void test('[engine-client]: Running LP tests', () => runWithContext(lpTests));

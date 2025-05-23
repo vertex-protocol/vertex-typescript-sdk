@@ -2,8 +2,8 @@ import { IndexerClient } from '@vertex-protocol/indexer-client';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
-import { prettyPrint } from '../utils/prettyPrint';
 import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function vlpQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -19,7 +19,7 @@ async function vlpQueriesTests(context: RunContext) {
     granularity: TimeInSeconds.DAY,
   });
 
-  prettyPrint('VLP snapshots', vlpSnapshots);
+  debugPrint('VLP snapshots', vlpSnapshots);
 }
 
 void test('[indexer-client]: Running VLP queries tests', () =>

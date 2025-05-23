@@ -1,8 +1,8 @@
 import { createVertexClient, VertexClient } from '@vertex-protocol/client';
-import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
 import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function queryTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -15,35 +15,29 @@ async function queryTests(context: RunContext) {
 
   const walletClientAddress = walletClient.account.address;
 
-  prettyPrint('Engine time', await vertexClient.context.engineClient.getTime());
-  prettyPrint(
-    'Symbols',
-    await vertexClient.context.engineClient.getSymbols({}),
-  );
+  debugPrint('Engine time', await vertexClient.context.engineClient.getTime());
+  debugPrint('Symbols', await vertexClient.context.engineClient.getSymbols({}));
 
   // Fetches state from offchain sequencer
-  prettyPrint(
+  debugPrint(
     'Engine All Markets',
     await vertexClient.market.getAllEngineMarkets(),
   );
-  prettyPrint(
+  debugPrint(
     'Edge all markets',
     await vertexClient.market.getAllEngineMarkets(),
   );
 
   // Fetches state from Arbitrum
-  prettyPrint(
-    'On-Chain all markets',
-    await vertexClient.market.getAllMarkets(),
-  );
+  debugPrint('On-Chain all markets', await vertexClient.market.getAllMarkets());
 
-  prettyPrint(
+  debugPrint(
     'Latest market prices',
     await vertexClient.market.getLatestMarketPrices({
       productIds: [1, 2, 3],
     }),
   );
-  prettyPrint(
+  debugPrint(
     'Market liquidity',
     await vertexClient.market.getMarketLiquidity({
       productId: 3,
@@ -53,7 +47,7 @@ async function queryTests(context: RunContext) {
   );
 
   // Subaccount state from engine
-  prettyPrint(
+  debugPrint(
     'Subaccount state from engine',
     await vertexClient.subaccount.getEngineSubaccountSummary({
       subaccountOwner: walletClientAddress,
@@ -61,7 +55,7 @@ async function queryTests(context: RunContext) {
     }),
   );
   // Subaccount state from Arbitrum
-  prettyPrint(
+  debugPrint(
     'Subaccount state on-chain',
     await vertexClient.subaccount.getSubaccountSummary({
       subaccountOwner: walletClientAddress,
@@ -69,7 +63,7 @@ async function queryTests(context: RunContext) {
     }),
   );
 
-  prettyPrint(
+  debugPrint(
     'Isolated positions',
     await vertexClient.subaccount.getIsolatedPositions({
       subaccountOwner: walletClientAddress,
@@ -77,7 +71,7 @@ async function queryTests(context: RunContext) {
     }),
   );
 
-  prettyPrint(
+  debugPrint(
     'Subaccount fee rates',
     await vertexClient.subaccount.getSubaccountFeeRates({
       subaccountOwner: walletClientAddress,
@@ -85,7 +79,7 @@ async function queryTests(context: RunContext) {
     }),
   );
 
-  prettyPrint(
+  debugPrint(
     'Subaccount linked signer with rate limit',
     await vertexClient.subaccount.getSubaccountLinkedSignerWithRateLimit({
       subaccount: {
@@ -95,7 +89,7 @@ async function queryTests(context: RunContext) {
     }),
   );
 
-  prettyPrint(
+  debugPrint(
     'Referral code',
     await vertexClient.subaccount.getReferralCode({
       subaccount: {
@@ -105,7 +99,7 @@ async function queryTests(context: RunContext) {
     }),
   );
 
-  prettyPrint(
+  debugPrint(
     'Open subaccount orders',
     await vertexClient.market.getOpenSubaccountOrders({
       subaccountOwner: walletClientAddress,
@@ -114,7 +108,7 @@ async function queryTests(context: RunContext) {
     }),
   );
 
-  prettyPrint(
+  debugPrint(
     'Open subaccount multi-product orders',
     await vertexClient.market.getOpenSubaccountMultiProductOrders({
       subaccountOwner: walletClientAddress,

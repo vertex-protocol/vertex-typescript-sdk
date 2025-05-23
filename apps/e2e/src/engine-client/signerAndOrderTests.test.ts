@@ -16,11 +16,11 @@ import { addDecimals } from '@vertex-protocol/utils';
 import { createWalletClient, getContract, http, zeroAddress } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { getExpiration } from '../utils/getExpiration';
-import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
 import { delay } from '../utils/delay';
 import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function signerAndOrderTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -40,7 +40,7 @@ async function signerAndOrderTests(context: RunContext) {
 
   const endpointAddr = await clearinghouse.read.getEndpoint();
   const products = await client.getAllMarkets();
-  prettyPrint('All products', products);
+  debugPrint('All products', products);
 
   console.log('Placing order');
   const spotProductId = 1;
@@ -69,7 +69,7 @@ async function signerAndOrderTests(context: RunContext) {
     verifyingAddr: spotOrderbookAddr,
     chainId,
   });
-  prettyPrint('Done placing spot order', spotPlaceOrderResult);
+  debugPrint('Done placing spot order', spotPlaceOrderResult);
 
   if (spotOrderDigest !== spotPlaceOrderResult.data.digest) {
     throw Error(
@@ -96,7 +96,7 @@ async function signerAndOrderTests(context: RunContext) {
     order: isolatedOrder,
     nonce: getOrderNonce(),
   });
-  prettyPrint('Done placing isolated order', perpPlaceIsolatedOrderResult);
+  debugPrint('Done placing isolated order', perpPlaceIsolatedOrderResult);
   const perpIsolatedOrderDigest = getIsolatedOrderDigest({
     order: perpPlaceIsolatedOrderResult.orderParams,
     verifyingAddr: perpOrderbookAddr,
@@ -114,29 +114,29 @@ async function signerAndOrderTests(context: RunContext) {
     subaccountName: 'default',
     subaccountOwner: walletClientAddress,
   });
-  prettyPrint('Subaccount orders', subaccountOrders);
+  debugPrint('Subaccount orders', subaccountOrders);
 
   const marketLiquidity = await client.getMarketLiquidity({
     depth: 10,
     productId: spotProductId,
   });
-  prettyPrint('Market liquidity', marketLiquidity);
+  debugPrint('Market liquidity', marketLiquidity);
 
   const marketPrice = await client.getMarketPrice({
     productId: spotProductId,
   });
-  prettyPrint('Market price', marketPrice);
+  debugPrint('Market price', marketPrice);
 
   const marketPrices = await client.getMarketPrices({
     productIds: [spotProductId, 2, 3],
   });
-  prettyPrint('Market prices', marketPrices);
+  debugPrint('Market prices', marketPrices);
 
   const feeRates = await client.getSubaccountFeeRates({
     subaccountName: 'default',
     subaccountOwner: walletClientAddress,
   });
-  prettyPrint('Fee rates', feeRates);
+  debugPrint('Fee rates', feeRates);
 
   const maxOrderSize = await client.getMaxOrderSize({
     subaccountOwner: walletClientAddress,
@@ -145,14 +145,14 @@ async function signerAndOrderTests(context: RunContext) {
     price: marketPrice.ask,
     side: 'long',
   });
-  prettyPrint('Max order size', maxOrderSize);
+  debugPrint('Max order size', maxOrderSize);
 
   const maxWithdrawable = await client.getMaxWithdrawable({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: QUOTE_PRODUCT_ID,
   });
-  prettyPrint('Max withdrawable', maxWithdrawable);
+  debugPrint('Max withdrawable', maxWithdrawable);
 
   const maxWithdrawableNoSpotLeverage = await client.getMaxWithdrawable({
     subaccountOwner: walletClientAddress,
@@ -160,7 +160,7 @@ async function signerAndOrderTests(context: RunContext) {
     productId: QUOTE_PRODUCT_ID,
     spotLeverage: false,
   });
-  prettyPrint(
+  debugPrint(
     'Max withdrawable no spot leverage',
     maxWithdrawableNoSpotLeverage,
   );
@@ -169,20 +169,20 @@ async function signerAndOrderTests(context: RunContext) {
     digest: spotOrderDigest,
     productId: spotProductId,
   });
-  prettyPrint('Queried spot order', queriedOrder);
+  debugPrint('Queried spot order', queriedOrder);
 
   const queriedIsolatedOrder = await client.getOrder({
     digest: perpIsolatedOrderDigest,
     productId: perpProductId,
   });
-  prettyPrint('Queried perp isolated order', queriedIsolatedOrder);
+  debugPrint('Queried perp isolated order', queriedIsolatedOrder);
 
   const queriedOrders = await client.getSubaccountMultiProductOrders({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productIds: [spotProductId, perpProductId],
   });
-  prettyPrint('Queried orders', queriedOrders);
+  debugPrint('Queried orders', queriedOrders);
 
   console.log('Cancelling orders');
   const cancelResult = await client.cancelOrders({
@@ -193,21 +193,21 @@ async function signerAndOrderTests(context: RunContext) {
     verifyingAddr: endpointAddr,
     chainId,
   });
-  prettyPrint('Done cancelling orders', cancelResult);
+  debugPrint('Done cancelling orders', cancelResult);
 
   const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
     productId: spotProductId,
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
-  prettyPrint('Subaccount orders after cancel', subaccountOrdersAfterCancel);
+  debugPrint('Subaccount orders after cancel', subaccountOrdersAfterCancel);
 
   const maxWithdrawableAfterCancel = await client.getMaxWithdrawable({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
     productId: QUOTE_PRODUCT_ID,
   });
-  prettyPrint('Max withdrawable after cancel', maxWithdrawableAfterCancel);
+  debugPrint('Max withdrawable after cancel', maxWithdrawableAfterCancel);
 
   const linkedSignerWalletPrivKey =
     await createDeterministicLinkedSignerPrivateKey({
@@ -238,13 +238,13 @@ async function signerAndOrderTests(context: RunContext) {
     subaccountName: 'default',
     verifyingAddr: endpointAddr,
   });
-  prettyPrint('Done linking signer', linkSignerResult);
+  debugPrint('Done linking signer', linkSignerResult);
 
   const linkedSignerQueryResponse = await client.getLinkedSigner({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
-  prettyPrint(
+  debugPrint(
     'Linked signer, setting engine client to use the new signer',
     linkedSignerQueryResponse,
   );
@@ -269,13 +269,13 @@ async function signerAndOrderTests(context: RunContext) {
     order: createIsoPositionOrder,
     nonce: getOrderNonce(),
   });
-  prettyPrint('Done creating isolated position', createIsoPositionOrderResult);
+  debugPrint('Done creating isolated position', createIsoPositionOrderResult);
 
   const isoPositions = await client.getIsolatedPositions({
     subaccountOwner: walletClientAddress,
     subaccountName: 'default',
   });
-  prettyPrint('Isolated positions', isoPositions);
+  debugPrint('Isolated positions', isoPositions);
 
   // Revoke signer
   const revokeSignerResult = await client.linkSigner({
@@ -289,7 +289,7 @@ async function signerAndOrderTests(context: RunContext) {
     verifyingAddr: endpointAddr,
   });
   client.setLinkedSigner(null);
-  prettyPrint('Done revoking signer', revokeSignerResult);
+  debugPrint('Done revoking signer', revokeSignerResult);
 
   // Delay for rate limit
   await delay(5000);
@@ -312,7 +312,7 @@ async function signerAndOrderTests(context: RunContext) {
       nonce: getOrderNonce(),
       chainId,
     });
-    prettyPrint('Done placing order', placeResult);
+    debugPrint('Done placing order', placeResult);
 
     const subaccountOrdersAfterPlace = await client.getSubaccountOrders({
       productId,
@@ -320,7 +320,7 @@ async function signerAndOrderTests(context: RunContext) {
       subaccountName: 'default',
     });
 
-    prettyPrint('Subaccount Orders after place', subaccountOrdersAfterPlace);
+    debugPrint('Subaccount Orders after place', subaccountOrdersAfterPlace);
 
     // Delay for rate limit
     await delay(5000);
@@ -334,7 +334,7 @@ async function signerAndOrderTests(context: RunContext) {
     verifyingAddr: endpointAddr,
     chainId,
   });
-  prettyPrint('Cancel Product Orders', cancelProductOrdersRes);
+  debugPrint('Cancel Product Orders', cancelProductOrdersRes);
 
   for (const productId of [spotProductId, perpProductId]) {
     const subaccountOrdersAfterCancel = await client.getSubaccountOrders({
@@ -343,7 +343,7 @@ async function signerAndOrderTests(context: RunContext) {
       subaccountName: 'default',
     });
 
-    prettyPrint(
+    debugPrint(
       `Subaccount Orders after cancel for product ${productId}`,
       subaccountOrdersAfterCancel,
     );

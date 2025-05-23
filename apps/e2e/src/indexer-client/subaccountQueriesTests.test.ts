@@ -1,10 +1,10 @@
 import { QUOTE_PRODUCT_ID, Subaccount } from '@vertex-protocol/contracts';
 import { IndexerClient } from '@vertex-protocol/indexer-client';
 import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
-import { prettyPrint } from '../utils/prettyPrint';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
 import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function subaccountQueriesTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -24,13 +24,13 @@ async function subaccountQueriesTests(context: RunContext) {
     timestamps: [nowInSeconds(), nowInSeconds() - TimeInSeconds.DAY],
   });
 
-  prettyPrint('Summary', summary);
+  debugPrint('Summary', summary);
 
   const linkedSigner = await client.getLinkedSignerWithRateLimit({
     subaccount,
   });
 
-  prettyPrint('Linked Signer', linkedSigner);
+  debugPrint('Linked Signer', linkedSigner);
 
   const rewards = await client.getPaginatedRewards({
     address: subaccount.subaccountOwner,
@@ -38,20 +38,20 @@ async function subaccountQueriesTests(context: RunContext) {
     startCursor: '10',
   });
 
-  prettyPrint('Paginated Rewards', rewards);
+  debugPrint('Paginated Rewards', rewards);
 
   const takerRewards = await client.getTakerRewards({
     address: subaccount.subaccountOwner,
     limit: 1,
   });
 
-  prettyPrint('Taker Rewards', takerRewards);
+  debugPrint('Taker Rewards', takerRewards);
 
   const referralCode = await client.getReferralCode({
     subaccount,
   });
 
-  prettyPrint('Referral code', referralCode);
+  debugPrint('Referral code', referralCode);
 
   const orders = await client.getPaginatedSubaccountOrders({
     limit: 1,
@@ -60,7 +60,7 @@ async function subaccountQueriesTests(context: RunContext) {
     subaccountOwner: subaccount.subaccountOwner,
   });
 
-  prettyPrint('Paginated Orders', orders);
+  debugPrint('Paginated Orders', orders);
 
   const events = await client.getEvents({
     eventTypes: ['deposit_collateral', 'withdraw_collateral'],
@@ -72,7 +72,7 @@ async function subaccountQueriesTests(context: RunContext) {
     subaccount,
   });
 
-  prettyPrint('Raw Events', events);
+  debugPrint('Raw Events', events);
 
   const eventsAsc = await client.getEvents({
     eventTypes: ['match_orders'],
@@ -84,7 +84,7 @@ async function subaccountQueriesTests(context: RunContext) {
     subaccount,
   });
 
-  prettyPrint('Raw Events Asc', eventsAsc);
+  debugPrint('Raw Events Asc', eventsAsc);
 
   const matchEvents = await client.getPaginatedSubaccountMatchEvents({
     subaccountName: subaccount.subaccountName,
@@ -93,7 +93,7 @@ async function subaccountQueriesTests(context: RunContext) {
     limit: 10,
   });
 
-  prettyPrint('Match events', matchEvents);
+  debugPrint('Match events', matchEvents);
 
   const interestFundingPayments =
     await client.getPaginatedSubaccountInterestFundingPayments({
@@ -103,7 +103,7 @@ async function subaccountQueriesTests(context: RunContext) {
       limit: 10,
     });
 
-  prettyPrint('Interest & funding payments', interestFundingPayments);
+  debugPrint('Interest & funding payments', interestFundingPayments);
 
   const settlementEvents = await client.getPaginatedSubaccountSettlementEvents({
     limit: 1,
@@ -112,7 +112,7 @@ async function subaccountQueriesTests(context: RunContext) {
     subaccountOwner: subaccount.subaccountOwner,
   });
 
-  prettyPrint('Paginated settlement events', settlementEvents);
+  debugPrint('Paginated settlement events', settlementEvents);
 
   const allCollateralEvents =
     await client.getPaginatedSubaccountCollateralEvents({
@@ -122,7 +122,7 @@ async function subaccountQueriesTests(context: RunContext) {
       subaccountOwner: subaccount.subaccountOwner,
     });
 
-  prettyPrint('Paginated all collateral events', allCollateralEvents);
+  debugPrint('Paginated all collateral events', allCollateralEvents);
 
   const depositEvents = await client.getPaginatedSubaccountCollateralEvents({
     limit: 1,
@@ -132,7 +132,7 @@ async function subaccountQueriesTests(context: RunContext) {
     eventTypes: ['deposit_collateral'],
   });
 
-  prettyPrint('Paginated deposit events', depositEvents);
+  debugPrint('Paginated deposit events', depositEvents);
 
   const withdrawEvents = await client.getPaginatedSubaccountCollateralEvents({
     limit: 1,
@@ -142,7 +142,7 @@ async function subaccountQueriesTests(context: RunContext) {
     eventTypes: ['withdraw_collateral'],
   });
 
-  prettyPrint('Paginated withdrawal events', withdrawEvents);
+  debugPrint('Paginated withdrawal events', withdrawEvents);
 
   const lpEvents = await client.getPaginatedSubaccountLpEvents({
     limit: 1,
@@ -151,7 +151,7 @@ async function subaccountQueriesTests(context: RunContext) {
     subaccountOwner: subaccount.subaccountOwner,
   });
 
-  prettyPrint('Paginated LP events', lpEvents);
+  debugPrint('Paginated LP events', lpEvents);
 
   const vlpEvents = await client.getPaginatedSubaccountVlpEvents({
     limit: 1,
@@ -160,7 +160,7 @@ async function subaccountQueriesTests(context: RunContext) {
     subaccountOwner: subaccount.subaccountOwner,
   });
 
-  prettyPrint('Paginated VLP events', vlpEvents);
+  debugPrint('Paginated VLP events', vlpEvents);
 
   const latestWithdrawal = await client.getEvents({
     eventTypes: ['withdraw_collateral'],
@@ -174,7 +174,7 @@ async function subaccountQueriesTests(context: RunContext) {
     idx: latestWithdrawal[0].submissionIndex,
   });
 
-  prettyPrint('Fast Withdrawal Signature', fastWithdrawalSignature);
+  debugPrint('Fast Withdrawal Signature', fastWithdrawalSignature);
 }
 
 void test('[indexer-client]: Running subaccount queries tests', () =>
