@@ -10,7 +10,7 @@ import { privateKeyToAccount } from 'viem/accounts';
 import { env } from './env';
 import { RunContext, RunFn } from './types';
 
-export function runWithContext(runFn: RunFn) {
+export async function runWithContext(runFn: RunFn) {
   const getWalletClient = () => {
     if (!env.privateKey) {
       throw new Error('No private key found. Please check .env');
@@ -42,14 +42,5 @@ export function runWithContext(runFn: RunFn) {
     contracts: VERTEX_DEPLOYMENTS[env.chainEnv],
   };
 
-  try {
-    const result = runFn(context);
-    if (result instanceof Promise) {
-      result.catch((err) => {
-        console.error('Error running test:', err);
-      });
-    }
-  } catch (err) {
-    console.error('Error running test:', err);
-  }
+  await runFn(context);
 }

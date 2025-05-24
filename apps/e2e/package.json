@@ -11,13 +11,12 @@
   "source": "./src/index.ts",
   "repository": "https://github.com/vertex-protocol/vertex-typescript-sdk",
   "scripts": {
-    "client/collateral-tests": "tsx ./src/client/collateralTests.ts",
-    "client/order-tests": "tsx ./src/client/orderTests.ts",
-    "client/query-tests": "tsx ./src/client/queryTests.ts",
-    "client/ws-message-tests": "tsx ./src/client/wsMessageTests.ts",
-    "engine/full-sanity": "tsx ./src/engine-client/fullSanity.ts",
-    "indexer/full-sanity": "tsx ./src/indexer-client/fullSanity.ts",
-    "trigger/full-sanity": "tsx ./src/trigger-client/fullSanity.ts",
+    "account-setup": "tsx ./src/utils/accountSetup.ts",
+    "e2e": "tsx --test",
+    "e2e:client": "tsx --test ./src/client/*.test.ts",
+    "e2e:engine": "tsx --test ./src/engine-client/*.test.ts",
+    "e2e:indexer": "tsx --test ./src/indexer-client/*.test.ts",
+    "e2e:trigger": "tsx --test ./src/trigger-client/*.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
