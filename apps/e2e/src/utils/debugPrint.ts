@@ -6,7 +6,7 @@ import { toPrintableObject } from '@vertex-protocol/utils';
  * the object is serializable and readable.
  */
 export function debugPrint(label: string, obj: unknown) {
-  if (process.env.DEBUG === 'true') {
+  if (process.env.DEBUG) {
     console.log(label);
     console.log(JSON.stringify(toPrintableObject(obj), null, 2));
   }
