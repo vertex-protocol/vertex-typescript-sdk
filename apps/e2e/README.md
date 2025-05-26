@@ -12,7 +12,7 @@ Before running any tests, make sure to configure your environment and set up the
 
 | Command          | Description                       |
 | ---------------- | --------------------------------- |
-| yarn e2e         | Runs all tests                    |
+| yarn e2e         | Runs all E2E tests                |
 | yarn e2e:client  | Runs all client-related E2E tests |
 | yarn e2e:engine  | Runs all engine-client E2E tests  |
 | yarn e2e:indexer | Runs all indexer-client E2E tests |
