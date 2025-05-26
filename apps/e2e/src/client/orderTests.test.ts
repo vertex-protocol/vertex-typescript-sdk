@@ -6,10 +6,10 @@ import {
 } from '@vertex-protocol/client';
 import { getOrderDigest, getOrderNonce } from '@vertex-protocol/contracts';
 import { getExpiration } from '../utils/getExpiration';
-import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
-import { waitForTransaction } from '../utils/waitForTransaction';
+import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function orderTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -22,32 +22,6 @@ async function orderTests(context: RunContext) {
 
   const chainId = walletClient.chain.id;
   const walletClientAddress = walletClient.account.address;
-
-  console.log('Setting up account');
-
-  const initialDepositAmt = addDecimals(1000, 6);
-  await waitForTransaction(
-    vertexClient.spot._mintMockERC20({
-      amount: initialDepositAmt,
-      productId: 0,
-    }),
-    publicClient,
-  );
-  await waitForTransaction(
-    vertexClient.spot.approveAllowance({
-      amount: initialDepositAmt,
-      productId: 0,
-    }),
-    publicClient,
-  );
-  await waitForTransaction(
-    vertexClient.spot.deposit({
-      subaccountName: 'default',
-      productId: 0,
-      amount: initialDepositAmt,
-    }),
-    publicClient,
-  );
 
   // Query all markets for price information
   const allMarkets = await vertexClient.market.getAllMarkets();
@@ -78,7 +52,7 @@ async function orderTests(context: RunContext) {
     productId: spotOrderProductId,
   });
 
-  prettyPrint('Place order result', orderResult);
+  debugPrint('Place order result', orderResult);
 
   const orderCustomIdResult = await vertexClient.market.placeOrder({
     id: 100,
@@ -86,7 +60,7 @@ async function orderTests(context: RunContext) {
     productId: spotOrderProductId,
   });
 
-  prettyPrint('Place order w/ custom id result', orderCustomIdResult);
+  debugPrint('Place order w/ custom id result', orderCustomIdResult);
 
   const subaccountOrders =
     await vertexClient.context.engineClient.getSubaccountOrders({
@@ -95,7 +69,7 @@ async function orderTests(context: RunContext) {
       subaccountOwner: walletClientAddress,
     });
 
-  prettyPrint('Subaccount orders', subaccountOrders);
+  debugPrint('Subaccount orders', subaccountOrders);
 
   console.log(`Cancelling order`);
   const cancelResult = await vertexClient.market.cancelOrders({
@@ -104,7 +78,7 @@ async function orderTests(context: RunContext) {
     subaccountName: 'default',
   });
 
-  prettyPrint('Cancel order result', cancelResult);
+  debugPrint('Cancel order result', cancelResult);
 
   const perpOrderProductId = 4;
 
@@ -113,7 +87,7 @@ async function orderTests(context: RunContext) {
     productId: perpOrderProductId,
   });
 
-  prettyPrint('Place perp order result', perpOrderResult);
+  debugPrint('Place perp order result', perpOrderResult);
 
   const perpOrderDigest = getOrderDigest({
     order: perpOrderResult.orderParams,
@@ -142,14 +116,7 @@ async function orderTests(context: RunContext) {
     },
   });
 
-  prettyPrint('Cancel and place order result', cancelAndPlaceResult);
-
-  await vertexClient.spot.withdraw({
-    subaccountName: 'default',
-    productId: 0,
-    // 1 USDC withdrawal fee
-    amount: initialDepositAmt - addDecimals(1, 6),
-  });
+  debugPrint('Cancel and place order result', cancelAndPlaceResult);
 }
 
-runWithContext(orderTests);
+void test('[client]: Running order tests', () => runWithContext(orderTests));

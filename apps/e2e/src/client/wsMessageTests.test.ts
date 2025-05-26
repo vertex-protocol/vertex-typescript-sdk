@@ -6,12 +6,14 @@ import {
 import {
   getOrderDigest,
   getOrderNonce,
+  QUOTE_PRODUCT_ID,
   subaccountToHex,
 } from '@vertex-protocol/contracts';
 import { addDecimals, nowInSeconds } from '@vertex-protocol/utils';
-import { prettyPrint } from '../utils/prettyPrint';
 import { runWithContext } from '../utils/runWithContext';
 import { RunContext } from '../utils/types';
+import test from 'node:test';
+import { debugPrint } from '../utils/debugPrint';
 
 async function wsMessageTests(context: RunContext) {
   const walletClient = context.getWalletClient();
@@ -53,7 +55,7 @@ async function wsMessageTests(context: RunContext) {
     signature: wsOrderSig,
   }).payload;
 
-  prettyPrint('Place Order WS request', wsPlaceOrderReq);
+  debugPrint('Place Order WS request', wsPlaceOrderReq);
 
   const wsOrderDigest = getOrderDigest({
     order: wsOrder,
@@ -70,7 +72,7 @@ async function wsMessageTests(context: RunContext) {
     nonce: getOrderNonce(),
   });
 
-  prettyPrint('Cancel Order WS request', wsCancelOrdersReq);
+  debugPrint('Cancel Order WS request', wsCancelOrdersReq);
 
   const wsMintLpReq = await vertexClient.ws.execute.buildMintLpMessage({
     productId: 1,
@@ -82,7 +84,7 @@ async function wsMessageTests(context: RunContext) {
     signature: '',
   });
 
-  prettyPrint('Mint LP WS request', wsMintLpReq);
+  debugPrint('Mint LP WS request', wsMintLpReq);
 
   const wsBurnLpReq = await vertexClient.ws.execute.buildBurnLpMessage({
     productId: 1,
@@ -92,18 +94,18 @@ async function wsMessageTests(context: RunContext) {
     signature: '',
   });
 
-  prettyPrint('Burn LP WS request', wsBurnLpReq);
+  debugPrint('Burn LP WS request', wsBurnLpReq);
 
   const wsWithdrawCollateralReq =
     await vertexClient.ws.execute.buildWithdrawCollateralMessage({
       subaccountOwner: walletClientAddress,
       subaccountName: 'default',
-      productId: 0,
+      productId: QUOTE_PRODUCT_ID,
       amount: addDecimals(4999),
       signature: '',
     });
 
-  prettyPrint('Withdraw Collateral WS request', wsWithdrawCollateralReq);
+  debugPrint('Withdraw Collateral WS request', wsWithdrawCollateralReq);
 
   const wsQuerySubaccountInfoReq = vertexClient.ws.query.buildQueryMessage(
     'subaccount_info',
@@ -115,12 +117,12 @@ async function wsMessageTests(context: RunContext) {
     },
   );
 
-  prettyPrint('Query subaccount info WS request', wsQuerySubaccountInfoReq);
+  debugPrint('Query subaccount info WS request', wsQuerySubaccountInfoReq);
 
   const wsTradeStream = vertexClient.ws.subscription.buildSubscriptionParams(
     'trade',
     {
-      product_id: 0,
+      product_id: QUOTE_PRODUCT_ID,
     },
   );
   const wsTradeSubscriptionReq =
@@ -129,7 +131,7 @@ async function wsMessageTests(context: RunContext) {
       'subscribe',
       wsTradeStream,
     );
-  prettyPrint('Trade subscription WS request', wsTradeSubscriptionReq);
+  debugPrint('Trade subscription WS request', wsTradeSubscriptionReq);
 
   const wsFillStream = vertexClient.ws.subscription.buildSubscriptionParams(
     'fill',
@@ -146,12 +148,13 @@ async function wsMessageTests(context: RunContext) {
       wsFillStream,
     );
 
-  prettyPrint('Fill unsubscribe WS request', wsFillUnsubscribeReq);
+  debugPrint('Fill unsubscribe WS request', wsFillUnsubscribeReq);
 
   const wsListSubscriptionsReq =
     vertexClient.ws.subscription.buildSubscriptionMessage(1, 'list', {});
 
-  prettyPrint('List subscriptions WS request', wsListSubscriptionsReq);
+  debugPrint('List subscriptions WS request', wsListSubscriptionsReq);
 }
 
-runWithContext(wsMessageTests);
+void test('[client]: Running WS message tests', () =>
+  runWithContext(wsMessageTests));
