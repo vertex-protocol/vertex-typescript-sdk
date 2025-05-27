@@ -409,12 +409,12 @@ export class EngineExecuteBuilder {
   }
 
   protected async getTxNonceIfNeeded(
-    params: WithBaseEngineExecuteParams<unknown>,
+    params: WithBaseEngineExecuteParams<{ subaccountOwner: string }>,
   ) {
     if (params.nonce) {
       return params.nonce;
     }
-    return await this.engineClient.getTxNonce();
+    return await this.engineClient.getTxNonce(params.subaccountOwner);
   }
 
   protected getOrderNonceIfNeeded(
