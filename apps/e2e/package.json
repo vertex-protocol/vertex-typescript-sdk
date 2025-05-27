@@ -12,11 +12,11 @@
   "repository": "https://github.com/vertex-protocol/vertex-typescript-sdk",
   "scripts": {
     "account-setup": "tsx ./src/utils/accountSetup.ts",
-    "e2e": "tsx --test",
-    "e2e:client": "tsx --test ./src/client/*.test.ts",
-    "e2e:engine": "tsx --test ./src/engine-client/*.test.ts",
-    "e2e:indexer": "tsx --test ./src/indexer-client/*.test.ts",
-    "e2e:trigger": "tsx --test ./src/trigger-client/*.test.ts",
+    "e2e": "tsx --test --test-concurrency=1",
+    "e2e:client": "tsx --test --test-concurrency=1 ./src/client/*.test.ts",
+    "e2e:engine": "tsx --test --test-concurrency=1 ./src/engine-client/*.test.ts",
+    "e2e:indexer": "tsx --test --test-concurrency=1 ./src/indexer-client/*.test.ts",
+    "e2e:trigger": "tsx --test --test-concurrency=1 ./src/trigger-client/*.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
