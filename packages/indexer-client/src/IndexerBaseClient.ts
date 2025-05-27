@@ -129,6 +129,8 @@ import {
   GetIndexerVrtxSupplySnapshotsResponse,
   GetIndexerVrtxTokenInfoParams,
   GetIndexerVrtxTokenInfoResponse,
+  GetIndexerXrplWithdrawalTxsParams,
+  GetIndexerXrplWithdrawalTxsResponse,
   IndexerEventWithTx,
   IndexerMatchEvent,
   IndexerOraclePrice,
@@ -1174,6 +1176,26 @@ export class IndexerBaseClient {
 
     return {
       snapshots: baseResponse.snapshots.map(mapIndexerVlpSnapshot),
+    };
+  }
+
+  async getXrplWithdrawalTxs(
+    params: GetIndexerXrplWithdrawalTxsParams,
+  ): Promise<GetIndexerXrplWithdrawalTxsResponse> {
+    const baseResponse = await this.query('tx_hashes', {
+      idxs: params.submissionIndices,
+    });
+
+    return {
+      txHashes: baseResponse.tx_hashes.map((tx) => {
+        if (!tx) {
+          return null;
+        }
+        return {
+          submissionIndex: tx.submission_idx,
+          txHash: getValidatedHex(tx.tx_hash),
+        };
+      }),
     };
   }
 

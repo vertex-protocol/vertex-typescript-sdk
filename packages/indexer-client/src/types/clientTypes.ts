@@ -1013,3 +1013,30 @@ export interface IndexerVlpSnapshot {
 export interface GetIndexerVlpSnapshotsResponse {
   snapshots: IndexerVlpSnapshot[];
 }
+
+/**
+ * XRPL
+ */
+
+export interface GetIndexerXrplWithdrawalTxsParams {
+  submissionIndices: string[];
+}
+
+export interface IndexerXrplWithdrawalTx {
+  /**
+   * The actual submission index of the withdrawal transaction, which may differ from the one provided in the request.
+   */
+  submissionIndex: string;
+  /**
+   * The tx hash of the withdrawal as submitted to the EVM sidechain. This can be used to track the withdrawal on Axelarscan
+   */
+  txHash: Hex;
+}
+
+export interface GetIndexerXrplWithdrawalTxsResponse {
+  /**
+   * Array of withdrawal transactions, in the same order as the request params.
+   * If a withdrawal transaction was not found for a given submission index, the corresponding entry will be null.
+   */
+  txHashes: (IndexerXrplWithdrawalTx | null)[];
+}
