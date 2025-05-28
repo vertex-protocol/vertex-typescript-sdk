@@ -392,3 +392,19 @@ export interface IndexerServerVlpSnapshot {
   timestamp: string;
   tvl: string;
 }
+
+/**
+ * XRPL
+ */
+
+export interface IndexerServerXrplWithdrawalTxHash {
+  /**
+   * The actual submission index of the XRPL withdrawal transaction, which may be
+   * different from the submission index in the query.
+   * The submission index submitted in the query is in the range of:
+   * [submission_idx, submission_idx + length)
+   */
+  submission_idx: string;
+  length: string;
+  tx_hash: string;
+}

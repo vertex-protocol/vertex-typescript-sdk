@@ -29,6 +29,7 @@ import {
   IndexerServerTx,
   IndexerServerVlpSnapshot,
   IndexerServerVrtxSupplySnapshot,
+  IndexerServerXrplWithdrawalTxHash,
 } from './serverModelTypes';
 import { VertexWithdrawCollateralTx } from './VertexTx';
 
@@ -269,6 +270,10 @@ export interface IndexerServerVlpSnapshotsParams {
   interval: IndexerServerSnapshotsInterval;
 }
 
+export interface IndexerServerXrplWithdrawalTxHashesParams {
+  idxs: string[];
+}
+
 // Request
 export interface IndexerServerQueryRequestByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
@@ -309,6 +314,7 @@ export interface IndexerServerQueryRequestByType {
   staking_v2_top_stakers: IndexerServerStakingV2TopStakersParams;
   subaccounts: IndexerServerListSubaccountsParams;
   taker_rewards: IndexerServerTakerRewardsParams;
+  tx_hashes: IndexerServerXrplWithdrawalTxHashesParams;
   usdc_price: Record<string, never>;
   vlp_snapshots: IndexerServerVlpSnapshotsParams;
   vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsParams;
@@ -572,6 +578,14 @@ export interface IndexerServerVlpSnapshotsResponse {
   snapshots: IndexerServerVlpSnapshot[];
 }
 
+export interface IndexerServerXrplWithdrawalTxHashesResponse {
+  /**
+   * Array of withdrawal transactions, in the same order as the request params.
+   * If a withdrawal transaction was not found for a given submission index, the corresponding entry will be null.
+   */
+  tx_hashes: (IndexerServerXrplWithdrawalTxHash | null)[];
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
@@ -612,6 +626,7 @@ export interface IndexerServerQueryResponseByType {
   staking_v2_top_stakers: IndexerServerStakingV2TopStakersResponse;
   subaccounts: IndexerServerListSubaccountsResponse;
   taker_rewards: IndexerServerTakerRewardsResponse;
+  tx_hashes: IndexerServerXrplWithdrawalTxHashesResponse;
   usdc_price: IndexerServerUsdcPriceResponse;
   vlp_snapshots: IndexerServerVlpSnapshotsResponse;
   vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsResponse;
