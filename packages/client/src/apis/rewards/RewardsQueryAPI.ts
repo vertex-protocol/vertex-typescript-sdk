@@ -21,7 +21,7 @@ export class RewardsQueryAPI extends BaseRewardsAPI {
    * @param params
    * @returns
    */
-  getEstimatedStakeAsCcipFee(params: VrtxTokenAmountParams) {
+  async getEstimatedStakeAsCcipFee(params: VrtxTokenAmountParams) {
     const address = this.getWalletClientAddress();
 
     if (!address) {
@@ -43,7 +43,7 @@ export class RewardsQueryAPI extends BaseRewardsAPI {
    * Get the estimated CCIP fee for the `withdraw` transaction
    * @returns
    */
-  getEstimatedWithdrawCcipFee() {
+  async getEstimatedWithdrawCcipFee() {
     return this.getEstimatedCcipFee(SatelliteTransactionType.WITHDRAW);
   }
 
@@ -51,7 +51,7 @@ export class RewardsQueryAPI extends BaseRewardsAPI {
    * Get the estimated CCIP fee for the `withdrawSlow` transaction
    * @returns
    */
-  getEstimatedWithdrawSlowCcipFee() {
+  async getEstimatedWithdrawSlowCcipFee() {
     return this.getEstimatedCcipFee(SatelliteTransactionType.WITHDRAW_SLOW);
   }
 
@@ -59,7 +59,7 @@ export class RewardsQueryAPI extends BaseRewardsAPI {
    * Get the estimated CCIP fee for the `claimWithdraw` transaction
    * @returns
    */
-  getEstimatedClaimWithdrawCcipFee() {
+  async getEstimatedClaimWithdrawCcipFee() {
     return this.getEstimatedCcipFee(SatelliteTransactionType.CLAIM_WITHDRAW);
   }
 
@@ -103,7 +103,7 @@ export class RewardsQueryAPI extends BaseRewardsAPI {
    * @param transactionType
    * @param encodedAbiParams
    */
-  private getEstimatedCcipFee(
+  private async getEstimatedCcipFee(
     transactionType: SatelliteTransactionType,
     encodedAbiParams: Hex = zeroHash,
   ) {
