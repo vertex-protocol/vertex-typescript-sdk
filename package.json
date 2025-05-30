@@ -15,7 +15,7 @@
     "link-local": "./setup-yarn-links.sh",
     "lint": "eslint --cache --fix './**/*.{ts,tsx}' && prettier --write './**/*.{ts,tsx}'",
     "prepare": "husky",
-    "publish-all": "yarn build && npx lerna publish --force-publish --no-private",
+    "publish-all": "yarn clean && yarn build && npx lerna publish --force-publish --no-private",
     "test": "jest",
     "typecheck": "npx lerna run typecheck",
     "unlink-local": "UNLINK=true ./setup-yarn-links.sh",
