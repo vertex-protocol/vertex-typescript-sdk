@@ -100,9 +100,13 @@ export interface EngineServerMaxOrderSizeQueryParams {
   sender: string;
   product_id: number;
   price_x18: string;
+  // Note: When `reduce_only` is true, `direction` must be opposite of the current position, otherwise it returns 0.
   direction: 'long' | 'short';
   // If not given, engine defaults to true (leverage/borrow enabled)
   spot_leverage: string | null;
+  // If not given, engine defaults to false. If true, the max order size will be capped to the subaccount's current position size;
+  // If no position exists, it will return 0.
+  reduce_only: string | null;
 }
 
 export interface EngineServerMaxMintLpQueryParams {

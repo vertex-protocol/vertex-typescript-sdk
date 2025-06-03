@@ -233,10 +233,14 @@ export interface GetEngineMarketPricesResponse {
 export interface GetEngineMaxOrderSizeParams extends Subaccount {
   price: BigDecimal;
   productId: number;
+  // Note: When `reduceOnly` is true, `side` must be opposite of the current position, otherwise it returns 0.
   side: BalanceSide;
   // If not given, engine defaults to true (leverage/borrow enabled) for spot
   // Do not pass this for perp products
   spotLeverage?: boolean;
+  // If not given, engine defaults to false. If true, the max order size will be capped to the subaccount's current position size;
+  // If no position exists, it will return 0.
+  reduceOnly?: boolean;
 }
 
 export type GetEngineMaxOrderSizeResponse = BigDecimal;

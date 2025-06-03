@@ -485,6 +485,7 @@ export class EngineQueryClient extends EngineBaseClient {
       }),
       spot_leverage:
         params.spotLeverage != null ? String(params.spotLeverage) : null,
+      reduce_only: params.reduceOnly != null ? String(params.reduceOnly) : null,
     });
 
     return toBigDecimal(baseResponse.max_order_size);
