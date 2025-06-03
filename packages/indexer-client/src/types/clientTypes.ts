@@ -483,7 +483,7 @@ export interface IndexerProductPayment {
 export interface GetIndexerInterestFundingPaymentsResponse {
   interestPayments: IndexerProductPayment[];
   fundingPayments: IndexerProductPayment[];
-  nextCursor: string | null;
+  nextCursor: string | undefined;
 }
 
 /**
