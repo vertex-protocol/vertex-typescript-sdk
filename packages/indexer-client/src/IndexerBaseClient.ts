@@ -615,7 +615,8 @@ export class IndexerBaseClient {
    * Retrieves historical funding & interest payments.
    * NOTE: `limit` is an upperbound. If a user changes position size such that his position is 0 during each funding/interest tick,
    *        then the indexer will return fewer than `limit` results per page. However, all events are actually present,
-   *        we'll just need to keep paginating until the next cursor is null.
+   *        We typically determine that there are no pages if `nextCursor` is null, but there can still be an edge case
+   *        where `nextCursor` is defined if a query comes back with nothing. This is due to how the data is organized.
    *
    * @param params
    */
