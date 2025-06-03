@@ -1,4 +1,5 @@
 import { createDeterministicLinkedSignerPrivateKey } from '@vertex-protocol/contracts';
+import { WalletNotProvidedError } from '@vertex-protocol/utils';
 import { Mixin } from 'ts-mixer';
 import { privateKeyToAccount } from 'viem/accounts';
 import { SubaccountExecuteAPI } from './SubaccountExecuteAPI';
@@ -24,7 +25,7 @@ export class SubaccountAPI extends Mixin(
     const walletClient = this.context.walletClient;
 
     if (!walletClient) {
-      throw new Error('Wallet client not provided');
+      throw new WalletNotProvidedError();
     }
 
     const privateKey = await createDeterministicLinkedSignerPrivateKey({
