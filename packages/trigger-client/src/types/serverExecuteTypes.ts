@@ -19,6 +19,13 @@ export type TriggerServerTriggerCriteria =
     }
   | {
       last_price_below: string;
+    }
+  // These trigger on mid-book price
+  | {
+      mid_price_above: string;
+    }
+  | {
+      mid_price_below: string;
     };
 
 export interface TriggerServerPlaceOrderParams {

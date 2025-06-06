@@ -16,7 +16,9 @@ export type TriggerCriteriaType =
   | 'oracle_price_above'
   | 'oracle_price_below'
   | 'last_price_above'
-  | 'last_price_below';
+  | 'last_price_below'
+  | 'mid_price_above'
+  | 'mid_price_below';
 
 export type TriggerCriteria = {
   type: TriggerCriteriaType;
