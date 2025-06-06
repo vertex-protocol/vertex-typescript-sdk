@@ -12,7 +12,10 @@ import {
   SignableRequestTypeToParams,
   WalletClientWithAccount,
 } from '@vertex-protocol/contracts';
-import { toIntegerString } from '@vertex-protocol/utils';
+import {
+  toIntegerString,
+  WalletNotProvidedError,
+} from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { mapServerOrderInfo, mapTriggerCriteria } from './dataMappers';
 import {
@@ -204,7 +207,7 @@ export class TriggerClient {
       this.opts.linkedSignerWalletClient ?? this.opts.walletClient;
 
     if (walletClient == null) {
-      throw new Error('No wallet client provided');
+      throw new WalletNotProvidedError();
     }
 
     return getSignedTransactionRequest({

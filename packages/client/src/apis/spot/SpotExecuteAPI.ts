@@ -6,7 +6,7 @@ import {
   MintMockERC20Params,
   MOCK_ERC20_ABI,
 } from '@vertex-protocol/contracts';
-import { toBigInt } from '@vertex-protocol/utils';
+import { toBigInt, WalletNotProvidedError } from '@vertex-protocol/utils';
 import { BaseSpotAPI } from './BaseSpotAPI';
 import {
   ApproveAllowanceParams,
@@ -85,7 +85,7 @@ export class SpotExecuteAPI extends BaseSpotAPI {
 
   async _mintMockERC20(params: MintMockERC20Params) {
     if (!this.context.walletClient) {
-      throw new Error('Wallet client not provided');
+      throw new WalletNotProvidedError();
     }
 
     const config = await this.context.contracts.spotEngine.read.getConfig([

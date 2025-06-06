@@ -19,6 +19,7 @@ import {
   toBigDecimal,
   toBigInt,
   toIntegerString,
+  WalletNotProvidedError,
 } from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
@@ -1224,7 +1225,7 @@ export class IndexerBaseClient {
     const walletClient = this.opts.walletClient;
 
     if (!walletClient) {
-      throw new Error('No wallet client provided');
+      throw new WalletNotProvidedError();
     }
 
     return getSignedTransactionRequest({

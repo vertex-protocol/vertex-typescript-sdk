@@ -4,6 +4,7 @@ import {
   SignableRequestTypeToParams,
   WalletClientWithAccount,
 } from '@vertex-protocol/contracts';
+import { WalletNotProvidedError } from '@vertex-protocol/utils';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
   EngineServerExecuteRequestByType,
@@ -66,7 +67,7 @@ export class EngineBaseClient {
     const addr = address ?? this.opts.walletClient?.account.address;
 
     if (!addr) {
-      throw new Error('No address provided and no wallet client available');
+      throw new WalletNotProvidedError();
     }
 
     return (
@@ -190,7 +191,7 @@ export class EngineBaseClient {
       this.opts.linkedSignerWalletClient ?? this.opts.walletClient;
 
     if (!walletClient) {
-      throw new Error('No wallet client provided');
+      throw new WalletNotProvidedError();
     }
 
     return getSignedTransactionRequest({

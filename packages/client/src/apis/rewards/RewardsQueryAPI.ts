@@ -1,5 +1,5 @@
 import { VertexAbis } from '@vertex-protocol/contracts';
-import { toBigInt } from '@vertex-protocol/utils';
+import { toBigInt, WalletNotProvidedError } from '@vertex-protocol/utils';
 import {
   ContractFunctionName,
   encodeAbiParameters,
@@ -25,7 +25,7 @@ export class RewardsQueryAPI extends BaseRewardsAPI {
     const address = this.getWalletClientAddress();
 
     if (!address) {
-      throw new Error('No wallet client address found');
+      throw new WalletNotProvidedError();
     }
 
     const encodedAbiParams = encodeAbiParameters(

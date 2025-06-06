@@ -1,4 +1,6 @@
 import { WithContracts } from '@vertex-protocol/contracts';
+import { WalletNotProvidedError } from '@vertex-protocol/utils';
+
 import { VertexClientContext } from '../context';
 
 export class BaseVertexAPI {
@@ -10,7 +12,7 @@ export class BaseVertexAPI {
 
   protected getWalletClientAddress() {
     if (!this.context.walletClient) {
-      throw new Error('Wallet client not provided');
+      throw new WalletNotProvidedError();
     }
     return this.context.walletClient.account.address;
   }
@@ -22,7 +24,7 @@ export class BaseVertexAPI {
       return params.chainId;
     }
     if (!this.context.walletClient) {
-      throw new Error('Wallet client not provided');
+      throw new WalletNotProvidedError();
     }
     return this.context.walletClient.chain.id;
   }
