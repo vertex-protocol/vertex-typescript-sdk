@@ -633,6 +633,15 @@ export class IndexerBaseClient {
       max_idx: params.startCursor,
     });
 
+    const nextCursor =
+      baseResponse.funding_payments.length > 0
+        ? baseResponse.funding_payments[
+            baseResponse.funding_payments.length - 1
+          ].idx
+        : baseResponse.interest_payments[
+            baseResponse.interest_payments.length - 1
+          ].idx;
+
     return {
       fundingPayments: baseResponse.funding_payments.map(
         mapIndexerProductPayment,
@@ -640,7 +649,8 @@ export class IndexerBaseClient {
       interestPayments: baseResponse.interest_payments.map(
         mapIndexerProductPayment,
       ),
-      nextCursor: baseResponse.next_idx,
+      nextCursor:
+        nextCursor !== undefined ? toIntegerString(nextCursor) : undefined,
     };
   }
 
