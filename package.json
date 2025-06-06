@@ -2,23 +2,17 @@
   "name": "vertex-sdk-monorepo",
   "version": "0.1.0",
   "type": "module",
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
   "private": true,
   "scripts": {
-    "build": "npx lerna run build",
-    "clean": "npx lerna run clean",
-    "dev": "npx lerna run dev",
-    "gen-typedoc": "npx typedoc",
-    "link-local": "./setup-yarn-links.sh",
+    "build": "pnpm lerna run build",
+    "clean": "pnpm lerna run clean",
+    "dev": "pnpm lerna run dev",
+    "gen-typedoc": "pnpm typedoc",
     "lint": "eslint --cache --fix './**/*.{ts,tsx}' && prettier --write './**/*.{ts,tsx}'",
     "prepare": "husky",
-    "publish-all": "yarn clean && yarn build && npx lerna publish --force-publish --no-private",
+    "publish-all": "pnpm clean && pnpm build && pnpm lerna publish --force-publish --no-private",
     "test": "jest",
-    "typecheck": "npx lerna run typecheck",
-    "unlink-local": "UNLINK=true ./setup-yarn-links.sh",
+    "typecheck": "pnpm lerna run typecheck",
     "depcruise:all": "depcruise packages/* apps/*"
   },
   "devDependencies": {
@@ -49,5 +43,5 @@
     "axios": "^1.7.2",
     "ts-mixer": "^6.0.4"
   },
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "pnpm@10.11.1"
 }
