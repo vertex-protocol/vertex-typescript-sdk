@@ -27,9 +27,9 @@
     ".": "./dist/index.js"
   },
   "dependencies": {
-    "@vertex-protocol/contracts": "^1.13.0",
-    "@vertex-protocol/engine-client": "^1.13.0",
-    "@vertex-protocol/utils": "^1.13.0",
+    "@vertex-protocol/contracts": "workspace:*",
+    "@vertex-protocol/engine-client": "workspace:*",
+    "@vertex-protocol/utils": "workspace:*",
     "axios": "*",
     "ts-mixer": "*"
   },

@@ -1,5 +1,5 @@
 import { getValidatedAddress } from '@vertex-protocol/utils';
-import { TypedDataDomain } from 'abitype';
+import { TypedDataDomain } from 'viem';
 
 /**
  * Gives the EIP712 data domain for order signing

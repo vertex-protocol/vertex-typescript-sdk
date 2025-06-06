@@ -27,7 +27,7 @@
     ".": "./dist/index.js"
   },
   "dependencies": {
-    "@vertex-protocol/utils": "^1.13.0"
+    "@vertex-protocol/utils": "workspace:*"
   },
   "peerDependencies": {
     "viem": "*"
