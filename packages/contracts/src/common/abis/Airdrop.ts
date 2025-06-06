@@ -83,6 +83,109 @@ export const AIRDROP_ABI = [
   {
     inputs: [
       {
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+      {
+        internalType: 'uint32',
+        name: 'epoch',
+        type: 'uint32',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'totalAmount',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bytes32[]',
+        name: 'proof',
+        type: 'bytes32[]',
+      },
+    ],
+    name: 'claimAs',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: 'uint32',
+            name: 'epoch',
+            type: 'uint32',
+          },
+          {
+            internalType: 'uint256',
+            name: 'amount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'totalAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'bytes32[]',
+            name: 'proof',
+            type: 'bytes32[]',
+          },
+        ],
+        internalType: 'struct IAirdrop.ClaimProof[]',
+        name: 'claimProofs',
+        type: 'tuple[]',
+      },
+    ],
+    name: 'claimMultiple',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: 'uint32',
+            name: 'epoch',
+            type: 'uint32',
+          },
+          {
+            internalType: 'uint256',
+            name: 'amount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'totalAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'bytes32[]',
+            name: 'proof',
+            type: 'bytes32[]',
+          },
+        ],
+        internalType: 'struct IAirdrop.ClaimProof[]',
+        name: 'claimProofs',
+        type: 'tuple[]',
+      },
+    ],
+    name: 'claimMultipleAndStake',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         internalType: 'uint256',
         name: 'amount',
         type: 'uint256',

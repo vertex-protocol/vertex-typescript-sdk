@@ -1,56 +1,54 @@
-import { VertexAbis } from '@vertex-protocol/contracts';
 import {
   toBigDecimal,
   toBigInt,
   toIntegerString,
 } from '@vertex-protocol/utils';
-import { WriteContractParameters } from 'viem';
 import { BaseVertexAPI } from '../base';
-import {
-  ClaimLiquidTokensParams,
-  ClaimLiquidTokensSatelliteParams,
-} from './types';
+import { RewardsLiquidTokensProof } from './types';
 
 export class BaseRewardsAPI extends BaseVertexAPI {
   /**
    * Util function to share logic between claimLiquidTokens and claimAndStakeLiquidTokens
-   * @param params
+   * @param epoch - Optional epoch to claim, if not provided, all epochs will be claimed
    */
-  async getClaimLiquidTokensContractParams(
-    params: ClaimLiquidTokensParams | ClaimLiquidTokensSatelliteParams,
-  ): Promise<
-    WriteContractParameters<VertexAbis['vrtxAirdrop'], 'claimAndStake'>['args']
-  > {
+  async getRewardsLiquidTokensProofs(
+    epochs?: number[],
+  ): Promise<RewardsLiquidTokensProof[]> {
     const address = this.getWalletClientAddress();
 
-    const { totalAmount, proof } = (
-      await this.context.indexerClient.getClaimVrtxMerkleProofs({
-        address,
-      })
-    )[params.epoch];
+    const proofs = await this.context.indexerClient.getClaimVrtxMerkleProofs({
+      address,
+    });
 
-    const airdropContract = this.context.contracts.vrtxAirdrop;
+    const amountsClaimed =
+      await this.context.contracts.vrtxAirdrop.read.getClaimed([address]);
 
-    const amountToClaim = await (async () => {
-      if ('amount' in params) {
-        return params.amount;
+    const proofsToClaim: RewardsLiquidTokensProof[] = [];
+
+    proofs.forEach(({ proof, totalAmount }, idx) => {
+      if (idx === 0) {
+        // week 0 is invalid
+        return;
       }
-      const amountsClaimed = await airdropContract.read.getClaimed([address]);
 
-      const availableAmount = totalAmount.minus(
+      const amountToClaim = totalAmount.minus(
         // Some wallets seem to throw a `RangeError` here if we do amountsClaimed[params.epoch]
         // Likely because `amountsClaimed` isn't a simple array but a proxy
-        toBigDecimal(amountsClaimed.at(params.epoch) ?? 0),
+        toBigDecimal(amountsClaimed.at(idx) ?? 0),
       );
 
-      return toIntegerString(availableAmount);
-    })();
+      if (amountToClaim.isZero() || (epochs && !epochs.includes(idx))) {
+        return;
+      }
 
-    return [
-      params.epoch,
-      toBigInt(amountToClaim),
-      toBigInt(totalAmount),
-      proof,
-    ];
+      proofsToClaim.push({
+        epoch: idx,
+        amount: toBigInt(toIntegerString(amountToClaim)),
+        totalAmount: toBigInt(totalAmount),
+        proof,
+      });
+    });
+
+    return proofsToClaim;
   }
 }

@@ -29,27 +29,26 @@ export class RewardsExecuteAPI extends BaseRewardsAPI {
    * Claim earned VRTX tokens
    */
   async claimLiquidTokens(params: ClaimLiquidTokensParams) {
-    return this.context.contracts.vrtxAirdrop.write.claim(
-      await this.getClaimLiquidTokensContractParams(params),
-    );
+    return this.context.contracts.vrtxAirdrop.write.claimMultiple([params]);
   }
 
   /**
    * Claim earned VRTX tokens and stake them
    */
   async claimAndStakeLiquidTokens(params: ClaimLiquidTokensParams) {
-    return this.context.contracts.vrtxAirdrop.write.claimAndStake(
-      await this.getClaimLiquidTokensContractParams(params),
-    );
+    return this.context.contracts.vrtxAirdrop.write.claimMultipleAndStake([
+      params,
+    ]);
   }
 
   /**
    * Claim earned VRTX tokens on non-canonical chains
    */
   async claimLiquidTokensSatellite(params: ClaimLiquidTokensSatelliteParams) {
-    return this.context.contracts.vrtxStakingV2Satellite.write.claim(
-      await this.getClaimLiquidTokensContractParams(params),
-      { value: toBigInt(params.ccipFee) },
+    const { ccipFee, ...proofsToClaim } = params;
+    return this.context.contracts.vrtxStakingV2Satellite.write.claimMultiple(
+      [proofsToClaim],
+      { value: toBigInt(ccipFee) },
     );
   }
 
@@ -59,9 +58,10 @@ export class RewardsExecuteAPI extends BaseRewardsAPI {
   async claimAndStakeLiquidTokensSatellite(
     params: ClaimLiquidTokensSatelliteParams,
   ) {
-    return this.context.contracts.vrtxStakingV2Satellite.write.claimAndStake(
-      await this.getClaimLiquidTokensContractParams(params),
-      { value: toBigInt(params.ccipFee) },
+    const { ccipFee, ...proofsToClaim } = params;
+    return this.context.contracts.vrtxStakingV2Satellite.write.claimMultipleAndStake(
+      [proofsToClaim],
+      { value: toBigInt(ccipFee) },
     );
   }
 

@@ -71,11 +71,11 @@ export class RewardsQueryAPI extends BaseRewardsAPI {
   async getClaimLiquidTokensCcipFee(params: ClaimLiquidTokensParams) {
     const encodedAbiParams = encodeAbiParameters(
       this.getFunctionAbiInputs('claim'),
-      await this.getClaimLiquidTokensContractParams(params),
+      [params],
     );
 
     return this.getEstimatedCcipFee(
-      SatelliteTransactionType.CLAIM,
+      SatelliteTransactionType.CLAIM_MULTIPLE,
       encodedAbiParams,
     );
   }
@@ -88,11 +88,11 @@ export class RewardsQueryAPI extends BaseRewardsAPI {
   async getClaimAndStakeLiquidTokensCcipFee(params: ClaimLiquidTokensParams) {
     const encodedAbiParams = encodeAbiParameters(
       this.getFunctionAbiInputs('claimAndStake'),
-      await this.getClaimLiquidTokensContractParams(params),
+      [params],
     );
 
     return this.getEstimatedCcipFee(
-      SatelliteTransactionType.CLAIM_AND_STAKE,
+      SatelliteTransactionType.CLAIM_MULTIPLE_AND_STAKE,
       encodedAbiParams,
     );
   }
