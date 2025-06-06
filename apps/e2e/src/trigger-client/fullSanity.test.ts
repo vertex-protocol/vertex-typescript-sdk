@@ -151,6 +151,81 @@ async function fullSanity(context: RunContext) {
 
   debugPrint('Long stop order result', longStopResult);
 
+  const shortStopMidBookNonce = getTriggerOrderNonce();
+
+  const shortStopMidBookOrder: EngineOrderParams & { nonce: string } = {
+    amount: addDecimals(-0.2),
+    expiration: getExpiration('fok'),
+    nonce: shortStopMidBookNonce,
+    price: 1000,
+    subaccountName,
+    subaccountOwner,
+  };
+
+  const shortStopMidBookDigest = getOrderDigest({
+    chainId,
+    order: shortStopMidBookOrder,
+    verifyingAddr: ethOrderbookAddr,
+  });
+
+  const marketPrice = await engineClient.getMarketPrice({
+    productId: ethProductId,
+  });
+  const midPrice = marketPrice.ask.plus(marketPrice.bid).div(2);
+
+  const shortStopMidBookTriggerParams: TriggerPlaceOrderParams = {
+    chainId,
+    order: shortStopMidBookOrder,
+    productId: ethProductId,
+    spotLeverage: true,
+    triggerCriteria: {
+      type: 'mid_price_above',
+      triggerPrice: midPrice,
+    },
+    verifyingAddr: ethOrderbookAddr,
+    nonce,
+    id: 1000,
+  };
+  const shortStopMidBookResult = await client.placeTriggerOrder(
+    shortStopMidBookTriggerParams,
+  );
+  debugPrint('Short stop mid-book order result', shortStopMidBookResult.data);
+
+  const longStopMidBookNonce = getTriggerOrderNonce();
+
+  const longStopMidBookOrder: EngineOrderParams & { nonce: string } = {
+    nonce: longStopMidBookNonce,
+    amount: addDecimals(0.02),
+    expiration: getExpiration('fok'),
+    price: 60000,
+    subaccountName,
+    subaccountOwner,
+  };
+
+  const longStopMidBookDigest = getOrderDigest({
+    chainId,
+    order: longStopMidBookOrder,
+    verifyingAddr: ethOrderbookAddr,
+  });
+
+  const longStopMidBookParams: TriggerPlaceOrderParams = {
+    chainId,
+    order: longStopMidBookOrder,
+    productId: btcPerpProductId,
+    triggerCriteria: {
+      type: 'mid_price_below',
+      triggerPrice: midPrice,
+    },
+    verifyingAddr: btcPerpOrderbookAddr,
+    nonce: longStopMidBookNonce,
+  };
+
+  const longStopMidBookResult = await client.placeTriggerOrder(
+    longStopMidBookParams,
+  );
+
+  debugPrint('Long stop mid-book order result', longStopMidBookResult.data);
+
   const pendingListOrdersResult = await client.listOrders({
     chainId,
     pending: true,
@@ -214,7 +289,12 @@ async function fullSanity(context: RunContext) {
     subaccountName,
     subaccountOwner,
     pending: false,
-    digests: [shortStopDigest, longStopDigest],
+    digests: [
+      shortStopDigest,
+      longStopDigest,
+      shortStopMidBookDigest,
+      longStopMidBookDigest,
+    ],
   });
 
   debugPrint('List orders by digest result', ordersByDigest);

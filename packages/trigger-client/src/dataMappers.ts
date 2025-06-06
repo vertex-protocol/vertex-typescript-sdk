@@ -53,6 +53,10 @@ export function mapTriggerCriteria(
       return { last_price_above: priceValue };
     case 'last_price_below':
       return { last_price_below: priceValue };
+    case 'mid_price_above':
+      return { mid_price_above: priceValue };
+    case 'mid_price_below':
+      return { mid_price_below: priceValue };
   }
 }
 
@@ -77,9 +81,21 @@ export function mapServerTriggerCriteria(
       triggerPrice: removeDecimals(criteria.last_price_above),
     };
   }
+  if ('last_price_below' in criteria) {
+    return {
+      type: 'last_price_below',
+      triggerPrice: removeDecimals(criteria.last_price_below),
+    };
+  }
+  if ('mid_price_above' in criteria) {
+    return {
+      type: 'mid_price_above',
+      triggerPrice: removeDecimals(criteria.mid_price_above),
+    };
+  }
   return {
-    type: 'last_price_below',
-    triggerPrice: removeDecimals(criteria.last_price_below),
+    type: 'mid_price_below',
+    triggerPrice: removeDecimals(criteria.mid_price_below),
   };
 }
 
