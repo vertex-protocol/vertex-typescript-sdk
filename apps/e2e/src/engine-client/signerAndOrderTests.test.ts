@@ -143,9 +143,21 @@ async function signerAndOrderTests(context: RunContext) {
     subaccountName: 'default',
     productId: spotProductId,
     price: marketPrice.ask,
+    spotLeverage: false,
     side: 'long',
   });
   debugPrint('Max order size', maxOrderSize);
+
+  const reduceOnlyMaxOrderSize = await client.getMaxOrderSize({
+    subaccountOwner: walletClientAddress,
+    subaccountName: 'default',
+    productId: spotProductId,
+    price: marketPrice.ask,
+    side: 'short',
+    spotLeverage: false,
+    reduceOnly: true,
+  });
+  debugPrint('Reduce-only Max order size', reduceOnlyMaxOrderSize);
 
   const maxWithdrawable = await client.getMaxWithdrawable({
     subaccountOwner: walletClientAddress,
