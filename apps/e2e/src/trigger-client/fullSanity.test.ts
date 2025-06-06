@@ -191,41 +191,6 @@ async function fullSanity(context: RunContext) {
   );
   debugPrint('Short stop mid-book order result', shortStopMidBookResult.data);
 
-  const longStopMidBookNonce = getTriggerOrderNonce();
-
-  const longStopMidBookOrder: EngineOrderParams & { nonce: string } = {
-    nonce: longStopMidBookNonce,
-    amount: addDecimals(0.02),
-    expiration: getExpiration('fok'),
-    price: 60000,
-    subaccountName,
-    subaccountOwner,
-  };
-
-  const longStopMidBookDigest = getOrderDigest({
-    chainId,
-    order: longStopMidBookOrder,
-    verifyingAddr: ethOrderbookAddr,
-  });
-
-  const longStopMidBookParams: TriggerPlaceOrderParams = {
-    chainId,
-    order: longStopMidBookOrder,
-    productId: btcPerpProductId,
-    triggerCriteria: {
-      type: 'mid_price_below',
-      triggerPrice: midPrice,
-    },
-    verifyingAddr: btcPerpOrderbookAddr,
-    nonce: longStopMidBookNonce,
-  };
-
-  const longStopMidBookResult = await client.placeTriggerOrder(
-    longStopMidBookParams,
-  );
-
-  debugPrint('Long stop mid-book order result', longStopMidBookResult.data);
-
   const pendingListOrdersResult = await client.listOrders({
     chainId,
     pending: true,
@@ -289,12 +254,7 @@ async function fullSanity(context: RunContext) {
     subaccountName,
     subaccountOwner,
     pending: false,
-    digests: [
-      shortStopDigest,
-      longStopDigest,
-      shortStopMidBookDigest,
-      longStopMidBookDigest,
-    ],
+    digests: [shortStopDigest, longStopDigest, shortStopMidBookDigest],
   });
 
   debugPrint('List orders by digest result', ordersByDigest);

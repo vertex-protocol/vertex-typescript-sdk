@@ -93,10 +93,13 @@ export function mapServerTriggerCriteria(
       triggerPrice: removeDecimals(criteria.mid_price_above),
     };
   }
-  return {
-    type: 'mid_price_below',
-    triggerPrice: removeDecimals(criteria.mid_price_below),
-  };
+  if ('mid_price_below' in criteria) {
+    return {
+      type: 'mid_price_below',
+      triggerPrice: removeDecimals(criteria.mid_price_below),
+    };
+  }
+  throw new Error(`Unknown trigger criteria: ${JSON.stringify(criteria)}`);
 }
 
 export function mapServerOrderInfo(
