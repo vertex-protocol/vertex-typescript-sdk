@@ -2,8 +2,6 @@ import { toBigInt } from '@vertex-protocol/utils';
 import { Hex } from 'viem';
 import { BaseRewardsAPI } from './BaseRewardsAPI';
 import {
-  ClaimLiquidTokensParams,
-  ClaimLiquidTokensSatelliteParams,
   SatelliteCcipParams,
   StakeSatelliteParams,
   VrtxTokenAmountParams,
@@ -28,27 +26,33 @@ export class RewardsExecuteAPI extends BaseRewardsAPI {
   /**
    * Claim earned VRTX tokens
    */
-  async claimLiquidTokens(params: ClaimLiquidTokensParams) {
-    return this.context.contracts.vrtxAirdrop.write.claim(
-      await this.getClaimLiquidTokensContractParams(params),
-    );
+  async claimAllLiquidTokens() {
+    const proofsToClaim = await this.getClaimAllLiquidTokensContractParams();
+
+    return this.context.contracts.vrtxAirdrop.write.claimMultiple([
+      proofsToClaim,
+    ]);
   }
 
   /**
    * Claim earned VRTX tokens and stake them
    */
-  async claimAndStakeLiquidTokens(params: ClaimLiquidTokensParams) {
-    return this.context.contracts.vrtxAirdrop.write.claimAndStake(
-      await this.getClaimLiquidTokensContractParams(params),
-    );
+  async claimAndStakeAllLiquidTokens() {
+    const proofsToClaim = await this.getClaimAllLiquidTokensContractParams();
+
+    return this.context.contracts.vrtxAirdrop.write.claimMultipleAndStake([
+      proofsToClaim,
+    ]);
   }
 
   /**
    * Claim earned VRTX tokens on non-canonical chains
    */
-  async claimLiquidTokensSatellite(params: ClaimLiquidTokensSatelliteParams) {
-    return this.context.contracts.vrtxStakingV2Satellite.write.claim(
-      await this.getClaimLiquidTokensContractParams(params),
+  async claimAllLiquidTokensSatellite(params: SatelliteCcipParams) {
+    const proofsToClaim = await this.getClaimAllLiquidTokensContractParams();
+
+    return this.context.contracts.vrtxStakingV2Satellite.write.claimMultiple(
+      [proofsToClaim],
       { value: toBigInt(params.ccipFee) },
     );
   }
@@ -56,11 +60,11 @@ export class RewardsExecuteAPI extends BaseRewardsAPI {
   /**
    * Claim trading rewards and stake the claimed VRTX on non-canonical chains
    */
-  async claimAndStakeLiquidTokensSatellite(
-    params: ClaimLiquidTokensSatelliteParams,
-  ) {
-    return this.context.contracts.vrtxStakingV2Satellite.write.claimAndStake(
-      await this.getClaimLiquidTokensContractParams(params),
+  async claimAndStakeAllLiquidTokensSatellite(params: SatelliteCcipParams) {
+    const proofsToClaim = await this.getClaimAllLiquidTokensContractParams();
+
+    return this.context.contracts.vrtxStakingV2Satellite.write.claimMultipleAndStake(
+      [proofsToClaim],
       { value: toBigInt(params.ccipFee) },
     );
   }
