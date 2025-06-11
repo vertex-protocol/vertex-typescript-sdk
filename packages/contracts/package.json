@@ -33,6 +33,7 @@
     "viem": "*"
   },
   "devDependencies": {
+    "abitype": "1.0.8",
     "env-cmd": "^10.1.0",
     "viem": "*"
   },
