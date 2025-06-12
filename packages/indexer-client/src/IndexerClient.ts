@@ -480,7 +480,11 @@ export class IndexerClient extends IndexerBaseClient {
   /**
    * Get all interest funding payments for a given subaccount with the standard pagination response
    * This is a simple wrapper over the underlying `getInterestFundingPayments` function. Very little
-   * additional processing is needed because the endpoint is well structured for pagination
+   * additional processing is needed because the endpoint is well structured for pagination.
+   *
+   * We are omitting `nextCursor` & `hasMore`. We typically determine that there are no pages if `nextCursor` is null,
+   * but there can still be an edge case where `nextCursor` is defined if a query comes back with nothing
+   * This is due to how the data is organized.
    *
    * @param params
    */
@@ -495,7 +499,8 @@ export class IndexerClient extends IndexerBaseClient {
       subaccountName,
       subaccountOwner,
     } = params;
-    const baseResponse = await this.getInterestFundingPayments({
+
+    return await this.getInterestFundingPayments({
       limit,
       productIds,
       startCursor,
@@ -505,14 +510,6 @@ export class IndexerClient extends IndexerBaseClient {
         subaccountOwner,
       },
     });
-
-    return {
-      ...baseResponse,
-      meta: {
-        hasMore: baseResponse.nextCursor != null,
-        nextCursor: baseResponse.nextCursor ?? undefined,
-      },
-    };
   }
 
   /**

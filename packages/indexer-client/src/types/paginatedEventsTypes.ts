@@ -217,10 +217,8 @@ export type GetIndexerSubaccountInterestFundingPaymentsParams =
   BaseSubaccountPaginationParams &
     Pick<GetIndexerInterestFundingPaymentsParams, 'productIds' | 'startCursor'>;
 
-export interface GetIndexerPaginatedInterestFundingPaymentsResponse
-  extends GetIndexerInterestFundingPaymentsResponse {
-  meta: IndexerPaginationMeta;
-}
+export type GetIndexerPaginatedInterestFundingPaymentsResponse =
+  GetIndexerInterestFundingPaymentsResponse;
 
 export type GetIndexerPaginatedLeaderboardParams = IndexerPaginationParams &
   Pick<GetIndexerLeaderboardParams, 'contestId' | 'rankType'>;
