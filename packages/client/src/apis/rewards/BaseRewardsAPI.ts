@@ -1,44 +1,56 @@
-import { toBigDecimal, toBigInt } from '@vertex-protocol/utils';
+import { VertexAbis } from '@vertex-protocol/contracts';
+import {
+  toBigDecimal,
+  toBigInt,
+  toIntegerString,
+} from '@vertex-protocol/utils';
+import { WriteContractParameters } from 'viem';
 import { BaseVertexAPI } from '../base';
-import { RewardsLiquidTokensProof } from './types';
+import {
+  ClaimLiquidTokensParams,
+  ClaimLiquidTokensSatelliteParams,
+} from './types';
 
 export class BaseRewardsAPI extends BaseVertexAPI {
   /**
    * Util function to share logic between claimLiquidTokens and claimAndStakeLiquidTokens
-   * @returns Proofs with a claimable amount to claim.
+   * @param params
    */
-  async getClaimAllLiquidTokensContractParams() {
+  async getClaimLiquidTokensContractParams(
+    params: ClaimLiquidTokensParams | ClaimLiquidTokensSatelliteParams,
+  ): Promise<
+    WriteContractParameters<VertexAbis['vrtxAirdrop'], 'claimAndStake'>['args']
+  > {
     const address = this.getWalletClientAddress();
 
-    const proofs = await this.context.indexerClient.getClaimVrtxMerkleProofs({
-      address,
-    });
+    const { totalAmount, proof } = (
+      await this.context.indexerClient.getClaimVrtxMerkleProofs({
+        address,
+      })
+    )[params.epoch];
 
-    const amountsClaimed =
-      await this.context.contracts.vrtxAirdrop.read.getClaimed([address]);
+    const airdropContract = this.context.contracts.vrtxAirdrop;
 
-    return proofs.reduce<RewardsLiquidTokensProof[]>(
-      (acc, { proof, totalAmount }, idx) => {
-        if (idx === 0) return acc; // week 0 is invalid
+    const amountToClaim = await (async () => {
+      if ('amount' in params) {
+        return params.amount;
+      }
+      const amountsClaimed = await airdropContract.read.getClaimed([address]);
 
-        const amountToClaim = totalAmount.minus(
-          // Some wallets seem to throw a `RangeError` here if we do amountsClaimed[params.epoch]
-          // Likely because `amountsClaimed` isn't a simple array but a proxy
-          toBigDecimal(amountsClaimed.at(idx) ?? 0),
-        );
+      const availableAmount = totalAmount.minus(
+        // Some wallets seem to throw a `RangeError` here if we do amountsClaimed[params.epoch]
+        // Likely because `amountsClaimed` isn't a simple array but a proxy
+        toBigDecimal(amountsClaimed.at(params.epoch) ?? 0),
+      );
 
-        if (!amountToClaim.isZero()) {
-          acc.push({
-            epoch: idx,
-            amount: toBigInt(amountToClaim),
-            totalAmount: toBigInt(totalAmount),
-            proof,
-          });
-        }
+      return toIntegerString(availableAmount);
+    })();
 
-        return acc;
-      },
-      [],
-    );
+    return [
+      params.epoch,
+      toBigInt(amountToClaim),
+      toBigInt(totalAmount),
+      proof,
+    ];
   }
 }

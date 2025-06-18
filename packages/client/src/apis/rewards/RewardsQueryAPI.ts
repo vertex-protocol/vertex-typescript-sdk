@@ -9,7 +9,11 @@ import {
   zeroHash,
 } from 'viem';
 import { BaseRewardsAPI } from './BaseRewardsAPI';
-import { SatelliteTransactionType, VrtxTokenAmountParams } from './types';
+import {
+  ClaimLiquidTokensParams,
+  SatelliteTransactionType,
+  VrtxTokenAmountParams,
+} from './types';
 
 export class RewardsQueryAPI extends BaseRewardsAPI {
   /**
@@ -64,12 +68,10 @@ export class RewardsQueryAPI extends BaseRewardsAPI {
    * @param params
    * @returns
    */
-  async getClaimLiquidTokensCcipFee() {
-    const proofs = await this.getClaimAllLiquidTokensContractParams();
-
+  async getClaimLiquidTokensCcipFee(params: ClaimLiquidTokensParams) {
     const encodedAbiParams = encodeAbiParameters(
       this.getFunctionAbiInputs('claim'),
-      [proofs],
+      await this.getClaimLiquidTokensContractParams(params),
     );
 
     return this.getEstimatedCcipFee(
@@ -83,12 +85,10 @@ export class RewardsQueryAPI extends BaseRewardsAPI {
    * @param params
    * @returns
    */
-  async getClaimAndStakeLiquidTokensCcipFee() {
-    const proofs = await this.getClaimAllLiquidTokensContractParams();
-
+  async getClaimAndStakeLiquidTokensCcipFee(params: ClaimLiquidTokensParams) {
     const encodedAbiParams = encodeAbiParameters(
       this.getFunctionAbiInputs('claimAndStake'),
-      [proofs],
+      await this.getClaimLiquidTokensContractParams(params),
     );
 
     return this.getEstimatedCcipFee(
