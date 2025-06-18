@@ -10,7 +10,6 @@ import {
   SPOT_ENGINE_ABI,
   STAKING_V1_ABI,
   STAKING_V2_ABI,
-  STAKING_V2_SATELLITE_ABI,
   VESTING_ABI,
   WITHDRAW_POOL_ABI,
 } from './abis';
@@ -29,7 +28,6 @@ export const VERTEX_ABIS = {
   vrtxVesting: VESTING_ABI,
   vrtxStaking: STAKING_V1_ABI,
   vrtxStakingV2: STAKING_V2_ABI,
-  vrtxStakingV2Satellite: STAKING_V2_SATELLITE_ABI,
 } as const;
 
 export type VertexAbis = typeof VERTEX_ABIS;

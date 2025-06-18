@@ -151,9 +151,6 @@ function validateDeployment(
     vrtxLba: getValidatedAddress(deployment.vrtxLba),
     vrtxStaking: getValidatedAddress(deployment.vrtxStaking),
     vrtxStakingV2: getValidatedAddress(deployment.vrtxStakingV2),
-    vrtxStakingV2Satellite: getValidatedAddress(
-      deployment.vrtxStakingV2Satellite,
-    ),
     vrtxToken: getValidatedAddress(deployment.vrtxToken),
     vrtxVesting: getValidatedAddress(deployment.vrtxVesting),
     withdrawPool: getValidatedAddress(deployment.withdrawPool),
