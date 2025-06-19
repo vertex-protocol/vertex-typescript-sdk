@@ -180,7 +180,7 @@ async function fullSanity(context: RunContext) {
     spotLeverage: true,
     triggerCriteria: {
       type: 'mid_price_above',
-      triggerPrice: midPrice,
+      triggerPrice: midPrice.multipliedBy(2),
     },
     verifyingAddr: ethOrderbookAddr,
     nonce,
