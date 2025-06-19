@@ -1,6 +1,10 @@
 import { QUOTE_PRODUCT_ID, Subaccount } from '@vertex-protocol/contracts';
 import { IndexerClient } from '@vertex-protocol/indexer-client';
-import { nowInSeconds, TimeInSeconds } from '@vertex-protocol/utils';
+import {
+  nowInSeconds,
+  TimeInSeconds,
+  toBigDecimal,
+} from '@vertex-protocol/utils';
 import { RunContext } from '../utils/types';
 import { runWithContext } from '../utils/runWithContext';
 import test from 'node:test';
@@ -89,7 +93,7 @@ async function subaccountQueriesTests(context: RunContext) {
   const matchEvents = await client.getPaginatedSubaccountMatchEvents({
     subaccountName: subaccount.subaccountName,
     subaccountOwner: subaccount.subaccountOwner,
-    productIds: [QUOTE_PRODUCT_ID, 2, 3, 4],
+    productIds: [2, 3, 4],
     limit: 10,
   });
 
@@ -143,6 +147,30 @@ async function subaccountQueriesTests(context: RunContext) {
   });
 
   debugPrint('Paginated withdrawal events', withdrawEvents);
+
+  const sequencerBacklog = await client.getSequencerBacklog();
+
+  debugPrint('Sequencer backlog', sequencerBacklog);
+
+  if (withdrawEvents.events.length > 0) {
+    const withdrawalSubmissionIndex = toBigDecimal(
+      withdrawEvents.events[0].submissionIndex,
+    );
+    const placeInQueue = withdrawalSubmissionIndex.minus(
+      sequencerBacklog.totalSubmissions,
+    );
+
+    const withdrawalPlaceInQueue = placeInQueue.isNegative()
+      ? toBigDecimal(0)
+      : placeInQueue;
+
+    const withdrawalEta = sequencerBacklog.txsPerSecond?.gt(0)
+      ? withdrawalPlaceInQueue.div(sequencerBacklog.txsPerSecond)
+      : null;
+
+    debugPrint('Withdrawal place in queue', withdrawalPlaceInQueue.toString());
+    debugPrint('Withdrawal ETA', withdrawalEta?.toString() ?? 'N/A');
+  }
 
   const lpEvents = await client.getPaginatedSubaccountLpEvents({
     limit: 1,

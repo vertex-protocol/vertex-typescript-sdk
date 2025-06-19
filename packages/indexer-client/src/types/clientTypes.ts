@@ -1040,3 +1040,18 @@ export interface GetIndexerXrplWithdrawalTxsResponse {
    */
   txHashes: (IndexerXrplWithdrawalTx | null)[];
 }
+
+export interface GetIndexerBacklogResponse {
+  // Total number of transactions stored in the indexer DB
+  totalTxs: BigDecimal;
+  // Current nSubmissions value from the chain (i.e., number of processed txs)
+  totalSubmissions: BigDecimal;
+  // Number of unprocessed transactions (totalTxs - totalSubmissions)
+  backlogSize: BigDecimal;
+  // UNIX timestamp (in seconds) of when the data was last updated
+  updatedAt: BigDecimal;
+  // Estimated time in seconds (float) to clear the entire backlog (null if unavailable)
+  backlogEtaInSeconds: BigDecimal | null;
+  // Current submission rate in transactions per second (float) (null if unavailable)
+  txsPerSecond: BigDecimal | null;
+}

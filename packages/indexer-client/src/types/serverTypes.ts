@@ -277,6 +277,7 @@ export interface IndexerServerXrplWithdrawalTxHashesParams {
 // Request
 export interface IndexerServerQueryRequestByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
+  backlog: Record<string, never>;
   blast_points: IndexerServerBlastPointsParams;
   blitz_points: IndexerServerBlitzPointsParams;
   blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardParams;
@@ -586,9 +587,25 @@ export interface IndexerServerXrplWithdrawalTxHashesResponse {
   tx_hashes: (IndexerServerXrplWithdrawalTxHash | null)[];
 }
 
+export interface IndexerServerBacklogResponse {
+  // Total number of transactions stored in the indexer DB
+  total_txs: string;
+  // Current nSubmissions value from the chain (i.e., number of processed txs)
+  total_submissions: string;
+  // Number of unprocessed transactions (total_txs - total_submissions)
+  backlog_size: string;
+  // UNIX timestamp (in seconds) of when the data was last updated
+  updated_at: string;
+  // Estimated time in seconds (float) to clear the entire backlog (null if unavailable)
+  backlog_eta_in_seconds: string | null;
+  // Current submission rate in transactions per second (float) (null if unavailable)
+  txs_per_second: string | null;
+}
+
 // Response
 export interface IndexerServerQueryResponseByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
+  backlog: IndexerServerBacklogResponse;
   blast_points: IndexerServerBlastPointsResponse;
   blitz_points: IndexerServerBlitzPointsResponse;
   blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardResponse;

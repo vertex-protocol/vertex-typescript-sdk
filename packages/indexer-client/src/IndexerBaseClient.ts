@@ -47,6 +47,7 @@ import {
   mapSnapshotsIntervalToServerParams,
 } from './dataMappers';
 import {
+  GetIndexerBacklogResponse,
   GetIndexerBlastPointsParams,
   GetIndexerBlastPointsResponse,
   GetIndexerBlitzInitialDropConditionsParams,
@@ -1197,6 +1198,23 @@ export class IndexerBaseClient {
           txHash: getValidatedHex(tx.tx_hash),
         };
       }),
+    };
+  }
+
+  async getSequencerBacklog(): Promise<GetIndexerBacklogResponse> {
+    const baseResponse = await this.query('backlog', {});
+
+    return {
+      totalTxs: toBigDecimal(baseResponse.total_txs),
+      totalSubmissions: toBigDecimal(baseResponse.total_submissions),
+      backlogSize: toBigDecimal(baseResponse.backlog_size),
+      updatedAt: toBigDecimal(baseResponse.updated_at),
+      backlogEtaInSeconds: baseResponse.backlog_eta_in_seconds
+        ? toBigDecimal(baseResponse.backlog_eta_in_seconds)
+        : null,
+      txsPerSecond: baseResponse.txs_per_second
+        ? toBigDecimal(baseResponse.txs_per_second)
+        : null,
     };
   }
 
