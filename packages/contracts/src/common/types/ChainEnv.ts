@@ -2,28 +2,9 @@ export const LOCAL_CHAIN_ENVS = ['local'] as const satisfies string[];
 
 export const TESTNET_CHAIN_ENVS = [
   'arbitrumTestnet',
-  'blastTestnet',
-  'mantleTestnet',
-  'seiTestnet',
-  'baseTestnet',
-  'sonicTestnet',
-  'beraTestnet',
-  'abstractTestnet',
-  'avaxTestnet',
-  'xrplTestnet',
 ] as const satisfies string[];
 
-export const MAINNET_CHAIN_ENVS = [
-  'arbitrum',
-  'blast',
-  'mantle',
-  'sei',
-  'base',
-  'sonic',
-  'abstract',
-  'bera',
-  'avax',
-] as const satisfies string[];
+export const MAINNET_CHAIN_ENVS = ['arbitrum'] as const satisfies string[];
 
 export const ALL_CHAIN_ENVS = [
   ...LOCAL_CHAIN_ENVS,

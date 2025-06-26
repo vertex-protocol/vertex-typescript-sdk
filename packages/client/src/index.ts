@@ -6,7 +6,6 @@ export * from './apis/market';
 export * from './apis/perp';
 export * from './apis/spot';
 export * from './apis/subaccount';
-export * from './apis/rewards';
 
 // Subpackage exports
 export * from '@vertex-protocol/utils';
