@@ -1,5 +1,4 @@
-import { expect, it } from '@jest/globals';
-import { describe } from 'node:test';
+import { describe, expect, it } from '@jest/globals';
 import { Subaccount } from '../common';
 import {
   subaccountFromBytes32,
