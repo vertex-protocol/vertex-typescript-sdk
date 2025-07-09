@@ -1,6 +1,6 @@
 {
   "name": "@vertex-protocol/indexer-client",
-  "version": "1.14.0",
+  "version": "1.14.1",
   "type": "module",
   "description": "> TODO: description",
   "author": "Frank Jia <frank@vertexprotocol.com>",
@@ -27,9 +27,9 @@
     ".": "./dist/index.js"
   },
   "dependencies": {
-    "@vertex-protocol/contracts": "^1.14.0",
-    "@vertex-protocol/engine-client": "^1.14.0",
-    "@vertex-protocol/utils": "^1.14.0",
+    "@vertex-protocol/contracts": "1.14.1",
+    "@vertex-protocol/engine-client": "1.14.1",
+    "@vertex-protocol/utils": "1.14.1",
     "axios": "*",
     "ts-mixer": "*"
   },
