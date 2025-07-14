@@ -576,18 +576,13 @@ export class IndexerBaseClient {
       }
       const { tx, timestamp } = baseResponse.txs[lastTxIdx];
 
-      const productId = (() => {
-        if ('match_orders' in tx) {
-          return tx.match_orders.product_id;
-        } else if ('match_orders_r_f_q' in tx) {
-          return tx.match_orders_r_f_q.product_id;
-        } else {
-          throw new Error('Match Event Tx is not a valid match event');
-        }
-      })();
+      // We use this to derive the product ID for the match
+      const postBalances = mapIndexerMatchEventBalances(
+        matchEvent.post_balance,
+      );
 
       return {
-        productId,
+        productId: postBalances.base.productId,
         isolated: matchEvent.isolated,
         totalFee: toBigDecimal(matchEvent.fee),
         sequencerFee: toBigDecimal(matchEvent.sequencer_fee),
@@ -605,7 +600,7 @@ export class IndexerBaseClient {
           netEntryCumulative: toBigDecimal(matchEvent.net_entry_cumulative),
         },
         preBalances: mapIndexerMatchEventBalances(matchEvent.pre_balance),
-        postBalances: mapIndexerMatchEventBalances(matchEvent.post_balance),
+        postBalances,
         tx,
         ...subaccountFromHex(matchEvent.order.sender),
       };
