@@ -10,14 +10,11 @@ import {
   Subaccount,
 } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils';
-import { Address, Hex } from 'viem';
+import { Hex } from 'viem';
 import { CandlestickPeriod } from './CandlestickPeriod';
 import { IndexerEventType } from './IndexerEventType';
 import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
-import { IndexerVrtxTokenInfoType } from './IndexerVrtxTokenInfoType';
 import {
-  IndexerServerClaimFoundationRewardsMerkleProofsParams,
-  IndexerServerClaimVrtxMerkleProofsParams,
   IndexerServerFastWithdrawalSignatureParams,
   IndexerServerListSubaccountsParams,
 } from './serverTypes';
@@ -487,73 +484,6 @@ export interface GetIndexerInterestFundingPaymentsResponse {
 }
 
 /**
- * VRTX rewards
- */
-
-export interface GetIndexerRewardsParams {
-  address: string;
-  // Inclusive, epochs are returned in descending order
-  start?: number;
-  limit?: number;
-}
-
-export type GetIndexerTakerRewardsParams = GetIndexerRewardsParams;
-
-export interface IndexerSubaccountRewardsForProduct {
-  productId: number;
-  qScore: BigDecimal;
-  sumQMin: BigDecimal;
-  uptime: number;
-  makerVolume: BigDecimal;
-  takerVolume: BigDecimal;
-  makerFee: BigDecimal;
-  takerFee: BigDecimal;
-  makerTokens: BigDecimal;
-  takerTokens: BigDecimal;
-  takerReferralTokens: BigDecimal;
-  rebates: BigDecimal;
-}
-
-export interface IndexerGlobalRewardsForProduct {
-  productId: number;
-  rewardCoefficient: BigDecimal;
-  qScores: BigDecimal;
-  makerVolumes: BigDecimal;
-  takerVolumes: BigDecimal;
-  makerFees: BigDecimal;
-  takerFees: BigDecimal;
-  makerTokens: BigDecimal;
-  takerTokens: BigDecimal;
-}
-
-export interface IndexerRewardsEpoch {
-  epoch: number;
-  startTime: BigDecimal;
-  period: BigDecimal;
-  numEligibleAddresses: number;
-  addressRewards: IndexerSubaccountRewardsForProduct[];
-  globalRewards: IndexerGlobalRewardsForProduct[];
-}
-
-export interface GetIndexerRewardsResponse {
-  epochs: IndexerRewardsEpoch[];
-  updateTime: BigDecimal;
-  totalReferrals: number;
-}
-
-export interface IndexerTakerRewardsEpoch {
-  epoch: number;
-  takerTokens: BigDecimal;
-  takerReferralTokens: BigDecimal;
-}
-
-export interface GetIndexerTakerRewardsResponse {
-  epochs: IndexerTakerRewardsEpoch[];
-  updateTime: BigDecimal;
-  totalReferrals: number;
-}
-
-/**
  * Referral code
  */
 
@@ -563,186 +493,6 @@ export interface GetIndexerReferralCodeParams {
 
 export interface GetIndexerReferralCodeResponse {
   referralCode: string | null;
-}
-
-/**
- * VRTX claim
- */
-
-export interface IndexerMerkleProof {
-  proof: Hex[];
-  totalAmount: BigDecimal;
-}
-
-export type GetIndexerClaimVrtxMerkleProofsParams =
-  IndexerServerClaimVrtxMerkleProofsParams;
-
-export type GetIndexerClaimVrtxMerkleProofsResponse = IndexerMerkleProof[];
-
-/**
- * Foundation rewards
- */
-
-export interface GetIndexerFoundationTakerRewardsParams {
-  address: string;
-}
-
-export type IndexerSubaccountFoundationTakerRewardsForProduct = Pick<
-  IndexerSubaccountRewardsForProduct,
-  'productId' | 'takerVolume' | 'takerFee' | 'takerTokens'
->;
-
-export type IndexerFoundationTakerGlobalRewardsForProduct = Pick<
-  IndexerGlobalRewardsForProduct,
-  'productId' | 'takerFees' | 'takerTokens' | 'takerVolumes'
->;
-
-export interface IndexerFoundationTakerRewardsWeek {
-  week: number;
-  startTime: BigDecimal;
-  period: BigDecimal;
-  addressRewards: IndexerSubaccountFoundationTakerRewardsForProduct[];
-  globalRewards: IndexerFoundationTakerGlobalRewardsForProduct[];
-}
-
-export interface GetIndexerFoundationTakerRewardsResponse {
-  weeks: IndexerFoundationTakerRewardsWeek[];
-  updateTime: BigDecimal;
-}
-
-export type GetIndexerClaimFoundationRewardsMerkleProofsParams =
-  IndexerServerClaimFoundationRewardsMerkleProofsParams;
-
-export type GetIndexerClaimFoundationRewardsMerkleProofsResponse =
-  GetIndexerClaimVrtxMerkleProofsResponse;
-
-/**
- * Sonic Points
- */
-
-export interface GetIndexerSonicPointsParams {
-  // Subaccount address
-  address: string;
-}
-
-export interface GetIndexerSonicPointsResponse {
-  tradingPoints: BigDecimal;
-  referralPoints: BigDecimal;
-  // Total taker volume in quote asset
-  takerVolume: BigDecimal;
-  // Total maker volume in quote asset
-  makerVolume: BigDecimal;
-  // Total users referred by subaccount
-  usersReferred: BigDecimal;
-  // Leaderboard rank of subaccount
-  rank: BigDecimal;
-}
-
-export interface GetIndexerSonicPointsLeaderboardParams {
-  // Minimum rank, inclusive
-  startCursor?: string;
-  limit: number;
-}
-
-export interface IndexerSonicPointsLeaderboardPosition {
-  address: string;
-  referralPoints: BigDecimal;
-  tradingPoints: BigDecimal;
-  rank: BigDecimal;
-  takerVolume: BigDecimal;
-  makerVolume: BigDecimal;
-}
-
-export interface GetIndexerSonicPointsLeaderboardResponse {
-  positions: IndexerSonicPointsLeaderboardPosition[];
-}
-
-/**
- * Blitz points
- */
-
-export interface GetIndexerBlitzPointsParams {
-  address: string;
-}
-
-export interface IndexerBlitzPointsEpoch {
-  epoch: number;
-  // Start time of the epoch in seconds
-  startTime: BigDecimal;
-  // Period of the epoch in seconds
-  period: BigDecimal;
-  tradingPoints: BigDecimal;
-  referralPoints: BigDecimal;
-  takerVolume: BigDecimal;
-  makerVolume: BigDecimal;
-  rank: BigDecimal;
-}
-
-export interface GetIndexerBlitzPointsResponse {
-  // Accrued points from the initial points drop
-  initialPoints: BigDecimal;
-  // Total accrued taker points from trading for phase 1 & phase 2
-  tradingPoints: BigDecimal;
-  // Total accrued points from referrals for phase 1 & phase 2
-  referralPoints: BigDecimal;
-  // Total taker volume in quote asset
-  takerVolume: BigDecimal;
-  // Total maker volume in quote asset
-  makerVolume: BigDecimal;
-  // Total users referred
-  usersReferred: BigDecimal;
-  // Epoch-based data for phase 2, in descending order
-  phase2Epochs: IndexerBlitzPointsEpoch[];
-}
-
-export interface GetIndexerBlitzInitialDropConditionsParams {
-  address: string;
-}
-
-export interface GetIndexerBlitzInitialDropConditionsResponse {
-  // Amount eligible for the initial drop
-  amount: BigDecimal;
-  // Deadline in seconds to claim
-  deadline: BigDecimal;
-  // Whether the address has reached 100+ USDB in acct value
-  accountValueReached: boolean;
-  // Whether address has completed 2 perp trades
-  perpTradesCompleted: boolean;
-  // Whether address has a verified tweet tagging Blitz
-  tweeted: boolean;
-}
-
-export interface GetIndexerBlitzPointsLeaderboardParams {
-  epoch: number;
-  // Minimum rank, inclusive
-  startCursor?: string;
-  limit: number;
-}
-
-export interface IndexerBlitzPointsLeaderboardPosition {
-  address: string;
-  referralPoints: BigDecimal;
-  tradingPoints: BigDecimal;
-  rank: BigDecimal;
-  takerVolume: BigDecimal;
-  makerVolume: BigDecimal;
-}
-
-export interface GetIndexerBlitzPointsLeaderboardResponse {
-  positions: IndexerBlitzPointsLeaderboardPosition[];
-}
-
-/**
- * Blast points
- */
-
-export interface GetIndexerBlastPointsParams {
-  address: string;
-}
-
-export interface GetIndexerBlastPointsResponse {
-  points: BigDecimal;
-  gold: BigDecimal;
 }
 
 /**
@@ -799,9 +549,6 @@ export interface IndexerLeaderboardParticipant {
   // Float indicating the trading volume at the time the snapshot was taken i.e: at updateTime.
   // Null for contests that have no volume requirement.
   volume?: BigDecimal;
-  // Float indicating the staked VRTX amount at the time the snapshot was taken i.e: at updateTime.
-  // Null for contests that have no staking requirement.
-  stakedVrtx?: BigDecimal;
   // Seconds
   updateTime: BigDecimal;
 }
@@ -875,8 +622,6 @@ export interface IndexerLeaderboardContest {
   minRequiredAccountValue: BigDecimal;
   // Float indicating the min trading volume required to be eligible for this contest e.g: 1000.0
   minRequiredVolume: BigDecimal;
-  // Float indicating the min staked vrtx required to be eligible for this contest e.g: 1000.0
-  minRequiredStakedVrtx: BigDecimal;
   // For market-specific contests, only the volume from these products will be counted.
   requiredProductIds: number[];
   active: boolean;
@@ -886,18 +631,6 @@ export interface GetIndexerLeaderboardContestsResponse {
   contests: IndexerLeaderboardContest[];
 }
 
-export interface GetIndexerVrtxTokenInfoParams {
-  tokenInfoType: IndexerVrtxTokenInfoType;
-}
-
-/**
- * Represents the total or circulating supply of the VRTX token as a float number.
- *
- * @remarks This value does not include token decimals. It is a base 10 number.
- *          For instance, 10 VRTX will be represented as 10.0, not 10*10^18.
- */
-export type GetIndexerVrtxTokenInfoResponse = number;
-
 export type GetIndexerFastWithdrawalSignatureParams =
   IndexerServerFastWithdrawalSignatureParams;
 
@@ -906,88 +639,6 @@ export interface GetIndexerFastWithdrawalSignatureResponse {
   tx: VertexWithdrawCollateralTx['withdraw_collateral'];
   txBytes: Hex;
   signatures: Hex[];
-}
-
-/**
- * Staking
- */
-
-export interface IndexerStakingV2PoolSnapshot {
-  timestamp: BigDecimal;
-  cumulativeStaked: BigDecimal;
-  cumulativeUnstaked: BigDecimal;
-  numberOfStakers: BigDecimal;
-}
-
-export type GetIndexerStakingV2PoolSnapshotsParams =
-  IndexerSnapshotsIntervalParams;
-
-export interface GetIndexerStakingV2PoolSnapshotsResponse {
-  snapshots: IndexerStakingV2PoolSnapshot[];
-}
-
-export interface IndexerStakingV2Staker {
-  address: Address;
-  stakedAmount: BigDecimal;
-  /** Address pool share as fraction ex. 0.01 */
-  poolShare: number;
-}
-
-export interface GetIndexerStakingV2TopStakersParams {
-  limit: number;
-}
-
-export interface GetIndexerStakingV2TopStakersResponse {
-  stakers: IndexerStakingV2Staker[];
-}
-
-/**
- * VRTX Supply / incentives for stats dashboard
- */
-
-export type GetIndexerVrtxSupplySnapshotsParams =
-  IndexerSnapshotsIntervalParams;
-
-export interface IndexerVrtxSupplySnapshot {
-  timestamp: BigDecimal;
-  /** VRTX token price in primary quote. */
-  vrtxOraclePrice: BigDecimal;
-  /** Percentage of total VRTX supply distributed as staking incentives.  */
-  cumulativeIncentivesPercentage: BigDecimal;
-  /** Percentage of total VRTX supply distributed during the LBA (Liquidity Bootstrapping Auction). */
-  cumulativeLbaPercentage: BigDecimal;
-  /** Percentage of total VRTX supply allocated to the ecosystem. */
-  cumulativeEcosystemSupplyPercentage: BigDecimal;
-  /** Percentage of total VRTX supply allocated to the treasury. */
-  cumulativeTreasurySupplyPercentage: BigDecimal;
-  /** Percentage of total VRTX supply allocated to investors. */
-  cumulativeInvestorsSupplyPercentage: BigDecimal;
-  /** Percentage of total VRTX supply allocated to the team. */
-  cumulativeTeamSupplyPercentage: BigDecimal;
-}
-
-export interface GetIndexerVrtxSupplySnapshotsResponse {
-  snapshots: IndexerVrtxSupplySnapshot[];
-}
-
-export type GetIndexerFoundationTokenIncentivesSnapshotsParams =
-  IndexerSnapshotsIntervalParams;
-
-export interface IndexerFoundationTokenIncentivesSnapshot {
-  timestamp: BigDecimal;
-  /** Total distributed foundation token incentives. */
-  cumulativeFoundationTokenIncentives: BigDecimal;
-  /** Foundation token oracle price. */
-  foundationTokenOraclePrice: BigDecimal;
-  /** Foundation token product. */
-  foundationTokenProductId: number;
-}
-
-export interface GetIndexerFoundationTokenIncentivesSnapshotsResponse {
-  /**
-   * Chain ID -> Snapshots
-   */
-  snapshots: Record<number, IndexerFoundationTokenIncentivesSnapshot[]>;
 }
 
 /**
@@ -1012,33 +663,6 @@ export interface IndexerVlpSnapshot {
 
 export interface GetIndexerVlpSnapshotsResponse {
   snapshots: IndexerVlpSnapshot[];
-}
-
-/**
- * XRPL
- */
-
-export interface GetIndexerXrplWithdrawalTxsParams {
-  submissionIndices: string[];
-}
-
-export interface IndexerXrplWithdrawalTx {
-  /**
-   * The actual submission index of the withdrawal transaction, which may differ from the one provided in the request.
-   */
-  submissionIndex: string;
-  /**
-   * The tx hash of the withdrawal as submitted to the EVM sidechain. This can be used to track the withdrawal on Axelarscan
-   */
-  txHash: Hex;
-}
-
-export interface GetIndexerXrplWithdrawalTxsResponse {
-  /**
-   * Array of withdrawal transactions, in the same order as the request params.
-   * If a withdrawal transaction was not found for a given submission index, the corresponding entry will be null.
-   */
-  txHashes: (IndexerXrplWithdrawalTx | null)[];
 }
 
 export interface GetIndexerBacklogResponse {

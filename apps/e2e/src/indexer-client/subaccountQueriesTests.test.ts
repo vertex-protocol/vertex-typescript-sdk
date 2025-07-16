@@ -36,21 +36,6 @@ async function subaccountQueriesTests(context: RunContext) {
 
   debugPrint('Linked Signer', linkedSigner);
 
-  const rewards = await client.getPaginatedRewards({
-    address: subaccount.subaccountOwner,
-    limit: 2,
-    startCursor: '10',
-  });
-
-  debugPrint('Paginated Rewards', rewards);
-
-  const takerRewards = await client.getTakerRewards({
-    address: subaccount.subaccountOwner,
-    limit: 1,
-  });
-
-  debugPrint('Taker Rewards', takerRewards);
-
   const referralCode = await client.getReferralCode({
     subaccount,
   });

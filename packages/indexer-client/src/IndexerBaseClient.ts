@@ -26,8 +26,6 @@ import {
   mapIndexerCandlesticks,
   mapIndexerEvent,
   mapIndexerEventWithTx,
-  mapIndexerFoundationTakerRewardsWeek,
-  mapIndexerFoundationTokenIncentivesSnapshot,
   mapIndexerFundingRate,
   mapIndexerLeaderboardContest,
   mapIndexerLeaderboardPosition,
@@ -38,30 +36,14 @@ import {
   mapIndexerOrder,
   mapIndexerPerpPrices,
   mapIndexerProductPayment,
-  mapIndexerRewardsEpoch,
   mapIndexerServerProduct,
-  mapIndexerStakingV2PoolSnapshot,
-  mapIndexerStakingV2Staker,
   mapIndexerVlpSnapshot,
-  mapIndexerVrtxSupplySnapshot,
   mapSnapshotsIntervalToServerParams,
 } from './dataMappers';
 import {
   GetIndexerBacklogResponse,
-  GetIndexerBlastPointsParams,
-  GetIndexerBlastPointsResponse,
-  GetIndexerBlitzInitialDropConditionsParams,
-  GetIndexerBlitzInitialDropConditionsResponse,
-  GetIndexerBlitzPointsLeaderboardParams,
-  GetIndexerBlitzPointsLeaderboardResponse,
-  GetIndexerBlitzPointsParams,
-  GetIndexerBlitzPointsResponse,
   GetIndexerCandlesticksParams,
   GetIndexerCandlesticksResponse,
-  GetIndexerClaimFoundationRewardsMerkleProofsParams,
-  GetIndexerClaimFoundationRewardsMerkleProofsResponse,
-  GetIndexerClaimVrtxMerkleProofsParams,
-  GetIndexerClaimVrtxMerkleProofsResponse,
   GetIndexerEdgeCandlesticksParams,
   GetIndexerEdgeCandlesticksResponse,
   GetIndexerEdgeMarketSnapshotResponse,
@@ -70,10 +52,6 @@ import {
   GetIndexerEventsResponse,
   GetIndexerFastWithdrawalSignatureParams,
   GetIndexerFastWithdrawalSignatureResponse,
-  GetIndexerFoundationTakerRewardsParams,
-  GetIndexerFoundationTakerRewardsResponse,
-  GetIndexerFoundationTokenIncentivesSnapshotsParams,
-  GetIndexerFoundationTokenIncentivesSnapshotsResponse,
   GetIndexerFundingRateParams,
   GetIndexerFundingRateResponse,
   GetIndexerInterestFundingPaymentsParams,
@@ -113,26 +91,8 @@ import {
   GetIndexerQuotePriceResponse,
   GetIndexerReferralCodeParams,
   GetIndexerReferralCodeResponse,
-  GetIndexerRewardsParams,
-  GetIndexerRewardsResponse,
-  GetIndexerSonicPointsLeaderboardParams,
-  GetIndexerSonicPointsLeaderboardResponse,
-  GetIndexerSonicPointsParams,
-  GetIndexerSonicPointsResponse,
-  GetIndexerStakingV2PoolSnapshotsParams,
-  GetIndexerStakingV2PoolSnapshotsResponse,
-  GetIndexerStakingV2TopStakersParams,
-  GetIndexerStakingV2TopStakersResponse,
-  GetIndexerTakerRewardsParams,
-  GetIndexerTakerRewardsResponse,
   GetIndexerVlpSnapshotsParams,
   GetIndexerVlpSnapshotsResponse,
-  GetIndexerVrtxSupplySnapshotsParams,
-  GetIndexerVrtxSupplySnapshotsResponse,
-  GetIndexerVrtxTokenInfoParams,
-  GetIndexerVrtxTokenInfoResponse,
-  GetIndexerXrplWithdrawalTxsParams,
-  GetIndexerXrplWithdrawalTxsResponse,
   IndexerEventWithTx,
   IndexerMatchEvent,
   IndexerOraclePrice,
@@ -142,7 +102,6 @@ import {
   IndexerServerQueryResponseByType,
   IndexerSnapshotBalance,
   IndexerSubaccountSnapshot,
-  IndexerTakerRewardsEpoch,
   ListIndexerSubaccountsParams,
   ListIndexerSubaccountsResponse,
   UpdateIndexerLeaderboardRegistrationParams,
@@ -240,56 +199,6 @@ export class IndexerBaseClient {
     return {
       subaccountHexIds,
       snapshots: snapshotsBySubaccount,
-    };
-  }
-
-  /**
-   * Retrieves estimated / past rewards for an address
-   *
-   * @param params
-   */
-  async getRewards(
-    params: GetIndexerRewardsParams,
-  ): Promise<GetIndexerRewardsResponse> {
-    const baseResponse = await this.query('rewards', {
-      address: params.address,
-      start: params.start,
-      limit: params.limit,
-    });
-
-    return {
-      epochs: baseResponse.rewards.map(mapIndexerRewardsEpoch),
-      updateTime: toBigDecimal(baseResponse.update_time),
-      totalReferrals: Number(baseResponse.total_referrals),
-    };
-  }
-
-  /**
-   * Retrieves estimated / past taker trading + referral rewards for an address
-   *
-   * @param params
-   */
-  async getTakerRewards(
-    params: GetIndexerTakerRewardsParams,
-  ): Promise<GetIndexerTakerRewardsResponse> {
-    const baseResponse = await this.query('taker_rewards', {
-      address: params.address,
-      start: params.start,
-      limit: params.limit,
-    });
-
-    return {
-      epochs: baseResponse.taker_rewards.map(
-        (epoch): IndexerTakerRewardsEpoch => {
-          return {
-            epoch: epoch.epoch,
-            takerTokens: toBigDecimal(epoch.taker_tokens),
-            takerReferralTokens: toBigDecimal(epoch.taker_referral_tokens),
-          };
-        },
-      ),
-      updateTime: toBigDecimal(baseResponse.update_time),
-      totalReferrals: Number(baseResponse.total_referrals),
     };
   }
 
@@ -699,224 +608,6 @@ export class IndexerBaseClient {
   }
 
   /**
-   * Retrieve the merkle proofs & total amounts claimable for the address for all epochs
-   *
-   * @param params
-   */
-  async getClaimVrtxMerkleProofs(
-    params: GetIndexerClaimVrtxMerkleProofsParams,
-  ): Promise<GetIndexerClaimVrtxMerkleProofsResponse> {
-    const baseResponse = await this.query('vrtx_merkle_proofs', params);
-
-    return baseResponse.merkle_proofs.map((proof) => {
-      return {
-        proof: proof.proof.map(getValidatedHex),
-        totalAmount: toBigDecimal(proof.total_amount),
-      };
-    });
-  }
-
-  /**
-   * Retrieves estimated / past foundation taker rewards for an address
-   * Example of foundation taker rewards: ARB rewards on Arbitrum
-   *
-   * @param params
-   */
-  async getFoundationTakerRewards(
-    params: GetIndexerFoundationTakerRewardsParams,
-  ): Promise<GetIndexerFoundationTakerRewardsResponse> {
-    const baseResponse = await this.query('foundation_taker_rewards', {
-      address: params.address,
-    });
-
-    return {
-      weeks: baseResponse.foundation_taker_rewards.map(
-        mapIndexerFoundationTakerRewardsWeek,
-      ),
-      updateTime: toBigDecimal(baseResponse.update_time),
-    };
-  }
-
-  /**
-   * Retrieve the merkle proofs & total amounts claimable for the address for all weeks
-   *
-   * @param params
-   */
-  async getClaimFoundationRewardsMerkleProofs(
-    params: GetIndexerClaimFoundationRewardsMerkleProofsParams,
-  ): Promise<GetIndexerClaimFoundationRewardsMerkleProofsResponse> {
-    const baseResponse = await this.query(
-      'foundation_rewards_merkle_proofs',
-      params,
-    );
-
-    return baseResponse.merkle_proofs.map((proof) => {
-      return {
-        proof: proof.proof.map(getValidatedHex),
-        totalAmount: toBigDecimal(proof.total_amount),
-      };
-    });
-  }
-
-  /**
-   * Retrieve Sonic Points of a subaccount
-   *
-   * @param params
-   */
-  async getSonicPoints(
-    params: GetIndexerSonicPointsParams,
-  ): Promise<GetIndexerSonicPointsResponse> {
-    const baseResponse = await this.query('sonic_points', params);
-
-    return {
-      tradingPoints: toBigDecimal(baseResponse.trading_points),
-      referralPoints: toBigDecimal(baseResponse.referral_points),
-      rank: toBigDecimal(baseResponse.rank),
-      takerVolume: toBigDecimal(baseResponse.taker_volumes),
-      makerVolume: toBigDecimal(baseResponse.maker_volumes),
-      usersReferred: toBigDecimal(baseResponse.users_referred),
-    };
-  }
-
-  async getSonicPointsLeaderboard(
-    params: GetIndexerSonicPointsLeaderboardParams,
-  ): Promise<GetIndexerSonicPointsLeaderboardResponse> {
-    const baseResponse = await this.query('sonic_points_leaderboard', {
-      start: Number(params.startCursor),
-      limit: params.limit,
-    });
-
-    return {
-      positions: baseResponse.positions.map(
-        ({
-          rank,
-          trading_points,
-          referral_points,
-          taker_volumes,
-          maker_volumes,
-          address,
-        }) => {
-          return {
-            rank: toBigDecimal(rank),
-            tradingPoints: toBigDecimal(trading_points),
-            referralPoints: toBigDecimal(referral_points),
-            takerVolume: toBigDecimal(taker_volumes),
-            makerVolume: toBigDecimal(maker_volumes),
-            address,
-          };
-        },
-      ),
-    };
-  }
-
-  /**
-   * Retrieve blitz points for the address
-   */
-  async getBlitzPoints(
-    params: GetIndexerBlitzPointsParams,
-  ): Promise<GetIndexerBlitzPointsResponse> {
-    const baseResponse = await this.query('blitz_points', params);
-
-    return {
-      initialPoints: toBigDecimal(baseResponse.initial_points),
-      referralPoints: toBigDecimal(baseResponse.referral_points),
-      tradingPoints: toBigDecimal(baseResponse.trading_points),
-      takerVolume: toBigDecimal(baseResponse.taker_volumes),
-      makerVolume: toBigDecimal(baseResponse.maker_volumes),
-      usersReferred: toBigDecimal(baseResponse.users_referred),
-      phase2Epochs: baseResponse.phase2_points.map(
-        ({
-          epoch,
-          rank,
-          period,
-          referral_points,
-          start_time,
-          trading_points,
-          taker_volumes,
-          maker_volumes,
-        }) => {
-          return {
-            epoch,
-            rank: toBigDecimal(rank),
-            startTime: toBigDecimal(start_time),
-            period: toBigDecimal(period),
-            tradingPoints: toBigDecimal(trading_points),
-            referralPoints: toBigDecimal(referral_points),
-            takerVolume: toBigDecimal(taker_volumes),
-            makerVolume: toBigDecimal(maker_volumes),
-          };
-        },
-      ),
-    };
-  }
-
-  /**
-   * Retrieve blast points for the address
-   */
-  async getBlastPoints(
-    params: GetIndexerBlastPointsParams,
-  ): Promise<GetIndexerBlastPointsResponse> {
-    const baseResponse = await this.query('blast_points', params);
-
-    return {
-      points: toBigDecimal(baseResponse.points),
-      gold: toBigDecimal(baseResponse.gold),
-    };
-  }
-
-  /**
-   * Retrieve blitz points leaderboard
-   */
-  async getBlitzPointsLeaderboard(
-    params: GetIndexerBlitzPointsLeaderboardParams,
-  ): Promise<GetIndexerBlitzPointsLeaderboardResponse> {
-    const baseResponse = await this.query('blitz_points_leaderboard', {
-      limit: params.limit,
-      start: Number(params.startCursor),
-      epoch: params.epoch,
-    });
-
-    return {
-      positions: baseResponse.positions.map(
-        ({
-          address,
-          rank,
-          trading_points,
-          referral_points,
-          taker_volumes,
-          maker_volumes,
-        }) => {
-          return {
-            address,
-            rank: toBigDecimal(rank),
-            tradingPoints: toBigDecimal(trading_points),
-            referralPoints: toBigDecimal(referral_points),
-            takerVolume: toBigDecimal(taker_volumes),
-            makerVolume: toBigDecimal(maker_volumes),
-          };
-        },
-      ),
-    };
-  }
-
-  /**
-   * Retrieve status for initial claim process for Blitz
-   */
-  async getBlitzInitialDropConditions(
-    params: GetIndexerBlitzInitialDropConditionsParams,
-  ): Promise<GetIndexerBlitzInitialDropConditionsResponse> {
-    const baseResponse = await this.query('initial_drop_conditions', params);
-
-    return {
-      accountValueReached: baseResponse.account_value_reached,
-      amount: toBigDecimal(baseResponse.amount),
-      deadline: toBigDecimal(baseResponse.deadline),
-      perpTradesCompleted: baseResponse.perp_trades_done,
-      tweeted: baseResponse.tweeted,
-    };
-  }
-
-  /**
    * Retrieve maker statistics for a given epoch
    *
    * @param params
@@ -1078,86 +769,6 @@ export class IndexerBaseClient {
     };
   }
 
-  /**
-   * Retrieves VRTX total / circulating supply
-   *
-   * @param params
-   */
-  async getVrtxTokenInfo(
-    params: GetIndexerVrtxTokenInfoParams,
-  ): Promise<GetIndexerVrtxTokenInfoResponse> {
-    const response = await this.axiosInstance.get(
-      `${this.v2Url}/vrtx?q=${params.tokenInfoType}`,
-    );
-
-    this.checkResponseStatus(response);
-
-    return response.data as GetIndexerVrtxTokenInfoResponse;
-  }
-
-  /**
-   * Retrieves staking top stakers.
-   *
-   * @param params
-   */
-  async getStakingV2TopStakers(
-    params: GetIndexerStakingV2TopStakersParams,
-  ): Promise<GetIndexerStakingV2TopStakersResponse> {
-    const baseResponse = await this.query('staking_v2_top_stakers', {
-      limit: params.limit,
-    });
-
-    return {
-      stakers: baseResponse.stakers.map(mapIndexerStakingV2Staker),
-    };
-  }
-
-  /**
-   * Retrieves staking v2 pool snapshots.
-   *
-   * @param params
-   */
-  async getStakingV2PoolSnapshots(
-    params: GetIndexerStakingV2PoolSnapshotsParams,
-  ): Promise<GetIndexerStakingV2PoolSnapshotsResponse> {
-    const baseResponse = await this.query('staking_v2_pool_snapshots', {
-      interval: mapSnapshotsIntervalToServerParams(params),
-    });
-
-    return {
-      snapshots: baseResponse.snapshots.map(mapIndexerStakingV2PoolSnapshot),
-    };
-  }
-
-  async getVrtxSupplySnapshots(
-    params: GetIndexerVrtxSupplySnapshotsParams,
-  ): Promise<GetIndexerVrtxSupplySnapshotsResponse> {
-    const baseResponse = await this.query('vrtx_supply_snapshots', {
-      interval: mapSnapshotsIntervalToServerParams(params),
-    });
-
-    return {
-      snapshots: baseResponse.snapshots.map(mapIndexerVrtxSupplySnapshot),
-    };
-  }
-
-  async getFoundationTokenIncentivesSnapshots(
-    params: GetIndexerFoundationTokenIncentivesSnapshotsParams,
-  ): Promise<GetIndexerFoundationTokenIncentivesSnapshotsResponse> {
-    const baseResponse = await this.query(
-      'foundation_token_incentives_snapshots',
-      {
-        interval: mapSnapshotsIntervalToServerParams(params),
-      },
-    );
-
-    return {
-      snapshots: mapValues(baseResponse.snapshots, (snapshots) =>
-        snapshots.map(mapIndexerFoundationTokenIncentivesSnapshot),
-      ),
-    };
-  }
-
   async getVlpSnapshots(
     params: GetIndexerVlpSnapshotsParams,
   ): Promise<GetIndexerVlpSnapshotsResponse> {
@@ -1173,26 +784,6 @@ export class IndexerBaseClient {
 
     return {
       snapshots: baseResponse.snapshots.map(mapIndexerVlpSnapshot),
-    };
-  }
-
-  async getXrplWithdrawalTxs(
-    params: GetIndexerXrplWithdrawalTxsParams,
-  ): Promise<GetIndexerXrplWithdrawalTxsResponse> {
-    const baseResponse = await this.query('tx_hashes', {
-      idxs: params.submissionIndices,
-    });
-
-    return {
-      txHashes: baseResponse.tx_hashes.map((tx) => {
-        if (!tx) {
-          return null;
-        }
-        return {
-          submissionIndex: tx.submission_idx,
-          txHash: getValidatedHex(tx.tx_hash),
-        };
-      }),
     };
   }
 

@@ -4,4 +4,3 @@ export * from './execute';
 export * from './common';
 export * from './utils';
 export * from './encoding';
-export * from './vrtxToken';

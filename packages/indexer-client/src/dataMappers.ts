@@ -12,7 +12,6 @@ import {
   mapEngineServerSpotProduct,
 } from '@vertex-protocol/engine-client';
 import {
-  getValidatedAddress,
   mapValues,
   removeDecimals,
   toBigDecimal,
@@ -22,11 +21,7 @@ import {
   Candlestick,
   IndexerEvent,
   IndexerEventWithTx,
-  IndexerFoundationTakerGlobalRewardsForProduct,
-  IndexerFoundationTakerRewardsWeek,
-  IndexerFoundationTokenIncentivesSnapshot,
   IndexerFundingRate,
-  IndexerGlobalRewardsForProduct,
   IndexerLeaderboardContest,
   IndexerLeaderboardParticipant,
   IndexerLeaderboardRegistration,
@@ -37,12 +32,9 @@ import {
   IndexerPerpBalance,
   IndexerPerpPrices,
   IndexerProductPayment,
-  IndexerRewardsEpoch,
   IndexerServerBalance,
   IndexerServerCandlestick,
   IndexerServerEvent,
-  IndexerServerFoundationTakerRewardsWeek,
-  IndexerServerFoundationTokenIncentivesSnapshot,
   IndexerServerFundingRate,
   IndexerServerLeaderboardContest,
   IndexerServerLeaderboardPosition,
@@ -54,21 +46,12 @@ import {
   IndexerServerPerpPrices,
   IndexerServerProduct,
   IndexerServerProductPayment,
-  IndexerServerRewardsEpoch,
   IndexerServerSnapshotsInterval,
-  IndexerServerStakingV2PoolSnapshot,
-  IndexerServerStakingV2Staker,
   IndexerServerTx,
   IndexerServerVlpSnapshot,
-  IndexerServerVrtxSupplySnapshot,
   IndexerSnapshotsIntervalParams,
   IndexerSpotBalance,
-  IndexerStakingV2PoolSnapshot,
-  IndexerStakingV2Staker,
-  IndexerSubaccountFoundationTakerRewardsForProduct,
-  IndexerSubaccountRewardsForProduct,
   IndexerVlpSnapshot,
-  IndexerVrtxSupplySnapshot,
 } from './types';
 
 export function mapSnapshotsIntervalToServerParams(
@@ -219,80 +202,6 @@ export function mapIndexerProductPayment(
   };
 }
 
-export function mapIndexerRewardsEpoch(
-  epoch: IndexerServerRewardsEpoch,
-): IndexerRewardsEpoch {
-  return {
-    epoch: epoch.epoch,
-    period: toBigDecimal(epoch.period),
-    startTime: toBigDecimal(epoch.start_time),
-    numEligibleAddresses: epoch.num_eligible_addresses,
-    addressRewards: epoch.address_rewards.map(
-      (reward): IndexerSubaccountRewardsForProduct => {
-        return {
-          productId: reward.product_id,
-          makerFee: toBigDecimal(reward.maker_fee),
-          makerTokens: toBigDecimal(reward.maker_tokens),
-          makerVolume: toBigDecimal(reward.maker_volume),
-          qScore: toBigDecimal(reward.q_score),
-          rebates: toBigDecimal(reward.rebates),
-          sumQMin: toBigDecimal(reward.sum_q_min),
-          takerFee: toBigDecimal(reward.taker_fee),
-          takerTokens: toBigDecimal(reward.taker_tokens),
-          takerVolume: toBigDecimal(reward.taker_volume),
-          takerReferralTokens: toBigDecimal(reward.taker_referral_tokens),
-          uptime: reward.uptime,
-        };
-      },
-    ),
-    globalRewards: epoch.global_rewards.map(
-      (reward): IndexerGlobalRewardsForProduct => {
-        return {
-          productId: reward.product_id,
-          makerFees: toBigDecimal(reward.maker_fees),
-          makerTokens: toBigDecimal(reward.maker_tokens),
-          makerVolumes: toBigDecimal(reward.maker_volumes),
-          qScores: toBigDecimal(reward.q_scores),
-          rewardCoefficient: toBigDecimal(reward.reward_coefficient),
-          takerFees: toBigDecimal(reward.taker_fees),
-          takerTokens: toBigDecimal(reward.taker_tokens),
-          takerVolumes: toBigDecimal(reward.taker_volumes),
-        };
-      },
-    ),
-  };
-}
-
-export function mapIndexerFoundationTakerRewardsWeek(
-  week: IndexerServerFoundationTakerRewardsWeek,
-): IndexerFoundationTakerRewardsWeek {
-  return {
-    week: week.week,
-    period: toBigDecimal(week.period),
-    startTime: toBigDecimal(week.start_time),
-    addressRewards: week.address_rewards.map(
-      (reward): IndexerSubaccountFoundationTakerRewardsForProduct => {
-        return {
-          productId: reward.product_id,
-          takerFee: toBigDecimal(reward.taker_fee),
-          takerTokens: toBigDecimal(reward.taker_tokens),
-          takerVolume: toBigDecimal(reward.taker_volume),
-        };
-      },
-    ),
-    globalRewards: week.global_rewards.map(
-      (reward): IndexerFoundationTakerGlobalRewardsForProduct => {
-        return {
-          productId: reward.product_id,
-          takerFees: toBigDecimal(reward.taker_fees),
-          takerTokens: toBigDecimal(reward.taker_tokens),
-          takerVolumes: toBigDecimal(reward.taker_volumes),
-        };
-      },
-    ),
-  };
-}
-
 export function mapIndexerPerpPrices(
   perpPrices: IndexerServerPerpPrices,
 ): IndexerPerpPrices {
@@ -345,9 +254,6 @@ export function mapIndexerLeaderboardPosition(
     roiRank: toBigDecimal(position.roi_rank),
     accountValue: toBigDecimal(position.account_value),
     volume: position.volume ? toBigDecimal(position.volume) : undefined,
-    stakedVrtx: position.staked_vrtx
-      ? toBigDecimal(position.staked_vrtx)
-      : undefined,
     updateTime: toBigDecimal(position.update_time),
   };
 }
@@ -373,7 +279,6 @@ export function mapIndexerLeaderboardContest(
     totalParticipants: toBigDecimal(contest.count),
     minRequiredAccountValue: toBigDecimal(contest.threshold),
     minRequiredVolume: toBigDecimal(contest.volume_threshold),
-    minRequiredStakedVrtx: toBigDecimal(contest.staking_threshold),
     requiredProductIds: contest.product_ids,
     active: contest.active,
     lastUpdated: toBigDecimal(contest.last_updated),
@@ -440,67 +345,6 @@ export function mapIndexerMarketSnapshot(
     oraclePrices: mapValues(snapshot.oracle_prices, (value) =>
       removeDecimals(value),
     ),
-  };
-}
-
-export function mapIndexerStakingV2PoolSnapshot(
-  snapshot: IndexerServerStakingV2PoolSnapshot,
-): IndexerStakingV2PoolSnapshot {
-  return {
-    timestamp: toBigDecimal(snapshot.timestamp),
-    cumulativeStaked: toBigDecimal(snapshot.cumulative_staked),
-    cumulativeUnstaked: toBigDecimal(snapshot.cumulative_unstaked),
-    numberOfStakers: toBigDecimal(snapshot.number_of_stakers),
-  };
-}
-
-export function mapIndexerStakingV2Staker(
-  staker: IndexerServerStakingV2Staker,
-): IndexerStakingV2Staker {
-  return {
-    address: getValidatedAddress(staker.address),
-    stakedAmount: toBigDecimal(staker.stake_amount),
-    poolShare: staker.pool_share,
-  };
-}
-
-export function mapIndexerVrtxSupplySnapshot(
-  snapshot: IndexerServerVrtxSupplySnapshot,
-): IndexerVrtxSupplySnapshot {
-  return {
-    timestamp: toBigDecimal(snapshot.timestamp),
-    vrtxOraclePrice: removeDecimals(snapshot.vrtx_oracle_price),
-    cumulativeIncentivesPercentage: toBigDecimal(
-      snapshot.cumulative_incentives,
-    ),
-    cumulativeLbaPercentage: toBigDecimal(snapshot.cumulative_lba),
-    cumulativeEcosystemSupplyPercentage: toBigDecimal(
-      snapshot.cumulative_ecosystem_supply,
-    ),
-    cumulativeTreasurySupplyPercentage: toBigDecimal(
-      snapshot.cumulative_treasury_supply,
-    ),
-    cumulativeInvestorsSupplyPercentage: toBigDecimal(
-      snapshot.cumulative_investors_supply,
-    ),
-    cumulativeTeamSupplyPercentage: toBigDecimal(
-      snapshot.cumulative_team_supply,
-    ),
-  };
-}
-
-export function mapIndexerFoundationTokenIncentivesSnapshot(
-  snapshot: IndexerServerFoundationTokenIncentivesSnapshot,
-): IndexerFoundationTokenIncentivesSnapshot {
-  return {
-    timestamp: toBigDecimal(snapshot.timestamp),
-    cumulativeFoundationTokenIncentives: toBigDecimal(
-      snapshot.cumulative_foundation_token_incentives,
-    ),
-    foundationTokenOraclePrice: removeDecimals(
-      snapshot.foundation_token_oracle_price,
-    ),
-    foundationTokenProductId: snapshot.foundation_token_product_id,
   };
 }
 

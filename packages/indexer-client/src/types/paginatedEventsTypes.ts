@@ -1,17 +1,12 @@
 import { Subaccount } from '@vertex-protocol/contracts';
 import { BigDecimal } from '@vertex-protocol/utils';
 import {
-  GetIndexerBlitzPointsLeaderboardParams,
-  GetIndexerBlitzPointsLeaderboardResponse,
   GetIndexerInterestFundingPaymentsParams,
   GetIndexerInterestFundingPaymentsResponse,
   GetIndexerLeaderboardParams,
   GetIndexerLeaderboardResponse,
   GetIndexerMatchEventsParams,
   GetIndexerOrdersParams,
-  GetIndexerRewardsParams,
-  GetIndexerRewardsResponse,
-  GetIndexerSonicPointsLeaderboardResponse,
   IndexerEventBalanceStateSnapshot,
   IndexerEventPerpStateSnapshot,
   IndexerEventSpotStateSnapshot,
@@ -227,24 +222,3 @@ export type GetIndexerPaginatedLeaderboardParams = IndexerPaginationParams &
 
 export type GetIndexerPaginatedLeaderboardResponse = WithPaginationMeta &
   GetIndexerLeaderboardResponse;
-
-export type GetIndexerPaginatedBlitzPointsLeaderboardParams =
-  IndexerPaginationParams &
-    Pick<GetIndexerBlitzPointsLeaderboardParams, 'epoch'>;
-
-export type GetIndexerPaginatedBlitzPointsLeaderboardResponse =
-  WithPaginationMeta & GetIndexerBlitzPointsLeaderboardResponse;
-
-export type GetIndexerPaginatedSonicPointsLeaderboardResponse =
-  WithPaginationMeta & GetIndexerSonicPointsLeaderboardResponse;
-
-/**
- * Paginated rewards query - these paginate on epoch #, which is `number`, but for consistency we use the
- * string pagination params / meta that is used for other paginated queries
- */
-
-export type GetIndexerPaginatedRewardsParams = IndexerPaginationParams &
-  Pick<GetIndexerRewardsParams, 'address'>;
-
-export type GetIndexerPaginatedRewardsResponse = WithPaginationMeta &
-  GetIndexerRewardsResponse;
