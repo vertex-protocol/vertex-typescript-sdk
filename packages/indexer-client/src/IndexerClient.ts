@@ -10,16 +10,11 @@ import { IndexerBaseClient } from './IndexerBaseClient';
 import {
   BaseIndexerPaginatedEvent,
   CollateralEventType,
-  GetIndexerPaginatedBlitzPointsLeaderboardParams,
-  GetIndexerPaginatedBlitzPointsLeaderboardResponse,
   GetIndexerPaginatedInterestFundingPaymentsResponse,
   GetIndexerPaginatedLeaderboardParams,
   GetIndexerPaginatedLeaderboardResponse,
   GetIndexerPaginatedOrdersParams,
   GetIndexerPaginatedOrdersResponse,
-  GetIndexerPaginatedRewardsParams,
-  GetIndexerPaginatedRewardsResponse,
-  GetIndexerPaginatedSonicPointsLeaderboardResponse,
   GetIndexerSubaccountCollateralEventsParams,
   GetIndexerSubaccountCollateralEventsResponse,
   GetIndexerSubaccountInterestFundingPaymentsParams,
@@ -39,7 +34,6 @@ import {
   IndexerEventWithTx,
   IndexerLiquidationEvent,
   IndexerLpEvent,
-  IndexerPaginationParams,
   IndexerSettlementEvent,
   IndexerVlpEvent,
   PaginatedIndexerEventsResponse,
@@ -511,104 +505,6 @@ export class IndexerClient extends IndexerBaseClient {
       meta: {
         hasMore: baseResponse.nextCursor != null,
         nextCursor: baseResponse.nextCursor ?? undefined,
-      },
-    };
-  }
-
-  /**
-   * Paginated rewards query that paginates on epoch number.
-   *
-   * @param params
-   */
-  async getPaginatedRewards(
-    params: GetIndexerPaginatedRewardsParams,
-  ): Promise<GetIndexerPaginatedRewardsResponse> {
-    const requestedLimit = params.limit;
-
-    const baseResponse = await this.getRewards({
-      address: params.address,
-      // Query for 1 more epoch for proper pagination
-      limit: requestedLimit + 1,
-      // Start cursor is the next epoch number
-      start: Number(params.startCursor),
-    });
-
-    const nextCursor = baseResponse.epochs[requestedLimit]?.epoch;
-
-    // Truncate the response to the requested limit
-    return {
-      ...baseResponse,
-      epochs: baseResponse.epochs.slice(0, requestedLimit),
-      meta: {
-        hasMore: baseResponse.epochs.length > requestedLimit,
-        // Next cursor is the epoch number of the (requestedLimit+1)th item
-        nextCursor:
-          nextCursor !== undefined ? toIntegerString(nextCursor) : undefined,
-      },
-    };
-  }
-
-  /**
-   * Paginated blitz points leaderboard query that paginates on rank number.
-   *
-   * @param params
-   */
-  async getPaginatedBlitzPointsLeaderboard(
-    params: GetIndexerPaginatedBlitzPointsLeaderboardParams,
-  ): Promise<GetIndexerPaginatedBlitzPointsLeaderboardResponse> {
-    const requestedLimit = params.limit;
-
-    const baseResponse = await this.getBlitzPointsLeaderboard({
-      epoch: params.epoch,
-      // Query for 1 more result for proper pagination
-      limit: requestedLimit + 1,
-      // Start cursor is the next rank number
-      startCursor: params.startCursor,
-    });
-
-    // Next cursor is the rank number of the (requestedLimit+1)th item
-    const nextCursor = baseResponse.positions[requestedLimit]?.rank;
-
-    return {
-      ...baseResponse,
-      // Truncate the response to the requested limit
-      positions: baseResponse.positions.slice(0, requestedLimit),
-      meta: {
-        hasMore: baseResponse.positions.length > requestedLimit,
-        nextCursor:
-          nextCursor !== undefined ? toIntegerString(nextCursor) : undefined,
-      },
-    };
-  }
-
-  /**
-   * Paginated sonic points leaderboard query that paginates on rank number.
-   *
-   * @param params
-   */
-  async getPaginatedSonicPointsLeaderboard(
-    params: IndexerPaginationParams,
-  ): Promise<GetIndexerPaginatedSonicPointsLeaderboardResponse> {
-    const requestedLimit = params.limit;
-
-    const baseResponse = await this.getSonicPointsLeaderboard({
-      // Query for 1 more result for proper pagination
-      limit: requestedLimit + 1,
-      // Start cursor is the next rank number
-      startCursor: params.startCursor,
-    });
-
-    // Next cursor is the rank number of the (requestedLimit+1)th item
-    const nextCursor = baseResponse.positions[requestedLimit]?.rank;
-
-    return {
-      ...baseResponse,
-      // Truncate the response to the requested limit
-      positions: baseResponse.positions.slice(0, requestedLimit),
-      meta: {
-        hasMore: baseResponse.positions.length > requestedLimit,
-        nextCursor:
-          nextCursor !== undefined ? toIntegerString(nextCursor) : undefined,
       },
     };
   }

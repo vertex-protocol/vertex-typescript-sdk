@@ -7,8 +7,6 @@ import { IndexerLeaderboardRankType } from './IndexerLeaderboardType';
 import {
   IndexerServerCandlestick,
   IndexerServerEvent,
-  IndexerServerFoundationTakerRewardsWeek,
-  IndexerServerFoundationTokenIncentivesSnapshot,
   IndexerServerLeaderboardContest,
   IndexerServerLeaderboardPosition,
   IndexerServerLeaderboardRegistration,
@@ -16,20 +14,13 @@ import {
   IndexerServerMarketSnapshot,
   IndexerServerMarketSnapshotInterval,
   IndexerServerMatchEvent,
-  IndexerServerMerkleProof,
   IndexerServerOraclePrice,
   IndexerServerOrder,
   IndexerServerProductPayment,
   IndexerServerProductSnapshot,
-  IndexerServerRewardsEpoch,
   IndexerServerSnapshotsInterval,
-  IndexerServerStakingV2PoolSnapshot,
-  IndexerServerStakingV2Staker,
-  IndexerServerTakerRewardsEpoch,
   IndexerServerTx,
   IndexerServerVlpSnapshot,
-  IndexerServerVrtxSupplySnapshot,
-  IndexerServerXrplWithdrawalTxHash,
 } from './serverModelTypes';
 import { VertexWithdrawCollateralTx } from './VertexTx';
 
@@ -52,15 +43,6 @@ export interface IndexerServerMultiSubaccountSnapshotsParams {
   // If not given, will return both isolated & non-iso balances
   isolated?: boolean;
 }
-
-export interface IndexerServerRewardsParams {
-  address: string;
-  // Inclusive, epochs are returned in descending order
-  start?: number;
-  limit?: number;
-}
-
-export type IndexerServerTakerRewardsParams = IndexerServerRewardsParams;
 
 export interface IndexerServerReferralCodeParams {
   subaccount: string;
@@ -176,45 +158,6 @@ export interface IndexerServerInterestFundingParams {
   limit: number;
 }
 
-export interface IndexerServerClaimVrtxMerkleProofsParams {
-  address: string;
-}
-
-export interface IndexerServerFoundationTakerRewardsParams {
-  address: string;
-}
-
-export interface IndexerServerClaimFoundationRewardsMerkleProofsParams {
-  address: string;
-}
-
-export interface IndexerServerBlastPointsParams {
-  address: string;
-}
-
-export interface IndexerServerBlitzPointsParams {
-  address: string;
-}
-
-export interface IndexerServerBlitzPointsLeaderboardParams {
-  epoch: number;
-  start?: number;
-  limit?: number;
-}
-
-export interface IndexerServerBlitzInitialDropConditionsParams {
-  address: string;
-}
-
-export interface IndexerServerSonicPointsParams {
-  address: string;
-}
-
-export interface IndexerServerSonicPointsLeaderboardParams {
-  start?: number;
-  limit?: number;
-}
-
 export interface IndexerServerMakerStatisticsParams {
   product_id: number;
   epoch: number;
@@ -250,48 +193,21 @@ export interface IndexerServerFastWithdrawalSignatureParams {
   idx: number | string;
 }
 
-export interface IndexerServerStakingV2PoolSnapshotsParams {
-  interval: IndexerServerSnapshotsInterval;
-}
-
-export interface IndexerServerStakingV2TopStakersParams {
-  limit: number;
-}
-
-export interface IndexerServerVrtxSupplySnapshotsParams {
-  interval: IndexerServerSnapshotsInterval;
-}
-
-export interface IndexerServerFoundationTokenIncentivesSnapshotsParams {
-  interval: IndexerServerSnapshotsInterval;
-}
-
 export interface IndexerServerVlpSnapshotsParams {
   interval: IndexerServerSnapshotsInterval;
-}
-
-export interface IndexerServerXrplWithdrawalTxHashesParams {
-  idxs: string[];
 }
 
 // Request
 export interface IndexerServerQueryRequestByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsParams;
   backlog: Record<string, never>;
-  blast_points: IndexerServerBlastPointsParams;
-  blitz_points: IndexerServerBlitzPointsParams;
-  blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardParams;
   candlesticks: IndexerServerCandlesticksParams;
   edge_candlesticks: IndexerEdgeServerCandlesticksParams;
   edge_market_snapshots: IndexerEdgeServerMarketSnapshotsParams;
   events: IndexerServerEventsParams;
   fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureParams;
-  foundation_rewards_merkle_proofs: IndexerServerClaimFoundationRewardsMerkleProofsParams;
-  foundation_taker_rewards: IndexerServerFoundationTakerRewardsParams;
-  foundation_token_incentives_snapshots: IndexerServerFoundationTokenIncentivesSnapshotsParams;
   funding_rate: IndexerServerFundingRateParams;
   funding_rates: IndexerServerFundingRatesParams;
-  initial_drop_conditions: IndexerServerBlitzInitialDropConditionsParams;
   interest_and_funding: IndexerServerInterestFundingParams;
   leaderboard: IndexerServerLeaderboardParams;
   leaderboard_contests: IndexerServerLeaderboardContestsParams;
@@ -308,18 +224,9 @@ export interface IndexerServerQueryRequestByType {
   product_snapshots: IndexerServerMultiProductsParams;
   products: IndexerServerProductsParams;
   referral_code: IndexerServerReferralCodeParams;
-  rewards: IndexerServerRewardsParams;
-  sonic_points: IndexerServerSonicPointsParams;
-  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardParams;
-  staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsParams;
-  staking_v2_top_stakers: IndexerServerStakingV2TopStakersParams;
   subaccounts: IndexerServerListSubaccountsParams;
-  taker_rewards: IndexerServerTakerRewardsParams;
-  tx_hashes: IndexerServerXrplWithdrawalTxHashesParams;
   usdc_price: Record<string, never>;
   vlp_snapshots: IndexerServerVlpSnapshotsParams;
-  vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsParams;
-  vrtx_supply_snapshots: IndexerServerVrtxSupplySnapshotsParams;
 }
 
 export type IndexerServerQueryRequestType =
@@ -340,18 +247,6 @@ export interface IndexerServerListSubaccountsResponse {
 export interface IndexerServerMultiSubaccountSnapshotsResponse {
   // Map of subaccount hex -> timestamp requested -> latest events corresponding to each product
   snapshots: Record<string, Record<string, IndexerServerEvent[]>>;
-}
-
-export interface IndexerServerRewardsResponse {
-  rewards: IndexerServerRewardsEpoch[];
-  update_time: string;
-  total_referrals: string;
-}
-
-export interface IndexerServerTakerRewardsResponse {
-  taker_rewards: IndexerServerTakerRewardsEpoch[];
-  update_time: string;
-  total_referrals: string;
 }
 
 export interface IndexerServerReferralCodeResponse {
@@ -448,82 +343,6 @@ export interface IndexerServerInterestFundingResponse {
   next_idx: string;
 }
 
-export interface IndexerServerClaimVrtxMerkleProofsResponse {
-  merkle_proofs: IndexerServerMerkleProof[];
-}
-
-export interface IndexerServerFoundationTakerRewardsResponse {
-  foundation_taker_rewards: IndexerServerFoundationTakerRewardsWeek[];
-  update_time: string;
-}
-
-export type IndexerServerClaimFoundationRewardsMerkleProofsResponse =
-  IndexerServerClaimVrtxMerkleProofsResponse;
-
-export interface IndexerServerBlitzPointsResponse {
-  initial_points: string;
-  trading_points: string;
-  referral_points: string;
-  maker_volumes: string;
-  taker_volumes: string;
-  users_referred: string;
-  phase2_points: Array<{
-    epoch: number;
-    // in seconds
-    start_time: string;
-    period: string;
-    trading_points: string;
-    referral_points: string;
-    taker_volumes: string;
-    maker_volumes: string;
-    rank: string;
-  }>;
-}
-
-export interface IndexerServerBlitzPointsLeaderboardResponse {
-  positions: Array<{
-    address: string;
-    trading_points: string;
-    referral_points: string;
-    rank: string;
-    taker_volumes: string;
-    maker_volumes: string;
-  }>;
-}
-
-export interface IndexerServerBlitzInitialDropConditionsResponse {
-  amount: string;
-  deadline: string;
-  account_value_reached: boolean;
-  perp_trades_done: boolean;
-  tweeted: boolean;
-}
-
-export interface IndexerServerBlastPointsResponse {
-  points: string;
-  gold: string;
-}
-
-export interface IndexerServerSonicPointsResponse {
-  trading_points: string;
-  referral_points: string;
-  rank: string;
-  users_referred: string;
-  taker_volumes: string;
-  maker_volumes: string;
-}
-
-export interface IndexerServerSonicPointsLeaderboardResponse {
-  positions: Array<{
-    address: string;
-    trading_points: string;
-    referral_points: string;
-    rank: string;
-    taker_volumes: string;
-    maker_volumes: string;
-  }>;
-}
-
 export interface IndexerServerMakerStatisticsResponse {
   reward_coefficient: string;
   makers: IndexerServerMaker[];
@@ -556,35 +375,8 @@ export interface IndexerServerFastWithdrawalSignatureResponse {
   signatures: string[];
 }
 
-export interface IndexerServerStakingV2TopStakersResponse {
-  stakers: IndexerServerStakingV2Staker[];
-}
-
-export interface IndexerServerStakingV2PoolSnapshotsResponse {
-  snapshots: IndexerServerStakingV2PoolSnapshot[];
-}
-
-export interface IndexerServerVrtxSupplySnapshotsResponse {
-  snapshots: IndexerServerVrtxSupplySnapshot[];
-}
-
-export interface IndexerServerFoundationTokenIncentivesSnapshotsResponse {
-  /**
-   * Chain ID -> Snapshots
-   */
-  snapshots: Record<number, IndexerServerFoundationTokenIncentivesSnapshot[]>;
-}
-
 export interface IndexerServerVlpSnapshotsResponse {
   snapshots: IndexerServerVlpSnapshot[];
-}
-
-export interface IndexerServerXrplWithdrawalTxHashesResponse {
-  /**
-   * Array of withdrawal transactions, in the same order as the request params.
-   * If a withdrawal transaction was not found for a given submission index, the corresponding entry will be null.
-   */
-  tx_hashes: (IndexerServerXrplWithdrawalTxHash | null)[];
 }
 
 export interface IndexerServerBacklogResponse {
@@ -606,20 +398,13 @@ export interface IndexerServerBacklogResponse {
 export interface IndexerServerQueryResponseByType {
   account_snapshots: IndexerServerMultiSubaccountSnapshotsResponse;
   backlog: IndexerServerBacklogResponse;
-  blast_points: IndexerServerBlastPointsResponse;
-  blitz_points: IndexerServerBlitzPointsResponse;
-  blitz_points_leaderboard: IndexerServerBlitzPointsLeaderboardResponse;
   candlesticks: IndexerServerCandlesticksResponse;
   edge_candlesticks: IndexerEdgeServerCandlesticksResponse;
   edge_market_snapshots: IndexerEdgeServerMarketSnapshotsResponse;
   events: IndexerServerEventsResponse;
   fast_withdrawal_signature: IndexerServerFastWithdrawalSignatureResponse;
-  foundation_rewards_merkle_proofs: IndexerServerClaimFoundationRewardsMerkleProofsResponse;
-  foundation_taker_rewards: IndexerServerFoundationTakerRewardsResponse;
-  foundation_token_incentives_snapshots: IndexerServerFoundationTokenIncentivesSnapshotsResponse;
   funding_rate: IndexerServerFundingRateResponse;
   funding_rates: IndexerServerFundingRatesResponse;
-  initial_drop_conditions: IndexerServerBlitzInitialDropConditionsResponse;
   interest_and_funding: IndexerServerInterestFundingResponse;
   leaderboard: IndexerServerLeaderboardResponse;
   leaderboard_contests: IndexerServerLeaderboardContestsResponse;
@@ -636,16 +421,7 @@ export interface IndexerServerQueryResponseByType {
   product_snapshots: IndexerServerMultiProductsResponse;
   products: IndexerServerProductsResponse;
   referral_code: IndexerServerReferralCodeResponse;
-  rewards: IndexerServerRewardsResponse;
-  sonic_points: IndexerServerSonicPointsResponse;
-  sonic_points_leaderboard: IndexerServerSonicPointsLeaderboardResponse;
-  staking_v2_pool_snapshots: IndexerServerStakingV2PoolSnapshotsResponse;
-  staking_v2_top_stakers: IndexerServerStakingV2TopStakersResponse;
   subaccounts: IndexerServerListSubaccountsResponse;
-  taker_rewards: IndexerServerTakerRewardsResponse;
-  tx_hashes: IndexerServerXrplWithdrawalTxHashesResponse;
   usdc_price: IndexerServerUsdcPriceResponse;
   vlp_snapshots: IndexerServerVlpSnapshotsResponse;
-  vrtx_merkle_proofs: IndexerServerClaimVrtxMerkleProofsResponse;
-  vrtx_supply_snapshots: IndexerServerVrtxSupplySnapshotsResponse;
 }

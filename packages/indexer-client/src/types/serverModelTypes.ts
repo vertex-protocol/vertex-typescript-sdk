@@ -186,34 +186,6 @@ export interface IndexerServerMarketSnapshot {
 }
 
 /**
- * Staking
- */
-
-export interface IndexerServerStakingV2PoolSnapshot {
-  timestamp: string;
-  cumulative_staked: string;
-  cumulative_unstaked: string;
-  number_of_stakers: number;
-}
-
-export interface IndexerServerStakingV2Staker {
-  address: string;
-  stake_amount: string;
-  pool_share: number;
-}
-
-export interface IndexerServerVrtxSupplySnapshot {
-  timestamp: string;
-  vrtx_oracle_price: string;
-  cumulative_incentives: string;
-  cumulative_lba: string;
-  cumulative_ecosystem_supply: string;
-  cumulative_treasury_supply: string;
-  cumulative_investors_supply: string;
-  cumulative_team_supply: string;
-}
-
-/**
  * Interest / funding
  */
 
@@ -227,97 +199,6 @@ export interface IndexerServerProductPayment {
   oracle_price_x18: string;
   isolated: boolean;
   isolated_product_id: number | null;
-}
-
-/**
- * Rewards
- */
-
-export interface IndexerServerSubaccountRewardsForProduct {
-  product_id: number;
-  q_score: string;
-  sum_q_min: string;
-  uptime: number;
-  maker_volume: string;
-  taker_volume: string;
-  maker_fee: string;
-  taker_fee: string;
-  // Already include adjustment for decimals
-  maker_tokens: string;
-  taker_tokens: string;
-  taker_referral_tokens: string;
-  rebates: string;
-}
-
-export interface IndexerServerGlobalRewardsForProduct {
-  product_id: number;
-  reward_coefficient: string;
-  q_scores: string;
-  maker_volumes: string;
-  taker_volumes: string;
-  maker_fees: string;
-  taker_fees: string;
-  maker_tokens: string;
-  taker_tokens: string;
-}
-
-export interface IndexerServerRewardsEpoch {
-  epoch: number;
-  start_time: string;
-  period: string;
-  num_eligible_addresses: number;
-  // Per product ID
-  address_rewards: IndexerServerSubaccountRewardsForProduct[];
-  global_rewards: IndexerServerGlobalRewardsForProduct[];
-}
-
-export interface IndexerServerTakerRewardsEpoch {
-  epoch: number;
-  taker_tokens: string;
-  taker_referral_tokens: string;
-}
-
-/**
- * Foundation token rewards
- */
-
-export interface IndexerServerFoundationTakerRewardsForProduct {
-  product_id: number;
-  taker_volume: string;
-  taker_fee: string;
-  taker_tokens: string;
-}
-
-export interface IndexerServerFoundationTakerGlobalRewardsForProduct {
-  product_id: number;
-  taker_volumes: string;
-  taker_fees: string;
-  taker_tokens: string;
-}
-
-export interface IndexerServerFoundationTakerRewardsWeek {
-  week: number;
-  start_time: string;
-  period: string;
-  // Per product ID
-  address_rewards: IndexerServerFoundationTakerRewardsForProduct[];
-  global_rewards: IndexerServerFoundationTakerGlobalRewardsForProduct[];
-}
-
-export interface IndexerServerFoundationTokenIncentivesSnapshot {
-  timestamp: string;
-  cumulative_foundation_token_incentives: string;
-  foundation_token_oracle_price: string;
-  foundation_token_product_id: number;
-}
-
-/**
- * VRTX claim merkle proof
- */
-
-export interface IndexerServerMerkleProof {
-  total_amount: string;
-  proof: string[];
 }
 
 /**
@@ -352,7 +233,6 @@ export interface IndexerServerLeaderboardPosition {
   roi_rank: string;
   account_value: string;
   volume?: string;
-  staked_vrtx?: string;
   update_time: string;
 }
 
@@ -364,7 +244,6 @@ export interface IndexerServerLeaderboardContest {
   count: string;
   threshold: string;
   volume_threshold: string;
-  staking_threshold: string;
   product_ids: number[];
   last_updated: string;
   active: boolean;
@@ -391,20 +270,4 @@ export interface IndexerServerVlpSnapshot {
   submission_idx: string;
   timestamp: string;
   tvl: string;
-}
-
-/**
- * XRPL
- */
-
-export interface IndexerServerXrplWithdrawalTxHash {
-  /**
-   * The actual submission index of the XRPL withdrawal transaction, which may be
-   * different from the submission index in the query.
-   * The submission index submitted in the query is in the range of:
-   * [submission_idx, submission_idx + length)
-   */
-  submission_idx: string;
-  length: string;
-  tx_hash: string;
 }
