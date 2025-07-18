@@ -6,6 +6,7 @@
     "declarationMap": true,
     "sourceMap": true,
     "esModuleInterop": true,
+    "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "lib": ["esnext"],
     "module": "esnext",

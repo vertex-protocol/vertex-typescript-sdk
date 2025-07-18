@@ -1,8 +1,8 @@
 import { getValidatedAddress } from '@vertex-protocol/utils';
 import { Address } from 'viem';
-import ArbitrumOneCoreDeployment from './core/deployment.arbitrumOne.json';
-import ArbitrumSepoliaCoreDeployment from './core/deployment.arbitrumSepolia.json';
-import LocalCoreDeployment from './core/deployment.localhost.json';
+import ArbitrumOneCoreDeployment from './core/deployment.arbitrumOne.json' with { type: 'json' };
+import ArbitrumSepoliaCoreDeployment from './core/deployment.arbitrumSepolia.json' with { type: 'json' };
+import LocalCoreDeployment from './core/deployment.localhost.json' with { type: 'json' };
 
 import { ChainEnv } from '../types';
 import { VertexContractName } from '../vertexAbis';
