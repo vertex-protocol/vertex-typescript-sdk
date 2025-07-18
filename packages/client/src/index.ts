@@ -13,4 +13,3 @@ export * from '@vertex-protocol/contracts';
 export * from '@vertex-protocol/engine-client';
 export * from '@vertex-protocol/indexer-client';
 export * from '@vertex-protocol/trigger-client';
-export type { OptionalSignatureParams } from './apis/types';
