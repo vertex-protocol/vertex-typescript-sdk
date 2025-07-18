@@ -1,0 +1,23 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+      - uses: borales/actions-yarn@v5
+        with:
+            cmd: install
+      - run: yarn build
+      - run: yarn test
+      - run: yarn --cwd apps/node-compat-test test:esm
+      - run: yarn --cwd apps/node-compat-test test:cjs
