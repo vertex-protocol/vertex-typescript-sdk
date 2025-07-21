@@ -42,7 +42,7 @@ The Vertex TypeScript SDK is a monorepo containing utilities for interacting wit
 
 ### JSDoc Requirements
 
-**ALWAYS use JSDoc format (`/** ... \*/`) for:\*\*
+**ALWAYS use JSDoc format (`/** ... */`) for:**
 
 - ALL exported functions, classes, methods, variables, constants
 - ALL exported types and interfaces including their properties

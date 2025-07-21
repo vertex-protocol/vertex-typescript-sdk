@@ -80,7 +80,7 @@ When completing coding tasks, **ALWAYS** run the following verification sequence
 
 ### JSDoc Documentation Standards
 
-**🚨 ALWAYS use JSDoc format (`/** ... \*/`) for:\*\*
+**🚨 ALWAYS use JSDoc format (`/** ... */`) for:**
 
 - **ALL exported functions** - Every function with `export` keyword must have JSDoc docstring describing purpose, parameters, and return value
 - **ALL exported classes and methods** - Class constructors, public methods, and static methods
