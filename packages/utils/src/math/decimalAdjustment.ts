@@ -1,6 +1,8 @@
 import { BigDecimal, BigDecimalish, toBigDecimal } from './bigDecimal';
 
-// All Vertex balances have 18 decimals. Ex. 1e18 = 1.0
+/**
+ * All Vertex balances have 18 decimals. Ex. 1e18 = 1.0
+ */
 export const VERTEX_PRODUCT_DECIMALS = 18;
 
 /**
