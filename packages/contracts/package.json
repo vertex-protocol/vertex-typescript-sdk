@@ -2,12 +2,11 @@
   "name": "@vertex-protocol/contracts",
   "version": "1.15.0",
   "type": "module",
+  "sideEffects": false,
   "description": "",
   "author": "Frank Jia <frank@vertexprotocol.com>",
   "homepage": "",
   "license": "ISC",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "source": "./src/index.ts",
   "publishConfig": {
     "access": "public"
@@ -15,7 +14,7 @@
   "repository": "https://github.com/vertex-protocol/vertex-typescript-sdk",
   "scripts": {
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
-    "build": "tsc -b",
+    "build": "tsup",
     "dev": "tsc -w",
     "typecheck": "tsc --noEmit"
   },
@@ -24,7 +23,16 @@
     "src"
   ],
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
   },
   "dependencies": {
     "@vertex-protocol/utils": "^1.15.0"

@@ -54,3 +54,9 @@ to enable other local repos to consume Vertex packages without having to publish
 > repo for the changes to be picked up.
 
 **depcruise:all**: Run dependency-cruiser on all packages to check for dependency issues (incl. circular dependencies).
+
+### Production Build Setup
+
+We're using [Tsup](https://tsup.egoist.dev/) for building the packages in CJS and ESM formats.
+Each package has its own `tsup.config.ts` file importing `tsup.base.config.ts` at the root of the monorepo.
+`apps/node-compat-test` tests the compatibility of the SDK in a pure, bundler-less, Node.js environment.
