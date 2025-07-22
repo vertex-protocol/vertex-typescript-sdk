@@ -98,6 +98,74 @@ When completing coding tasks, **ALWAYS** run the following verification sequence
  */
 ````
 
+### SDK-Specific JSDoc Patterns
+
+**Financial/Trading Operations:**
+- Always document precision and decimal handling for BigDecimal/BigNumber operations
+- Include units for financial values (USDC, ETH, etc.)
+- Document rounding behavior for price calculations
+
+````typescript
+/**
+ * Calculates the notional value of a position
+ * @param size - Position size in base units (BigDecimal)
+ * @param price - Current price per unit (BigDecimal, precision 18)
+ * @returns Notional value in quote currency (USDC), rounded to 6 decimal places
+ * @throws {InvalidPositionError} When size is zero or negative
+ * @example
+ * ```typescript
+ * const notional = calculateNotional(toBigDecimal('1.5'), toBigDecimal('2500.123456'));
+ * console.log(notional.toString()); // "3750.185184"
+ * ```
+ */
+````
+
+**Async Operations with Blockchain:**
+- Document gas estimation and transaction behavior
+- Include network timeout and retry information
+- Specify when operations require wallet signatures
+
+````typescript
+/**
+ * Places a limit order on the Vertex exchange
+ * @param params - Order parameters including product, size, and price
+ * @returns Promise resolving to transaction hash and order digest
+ * @throws {InsufficientBalanceError} When account lacks required collateral
+ * @throws {NetworkError} When blockchain connection fails after 3 retries
+ * @example
+ * ```typescript
+ * const order = await client.spot.placeLimitOrder({
+ *   productId: 1,
+ *   size: toBigDecimal('100'),
+ *   price: toBigDecimal('2500')
+ * });
+ * console.log(`Order placed: ${order.digest}`);
+ * ```
+ */
+````
+
+**API Response Types:**
+- Document nullable fields and their conditions
+- Include version compatibility notes for breaking changes
+- Specify rate limiting and caching behavior
+
+````typescript
+/**
+ * Market summary data from the indexer API
+ * @interface MarketSummary
+ */
+interface MarketSummary {
+  /** Product ID (uint32) */
+  productId: number;
+  /** 24h volume in quote currency (USDC), null if no trades */
+  volume24h: string | null;
+  /** Last trade price, null if no recent trades */
+  lastPrice: string | null;
+  /** Price change percentage over 24h (-100 to +∞) */
+  priceChange24h: string;
+}
+````
+
 ### TypeScript Conventions
 
 - Use `interface` for object shapes that might be extended or implemented
