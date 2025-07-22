@@ -98,73 +98,52 @@ When completing coding tasks, **ALWAYS** run the following verification sequence
  */
 ````
 
-### SDK-Specific JSDoc Patterns
+### Code Enforcement Rules
 
-**Financial/Trading Operations:**
-- Always document precision and decimal handling for BigDecimal/BigNumber operations
-- Include units for financial values (USDC, ETH, etc.)
-- Document rounding behavior for price calculations
+**When generating or reviewing code, LLM should:**
 
-````typescript
+1. **Detect export keywords** - Scan for `export function`, `export const`, `export type`, `export interface`
+2. **Check for JSDoc** - Verify each export has proper `/** ... */` documentation
+3. **Suggest JSDoc format** - Auto-complete JSDoc blocks for any missing documentation
+4. **Flag regular comments** - Convert `//` comments above exports to JSDoc format
+5. **Apply to all files** - Enforce in `apps/`, `packages/`, and all TypeScript files
+
+### Detection Patterns for Regular Comments Above Exports
+
+**🚨 CRITICAL: Always detect and flag these patterns for JSDoc conversion:**
+
+- `// comment\nexport function` → Convert to JSDoc
+- `/* comment */\nexport function` → Convert to JSDoc
+- `// comment\nexport const` → Convert to JSDoc
+- `// comment\nexport interface` → Convert to JSDoc
+- `// comment\nexport type` → Convert to JSDoc
+- `// comment\nexport class` → Convert to JSDoc
+
+**Example:**
+
+❌ **Avoid - Regular comment above export:**
+
+```typescript
+// calculates position notional value
+export function calculateNotional(size: BigDecimal, price: BigDecimal) {
+  // Should be converted to JSDoc format
+}
+```
+
+✅ **Good - Proper JSDoc:**
+
+```typescript
 /**
  * Calculates the notional value of a position
  * @param size - Position size in base units (BigDecimal)
  * @param price - Current price per unit (BigDecimal, precision 18)
  * @returns Notional value in quote currency (USDC), rounded to 6 decimal places
  * @throws {InvalidPositionError} When size is zero or negative
- * @example
- * ```typescript
- * const notional = calculateNotional(toBigDecimal('1.5'), toBigDecimal('2500.123456'));
- * console.log(notional.toString()); // "3750.185184"
- * ```
  */
-````
-
-**Async Operations with Blockchain:**
-- Document gas estimation and transaction behavior
-- Include network timeout and retry information
-- Specify when operations require wallet signatures
-
-````typescript
-/**
- * Places a limit order on the Vertex exchange
- * @param params - Order parameters including product, size, and price
- * @returns Promise resolving to transaction hash and order digest
- * @throws {InsufficientBalanceError} When account lacks required collateral
- * @throws {NetworkError} When blockchain connection fails after 3 retries
- * @example
- * ```typescript
- * const order = await client.spot.placeLimitOrder({
- *   productId: 1,
- *   size: toBigDecimal('100'),
- *   price: toBigDecimal('2500')
- * });
- * console.log(`Order placed: ${order.digest}`);
- * ```
- */
-````
-
-**API Response Types:**
-- Document nullable fields and their conditions
-- Include version compatibility notes for breaking changes
-- Specify rate limiting and caching behavior
-
-````typescript
-/**
- * Market summary data from the indexer API
- * @interface MarketSummary
- */
-interface MarketSummary {
-  /** Product ID (uint32) */
-  productId: number;
-  /** 24h volume in quote currency (USDC), null if no trades */
-  volume24h: string | null;
-  /** Last trade price, null if no recent trades */
-  lastPrice: string | null;
-  /** Price change percentage over 24h (-100 to +∞) */
-  priceChange24h: string;
+export function calculateNotional(size: BigDecimal, price: BigDecimal): BigDecimal {
+  // Implementation
 }
-````
+```
 
 ### TypeScript Conventions
 
