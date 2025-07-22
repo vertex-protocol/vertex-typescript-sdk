@@ -8,13 +8,15 @@ export default defineConfig([
         format: ['cjs', 'esm'],
         target: 'esnext',
         outDir: 'dist',
-        dts: true,
+        dts: {
+            compilerOptions: {
+                // Disabling `composite` is required for `tsup` to generate `.d.ts` files correctly.
+                // See https://github.com/egoist/tsup/issues/571
+                composite: false,
+            },
+        },
         sourcemap: true,
         clean: true,
-        // A separate tsconfig to disable `composite` and `incremental` options
-        // which are not compatible with tsup.
-        // See https://github.com/egoist/tsup/issues/647
-        tsconfig: './tsconfig.build.json',
         esbuildPlugins: [
             // This plugin rewrites our extension-less imports to use '.js' as required in bundler-less environments.
             // eslint-disable-next-line @typescript-eslint/no-unsafe-call
