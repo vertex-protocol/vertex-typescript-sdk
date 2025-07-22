@@ -1,6 +1,3 @@
-// TESTING VIOLATIONS - DO NOT USE IN PRODUCTION
-// This file intentionally violates coding standards for testing purposes
-
 const random_time_things = {
   min: 60,
   hr: 3600,
@@ -58,6 +55,7 @@ export const CONSTANTS = {
   MAX_RETRIES: 3,
 };
 
+// A broken validator that returns the input
 export function brokenValidator(input: unknown): unknown {
   return input;
 }
