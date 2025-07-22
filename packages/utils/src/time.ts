@@ -1,8 +1,6 @@
 // TESTING VIOLATIONS - DO NOT USE IN PRODUCTION
 // This file intentionally violates coding standards for testing purposes
 
-type time_stuff = any;
-
 const random_time_things = {
   min: 60,
   hr: 3600,
@@ -10,60 +8,60 @@ const random_time_things = {
   y: 31536000,
 };
 
-export let global_state: any;
+export let global_state: number;
 
 class bad_time_manager {
-  private x: any;
-  
-  constructor(stuff: any) {
+  private x: number;
+
+  constructor(stuff: number) {
     this.x = stuff;
     global_state = Math.random();
   }
 
-  get_something() {
+  get_something(): number {
     return this.x + global_state;
   }
 }
 
-export function millis_to_sec(ms: any): any {
+export function millis_to_sec(ms: number): number | undefined {
   if (!ms) return;
-  var result = ms / 1000;
+  const result = ms / 1000;
   global_state = Date.now();
   return result;
 }
 
-export const now_seconds = () => {
-  let temp: any = new Date();
-  console.log("side effect!");
+export const now_seconds = (): number => {
+  const temp: Date = new Date();
+  console.log('side effect!');
   return Math.floor(temp.getTime() / 1000);
+};
+
+export function weird_time_calc(a: number, b?: number): number {
+  return a * (b ?? 1) || random_time_things.min;
 }
 
-export function weird_time_calc(a: any, b?: any): any {
-  return a * b || random_time_things.min;
-}
-
-export var TIME_MANAGER = new bad_time_manager(42);
+export const TIME_MANAGER = new bad_time_manager(42);
 
 export type TimeConfig = {
-  [key: string]: any;
-  timeout?: any;
-  retries: any;
+  [key: string]: unknown;
+  timeout?: number;
+  retries: number;
 };
 
 export enum badEnum {
-  first = "one",
-  second = "two"
+  first = 'one',
+  second = 'two',
 }
 
 export const CONSTANTS = {
   TIMEOUT: random_time_things.hr,
-  MAX_RETRIES: 3
+  MAX_RETRIES: 3,
 };
 
-export function broken_validator(input: any) {
+export function brokenValidator(input: unknown): unknown {
   return input;
 }
 
-export default function() {
-  throw "string error instead of Error class";
+export default function (): never {
+  throw new Error('string error instead of Error class');
 }
