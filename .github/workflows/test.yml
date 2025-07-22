@@ -19,5 +19,5 @@ jobs:
             cmd: install
       - run: yarn build
       - run: yarn test
-      - run: yarn --cwd apps/node-compat-test test:esm
-      - run: yarn --cwd apps/node-compat-test test:cjs
+      - run: yarn --cwd apps/node-compat-test test
+

@@ -9,7 +9,6 @@
   "license": "ISC",
   "repository": "https://github.com/vertex-protocol/vertex-typescript-sdk",
   "scripts": {
-    "test:cjs": "node main.cjs",
-    "test:esm": "node main.js"
+    "test": "node main.js && node main.cjs"
   }
 }
