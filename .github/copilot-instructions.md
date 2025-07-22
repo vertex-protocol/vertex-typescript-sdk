@@ -76,27 +76,40 @@ When completing coding tasks, **ALWAYS** run the following verification sequence
 
 **🚨 ALWAYS use JSDoc format (`/** ... */`) for:**
 
-- **ALL exported functions** - Every function with `export` keyword must have JSDoc docstring describing purpose, parameters, and return value
-- **ALL exported classes and methods** - Class constructors, public methods, and static methods
-- **ALL exported variables/constants** - Any constant or variable with `export` keyword used outside the current package
+- **ALL exported functions** - Every function with `export` keyword must have JSDoc docstring describing its purpose, parameters, and return value
+- **ALL exported variables/constants** - Any constant or variable with `export` keyword used outside the current file
 - **ALL exported types and interfaces** - Including their properties and purpose
-- **ALL interface/type properties** - Individual property descriptions for public APIs
+- **ALL interface/type properties** - Individual property descriptions
 
-**JSDoc Formatting:**
+**⚠️ When you see `export function`, `export const`, `export type`, or `export interface`, automatically add JSDoc format.**
 
-````typescript
+### When NOT to Use JSDoc Format
+
+- **Implementation comments** - Comments inside function bodies explaining logic flow
+- **Inline comments** - Comments on the same line as code
+- **Temporary/debugging comments** - Comments meant for development purposes only
+- **Non-exported private utilities** - Internal helper functions not used elsewhere
+
+### JSDoc Formatting Requirements
+
+#### Basic Structure
+
+```typescript
 /**
- * Brief description of the function/class/variable
+ * Brief description of the function/variable/type
  * @param {type} paramName - Description of parameter
  * @returns {type} Description of return value
- * @throws {ErrorType} Description of when this error is thrown
- * @example
- * ```typescript
- * const result = myFunction('example');
- * console.log(result); // Expected output
- * ```
+ * @type {type} - For variable type annotations
  */
-````
+```
+
+#### Quality Guidelines
+
+- **Be Concise** - Keep descriptions clear and to the point
+- **Be Specific** - Explain what the function/variable does, not how it works
+- **Use Proper Grammar** - Start with capital letters, end with periods
+- **Avoid Redundancy** - Don't repeat information already clear from the code
+- **Include Edge Cases** - Document important limitations or special behaviors
 
 ### Code Enforcement Rules
 
