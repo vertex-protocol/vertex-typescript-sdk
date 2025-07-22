@@ -1,0 +1,14 @@
+{
+  "name": "node-compat-test",
+  "version": "0.1.0",
+  "description": "Tests loading @vertex-protocol/client in a pure Node.js environment",
+  "type": "module",
+  "private": true,
+  "author": "Frank Jia <frank@vertexprotocol.com>",
+  "homepage": "",
+  "license": "ISC",
+  "repository": "https://github.com/vertex-protocol/vertex-typescript-sdk",
+  "scripts": {
+    "test": "node main.js && node main.cjs"
+  }
+}
