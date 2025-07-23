@@ -1,0 +1,16 @@
+packages:
+  - packages/*
+  - apps/*
+
+dedupeDirectDeps: true
+
+disallowWorkspaceCycles: true
+
+includeWorkspaceRoot: true
+
+linkWorkspacePackages: true
+
+onlyBuiltDependencies:
+  - esbuild
+  - nx
+  - unrs-resolver

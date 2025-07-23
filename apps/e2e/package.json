@@ -20,13 +20,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@vertex-protocol/client": "*",
-    "@vertex-protocol/contracts": "*",
-    "@vertex-protocol/engine-client": "*",
-    "@vertex-protocol/indexer-client": "*",
-    "@vertex-protocol/trigger-client": "*",
-    "@vertex-protocol/utils": "*",
-    "dotenv": "^17.0.1",
+    "@vertex-protocol/client": "workspace:*",
+    "@vertex-protocol/contracts": "workspace:*",
+    "@vertex-protocol/engine-client": "workspace:*",
+    "@vertex-protocol/indexer-client": "workspace:*",
+    "@vertex-protocol/trigger-client": "workspace:*",
+    "@vertex-protocol/utils": "workspace:*",
+    "dotenv": "^16.3.1",
     "viem": "*"
   },
   "gitHead": "6d0f498829ddaf01a11d2f46f960811428b370f5"

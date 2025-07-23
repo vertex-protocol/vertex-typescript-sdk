@@ -35,8 +35,8 @@
     }
   },
   "dependencies": {
-    "@vertex-protocol/contracts": "^1.15.0",
-    "@vertex-protocol/utils": "^1.15.0",
+    "@vertex-protocol/contracts": "workspace:*",
+    "@vertex-protocol/utils": "workspace:*",
     "axios": "*",
     "ts-mixer": "*"
   },
