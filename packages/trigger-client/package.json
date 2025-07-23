@@ -35,17 +35,17 @@
     }
   },
   "dependencies": {
-    "@vertex-protocol/contracts": "^1.15.0",
-    "@vertex-protocol/engine-client": "^1.15.0",
-    "@vertex-protocol/utils": "^1.15.0",
-    "axios": "*",
-    "ts-mixer": "*"
+    "@vertex-protocol/contracts": "workspace:*",
+    "@vertex-protocol/engine-client": "workspace:*",
+    "@vertex-protocol/utils": "workspace:*",
+    "axios": "catalog:",
+    "ts-mixer": "catalog:"
   },
   "peerDependencies": {
-    "viem": "*"
+    "viem": "catalog:"
   },
   "devDependencies": {
-    "viem": "*"
+    "viem": "catalog:"
   },
   "gitHead": "494d15823821c58c8bd629e5945a4aa7a85a29f0"
 }

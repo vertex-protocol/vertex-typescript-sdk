@@ -1,0 +1,21 @@
+packages:
+  - packages/*
+  - apps/*
+
+dedupeDirectDeps: true
+
+disallowWorkspaceCycles: true
+
+includeWorkspaceRoot: true
+
+linkWorkspacePackages: true
+
+onlyBuiltDependencies:
+  - esbuild
+  - nx
+  - unrs-resolver
+
+catalog:
+  viem: 2.31.6
+  axios: ^1.10.0
+  ts-mixer: ^6.0.4
