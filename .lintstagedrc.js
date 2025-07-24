@@ -8,10 +8,10 @@ const config = {
     '!(dist/**/*)**/*.(ts|tsx|js)': (filenames) => {
         const relativeFiles = filenames.map((f) => path.relative(path.resolve('.'), f));
         return [
-            `yarn typecheck`,
-            `yarn eslint --cache --fix ${relativeFiles.join(' ')}`,
-            `yarn depcruise ${relativeFiles.join(' ')}`,
-            `yarn prettier --write ${relativeFiles.join(' ')}`,
+            `pnpm typecheck`,
+            `pnpm eslint --cache --fix ${relativeFiles.join(' ')}`,
+            `pnpm depcruise ${relativeFiles.join(' ')}`,
+            `pnpm prettier --write ${relativeFiles.join(' ')}`,
         ];
     },
 
@@ -19,7 +19,7 @@ const config = {
     '**/*.(md|json)': (filenames) => {
         const relativeFiles = filenames.map((f) => path.relative(path.resolve('.'), f));
         return [
-            `yarn prettier --write ${relativeFiles.join(' ')}`
+            `pnpm prettier --write ${relativeFiles.join(' ')}`
         ];
     },
 };

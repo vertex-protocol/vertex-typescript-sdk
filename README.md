@@ -46,13 +46,6 @@ This is a Lerna monorepo. See `package.json` for common tasks, some of which are
 
 **gen-typedoc**: Generates documentation using [TypeDoc](https://typedoc.org/)
 
-**link/unlink-local**: Used for local package development.
-Uses `yarn link/unlink` ([docs](https://classic.yarnpkg.com/en/docs/cli/link))
-to enable other local repos to consume Vertex packages without having to publish a new version.
-
-> When making a change to the SDK, you will need to build the SDK, then run `yarn install --force` on the consuming
-> repo for the changes to be picked up.
-
 **depcruise:all**: Run dependency-cruiser on all packages to check for dependency issues (incl. circular dependencies).
 
 ### Production Build Setup

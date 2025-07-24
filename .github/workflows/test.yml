@@ -14,10 +14,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-      - uses: borales/actions-yarn@v5
-        with:
-            cmd: install
-      - run: yarn build
-      - run: yarn test
-      - run: yarn --cwd apps/node-compat-test test
-
+      - uses: pnpm/action-setup@v4
+      - run: pnpm install
+      - run: pnpm build
+      - run: pnpm test
+      - run: pnpm run --dir apps/node-compat-test test
