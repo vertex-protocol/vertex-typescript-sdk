@@ -1,3 +1,8 @@
+export interface EngineServerOrderUpdateStreamParams {
+  product_id: number;
+  subaccount: string;
+}
+
 export interface EngineServerTradeStreamParams {
   product_id: number;
 }
@@ -24,6 +29,7 @@ export interface EngineServerBookDepthStreamParams {
  * Available subscription streams
  */
 export interface EngineServerSubscriptionStreamParamsByType {
+  order_update: EngineServerOrderUpdateStreamParams;
   trade: EngineServerTradeStreamParams;
   best_bid_offer: EngineServerBestBidOfferStreamParams;
   fill: EngineServerFillStreamParams;
