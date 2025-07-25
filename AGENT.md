@@ -54,6 +54,19 @@ The project follows a monorepo pattern with these core packages:
 - Comprehensive type definitions for all API responses
 - Consistent error handling with custom error classes
 
+## Test and Verification Sequence
+
+After making edits, **ALWAYS** run the following verification sequence:
+
+1. **Type Check**: `yarn typecheck` - Verify all TypeScript types are correct
+2. **Lint Check**: `yarn lint` - Ensure code follows linting rules and standards
+
+**Requirements:**
+
+- All commands must pass successfully before considering a task complete
+- Fix any errors found during verification before marking tasks as done
+- If any command fails, address the issues and re-run the full sequence
+
 ## TypeScript SDK Style Guide
 
 For detailed coding standards, formatting requirements, and best practices, see [docs/STYLE_GUIDE.md](docs/STYLE_GUIDE.md).

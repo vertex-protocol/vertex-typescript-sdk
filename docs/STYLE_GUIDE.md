@@ -1,24 +1,5 @@
 # TypeScript SDK Style Guide
 
-## Test and Verification Sequence
-
-After making edits, **ALWAYS** run the following verification sequence:
-
-1. **Type Check**: `yarn typecheck` - Verify all TypeScript types are correct
-2. **Lint Check**: `yarn lint` - Ensure code follows linting rules and standards
-
-After task is complete run:
-
-3. **Build Verification**: `yarn build` - Confirm the project builds successfully without errors
-4. **Test Verification**: `yarn test` - Run all tests to ensure functionality remains intact
-
-**Requirements:**
-
-- All four commands must pass successfully before considering a task complete
-- Fix any errors found during verification before marking tasks as done
-- Run these commands after any significant code changes
-- If any command fails, address the issues and re-run the full sequence
-
 ## JSDoc Documentation Standards
 
 **🚨 ALWAYS use JSDoc format (`/** ... */`) for:**
