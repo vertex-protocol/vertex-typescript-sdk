@@ -53,3 +53,7 @@ jspm_packages
 
 # eslint
 .eslintcache
+
+# LLM agent instructions (except CLAUDE.md which is symlinked)
+QWEN.md
+GEMINI.md
