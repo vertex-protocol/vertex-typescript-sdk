@@ -72,5 +72,3 @@ ln -sf AGENT.md QWEN.md
 # For Gemini
 ln -sf AGENT.md GEMINI.md
 ```
-
-Note: `QWEN.md` and `GEMINI.md` are ignored by git, so each developer can create their own symlinks as needed.
