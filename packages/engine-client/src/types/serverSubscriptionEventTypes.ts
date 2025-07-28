@@ -1,6 +1,17 @@
 import { EngineServerPriceTickLiquidity } from './serverQueryTypes';
 
 /**
+ * Event from subscribing to a `order_update` stream.
+ */
+export interface EngineServerSubscriptionOrderUpdateEvent {
+  timestamp: string;
+  product_id: number;
+  digest: string;
+  amount: string;
+  reason: string;
+}
+
+/**
  * Event from subscribing to a `trade` stream.
  */
 export interface EngineServerSubscriptionTradeEvent {
@@ -52,6 +63,9 @@ export interface EngineServerSubscriptionPositionChangeEvent {
   v_quote_amount: string;
 }
 
+/**
+ * Event from subscribing to a `book_depth` stream.
+ */
 export interface EngineServerSubscriptionBookDepthEvent {
   min_timestamp: string;
   max_timestamp: string;
