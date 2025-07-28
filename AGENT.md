@@ -16,15 +16,32 @@ The Vertex TypeScript SDK is a monorepo containing utilities for interacting wit
 - `yarn test` - Run Jest tests across the entire codebase
 - `yarn lint` - Run ESLint with auto-fix and Prettier formatting
 - `yarn typecheck` - Run TypeScript type checking for all packages
+- `yarn gen-typedoc` - Generate TypeDoc documentation for all packages
 
 ### Testing
 
-- E2E tests in `apps/e2e` are excluded from main test runs
+- E2E tests in `apps/e2e`
+- `yarn --cwd apps/e2e e2e` - Run all E2E tests
+- `yarn --cwd apps/e2e e2e:client` - Run client-specific E2E tests
+- `yarn --cwd apps/e2e e2e:engine` - Run engine-client E2E tests  
+- `yarn --cwd apps/e2e e2e:indexer` - Run indexer-client E2E tests
+- `yarn --cwd apps/e2e e2e:trigger` - Run trigger-client E2E tests
 
 ### Package Management
 
 - `yarn link-local` / `yarn unlink-local` - Link/unlink packages for local development
 - `yarn publish-all` - Clean, build, and publish all packages via Lerna
+- `yarn depcruise:all` - Analyze package dependencies and detect circular dependencies
+
+### Individual Package Scripts
+
+Each package in `packages/` has these common scripts:
+- `yarn build` - Build the specific package
+- `yarn clean` - Clean build artifacts  
+- `yarn dev` - Watch mode for development
+- `yarn lint` - Check linting rules only
+- `yarn lint:fix` - Fix linting issues automatically
+- `yarn typecheck` - Type check without emitting files
 
 ## Architecture
 
@@ -53,20 +70,36 @@ The project follows a monorepo pattern with these core packages:
 - EIP-712 signing for off-chain order execution
 - Comprehensive type definitions for all API responses
 - Consistent error handling with custom error classes
+- ESM-only modules (no CommonJS support in published packages)
+- Viem as the primary Ethereum library dependency
 
 ## Test and Verification Sequence
 
 After making edits, **ALWAYS** run the following verification sequence:
 
-1. **Type Check**: `yarn typecheck` - Verify all TypeScript types are correct
-2. **Lint Check**: `yarn lint` - Ensure code follows linting rules and standards
+1. **Type Check**: `yarn typecheck` - Verify all TypeScript types are correct across all packages
+2. **Lint Check**: 
+   - If changes are made in only one package: `yarn lint:fix` (from that specific package directory)
+   - If changes are made in multiple packages: `yarn lint` (from root directory)
 
 **Requirements:**
 
 - All commands must pass successfully before considering a task complete
 - Fix any errors found during verification before marking tasks as done
 - If any command fails, address the issues and re-run the full sequence
+- For E2E testing, run `yarn --cwd apps/e2e e2e` separately if needed
 
 ## TypeScript SDK Style Guide
 
-For detailed coding standards, formatting requirements, and best practices, see [docs/STYLE_GUIDE.md](docs/STYLE_GUIDE.md).
+For detailed coding standards and conventions, see [STYLEGUIDE.md](./docs/STYLEGUIDE.md).
+
+### Key areas covered in the style guide:
+
+- JSDoc documentation standards
+- TypeScript conventions and type safety
+- Client class patterns and architecture
+- Error handling and custom exceptions
+- Naming conventions and file structure
+- Constants and configuration management
+- Utility function patterns and validation
+

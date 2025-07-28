@@ -35,7 +35,9 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# docs files
+# docs
+# Exclude .md files from formatting because Prettier adds unnecessary escaping
+# (e.g., turns `*` into `\*` where no escaping is needed).
 *.md
 
 # vercel
