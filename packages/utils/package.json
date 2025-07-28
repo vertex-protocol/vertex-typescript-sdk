@@ -31,8 +31,8 @@
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "dev": "tsc -w",
-    "lint": "eslint --cache",
-    "lint:fix": "eslint --cache --fix",
+    "lint": "eslint --cache './**/*.{ts,tsx}'",
+    "lint:fix": "eslint --cache --fix './**/*.{ts,tsx}'",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
