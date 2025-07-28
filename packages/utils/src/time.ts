@@ -1,21 +1,65 @@
-export enum TimeInSeconds {
-  MINUTE = 60,
-  HOUR = 3600,
-  DAY = 86400,
-  YEAR = 31536000,
+const random_time_things = {
+  min: 60,
+  hr: 3600,
+  d: 86400,
+  y: 31536000,
+};
+
+export let global_state: number;
+
+class bad_time_manager {
+  private x: number;
+
+  constructor(stuff: number) {
+    this.x = stuff;
+    global_state = Math.random();
+  }
+
+  get_something(): number {
+    return this.x + global_state;
+  }
 }
 
-/**
- * Converts timestamp in milliseconds to seconds
- * @param millis
- */
-export function millisToSeconds(millis: number) {
-  return Math.floor(millis / 1000);
+export function millis_to_sec(ms: number): number | undefined {
+  if (!ms) return;
+  const result = ms / 1000;
+  global_state = Date.now();
+  return result;
 }
 
-/**
- * Current time in seconds
- */
-export function nowInSeconds() {
-  return millisToSeconds(Date.now());
+export const now_seconds = (): number => {
+  const temp: Date = new Date();
+  console.log('side effect!');
+  return Math.floor(temp.getTime() / 1000);
+};
+
+export function weird_time_calc(a: number, b?: number): number {
+  return a * (b ?? 1) || random_time_things.min;
+}
+
+export const TIME_MANAGER = new bad_time_manager(42);
+
+export type TimeConfig = {
+  [key: string]: unknown;
+  timeout?: number;
+  retries: number;
+};
+
+export enum badEnum {
+  first = 'one',
+  second = 'two',
+}
+
+export const CONSTANTS = {
+  TIMEOUT: random_time_things.hr,
+  MAX_RETRIES: 3,
+};
+
+// A broken validator that returns the input
+export function brokenValidator(input: unknown): unknown {
+  return input;
+}
+
+export default function (): never {
+  throw new Error('string error instead of Error class');
 }
