@@ -54,3 +54,21 @@ to enable other local repos to consume Vertex packages without having to publish
 > repo for the changes to be picked up.
 
 **depcruise:all**: Run dependency-cruiser on all packages to check for dependency issues (incl. circular dependencies).
+
+## Agent Instructions
+
+This repository includes agent instruction files for LLM-based development tools:
+
+- `AGENT.md` - Master instructions file
+- `CLAUDE.md` - Automatically symlinked to `AGENT.md` (managed by the repository)
+- `.github/copilot-instructions.md` - Automatically symlinked to `AGENT.md` for GitHub Copilot
+
+For other LLM agents (Qwen, Gemini, etc.), you can manually create symlinks:
+
+```bash
+# For Qwen
+ln -sf AGENT.md QWEN.md
+
+# For Gemini
+ln -sf AGENT.md GEMINI.md
+```

@@ -53,3 +53,12 @@ jspm_packages
 
 # eslint
 .eslintcache
+
+# agent instructions
+AGENTS.md
+QWEN.md
+GEMINI.md
+GPT.md
+LLAMA.md
+MISTRAL.md
+VICUNA.md
