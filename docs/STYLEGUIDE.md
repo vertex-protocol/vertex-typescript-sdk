@@ -102,51 +102,62 @@ export function calculateNotional(
 
 ```typescript
 /**
- * Main client for interacting with Vertex Protocol
+ * Client for querying and executing against Vertex Clearinghouse.
+ * Usually not instantiated directly. Instead, use {@link createVertexClient}.
  */
 export class VertexClient {
-  private readonly config: VertexClientConfig;
-  private readonly signer?: Signer;
+  // Use definite assignment assertion for properties initialized in constructor helper
+  context!: VertexClientContext;
+  market!: MarketAPI;
+  subaccount!: SubaccountAPI;
+  spot!: SpotAPI;
+  perp!: PerpAPI;
+  ws!: WebsocketAPI;
 
-  /**
-   * Creates a new Vertex client instance
-   * @param config - Client configuration options
-   * @param signer - Optional signer for authenticated operations
-   */
-  constructor(config: VertexClientConfig, signer?: Signer) {
-    this.config = config;
-    this.signer = signer;
+  constructor(context: VertexClientContext) {
+    // Delegate setup to private method for reusability
+    this.setupFromContext(context);
   }
 
   /**
-   * Retrieves current market data for a product
-   * @param productId - The product ID to query
-   * @returns Promise resolving to market data
-   * @throws {ProductNotFoundError} When product ID is invalid
+   * Sets the linked signer for the client. Set to null to revert to the chain signer.
+   * @param linkedSignerWalletClient - The linked signer wallet client or null to remove
    */
-  async getMarketData(productId: number): Promise<MarketData> {
-    // Implementation
+  setLinkedSigner(linkedSignerWalletClient: WalletClientWithAccount | null) {
+    // Update context and propagate to all sub-clients
+    // Implementation details...
   }
 }
 ```
 
 ## Error Handling Patterns
 
-- Create custom error classes extending base `VertexError`
+- Create custom error classes extending base `Error`
 - Use `@throws` JSDoc tags to document all possible errors
 - Provide detailed error context and recovery suggestions
 
+✅ **Good error class patterns:**
+
 ```typescript
 /**
- * Base error class for all Vertex SDK errors
+ * Error thrown when wallet client is not provided for operations requiring it
  */
-export abstract class VertexError extends Error {
-  constructor(
-    message: string,
-    public readonly cause?: Error,
-  ) {
-    super(message);
-    this.name = this.constructor.name;
+export class WalletNotProvidedError extends Error {
+  constructor() {
+    // Set descriptive message and proper error name
+    super('Wallet client not provided');
+    this.name = 'WalletNotProvidedError';
+  }
+}
+
+/**
+ * Error thrown when engine server returns a failure response
+ */
+export class EngineServerFailureError extends Error {
+  // Store server response data as readonly property for debugging
+  constructor(readonly responseData: ServerFailureResponse) {
+    // Call super() with optional message
+    super();
   }
 }
 ```
@@ -162,17 +173,25 @@ export abstract class VertexError extends Error {
 
 ## Constants and Configuration
 
+✅ **Good constants patterns:**
+
 ```typescript
 /**
- * Default configuration values for the Vertex client
+ * Common BigDecimal constants used throughout the SDK
  */
-export const DEFAULT_CLIENT_CONFIG: Readonly<VertexClientConfig> =
-  Object.freeze({
-    chainId: 42161, // Arbitrum mainnet
-    timeout: 30000,
-    retryAttempts: 3,
-    debug: false,
-  });
+export const BigDecimals = Object.freeze({
+  // Freeze object to prevent mutation
+  // Use semantic names for commonly used values
+  ZERO: toBigDecimal(0),
+  ONE: toBigDecimal(1),
+  INF: toBigDecimal(Infinity),
+  MAX_I128: toBigDecimal('170141183460469231731687303715884105727'),
+});
+
+/**
+ * Quote product ID for USDC
+ */
+export const QUOTE_PRODUCT_ID = 0;
 ```
 
 ## Utility Function Patterns
@@ -182,16 +201,35 @@ export const DEFAULT_CLIENT_CONFIG: Readonly<VertexClientConfig> =
 - Use proper type guards and validators
 - Handle edge cases gracefully
 
+✅ **Good utility function patterns:**
+
 ```typescript
 /**
- * Converts a decimal string to BigDecimal with validation
- * @param value - String representation of decimal number
- * @param name - Optional field name for error context
- * @returns BigDecimal representation of the input
- * @throws {ValidationError} When input is not a valid decimal
+ * BigDecimal is a renamed `BigNumber` type from `bignumber.js`.
+ * Includes valid values & instances for BigDecimal.
+ * @see https://mikemcl.github.io/bignumber.js/
  */
-export function toBigDecimal(value: string, name?: string): BigDecimal {
-  // Implementation with validation
+export type BigDecimalish = BigDecimal | BigDecimal.Value | bigint;
+
+/**
+ * Converts a value to an instance of BigDecimal
+ * @param val - The value to convert to BigDecimal  
+ * @returns A new BigDecimal instance
+ */
+export function toBigDecimal(val: BigDecimalish): BigDecimal {
+  // Handle different input types with type guards
+  const bnConstructorVal = (() => {
+    if (val instanceof BigDecimal) {
+      return val; // Already BigDecimal, return as-is
+    } else if (typeof val === 'string' || typeof val === 'number') {
+      return val; // Native types supported by BigNumber constructor
+    } else if (typeof val === 'bigint') {
+      return val.toString(); // Convert bigint to string
+    }
+    // Fallback for unexpected types (edge case handling)
+    return JSON.stringify(val);
+  })();
+  return new BigDecimal(bnConstructorVal);
 }
 ```
 

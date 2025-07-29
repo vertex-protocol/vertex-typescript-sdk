@@ -52,7 +52,7 @@ The project follows a monorepo pattern with these core packages:
 1. **`@vertex-protocol/client`** - Main entry point that composes all other packages into a unified `VertexClient`
 2. **`@vertex-protocol/engine-client`** - Handles off-chain matching engine communication
 3. **`@vertex-protocol/indexer-client`** - Provides indexer queries for historical data
-4. **`@vertex-protocol/trigger-client`** - Manages trigger service for stop/TP/SL orders
+4. **`@vertex-protocol/trigger-client`** - Manages trigger service for stop orders
 5. **`@vertex-protocol/contracts`** - Contract utilities, ABIs, and on-chain interactions
 6. **`@vertex-protocol/utils`** - Common utilities including BigNumber.js for decimal math
 
@@ -70,7 +70,6 @@ The project follows a monorepo pattern with these core packages:
 - EIP-712 signing for off-chain order execution
 - Comprehensive type definitions for all API responses
 - Consistent error handling with custom error classes
-- ESM-only modules (no CommonJS support in published packages)
 - Viem as the primary Ethereum library dependency
 
 ## Test and Verification Sequence
@@ -81,13 +80,14 @@ After making edits, **ALWAYS** run the following verification sequence:
 2. **Lint Check**: 
    - If changes are made in only one package: `yarn lint:fix` (from that specific package directory)
    - If changes are made in multiple packages: `yarn lint` (from root directory)
+3. **E2E Testing** (when applicable): Use specific commands from the E2E section above
 
 **Requirements:**
 
 - All commands must pass successfully before considering a task complete
 - Fix any errors found during verification before marking tasks as done
 - If any command fails, address the issues and re-run the full sequence
-- For E2E testing, run `yarn --cwd apps/e2e e2e` separately if needed
+- E2E tests should be run when making changes to client APIs or core functionality
 
 ## TypeScript SDK Style Guide
 
