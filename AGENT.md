@@ -20,7 +20,8 @@ The Vertex TypeScript SDK is a monorepo containing utilities for interacting wit
 
 ### Testing
 
-- E2E tests in `apps/e2e`
+- **E2E tests only** - This project uses E2E integration tests in `apps/e2e`, not unit tests (Jest/Mocha)
+- **IMPORTANT**: Run `yarn build` before running any E2E tests to ensure all packages are built
 - `yarn --cwd apps/e2e e2e` - Run all E2E tests
 - `yarn --cwd apps/e2e e2e:client` - Run client-specific E2E tests
 - `yarn --cwd apps/e2e e2e:engine` - Run engine-client E2E tests  
@@ -76,16 +77,25 @@ The project follows a monorepo pattern with these core packages:
 
 After making edits, **ALWAYS** run the following verification sequence:
 
-1. **Type Check**: `yarn typecheck` - Verify all TypeScript types are correct across all packages
-2. **Lint Check**: `yarn lint` - Run ESLint with auto-fix and Prettier formatting
-3. **E2E Testing** (when applicable): Use specific commands from the Testing section above
+1. **Type Check**  
+   - Run `yarn typecheck` to verify all TypeScript types are correct across all packages.
+2. **Lint Check**  
+   - Run `yarn lint` to run ESLint with auto-fix and Prettier formatting.
+3. **Build**  
+   - Run `yarn build` to build all packages before running any tests.
+4. **E2E Tests**
+   - Run **E2E tests** to confirm core flows are working.
+   - Add new **basic E2E tests** for any new functionality introduced.
 
-**Requirements:**
+### Requirements
+- All commands must pass successfully before considering a task complete.  
+- Fix any errors found during verification before marking tasks as done.  
+- If any command fails, address the issues and **re-run the full sequence**.  
+- Always run `yarn build` before E2E testing to ensure all packages are properly built.  
+- Add **E2E tests** for new features to ensure they function correctly.  
+- E2E tests should be run whenever client APIs, core functionality, or user flows are modified.
+- **DO NOT write unit tests (Jest/Mocha)** - this project exclusively uses E2E integration tests in `apps/e2e`
 
-- All commands must pass successfully before considering a task complete
-- Fix any errors found during verification before marking tasks as done
-- If any command fails, address the issues and re-run the full sequence
-- E2E tests should be run when making changes to client APIs or core functionality
 
 ## TypeScript SDK Style Guide
 
