@@ -86,13 +86,13 @@ After making edits, **ALWAYS** run the following verification sequence:
    - Run `yarn test` to run all tests across the codebase.
 5. **E2E Tests**
    - Run **E2E tests** to confirm core flows are working.
-   - Add new **basic E2E tests** for any new functionality introduced.
+   - Add new **basic sanity E2E tests** for any new functionality introduced.
 
 ### Requirements
 - **All commands must pass** before considering a task complete
 - **Fix errors immediately** - If any command fails, address issues and re-run the full sequence
 - **Build before E2E** - Always run `yarn build` before E2E testing to ensure packages are properly built
-- **Add E2E tests** for new features and when modifying client APIs, core functionality, or user flows
+- **Add basic sanity E2E tests** for new features and when modifying client APIs, core functionality, or user flows
 - **No unit tests** - This project uses E2E integration tests in `apps/e2e`, any unit tests should be written manually
 
 
