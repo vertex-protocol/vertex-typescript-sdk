@@ -77,10 +77,8 @@ The project follows a monorepo pattern with these core packages:
 After making edits, **ALWAYS** run the following verification sequence:
 
 1. **Type Check**: `yarn typecheck` - Verify all TypeScript types are correct across all packages
-2. **Lint Check**: 
-   - If changes are made in only one package: `yarn lint:fix` (from that specific package directory)
-   - If changes are made in multiple packages: `yarn lint` (from root directory)
-3. **E2E Testing** (when applicable): Use specific commands from the E2E section above
+2. **Lint Check**: `yarn lint` - Run ESLint with auto-fix and Prettier formatting
+3. **E2E Testing** (when applicable): Use specific commands from the Testing section above
 
 **Requirements:**
 
