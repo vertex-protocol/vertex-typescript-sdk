@@ -77,21 +77,18 @@ The project follows a monorepo pattern with these core packages:
 After making edits, **ALWAYS** run the following verification sequence:
 
 1. **Type Check**  
-   - Run `yarn typecheck` to verify all TypeScript types are correct across all packages.
+   - Run `yarn typecheck` to verify all TypeScript types are correct across all packages
 2. **Lint Check**  
-   - Run `yarn lint` to run ESLint with auto-fix and Prettier formatting.
+   - Run `yarn lint` to run ESLint with auto-fix and Prettier formatting
 3. **Build**  
-   - Run `yarn build` to build all packages before running any tests.
+   - Run `yarn build` to build all packages before running any tests
 4. **Tests**
-   - Run `yarn test` to run all tests across the codebase.
-5. **E2E Tests**
-   - Run **E2E tests** to confirm core flows are working.
-   - Add new **basic sanity E2E tests** for any new functionality introduced.
+   - Run `yarn test` to run all tests across the codebase
 
 ### Requirements
 - **All commands must pass** before considering a task complete
 - **Fix errors immediately** - If any command fails, address issues and re-run the full sequence
-- **Build before E2E** - Always run `yarn build` before E2E testing to ensure packages are properly built
+- **Build before adding E2E tests** - Always run `yarn build` before E2E testing to ensure packages are properly built
 - **Add basic sanity E2E tests** for new features and when modifying client APIs, core functionality, or user flows
 - **Do NOT write unit tests** - any unit tests should be written manually
 
