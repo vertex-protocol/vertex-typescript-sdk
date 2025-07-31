@@ -54,19 +54,19 @@ The project follows a monorepo pattern with these core packages:
 3. **`@vertex-protocol/indexer-client`** - Provides indexer queries for historical data
 4. **`@vertex-protocol/trigger-client`** - Manages trigger service for stop orders
 5. **`@vertex-protocol/contracts`** - Contract utilities, ABIs, and on-chain interactions
-6. **`@vertex-protocol/utils`** - Common utilities including BigNumber.js for decimal math
+6. **`@vertex-protocol/utils`** - Common utilities including bignumber.js for decimal math
 
 ### Client Architecture
 
 - `VertexClient` is the main class that orchestrates all API interactions
-- Uses `viem` for Ethereum wallet/provider functionality (migrated from ethers)
+- Uses `viem` for Ethereum wallet/provider functionality
 - Supports both chain signers and linked signers for trading
 - Modular API design with separate classes for Market, Spot, Perp, Subaccount, and WebSocket operations
 
 ### Key Patterns
 
 - All packages use TypeScript with strict type checking
-- BigDecimal/BigNumber.js for precise decimal calculations
+- Use bignumber.js (renamed to BigDecimal) for precise decimal calculations
 - EIP-712 signing for off-chain order execution
 - Comprehensive type definitions for all API responses
 - Consistent error handling with custom error classes
@@ -93,7 +93,7 @@ After making edits, **ALWAYS** run the following verification sequence:
 - **Fix errors immediately** - If any command fails, address issues and re-run the full sequence
 - **Build before E2E** - Always run `yarn build` before E2E testing to ensure packages are properly built
 - **Add basic sanity E2E tests** for new features and when modifying client APIs, core functionality, or user flows
-- **No unit tests** - This project uses E2E integration tests in `apps/e2e`, any unit tests should be written manually
+- **Do NOT write unit tests** - any unit tests should be written manually
 
 
 ## TypeScript SDK Style Guide
