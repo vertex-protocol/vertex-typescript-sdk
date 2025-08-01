@@ -84,18 +84,17 @@ After making edits, **ALWAYS** run the following verification sequence:
    - Run `yarn build` to build all packages before running any tests
 4. **Tests**
    - Run `yarn test` to run all tests across the codebase
-
 ### Requirements
 - **All commands must pass** before considering a task complete
 - **Fix errors immediately** - If any command fails, address issues and re-run the full sequence
 - **Build before adding E2E tests** - Always run `yarn build` before E2E testing to ensure packages are properly built
-- **Add basic sanity E2E tests** for new features and when modifying client APIs, core functionality, or user flows
+- **Add basic sanity E2E tests** - Never skip writing E2E tests for new features, client APIs, or user flows
 - **Do NOT write unit tests** - any unit tests should be written manually
 
 
 ## TypeScript SDK Style Guide
 
-For detailed coding standards and conventions, see [STYLEGUIDE.md](./docs/STYLEGUIDE.md).
+For detailed coding standards and conventions, see [Style Guide](./docs/STYLEGUIDE.md).
 
 ### Key areas covered in the style guide:
 
