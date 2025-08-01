@@ -39,6 +39,9 @@ import {
   PaginatedIndexerEventsResponse,
 } from './types';
 
+/**
+ * Indexer client providing paginated queries for historical data from the Vertex indexer service
+ */
 export class IndexerClient extends IndexerBaseClient {
   async getPaginatedSubaccountMatchEvents(
     params: GetIndexerSubaccountMatchEventParams,

@@ -22,7 +22,9 @@ type ClientOrderParams<T> = Omit<OptionalSignatureParams<T>, 'order'> & {
 
 export type PlaceOrderParams = ClientOrderParams<EnginePlaceOrderParams>;
 
-// Same as PlaceOrderParams but with isolated fields
+/**
+ * Same as PlaceOrderParams but with isolated fields for isolated margin trading
+ */
 export type PlaceIsolatedOrderParams = Omit<
   OptionalSignatureParams<EnginePlaceIsolatedOrderParams>,
   'order'

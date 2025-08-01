@@ -60,3 +60,21 @@ to enable other local repos to consume Vertex packages without having to publish
 We're using [Tsup](https://tsup.egoist.dev/) for building the packages in CJS and ESM formats.
 Each package has its own `tsup.config.ts` file importing `tsup.base.config.ts` at the root of the monorepo.
 `apps/node-compat-test` tests the compatibility of the SDK in a pure, bundler-less, Node.js environment.
+
+## Agent Instructions
+
+This repository includes agent instruction files for LLM-based development tools:
+
+- `AGENT.md` - Master instructions file
+- `CLAUDE.md` - Automatically symlinked to `AGENT.md` (managed by the repository)
+- `.github/copilot-instructions.md` - Automatically symlinked to `AGENT.md` for GitHub Copilot
+
+For other LLM agents (Qwen, Gemini, etc.), you can manually create symlinks:
+
+```bash
+# For Qwen
+ln -sf AGENT.md QWEN.md
+
+# For Gemini
+ln -sf AGENT.md GEMINI.md
+```
