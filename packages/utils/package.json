@@ -4,13 +4,14 @@
   "type": "module",
   "sideEffects": false,
   "description": "",
-  "author": "Frank Jia <frank@vertexprotocol.com>",
+  "author": "Frank Jia <frank@inkfnd.com>",
   "homepage": "",
   "bugs": {
     "url": ""
   },
   "license": "ISC",
   "source": "./src/index.ts",
+  "repository": "https://github.com/nadohq/nado-typescript-sdk",
   "publishConfig": {
     "access": "public"
   },
@@ -29,11 +30,6 @@
         "default": "./dist/index.cjs"
       }
     }
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vertex-protocol/vertex-typescript-sdk",
-    "directory": "packages/utils"
   },
   "scripts": {
     "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",

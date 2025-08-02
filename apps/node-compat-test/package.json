@@ -4,10 +4,10 @@
   "description": "Tests loading @vertex-protocol/client in a pure Node.js environment",
   "type": "module",
   "private": true,
-  "author": "Frank Jia <frank@vertexprotocol.com>",
+  "author": "Frank Jia <frank@inkfnd.com>",
   "homepage": "",
   "license": "ISC",
-  "repository": "https://github.com/vertex-protocol/vertex-typescript-sdk",
+  "repository": "https://github.com/nadohq/nado-typescript-sdk",
   "scripts": {
     "test": "node main.js && node main.cjs"
   }
